@@ -4,7 +4,7 @@ An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demons
 
 ## Current state
 
-Planning documents, an untested camera prototype and an untested complete store blockout generator are available. This is **not yet an executable Unity project**. No assets have been imported and no headset testing has taken place.
+Planning documents, untested tool/reset/camera components, and store/tool-station generators are available. This is **not yet an executable Unity project**. No assets have been imported and no headset testing has taken place.
 
 ## Start here
 
@@ -14,6 +14,8 @@ Planning documents, an untested camera prototype and an untested complete store 
 - [Scene layout](Docs/SCENE_LAYOUT.md): provisional store design.
 - [Asset register](Docs/ASSET_REGISTER.md): sources and licensing.
 - [Handoff](Docs/HANDOFF.md): instructions for continuing with an assistant.
+- [Tools and detail batch 02](Docs/TOOLS_BATCH_02.md): import the whole source batch.
+- [Controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
 - [Environment batch 01](Docs/ENVIRONMENT_BATCH_01.md): store generator and import instructions.
 - [Camera prototype](Prototype/Scripts/EvidenceCamera.cs).
 
