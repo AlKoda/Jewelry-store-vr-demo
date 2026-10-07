@@ -25,9 +25,9 @@ These are setup stages, not verified version-specific click instructions.
 4. Assign that Camera to the component's Photo Camera field.
 5. Exclude demo UI from the photo camera's culling mask.
 6. Connect the installed XR toolkit's activation event to CapturePhoto(). Exact wiring depends on toolkit version.
-7. Test in the Editor and then a Windows build. Manual Camera.Render compatibility must be checked with the chosen render pipeline; adjust the render request approach if needed.
+7. Test in the Editor and then a Windows build. The dedicated camera is enabled for one normal frame; validate the active render pipeline configuration and rendered output.
 
-The script provides synchronous PNG capture only. Preview, shutter feedback, desktop folder access and VR interaction are not implemented.
+The updated script provides normal-frame rendering followed by synchronous PNG saving, sequential filenames, shutter sound/events, status feedback and Windows folder access. Live preview and VR activation remain pending. See TOOLS_BATCH_02.md for automatic station/camera setup.
 
 ## Photograph storage
 
