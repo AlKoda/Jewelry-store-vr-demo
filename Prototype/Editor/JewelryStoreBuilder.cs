@@ -220,8 +220,11 @@ public static class JewelryStoreBuilder
         if(shardMesh==null)
         {
             shardMesh=new Mesh { name="BlockoutShard" };
-            shardMesh.vertices=new Vector3[] {V(-0.5f,0,-0.4f),V(0.5f,0,-0.2f),V(0.1f,0,0.6f)};
-            shardMesh.triangles=new int[] {0,2,1,0,1,2};
+            // Separate vertices for each face preserve opposing normals.
+            shardMesh.vertices=new Vector3[] {
+                V(-0.5f,0,-0.4f),V(0.5f,0,-0.2f),V(0.1f,0,0.6f),
+                V(-0.5f,0,-0.4f),V(0.5f,0,-0.2f),V(0.1f,0,0.6f)};
+            shardMesh.triangles=new int[] {0,2,1,3,4,5};
             shardMesh.RecalculateNormals();
             shardMesh.RecalculateBounds();
             // Save generated mesh so scene references survive reopening Unity.
