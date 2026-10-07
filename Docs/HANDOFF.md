@@ -29,3 +29,7 @@ Inspect installed Unity version and any existing project. Record pipeline and XR
 ## Outstanding technical risk
 
 The camera prototype's manual rendering path must be validated against the chosen Unity render pipeline. It has not been compiled or run.
+
+## Batch 02 prepared
+
+Read TOOLS_BATCH_02.md and CONTROLS_AND_INTEGRATION.md. Import all runtime and Editor sources together. Generate store, then tool station. Tool prefabs, desktop panel and handheld camera are generated automatically. Source delimiter checks only; no compilation or runtime validation. Preserve deployment ownership during XR grabbing and release selections before reset. Camera now captures via normal frame rendering rather than Camera.Render.
