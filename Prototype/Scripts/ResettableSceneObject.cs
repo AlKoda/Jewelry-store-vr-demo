@@ -9,7 +9,7 @@ public sealed class ResettableSceneObject : MonoBehaviour
     private bool active;
     private bool recorded;
 
-    private void Awake() { RecordInitialState(); }
+    private void Awake() { if (!recorded) RecordInitialState(); }
 
     public void RecordInitialState()
     {
