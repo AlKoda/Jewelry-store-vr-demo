@@ -4,7 +4,7 @@ An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demons
 
 ## Current state
 
-Planning documents and an untested camera prototype are available. This is **not yet an executable Unity project**. No assets have been imported and no headset testing has taken place.
+Planning documents, an untested camera prototype and an untested complete store blockout generator are available. This is **not yet an executable Unity project**. No assets have been imported and no headset testing has taken place.
 
 ## Start here
 
@@ -14,6 +14,7 @@ Planning documents and an untested camera prototype are available. This is **not
 - [Scene layout](Docs/SCENE_LAYOUT.md): provisional store design.
 - [Asset register](Docs/ASSET_REGISTER.md): sources and licensing.
 - [Handoff](Docs/HANDOFF.md): instructions for continuing with an assistant.
+- [Environment batch 01](Docs/ENVIRONMENT_BATCH_01.md): store generator and import instructions.
 - [Camera prototype](Prototype/Scripts/EvidenceCamera.cs).
 
 ## Repository structure
@@ -21,6 +22,7 @@ Planning documents and an untested camera prototype are available. This is **not
 ```
 Docs/                  Planning, setup, asset records and handoff
 Prototype/Scripts/     Portable C# scripts awaiting Unity integration
+Prototype/Editor/      Unity Editor environment generator
 UnityProject/          To be created on the Windows PC
 ```
 
