@@ -28,7 +28,7 @@ Inspect installed Unity version and any existing project. Record pipeline and XR
 
 ## Outstanding technical risk
 
-The camera prototype's manual rendering path must be validated against the chosen Unity render pipeline. It has not been compiled or run.
+The camera's dedicated normal-frame rendering configuration must be validated against the chosen Unity render pipeline. It has not been compiled or run.
 
 ## Batch 02 prepared
 
