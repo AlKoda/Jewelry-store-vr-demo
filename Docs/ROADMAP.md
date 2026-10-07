@@ -11,7 +11,7 @@ Dates are targets, dependent on access to the PC and headset.
 | U01 | Unity project setup | Required | Planned | Oct 10–12 | Editor/pipeline/packages recorded; project opens without errors |
 | U02 | Quest PC connection | Required | Planned | Oct 10–12 | Head and controller tracking work in a Windows build |
 | U03 | Movement | Required | Planned | Oct 10–12 | Teleport and snap turn work; room scale checked |
-| U04 | Store blockout | Required | Planned | Oct 10–12 | Full room and pavement navigable at believable scale |
+| U04 | Store blockout | Required | In progress | Oct 10–12 | Full room and pavement navigable at believable scale |
 | T01 | Cones and markers | Required | Planned | Oct 13–16 | Spawn, grab, place, move and remove objects anywhere suitable |
 | T02 | Scene tape | Required | Planned | Oct 13–16 | Tape spans two posts and follows repositioning |
 | T03 | Camera integration | Required | Planned | Oct 17–19 | Controller capture saves readable PNGs; failures shown clearly |
@@ -25,6 +25,8 @@ Dates are targets, dependent on access to the PC and headset.
 | X02 | Additional cases | Future | Planned | After presentation | Reusable scene/tool structure established |
 
 ## Verification log
+
+Environment batch 01 generator uploaded: complete editable store geometry source, awaiting compilation and scene validation. See [batch instructions](ENVIRONMENT_BATCH_01.md).
 
 No Unity compilation, runtime or headset tests performed yet.
 
