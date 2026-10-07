@@ -8,7 +8,7 @@ Deliver a working instructor-led PC VR jewelry-store demonstration by October 27
 
 ## Current state
 
-Repository contains design documents and an untested portable camera script. There is no Unity project, imported art, executable build or validated XR configuration yet.
+Repository contains design documents, an untested portable camera script, and an untested Unity Editor store generator. See ENVIRONMENT_BATCH_01.md for import instructions. User prefers complete milestone batches and will test when home; prioritize geometry before visual polish. There is no Unity project, imported art, executable build or validated XR configuration yet.
 
 ## Next action on the PC
 
