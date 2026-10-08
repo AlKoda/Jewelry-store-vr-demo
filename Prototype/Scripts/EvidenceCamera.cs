@@ -25,7 +25,31 @@ public sealed class EvidenceCamera : MonoBehaviour
     private RenderTexture target, previousTarget;
     private bool previousEnabled;
     private bool rendered;
+    private bool restorePhotoPose;
+    private Vector3 savedPhotoPosition;
+    private Quaternion savedPhotoRotation;
     private StereoTargetEyeMask previousStereo;
+
+    public void CaptureFromView(Transform viewpoint)
+    {
+        if(IsCapturing || !isActiveAndEnabled || photoCamera==null || viewpoint==null) return;
+        savedPhotoPosition=photoCamera.transform.localPosition;
+        savedPhotoRotation=photoCamera.transform.localRotation;
+        restorePhotoPose=true;
+        photoCamera.transform.SetPositionAndRotation(viewpoint.position,viewpoint.rotation);
+        CapturePhoto();
+        if(!IsCapturing) RestorePhotoPose();
+    }
+
+    private void RestorePhotoPose()
+    {
+        if(restorePhotoPose && photoCamera!=null)
+        {
+            photoCamera.transform.localPosition=savedPhotoPosition;
+            photoCamera.transform.localRotation=savedPhotoRotation;
+        }
+        restorePhotoPose=false;
+    }
 
     public void CapturePhoto()
     {
@@ -150,6 +174,7 @@ public sealed class EvidenceCamera : MonoBehaviour
         if(target!=null) RenderTexture.ReleaseTemporary(target);
         target=null;
         IsCapturing=false;
+        RestorePhotoPose();
     }
 
     private void Fail(string message)

@@ -8,7 +8,7 @@ if not exist "%JEWELRY_UNITY%" (
   exit /b 1
 )
 if not exist "%JEWELRY_PROJECT%\Assets" (
-  echo Extract Downloads\JewelryStore_City_Unity6000.6.2f1.zip into UnityProject first.
+  echo Extract Downloads\JewelryStore_Expanded_Unity6000.6.2f1.zip into UnityProject first.
   pause
   exit /b 1
 )
