@@ -1,0 +1,16 @@
+Unity 6000.6.2f1; Built-in pipeline
+Scene generation and 3 actual Unity rendered captures passed.
+PASS: Tool station exists
+PASS: Sequential marker numbers
+PASS: Marker label assigned
+PASS: Tool placement
+PASS: Tape connection
+PASS: Tape length
+PASS: Tape follows moved post
+PASS: Tape removed after endpoint removal
+PASS: Runtime photograph saved
+PASS: Reset clears deployed objects
+PASS: Reset restarts marker numbering
+PASS: Reset preserves photographs
+PASS: Reset restores handheld camera
+PASS: Validation completed
