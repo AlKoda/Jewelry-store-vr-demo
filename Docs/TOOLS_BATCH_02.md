@@ -2,7 +2,7 @@
 
 ## Status
 
-Source prepared and uploaded. Basic source delimiter checks passed. No C# compilation, Unity execution, screenshots or Quest tests performed. This remains a prototype source repository, not a runnable project download.
+October 8 update: all source compiled on the user's PC under Unity 6000.6.2f1; generated scene and 13 core Play mode assertions passed. A project snapshot and real Unity captures are available. See VERIFICATION_2026-10-08.md. XR/controller and presentation UI checks remain pending.
 
 ## Import as a batch
 
