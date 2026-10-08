@@ -44,8 +44,12 @@ Uses Application.persistentDataPath/EvidencePhotos. On Windows this is normally 
 
 ## Recorded configuration
 
-- Unity Editor: pending
-- Render pipeline: pending
+- Unity Editor: 6000.6.2f1 (tested October 8)
+- Render pipeline: Built-in (temporary package-free project)
 - XR packages: pending
 - Quest connection: pending
 - Successful Windows/headset build: pending
+
+## October 8 PC verification
+
+See VERIFICATION_2026-10-08.md and the downloadable generated project. All source compiled and core Play mode checks passed. Camera capture now waits for camera render callbacks. Unity Package Manager local-server startup failed; -noUpm is a temporary geometry-stage workaround and must be resolved before XR setup.
