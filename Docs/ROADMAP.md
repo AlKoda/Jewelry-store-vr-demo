@@ -1,6 +1,6 @@
 | In progress || In progress || In progress || In progress || In progress |# Roadmap
 
-Updated: October 7, 2026.
+Updated: October 8, 2026.
 Statuses: Planned / In progress / Blocked / Complete.
 Dates are targets, dependent on access to the PC and headset.
 
@@ -11,7 +11,7 @@ Dates are targets, dependent on access to the PC and headset.
 | U01 | Unity project setup | Required | Planned | Oct 10–12 | Editor/pipeline/packages recorded; project opens without errors |
 | U02 | Quest PC connection | Required | Planned | Oct 10–12 | Head and controller tracking work in a Windows build |
 | U03 | Movement | Required | Planned | Oct 10–12 | Teleport and snap turn work; room scale checked |
-| U04 | Store blockout | Required | In progress | Oct 10–12 | Full room and pavement navigable at believable scale |
+| U04 | Store blockout | Required | In progress | Oct 10–12 | Scene generated and saved; scale, traversal and collision checks in Quest remain pending |
 | T01 | Cones and markers | Required | In progress | Oct 13–16 | Spawn, grab, place, move and remove objects anywhere suitable |
 | T02 | Scene tape | Required | In progress | Oct 13–16 | Tape spans two posts and follows repositioning |
 | T03 | Camera integration | Required | In progress | Oct 17–19 | Controller capture saves readable PNGs; failures shown clearly |
@@ -30,7 +30,7 @@ Environment batch 01 generator uploaded: complete editable store geometry source
 
 Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel, camera feedback/folder access and detailed geometry source. See [batch 02](TOOLS_BATCH_02.md). Basic source delimiter checks passed; functionality remains unverified.
 
-No Unity compilation, runtime or headset tests performed yet.
+October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
 
 When testing begins, record date, build/version, device, result and any remaining issue. Do not mark a feature complete merely because its source exists.
 
