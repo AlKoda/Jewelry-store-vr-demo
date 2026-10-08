@@ -24,7 +24,18 @@ Dates are targets, dependent on access to the PC and headset.
 | X01 | Intact-store state | Optional | Planned | After core demo | Shared layout switches between intact and robbed states |
 | X02 | Additional cases | Future | Planned | After presentation | Reusable scene/tool structure established |
 
+## Batch 03 additions
+
+| Feature | Status | Evidence / remaining work |
+|---|---|---|
+| Refined shop and city geometry | Complete for desktop milestone | Real rendered captures; 4,740 city mesh triangles and 18 renderers |
+| Inside desktop spawn and walking | Complete for desktop milestone | Movement and collision assertions passed |
+| Exterior access prevention | Complete for desktop milestone | Front/side constraints passed; XR teleport/physical tracking not integrated |
+| Full project snapshot on GitHub | Complete | Downloads/JewelryStore_City_Unity6000.6.2f1.zip |
+
 ## Verification log
+
+Batch 03: 22 Editor Play mode assertions passed; see [environment report](ENVIRONMENT_BATCH_03.md). Quest and standalone build checks remain pending.
 
 Environment batch 01 generator uploaded: complete editable store geometry source, awaiting compilation and scene validation. See [batch instructions](ENVIRONMENT_BATCH_01.md).
 

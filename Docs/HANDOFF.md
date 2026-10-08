@@ -1,39 +1,30 @@
 # Assistant handoff
 
-Read README.md, PROJECT_BRIEF.md, ROADMAP.md and SETUP.md before implementation.
+## Current state
+
+Latest milestone: [Batch 03](ENVIRONMENT_BATCH_03.md). Unity 6000.6.2f1, Built-in pipeline. A refined shop, lightweight city exterior and inside-only desktop walker are saved in Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity. Twenty-two Editor Play mode assertions passed on October 8, 2026.
+
+Download Downloads/JewelryStore_City_Unity6000.6.2f1.zip for the full generated project (Assets, .meta files and ProjectSettings). Prototype contains the editable source used to generate it. The prior project snapshot and verification remain as historical milestones.
+
+Local PC root:
+C:\Users\MOBPC\Documents\Codex\Jewelry-store-vr-demo\Jewelry-store-vr-demo-main
 
 ## Objective
 
-Deliver a working instructor-led PC VR jewelry-store demonstration by October 27, 2026, for Quest 2. User works with this assistant and Claude Code.
+Instructor-led jewelry robbery VR demonstration by October 27, 2026. Free exploration, tools and photographs; no score, timer or forced sequence. User prefers complete batches and minimal repeated manual testing.
 
-## Current state
+## Next technical dependency
 
-Repository contains design documents, an untested portable camera script, and an untested Unity Editor store generator. See ENVIRONMENT_BATCH_01.md for import instructions. User prefers complete milestone batches and will test when home; prioritize geometry before visual polish. There is no Unity project, imported art, executable build or validated XR configuration yet.
+Unity Package Manager local-server startup failed; -noUpm currently permits geometry/core-tool work. Resolve it before XR installation. Unity reports an RTX 5060 Ti and approximately 16 GB RAM on this PC.
 
-## Next action on the PC
+## Work still pending
 
-Inspect installed Unity version and any existing project. Record pipeline and XR versions. Create the project under UnityProject and validate Quest head/controller tracking before expanding the scene.
+OpenXR/XR Interaction Toolkit installation, Quest connection, controller movement/grabbing, headset HUD, headset performance, direct input usability checks and standalone build validation. Keep the player inside: restrict teleportation to interior surfaces and respect the storefront barrier. Desktop boundaries do not constrain physical headset tracking.
 
-## Working rules
+## Tested behavior
 
-- Keep instructor-led free exploration: no scores, timers, forced task order or automatic judgments.
-- Favor simple working interactions and free assets.
-- Mark code written and code tested separately.
-- Update ROADMAP.md and the verification log after meaningful changes.
-- Record third-party asset licenses and acquisition links.
-- Preserve asset .meta files and avoid generated Unity folders.
-- Keep session reset separate from deletion of saved photographs.
-- Coordinate changes through Git commits; pull latest changes before editing.
-- Consult installed XR/render-pipeline documentation rather than assuming a package API version.
+Inside spawn, component-driven walking, front/side constraints, safe-room access, view-transparent barrier, city renderer/triangle budgets; tools, numbered markers, tape endpoints, saved photos and reset. See Docs/VerificationCity/runtime-results.txt and the real screenshots.
 
-## Outstanding technical risk
+## Collaboration
 
-The camera's dedicated normal-frame rendering configuration must be validated against the chosen Unity render pipeline. It has not been compiled or run.
-
-## Batch 02 prepared
-
-Read TOOLS_BATCH_02.md and CONTROLS_AND_INTEGRATION.md. Import all runtime and Editor sources together. Generate store, then tool station. Tool prefabs, desktop panel and handheld camera are generated automatically. Source delimiter checks only; no compilation or runtime validation. Preserve deployment ownership during XR grabbing and release selections before reset. Camera now captures via normal frame rendering rather than Camera.Render.
-
-## October 8 verified state
-
-Read VERIFICATION_2026-10-08.md. A generated project now exists on the PC and as Downloads/JewelryStore_Unity6000.6.2f1.zip. Unity 6000.6.2f1, Built-in pipeline, all sources compile and 13 core Play mode assertions passed. No headset or standalone build tests. Normal Package Manager startup failed; -noUpm allowed core verification, but XR setup is blocked until that installation issue is resolved. Camera captures now wait for render callbacks. Do not repeat completed checks unless changes or unresolved concerns justify it.
+Read PROJECT_BRIEF.md, ROADMAP.md and ENVIRONMENT_BATCH_03.md. Preserve .meta files and update source plus generated project snapshot together. Pull current GitHub files before editing. Do not commit Library/caches. Record any asset license before importing. Keep tool deployment ownership intact during XR grabbing; release held objects before reset. Photos must survive reset. Repeat completed checks only when changes or unresolved issues justify it.

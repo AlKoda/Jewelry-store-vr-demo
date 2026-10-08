@@ -2,13 +2,21 @@
 
 An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demonstration on **October 27, 2026**.
 
-## Current state
+## Latest milestone
+
+[Refined shop, indoor walking and city street](Docs/ENVIRONMENT_BATCH_03.md) — 22 Editor Play mode assertions passed.
+
+[Download the latest complete Unity project](Downloads/JewelryStore_City_Unity6000.6.2f1.zip). Extract into UnityProject, run Open-Unity-Blockout.cmd, and open Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity.
+
+WASD/arrows walk; hold right mouse to look; Home returns to the inside start. The street is visible through the storefront while the player remains inside.
+
+## Previous verified milestone
 
 A generated Unity 6000.6.2f1 project snapshot and actual scene captures are available. Scripts compiled and 13 core runtime assertions passed in Editor Play mode on the user's PC. Quest setup and standalone build verification remain pending. See [verification report](Docs/VERIFICATION_2026-10-08.md), including the temporary Package Manager workaround.
 
 ## Start here
 
-- [Download generated Unity project](Downloads/JewelryStore_Unity6000.6.2f1.zip).
+- [Previous blockout snapshot](Downloads/JewelryStore_Unity6000.6.2f1.zip).
 - [Verified scene screenshots and results](Docs/VERIFICATION_2026-10-08.md).
 
 - [Project brief](Docs/PROJECT_BRIEF.md): agreed scope and hardware.
