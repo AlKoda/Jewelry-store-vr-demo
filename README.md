@@ -4,9 +4,12 @@ An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demons
 
 ## Current state
 
-Planning documents, untested tool/reset/camera components, and store/tool-station generators are available. This is **not yet an executable Unity project**. No assets have been imported and no headset testing has taken place.
+A generated Unity 6000.6.2f1 project snapshot and actual scene captures are available. Scripts compiled and 13 core runtime assertions passed in Editor Play mode on the user's PC. Quest setup and standalone build verification remain pending. See [verification report](Docs/VERIFICATION_2026-10-08.md), including the temporary Package Manager workaround.
 
 ## Start here
+
+- [Download generated Unity project](Downloads/JewelryStore_Unity6000.6.2f1.zip).
+- [Verified scene screenshots and results](Docs/VERIFICATION_2026-10-08.md).
 
 - [Project brief](Docs/PROJECT_BRIEF.md): agreed scope and hardware.
 - [Roadmap](Docs/ROADMAP.md): progress, priorities and completion criteria.
@@ -28,7 +31,7 @@ Prototype/Editor/      Unity Editor environment generator
 UnityProject/          To be created on the Windows PC
 ```
 
-Download using **Code → Download ZIP**, or clone this repository with GitHub Desktop. Until UnityProject exists, do not try to open the repository itself as a Unity project.
+Download using **Code → Download ZIP**, or clone this repository with GitHub Desktop. Extract the project snapshot into UnityProject alongside this README, then run Open-Unity-Blockout.cmd. The snapshot has no XR packages yet.
 
 ## Demo behavior
 
