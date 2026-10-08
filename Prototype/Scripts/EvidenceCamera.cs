@@ -24,6 +24,7 @@ public sealed class EvidenceCamera : MonoBehaviour
     private int sequence;
     private RenderTexture target, previousTarget;
     private bool previousEnabled;
+    private bool rendered;
     private StereoTargetEyeMask previousStereo;
 
     public void CapturePhoto()
@@ -62,6 +63,9 @@ public sealed class EvidenceCamera : MonoBehaviour
     private IEnumerator Capture()
     {
         IsCapturing=true;
+        rendered=false;
+        Camera.onPostRender+=OnCameraRendered;
+        UnityEngine.Rendering.RenderPipelineManager.endCameraRendering+=OnPipelineCameraRendered;
         Status="Capturing...";
         previousTarget=photoCamera.targetTexture;
         previousEnabled=photoCamera.enabled;
@@ -80,7 +84,9 @@ public sealed class EvidenceCamera : MonoBehaviour
 
         // Let the active render pipeline render the dedicated camera normally.
         // Run capture from Play mode or a build, not a paused Editor.
-        yield return new WaitForEndOfFrame();
+        float deadline=Time.realtimeSinceStartup+10f;
+        while(!rendered && Time.realtimeSinceStartup<deadline) yield return null;
+        if(!rendered) { Fail("Photo camera did not render within 10 seconds."); Restore(); yield break; }
         string path=null;
         try { path=SaveImage(); }
         catch(Exception exception) { Fail(exception.Message); }
@@ -121,8 +127,20 @@ public sealed class EvidenceCamera : MonoBehaviour
         }
     }
 
+    private void OnCameraRendered(Camera camera)
+    {
+        if(camera==photoCamera) rendered=true;
+    }
+
+    private void OnPipelineCameraRendered(UnityEngine.Rendering.ScriptableRenderContext context,Camera camera)
+    {
+        OnCameraRendered(camera);
+    }
+
     private void Restore()
     {
+        Camera.onPostRender-=OnCameraRendered;
+        UnityEngine.Rendering.RenderPipelineManager.endCameraRendering-=OnPipelineCameraRendered;
         if (IsCapturing && photoCamera != null)
         {
             photoCamera.targetTexture=previousTarget;
