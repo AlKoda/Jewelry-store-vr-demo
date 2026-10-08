@@ -31,6 +31,7 @@ public sealed class DesktopToolPlacement : MonoBehaviour
     {
         Selected=tool;
         IsPlacing=false;
+        if(cursor!=null) cursor.SetActive(false);
         Status=tool==null?"No tool selected.":"Selected "+tool.name;
     }
 
@@ -96,7 +97,11 @@ public sealed class DesktopToolPlacement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.F)) PhotographView();
         if(Input.GetKeyDown(KeyCode.Escape)) CancelPlacement();
         bool overPanel=Input.mousePosition.x<312 && Input.mousePosition.y>12;
-        if(Selected==null) IsPlacing=false;
+        if(Selected==null)
+        {
+            IsPlacing=false;
+            if(cursor!=null) cursor.SetActive(false);
+        }
         if(IsPlacing)
         {
             if(Input.GetKeyDown(KeyCode.Q)) yaw-=15;
