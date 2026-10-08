@@ -29,13 +29,14 @@ Inside spawn, component-driven walking, front/side constraints, safe-room access
 
 Read PROJECT_BRIEF.md, ROADMAP.md and ENVIRONMENT_BATCH_03.md. Preserve .meta files and update source plus generated project snapshot together. Pull current GitHub files before editing. Do not commit Library/caches. Record any asset license before importing. Keep tool deployment ownership intact during XR grabbing; release held objects before reset. Photos must survive reset. Repeat completed checks only when changes or unresolved issues justify it.
 
-## Code fixes — October 8, 2026 (not yet re-run in Unity)
+## Batch 04 — desktop interaction (October 8, 2026, not yet re-run in Unity)
 
-Source and the City snapshot zip were updated together; .meta files unchanged.
+Source and the City snapshot zip were updated together. The snapshot's scenes still predate this batch: run ShopCityValidation.Run (and JewelrySceneValidation.Run for the old scene) to regenerate scenes, captures and results, or use Crime Scene Demo → Create Desktop Player on an open scene.
 
-- Marker numbers: generated TextMesh labels had no font (`m_Font: {fileID: 0}` in Marker.prefab), so digits could not render. DemoToolGeometry now assigns the built-in LegacyRuntime font, and DeployedTool.SetMarkerNumber assigns it at runtime for prefabs generated before this fix.
-- Desktop walking: two CharacterController.Move calls per frame cleared isGrounded, so downward speed grew without limit while walking. Movement now uses one combined Move per frame; MovePlanar keeps its behavior for validation.
-- Build settings: ShopCityValidation registered the old JewelryStoreDemo scene; it now registers JewelryStoreCity.unity (also corrected in the snapshot's EditorBuildSettings.asset).
-- Snapshot zip repacked with forward-slash paths; contents otherwise identical.
+New runtime scripts: InteriorBounds (shared interior regions; Contains/Clamp), DesktopInteractor (pointer pick-up/carry/rotate/place/remove, camera hold, hotkeys). Rewritten: ShopWalkController (bounds-driven, sprint, Looking state), DemoDesktopPanel (presenter panel with controls guide, Tab toggle, no more nudge buttons). DemoSession gained a Resetting event that fires before clearing.
 
-Next PC check: run ShopCityValidation.Run, confirm marker digits are visible, and walk for a minute to confirm smooth movement.
+Editor: DemoValidation holds everything the two validators shared (preview camera, captures, assertions, tool/photo/reset stages); the validators are now scene setup plus their own checks. DemoToolsBuilder.CreateDesktopPlayer replaces ShopCityRefinement.CreateWalker and is also a menu item. Expected City result: 30 assertions (8 new: bounds, held/placed/rotated/removed tool, camera held and returned, marker font).
+
+Earlier fixes in the same day: marker labels had no font (digits could not render); two CharacterController.Move calls per frame made fall speed accumulate; build settings pointed at the old scene; the zip used backslash paths.
+
+Next PC check: run the validation, then by hand confirm marker digits are visible, tools follow the pointer onto floor and display tops, the camera photo shows the view when held (F, then P), and movement is smooth.

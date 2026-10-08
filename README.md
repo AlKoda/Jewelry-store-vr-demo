@@ -8,7 +8,7 @@ An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demons
 
 [Download the latest complete Unity project](Downloads/JewelryStore_City_Unity6000.6.2f1.zip). Extract into UnityProject, run Open-Unity-Blockout.cmd, and open Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity.
 
-WASD/arrows walk; hold right mouse to look; Home returns to the inside start. The street is visible through the storefront while the player remains inside.
+WASD/arrows walk (Shift runs); hold right mouse to look; left click picks up and places tools; 1/2/3 spawn a cone, marker or tape post into the hand; T connects tape posts; F holds the camera and P photographs; Tab hides the presenter panel; Home returns to the inside start. The street is visible through the storefront while the player remains inside. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
 
 ## Previous verified milestone
 

@@ -5,6 +5,8 @@ public sealed class DemoSession : MonoBehaviour
 {
     public ToolStation Station;
     public ResettableSceneObject[] SceneObjects = new ResettableSceneObject[0];
+    // Resetting fires first so adapters can release held objects; SessionReset follows.
+    public UnityEvent Resetting = new UnityEvent();
     public UnityEvent SessionReset = new UnityEvent();
 
     private void Start()
@@ -16,6 +18,7 @@ public sealed class DemoSession : MonoBehaviour
 
     public void ResetSession()
     {
+        Resetting.Invoke();
         if (Station != null) Station.ClearTools();
         foreach (ResettableSceneObject item in SceneObjects)
             if (item != null) item.RestoreInitialState();

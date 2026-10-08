@@ -69,7 +69,6 @@ public static class ShopCityRefinement
         barrier.transform.SetParent(store.transform,false);
         barrier.transform.localPosition=V(0,1.5f,-.05f);
         barrier.AddComponent<BoxCollider>().size=V(10.4f,3,.15f);
-        store.transform.Find("ReferencePoints/SuggestedPlayerStart").localPosition=V(3.65f,0,1.3f);
 
         city=Group("CityBackdrop",null);
         Box("DistantGround",city,V(0,-.22f,-22),V(180,.2f,160),stone);
@@ -107,25 +106,6 @@ public static class ShopCityRefinement
         RenderSettings.fogStartDistance=35;
         RenderSettings.fogEndDistance=110;
         AssetDatabase.SaveAssets();
-    }
-
-    public static ShopWalkController CreateWalker(Camera camera)
-    {
-        GameObject player=new GameObject("IndoorPlayer");
-        player.transform.position=V(3.65f,0,1.3f);
-        player.transform.rotation=Quaternion.Euler(0,-30,0);
-        CharacterController cc=player.AddComponent<CharacterController>();
-        cc.height=1.75f; cc.radius=.23f; cc.center=V(0,.875f,0);
-        cc.stepOffset=.15f; cc.skinWidth=.025f;
-        camera.transform.SetParent(player.transform,false);
-        camera.transform.localPosition=V(0,1.65f,0);
-        camera.transform.localRotation=Quaternion.identity;
-        camera.backgroundColor=RenderSettings.fogColor;
-        camera.clearFlags=CameraClearFlags.SolidColor;
-        camera.farClipPlane=120;
-        ShopWalkController controller=player.AddComponent<ShopWalkController>();
-        controller.View=camera.transform;
-        return controller;
     }
 
     private static void Building(string name,Vector3 p,float width,float height,float depth,
