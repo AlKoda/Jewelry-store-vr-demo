@@ -47,7 +47,7 @@ public static class ShopCityValidation
             string dir="Assets/CrimeSceneDemo/Scenes";
             Directory.CreateDirectory(dir);
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),dir+"/JewelryStoreCity.unity");
-            EditorBuildSettings.scenes=new [] {new EditorBuildSettingsScene(dir+"/JewelryStoreDemo.unity",true)};
+            EditorBuildSettings.scenes=new [] {new EditorBuildSettingsScene(dir+"/JewelryStoreCity.unity",true)};
             Render(camera,"showroom.png");
             View(camera,new Vector3(0,1.65f,1.5f),new Vector3(0,2,-18));
             Render(camera,"street-from-inside.png");

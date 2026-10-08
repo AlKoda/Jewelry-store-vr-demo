@@ -1,4 +1,4 @@
-| In progress || In progress || In progress || In progress || In progress |# Roadmap
+# Roadmap
 
 Updated: October 8, 2026.
 Statuses: Planned / In progress / Blocked / Complete.
@@ -42,6 +42,8 @@ Environment batch 01 generator uploaded: complete editable store geometry source
 Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel, camera feedback/folder access and detailed geometry source. See [batch 02](TOOLS_BATCH_02.md). Basic source delimiter checks passed; functionality remains unverified.
 
 October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
+
+October 8 (later): marker label font, walker grounding and build-scene fixes committed; awaiting Unity re-run. See [handoff](HANDOFF.md).
 
 When testing begins, record date, build/version, device, result and any remaining issue. Do not mark a feature complete merely because its source exists.
 

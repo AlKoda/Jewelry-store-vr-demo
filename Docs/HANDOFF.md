@@ -28,3 +28,14 @@ Inside spawn, component-driven walking, front/side constraints, safe-room access
 ## Collaboration
 
 Read PROJECT_BRIEF.md, ROADMAP.md and ENVIRONMENT_BATCH_03.md. Preserve .meta files and update source plus generated project snapshot together. Pull current GitHub files before editing. Do not commit Library/caches. Record any asset license before importing. Keep tool deployment ownership intact during XR grabbing; release held objects before reset. Photos must survive reset. Repeat completed checks only when changes or unresolved issues justify it.
+
+## Code fixes — October 8, 2026 (not yet re-run in Unity)
+
+Source and the City snapshot zip were updated together; .meta files unchanged.
+
+- Marker numbers: generated TextMesh labels had no font (`m_Font: {fileID: 0}` in Marker.prefab), so digits could not render. DemoToolGeometry now assigns the built-in LegacyRuntime font, and DeployedTool.SetMarkerNumber assigns it at runtime for prefabs generated before this fix.
+- Desktop walking: two CharacterController.Move calls per frame cleared isGrounded, so downward speed grew without limit while walking. Movement now uses one combined Move per frame; MovePlanar keeps its behavior for validation.
+- Build settings: ShopCityValidation registered the old JewelryStoreDemo scene; it now registers JewelryStoreCity.unity (also corrected in the snapshot's EditorBuildSettings.asset).
+- Snapshot zip repacked with forward-slash paths; contents otherwise identical.
+
+Next PC check: run ShopCityValidation.Run, confirm marker digits are visible, and walk for a minute to confirm smooth movement.

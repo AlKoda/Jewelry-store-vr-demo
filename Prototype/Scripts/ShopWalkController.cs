@@ -35,16 +35,23 @@ public sealed class ShopWalkController : MonoBehaviour
         }
         Vector3 direction=transform.right*Input.GetAxisRaw("Horizontal")
             +transform.forward*Input.GetAxisRaw("Vertical");
-        MovePlanar(Vector3.ClampMagnitude(direction,1)*Speed*Time.deltaTime);
+        // Single Move per frame: a separate planar Move clears isGrounded,
+        // which made the downward speed grow without limit while walking.
         verticalSpeed=body.isGrounded?-1f:verticalSpeed-9.81f*Time.deltaTime;
-        body.Move(Vector3.up*verticalSpeed*Time.deltaTime);
+        Vector3 planar=Vector3.ClampMagnitude(direction,1)*Speed;
+        Move((planar+Vector3.up*verticalSpeed)*Time.deltaTime);
         if(Input.GetKeyDown(KeyCode.Home)) ResetPosition();
     }
 
     public void MovePlanar(Vector3 displacement)
     {
-        if(body==null) body=GetComponent<CharacterController>();
         displacement.y=0;
+        Move(displacement);
+    }
+
+    private void Move(Vector3 displacement)
+    {
+        if(body==null) body=GetComponent<CharacterController>();
         body.Move(displacement);
         // Fallback bounds complement walls/front colliders. Safe room remains accessible.
         Vector3 p=transform.position;
