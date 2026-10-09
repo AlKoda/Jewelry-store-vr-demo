@@ -11,5 +11,12 @@ GlamVelvetSofa — © 2021 Wayfair, LLC. CC BY 4.0.
 SunglassesKhronos — © 2024 Darmstadt Graphics Group GmbH. CC BY 4.0.
 GlassVaseFlowers — © 2023, released to the public (CC0).
 WaterBottle — © 2017 Microsoft, released to the public (CC0).
+Lantern — © 2017 Microsoft, released to the public (CC0). Scaled to 3 m for use as a street lamp.
+ChronographWatch — © 2025 Darmstadt Graphics Group GmbH. CC BY 4.0. Based on "Chronograph Watch Mudmaster"
+  by graphiccompressor (https://skfb.ly/oAsPA), CC BY 4.0. Decimated to about 15k triangles, scaled to metres.
+DiffuseTransmissionPlant — © 2024 Darmstadt Graphics Group GmbH. CC BY 4.0. Decimated to about 15k triangles.
+GlassHurricaneCandleHolder — © 2021 Wayfair, LLC. CC BY 4.0.
+IridescenceLamp — © 2022 Wayfair, LLC. CC BY 4.0. Decimated to about 15k triangles.
+ChairDamaskPurplegold — © 2021 Wayfair. CC BY 4.0. Decimated to about 10k triangles.
 
 CC BY 4.0 requires that this attribution travels with the demo. Sample-asset READMEs: https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models

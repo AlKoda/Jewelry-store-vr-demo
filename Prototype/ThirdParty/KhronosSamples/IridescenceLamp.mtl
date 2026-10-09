@@ -1,0 +1,17 @@
+newmtl IridescenceLampIridescence
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd IridescenceLamp_IridescenceLampIridescence.png
+
+newmtl IridescenceLampTransmissionIridescence
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd IridescenceLamp_IridescenceLampTransmissionIridescence.png
+
+newmtl IridescenceLamp
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd IridescenceLamp_IridescenceLamp.png

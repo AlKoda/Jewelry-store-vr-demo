@@ -1,0 +1,62 @@
+newmtl Watch_Face
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd ChronographWatch_Watch_Face.png
+
+newmtl Hand_Plastic
+Kd 0.031 0.031 0.031
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Hand_Metal
+Kd 0.761 0.741 0.788
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Hand_Color_Gold
+Kd 1.000 0.722 0.314
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Glass_Face
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Clasp_DGG
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd ChronographWatch_Clasp_DGG.png
+
+newmtl Button_Plastic_Gold
+Kd 0.031 0.031 0.031
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Button_Metal
+Kd 0.761 0.741 0.788
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Bezel_Frame_Gold
+Kd 1.000 0.722 0.314
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Band_Plastic_Gold
+Kd 0.031 0.031 0.031
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Band_Carbon_Fiber_Gold
+Kd 1.000 0.722 0.314
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Backplate_Khronos
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd ChronographWatch_Backplate_Khronos.png

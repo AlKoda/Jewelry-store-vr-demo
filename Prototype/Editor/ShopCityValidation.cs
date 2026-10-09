@@ -228,7 +228,7 @@ public static class ShopCityValidation
         Transform store = GameObject.Find("JewelryStore_Blockout").transform;
         DemoValidation.Check(store.Find("PresentationDetails") != null, "Presentation details present");
         Transform dressing = store.Find("ThirdPartyDressing");
-        DemoValidation.Check(dressing != null && dressing.childCount == 5, "Third-party dressing placed (5 models)");
+        DemoValidation.Check(dressing != null && dressing.childCount == ShopAssetDressing.Count, "Third-party dressing placed (" + ShopAssetDressing.Count + " models)");
         DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
 
         CrimeSceneState state = DemoValidation.Find<CrimeSceneState>();

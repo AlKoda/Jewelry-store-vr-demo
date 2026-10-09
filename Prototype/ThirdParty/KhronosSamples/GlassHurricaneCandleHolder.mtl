@@ -1,0 +1,11 @@
+newmtl GlassHurricaneCandleHolder_glass
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd GlassHurricaneCandleHolder_GlassHurricaneCandleHolder_glass.png
+
+newmtl GlassHurricaneCandleHolder_opaque
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd GlassHurricaneCandleHolder_GlassHurricaneCandleHolder_opaque.png

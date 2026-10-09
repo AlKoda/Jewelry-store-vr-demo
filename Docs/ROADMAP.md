@@ -54,6 +54,8 @@ Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel,
 
 October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
 
+October 9: batch 13 — six more licensed sample models (street lanterns, watch, plant, candle holder, lamp, chair) and the Tools/glb_to_obj.py converter. Unverified. See [handoff](HANDOFF.md).
+
 October 9: batch 12 — intact/robbed store comparison toggle (X01). Unverified. See [handoff](HANDOFF.md).
 
 October 9: batch 11 — generated click/thud/ambience sounds, emissive light fixtures, credits in the panel, third-party licenses copied into builds. Unverified. See [handoff](HANDOFF.md).

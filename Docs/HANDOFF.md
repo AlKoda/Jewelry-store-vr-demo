@@ -34,6 +34,10 @@ Package Manager fix, OpenXR install, Quest tracking test, hands-on keyboard/mous
 
 Read the brief, roadmap and this file. Preserve .meta files. Update source and the Expanded snapshot together; exclude Library/caches/InstructorReviews. **Pull `main` before editing**; two assistants work on this repository and the October 9 double implementation of mouse placement cost a day. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
 
+## Batch 13 — more models and a reusable converter (October 9, 2026, unverified)
+
+Six more Khronos sample models (Lantern as the street lamps; ChronographWatch and the plant, candle holder, iridescent lamp and damask chair as shop dressing), decimated and converted with the new Tools/glb_to_obj.py (trimesh + fast_simplification; texture downscale, decimation, scale, grounding). ShopAssetDressing.Count is the single source for the dressing check. Expected City result: 67 assertions.
+
 ## Batch 12 — intact store comparison (October 9, 2026, unverified)
 
 CrimeSceneState (on the store root) swaps the robbed view (FixedEvidence, jagged glass, dropped tray, fallen trim, darkened door edges) for an intact overlay (whole storefront pane, intact case tops, stock on the emptied pads) and closes the safe door; I key or the panel button toggles it, and a session reset returns to robbed. IntactStateBuilder generates the overlay; JewelryStoreBuilder.Stock is shared with the display generator; DemoGeometry.Translucent is shared with the expansion's glass. Roadmap X01. Expected City result: 67 assertions.
@@ -56,6 +60,7 @@ Tool rack samples (half-size cone, marker and tape post on the rack): click one 
 
 ## History
 
+- Batch 13 (Claude, unverified): six more Khronos models, Tools/glb_to_obj.py converter.
 - Batch 12 (Claude, unverified): intact/robbed store toggle (X01).
 - Batch 11 (Claude, unverified): generated sounds, ambience, emissive fixtures, credits, licenses shipped with builds.
 - Batch 10 (Claude, unverified): PhotoFrame, ShopAssetDressing with Khronos sample models, TrafficCone tool visual.

@@ -154,6 +154,7 @@ public static class ShopCityRefinement
     private static void Lamp(Vector3 p)
     {
         Transform g=Group("StreetLamp",city); g.localPosition=p;
+        if(DemoAssetLibrary.Place("KhronosSamples","Lantern",g,Vector3.zero,0,1)!=null) return;
         Box("Post",g,V(0,2.2f,0),V(.09f,4.4f,.09f),dark);
         Box("Arm",g,V(0,4.35f,.45f),V(.09f,.09f,.9f),dark);
         Box("Head",g,V(0,4.28f,.9f),V(.3f,.10f,.5f),glow);
