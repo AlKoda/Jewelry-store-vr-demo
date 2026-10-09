@@ -180,7 +180,9 @@ public static class ShopCityValidation
         DemoValidation.Check(desktop.enabled && !hand.gameObject.activeSelf && evidence.Holder == null,
             "Desktop mode releases the hands and returns the camera");
         desktop.ToggleCamera();
-        desktop.Session.ResetSession();
+        DemoDesktopPanel panel = DemoValidation.Find<DemoDesktopPanel>();
+        DemoValidation.Check(!panel.RequestReset() && desktop.HoldingCamera, "First reset request only arms the button");
+        DemoValidation.Check(panel.RequestReset(), "Second reset request resets the session");
         DemoValidation.Check(!desktop.HoldingCamera && evidence.Holder == null
             && Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f,
             "Reset returns the camera to its rack");

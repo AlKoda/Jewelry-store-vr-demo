@@ -14,7 +14,18 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     public PhotoFrame Frame;
     public Transform Player;
     public bool Visible = true;
-    public bool PointerOverPanel { get; private set; }
+
+    // Evaluated on demand so the interactor's Update sees this frame's pointer.
+    public bool PointerOverPanel
+    {
+        get
+        {
+            if (!Visible || Station == null || (Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking)) return false;
+            return Area.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y));
+        }
+    }
+
+    private static Rect Area => new Rect(12, 12, Width, Screen.height - 24);
 
     private const float Width = 330;
     private const string DesktopGuide =
@@ -44,7 +55,6 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private void OnDisable()
     {
-        PointerOverPanel = false;
         if (Station != null) Station.ToolsChanged.RemoveListener(Recount);
     }
 
@@ -58,11 +68,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (panel == null) BuildStyles();
         bool looking = Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking;
         if (looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
-        Rect area = new Rect(12, 12, Width, Screen.height - 24);
-        PointerOverPanel = Visible && Station != null && !looking && area.Contains(Event.current.mousePosition);
         if (!Visible || Station == null) return;
 
-        GUILayout.BeginArea(area, panel);
+        GUILayout.BeginArea(Area, panel);
         scroll = GUILayout.BeginScrollView(scroll);
         bool vr = Interactor != null && !Interactor.isActiveAndEnabled;
         GUILayout.Label("CRIME SCENE DEMO  —  " + (vr ? "VR mode" : "desktop mode"), header);
@@ -128,14 +136,22 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUI.DrawTexture(new Rect(x - 4, y - 4, 8, 8), dot);
     }
 
-    // Two clicks within a few seconds, so a stray click cannot wipe the scene mid-demo.
     private void ResetButton()
     {
         if (Session == null) return;
-        bool armed = Time.unscaledTime < resetArmedUntil;
-        if (!GUILayout.Button(armed ? "Click again to confirm reset" : "Reset placed tools / scene", button)) return;
-        if (armed) { resetArmedUntil = 0; Session.ResetSession(); }
-        else resetArmedUntil = Time.unscaledTime + 4f;
+        if (GUILayout.Button(ResetArmed ? "Click again to confirm reset" : "Reset placed tools / scene", button)) RequestReset();
+    }
+
+    public bool ResetArmed => Time.unscaledTime < resetArmedUntil;
+
+    // Two requests within a few seconds, so a stray click cannot wipe the scene mid-demo.
+    public bool RequestReset()
+    {
+        if (Session == null) return false;
+        if (!ResetArmed) { resetArmedUntil = Time.unscaledTime + 4f; return false; }
+        resetArmedUntil = 0;
+        Session.ResetSession();
+        return true;
     }
 
     private void SpawnButton(string label, DemoToolKind kind)

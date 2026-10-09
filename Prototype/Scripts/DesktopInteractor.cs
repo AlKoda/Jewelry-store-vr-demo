@@ -108,6 +108,12 @@ public sealed class DesktopInteractor : ToolHolder
         Held.PlaceAt(Held.transform.position, heldYaw);
     }
 
+    public override void Remove(DeployedTool tool)
+    {
+        if (tool != null && tool == Hovered) Hovered = null;
+        base.Remove(tool);
+    }
+
     public override void ReleaseAll()
     {
         base.ReleaseAll();

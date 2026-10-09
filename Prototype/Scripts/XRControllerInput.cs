@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -17,33 +18,21 @@ public sealed class XRControllerInput : MonoBehaviour
     public DemoToolKind SpawnKind = DemoToolKind.Cone;
     public TextMesh Label;
 
+    private static readonly int KindCount = Enum.GetValues(typeof(DemoToolKind)).Length;
     private HandInteractor hand;
-    private bool grip, trigger, primary, secondary, aiming, turned;
+    private bool grip, trigger, primary, secondary, aiming, aimValid, turned;
+    private Vector3 aimPoint;
     private Transform teleportMarker;
 
     private void Awake()
     {
         hand = GetComponent<HandInteractor>();
-        GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        marker.name = "TeleportMarker";
-        Destroy(marker.GetComponent<Collider>());
-        marker.transform.localScale = new Vector3(0.4f, 0.01f, 0.4f);
-        marker.SetActive(false);
-        teleportMarker = marker.transform;
         RefreshLabel();
-    }
-
-    // Small text on the back of the hand: which tool A/X spawns, and the grip hint.
-    private void RefreshLabel()
-    {
-        if (Label == null) return;
-        Label.text = (Node == XRNode.LeftHand ? "X" : "A") + ": new " + SpawnKind.ToString().ToLowerInvariant()
-            + "\n" + (Node == XRNode.LeftHand ? "Y" : "B") + ": remove / next kind";
     }
 
     private void OnDisable()
     {
-        aiming = false;
+        aiming = aimValid = false;
         if (teleportMarker != null) teleportMarker.gameObject.SetActive(false);
     }
 
@@ -68,31 +57,61 @@ public sealed class XRControllerInput : MonoBehaviour
         if (Changed(device, CommonUsages.secondaryButton, ref secondary) && secondary)
         {
             if (hand.Held != null) hand.RemoveHeld();
-            else { SpawnKind = (DemoToolKind)(((int)SpawnKind + 1) % 3); RefreshLabel(); }
+            else { SpawnKind = (DemoToolKind)(((int)SpawnKind + 1) % KindCount); RefreshLabel(); }
         }
         if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 stick)) Stick(stick);
     }
 
+    // Small text on the back of the hand: which tool A/X spawns, and the B/Y hint.
+    private void RefreshLabel()
+    {
+        if (Label == null) return;
+        bool left = Node == XRNode.LeftHand;
+        Label.text = (left ? "X" : "A") + ": new " + SpawnKind.ToString().ToLowerInvariant()
+            + "\n" + (left ? "Y" : "B") + ": remove / next kind";
+    }
+
     private void Stick(Vector2 stick)
     {
-        if (Teleports && Locomotion != null)
-        {
-            bool pushed = stick.y > 0.7f;
-            Ray ray = new Ray(transform.position, transform.forward);
-            bool valid = pushed && Physics.Raycast(ray, out RaycastHit hit, Locomotion.MaxTeleportDistance)
-                && hit.normal.y >= 0.7f && (Locomotion.Bounds == null || Locomotion.Bounds.Contains(hit.point));
-            teleportMarker.gameObject.SetActive(valid);
-            if (valid) teleportMarker.position = hit.point + Vector3.up * 0.005f;
-            // Teleport when the stick is released after aiming at a valid spot.
-            if (aiming && !pushed && stick.y < 0.3f) Locomotion.TryTeleport(ray);
-            aiming = pushed;
-        }
+        if (Teleports && Locomotion != null) Teleport(stick.y);
         if (SnapTurns && Locomotion != null)
         {
             if (!turned && stick.x > 0.7f) { Locomotion.SnapRight(); turned = true; }
             else if (!turned && stick.x < -0.7f) { Locomotion.SnapLeft(); turned = true; }
             else if (Mathf.Abs(stick.x) < 0.3f) turned = false;
         }
+    }
+
+    // While the stick is pushed forward the marker shows the destination; releasing
+    // the stick teleports to the last destination shown, not to a fresh ray.
+    private void Teleport(float push)
+    {
+        bool pushed = push > 0.7f;
+        if (pushed)
+        {
+            aimValid = Locomotion.FindDestination(new Ray(transform.position, transform.forward), out Vector3 point);
+            if (aimValid) aimPoint = point;
+            Marker().gameObject.SetActive(aimValid);
+            if (aimValid) Marker().position = aimPoint + Vector3.up * 0.005f;
+        }
+        else if (aiming && push < 0.3f)
+        {
+            if (aimValid) Locomotion.TryTeleport(aimPoint);
+            aimValid = false;
+            if (teleportMarker != null) teleportMarker.gameObject.SetActive(false);
+        }
+        aiming = pushed || (aiming && push >= 0.3f);
+    }
+
+    private Transform Marker()
+    {
+        if (teleportMarker != null) return teleportMarker;
+        GameObject marker = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        marker.name = "TeleportMarker";
+        Destroy(marker.GetComponent<Collider>());
+        marker.transform.localScale = new Vector3(0.4f, 0.01f, 0.4f);
+        teleportMarker = marker.transform;
+        return teleportMarker;
     }
 
     // True when the button state changed; state holds the new value.

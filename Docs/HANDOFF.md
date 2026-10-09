@@ -6,7 +6,7 @@ All work now lands on `main` directly; there is no separate feature branch. Pull
 
 Verified on the PC (October 9, 2026, Unity 6000.6.2f1, Built-in pipeline): the expanded shop, pointer placement, current-view photography and the **instructor review recorder** — 40 assertions, see [REVIEW_BATCH_05.md](REVIEW_BATCH_05.md). That run used the source *before* the batches listed below were merged in.
 
-Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 59 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
+Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 61 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
 
 Latest snapshot with the merged source: Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip (scene files inside predate this merge; the validation run regenerates them). Downloads/JewelryStore_Review_Unity6000.6.2f1.zip is the verified batch-05 project. Older snapshots are history.
 
@@ -34,9 +34,13 @@ Package Manager fix, OpenXR install, Quest tracking test, hands-on keyboard/mous
 
 Read the brief, roadmap and this file. Preserve .meta files. Update source and the Expanded snapshot together; exclude Library/caches/InstructorReviews. **Pull `main` before editing**; two assistants work on this repository and the October 9 double implementation of mouse placement cost a day. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
 
+## Review fixes after batch 10 (unverified)
+
+Teleport goes to the destination the marker showed, refuses surfaces above step height, and snap turn moves the root through Relocate; the panel evaluates the pointer on demand and exposes RequestReset (two requests within four seconds) for validation; Remove clears the desktop hover; the snapshot no longer carries the removed XRRigBuilder.
+
 ## Batch 10 — photo frame and third-party props (October 9, 2026, unverified)
 
-PhotoFrame: the last photograph appears on a quad on the wall above the rack (VR and monitor) and as a thumbnail in the panel. ShopAssetDressing places Khronos sample models (armchair, sofa, vase, bottle, sunglasses; licenses in ASSET_REGISTER.md and ThirdParty/KhronosSamples/LICENSE.txt) with box colliders on the furniture; the TrafficCone model replaces the generated cone visual when present (one bounds collider on the tool root). Unity generates .meta files for the OBJ/MTL/PNG on first import; commit them from the PC. Expected City result: 59 assertions.
+PhotoFrame: the last photograph appears on a quad on the wall above the rack (VR and monitor) and as a thumbnail in the panel. ShopAssetDressing places Khronos sample models (armchair, sofa, vase, bottle, sunglasses; licenses in ASSET_REGISTER.md and ThirdParty/KhronosSamples/LICENSE.txt) with box colliders on the furniture; the TrafficCone model replaces the generated cone visual when present (one bounds collider on the tool root). Unity generates .meta files for the OBJ/MTL/PNG on first import; commit them from the PC. Expected City result: 61 assertions.
 
 ## Batch 09 — usability, presenter map, first third-party models (October 9, 2026, unverified)
 

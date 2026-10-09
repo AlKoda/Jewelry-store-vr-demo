@@ -76,7 +76,7 @@ public abstract class ToolHolder : MonoBehaviour
         tool.PlaceAt(landing, tool.transform.eulerAngles.y);
     }
 
-    public void Remove(DeployedTool tool)
+    public virtual void Remove(DeployedTool tool)
     {
         if (tool == null || Station == null) return;
         if (tool == Held) Held = null;
