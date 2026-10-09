@@ -161,16 +161,16 @@ public static class DemoValidation
         station.SelectTapePost(post2);
         SceneTape tape = station.DeploymentRoot.GetComponentInChildren<SceneTape>();
         Check(tape != null, "Tape connection");
-        tape.SendMessage("LateUpdate");
+        tape.Refresh();
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 2) < 0.01f, "Tape length");
         post2.PlaceAt(new Vector3(3, 0, 1), 0);
-        tape.SendMessage("LateUpdate");
+        tape.Refresh();
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 3) < 0.01f, "Tape follows moved post");
         station.RemoveTool(post1);
-        tape.SendMessage("LateUpdate");
+        tape.Refresh();
         evidence = Find<EvidenceCamera>();
         evidence.CaptureFailed.AddListener(message => failure = message);
-        evidence.CapturePhoto();
+        evidence.CaptureFromView(Camera.main.transform);
         frame = Time.frameCount;
     }
 
@@ -183,7 +183,17 @@ public static class DemoValidation
         ToolStation station = Find<ToolStation>();
         Check(station.DeploymentRoot.GetComponentInChildren<SceneTape>() == null, "Tape removed after endpoint removal");
         Check(File.Exists(evidence.LastPhotoPath), "Runtime photograph saved");
+        Check(Vector3.Distance(evidence.transform.Find("PhotoCamera").localPosition, new Vector3(0, 0, 0.1f)) < 0.001f,
+            "View photograph restores dedicated camera pose");
         File.Copy(evidence.LastPhotoPath, Path.Combine(Output, "runtime-photo.png"), true);
+
+        SessionReviewRecorder review = Find<SessionReviewRecorder>();
+        SessionReviewRecorder.ReviewDocument document = ReadReview(review);
+        SessionReviewRecorder.Entry photo = document.entries[document.entries.Count - 1];
+        Check(photo.reason == "Photograph" && photo.tools.Count >= 3, "Photograph records deployed tools in the review");
+        Check(File.Exists(Path.Combine(review.ReviewFolder, photo.photo)), "Review contains the copied photograph");
+        Check(File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html")).Contains(photo.photo), "HTML review references the photograph");
+        review.SaveSnapshot();
         evidence.transform.position = new Vector3(0, 1.5f, 4);
         Find<DemoSession>().ResetSession();
         frame = Time.frameCount;
@@ -199,7 +209,18 @@ public static class DemoValidation
         Check(station.NextMarkerNumber == 1, "Reset restarts marker numbering");
         Check(File.Exists(evidence.LastPhotoPath), "Reset preserves photographs");
         Check(Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f, "Reset restores handheld camera");
+        SessionReviewRecorder.ReviewDocument document = ReadReview(Find<SessionReviewRecorder>());
+        int last = document.entries.Count - 1;
+        Check(last >= 1 && document.entries[last - 1].reason == "Manual snapshot" && document.entries[last].reason == "Before scene reset"
+            && document.entries[last].tools.Count >= 3, "Snapshot and reset append review entries with the tools");
         return true;
+    }
+
+    private static SessionReviewRecorder.ReviewDocument ReadReview(SessionReviewRecorder review)
+    {
+        string path = Path.Combine(review.ReviewFolder, "session.json");
+        Check(File.Exists(path), "Review session JSON written");
+        return JsonUtility.FromJson<SessionReviewRecorder.ReviewDocument>(File.ReadAllText(path));
     }
 
     public static void Finish(string stageKey, bool success, string error)

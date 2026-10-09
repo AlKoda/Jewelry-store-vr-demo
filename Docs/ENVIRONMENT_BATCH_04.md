@@ -22,6 +22,8 @@ These are lightweight procedural geometry and shared materials. No paid assets, 
 
 ## Desktop tool workflow
 
+*Superseded, unverified:* batch 05 replaced DesktopToolPlacement with DesktopInteractor (left click picks up and places; see CONTROLS_AND_INTEGRATION.md). The workflow below describes the verified batch-04 source.
+
 1. Spawn a cone, marker or tape post from the panel.
 2. Choose **Place selected with mouse**.
 3. Point at an accessible interior floor/display surface. A small green preview shows a valid target.
@@ -68,7 +70,7 @@ These are programmatic Editor runtime checks. Hands-on keyboard/mouse usability,
 New: DesktopToolPlacement.cs, ShopPresentationExpansion.cs and ShopPresentationValidation.cs.
 Updated: EvidenceCamera.cs and DemoDesktopPanel.cs.
 
-Use ShopPresentationValidation.Run only in this isolated demo project: it creates and saves the expanded scene, captures images, performs checks and exits Unity. The complete snapshot includes Unity .meta files, generated assets and ProjectSettings. Earlier snapshots remain available.
+Use ShopCityValidation.RunExpanded (formerly ShopPresentationValidation.Run) only in this isolated demo project: it creates and saves the expanded scene, captures images, performs checks and exits Unity. The complete snapshot includes Unity .meta files, generated assets and ProjectSettings. Earlier snapshots remain available.
 
 ## Current blocker for VR
 

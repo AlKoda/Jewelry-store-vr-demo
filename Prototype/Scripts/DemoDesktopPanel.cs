@@ -1,151 +1,128 @@
 using UnityEngine;
 
-// One presenter layout, with one input adapter active at a time.
+// Presenter panel on IMGUI, so it needs no packages. Tab hides it.
+// This is the desktop/monitor view, not the headset HUD.
 public sealed class DemoDesktopPanel : MonoBehaviour
 {
     public ToolStation Station;
     public DemoSession Session;
     public EvidenceCamera EvidenceCamera;
     public DesktopInteractor Interactor;
-    public DesktopToolPlacement Placement;
     public SessionReviewRecorder Review;
-    public bool Visible=true;
-    public bool UseCarryControls=false;
-    private DeployedTool fallbackSelected;
-    private Vector2 panelScroll,toolScroll;
-    private int deployed;
+    public bool Visible = true;
+    public bool PointerOverPanel { get; private set; }
 
-    public Rect Area => new Rect(12,12,300,Mathf.Max(80,Screen.height-24));
-    public bool PointerOverPanel
-    {
-        get
-        {
-            bool looking=Interactor!=null && Interactor.Walker!=null && Interactor.Walker.Looking;
-            return Visible && !looking && Area.Contains(
-                new Vector2(Input.mousePosition.x,Screen.height-Input.mousePosition.y));
-        }
-    }
-    private DeployedTool Selected
-    {
-        get
-        {
-            if(UseCarryControls && Interactor!=null)
-                return Interactor.Held!=null?Interactor.Held:Interactor.Hovered!=null?Interactor.Hovered:fallbackSelected;
-            return Placement!=null?Placement.Selected:fallbackSelected;
-        }
-        set {fallbackSelected=value;if(Placement!=null)Placement.Select(value);}
-    }
+    private static readonly Rect Area = new Rect(12, 12, 310, 500);
+    private const string Guide =
+        "WASD / arrows: walk (Shift: faster)\n" +
+        "Hold right mouse: look\n" +
+        "Left click: pick up / place a tool\n" +
+        "1 / 2 / 3: new cone / marker / tape post\n" +
+        "Q / E or wheel: rotate held tool\n" +
+        "T: select tape post   X: cancel tape\n" +
+        "Delete: remove tool under pointer\n" +
+        "F or click camera: hold / return it\n" +
+        "P: photograph (your view, or the held camera)\n" +
+        "Home: return to start\n" +
+        "Tab: hide this panel";
+
+    private int deployed;
+    private float resetArmedUntil;
 
     private void OnEnable()
     {
-        if(Station!=null) Station.ToolsChanged.AddListener(Recount);
+        if (Station == null) return;
+        Station.ToolsChanged.AddListener(Recount);
         Recount();
-        ApplyInputMode();
     }
+
     private void OnDisable()
     {
-        if(Station!=null) Station.ToolsChanged.RemoveListener(Recount);
+        PointerOverPanel = false;
+        if (Station != null) Station.ToolsChanged.RemoveListener(Recount);
     }
+
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Tab)) Visible=!Visible;
+        if (Input.GetKeyDown(KeyCode.Tab)) Visible = !Visible;
     }
-    public void SetCarryControls(bool carry)
-    {
-        if(Interactor!=null) Interactor.ReleaseAll();
-        if(Placement!=null) Placement.CancelPlacement();
-        UseCarryControls=carry;
-        ApplyInputMode();
-    }
-    private void ApplyInputMode()
-    {
-        if(Interactor!=null) Interactor.ReadDesktopInput=UseCarryControls;
-        if(Placement!=null) Placement.ReadDesktopInput=!UseCarryControls;
-    }
-    private void Recount()
-    {
-        deployed=Station!=null && Station.DeploymentRoot!=null?
-            Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>().Length:0;
-    }
+
     private void OnGUI()
     {
-        if(!Visible || Station==null) return;
-        GUILayout.BeginArea(Area,GUI.skin.box);
-        panelScroll=GUILayout.BeginScrollView(panelScroll);
+        bool looking = Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking;
+        if (looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
+        PointerOverPanel = Visible && Station != null && !looking && Area.Contains(Event.current.mousePosition);
+        if (!PointerOverPanel && (!Visible || Station == null)) return;
+
+        GUILayout.BeginArea(Area, GUI.skin.box);
         GUILayout.Label("Crime Scene Demo — presenter controls");
-        bool carry=GUILayout.Toggle(UseCarryControls,"Carry controls (1/2/3 spawn, click pick/place)");
-        if(carry!=UseCarryControls) SetCarryControls(carry);
         GUILayout.BeginHorizontal();
-        SpawnButton("Cone",DemoToolKind.Cone);
-        SpawnButton("Marker",DemoToolKind.Marker);
-        SpawnButton("Tape post",DemoToolKind.TapePost);
+        SpawnButton("Cone", DemoToolKind.Cone);
+        SpawnButton("Marker", DemoToolKind.Marker);
+        SpawnButton("Tape post", DemoToolKind.TapePost);
         GUILayout.EndHorizontal();
-        GUILayout.Label("Deployed: "+deployed+"   Next marker: "+Station.NextMarkerNumber);
-        if(Placement!=null && !UseCarryControls) GUILayout.Label(Placement.Status);
-        GUILayout.Label("Select a deployed tool:");
-        toolScroll=GUILayout.BeginScrollView(toolScroll,GUILayout.Height(110));
-        if(Station.DeploymentRoot!=null)
-            foreach(DeployedTool tool in Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>())
-                if(GUILayout.Button(tool.name)) Selected=tool;
-        GUILayout.EndScrollView();
-        DeployedTool selected=Selected;
-        if(selected!=null)
+        GUILayout.Label(Status());
+        if (Station.PendingPost != null && GUILayout.Button("Cancel tape selection"))
+            Station.CancelTapeSelection();
+        if (EvidenceCamera != null)
         {
-            GUILayout.Label("Selected: "+selected.name);
-            if(!UseCarryControls && Placement!=null && GUILayout.Button("Place selected with mouse"))
-                Placement.BeginPlacement(selected);
-            if(UseCarryControls && Interactor!=null && GUILayout.Button("Pick up selected"))
-                Interactor.Hold(selected);
-            if(GUILayout.Button("Rotate 15 degrees"))
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Take photograph (P)"))
             {
-                if(UseCarryControls && Interactor!=null && Interactor.Held==selected) Interactor.Rotate(15);
-                else selected.PlaceAt(selected.transform.position,selected.transform.eulerAngles.y+15);
-            }
-            if(selected.Kind==DemoToolKind.TapePost && GUILayout.Button("Select post for tape"))
-                Station.SelectTapePost(selected);
-            if(GUILayout.Button("Remove selected"))
-            {
-                if(Interactor!=null) Interactor.Remove(selected); else Station.RemoveTool(selected);
-                Selected=null;
-            }
-        }
-        if(Placement!=null && Placement.IsPlacing && GUILayout.Button("Cancel placement")) Placement.CancelPlacement();
-        GUILayout.Label(Station.PendingPost!=null?"Tape: select second post":"Tape: select first post");
-        if(GUILayout.Button("Cancel tape selection")) Station.CancelTapeSelection();
-        if(EvidenceCamera!=null)
-        {
-            if(GUILayout.Button("Photograph current view"))
-            {
-                if(Placement!=null) Placement.PhotographView();
+                if (Interactor != null) Interactor.Photograph();
                 else EvidenceCamera.CapturePhoto();
             }
-            if(Interactor!=null && GUILayout.Button(Interactor.HoldingCamera?"Return camera to rack":"Hold camera"))
-                Interactor.ToggleCamera();
-            if(GUILayout.Button("Open photo folder")) EvidenceCamera.OpenPhotoFolder();
+            if (GUILayout.Button("Open photo folder")) EvidenceCamera.OpenPhotoFolder();
+            GUILayout.EndHorizontal();
             GUILayout.Label(EvidenceCamera.Status);
+            if (Interactor != null && Interactor.isActiveAndEnabled
+                && GUILayout.Button(Interactor.HoldingCamera ? "Return camera to rack (F)" : "Hold camera (F)"))
+                Interactor.ToggleCamera();
         }
-        if(Review!=null)
+        if (Review != null)
         {
-            if(GUILayout.Button("Save review snapshot")) Review.SaveSnapshot();
-            if(GUILayout.Button("Open instructor review")) Review.OpenReview();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Save review snapshot")) Review.SaveSnapshot();
+            if (GUILayout.Button("Open instructor review")) Review.OpenReview();
+            GUILayout.EndHorizontal();
             GUILayout.Label(Review.Status);
         }
-        if(Session!=null && GUILayout.Button("Reset scene / placed tools"))
-        {
-            if(Interactor!=null) Interactor.ReleaseAll();
-            if(Placement!=null) {Placement.CancelPlacement();Placement.Select(null);}
-            fallbackSelected=null;
-            Session.ResetSession();
-        }
-        GUILayout.Label("WASD: walk | right mouse: look | Home: inside start | Tab: panel");
-        GUILayout.Label(UseCarryControls?"F: hold/return camera | P: shutter | T: tape endpoint | X: cancel tape":
-            "F: current-view photograph | Q/E: rotate placement | Escape: cancel");
-        GUILayout.EndScrollView();
+        ResetButton();
+        GUILayout.Space(8);
+        GUILayout.Label(Guide);
         GUILayout.EndArea();
     }
-    private void SpawnButton(string label,DemoToolKind kind)
+
+    // Two clicks within a few seconds, so a stray click cannot wipe the scene mid-demo.
+    private void ResetButton()
     {
-        if(!GUILayout.Button(label)) return;
-        Selected=UseCarryControls && Interactor!=null?Interactor.SpawnIntoHand(kind):Station.Spawn(kind);
+        if (Session == null) return;
+        bool armed = Time.unscaledTime < resetArmedUntil;
+        if (!GUILayout.Button(armed ? "Click again to confirm reset" : "Reset placed tools / scene")) return;
+        if (armed) { resetArmedUntil = 0; Session.ResetSession(); }
+        else resetArmedUntil = Time.unscaledTime + 4f;
+    }
+
+    private void SpawnButton(string label, DemoToolKind kind)
+    {
+        if (!GUILayout.Button(label)) return;
+        if (Interactor != null && Interactor.isActiveAndEnabled) Interactor.SpawnIntoHand(kind);
+        else Station.Spawn(kind);
+    }
+
+    private void Recount() { deployed = Station.DeployedCount; }
+
+    private string Status()
+    {
+        string text = "Deployed tools: " + deployed + "   Next marker: " + Station.NextMarkerNumber;
+        if (Interactor != null)
+        {
+            if (Interactor.Held != null) text += "\nHolding: " + Interactor.Held.name;
+            else if (Interactor.Hovered != null) text += "\nPointing at: " + Interactor.Hovered.name;
+            else if (Interactor.HoveringCamera) text += "\nPointing at: camera";
+            if (Interactor.HoldingCamera) text += "\nCamera in hand";
+        }
+        if (Station.PendingPost != null) text += "\nTape: choose the second post (T)";
+        return text;
     }
 }

@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using static DemoGeometry;
 
 public static class DemoToolsBuilder
 {
@@ -20,10 +21,8 @@ public static class DemoToolsBuilder
             EditorUtility.DisplayDialog("Already created","Remove the existing ToolSystem before creating another.","OK");
             return;
         }
-        if(!AssetDatabase.IsValidFolder("Assets/CrimeSceneDemo"))
-            AssetDatabase.CreateFolder("Assets","CrimeSceneDemo");
-        if(!AssetDatabase.IsValidFolder(Folder))
-            AssetDatabase.CreateFolder("Assets/CrimeSceneDemo","GeneratedTools");
+        EnsureFolder("Assets/CrimeSceneDemo");
+        EnsureFolder(Folder);
 
         GameObject root=new GameObject("ToolSystem");
         root.transform.SetParent(store.transform,false);
@@ -88,25 +87,53 @@ public static class DemoToolsBuilder
         panel.Station=station;
         panel.Session=session;
         panel.EvidenceCamera=evidence;
+
+        // Local instructor records: photos, tool positions, before-reset snapshots.
+        SessionReviewRecorder review=root.AddComponent<SessionReviewRecorder>();
+        review.Station=station;
+        review.Session=session;
+        review.EvidenceCamera=evidence;
+        panel.Review=review;
+
+        // Wall-mounted status text above the rack, facing into the showroom.
+        GameObject boardObject=new GameObject("StatusBoard");
+        boardObject.transform.SetParent(root.transform,false);
+        boardObject.transform.localPosition=new Vector3(-4.9f,1.9f,1);
+        boardObject.transform.localRotation=Quaternion.Euler(0,-90,0);
+        TextMesh boardText=boardObject.AddComponent<TextMesh>();
+        boardText.anchor=TextAnchor.MiddleCenter;
+        boardText.alignment=TextAlignment.Center;
+        boardText.fontSize=48;
+        boardText.characterSize=0.02f;
+        boardText.color=new Color(0.92f,0.86f,0.62f);
+        DeployedTool.EnsureFont(boardText);
+        DemoStatusBoard board=boardObject.AddComponent<DemoStatusBoard>();
+        board.Station=station;
+        board.Session=session;
+        board.EvidenceCamera=evidence;
+        // A player created before the station is wired up here.
+        foreach(ToolHolder existing in Object.FindObjectsByType<ToolHolder>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+            Wire(existing);
         Selection.activeGameObject=root;
         Debug.Log("Tool station created. Save scene; XR grabbing/activation and lighting still require integration.",root);
     }
 
-    [MenuItem("Crime Scene Demo/Create Desktop Player")]
-    public static void CreateDesktopPlayerFromMenu()
+    [MenuItem("Crime Scene Demo/Create Player (desktop and VR)")]
+    public static void CreatePlayerFromMenu()
     {
         if(Camera.main==null)
         {
             EditorUtility.DisplayDialog("Camera required","Add a camera tagged MainCamera first.","OK");
             return;
         }
-        Undo.RegisterCreatedObjectUndo(CreateDesktopPlayer(Camera.main).gameObject,"Create desktop player");
+        Undo.RegisterCreatedObjectUndo(CreatePlayer(Camera.main).gameObject,"Create player");
     }
 
-    // Desktop walker plus pointer interactor; the camera becomes the player's view.
-    public static ShopWalkController CreateDesktopPlayer(Camera camera)
+    // One rig for both modes: walker and pointer for the desktop, head tracking and
+    // two controller-driven hands for VR. DemoModeSwitch enables one set at a time.
+    public static ShopWalkController CreatePlayer(Camera camera)
     {
-        GameObject player=new GameObject("IndoorPlayer");
+        GameObject player=new GameObject("Player");
         Transform start=GameObject.Find("JewelryStore_Blockout")?.transform.Find("ReferencePoints/SuggestedPlayerStart");
         player.transform.position=start!=null?start.position:new Vector3(3.65f,0,1.3f);
         player.transform.rotation=Quaternion.Euler(0,-30,0);
@@ -120,6 +147,9 @@ public static class DemoToolsBuilder
         if(RenderSettings.fog) { camera.backgroundColor=RenderSettings.fogColor; camera.farClipPlane=120; }
 
         InteriorBounds bounds=player.AddComponent<InteriorBounds>();
+        XRLocomotion locomotion=player.AddComponent<XRLocomotion>();
+        locomotion.Head=camera.transform;
+        locomotion.Bounds=bounds;
         ShopWalkController walker=player.AddComponent<ShopWalkController>();
         walker.View=camera.transform;
         walker.Bounds=bounds;
@@ -127,12 +157,46 @@ public static class DemoToolsBuilder
         interactor.View=camera;
         interactor.Walker=walker;
         interactor.Bounds=bounds;
-        interactor.Station=Object.FindFirstObjectByType<ToolStation>();
-        interactor.Session=Object.FindFirstObjectByType<DemoSession>();
-        interactor.EvidenceCamera=Object.FindFirstObjectByType<EvidenceCamera>();
-        interactor.Panel=Object.FindFirstObjectByType<DemoDesktopPanel>();
-        if(interactor.Panel!=null) interactor.Panel.Interactor=interactor;
+        Wire(interactor);
+
+        XRHeadTracking head=camera.gameObject.AddComponent<XRHeadTracking>();
+        XRControllerInput left=CreateHand(player.transform,"LeftHand",UnityEngine.XR.XRNode.LeftHand,-1,locomotion,bounds);
+        XRControllerInput right=CreateHand(player.transform,"RightHand",UnityEngine.XR.XRNode.RightHand,1,locomotion,bounds);
+        left.Teleports=true; left.SnapTurns=false;
+        right.Teleports=false; right.SnapTurns=true;
+
+        DemoModeSwitch mode=player.AddComponent<DemoModeSwitch>();
+        mode.DesktopOnly=new Behaviour[] {walker,interactor};
+        mode.VROnly=new Behaviour[] {head};
+        mode.VRObjects=new [] {left.gameObject,right.gameObject};
         return walker;
+    }
+
+    private static XRControllerInput CreateHand(Transform rig,string name,UnityEngine.XR.XRNode node,float side,
+        XRLocomotion locomotion,InteriorBounds bounds)
+    {
+        Transform hand=Group(name,rig);
+        hand.localPosition=new Vector3(side*0.2f,1.1f,0.3f);
+        Box("Visual",hand,Vector3.zero,new Vector3(.04f,.04f,.1f));
+        HandInteractor interactor=hand.gameObject.AddComponent<HandInteractor>();
+        interactor.Bounds=bounds;
+        Wire(interactor);
+        XRControllerInput input=hand.gameObject.AddComponent<XRControllerInput>();
+        input.Node=node;
+        input.Locomotion=locomotion;
+        hand.gameObject.SetActive(false);
+        return input;
+    }
+
+    private static void Wire(ToolHolder holder)
+    {
+        holder.Station=Object.FindFirstObjectByType<ToolStation>();
+        holder.Session=Object.FindFirstObjectByType<DemoSession>();
+        holder.EvidenceCamera=Object.FindFirstObjectByType<EvidenceCamera>();
+        DesktopInteractor desktop=holder as DesktopInteractor;
+        if(desktop==null) return;
+        desktop.Panel=Object.FindFirstObjectByType<DemoDesktopPanel>();
+        if(desktop.Panel!=null) desktop.Panel.Interactor=desktop;
     }
 
     private static DeployedTool SaveTool(DemoToolKind kind)

@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using static DemoGeometry;
 
 // One Unity unit = one metre. Editor-only generation; no runtime dependency.
 public static class JewelryStoreBuilder
@@ -228,13 +229,9 @@ public static class JewelryStoreBuilder
             shardMesh.RecalculateNormals();
             shardMesh.RecalculateBounds();
             // Save generated mesh so scene references survive reopening Unity.
-            const string dir="Assets/CrimeSceneDemo/Generated";
-            EnsureFolder("Assets","CrimeSceneDemo");
-            EnsureFolder("Assets/CrimeSceneDemo","Generated");
-            string path=dir+"/BlockoutShard.asset";
-            Mesh existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if(existing!=null) { Object.DestroyImmediate(shardMesh); shardMesh=existing; }
-            else AssetDatabase.CreateAsset(shardMesh,path);
+            EnsureFolder("Assets/CrimeSceneDemo");
+            EnsureFolder("Assets/CrimeSceneDemo/Generated");
+            SaveMesh(ref shardMesh,"Assets/CrimeSceneDemo/Generated/BlockoutShard.asset");
         }
         GameObject o=new GameObject(name);
         o.transform.SetParent(evidence,false);
@@ -246,36 +243,14 @@ public static class JewelryStoreBuilder
             AssetDatabase.GetBuiltinExtraResource<Material>("Default-Material.mat");
     }
 
-    private static void EnsureFolder(string parent,string name)
-    {
-        if(!AssetDatabase.IsValidFolder(parent+"/"+name))
-            AssetDatabase.CreateFolder(parent,name);
-    }
-
-    private static Vector3 V(float x,float y,float z) => new Vector3(x,y,z);
-    private static Transform Group(string name,Transform parent)
-    {
-        GameObject g=new GameObject(name);
-        g.transform.SetParent(parent,false);
-        return g.transform;
-    }
     private static void Empty(string name,Transform parent,Vector3 position)
     {
-        Transform t=Group(name,parent);
-        t.localPosition=position;
+        Group(name,parent).localPosition=position;
     }
+    // Blockout geometry collides by default; detail pieces opt out.
     private static GameObject Box(string name,Transform parent,Vector3 p,Vector3 size,bool collision=true)
-        => Primitive(name,PrimitiveType.Cube,parent,p,size,collision);
-    private static GameObject Primitive(string name,PrimitiveType type,Transform parent,
-        Vector3 p,Vector3 size,bool collision)
-    {
-        GameObject g=GameObject.CreatePrimitive(type);
-        g.name=name;
-        g.transform.SetParent(parent,false);
-        g.transform.localPosition=p;
-        g.transform.localScale=size;
-        if(!collision) Object.DestroyImmediate(g.GetComponent<Collider>());
-        return g;
-    }
+        => DemoGeometry.Box(name,parent,p,size,null,collision);
+    private static GameObject Primitive(string name,PrimitiveType type,Transform parent,Vector3 p,Vector3 size,bool collision)
+        => DemoGeometry.Primitive(name,type,parent,p,size,null,collision);
 }
 #endif

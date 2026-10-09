@@ -42,6 +42,28 @@ Uses Application.persistentDataPath/EvidencePhotos. On Windows this is normally 
 - Files can be opened after closing the demo.
 - Capture behavior and any brief frame stall are acceptable in the headset.
 
+## Package Manager startup failure (open)
+
+Unity reported that the Package Manager local server did not start. Unity launches a helper process (UnityPackageManager.exe, under the Editor's Data\Resources\PackageManager\Server folder) and connects to it on 127.0.0.1; the error means that connection failed. Reports from other users point at these causes, in a sensible order to try. None is a confirmed fix for this PC.
+
+1. Antivirus or firewall blocking UnityPackageManager.exe or the local connection. Add an exception for the Unity Editor folder rather than disabling protection; re-enable anything turned off for a test.
+2. Proxy settings. If HTTP_PROXY/HTTPS_PROXY variables exist, set UNITY_NOPROXY to `localhost,127.0.0.1`.
+3. Cache permissions. The account must have full control of `%LOCALAPPDATA%\Unity\cache`. Deleting that folder and the project's Library folder is safe; Unity regenerates both.
+4. Unity Hub → the Editor's menu → Package Manager diagnostics. Keep the report; `%LOCALAPPDATA%\Unity\Editor\upm.log` holds the server's own log.
+5. Reinstall the Editor through the Hub if the above fail.
+
+Until this is resolved the launchers use -noUpm, which blocks installing any package.
+
+## XR package plan (after Package Manager works)
+
+Install through Package Manager, Unity Registry, with the versions the Editor offers for 6000.x: XR Plug-in Management and the OpenXR Plugin are enough for this project; XR Interaction Toolkit and Input System are optional (only needed for the TrackedPoseDriver fallback noted in CONTROLS_AND_INTEGRATION.md). Enable OpenXR for the Windows build target and add the Meta Quest Touch controller interaction profile. Quest 2 connects by Link cable or Air Link with the Meta runtime set as the active OpenXR runtime.
+
+The scene's Player already contains everything for VR: XRHeadTracking on the camera, two hands with HandInteractor + XRControllerInput, XRLocomotion, and DemoModeSwitch choosing VR or desktop at start (F9 flips). After enabling OpenXR, press Play with the headset connected; no scene changes are expected. Record the exact package versions here when installed.
+
+## Windows build
+
+Build-Windows.cmd at the repository root runs DemoBuild.BuildWindows in batch mode and writes Builds\Windows\JewelryStoreDemo.exe; Run-Demo.cmd starts it. The same build is available from the Crime Scene Demo menu. Builds are not committed. Keep a copy of a working build on separate storage before the presentation.
+
 ## Recorded configuration
 
 - Unity Editor: 6000.6.2f1 (tested October 8)

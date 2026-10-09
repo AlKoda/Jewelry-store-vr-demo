@@ -28,6 +28,14 @@ public sealed class InteriorBounds : MonoBehaviour
         new Region(1.3f, 3.7f, 8.25f, 10.75f)
     };
 
+    // The object's own bounds, adding the default shop regions when none exist,
+    // so walking and teleporting are never left unconstrained.
+    public static InteriorBounds On(GameObject owner)
+    {
+        InteriorBounds bounds = owner.GetComponent<InteriorBounds>();
+        return bounds != null ? bounds : owner.AddComponent<InteriorBounds>();
+    }
+
     public bool Contains(Vector3 p)
     {
         foreach (Region region in Regions)
