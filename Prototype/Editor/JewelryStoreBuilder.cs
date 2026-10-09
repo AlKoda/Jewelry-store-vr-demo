@@ -84,7 +84,7 @@ public static class JewelryStoreBuilder
         }
 
         Transform references = Group("ReferencePoints", root.transform);
-        Empty("SuggestedPlayerStart", references, V(3.8f,0,-1.2f));
+        Empty("SuggestedPlayerStart", references, V(3.65f,0,1.3f));
         Empty("SuggestedToolStation", references, V(-3.6f,1,1));
         Empty("SafeRoomEntry", references, V(2.5f,0,8.5f));
         Selection.activeGameObject = root;

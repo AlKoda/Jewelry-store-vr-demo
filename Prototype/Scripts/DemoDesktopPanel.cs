@@ -1,11 +1,13 @@
 using UnityEngine;
 
-// Temporary desktop/debug panel. This is not the final headset HUD.
+// Presenter panel on IMGUI, so it needs no packages. Tab hides it.
+// This is the desktop/monitor view, not the headset HUD.
 public sealed class DemoDesktopPanel : MonoBehaviour
 {
     public ToolStation Station;
     public DemoSession Session;
     public EvidenceCamera EvidenceCamera;
+    public DesktopInteractor Interactor;
     public bool Visible = true;
     private DeployedTool fallbackSelected;
     public DesktopToolPlacement Placement;
@@ -19,6 +21,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private void OnGUI()
     {
+        bool looking = Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking;
+        if (looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
+        PointerOverPanel = Visible && !looking && Area.Contains(Event.current.mousePosition);
         if (!Visible || Station == null) return;
         GUILayout.BeginArea(new Rect(12,12,300,Screen.height-24),GUI.skin.box);
         panelScroll=GUILayout.BeginScrollView(panelScroll);
@@ -39,12 +44,21 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 if(GUILayout.Button(tool.name)) selected=tool;
         GUILayout.EndScrollView();
 
-        if(selected!=null)
+        GUILayout.BeginArea(Area, GUI.skin.box);
+        GUILayout.Label("Crime Scene Demo — presenter controls");
+        GUILayout.BeginHorizontal();
+        SpawnButton("Cone", DemoToolKind.Cone);
+        SpawnButton("Marker", DemoToolKind.Marker);
+        SpawnButton("Tape post", DemoToolKind.TapePost);
+        GUILayout.EndHorizontal();
+        GUILayout.Label(Status());
+        if (Station.PendingPost != null && GUILayout.Button("Cancel tape selection"))
+            Station.CancelTapeSelection();
+        if (EvidenceCamera != null)
         {
-            GUILayout.Label("Selected: "+selected.name);
             GUILayout.BeginHorizontal();
-            if(GUILayout.Button("Left")) Move(Vector3.left);
-            if(GUILayout.Button("Right")) Move(Vector3.right);
+            if (GUILayout.Button("Take photograph")) EvidenceCamera.CapturePhoto();
+            if (GUILayout.Button("Open photo folder")) EvidenceCamera.OpenPhotoFolder();
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
             if(GUILayout.Button("Forward")) Move(Vector3.forward);
@@ -86,9 +100,30 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUILayout.EndArea();
     }
 
-    private void Move(Vector3 direction)
+    private void SpawnButton(string label, DemoToolKind kind)
     {
-        selected.PlaceAt(selected.transform.position+direction*0.1f,
-            selected.transform.eulerAngles.y);
+        if (!GUILayout.Button(label)) return;
+        if (Interactor != null) Interactor.SpawnIntoHand(kind);
+        else Station.Spawn(kind);
+    }
+
+    private void Recount()
+    {
+        deployed = Station.DeploymentRoot != null
+            ? Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>().Length : 0;
+    }
+
+    private string Status()
+    {
+        string text = "Deployed tools: " + deployed + "   Next marker: " + Station.NextMarkerNumber;
+        if (Interactor != null)
+        {
+            if (Interactor.Held != null) text += "\nHolding: " + Interactor.Held.name;
+            else if (Interactor.Hovered != null) text += "\nPointing at: " + Interactor.Hovered.name;
+            else if (Interactor.HoveringCamera) text += "\nPointing at: camera";
+            if (Interactor.HoldingCamera) text += "\nCamera in hand";
+        }
+        if (Station.PendingPost != null) text += "\nTape: choose the second post (T)";
+        return text;
     }
 }

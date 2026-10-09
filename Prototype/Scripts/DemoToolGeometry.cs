@@ -72,6 +72,7 @@ public static class DemoToolGeometry
         // Counteract the thin, nonuniform panel scale.
         label.transform.localScale=new Vector3(1/0.16f,1/0.2f,1/0.008f);
         TextMesh text=label.AddComponent<TextMesh>();
+        DeployedTool.EnsureFont(text);
         text.anchor=TextAnchor.MiddleCenter;
         text.alignment=TextAlignment.Center;
         text.fontSize=64;

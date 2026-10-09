@@ -92,6 +92,49 @@ public static class DemoToolsBuilder
         Debug.Log("Tool station created. Save scene; XR grabbing/activation and lighting still require integration.",root);
     }
 
+    [MenuItem("Crime Scene Demo/Create Desktop Player")]
+    public static void CreateDesktopPlayerFromMenu()
+    {
+        if(Camera.main==null)
+        {
+            EditorUtility.DisplayDialog("Camera required","Add a camera tagged MainCamera first.","OK");
+            return;
+        }
+        Undo.RegisterCreatedObjectUndo(CreateDesktopPlayer(Camera.main).gameObject,"Create desktop player");
+    }
+
+    // Desktop walker plus pointer interactor; the camera becomes the player's view.
+    public static ShopWalkController CreateDesktopPlayer(Camera camera)
+    {
+        GameObject player=new GameObject("IndoorPlayer");
+        Transform start=GameObject.Find("JewelryStore_Blockout")?.transform.Find("ReferencePoints/SuggestedPlayerStart");
+        player.transform.position=start!=null?start.position:new Vector3(3.65f,0,1.3f);
+        player.transform.rotation=Quaternion.Euler(0,-30,0);
+        CharacterController cc=player.AddComponent<CharacterController>();
+        cc.height=1.75f; cc.radius=.23f; cc.center=new Vector3(0,.875f,0);
+        cc.stepOffset=.15f; cc.skinWidth=.025f;
+        camera.transform.SetParent(player.transform,false);
+        camera.transform.localPosition=new Vector3(0,1.65f,0);
+        camera.transform.localRotation=Quaternion.identity;
+        camera.clearFlags=CameraClearFlags.SolidColor;
+        if(RenderSettings.fog) { camera.backgroundColor=RenderSettings.fogColor; camera.farClipPlane=120; }
+
+        InteriorBounds bounds=player.AddComponent<InteriorBounds>();
+        ShopWalkController walker=player.AddComponent<ShopWalkController>();
+        walker.View=camera.transform;
+        walker.Bounds=bounds;
+        DesktopInteractor interactor=player.AddComponent<DesktopInteractor>();
+        interactor.View=camera;
+        interactor.Walker=walker;
+        interactor.Bounds=bounds;
+        interactor.Station=Object.FindFirstObjectByType<ToolStation>();
+        interactor.Session=Object.FindFirstObjectByType<DemoSession>();
+        interactor.EvidenceCamera=Object.FindFirstObjectByType<EvidenceCamera>();
+        interactor.Panel=Object.FindFirstObjectByType<DemoDesktopPanel>();
+        if(interactor.Panel!=null) interactor.Panel.Interactor=interactor;
+        return walker;
+    }
+
     private static DeployedTool SaveTool(DemoToolKind kind)
     {
         DeployedTool temporary=DemoToolGeometry.Create(kind);
