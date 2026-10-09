@@ -26,6 +26,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         "Tab: hide this panel";
 
     private int deployed;
+    private float resetArmedUntil;
 
     private void OnEnable()
     {
@@ -73,10 +74,20 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             GUILayout.EndHorizontal();
             GUILayout.Label(EvidenceCamera.Status);
         }
-        if (Session != null && GUILayout.Button("Reset placed tools / scene")) Session.ResetSession();
+        ResetButton();
         GUILayout.Space(8);
         GUILayout.Label(Guide);
         GUILayout.EndArea();
+    }
+
+    // Two clicks within a few seconds, so a stray click cannot wipe the scene mid-demo.
+    private void ResetButton()
+    {
+        if (Session == null) return;
+        bool armed = Time.unscaledTime < resetArmedUntil;
+        if (!GUILayout.Button(armed ? "Click again to confirm reset" : "Reset placed tools / scene")) return;
+        if (armed) { resetArmedUntil = 0; Session.ResetSession(); }
+        else resetArmedUntil = Time.unscaledTime + 4f;
     }
 
     private void SpawnButton(string label, DemoToolKind kind)

@@ -18,7 +18,7 @@ Instructor-led VR jewelry robbery demonstration by October 27, 2026. No score, t
 
 Runtime: ToolStation, DeployedTool, SceneTape, DemoToolGeometry (tools); EvidenceCamera (photos, HoldBy/ReturnToRack, CaptureFromView); DemoSession, ResettableSceneObject (reset; Resetting fires before clearing); InteriorBounds (shared interior regions); ToolHolder → DesktopInteractor (mouse/keyboard) and HandInteractor (tracked hands); XRLocomotion (teleport, snap turn); ShopWalkController (desktop walking); DemoDesktopPanel (presenter panel); DemoStatusBoard (wall text).
 
-Editor: JewelryStoreBuilder, ShopCityRefinement, ShopPresentationExpansion (geometry); DemoToolsBuilder (tool station, desktop player, status board); XRRigBuilder (rig skeleton); DemoValidation (shared checks) with JewelrySceneValidation.Run, ShopCityValidation.Run and ShopCityValidation.RunExpanded; DemoBuild (Windows player).
+Editor: DemoGeometry (shared primitive/material/text/mesh helpers), JewelryStoreBuilder, ShopCityRefinement, ShopPresentationExpansion (geometry); DemoToolsBuilder (tool station, desktop player, status board); XRRigBuilder (rig skeleton); DemoValidation (shared checks) with JewelrySceneValidation.Run, ShopCityValidation.Run and ShopCityValidation.RunExpanded; DemoBuild (Windows player).
 
 ## Next technical dependency
 
@@ -31,6 +31,10 @@ XR package install, Quest connection, binding controller actions to HandInteract
 ## Collaboration rules
 
 Read the brief, roadmap and latest batch report. Preserve .meta files. Update source and the complete snapshot together; exclude Library/caches. Pull current GitHub files before editing. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
+
+## Batch 07 — consolidation (October 9, 2026, unverified)
+
+DemoGeometry holds the primitive, material, text, mesh-save and combine-by-material helpers the three generators each had their own copy of. SceneTape.Refresh replaces the SendMessage call in validation. The panel's reset needs two clicks within four seconds. Docs/REHEARSAL.md is the demonstration run sheet.
 
 ## Batch 06 — XR-ready adapters, status board, build script (October 9, 2026, unverified)
 

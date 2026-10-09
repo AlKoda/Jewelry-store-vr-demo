@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
+using static DemoGeometry;
 
 public static class ShopPresentationExpansion
 {
@@ -159,26 +160,7 @@ public static class ShopPresentationExpansion
                 Box("DrainGrille",street,V(-16+i*15+j*.07f,-.025f,-10.8f),V(.03f,.009f,.3f),charcoal);
         }
         // Small additions use a handful of combined meshes, not individual draw calls.
-        Dictionary<Material,List<CombineInstance>> groups=new Dictionary<Material,List<CombineInstance>>();
-        List<GameObject> originals=new List<GameObject>();
-        foreach(MeshFilter f in street.GetComponentsInChildren<MeshFilter>())
-        {
-            Material m=f.GetComponent<MeshRenderer>().sharedMaterial;
-            if(!groups.ContainsKey(m)) groups[m]=new List<CombineInstance>();
-            groups[m].Add(new CombineInstance {mesh=f.sharedMesh,transform=f.transform.localToWorldMatrix});
-            originals.Add(f.gameObject);
-        }
-        int index=0;
-        foreach(var group in groups)
-        {
-            Mesh mesh=new Mesh();mesh.CombineMeshes(group.Value.ToArray(),true,true);
-            string path=Folder+"/StreetDetail_"+index+++".asset";SaveMesh(ref mesh,path);
-            GameObject g=new GameObject("StreetDetailBatch");g.transform.SetParent(street,false);
-            g.AddComponent<MeshFilter>().sharedMesh=mesh;
-            MeshRenderer r=g.AddComponent<MeshRenderer>();r.sharedMaterial=group.Key;
-            r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;
-        }
-        foreach(GameObject g in originals) Object.DestroyImmediate(g);
+        CombineByMaterial(street,Folder+"/StreetDetail_","StreetDetail_");
     }
 
     private static void JaggedPanel(Vector3 position,Vector3 scale,Quaternion rotation)
@@ -203,38 +185,8 @@ public static class ShopPresentationExpansion
         g.gameObject.AddComponent<MeshFilter>().sharedMesh=mesh;
         g.gameObject.AddComponent<MeshRenderer>().sharedMaterial=glass;
     }
-    private static void SaveMesh(ref Mesh mesh,string path)
-    {
-        Mesh existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-        if(existing==null) AssetDatabase.CreateAsset(mesh,path);
-        else {EditorUtility.CopySerialized(mesh,existing);Object.DestroyImmediate(mesh);mesh=existing;}
-    }
-    private static Material Mat(string name,Color color)
-    {
-        string path=Folder+"/"+name+".mat";
-        Material material=AssetDatabase.LoadAssetAtPath<Material>(path);
-        if(material==null) {material=new Material(Shader.Find("Standard"));AssetDatabase.CreateAsset(material,path);}
-        material.color=color;material.SetFloat("_Glossiness",.18f);return material;
-    }
-    private static Vector3 V(float x,float y,float z) => new Vector3(x,y,z);
-    private static Transform Group(string name,Transform parent)
-    {
-        GameObject go=new GameObject(name);go.transform.SetParent(parent,false);return go.transform;
-    }
-    private static GameObject Box(string name,Transform parent,Vector3 p,Vector3 size,Material material)
-    {
-        GameObject go=GameObject.CreatePrimitive(PrimitiveType.Cube);go.name=name;
-        go.transform.SetParent(parent,false);go.transform.localPosition=p;go.transform.localScale=size;
-        go.GetComponent<MeshRenderer>().sharedMaterial=material;
-        Object.DestroyImmediate(go.GetComponent<Collider>());return go;
-    }
+    private static Material Mat(string name,Color color) => DemoGeometry.Mat(Folder,name,color,.18f);
     private static void Label(string text,Vector3 p,float yaw,float size,Color color)
-    {
-        Transform t=Group(text,details);t.localPosition=p;t.localRotation=Quaternion.Euler(0,yaw,0);
-        TextMesh label=t.gameObject.AddComponent<TextMesh>();label.text=text;
-        label.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        label.GetComponent<MeshRenderer>().sharedMaterial=label.font.material;
-        label.anchor=TextAnchor.MiddleCenter;label.characterSize=size;label.fontSize=64;label.color=color;
-    }
+        => Text(text,details,text,p,yaw,size,color);
 }
 #endif

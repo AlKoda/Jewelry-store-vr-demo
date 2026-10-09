@@ -9,7 +9,10 @@ public sealed class SceneTape : MonoBehaviour
     [Min(0.01f)] public float RibbonHeight = 0.08f;
     [Min(0.001f)] public float Thickness = 0.004f;
 
-    private void LateUpdate()
+    private void LateUpdate() { Refresh(); }
+
+    // Re-stretch between the anchors now; LateUpdate does this every frame.
+    public void Refresh()
     {
         if (StartAnchor == null || EndAnchor == null ||
             !StartAnchor.gameObject.activeInHierarchy || !EndAnchor.gameObject.activeInHierarchy)

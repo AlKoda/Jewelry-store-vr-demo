@@ -27,6 +27,7 @@ Build-Windows.cmd produces a standalone Windows demo in Builds\Windows; Run-Demo
 - [Brief](Docs/PROJECT_BRIEF.md)
 - [Roadmap](Docs/ROADMAP.md)
 - [Current handoff](Docs/HANDOFF.md)
+- [Demonstration run sheet](Docs/REHEARSAL.md)
 - [Setup](Docs/SETUP.md)
 - [Controls and integration](Docs/CONTROLS_AND_INTEGRATION.md)
 - [Asset register](Docs/ASSET_REGISTER.md)

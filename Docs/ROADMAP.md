@@ -19,7 +19,7 @@ Dates are targets, dependent on access to the PC and headset.
 | V01 | Visual polish | Required | Planned | Oct 20–23 | Materials and lighting readable in headset |
 | D01 | Monitor view and controls | Required | In progress | Oct 20–23 | Visitors see view; presenter can access controls guide (desktop panel with guide done; headset mirror pending) |
 | D02 | Reset | Required | In progress | Oct 20–23 | Clears deployed tools, restores scene and preserves photos |
-| Q01 | Full rehearsal | Required | Planned | Oct 24–26 | Demonstration runs through tools, capture, review and reset |
+| Q01 | Full rehearsal | Required | Planned | Oct 24–26 | Demonstration runs through tools, capture, review and reset ([run sheet](REHEARSAL.md) drafted) |
 | Q02 | Performance and backup | Required | In progress | Oct 24–26 | Headset performance acceptable; tested build and backup saved (build script ready; build itself unverified) |
 | X01 | Intact-store state | Optional | Planned | After core demo | Shared layout switches between intact and robbed states |
 | X02 | Additional cases | Future | Planned | After presentation | Reusable scene/tool structure established |

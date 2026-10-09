@@ -1,15 +1,13 @@
 #if UNITY_EDITOR
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
+using static DemoGeometry;
 
 public static class ShopCityRefinement
 {
     private const string Folder="Assets/CrimeSceneDemo/CityGenerated";
     private static Material stone, dark, metal, cream, road, glass, green, brick, white;
     private static Transform city;
-    private static int meshSerial;
 
     [MenuItem("Crime Scene Demo/Refine Shop And Add Street")]
     public static void Apply()
@@ -99,7 +97,7 @@ public static class ShopCityRefinement
         Bench(V(8,0,-12.3f));
         for(int i=0;i<3;i++) Planter(V(-13+i*13,0,-13.2f));
         // Consolidate static backdrop by material into persistent mesh assets.
-        CombineCity();
+        CombineByMaterial(city,Folder+"/CityMesh_","City_");
         RenderSettings.fog=true;
         RenderSettings.fogMode=FogMode.Linear;
         RenderSettings.fogColor=new Color(.65f,.72f,.75f);
@@ -172,66 +170,6 @@ public static class ShopCityRefinement
         }
     }
 
-    private static void CombineCity()
-    {
-        meshSerial=0;
-        Dictionary<Material,List<CombineInstance>> batches=new Dictionary<Material,List<CombineInstance>>();
-        List<GameObject> originals=new List<GameObject>();
-        foreach(MeshFilter filter in city.GetComponentsInChildren<MeshFilter>())
-        {
-            MeshRenderer renderer=filter.GetComponent<MeshRenderer>();
-            if(renderer==null || filter.sharedMesh==null) continue;
-            Material material=renderer.sharedMaterial;
-            if(!batches.ContainsKey(material)) batches[material]=new List<CombineInstance>();
-            batches[material].Add(new CombineInstance {mesh=filter.sharedMesh,
-                transform=city.worldToLocalMatrix*filter.transform.localToWorldMatrix});
-            originals.Add(filter.gameObject);
-        }
-        foreach(var batch in batches)
-        {
-            Mesh mesh=new Mesh {name="City_"+batch.Key.name};
-            mesh.indexFormat=IndexFormat.UInt32;
-            mesh.CombineMeshes(batch.Value.ToArray(),true,true);
-            string path=Folder+"/CityMesh_"+meshSerial+++".asset";
-            Mesh old=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if(old!=null) {EditorUtility.CopySerialized(mesh,old); Object.DestroyImmediate(mesh); mesh=old;}
-            else AssetDatabase.CreateAsset(mesh,path);
-            GameObject go=new GameObject(mesh.name);go.transform.SetParent(city,false);
-            go.AddComponent<MeshFilter>().sharedMesh=mesh;
-            MeshRenderer r=go.AddComponent<MeshRenderer>();r.sharedMaterial=batch.Key;
-            r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;
-        }
-        foreach(GameObject go in originals) Object.DestroyImmediate(go);
-    }
-    private static Material Mat(string name,Color color)
-    {
-        string path=Folder+"/"+name+".mat";
-        Material m=AssetDatabase.LoadAssetAtPath<Material>(path);
-        if(m==null) {m=new Material(Shader.Find("Standard"));AssetDatabase.CreateAsset(m,path);}
-        m.color=color;m.SetFloat("_Glossiness",.12f);
-        return m;
-    }
-    private static Transform Group(string name,Transform parent)
-    {
-        GameObject g=new GameObject(name);g.transform.SetParent(parent,false);return g.transform;
-    }
-    private static Vector3 V(float x,float y,float z) => new Vector3(x,y,z);
-    private static GameObject Box(string name,Transform parent,Vector3 p,Vector3 size,Material mat)
-    {
-        GameObject g=GameObject.CreatePrimitive(PrimitiveType.Cube);g.name=name;
-        g.transform.SetParent(parent,false);g.transform.localPosition=p;g.transform.localScale=size;
-        g.GetComponent<Renderer>().sharedMaterial=mat;
-        Object.DestroyImmediate(g.GetComponent<Collider>());
-        return g;
-    }
-    private static void Text(string name,Transform parent,string value,Vector3 p,float yaw,float size,Color color)
-    {
-        Transform g=Group(name,parent);g.localPosition=p;g.localRotation=Quaternion.Euler(0,yaw,0);
-        TextMesh text=g.gameObject.AddComponent<TextMesh>();
-        text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-        text.GetComponent<MeshRenderer>().sharedMaterial=text.font.material;
-        text.text=value;text.fontSize=64;text.characterSize=size;
-        text.anchor=TextAnchor.MiddleCenter;text.alignment=TextAlignment.Center;text.color=color;
-    }
+    private static Material Mat(string name,Color color) => DemoGeometry.Mat(Folder,name,color,.12f);
 }
 #endif

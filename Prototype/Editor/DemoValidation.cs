@@ -161,13 +161,13 @@ public static class DemoValidation
         station.SelectTapePost(post2);
         SceneTape tape = station.DeploymentRoot.GetComponentInChildren<SceneTape>();
         Check(tape != null, "Tape connection");
-        tape.SendMessage("LateUpdate");
+        tape.Refresh();
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 2) < 0.01f, "Tape length");
         post2.PlaceAt(new Vector3(3, 0, 1), 0);
-        tape.SendMessage("LateUpdate");
+        tape.Refresh();
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 3) < 0.01f, "Tape follows moved post");
         station.RemoveTool(post1);
-        tape.SendMessage("LateUpdate");
+        tape.Refresh();
         evidence = Find<EvidenceCamera>();
         evidence.CaptureFailed.AddListener(message => failure = message);
         evidence.CaptureFromView(Camera.main.transform);
