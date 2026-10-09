@@ -18,7 +18,7 @@ Unity 6000.6.2f1, Built-in pipeline. Batch 04 (expanded shop) compiled and passe
 - Left click: pick up the pointed tool, place the held one, or take a new one from the rack samples. 1/2/3: new cone, marker or tape post into the hand.
 - Q/E or mouse wheel: rotate the held tool. Delete: remove it. T: select tape posts; X: cancel tape.
 - F or click the camera: hold it / put it back. P: photograph (your view, or through the held camera).
-- Tab: hide the presenter panel. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
+- I: switch between the robbed and the intact store. Tab: hide the presenter panel. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
 
 ## VR
 

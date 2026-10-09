@@ -40,6 +40,7 @@ Pointer = mouse, or the screen centre while the right button is held for looking
 | F | Hold the evidence camera in front of the view / return it to the rack |
 | P | CapturePhoto |
 | Home | Return to the start position |
+| I | Intact / robbed store view (CrimeSceneState; also a panel button) |
 | Tab | Show / hide the presenter panel (DemoDesktopPanel) |
 
 Walls, the storefront barrier and InteriorBounds keep the player inside. InteriorBounds.Contains/Clamp are the shared definition of the interior; use them to filter XR teleport destinations.

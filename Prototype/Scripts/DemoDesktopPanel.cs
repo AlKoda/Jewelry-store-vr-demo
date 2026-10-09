@@ -12,6 +12,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     public SessionReviewRecorder Review;
     public DemoOverviewMap Map;
     public PhotoFrame Frame;
+    public CrimeSceneState SceneState;
     public Transform Player;
     public bool Visible = true;
 
@@ -34,7 +35,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         "1 / 2 / 3: new cone / marker / tape post   Q / E, wheel: rotate\n" +
         "T: select tape post   X: cancel tape   Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
-        "Home: return to start   F9: VR mode   Tab: hide this panel";
+        "I: intact / robbed store   Home: return to start\n" +
+        "F9: VR mode   Tab: hide this panel";
     private const string VRGuide =
         "Grip: hold tool / rack sample / camera   Trigger: photo, tape post\n" +
         "A / X: new tool   B / Y: remove or next kind\n" +
@@ -120,6 +122,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (Player != null) DrawDot(mapRect, Map.ToMap(Player.position));
         }
         GUILayout.Label("SESSION", header);
+        if (SceneState != null && GUILayout.Button(SceneState.Intact ? "Show robbed store (I)" : "Show intact store (I)", button))
+            SceneState.Toggle();
         ResetButton();
         GUILayout.Label("CONTROLS", header);
         GUILayout.Label(vr ? VRGuide : DesktopGuide, body);

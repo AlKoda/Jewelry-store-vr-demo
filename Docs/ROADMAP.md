@@ -21,7 +21,7 @@ Dates are targets, dependent on access to the PC and headset.
 | D02 | Reset | Required | In progress | Oct 20–23 | Clears deployed tools, restores scene and preserves photos |
 | Q01 | Full rehearsal | Required | Planned | Oct 24–26 | Demonstration runs through tools, capture, review and reset ([run sheet](REHEARSAL.md) drafted) |
 | Q02 | Performance and backup | Required | In progress | Oct 24–26 | Headset performance acceptable; tested build and backup saved (build script ready; build itself unverified) |
-| X01 | Intact-store state | Optional | Planned | After core demo | Shared layout switches between intact and robbed states |
+| X01 | Intact-store state | Optional | In progress | After core demo | Shared layout switches between intact and robbed states (CrimeSceneState toggle, I key / panel; unverified) |
 | X02 | Additional cases | Future | Planned | After presentation | Reusable scene/tool structure established |
 
 ## Batch 03 additions
@@ -53,6 +53,8 @@ Environment batch 01 generator uploaded: complete editable store geometry source
 Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel, camera feedback/folder access and detailed geometry source. See [batch 02](TOOLS_BATCH_02.md). Basic source delimiter checks passed; functionality remains unverified.
 
 October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
+
+October 9: batch 12 — intact/robbed store comparison toggle (X01). Unverified. See [handoff](HANDOFF.md).
 
 October 9: batch 11 — generated click/thud/ambience sounds, emissive light fixtures, credits in the panel, third-party licenses copied into builds. Unverified. See [handoff](HANDOFF.md).
 

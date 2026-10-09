@@ -65,6 +65,18 @@ public static class DemoGeometry
         return m;
     }
 
+    // Standard-shader transparent (premultiplied) mode; alpha comes from the colour.
+    public static Material Translucent(Material material)
+    {
+        material.SetFloat("_Mode", 3);
+        material.SetInt("_SrcBlend", (int)BlendMode.One);
+        material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.renderQueue = 3000;
+        return material;
+    }
+
     // Standard-shader emission on a saved material, so light fixtures read as lit.
     public static Material Glowing(Material material, Color emission)
     {

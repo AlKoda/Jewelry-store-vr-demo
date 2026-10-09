@@ -25,7 +25,7 @@ public static class ShopCityValidation
             JewelryStoreBuilder.CreateStore();
             DemoToolsBuilder.Create();
             ShopCityRefinement.Apply();
-            if (expanded) { ShopPresentationExpansion.Apply(); ShopAssetDressing.Apply(); }
+            if (expanded) { ShopPresentationExpansion.Apply(); ShopAssetDressing.Apply(); IntactStateBuilder.Apply(); }
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             DemoValidation.SaveScene(expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
@@ -225,6 +225,18 @@ public static class ShopCityValidation
         Transform dressing = store.Find("ThirdPartyDressing");
         DemoValidation.Check(dressing != null && dressing.childCount == 5, "Third-party dressing placed (5 models)");
         DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
+
+        CrimeSceneState state = DemoValidation.Find<CrimeSceneState>();
+        state.ReadDesktopInput = false;
+        Transform evidenceGroup = store.Find("FixedEvidence");
+        Transform hinge = store.Find("Furniture/OpenSafe/DoorHinge");
+        state.SetIntact(true);
+        DemoValidation.Check(state.Intact && !evidenceGroup.gameObject.activeSelf && store.Find("IntactOverlay").gameObject.activeSelf
+            && Mathf.Abs(hinge.localEulerAngles.y) < 0.01f && store.Find("IntactOverlay").childCount >= 7,
+            "Intact view hides evidence, closes the safe and restores glass and stock");
+        DemoValidation.Find<DemoSession>().ResetSession();
+        DemoValidation.Check(!state.Intact && evidenceGroup.gameObject.activeSelf && !store.Find("IntactOverlay").gameObject.activeSelf
+            && Mathf.Abs(Mathf.DeltaAngle(hinge.localEulerAngles.y, 110)) < 0.01f, "Reset returns to the robbed view");
     }
 }
 #endif

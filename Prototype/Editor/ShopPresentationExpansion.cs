@@ -23,10 +23,7 @@ public static class ShopPresentationExpansion
         orange=Mat("ConeOrange",new Color(.95f,.29f,.03f));
         yellow=Mat("EvidenceYellow",new Color(.95f,.75f,.08f));
         darkGlass=Mat("Screen",new Color(.05f,.11f,.14f));
-        glass=Mat("RemainingGlass",new Color(.62f,.83f,.87f,.19f));
-        glass.SetFloat("_Mode",3);glass.SetInt("_SrcBlend",(int)BlendMode.One);
-        glass.SetInt("_DstBlend",(int)BlendMode.OneMinusSrcAlpha);glass.SetInt("_ZWrite",0);
-        glass.EnableKeyword("_ALPHAPREMULTIPLY_ON");glass.renderQueue=3000;
+        glass=Translucent(Mat("RemainingGlass",new Color(.62f,.83f,.87f,.19f)));
         Transform store=GameObject.Find("JewelryStore_Blockout").transform;
         if(store.Find("PresentationDetails")!=null) throw new System.InvalidOperationException("Already expanded.");
         details=Group("PresentationDetails",store);

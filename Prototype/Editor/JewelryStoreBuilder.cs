@@ -117,25 +117,28 @@ public static class JewelryStoreBuilder
             float z = -size.z*0.32f+i*size.z*0.21f;
             Box("JewelryPad_"+i, group, p+V(0,0.87f,z), V(0.32f,0.06f,0.28f));
             // Two empty pads on damaged cases suggest missing stock.
-            if (!damaged || i<2)
-            {
-                if(i%2==0)
-                {
-                    Primitive("NecklaceBust",PrimitiveType.Sphere,group,
-                        p+V(0,0.98f,z),V(0.16f,0.18f,0.1f),false);
-                    Ring("Necklace",group,p+V(0,1.0f,z-0.055f),0.06f,0.009f,true);
-                }
-                else
-                {
-                    Box("RingStand",group,p+V(0,0.94f,z),V(0.045f,0.08f,0.045f),false);
-                    Ring("JewelryRing",group,p+V(0,0.98f,z-0.025f),0.025f,0.007f,true);
-                }
-            }
+            if (!damaged || i<2) Stock(group,p,z,i%2==0);
         }
         if (damaged)
             for (int i=0;i<5;i++)
                 Shard(name+"_DisplayShard_"+i, p+V(0.12f*(i-2),0.913f,0.14f*i),
                     0.12f, i*47);
+    }
+
+    // A necklace on a bust, or a ring on a stand, on the pad at display offset z.
+    public static void Stock(Transform group,Vector3 p,float z,bool necklace)
+    {
+        if(necklace)
+        {
+            Primitive("NecklaceBust",PrimitiveType.Sphere,group,
+                p+V(0,0.98f,z),V(0.16f,0.18f,0.1f),false);
+            Ring("Necklace",group,p+V(0,1.0f,z-0.055f),0.06f,0.009f,true);
+        }
+        else
+        {
+            Box("RingStand",group,p+V(0,0.94f,z),V(0.045f,0.08f,0.045f),false);
+            Ring("JewelryRing",group,p+V(0,0.98f,z-0.025f),0.025f,0.007f,true);
+        }
     }
 
     private static void Safe()
