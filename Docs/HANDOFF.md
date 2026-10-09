@@ -6,7 +6,7 @@ All work now lands on `main` directly; there is no separate feature branch. Pull
 
 Verified on the PC (October 9, 2026, Unity 6000.6.2f1, Built-in pipeline): the expanded shop, pointer placement, current-view photography and the **instructor review recorder** — 40 assertions, see [REVIEW_BATCH_05.md](REVIEW_BATCH_05.md). That run used the source *before* the batches listed below were merged in.
 
-Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 67 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
+Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 70 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
 
 Latest snapshot with the merged source: Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip (scene files inside predate this merge; the validation run regenerates them). Downloads/JewelryStore_Review_Unity6000.6.2f1.zip is the verified batch-05 project. Older snapshots are history.
 
@@ -33,6 +33,10 @@ Package Manager fix, OpenXR install, Quest tracking test, hands-on keyboard/mous
 ## Collaboration rules
 
 Read the brief, roadmap and this file. Preserve .meta files. Update source and the Expanded snapshot together; exclude Library/caches/InstructorReviews. **Pull `main` before editing**; two assistants work on this repository and the October 9 double implementation of mouse placement cost a day. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
+
+## Review fixes after batch 13 (unverified)
+
+DemoPhysics.Nearest is the one ignoring raycast (64 hits, upward-only option) used by the pointer, hands, tool settling and teleport aiming (which now skips the rig and the held tool). A tool knows its Holder, so two hands cannot hold one tool and a hand holding the camera spawns nothing. Settling casts from above the tool (clears a case it was lowered into) and is silent on reset or disable. DemoModeSwitch also disables the CharacterController in VR. The overview map culls a ceiling layer instead of toggling objects. The photo frame uses the Standard shader (always in builds). The walker clamps before its single Move and caps fall speed. The review recorder keeps an entry when writing fails; the mouse wheel over the panel no longer rotates the tool. Expected City result: 70 assertions.
 
 ## Batch 13 — more models and a reusable converter (October 9, 2026, unverified)
 

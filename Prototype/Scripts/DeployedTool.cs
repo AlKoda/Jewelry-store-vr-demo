@@ -10,6 +10,9 @@ public sealed class DeployedTool : MonoBehaviour
     public TextMesh NumberLabel;
     public TextMesh BackNumberLabel;
     public int MarkerNumber { get; private set; }
+    // The adapter currently carrying this tool; null when it rests in the scene.
+    public ToolHolder Holder { get; set; }
+    public bool Free => Holder == null;
 
     public void SetMarkerNumber(int number)
     {

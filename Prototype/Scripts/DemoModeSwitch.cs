@@ -11,6 +11,7 @@ public sealed class DemoModeSwitch : MonoBehaviour
 
     public DemoMode Mode = DemoMode.Auto;
     public Behaviour[] DesktopOnly = new Behaviour[0];
+    public Collider[] DesktopColliders = new Collider[0];
     public Behaviour[] VROnly = new Behaviour[0];
     public GameObject[] VRObjects = new GameObject[0];
     public bool VRActive { get; private set; }
@@ -29,6 +30,7 @@ public sealed class DemoModeSwitch : MonoBehaviour
     {
         VRActive = vr;
         foreach (Behaviour b in DesktopOnly) if (b != null) b.enabled = !vr;
+        foreach (Collider c in DesktopColliders) if (c != null) c.enabled = !vr;
         foreach (Behaviour b in VROnly) if (b != null) b.enabled = vr;
         foreach (GameObject g in VRObjects) if (g != null) g.SetActive(vr);
     }

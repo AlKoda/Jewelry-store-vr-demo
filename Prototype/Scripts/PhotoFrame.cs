@@ -16,7 +16,8 @@ public sealed class PhotoFrame : MonoBehaviour
     private void Awake()
     {
         frame = GetComponent<MeshRenderer>();
-        material = new Material(Shader.Find("Unlit/Texture"));
+        material = new Material(Shader.Find("Standard"));
+        material.SetFloat("_Glossiness", 0f);
         frame.sharedMaterial = material;
         frame.enabled = false;
     }

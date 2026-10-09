@@ -70,16 +70,16 @@ public sealed class SessionReviewRecorder : MonoBehaviour
             foreach(DeployedTool tool in Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>())
                 entry.tools.Add(new ToolRecord {kind=tool.Kind.ToString(),markerNumber=tool.MarkerNumber,
                     position=tool.transform.position,rotation=tool.transform.eulerAngles});
+        document.entries.Add(entry);
         try
         {
             Directory.CreateDirectory(ReviewFolder);
             if(!string.IsNullOrEmpty(originalPhoto))
             {
                 string name="Photo_"+(++sequence).ToString("D4")+".png";
-                File.Copy(originalPhoto,Path.Combine(ReviewFolder,name),false);
+                File.Copy(originalPhoto,Path.Combine(ReviewFolder,name),true);
                 entry.photo=name;
             }
-            document.entries.Add(entry);
             WriteFiles();
             Status="Review saved: "+document.entries.Count+" entries";
         }

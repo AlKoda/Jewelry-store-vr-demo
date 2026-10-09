@@ -2,11 +2,12 @@ using UnityEngine;
 
 // Top-down picture of the shop for the presenter panel, so the instructor can
 // see where the visitor and the tools are without the headset. A hidden
-// orthographic camera renders into a small texture a few times a second with
-// the ceilings switched off for that one render.
+// orthographic camera renders into a small texture a few times a second and
+// culls the ceiling layer.
 public sealed class DemoOverviewMap : MonoBehaviour
 {
-    public Transform Ceiling;
+    // Objects on this (unnamed) layer are left out of the overview: the ceilings.
+    public int HiddenLayer = 31;
     public Vector2 Centre = new Vector2(0, 5.5f);
     public float HalfSize = 6f;
     public int Resolution = 256;
@@ -32,6 +33,7 @@ public sealed class DemoOverviewMap : MonoBehaviour
         overview.clearFlags = CameraClearFlags.SolidColor;
         overview.backgroundColor = new Color(0.12f, 0.13f, 0.15f);
         overview.targetTexture = Texture;
+        overview.cullingMask = ~(1 << HiddenLayer);
         overview.stereoTargetEye = StereoTargetEyeMask.None;
     }
 
@@ -42,13 +44,7 @@ public sealed class DemoOverviewMap : MonoBehaviour
         Render();
     }
 
-    public void Render()
-    {
-        bool ceilingShown = Ceiling != null && Ceiling.gameObject.activeSelf;
-        if (ceilingShown) Ceiling.gameObject.SetActive(false);
-        overview.Render();
-        if (ceilingShown) Ceiling.gameObject.SetActive(true);
-    }
+    public void Render() { overview.Render(); }
 
     // World position to 0..1 texture coordinates (u right, v up = +z).
     public Vector2 ToMap(Vector3 world)

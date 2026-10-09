@@ -37,6 +37,7 @@ public sealed class DesktopInteractor : ToolHolder
         {
             bool hit = Raycast(ray, Reach, out RaycastHit nearest, Walker != null ? Walker.transform : null);
             Hovered = hit ? nearest.collider.GetComponentInParent<DeployedTool>() : null;
+            if (Hovered != null && !Hovered.Free) Hovered = null;
             HoveredSample = hit && Hovered == null ? nearest.collider.GetComponentInParent<ToolRackSample>() : null;
             HoveringCamera = hit && Hovered == null && HoveredSample == null && EvidenceCamera != null &&
                 nearest.collider.GetComponentInParent<EvidenceCamera>() == EvidenceCamera;
@@ -57,7 +58,7 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.Q)) Rotate(-RotateStep);
         if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
         float wheel = Input.GetAxis("Mouse ScrollWheel");
-        if (wheel != 0) Rotate(Mathf.Sign(wheel) * RotateStep);
+        if (wheel != 0 && !overPanel) Rotate(Mathf.Sign(wheel) * RotateStep);
         if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) Remove(Target);
         if (Input.GetKeyDown(KeyCode.T)) SelectTapePost(Target);
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();

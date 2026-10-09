@@ -171,6 +171,10 @@ public static class ShopCityValidation
             "Released tool drops onto the floor");
         hand.transform.position = marker.transform.position + Vector3.up * 0.1f;
         DemoValidation.Check(hand.Grab() && hand.Held == marker, "Hand grabs the nearest tool");
+        HandInteractor other = desktop.transform.Find("LeftHand").GetComponent<HandInteractor>();
+        other.transform.position = hand.transform.position;
+        DemoValidation.Check(!other.Grab() && other.Held == null && marker.Holder == hand, "A held tool cannot be taken by the other hand");
+        DemoValidation.Check(!desktop.GetComponent<CharacterController>().enabled, "VR mode disables the walking collider");
         hand.RemoveHeld();
         DemoValidation.Check(hand.Held == null, "Hand removes the held tool");
 
@@ -181,6 +185,7 @@ public static class ShopCityValidation
         hand.transform.position = evidence.transform.position;
         DemoValidation.Check(hand.Grab() && hand.HoldingCamera && evidence.Holder == hand.transform,
             "Hand grabs the camera from the rack");
+        DemoValidation.Check(hand.SpawnIntoHand(DemoToolKind.Cone) == null, "No tool spawns into a hand holding the camera");
         mode.Apply(false);
         DemoValidation.Check(desktop.enabled && !hand.gameObject.activeSelf && evidence.Holder == null,
             "Desktop mode releases the hands and returns the camera");

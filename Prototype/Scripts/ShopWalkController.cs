@@ -44,7 +44,7 @@ public sealed class ShopWalkController : MonoBehaviour
             + transform.forward * Input.GetAxisRaw("Vertical");
         float speed = Speed * (Input.GetKey(KeyCode.LeftShift) ? SprintMultiplier : 1);
         // One Move per frame keeps isGrounded valid, so fall speed cannot accumulate.
-        verticalSpeed = body.isGrounded ? -1f : verticalSpeed - 9.81f * Time.deltaTime;
+        verticalSpeed = body.isGrounded ? -1f : Mathf.Max(verticalSpeed - 9.81f * Time.deltaTime, -8f);
         Move((Vector3.ClampMagnitude(direction, 1) * speed + Vector3.up * verticalSpeed) * Time.deltaTime);
         if (Input.GetKeyDown(KeyCode.Home)) ResetPosition();
     }
@@ -69,9 +69,12 @@ public sealed class ShopWalkController : MonoBehaviour
     {
         if (body == null) body = GetComponent<CharacterController>();
         if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
-        body.Move(displacement);
+        // Clamp the intended target first so the one Move per frame stays grounded;
+        // relocating only when the controller still slid out of bounds.
+        Vector3 target = Bounds.Clamp(transform.position + displacement);
+        body.Move(target - transform.position);
         Vector3 inside = Bounds.Clamp(transform.position);
-        if ((inside - transform.position).sqrMagnitude > 0.00001f) XRLocomotion.Relocate(transform, inside);
+        if ((inside - transform.position).sqrMagnitude > 0.0025f) XRLocomotion.Relocate(transform, inside);
     }
 
     public Vector3 EyeHeight = new Vector3(0, 1.65f, 0);

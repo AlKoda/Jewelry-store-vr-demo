@@ -3,7 +3,8 @@ using UnityEngine;
 // Everything an interaction adapter shares, whatever drives it: one held tool
 // at a time, spawning into the hand, removal, tape selection, holding the
 // evidence camera, and releasing it all before a session reset so parents and
-// poses restore. Tools stay under the station's DeploymentRoot while held.
+// poses restore. Tools stay under the station's DeploymentRoot while held, and
+// a tool held by one holder cannot be taken by another.
 public abstract class ToolHolder : MonoBehaviour
 {
     public ToolStation Station;
@@ -20,7 +21,7 @@ public abstract class ToolHolder : MonoBehaviour
     // Where the camera sits while this holder has it.
     protected abstract Transform CameraAnchor { get; }
 
-    private readonly RaycastHit[] hits = new RaycastHit[16];
+    private DeployedTool highlighted;
 
     protected virtual void OnEnable()
     {
@@ -33,9 +34,10 @@ public abstract class ToolHolder : MonoBehaviour
         ReleaseAll();
     }
 
+    // A new tool straight into the hand; refused while the camera is held.
     public DeployedTool SpawnIntoHand(DemoToolKind kind)
     {
-        if (Station == null) return null;
+        if (Station == null || HoldingCamera) return null;
         DeployedTool tool = Station.Spawn(kind);
         Hold(tool);
         return tool;
@@ -44,44 +46,39 @@ public abstract class ToolHolder : MonoBehaviour
     public DeployedTool TakeSample(ToolRackSample sample)
         => sample != null ? SpawnIntoHand(sample.Kind) : null;
 
-    private DeployedTool highlighted;
-
-    // One highlighted tool per holder: the pointed, nearest or held one.
-    protected void Highlight(DeployedTool tool)
-    {
-        if (tool == highlighted) return;
-        if (highlighted != null) highlighted.SetHighlight(false);
-        highlighted = tool;
-        if (highlighted != null) highlighted.SetHighlight(true);
-    }
-
-    // Taking a second tool first puts the current one down.
+    // Taking a second tool first puts the current one down. A tool another
+    // holder has, or anything while the camera is held, is refused.
     public virtual void Hold(DeployedTool tool)
     {
-        if (tool == null || tool == Held) return;
-        if (Held != null) Place();
+        if (tool == null || tool == Held || HoldingCamera || !tool.Free) return;
+        if (Held != null) Settle(true);
         Held = tool;
+        tool.Holder = this;
         DemoSounds.Play(DemoSound.Click, tool.transform.position, 0.4f);
     }
 
-    // Lets go of the held tool and settles it on the surface beneath, inside the
-    // interior, so nothing is left floating at the rack or in mid-air.
-    public virtual void Place()
+    public virtual void Place() { Settle(true); }
+
+    // Lets go of the held tool and sets it on the nearest upward surface beneath it,
+    // inside the interior; casting from above the tool clears any case it is inside.
+    private void Settle(bool audible)
     {
         DeployedTool tool = Held;
         Held = null;
         if (tool == null) return;
-        Vector3 origin = Confine(tool.transform.position) + Vector3.up * 0.05f;
-        Vector3 landing = Raycast(new Ray(origin, Vector3.down), DropSearchDepth, out RaycastHit hit, tool.transform)
-            && hit.normal.y >= 0.7f ? hit.point : new Vector3(origin.x, Mathf.Max(0, origin.y - 0.05f), origin.z);
+        tool.Holder = null;
+        Vector3 origin = Confine(tool.transform.position) + Vector3.up;
+        Vector3 landing = DemoPhysics.Nearest(new Ray(origin, Vector3.down), DropSearchDepth + 1, out RaycastHit hit, tool.transform, null, true)
+            ? hit.point : new Vector3(origin.x, Mathf.Max(0, origin.y - 1), origin.z);
         tool.PlaceAt(landing, tool.transform.eulerAngles.y);
-        DemoSounds.Play(DemoSound.Thud, landing, 0.5f);
+        if (audible) DemoSounds.Play(DemoSound.Thud, landing, 0.5f);
     }
 
     public virtual void Remove(DeployedTool tool)
     {
         if (tool == null || Station == null) return;
-        if (tool == Held) Held = null;
+        if (tool == Held) { Held = null; tool.Holder = null; }
+        if (tool == highlighted) highlighted = null;
         Station.RemoveTool(tool);
     }
 
@@ -94,33 +91,29 @@ public abstract class ToolHolder : MonoBehaviour
     {
         if (EvidenceCamera == null || CameraAnchor == null) return;
         if (HoldingCamera) EvidenceCamera.ReturnToRack();
-        else EvidenceCamera.HoldBy(CameraAnchor, CameraHoldOffset);
+        else if (Held == null) EvidenceCamera.HoldBy(CameraAnchor, CameraHoldOffset);
     }
 
+    // Quietly lets go of everything: before a reset, or when the holder is switched off.
     public virtual void ReleaseAll()
     {
         Highlight(null);
-        Place();
+        Settle(false);
         if (HoldingCamera) EvidenceCamera.ReturnToRack();
+    }
+
+    // One highlighted tool per holder: the pointed, nearest or held one.
+    protected void Highlight(DeployedTool tool)
+    {
+        if (tool == highlighted) return;
+        if (highlighted != null) highlighted.SetHighlight(false);
+        highlighted = tool;
+        if (highlighted != null) highlighted.SetHighlight(true);
     }
 
     // Nearest point inside the interior, when bounds are assigned.
     protected Vector3 Confine(Vector3 point) => Bounds != null ? Bounds.Clamp(point) : point;
 
-    // Nearest hit along the ray, skipping colliders under the ignored transforms
-    // (the held tool, the player) so they never block their own placement.
-    protected bool Raycast(Ray ray, float distance, out RaycastHit nearest, Transform ignore = null, Transform alsoIgnore = null)
-    {
-        nearest = default;
-        bool found = false;
-        int count = Physics.RaycastNonAlloc(ray, hits, distance);
-        for (int i = 0; i < count; i++)
-        {
-            Transform hitTransform = hits[i].transform;
-            if (ignore != null && hitTransform.IsChildOf(ignore)) continue;
-            if (alsoIgnore != null && hitTransform.IsChildOf(alsoIgnore)) continue;
-            if (!found || hits[i].distance < nearest.distance) { nearest = hits[i]; found = true; }
-        }
-        return found;
-    }
+    protected static bool Raycast(Ray ray, float distance, out RaycastHit nearest, Transform ignore = null, Transform alsoIgnore = null)
+        => DemoPhysics.Nearest(ray, distance, out nearest, ignore, alsoIgnore);
 }

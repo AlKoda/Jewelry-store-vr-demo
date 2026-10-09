@@ -121,7 +121,8 @@ public static class DemoToolsBuilder
 
         // Top-down map for the presenter panel; ceilings are hidden only for its render.
         DemoOverviewMap map=root.AddComponent<DemoOverviewMap>();
-        map.Ceiling=store.transform.Find("Architecture/Ceiling_Optional");
+        foreach(Transform t in store.transform.Find("Architecture/Ceiling_Optional").GetComponentsInChildren<Transform>(true))
+            t.gameObject.layer=map.HiddenLayer;
         panel.Map=map;
 
         // Wall-mounted status text above the rack, facing into the showroom.
@@ -197,6 +198,7 @@ public static class DemoToolsBuilder
 
         DemoModeSwitch mode=player.AddComponent<DemoModeSwitch>();
         mode.DesktopOnly=new Behaviour[] {walker,interactor};
+        mode.DesktopColliders=new Collider[] {cc};
         mode.VROnly=new Behaviour[] {head};
         mode.VRObjects=new [] {left.gameObject,right.gameObject};
         return walker;

@@ -20,10 +20,11 @@ public sealed class XRLocomotion : MonoBehaviour
     }
 
     // Floor point the pointer ray lands on, or false when it is not a valid destination.
-    public bool FindDestination(Ray pointer, out Vector3 floorPoint)
+    public bool FindDestination(Ray pointer, out Vector3 floorPoint, Transform ignore = null)
     {
         floorPoint = default;
-        if (!Physics.Raycast(pointer, out RaycastHit hit, MaxTeleportDistance) || !IsDestination(hit.point, hit.normal)) return false;
+        if (!DemoPhysics.Nearest(pointer, MaxTeleportDistance, out RaycastHit hit, transform, ignore)
+            || !IsDestination(hit.point, hit.normal)) return false;
         floorPoint = hit.point;
         return true;
     }

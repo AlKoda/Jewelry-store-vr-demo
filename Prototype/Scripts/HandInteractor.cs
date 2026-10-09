@@ -73,6 +73,7 @@ public sealed class HandInteractor : ToolHolder
         {
             Collider collider = overlaps[i];
             DeployedTool tool = collider.GetComponentInParent<DeployedTool>();
+            if (tool != null && !tool.Free) continue;
             if (tool == null)
             {
                 if (nearSample == null) nearSample = collider.GetComponentInParent<ToolRackSample>();

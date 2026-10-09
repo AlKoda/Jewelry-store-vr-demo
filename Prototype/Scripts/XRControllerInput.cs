@@ -92,7 +92,8 @@ public sealed class XRControllerInput : MonoBehaviour
         bool pushed = push > 0.7f;
         if (pushed)
         {
-            aimValid = Locomotion.FindDestination(new Ray(transform.position, transform.forward), out Vector3 point);
+            aimValid = Locomotion.FindDestination(new Ray(transform.position, transform.forward), out Vector3 point,
+                hand.Held != null ? hand.Held.transform : null);
             if (aimValid) { aimPoint = point; Marker().position = aimPoint + Vector3.up * 0.005f; }
             if (teleportMarker != null) teleportMarker.gameObject.SetActive(aimValid);
         }
