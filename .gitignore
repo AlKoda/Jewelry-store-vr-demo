@@ -29,3 +29,6 @@ EvidencePhotos/
 *.log
 
 # Keep Unity .meta files, Assets, Packages and ProjectSettings tracked.
+
+# Local instructor records
+InstructorReviews/

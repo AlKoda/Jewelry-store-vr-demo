@@ -2,6 +2,9 @@
 
 ## Current state
 
+**October 9 supersedes the milestone below.** Latest snapshot: Downloads/JewelryStore_Review_Unity6000.6.2f1.zip; scene Assets/CrimeSceneDemo/Scenes/JewelryStoreReview.unity. Tested isolated PC project: UnityProject_Next. Forty automated assertions passed. See REVIEW_BATCH_05.md. Current source includes the merged shared bounds/interactor fixes and a repaired presenter panel, player factory compatibility and build-scene registration. SessionReviewRecorder saves local photo/tool records. Do not overwrite the older UnityProject.
+
+
 Latest: [Batch 04](ENVIRONMENT_BATCH_04.md). Unity 6000.6.2f1, Built-in pipeline. The refined shop/city includes inside-only desktop walking, mouse surface placement, colored tools, current-view photography and more scene detail. **33 Editor Play mode assertions passed** on October 8, 2026.
 
 Open Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity.

@@ -12,6 +12,12 @@ public static class ShopCityRefinement
     private static int meshSerial;
 
     [MenuItem("Crime Scene Demo/Refine Shop And Add Street")]
+    // Compatibility entry point for the earlier scene validators.
+    public static ShopWalkController CreateWalker(Camera camera)
+    {
+        return DemoToolsBuilder.CreateDesktopPlayer(camera);
+    }
+
     public static void Apply()
     {
         GameObject store=GameObject.Find("JewelryStore_Blockout");

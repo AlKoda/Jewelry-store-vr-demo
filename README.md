@@ -4,6 +4,10 @@ Instructor-led jewelry-store crime-scene prototype for the October 27, 2026 demo
 
 ## Latest project
 
+October 9: [Download the tested review project](Downloads/JewelryStore_Review_Unity6000.6.2f1.zip). Extract into a separate folder, open with Unity 6000.6.2f1 using `-noUpm`, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreReview.unity**. See [Batch 05](Docs/REVIEW_BATCH_05.md): 40 automated Play mode assertions passed. The panel now saves local instructor reviews with photographs and tool positions. Point placement is the default; optional carry controls remain pending hands-on testing.
+
+The expanded download below is the previous milestone.
+
 [Download the expanded Unity project](Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip) and [see screenshots and the batch report](Docs/ENVIRONMENT_BATCH_04.md).
 
 Extract the snapshot into UnityProject alongside this README. Run Open-Unity-Blockout.cmd and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity**.

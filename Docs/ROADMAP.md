@@ -1,6 +1,6 @@
 # Roadmap
 
-Updated: October 8, 2026.
+Updated: October 9, 2026.
 Statuses: Planned / In progress / Blocked / Complete.
 Dates are targets, dependent on access to the PC and headset.
 
@@ -67,3 +67,7 @@ When testing begins, record date, build/version, device, result and any remainin
 - [ ] Photograph folder located and images reviewed.
 - [ ] Reset demonstrated without deleting photos.
 - [ ] Backup build copied to a separate location.
+
+## Batch 05
+
+Panel merge repaired; generated scene and all source compiled. Forty automated Editor Play mode assertions passed, including instructor review photo copies, tool positions, manual snapshots and before-reset records. Latest snapshot: Downloads/JewelryStore_Review_Unity6000.6.2f1.zip. See [report](REVIEW_BATCH_05.md). UPM normal startup still fails; XR and hands-on input checks remain pending.

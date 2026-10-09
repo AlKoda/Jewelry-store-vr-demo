@@ -18,6 +18,8 @@ public sealed class EvidenceCamera : MonoBehaviour
     public string LastPhotoPath { get; private set; }
     public string Status { get; private set; } = "Ready";
     public bool IsCapturing { get; private set; }
+    public Vector3 LastCapturePosition { get; private set; }
+    public Quaternion LastCaptureRotation { get; private set; }
     public string PhotoFolder => Path.Combine(Application.persistentDataPath,"EvidencePhotos");
 
     private readonly string sessionId = DateTime.Now.ToString("yyyyMMdd_HHmmss")+"_"+Guid.NewGuid().ToString("N").Substring(0,8);
@@ -86,6 +88,8 @@ public sealed class EvidenceCamera : MonoBehaviour
 
     private IEnumerator Capture()
     {
+        LastCapturePosition=photoCamera.transform.position;
+        LastCaptureRotation=photoCamera.transform.rotation;
         IsCapturing=true;
         rendered=false;
         Camera.onPostRender+=OnCameraRendered;

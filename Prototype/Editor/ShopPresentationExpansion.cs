@@ -118,6 +118,10 @@ public static class ShopPresentationExpansion
         DesktopToolPlacement placement=panel.gameObject.AddComponent<DesktopToolPlacement>();
         placement.ViewCamera=view;placement.Station=panel.Station;placement.EvidenceCamera=panel.EvidenceCamera;
         panel.Placement=placement;
+        SessionReviewRecorder review=panel.gameObject.GetComponent<SessionReviewRecorder>();
+        if(review==null) review=panel.gameObject.AddComponent<SessionReviewRecorder>();
+        review.Station=panel.Station;review.EvidenceCamera=panel.EvidenceCamera;review.Session=panel.Session;
+        panel.Review=review;
     }
 
     private static void StyleTools()

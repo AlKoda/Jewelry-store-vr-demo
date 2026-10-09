@@ -12,7 +12,7 @@ public static class ShopPresentationValidation
 {
     private const string Key="ShopPresentationValidationStage";
     private static readonly List<string> results=new List<string>();
-    private static string Output => Path.GetFullPath(Path.Combine(Application.dataPath,"../../Docs/VerificationExpanded"));
+    private static string Output => Path.GetFullPath(Path.Combine(Application.dataPath,"../../Docs/VerificationReview"));
     private static float started;
     private static int frame;
     private static EvidenceCamera evidence;
@@ -47,8 +47,8 @@ public static class ShopPresentationValidation
             View(camera,new Vector3(3.6f,1.65f,0.8f),new Vector3(-0.2f,1,4.5f));
             string dir="Assets/CrimeSceneDemo/Scenes";
             Directory.CreateDirectory(dir);
-            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),dir+"/JewelryStoreExpanded.unity");
-            EditorBuildSettings.scenes=new [] {new EditorBuildSettingsScene(dir+"/JewelryStoreDemo.unity",true)};
+            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(),dir+"/JewelryStoreReview.unity");
+            EditorBuildSettings.scenes=new [] {new EditorBuildSettingsScene(dir+"/JewelryStoreReview.unity",true)};
             Render(camera,"showroom.png");
             View(camera,new Vector3(-.4f,1.6f,2),new Vector3(-2,1,3.7f));
             Render(camera,"display-details.png");
@@ -176,6 +176,15 @@ public static class ShopPresentationValidation
                 Check(Vector3.Distance(evidence.transform.Find("PhotoCamera").localPosition,new Vector3(0,0,.1f))<.001f,
                     "View photograph restores dedicated camera pose");
                 File.Copy(evidence.LastPhotoPath,Path.Combine(Output,"runtime-photo.png"),true);
+                SessionReviewRecorder review=UnityEngine.Object.FindFirstObjectByType<SessionReviewRecorder>();
+                Check(review!=null,"Instructor review connected");
+                string jsonPath=Path.Combine(review.ReviewFolder,"session.json");
+                Check(File.Exists(jsonPath),"Photograph writes review JSON");
+                var document=JsonUtility.FromJson<SessionReviewRecorder.ReviewDocument>(File.ReadAllText(jsonPath));
+                Check(document.entries.Count==1 && document.entries[0].tools.Count>=3,"Photo records deployed tools");
+                Check(File.Exists(Path.Combine(review.ReviewFolder,document.entries[0].photo)),"Review contains copied photograph");
+                Check(File.ReadAllText(Path.Combine(review.ReviewFolder,"review.html")).Contains(document.entries[0].photo),"HTML review references photograph");
+                review.SaveSnapshot();
                 evidence.transform.position=new Vector3(0,1.5f,4);
                 UnityEngine.Object.FindFirstObjectByType<DemoSession>().ResetSession();
                 frame=Time.frameCount;
@@ -188,6 +197,10 @@ public static class ShopPresentationValidation
                 Check(station.NextMarkerNumber==1,"Reset restarts marker numbering");
                 Check(File.Exists(evidence.LastPhotoPath),"Reset preserves photographs");
                 Check(Vector3.Distance(evidence.transform.localPosition,new Vector3(-3.6f,1.1f,1))<0.001f,"Reset restores handheld camera");
+                SessionReviewRecorder review=UnityEngine.Object.FindFirstObjectByType<SessionReviewRecorder>();
+                var document=JsonUtility.FromJson<SessionReviewRecorder.ReviewDocument>(File.ReadAllText(Path.Combine(review.ReviewFolder,"session.json")));
+                Check(document.entries.Count==3,"Manual snapshot and reset append review entries");
+                Check(document.entries[2].reason=="Before scene reset" && document.entries[2].tools.Count>=3,"Reset records tools before clearing");
                 Finish(true,null);
             }
         }
