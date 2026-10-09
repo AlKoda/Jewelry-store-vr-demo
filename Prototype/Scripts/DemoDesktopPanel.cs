@@ -94,7 +94,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private void SpawnButton(string label, DemoToolKind kind)
     {
         if (!GUILayout.Button(label)) return;
-        if (Interactor != null) Interactor.SpawnIntoHand(kind);
+        if (Interactor != null && Interactor.isActiveAndEnabled) Interactor.SpawnIntoHand(kind);
         else Station.Spawn(kind);
     }
 

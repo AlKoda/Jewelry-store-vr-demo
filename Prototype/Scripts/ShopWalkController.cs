@@ -74,6 +74,16 @@ public sealed class ShopWalkController : MonoBehaviour
         if ((inside - transform.position).sqrMagnitude > 0.00001f) XRLocomotion.Relocate(transform, inside);
     }
 
+    public Vector3 EyeHeight = new Vector3(0, 1.65f, 0);
+
+    private void OnEnable()
+    {
+        pitch = 0;
+        if (View == null) return;
+        View.localPosition = EyeHeight;
+        View.localRotation = Quaternion.identity;
+    }
+
     private void OnDisable()
     {
         Looking = false;

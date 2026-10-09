@@ -18,6 +18,10 @@ Unity 6000.6.2f1, Built-in pipeline. Batch 04 (expanded shop) compiled and passe
 - F or click the camera: hold it / put it back. P: photograph (your view, or through the held camera).
 - Tab: hide the presenter panel. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
 
+## VR
+
+The same scene runs in VR: with OpenXR enabled and a headset active the Player switches to head and controller tracking at start; otherwise it is the mouse-and-keyboard demo. F9 flips modes for testing. Controller mapping in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
+
 ## Build
 
 Build-Windows.cmd produces a standalone Windows demo in Builds\Windows; Run-Demo.cmd starts it. XR-ready movement and hand scripts are in place without toolkit dependencies; see [setup](Docs/SETUP.md) for the package plan and Package Manager troubleshooting.

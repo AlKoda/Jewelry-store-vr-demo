@@ -46,26 +46,33 @@ Walls, the storefront barrier and InteriorBounds keep the player inside. Interio
 
 DemoSession.Resetting fires before anything is cleared; adapters release held objects there so parents and poses restore correctly. The desktop adapter does this; an XR adapter must do the same.
 
-## XR adapter (HandInteractor and XRLocomotion, package-free)
+## One player, two modes (DemoModeSwitch)
 
-One HandInteractor per hand on a transform that a tracked pose driver moves. One XRLocomotion on the rig root with Head set to the XR camera. Bind controller actions to these methods; nothing else is toolkit-specific.
+The Player object carries both the desktop components (ShopWalkController, DesktopInteractor) and the VR ones (XRHeadTracking on the camera, LeftHand/RightHand with HandInteractor + XRControllerInput). DemoModeSwitch enables one set: VR when a headset is active at start (XRSettings.isDeviceActive), desktop otherwise. **F9** flips between them at any time, so the demo can be tested with mouse and keyboard without unplugging anything. The presenter panel stays on the monitor in both modes.
 
-| Controller action | Method |
+## VR controls (XRControllerInput, package-free)
+
+Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputDevices), which the OpenXR runtime feeds once XR Plug-in Management and the OpenXR plugin are installed and enabled. No toolkit, Input System or TrackedPoseDriver is required.
+
+| Controller | Action |
 |---|---|
-| Grip pressed | HandInteractor.Grab() — nearest tool within GrabRadius, else the camera |
-| Grip released | HandInteractor.Release() — drops the tool onto the surface below, inside the bounds |
-| Trigger | HandInteractor.Trigger() — photograph while holding the camera; select a held tape post |
-| Tool menu choice | HandInteractor.SpawnIntoHand(kind) |
-| Remove | HandInteractor.RemoveHeld() |
-| Teleport confirm | XRLocomotion.TryTeleport(Ray) or TryTeleport(Vector3) — refused outside InteriorBounds |
-| Thumbstick left / right | XRLocomotion.SnapLeft() / SnapRight() |
+| Grip (either hand) | Hold the nearest tool within 25 cm, or the camera; release to put it down on the surface beneath |
+| Trigger | Photograph while holding the camera; select a held tape post for tape |
+| A / X (primary) | New tool of the hand's current kind, straight into the hand |
+| B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post) |
+| Left thumbstick forward, release | Teleport to the pointed floor spot (marker shows a valid target; refused outside the shop) |
+| Right thumbstick left / right | Snap turn 45° |
 
-Both adapters derive from ToolHolder, which owns the held tool, the camera hand-off (EvidenceCamera.HoldBy / ReturnToRack) and the release on DemoSession.Resetting. Tools stay under DeploymentRoot while held, so reset and removal keep working.
+If controller poses do not arrive under a future OpenXR version, the fallback is a TrackedPoseDriver (Input System package) on the camera and both hands and an input binder that calls the same HandInteractor/XRLocomotion methods; nothing else changes.
 
-Physical headset movement is not constrained by any of this; only teleport targets are.
+### HandInteractor and XRLocomotion methods
 
-## Proposed controller behavior
+| Method | Effect |
+|---|---|
+| HandInteractor.Grab() / Release() | Hold the nearest tool or the camera; drop onto the surface below, inside the bounds |
+| HandInteractor.Trigger() | Photograph with the held camera; select a held tape post |
+| HandInteractor.SpawnIntoHand(kind) / RemoveHeld() | New tool in the hand; remove the held one |
+| XRLocomotion.TryTeleport(Ray) / TryTeleport(Vector3) | Move the rig so the head lands over the target; refused outside InteriorBounds |
+| XRLocomotion.SnapLeft() / SnapRight() | Turn around the head |
 
-Grip: grab/reposition. Camera trigger: capture while held. Tool menu: spawn a selected tool near the hand/station. Tape-post action: select endpoint. Teleportation and snap turn: follow toolkit defaults once installed.
-
-Exact buttons, handedness and HUD placement remain to validate on Quest. Do not hard-code a toolkit API until the package version is known.
+Both adapters derive from ToolHolder, which owns the held tool, the camera hand-off (EvidenceCamera.HoldBy / ReturnToRack) and the release on DemoSession.Resetting. Tools stay under DeploymentRoot while held, so reset and removal keep working. Physical headset movement is not constrained by any of this; only teleport targets are.

@@ -23,7 +23,7 @@ public static class JewelrySceneValidation
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
             DemoValidation.Capture(camera, "safe-room.png", new Vector3(3.4f, 1.65f, 8.8f), new Vector3(2.1f, 0.9f, 10.5f));
             DemoValidation.CaptureOverview(camera);
-            DemoToolsBuilder.CreateDesktopPlayer(camera);
+            DemoToolsBuilder.CreatePlayer(camera);
             DemoValidation.SaveScene();
             DemoValidation.EnterPlayMode(Key, "Scene generation and 3 actual Unity rendered captures passed.");
         }

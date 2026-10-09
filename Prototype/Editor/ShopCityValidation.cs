@@ -33,7 +33,7 @@ public static class ShopCityValidation
             DemoValidation.Capture(camera, "street-from-inside.png", new Vector3(0, 1.65f, 1.5f), new Vector3(0, 2, -18));
             DemoValidation.Capture(camera, "safe-room.png", new Vector3(3.4f, 1.65f, 8.8f), new Vector3(2.1f, 0.9f, 10.5f));
             DemoValidation.CaptureOverview(camera);
-            DemoToolsBuilder.CreateDesktopPlayer(camera);
+            DemoToolsBuilder.CreatePlayer(camera);
             DemoValidation.SaveScene();
             DemoValidation.EnterPlayMode(Key, (expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
                 + " actual Unity rendered captures passed.");
@@ -150,15 +150,11 @@ public static class ShopCityValidation
     {
         DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
         EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
-        // Inactive while wiring so OnEnable sees the session and subscribes to Resetting.
-        GameObject handObject = new GameObject("ValidationHand");
-        handObject.SetActive(false);
-        HandInteractor hand = handObject.AddComponent<HandInteractor>();
-        hand.Station = desktop.Station;
-        hand.Session = desktop.Session;
-        hand.EvidenceCamera = evidence;
-        hand.Bounds = desktop.Bounds;
-        handObject.SetActive(true);
+        DemoModeSwitch mode = DemoValidation.Find<DemoModeSwitch>();
+        mode.Apply(true);
+        HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
+        DemoValidation.Check(!desktop.enabled && hand.isActiveAndEnabled && hand.Station == desktop.Station,
+            "VR mode enables wired hands and disables desktop input");
 
         hand.transform.position = new Vector3(-3, 1, 5);
         DeployedTool marker = hand.SpawnIntoHand(DemoToolKind.Marker);
@@ -175,15 +171,16 @@ public static class ShopCityValidation
         hand.transform.position = evidence.transform.position;
         DemoValidation.Check(hand.Grab() && hand.HoldingCamera && evidence.Holder == hand.transform,
             "Hand grabs the camera from the rack");
+        mode.Apply(false);
+        DemoValidation.Check(desktop.enabled && !hand.gameObject.activeSelf && evidence.Holder == null,
+            "Desktop mode releases the hands and returns the camera");
         desktop.ToggleCamera();
-        DemoValidation.Check(!hand.HoldingCamera && desktop.HoldingCamera, "Camera passes between holders");
         desktop.Session.ResetSession();
         DemoValidation.Check(!desktop.HoldingCamera && evidence.Holder == null
             && Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f,
             "Reset returns the camera to its rack");
         DemoValidation.Check(DemoValidation.Find<DemoStatusBoard>().GetComponent<TextMesh>().text.Contains("next marker 1"),
             "Status board reflects the reset");
-        UnityEngine.Object.Destroy(handObject);
     }
 
     private static void BackdropChecks()

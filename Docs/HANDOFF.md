@@ -4,7 +4,7 @@
 
 Verified: [Batch 04](ENVIRONMENT_BATCH_04.md). Unity 6000.6.2f1, Built-in pipeline. The refined shop/city includes inside-only desktop walking, colored tools, current-view photography and more scene detail. **33 Editor Play mode assertions passed** on October 8, 2026 with the batch-04 source.
 
-Unverified since then (batches 05 and 06 below): pointer-based tool handling replaced DesktopToolPlacement, the presenter panel was rewritten, and toolkit-independent XR adapters, a status board and a build script were added. Scenes in the snapshot predate these changes. **Run `ShopCityValidation.RunExpanded`** (isolated demo project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results, then check by hand: marker digits visible, tools follow the pointer onto floor and display tops, P photographs the view, F then P photographs through the held camera, movement smooth. Expected: 45 assertions.
+Unverified since then (batches 05 and 06 below): pointer-based tool handling replaced DesktopToolPlacement, the presenter panel was rewritten, and toolkit-independent XR adapters, a status board and a build script were added. Scenes in the snapshot predate these changes. **Run `ShopCityValidation.RunExpanded`** (isolated demo project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results, then check by hand: marker digits visible, tools follow the pointer onto floor and display tops, P photographs the view, F then P photographs through the held camera, movement smooth. Expected: 47 assertions.
 
 Open Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity. Download Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip for the full generated project; Prototype contains the matching editable source. Earlier snapshots are historical.
 
@@ -16,9 +16,9 @@ Instructor-led VR jewelry robbery demonstration by October 27, 2026. No score, t
 
 ## Source map
 
-Runtime: ToolStation, DeployedTool, SceneTape, DemoToolGeometry (tools); EvidenceCamera (photos, HoldBy/ReturnToRack, CaptureFromView); DemoSession, ResettableSceneObject (reset; Resetting fires before clearing); InteriorBounds (shared interior regions); ToolHolder → DesktopInteractor (mouse/keyboard) and HandInteractor (tracked hands); XRLocomotion (teleport, snap turn); ShopWalkController (desktop walking); DemoDesktopPanel (presenter panel); DemoStatusBoard (wall text).
+Runtime: DemoModeSwitch (desktop/VR, F9), XRHeadTracking, XRControllerInput (built-in XR input API); ToolStation, DeployedTool, SceneTape, DemoToolGeometry (tools); EvidenceCamera (photos, HoldBy/ReturnToRack, CaptureFromView); DemoSession, ResettableSceneObject (reset; Resetting fires before clearing); InteriorBounds (shared interior regions); ToolHolder → DesktopInteractor (mouse/keyboard) and HandInteractor (tracked hands); XRLocomotion (teleport, snap turn); ShopWalkController (desktop walking); DemoDesktopPanel (presenter panel); DemoStatusBoard (wall text).
 
-Editor: DemoGeometry (shared primitive/material/text/mesh helpers), JewelryStoreBuilder, ShopCityRefinement, ShopPresentationExpansion (geometry); DemoToolsBuilder (tool station, desktop player, status board); XRRigBuilder (rig skeleton); DemoValidation (shared checks) with JewelrySceneValidation.Run, ShopCityValidation.Run and ShopCityValidation.RunExpanded; DemoBuild (Windows player).
+Editor: DemoGeometry (shared primitive/material/text/mesh helpers), JewelryStoreBuilder, ShopCityRefinement, ShopPresentationExpansion (geometry); DemoToolsBuilder (tool station, player for desktop and VR, status board); DemoValidation (shared checks) with JewelrySceneValidation.Run, ShopCityValidation.Run and ShopCityValidation.RunExpanded; DemoBuild (Windows player).
 
 ## Next technical dependency
 
@@ -31,6 +31,10 @@ XR package install, Quest connection, binding controller actions to HandInteract
 ## Collaboration rules
 
 Read the brief, roadmap and latest batch report. Preserve .meta files. Update source and the complete snapshot together; exclude Library/caches. Pull current GitHub files before editing. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
+
+## Batch 08 — one player for desktop and VR (October 9, 2026, unverified)
+
+The Player object now carries both input paths. DemoModeSwitch enables the desktop set (ShopWalkController, DesktopInteractor) or the VR set (XRHeadTracking, LeftHand/RightHand with HandInteractor + XRControllerInput), choosing VR only when XRSettings.isDeviceActive at start; F9 flips at runtime. XRControllerInput reads poses and buttons through UnityEngine.XR.InputDevices, so no XR package is needed in the project source; OpenXR supplies the data once installed. XRRigBuilder was removed (redundant). Validation uses the rig's right hand and checks the mode switch. Fallback if poses never arrive under OpenXR: TrackedPoseDriver + an input binder calling the same methods.
 
 ## Batch 07 — consolidation (October 9, 2026, unverified)
 
