@@ -33,7 +33,18 @@ Dates are targets, dependent on access to the PC and headset.
 | Exterior access prevention | Complete for desktop milestone | Front/side constraints passed; XR teleport/physical tracking not integrated |
 | Full project snapshot on GitHub | Complete | Downloads/JewelryStore_City_Unity6000.6.2f1.zip |
 
+## Batch 04 additions
+
+| Feature | Status | Evidence / remaining work |
+|---|---|---|
+| Refined furniture, damage and lighting | Complete for desktop milestone | Actual Unity captures in VerificationExpanded |
+| Mouse surface placement | Complete for desktop milestone | Placement, cancellation, exterior rejection and occlusion checks passed |
+| Current-view photography | Complete for desktop milestone | Image saved and dedicated camera pose restored |
+| Complete expanded snapshot | Complete | Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip |
+
 ## Verification log
+
+Batch 04: 33 Editor Play mode assertions passed. See [report](ENVIRONMENT_BATCH_04.md). Headset and hands-on input/performance checks are still pending.
 
 Batch 03: 22 Editor Play mode assertions passed; see [environment report](ENVIRONMENT_BATCH_03.md). Quest and standalone build checks remain pending.
 

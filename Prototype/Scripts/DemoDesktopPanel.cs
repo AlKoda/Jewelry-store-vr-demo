@@ -9,39 +9,15 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     public EvidenceCamera EvidenceCamera;
     public DesktopInteractor Interactor;
     public bool Visible = true;
-    public bool PointerOverPanel { get; private set; }
-
-    private static readonly Rect Area = new Rect(12, 12, 310, 430);
-    private const string Guide =
-        "WASD / arrows: walk (Shift: faster)\n" +
-        "Hold right mouse: look\n" +
-        "Left click: pick up / place a tool\n" +
-        "1 / 2 / 3: new cone / marker / tape post\n" +
-        "Q / E or wheel: rotate held tool\n" +
-        "T: select tape post   X: cancel tape\n" +
-        "Delete: remove tool under pointer\n" +
-        "F or click camera: hold / return it\n" +
-        "P: photograph   Home: return to start\n" +
-        "Tab: hide this panel";
-
-    private int deployed;
-
-    private void OnEnable()
+    private DeployedTool fallbackSelected;
+    public DesktopToolPlacement Placement;
+    private DeployedTool selected
     {
-        if (Station == null) return;
-        Station.ToolsChanged.AddListener(Recount);
-        Recount();
+        get { return Placement!=null ? Placement.Selected : fallbackSelected; }
+        set { fallbackSelected=value; if(Placement!=null) Placement.Select(value); }
     }
-
-    private void OnDisable()
-    {
-        if (Station != null) Station.ToolsChanged.RemoveListener(Recount);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Tab)) Visible = !Visible;
-    }
+    private Vector2 scroll;
+    private Vector2 panelScroll;
 
     private void OnGUI()
     {
@@ -49,6 +25,24 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
         PointerOverPanel = Visible && !looking && Area.Contains(Event.current.mousePosition);
         if (!Visible || Station == null) return;
+        GUILayout.BeginArea(new Rect(12,12,300,Screen.height-24),GUI.skin.box);
+        panelScroll=GUILayout.BeginScrollView(panelScroll);
+        GUILayout.Label("Crime Scene Demo — desktop controls");
+        if(GUILayout.Button("Spawn cone")) selected=Station.Spawn(DemoToolKind.Cone);
+        if(GUILayout.Button("Spawn marker")) selected=Station.Spawn(DemoToolKind.Marker);
+        if(GUILayout.Button("Spawn tape post")) selected=Station.Spawn(DemoToolKind.TapePost);
+        if(Placement!=null)
+        {
+            GUILayout.Label(Placement.Status);
+            if(selected!=null && GUILayout.Button("Place selected with mouse")) Placement.BeginPlacement(selected);
+            if(Placement.IsPlacing && GUILayout.Button("Cancel placement")) Placement.CancelPlacement();
+        }
+        GUILayout.Label("Select a deployed tool:");
+        scroll=GUILayout.BeginScrollView(scroll,GUILayout.Height(130));
+        if(Station.DeploymentRoot!=null)
+            foreach(DeployedTool tool in Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>())
+                if(GUILayout.Button(tool.name)) selected=tool;
+        GUILayout.EndScrollView();
 
         GUILayout.BeginArea(Area, GUI.skin.box);
         GUILayout.Label("Crime Scene Demo — presenter controls");
@@ -66,11 +60,43 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (GUILayout.Button("Take photograph")) EvidenceCamera.CapturePhoto();
             if (GUILayout.Button("Open photo folder")) EvidenceCamera.OpenPhotoFolder();
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button("Forward")) Move(Vector3.forward);
+            if(GUILayout.Button("Back")) Move(Vector3.back);
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button("Up")) Move(Vector3.up);
+            if(GUILayout.Button("Down")) Move(Vector3.down);
+            GUILayout.EndHorizontal();
+            if(GUILayout.Button("Rotate 15 degrees"))
+                selected.PlaceAt(selected.transform.position,selected.transform.eulerAngles.y+15);
+            if(selected.Kind==DemoToolKind.TapePost && GUILayout.Button("Select post for tape"))
+                Station.SelectTapePost(selected);
+            if(GUILayout.Button("Remove selected"))
+            {
+                Station.RemoveTool(selected);
+                selected=null;
+            }
+        }
+        GUILayout.Label(Station.PendingPost!=null ? "Tape: choose second post" : "Tape: choose first post");
+        if(GUILayout.Button("Cancel tape selection")) Station.CancelTapeSelection();
+        if(EvidenceCamera!=null)
+        {
+            if(GUILayout.Button("Photograph current view (F)"))
+            {
+                if(Placement!=null) Placement.PhotographView();
+                else EvidenceCamera.CapturePhoto();
+            }
+            if(GUILayout.Button("Open photo folder")) EvidenceCamera.OpenPhotoFolder();
             GUILayout.Label(EvidenceCamera.Status);
         }
-        if (Session != null && GUILayout.Button("Reset placed tools / scene")) Session.ResetSession();
-        GUILayout.Space(8);
-        GUILayout.Label(Guide);
+        if(Session!=null && GUILayout.Button("Reset placed tools / scene"))
+        {
+            selected=null;
+            if(Placement!=null) {Placement.CancelPlacement();Placement.Select(null);}
+            Session.ResetSession();
+        }
+        GUILayout.EndScrollView();
         GUILayout.EndArea();
     }
 

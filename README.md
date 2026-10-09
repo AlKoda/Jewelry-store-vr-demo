@@ -1,50 +1,39 @@
 # Jewelry Store VR Demo
 
-An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demonstration on **October 27, 2026**.
+Instructor-led jewelry-store crime-scene prototype for the October 27, 2026 demonstration.
 
-## Latest milestone
+## Latest project
 
-[Refined shop, indoor walking and city street](Docs/ENVIRONMENT_BATCH_03.md) — 22 Editor Play mode assertions passed.
+[Download the expanded Unity project](Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip) and [see screenshots and the batch report](Docs/ENVIRONMENT_BATCH_04.md).
 
-[Download the latest complete Unity project](Downloads/JewelryStore_City_Unity6000.6.2f1.zip). Extract into UnityProject, run Open-Unity-Blockout.cmd, and open Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity.
+Extract the snapshot into UnityProject alongside this README. Run Open-Unity-Blockout.cmd and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity**.
 
-WASD/arrows walk (Shift runs); hold right mouse to look; left click picks up and places tools; 1/2/3 spawn a cone, marker or tape post into the hand; T connects tape posts; F holds the camera and P photographs; Tab hides the presenter panel; Home returns to the inside start. The street is visible through the storefront while the player remains inside. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
+Unity 6000.6.2f1, Built-in pipeline. All source compiled and **33 Editor Play mode assertions passed** on the user's PC. This is a desktop prototype; Quest controls and standalone build testing remain pending. Package Manager currently needs the documented -noUpm workaround.
 
-## Previous verified milestone
+## Controls
 
-A generated Unity 6000.6.2f1 project snapshot and actual scene captures are available. Scripts compiled and 13 core runtime assertions passed in Editor Play mode on the user's PC. Quest setup and standalone build verification remain pending. See [verification report](Docs/VERIFICATION_2026-10-08.md), including the temporary Package Manager workaround.
+- WASD/arrows: walk inside the shop.
+- Hold right mouse: look around.
+- Home: return to the inside start.
+- Spawn/select a tool, choose Place selected with mouse, then click a surface.
+- Q/E: rotate while placing; Escape: cancel.
+- F: save a photograph of the current view.
+- Use the scrollable panel for tape connections, removal, folder access and reset.
 
-## Start here
+## Project documents
 
-- [Previous blockout snapshot](Downloads/JewelryStore_Unity6000.6.2f1.zip).
-- [Verified scene screenshots and results](Docs/VERIFICATION_2026-10-08.md).
+- [Brief](Docs/PROJECT_BRIEF.md)
+- [Roadmap](Docs/ROADMAP.md)
+- [Current handoff](Docs/HANDOFF.md)
+- [Setup](Docs/SETUP.md)
+- [Asset register](Docs/ASSET_REGISTER.md)
+- [Batch 03: city and inside walking](Docs/ENVIRONMENT_BATCH_03.md)
+- [Initial verification](Docs/VERIFICATION_2026-10-08.md)
 
-- [Project brief](Docs/PROJECT_BRIEF.md): agreed scope and hardware.
-- [Roadmap](Docs/ROADMAP.md): progress, priorities and completion criteria.
-- [Setup](Docs/SETUP.md): PC setup and camera integration.
-- [Scene layout](Docs/SCENE_LAYOUT.md): provisional store design.
-- [Asset register](Docs/ASSET_REGISTER.md): sources and licensing.
-- [Handoff](Docs/HANDOFF.md): instructions for continuing with an assistant.
-- [Tools and detail batch 02](Docs/TOOLS_BATCH_02.md): import the whole source batch.
-- [Controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
-- [Environment batch 01](Docs/ENVIRONMENT_BATCH_01.md): store generator and import instructions.
-- [Camera prototype](Prototype/Scripts/EvidenceCamera.cs).
+## Storage and collaboration
 
-## Repository structure
+Prototype contains editable runtime and Editor source. Downloads contains complete generated project snapshots (Assets, .meta files and ProjectSettings), excluding Library and caches. Docs contains decisions, test results and real Unity screenshots.
 
-```
-Docs/                  Planning, setup, asset records and handoff
-Prototype/Scripts/     Portable C# scripts awaiting Unity integration
-Prototype/Editor/      Unity Editor environment generator
-UnityProject/          To be created on the Windows PC
-```
+Use the latest snapshot when starting on another PC, and keep its .meta files. Record asset sources and licenses before adding third-party content. Update source, snapshot and roadmap together after a milestone.
 
-Download using **Code → Download ZIP**, or clone this repository with GitHub Desktop. Extract the project snapshot into UnityProject alongside this README, then run Open-Unity-Blockout.cmd. The snapshot has no XR packages yet.
-
-## Demo behavior
-
-Explore freely, place cones, scene tape and numbered markers, take saved photographs, and show the headset view on a monitor. Guidance and review come from the instructor. No scores, timers, forced sequence or automatic judgments.
-
-## Collaboration
-
-Update the roadmap after changes. Record the Unity and package versions when setup begins. Keep Unity .meta files alongside assets. Record third-party licenses before committing assets. Original project licensing has not yet been selected.
+The instructor provides guidance and review. There are no scores, timers or forced task sequences.
