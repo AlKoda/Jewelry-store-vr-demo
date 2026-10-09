@@ -65,6 +65,15 @@ public static class DemoGeometry
         return m;
     }
 
+    // Standard-shader emission on a saved material, so light fixtures read as lit.
+    public static Material Glowing(Material material, Color emission)
+    {
+        material.EnableKeyword("_EMISSION");
+        material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+        material.SetColor("_EmissionColor", emission);
+        return material;
+    }
+
     public static void EnsureFolder(string path)
     {
         if (AssetDatabase.IsValidFolder(path)) return;

@@ -112,6 +112,13 @@ public static class DemoToolsBuilder
         photoFrame.EvidenceCamera=evidence;
         panel.Frame=photoFrame;
 
+        // Street ambience heard through the broken window.
+        GameObject ambience=new GameObject("StreetAmbience");
+        ambience.transform.SetParent(root.transform,false);
+        ambience.transform.localPosition=new Vector3(-1,1.5f,-0.5f);
+        ambience.AddComponent<AudioSource>().playOnAwake=false;
+        ambience.AddComponent<AmbientSound>();
+
         // Top-down map for the presenter panel; ceilings are hidden only for its render.
         DemoOverviewMap map=root.AddComponent<DemoOverviewMap>();
         map.Ceiling=store.transform.Find("Architecture/Ceiling_Optional");

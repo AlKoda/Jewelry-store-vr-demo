@@ -206,6 +206,13 @@ public static class ShopCityValidation
             triangles += filter.sharedMesh.triangles.Length / 3;
         DemoValidation.Check(triangles < 20000, "Backdrop triangle budget");
         DemoValidation.Info("City renderers=" + renderers + "; triangles=" + triangles);
+        DemoValidation.Check(DemoSounds.Clip(DemoSound.Click).length > 0.02f && DemoSounds.Clip(DemoSound.Ambience).length > 3,
+            "Generated sounds are available");
+        Renderer fixture = GameObject.Find("JewelryStore_Blockout").transform.Find("ShopDetails/CeilingLight").GetComponent<Renderer>();
+        DemoValidation.Check(fixture.sharedMaterial.IsKeywordEnabled("_EMISSION"), "Ceiling fixtures use an emissive material");
+        // isPlaying is unreliable without an audio device in batch mode; check the setup instead.
+        AudioSource ambience = DemoValidation.Find<AmbientSound>().GetComponent<AudioSource>();
+        DemoValidation.Check(ambience.clip != null && ambience.loop, "Street ambience source is configured");
     }
 
     private static void ExpansionChecks()

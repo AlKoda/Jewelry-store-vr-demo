@@ -7,7 +7,7 @@ public static class ShopCityRefinement
 {
     private const string Folder="Assets/CrimeSceneDemo/CityGenerated";
     private const string Pack="KenneyCityBuilder";
-    private static Material stone, dark, metal, cream, road, glass, green, brick, white;
+    private static Material stone, dark, metal, cream, road, glass, green, brick, white, glow;
     private static Transform city;
 
     [MenuItem("Crime Scene Demo/Refine Shop And Add Street")]
@@ -27,6 +27,7 @@ public static class ShopCityRefinement
         green=Mat("Foliage",new Color(.21f,.30f,.23f));
         brick=Mat("Terracotta",new Color(.48f,.29f,.22f));
         white=Mat("RoadMarking",new Color(.83f,.84f,.80f));
+        glow=Glowing(Mat("LampGlow",new Color(.95f,.92f,.82f)),new Color(1f,.93f,.75f)*1.4f);
         foreach(Renderer r in store.GetComponentsInChildren<Renderer>())
         {
             string n=r.name.ToLowerInvariant();
@@ -55,7 +56,7 @@ public static class ShopCityRefinement
         {
             Box("CeilingTrack",detail,V(-3+i*3,2.92f,4),V(.07f,.08f,6),dark);
             for(int j=0;j<3;j++)
-                Box("CeilingLight",detail,V(-3+i*3,2.84f,1.8f+j*2),V(.26f,.08f,.32f),cream);
+                Box("CeilingLight",detail,V(-3+i*3,2.84f,1.8f+j*2),V(.26f,.08f,.32f),glow);
         }
         for(int side=-1;side<=1;side+=2)
         {
@@ -155,7 +156,7 @@ public static class ShopCityRefinement
         Transform g=Group("StreetLamp",city); g.localPosition=p;
         Box("Post",g,V(0,2.2f,0),V(.09f,4.4f,.09f),dark);
         Box("Arm",g,V(0,4.35f,.45f),V(.09f,.09f,.9f),dark);
-        Box("Head",g,V(0,4.28f,.9f),V(.3f,.10f,.5f),cream);
+        Box("Head",g,V(0,4.28f,.9f),V(.3f,.10f,.5f),glow);
     }
     private static void Bench(Vector3 p)
     {

@@ -39,8 +39,20 @@ public static class DemoBuild
             return null;
         }
         Directory.CreateDirectory(OutputFolder);
+        CopyLicenses();
         return BuildPipeline.BuildPlayer(scenes, Path.Combine(OutputFolder, Executable),
             BuildTarget.StandaloneWindows64, BuildOptions.None);
+    }
+
+    // CC BY attribution must travel with the distributed demo.
+    private static void CopyLicenses()
+    {
+        string thirdParty = Path.Combine(Application.dataPath, "CrimeSceneDemo/ThirdParty");
+        if (!Directory.Exists(thirdParty)) return;
+        string target = Path.Combine(OutputFolder, "ThirdPartyLicenses");
+        Directory.CreateDirectory(target);
+        foreach (string license in Directory.GetFiles(thirdParty, "LICENSE.txt", SearchOption.AllDirectories))
+            File.Copy(license, Path.Combine(target, Path.GetFileName(Path.GetDirectoryName(license)) + ".txt"), true);
     }
 }
 #endif

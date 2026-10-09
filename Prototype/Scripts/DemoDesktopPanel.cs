@@ -123,6 +123,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         ResetButton();
         GUILayout.Label("CONTROLS", header);
         GUILayout.Label(vr ? VRGuide : DesktopGuide, body);
+        GUILayout.Label("Models: Kenney (CC0); Khronos glTF samples by hinndia, Wayfair, DGG and Microsoft (CC0 / CC BY 4.0). See ThirdParty licenses.", body);
         GUILayout.EndScrollView();
         GUILayout.EndArea();
     }

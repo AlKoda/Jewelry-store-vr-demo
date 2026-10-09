@@ -6,7 +6,7 @@ All work now lands on `main` directly; there is no separate feature branch. Pull
 
 Verified on the PC (October 9, 2026, Unity 6000.6.2f1, Built-in pipeline): the expanded shop, pointer placement, current-view photography and the **instructor review recorder** — 40 assertions, see [REVIEW_BATCH_05.md](REVIEW_BATCH_05.md). That run used the source *before* the batches listed below were merged in.
 
-Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 61 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
+Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 64 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
 
 Latest snapshot with the merged source: Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip (scene files inside predate this merge; the validation run regenerates them). Downloads/JewelryStore_Review_Unity6000.6.2f1.zip is the verified batch-05 project. Older snapshots are history.
 
@@ -34,6 +34,10 @@ Package Manager fix, OpenXR install, Quest tracking test, hands-on keyboard/mous
 
 Read the brief, roadmap and this file. Preserve .meta files. Update source and the Expanded snapshot together; exclude Library/caches/InstructorReviews. **Pull `main` before editing**; two assistants work on this repository and the October 9 double implementation of mouse placement cost a day. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
 
+## Batch 11 — sound and lit fixtures (October 9, 2026, unverified)
+
+DemoSounds generates a click (tool taken), a thud (tool set down) and a looping street ambience (AmbientSound at the storefront); no audio assets. Ceiling fixtures and street-lamp heads use an emissive LampGlow material (DemoGeometry.Glowing). The panel ends with the model credits and DemoBuild copies every ThirdParty LICENSE.txt into Builds/Windows/ThirdPartyLicenses. Expected City result: 64 assertions.
+
 ## Review fixes after batch 10 (unverified)
 
 Teleport goes to the destination the marker showed, refuses surfaces above step height, and snap turn moves the root through Relocate; the panel evaluates the pointer on demand and exposes RequestReset (two requests within four seconds) for validation; Remove clears the desktop hover; the snapshot no longer carries the removed XRRigBuilder.
@@ -48,6 +52,7 @@ Tool rack samples (half-size cone, marker and tape post on the rack): click one 
 
 ## History
 
+- Batch 11 (Claude, unverified): generated sounds, ambience, emissive fixtures, credits, licenses shipped with builds.
 - Batch 10 (Claude, unverified): PhotoFrame, ShopAssetDressing with Khronos sample models, TrafficCone tool visual.
 - Batch 09 (Claude, unverified): rack samples, highlight, hand labels, overview map, panel restyle, DemoAssetLibrary and Kenney CC0 city models.
 - Batch 08 (Claude, unverified): one Player rig for desktop and VR; DemoModeSwitch; XRHeadTracking and XRControllerInput through UnityEngine.XR.InputDevices; VR mapping in CONTROLS_AND_INTEGRATION.md.

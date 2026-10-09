@@ -61,6 +61,7 @@ public abstract class ToolHolder : MonoBehaviour
         if (tool == null || tool == Held) return;
         if (Held != null) Place();
         Held = tool;
+        DemoSounds.Play(DemoSound.Click, tool.transform.position, 0.4f);
     }
 
     // Lets go of the held tool and settles it on the surface beneath, inside the
@@ -74,6 +75,7 @@ public abstract class ToolHolder : MonoBehaviour
         Vector3 landing = Raycast(new Ray(origin, Vector3.down), DropSearchDepth, out RaycastHit hit, tool.transform)
             && hit.normal.y >= 0.7f ? hit.point : new Vector3(origin.x, Mathf.Max(0, origin.y - 0.05f), origin.z);
         tool.PlaceAt(landing, tool.transform.eulerAngles.y);
+        DemoSounds.Play(DemoSound.Thud, landing, 0.5f);
     }
 
     public virtual void Remove(DeployedTool tool)
