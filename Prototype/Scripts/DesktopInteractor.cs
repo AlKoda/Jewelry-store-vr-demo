@@ -56,7 +56,15 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.T)) SelectTapePost(Target);
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
         if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
-        if (Input.GetKeyDown(KeyCode.P) && EvidenceCamera != null) EvidenceCamera.CapturePhoto();
+        if (Input.GetKeyDown(KeyCode.P)) Photograph();
+    }
+
+    // Through the held camera's lens, or of the current view when it is on its rack.
+    public void Photograph()
+    {
+        if (EvidenceCamera == null) return;
+        if (HoldingCamera || View == null) EvidenceCamera.CapturePhoto();
+        else EvidenceCamera.CaptureFromView(View.transform);
     }
 
     private DeployedTool Target => Held != null ? Held : Hovered;

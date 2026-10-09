@@ -1,47 +1,50 @@
 # Jewelry Store VR Demo
 
-An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demonstration on **October 27, 2026**.
+Instructor-led jewelry-store crime-scene prototype for the October 27, 2026 demonstration.
 
-## Latest milestone
+## Latest project
 
-[Refined shop, indoor walking and city street](Docs/ENVIRONMENT_BATCH_03.md) — 22 Editor Play mode assertions passed.
+[Download the expanded Unity project](Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip) and [see screenshots and the batch report](Docs/ENVIRONMENT_BATCH_04.md).
 
-[Download the latest complete Unity project](Downloads/JewelryStore_City_Unity6000.6.2f1.zip). Extract into UnityProject, run Open-Unity-Blockout.cmd, and open Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity.
+Extract the snapshot into UnityProject alongside this README. Run Open-Unity-Blockout.cmd and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity**.
 
-WASD/arrows walk (Shift runs); hold right mouse to look; left click picks up and places tools; 1/2/3 spawn a cone, marker or tape post into the hand; T connects tape posts; F holds the camera and P photographs; Tab hides the presenter panel; Home returns to the inside start. The street is visible through the storefront while the player remains inside. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
+Unity 6000.6.2f1, Built-in pipeline. Batch 04 (expanded shop) compiled and passed 33 Editor Play mode assertions on the user's PC. Batches 05 and 06 (pointer tool handling, presenter panel, XR-ready adapters, build script) are in the source and snapshot but have not been run in Unity yet: run `ShopCityValidation.RunExpanded` to regenerate the scene and verify them. This is a desktop prototype; Quest controls and standalone build testing remain pending. Package Manager currently needs the documented -noUpm workaround.
 
-Build-Windows.cmd produces a standalone Windows demo in Builds\Windows; Run-Demo.cmd starts it. XR-ready movement and hand scripts are in place without toolkit dependencies; see [setup](Docs/SETUP.md) for the package plan.
+## Controls
 
-## Previous verified milestone
+- WASD/arrows: walk inside the shop (Shift runs). Hold right mouse: look. Home: return to the start.
+- Left click: pick up the pointed tool, or place the held one. 1/2/3: new cone, marker or tape post into the hand.
+- Q/E or mouse wheel: rotate the held tool. Delete: remove it. T: select tape posts; X: cancel tape.
+- F or click the camera: hold it / put it back. P: photograph (your view, or through the held camera).
+- Tab: hide the presenter panel. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
 
-A generated Unity 6000.6.2f1 project snapshot and actual scene captures are available. Scripts compiled and 13 core runtime assertions passed in Editor Play mode on the user's PC. Quest setup and standalone build verification remain pending. See [verification report](Docs/VERIFICATION_2026-10-08.md), including the temporary Package Manager workaround.
+## Build
 
-## Start here
+Build-Windows.cmd produces a standalone Windows demo in Builds\Windows; Run-Demo.cmd starts it. XR-ready movement and hand scripts are in place without toolkit dependencies; see [setup](Docs/SETUP.md) for the package plan and Package Manager troubleshooting.
 
-- [Previous blockout snapshot](Downloads/JewelryStore_Unity6000.6.2f1.zip).
-- [Verified scene screenshots and results](Docs/VERIFICATION_2026-10-08.md).
+## Project documents
 
-- [Project brief](Docs/PROJECT_BRIEF.md): agreed scope and hardware.
-- [Roadmap](Docs/ROADMAP.md): progress, priorities and completion criteria.
-- [Setup](Docs/SETUP.md): PC setup and camera integration.
-- [Scene layout](Docs/SCENE_LAYOUT.md): provisional store design.
-- [Asset register](Docs/ASSET_REGISTER.md): sources and licensing.
-- [Handoff](Docs/HANDOFF.md): instructions for continuing with an assistant.
-- [Tools and detail batch 02](Docs/TOOLS_BATCH_02.md): import the whole source batch.
-- [Controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
-- [Environment batch 01](Docs/ENVIRONMENT_BATCH_01.md): store generator and import instructions.
-- [Camera prototype](Prototype/Scripts/EvidenceCamera.cs).
+- [Brief](Docs/PROJECT_BRIEF.md)
+- [Roadmap](Docs/ROADMAP.md)
+- [Current handoff](Docs/HANDOFF.md)
+- [Setup](Docs/SETUP.md)
+- [Controls and integration](Docs/CONTROLS_AND_INTEGRATION.md)
+- [Asset register](Docs/ASSET_REGISTER.md)
+- [Scene layout](Docs/SCENE_LAYOUT.md)
+- [Batch 04: expanded shop and mouse placement](Docs/ENVIRONMENT_BATCH_04.md)
+- [Batch 03: city and inside walking](Docs/ENVIRONMENT_BATCH_03.md)
+- [Batch 02: tools](Docs/TOOLS_BATCH_02.md), [batch 01: store generator](Docs/ENVIRONMENT_BATCH_01.md)
+- [October 8 verification](Docs/VERIFICATION_2026-10-08.md)
 
 ## Repository structure
 
 ```
-Docs/                  Planning, setup, asset records and handoff
-Prototype/Scripts/     Portable C# scripts awaiting Unity integration
-Prototype/Editor/      Unity Editor environment generator
-UnityProject/          To be created on the Windows PC
+Docs/                  Planning, setup, asset records, verification and handoff
+Prototype/Scripts/     Runtime C# (copied into the Unity project)
+Prototype/Editor/      Scene generators, validators and the build script
+Downloads/             Complete generated Unity project snapshots
+UnityProject/          Created on the Windows PC by extracting a snapshot
 ```
-
-Download using **Code → Download ZIP**, or clone this repository with GitHub Desktop. Extract the project snapshot into UnityProject alongside this README, then run Open-Unity-Blockout.cmd. The snapshot has no XR packages yet.
 
 ## Demo behavior
 
@@ -49,4 +52,4 @@ Explore freely, place cones, scene tape and numbered markers, take saved photogr
 
 ## Collaboration
 
-Update the roadmap after changes. Record the Unity and package versions when setup begins. Keep Unity .meta files alongside assets. Record third-party licenses before committing assets. Original project licensing has not yet been selected.
+Update the roadmap and handoff after changes. Keep Unity .meta files alongside assets. Update source and the project snapshot together. Record third-party licenses before committing assets. Original project licensing has not yet been selected.

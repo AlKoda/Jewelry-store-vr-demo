@@ -33,7 +33,18 @@ Dates are targets, dependent on access to the PC and headset.
 | Exterior access prevention | Complete for desktop milestone | Front/side constraints passed; XR teleport/physical tracking not integrated |
 | Full project snapshot on GitHub | Complete | Downloads/JewelryStore_City_Unity6000.6.2f1.zip |
 
+## Batch 04 additions
+
+| Feature | Status | Evidence / remaining work |
+|---|---|---|
+| Refined furniture, damage and lighting | Complete for desktop milestone | Actual Unity captures in VerificationExpanded |
+| Mouse surface placement | Complete for desktop milestone | Verified as DesktopToolPlacement; since folded into DesktopInteractor (pick up / place), unverified |
+| Current-view photography | Complete for desktop milestone | Image saved and dedicated camera pose restored |
+| Complete expanded snapshot | Complete | Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip |
+
 ## Verification log
+
+Batch 04: 33 Editor Play mode assertions passed. See [report](ENVIRONMENT_BATCH_04.md). Headset and hands-on input/performance checks are still pending.
 
 Batch 03: 22 Editor Play mode assertions passed; see [environment report](ENVIRONMENT_BATCH_03.md). Quest and standalone build checks remain pending.
 
@@ -43,9 +54,9 @@ Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel,
 
 October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
 
-October 9: batch 05 — toolkit-independent XR adapters (HandInteractor, XRLocomotion), camera hand-off, status board, Windows build script, Package Manager troubleshooting notes. Awaiting Unity re-run. See [handoff](HANDOFF.md).
+October 9: batch 06 — toolkit-independent XR adapters (HandInteractor, XRLocomotion), camera hand-off, status board, Windows build script, Package Manager troubleshooting notes. Awaiting Unity re-run. See [handoff](HANDOFF.md).
 
-October 8 (later): marker label font, walker grounding and build-scene fixes, then batch 04 desktop interaction (pointer tool handling, camera hold, presenter panel, shared validation code) committed; awaiting Unity re-run. See [handoff](HANDOFF.md).
+October 8 (later): marker label font, walker grounding and build-scene fixes, then batch 05 desktop interaction (pointer tool handling, camera hold, presenter panel, shared validation code) committed; awaiting Unity re-run. See [handoff](HANDOFF.md).
 
 When testing begins, record date, build/version, device, result and any remaining issue. Do not mark a feature complete merely because its source exists.
 

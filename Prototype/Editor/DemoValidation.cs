@@ -170,7 +170,7 @@ public static class DemoValidation
         tape.SendMessage("LateUpdate");
         evidence = Find<EvidenceCamera>();
         evidence.CaptureFailed.AddListener(message => failure = message);
-        evidence.CapturePhoto();
+        evidence.CaptureFromView(Camera.main.transform);
         frame = Time.frameCount;
     }
 
@@ -183,6 +183,8 @@ public static class DemoValidation
         ToolStation station = Find<ToolStation>();
         Check(station.DeploymentRoot.GetComponentInChildren<SceneTape>() == null, "Tape removed after endpoint removal");
         Check(File.Exists(evidence.LastPhotoPath), "Runtime photograph saved");
+        Check(Vector3.Distance(evidence.transform.Find("PhotoCamera").localPosition, new Vector3(0, 0, 0.1f)) < 0.001f,
+            "View photograph restores dedicated camera pose");
         File.Copy(evidence.LastPhotoPath, Path.Combine(Output, "runtime-photo.png"), true);
         evidence.transform.position = new Vector3(0, 1.5f, 4);
         Find<DemoSession>().ResetSession();

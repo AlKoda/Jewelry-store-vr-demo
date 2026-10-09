@@ -21,7 +21,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         "T: select tape post   X: cancel tape\n" +
         "Delete: remove tool under pointer\n" +
         "F or click camera: hold / return it\n" +
-        "P: photograph   Home: return to start\n" +
+        "P: photograph (your view, or the held camera)\n" +
+        "Home: return to start\n" +
         "Tab: hide this panel";
 
     private int deployed;
@@ -63,7 +64,11 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (EvidenceCamera != null)
         {
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Take photograph")) EvidenceCamera.CapturePhoto();
+            if (GUILayout.Button("Take photograph (P)"))
+            {
+                if (Interactor != null) Interactor.Photograph();
+                else EvidenceCamera.CapturePhoto();
+            }
             if (GUILayout.Button("Open photo folder")) EvidenceCamera.OpenPhotoFolder();
             GUILayout.EndHorizontal();
             GUILayout.Label(EvidenceCamera.Status);

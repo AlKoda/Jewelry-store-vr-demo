@@ -2,45 +2,42 @@
 
 ## Current state
 
-Latest milestone: [Batch 03](ENVIRONMENT_BATCH_03.md). Unity 6000.6.2f1, Built-in pipeline. A refined shop, lightweight city exterior and inside-only desktop walker are saved in Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity. Twenty-two Editor Play mode assertions passed on October 8, 2026.
+Verified: [Batch 04](ENVIRONMENT_BATCH_04.md). Unity 6000.6.2f1, Built-in pipeline. The refined shop/city includes inside-only desktop walking, colored tools, current-view photography and more scene detail. **33 Editor Play mode assertions passed** on October 8, 2026 with the batch-04 source.
 
-Download Downloads/JewelryStore_City_Unity6000.6.2f1.zip for the full generated project (Assets, .meta files and ProjectSettings). Prototype contains the editable source used to generate it. The prior project snapshot and verification remain as historical milestones.
+Unverified since then (batches 05 and 06 below): pointer-based tool handling replaced DesktopToolPlacement, the presenter panel was rewritten, and toolkit-independent XR adapters, a status board and a build script were added. Scenes in the snapshot predate these changes. **Run `ShopCityValidation.RunExpanded`** (isolated demo project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results, then check by hand: marker digits visible, tools follow the pointer onto floor and display tops, P photographs the view, F then P photographs through the held camera, movement smooth. Expected: 45 assertions.
 
-Local PC root:
-C:\Users\MOBPC\Documents\Codex\Jewelry-store-vr-demo\Jewelry-store-vr-demo-main
+Open Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity. Download Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip for the full generated project; Prototype contains the matching editable source. Earlier snapshots are historical.
 
-## Objective
+PC root: C:\Users\MOBPC\Documents\Codex\Jewelry-store-vr-demo\Jewelry-store-vr-demo-main
 
-Instructor-led jewelry robbery VR demonstration by October 27, 2026. Free exploration, tools and photographs; no score, timer or forced sequence. User prefers complete batches and minimal repeated manual testing.
+## Goal
+
+Instructor-led VR jewelry robbery demonstration by October 27, 2026. No score, timer or forced procedure. Keep the user inside the shop, with a visible lightweight street outside. Work in complete batches and save progress to GitHub.
+
+## Source map
+
+Runtime: ToolStation, DeployedTool, SceneTape, DemoToolGeometry (tools); EvidenceCamera (photos, HoldBy/ReturnToRack, CaptureFromView); DemoSession, ResettableSceneObject (reset; Resetting fires before clearing); InteriorBounds (shared interior regions); ToolHolder → DesktopInteractor (mouse/keyboard) and HandInteractor (tracked hands); XRLocomotion (teleport, snap turn); ShopWalkController (desktop walking); DemoDesktopPanel (presenter panel); DemoStatusBoard (wall text).
+
+Editor: JewelryStoreBuilder, ShopCityRefinement, ShopPresentationExpansion (geometry); DemoToolsBuilder (tool station, desktop player, status board); XRRigBuilder (rig skeleton); DemoValidation (shared checks) with JewelrySceneValidation.Run, ShopCityValidation.Run and ShopCityValidation.RunExpanded; DemoBuild (Windows player).
 
 ## Next technical dependency
 
-Unity Package Manager local-server startup failed; -noUpm currently permits geometry/core-tool work. Resolve it before XR installation. Unity reports an RTX 5060 Ti and approximately 16 GB RAM on this PC.
+Unity Package Manager fails to start normally; the -noUpm launcher permits package-free work. SETUP.md lists things to try. Resolve this before installing OpenXR/XR Interaction Toolkit. The PC reports RTX 5060 Ti and approximately 16 GB RAM.
 
-## Work still pending
+## Pending
 
-OpenXR/XR Interaction Toolkit installation, Quest connection, controller movement/grabbing, headset HUD, headset performance, direct input usability checks and standalone build validation. Keep the player inside: restrict teleportation to interior surfaces and respect the storefront barrier. Desktop boundaries do not constrain physical headset tracking.
+XR package install, Quest connection, binding controller actions to HandInteractor/XRLocomotion (see CONTROLS_AND_INTEGRATION.md), headset HUD, hands-on keyboard/mouse usability, headset performance and standalone build validation (Build-Windows.cmd is ready but unrun). Interior colliders and InteriorBounds constrain the desktop controller and teleport targets, not physical headset tracking.
 
-## Tested behavior
+## Collaboration rules
 
-Inside spawn, component-driven walking, front/side constraints, safe-room access, view-transparent barrier, city renderer/triangle budgets; tools, numbered markers, tape endpoints, saved photos and reset. See Docs/VerificationCity/runtime-results.txt and the real screenshots.
+Read the brief, roadmap and latest batch report. Preserve .meta files. Update source and the complete snapshot together; exclude Library/caches. Pull current GitHub files before editing. Keep deployment ownership during XR grabbing and release held objects before reset (ToolHolder does this on DemoSession.Resetting). Record external asset licenses. Repeat tests when changes or unresolved concerns justify them.
 
-## Collaboration
+## Batch 06 — XR-ready adapters, status board, build script (October 9, 2026, unverified)
 
-Read PROJECT_BRIEF.md, ROADMAP.md and ENVIRONMENT_BATCH_03.md. Preserve .meta files and update source plus generated project snapshot together. Pull current GitHub files before editing. Do not commit Library/caches. Record any asset license before importing. Keep tool deployment ownership intact during XR grabbing; release held objects before reset. Photos must survive reset. Repeat completed checks only when changes or unresolved issues justify it.
+ToolHolder is the shared base for DesktopInteractor and HandInteractor (grab/carry/drop/trigger for tracked hands, no toolkit API). XRLocomotion adds bounds-checked teleport and snap turn, on the desktop player now and the XR rig later. EvidenceCamera.HoldBy/ReturnToRack pass the camera between holders and return it on reset. DemoStatusBoard shows tool count, next marker, tape state and the last photo above the rack. DemoBuild plus Build-Windows.cmd/Run-Demo.cmd produce the standalone Windows demo. XRRigBuilder creates a rig skeleton. SETUP.md has Package Manager troubleshooting and the XR package plan.
 
-## Batch 05 — XR-ready adapters, status board, build script (October 9, 2026, not yet re-run in Unity)
+## Batch 05 — desktop interaction (October 8, 2026, unverified)
 
-ToolHolder is the shared base for DesktopInteractor and the new HandInteractor (grab/carry/drop/trigger for tracked hands, no toolkit API). XRLocomotion adds bounds-checked teleport and snap turn, attached to the desktop player now and to the XR rig later. EvidenceCamera gained HoldBy/ReturnToRack so the camera passes between holders and always returns to its rack on reset. DemoStatusBoard is a wall-mounted TextMesh above the rack showing tool count, next marker, tape state and the last photo. DemoBuild plus Build-Windows.cmd/Run-Demo.cmd produce the standalone Windows demo. XRRigBuilder creates a rig skeleton for the XR stage. SETUP.md has Package Manager troubleshooting and the XR package plan. Expected City result: 40 assertions (10 new: teleport/snap turn, hand carry/drop/grab/remove, camera hand-off and reset, status board).
+InteriorBounds (Contains/Clamp) replaced hard-coded limits. DesktopInteractor: left click picks up and places tools on pointed surfaces, 1/2/3 spawn into the hand, Q/E rotate, Delete removes, T/X tape, F camera, P photograph. ShopWalkController: bounds-driven, sprint, Looking state. DemoDesktopPanel: status, spawn/photo/reset buttons and the controls guide; Tab toggles. DemoValidation holds what the validators shared; DemoToolsBuilder.CreateDesktopPlayer replaced ShopCityRefinement.CreateWalker. Merged with batch 04: DesktopToolPlacement and ShopPresentationValidation were folded into DesktopInteractor and ShopCityValidation.RunExpanded; CaptureFromView was kept.
 
-## Batch 04 — desktop interaction (October 8, 2026, not yet re-run in Unity)
-
-Source and the City snapshot zip were updated together. The snapshot's scenes still predate this batch: run ShopCityValidation.Run (and JewelrySceneValidation.Run for the old scene) to regenerate scenes, captures and results, or use Crime Scene Demo → Create Desktop Player on an open scene.
-
-New runtime scripts: InteriorBounds (shared interior regions; Contains/Clamp), DesktopInteractor (pointer pick-up/carry/rotate/place/remove, camera hold, hotkeys). Rewritten: ShopWalkController (bounds-driven, sprint, Looking state), DemoDesktopPanel (presenter panel with controls guide, Tab toggle, no more nudge buttons). DemoSession gained a Resetting event that fires before clearing.
-
-Editor: DemoValidation holds everything the two validators shared (preview camera, captures, assertions, tool/photo/reset stages); the validators are now scene setup plus their own checks. DemoToolsBuilder.CreateDesktopPlayer replaces ShopCityRefinement.CreateWalker and is also a menu item. Expected City result: 30 assertions (8 new: bounds, held/placed/rotated/removed tool, camera held and returned, marker font).
-
-Earlier fixes in the same day: marker labels had no font (digits could not render); two CharacterController.Move calls per frame made fall speed accumulate; build settings pointed at the old scene; the zip used backslash paths.
-
-Next PC check: run the validation, then by hand confirm marker digits are visible, tools follow the pointer onto floor and display tops, the camera photo shows the view when held (F, then P), and movement is smooth.
+Earlier fixes the same day: marker labels had no font; two CharacterController.Move calls per frame made fall speed accumulate; build settings pointed at the old scene.

@@ -1,0 +1,37 @@
+Unity 6000.6.2f1; Built-in pipeline
+Expanded scene generation and 5 actual Unity rendered captures passed.
+PASS: Player spawns inside
+PASS: Desktop walking moves player
+PASS: Entrance boundary keeps player inside
+PASS: Side wall keeps player inside
+PASS: Rear safe room remains accessible
+PASS: Front boundary blocks movement without blocking view
+PASS: Backdrop has no physics colliders
+PASS: Backdrop renderer budget
+PASS: Backdrop triangle budget
+INFO: City renderers=18; triangles=4740
+PASS: Tool station exists
+PASS: Point placement component is connected
+PASS: Sequential marker numbers
+PASS: Marker label assigned
+PASS: Tool placement
+PASS: Pointing finds an interior floor surface
+PASS: Point placement commits marker
+PASS: Marker reaches pointed surface
+PASS: Placement rejects exterior position
+PASS: Cancel preserves placement
+PASS: Front barrier prevents placement through storefront
+PASS: Marker has a rendering font
+PASS: Street additions stay within renderer budget
+PASS: Street additions have no physics colliders
+PASS: Tape connection
+PASS: Tape length
+PASS: Tape follows moved post
+PASS: Tape removed after endpoint removal
+PASS: Runtime photograph saved
+PASS: View photograph restores dedicated camera pose
+PASS: Reset clears deployed objects
+PASS: Reset restarts marker numbering
+PASS: Reset preserves photographs
+PASS: Reset restores handheld camera
+PASS: Validation completed
