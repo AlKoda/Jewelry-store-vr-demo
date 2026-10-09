@@ -104,11 +104,16 @@ public static class ShopCityValidation
         DemoValidation.Check(locomotion.TryTeleport(new Vector3(-2, 0, 6))
             && Mathf.Abs(head.position.x + 2) < 0.01f && Mathf.Abs(head.position.z - 6) < 0.01f,
             "Teleport lands the head over the target");
+        DemoValidation.Check(!locomotion.TryTeleport(new Vector3(-2, 1, 6)), "Teleport refuses surfaces above step height");
+        // Offset the head as a headset would, so the pivot maths is exercised.
+        Vector3 headLocal = head.localPosition;
+        head.localPosition = new Vector3(0.4f, 1.6f, 0.3f);
         Vector3 headBefore = head.position;
         float yawBefore = locomotion.transform.eulerAngles.y;
         locomotion.SnapRight();
         DemoValidation.Check(Mathf.Abs(Mathf.DeltaAngle(locomotion.transform.eulerAngles.y, yawBefore + 45)) < 0.01f
-            && Vector3.Distance(head.position, headBefore) < 0.001f, "Snap turn pivots around the head");
+            && Vector3.Distance(head.position, headBefore) < 0.001f, "Snap turn pivots around an offset head");
+        head.localPosition = headLocal;
         walker.ResetPosition();
     }
 
@@ -134,7 +139,7 @@ public static class ShopCityValidation
         interactor.Rotate(30);
         DemoValidation.Check(Mathf.Abs(Mathf.DeltaAngle(cone.transform.eulerAngles.y, 30)) < 0.01f, "Held tool rotates");
         interactor.Remove(cone);
-        DemoValidation.Check(interactor.Held == null, "Removing the held tool clears the hand");
+        DemoValidation.Check(interactor.Held == null && interactor.Hovered == null, "Removing the held tool clears the hand and hover");
 
         EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
         Transform rack = evidence.transform.parent;

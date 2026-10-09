@@ -21,10 +21,12 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         get
         {
-            if (!Visible || Station == null || (Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking)) return false;
+            if (!isActiveAndEnabled || !Visible || Station == null || Looking) return false;
             return Area.Contains(new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y));
         }
     }
+
+    private bool Looking => Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking;
 
     private static Rect Area => new Rect(12, 12, Width, Screen.height - 24);
 
@@ -68,8 +70,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private void OnGUI()
     {
         if (panel == null) BuildStyles();
-        bool looking = Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking;
-        if (looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
+        if (Looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
         if (!Visible || Station == null) return;
 
         GUILayout.BeginArea(Area, panel);

@@ -6,7 +6,7 @@ All work now lands on `main` directly; there is no separate feature branch. Pull
 
 Verified on the PC (October 9, 2026, Unity 6000.6.2f1, Built-in pipeline): the expanded shop, pointer placement, current-view photography and the **instructor review recorder** — 40 assertions, see [REVIEW_BATCH_05.md](REVIEW_BATCH_05.md). That run used the source *before* the batches listed below were merged in.
 
-Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 66 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
+Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 67 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
 
 Latest snapshot with the merged source: Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip (scene files inside predate this merge; the validation run regenerates them). Downloads/JewelryStore_Review_Unity6000.6.2f1.zip is the verified batch-05 project. Older snapshots are history.
 
@@ -36,7 +36,7 @@ Read the brief, roadmap and this file. Preserve .meta files. Update source and t
 
 ## Batch 12 — intact store comparison (October 9, 2026, unverified)
 
-CrimeSceneState (on the store root) swaps the robbed view (FixedEvidence, jagged glass, dropped tray, fallen trim, darkened door edges) for an intact overlay (whole storefront pane, intact case tops, stock on the emptied pads) and closes the safe door; I key or the panel button toggles it, and a session reset returns to robbed. IntactStateBuilder generates the overlay; JewelryStoreBuilder.Stock is shared with the display generator; DemoGeometry.Translucent is shared with the expansion's glass. Roadmap X01. Expected City result: 66 assertions.
+CrimeSceneState (on the store root) swaps the robbed view (FixedEvidence, jagged glass, dropped tray, fallen trim, darkened door edges) for an intact overlay (whole storefront pane, intact case tops, stock on the emptied pads) and closes the safe door; I key or the panel button toggles it, and a session reset returns to robbed. IntactStateBuilder generates the overlay; JewelryStoreBuilder.Stock is shared with the display generator; DemoGeometry.Translucent is shared with the expansion's glass. Roadmap X01. Expected City result: 67 assertions.
 
 ## Batch 11 — sound and lit fixtures (October 9, 2026, unverified)
 

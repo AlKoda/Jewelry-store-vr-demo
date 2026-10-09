@@ -73,7 +73,8 @@ If controller poses do not arrive under a future OpenXR version, the fallback is
 | HandInteractor.Grab() / Release() | Hold the nearest tool or the camera; drop onto the surface below, inside the bounds |
 | HandInteractor.Trigger() | Photograph with the held camera; select a held tape post |
 | HandInteractor.SpawnIntoHand(kind) / RemoveHeld() | New tool in the hand; remove the held one |
-| XRLocomotion.TryTeleport(Ray) / TryTeleport(Vector3) | Move the rig so the head lands over the target; refused outside InteriorBounds |
+| XRLocomotion.FindDestination(Ray, out Vector3) | Valid floor point under the pointer for a preview marker, or false |
+| XRLocomotion.TryTeleport(Ray) / TryTeleport(Vector3) | Move the rig so the head lands over the target; refused outside InteriorBounds or more than MaxStepHeight above the floor |
 | XRLocomotion.SnapLeft() / SnapRight() | Turn around the head |
 
 Both adapters derive from ToolHolder, which owns the held tool, the camera hand-off (EvidenceCamera.HoldBy / ReturnToRack) and the release on DemoSession.Resetting. Tools stay under DeploymentRoot while held, so reset and removal keep working. Physical headset movement is not constrained by any of this; only teleport targets are.

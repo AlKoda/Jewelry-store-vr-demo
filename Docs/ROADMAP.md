@@ -10,7 +10,7 @@ Dates are targets, dependent on access to the PC and headset.
 | P02 | Camera starter script | Required | Complete | Oct 7–9 | Portable source saved; runtime validation tracked separately |
 | U01 | Unity project setup | Required | Planned | Oct 10–12 | Editor/pipeline/packages recorded; project opens without errors |
 | U02 | Quest PC connection | Required | In progress | Oct 10–12 | Head and controller tracking work in a Windows build (tracking scripts in place via built-in XR input; needs OpenXR installed to test) |
-| U03 | Movement | Required | In progress | Oct 10–12 | Desktop walking done; teleport and snap turn bound to the thumbsticks, untested on a headset |
+| U03 | Movement | Required | In progress | Oct 10–12 | Desktop walking done; thumbstick teleport (marker preview, refused outside the shop or above step height) and snap turn around the head, untested on a headset |
 | U04 | Store blockout | Required | In progress | Oct 10–12 | Scene generated and saved; scale, traversal and collision checks in Quest remain pending |
 | T01 | Cones and markers | Required | In progress | Oct 13–16 | Spawn, grab, place, move and remove objects anywhere suitable (desktop pointer done; XR grab pending) |
 | T02 | Scene tape | Required | In progress | Oct 13–16 | Tape spans two posts and follows repositioning |

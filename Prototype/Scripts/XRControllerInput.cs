@@ -30,7 +30,10 @@ public sealed class XRControllerInput : MonoBehaviour
         RefreshLabel();
     }
 
-    private void OnDisable()
+    private void OnDisable() { CancelAim(); }
+
+    // Forget any destination shown so far, e.g. when tracking drops or the hand is disabled.
+    private void CancelAim()
     {
         aiming = aimValid = false;
         if (teleportMarker != null) teleportMarker.gameObject.SetActive(false);
@@ -44,7 +47,7 @@ public sealed class XRControllerInput : MonoBehaviour
     private void Update()
     {
         InputDevice device = InputDevices.GetDeviceAtXRNode(Node);
-        if (!device.isValid) return;
+        if (!device.isValid) { CancelAim(); return; }
         if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
         if (device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
 
@@ -90,15 +93,13 @@ public sealed class XRControllerInput : MonoBehaviour
         if (pushed)
         {
             aimValid = Locomotion.FindDestination(new Ray(transform.position, transform.forward), out Vector3 point);
-            if (aimValid) aimPoint = point;
-            Marker().gameObject.SetActive(aimValid);
-            if (aimValid) Marker().position = aimPoint + Vector3.up * 0.005f;
+            if (aimValid) { aimPoint = point; Marker().position = aimPoint + Vector3.up * 0.005f; }
+            if (teleportMarker != null) teleportMarker.gameObject.SetActive(aimValid);
         }
         else if (aiming && push < 0.3f)
         {
             if (aimValid) Locomotion.TryTeleport(aimPoint);
-            aimValid = false;
-            if (teleportMarker != null) teleportMarker.gameObject.SetActive(false);
+            CancelAim();
         }
         aiming = pushed || (aiming && push >= 0.3f);
     }
