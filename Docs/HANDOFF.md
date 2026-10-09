@@ -29,6 +29,10 @@ Inside spawn, component-driven walking, front/side constraints, safe-room access
 
 Read PROJECT_BRIEF.md, ROADMAP.md and ENVIRONMENT_BATCH_03.md. Preserve .meta files and update source plus generated project snapshot together. Pull current GitHub files before editing. Do not commit Library/caches. Record any asset license before importing. Keep tool deployment ownership intact during XR grabbing; release held objects before reset. Photos must survive reset. Repeat completed checks only when changes or unresolved issues justify it.
 
+## Batch 05 — XR-ready adapters, status board, build script (October 9, 2026, not yet re-run in Unity)
+
+ToolHolder is the shared base for DesktopInteractor and the new HandInteractor (grab/carry/drop/trigger for tracked hands, no toolkit API). XRLocomotion adds bounds-checked teleport and snap turn, attached to the desktop player now and to the XR rig later. EvidenceCamera gained HoldBy/ReturnToRack so the camera passes between holders and always returns to its rack on reset. DemoStatusBoard is a wall-mounted TextMesh above the rack showing tool count, next marker, tape state and the last photo. DemoBuild plus Build-Windows.cmd/Run-Demo.cmd produce the standalone Windows demo. XRRigBuilder creates a rig skeleton for the XR stage. SETUP.md has Package Manager troubleshooting and the XR package plan. Expected City result: 40 assertions (10 new: teleport/snap turn, hand carry/drop/grab/remove, camera hand-off and reset, status board).
+
 ## Batch 04 — desktop interaction (October 8, 2026, not yet re-run in Unity)
 
 Source and the City snapshot zip were updated together. The snapshot's scenes still predate this batch: run ShopCityValidation.Run (and JewelrySceneValidation.Run for the old scene) to regenerate scenes, captures and results, or use Crime Scene Demo → Create Desktop Player on an open scene.

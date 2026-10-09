@@ -40,7 +40,9 @@ public static class ShopCityValidation
             if (stage == 1)
             {
                 WalkingChecks();
+                LocomotionChecks();
                 InteractionChecks();
+                HandChecks();
                 BackdropChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
@@ -109,6 +111,63 @@ public static class ShopCityValidation
         DemoValidation.Check(!interactor.HoldingCamera && evidence.transform.parent == rack
             && Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f,
             "Camera returns to its rack");
+    }
+
+    private static void LocomotionChecks()
+    {
+        ShopWalkController walker = DemoValidation.Find<ShopWalkController>();
+        XRLocomotion locomotion = DemoValidation.Find<XRLocomotion>();
+        Transform head = locomotion.Head;
+        DemoValidation.Check(!locomotion.TryTeleport(new Vector3(0, 0, -3)), "Teleport refuses the street");
+        DemoValidation.Check(locomotion.TryTeleport(new Vector3(-2, 0, 6))
+            && Mathf.Abs(head.position.x + 2) < 0.01f && Mathf.Abs(head.position.z - 6) < 0.01f,
+            "Teleport lands the head over the target");
+        Vector3 headBefore = head.position;
+        float yawBefore = locomotion.transform.eulerAngles.y;
+        locomotion.SnapRight();
+        DemoValidation.Check(Mathf.Abs(Mathf.DeltaAngle(locomotion.transform.eulerAngles.y, yawBefore + 45)) < 0.01f
+            && Vector3.Distance(head.position, headBefore) < 0.001f, "Snap turn pivots around the head");
+        walker.ResetPosition();
+    }
+
+    private static void HandChecks()
+    {
+        DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
+        EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
+        // Inactive while wiring so OnEnable sees the session and subscribes to Resetting.
+        GameObject handObject = new GameObject("ValidationHand");
+        handObject.SetActive(false);
+        HandInteractor hand = handObject.AddComponent<HandInteractor>();
+        hand.Station = desktop.Station;
+        hand.Session = desktop.Session;
+        hand.EvidenceCamera = evidence;
+        hand.Bounds = desktop.Bounds;
+        handObject.SetActive(true);
+
+        hand.transform.position = new Vector3(-3, 1, 5);
+        DeployedTool marker = hand.SpawnIntoHand(DemoToolKind.Marker);
+        DemoValidation.Check(marker != null && Vector3.Distance(marker.transform.position, new Vector3(-3, 0.85f, 5)) < 0.001f,
+            "Hand carries the spawned tool below the hand");
+        hand.Release();
+        DemoValidation.Check(hand.Held == null && Vector3.Distance(marker.transform.position, new Vector3(-3, 0, 5)) < 0.02f,
+            "Released tool drops onto the floor");
+        hand.transform.position = marker.transform.position + Vector3.up * 0.1f;
+        DemoValidation.Check(hand.Grab() && hand.Held == marker, "Hand grabs the nearest tool");
+        hand.RemoveHeld();
+        DemoValidation.Check(hand.Held == null, "Hand removes the held tool");
+
+        hand.transform.position = evidence.transform.position;
+        DemoValidation.Check(hand.Grab() && hand.HoldingCamera && evidence.Holder == hand.transform,
+            "Hand grabs the camera from the rack");
+        desktop.ToggleCamera();
+        DemoValidation.Check(!hand.HoldingCamera && desktop.HoldingCamera, "Camera passes between holders");
+        desktop.Session.ResetSession();
+        DemoValidation.Check(!desktop.HoldingCamera && evidence.Holder == null
+            && Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f,
+            "Reset returns the camera to its rack");
+        DemoValidation.Check(DemoValidation.Find<DemoStatusBoard>().GetComponent<TextMesh>().text.Contains("next marker 1"),
+            "Status board reflects the reset");
+        UnityEngine.Object.Destroy(handObject);
     }
 
     private static void BackdropChecks()

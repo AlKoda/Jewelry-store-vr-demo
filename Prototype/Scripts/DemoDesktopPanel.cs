@@ -81,11 +81,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         else Station.Spawn(kind);
     }
 
-    private void Recount()
-    {
-        deployed = Station.DeploymentRoot != null
-            ? Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>().Length : 0;
-    }
+    private void Recount() { deployed = Station.DeployedCount; }
 
     private string Status()
     {

@@ -20,7 +20,7 @@ Dates are targets, dependent on access to the PC and headset.
 | D01 | Monitor view and controls | Required | In progress | Oct 20–23 | Visitors see view; presenter can access controls guide (desktop panel with guide done; headset mirror pending) |
 | D02 | Reset | Required | In progress | Oct 20–23 | Clears deployed tools, restores scene and preserves photos |
 | Q01 | Full rehearsal | Required | Planned | Oct 24–26 | Demonstration runs through tools, capture, review and reset |
-| Q02 | Performance and backup | Required | Planned | Oct 24–26 | Headset performance acceptable; tested build and backup saved |
+| Q02 | Performance and backup | Required | In progress | Oct 24–26 | Headset performance acceptable; tested build and backup saved (build script ready; build itself unverified) |
 | X01 | Intact-store state | Optional | Planned | After core demo | Shared layout switches between intact and robbed states |
 | X02 | Additional cases | Future | Planned | After presentation | Reusable scene/tool structure established |
 
@@ -42,6 +42,8 @@ Environment batch 01 generator uploaded: complete editable store geometry source
 Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel, camera feedback/folder access and detailed geometry source. See [batch 02](TOOLS_BATCH_02.md). Basic source delimiter checks passed; functionality remains unverified.
 
 October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
+
+October 9: batch 05 — toolkit-independent XR adapters (HandInteractor, XRLocomotion), camera hand-off, status board, Windows build script, Package Manager troubleshooting notes. Awaiting Unity re-run. See [handoff](HANDOFF.md).
 
 October 8 (later): marker label font, walker grounding and build-scene fixes, then batch 04 desktop interaction (pointer tool handling, camera hold, presenter panel, shared validation code) committed; awaiting Unity re-run. See [handoff](HANDOFF.md).
 

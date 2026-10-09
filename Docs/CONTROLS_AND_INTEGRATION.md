@@ -46,6 +46,24 @@ Walls, the storefront barrier and InteriorBounds keep the player inside. Interio
 
 DemoSession.Resetting fires before anything is cleared; adapters release held objects there so parents and poses restore correctly. The desktop adapter does this; an XR adapter must do the same.
 
+## XR adapter (HandInteractor and XRLocomotion, package-free)
+
+One HandInteractor per hand on a transform that a tracked pose driver moves. One XRLocomotion on the rig root with Head set to the XR camera. Bind controller actions to these methods; nothing else is toolkit-specific.
+
+| Controller action | Method |
+|---|---|
+| Grip pressed | HandInteractor.Grab() — nearest tool within GrabRadius, else the camera |
+| Grip released | HandInteractor.Release() — drops the tool onto the surface below, inside the bounds |
+| Trigger | HandInteractor.Trigger() — photograph while holding the camera; select a held tape post |
+| Tool menu choice | HandInteractor.SpawnIntoHand(kind) |
+| Remove | HandInteractor.RemoveHeld() |
+| Teleport confirm | XRLocomotion.TryTeleport(Ray) or TryTeleport(Vector3) — refused outside InteriorBounds |
+| Thumbstick left / right | XRLocomotion.SnapLeft() / SnapRight() |
+
+Both adapters derive from ToolHolder, which owns the held tool, the camera hand-off (EvidenceCamera.HoldBy / ReturnToRack) and the release on DemoSession.Resetting. Tools stay under DeploymentRoot while held, so reset and removal keep working.
+
+Physical headset movement is not constrained by any of this; only teleport targets are.
+
 ## Proposed controller behavior
 
 Grip: grab/reposition. Camera trigger: capture while held. Tool menu: spawn a selected tool near the hand/station. Tape-post action: select endpoint. Teleportation and snap turn: follow toolkit defaults once installed.

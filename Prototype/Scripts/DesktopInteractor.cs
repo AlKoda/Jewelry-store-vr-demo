@@ -1,44 +1,24 @@
 using UnityEngine;
 
-// Desktop pointer adapter: pick up, carry, rotate, place and remove deployed
-// tools, hold the evidence camera and read hotkeys. The pointer is the mouse,
-// or the screen centre while the right button locks the cursor for looking.
-// XR controllers will replace this adapter; the station/session API stays.
-public sealed class DesktopInteractor : MonoBehaviour
+// Desktop pointer adapter: the pointer is the mouse, or the screen centre while
+// the right button locks the cursor for looking. Picks up, carries, rotates,
+// places and removes tools, holds the camera and reads hotkeys. Shared holding
+// rules live in ToolHolder; XR hands use HandInteractor instead.
+public sealed class DesktopInteractor : ToolHolder
 {
     public Camera View;
     public ShopWalkController Walker;
-    public ToolStation Station;
-    public DemoSession Session;
-    public EvidenceCamera EvidenceCamera;
-    public InteriorBounds Bounds;
     public DemoDesktopPanel Panel;
     public float Reach = 4f;
     public float RotateStep = 15f;
-    public Vector3 CameraHoldOffset = new Vector3(0.22f, -0.12f, 0.35f);
     public bool ReadDesktopInput = true;
 
-    public DeployedTool Held { get; private set; }
     public DeployedTool Hovered { get; private set; }
     public bool HoveringCamera { get; private set; }
-    public bool HoldingCamera { get; private set; }
+
+    protected override Transform CameraAnchor => View != null ? View.transform : null;
 
     private float heldYaw;
-    private Transform cameraRack;
-    private Vector3 rackPosition;
-    private Quaternion rackRotation;
-    private readonly RaycastHit[] hits = new RaycastHit[16];
-
-    private void OnEnable()
-    {
-        if (Session != null) Session.Resetting.AddListener(ReleaseAll);
-    }
-
-    private void OnDisable()
-    {
-        if (Session != null) Session.Resetting.RemoveListener(ReleaseAll);
-        ReleaseAll();
-    }
 
     private void Update()
     {
@@ -52,7 +32,7 @@ public sealed class DesktopInteractor : MonoBehaviour
         }
         else
         {
-            bool hit = Raycast(ray, null, out RaycastHit nearest);
+            bool hit = Raycast(ray, Reach, out RaycastHit nearest, Walker != null ? Walker.transform : null);
             Hovered = hit ? nearest.collider.GetComponentInParent<DeployedTool>() : null;
             HoveringCamera = hit && Hovered == null && EvidenceCamera != null &&
                 nearest.collider.GetComponentInParent<EvidenceCamera>() == EvidenceCamera;
@@ -73,7 +53,7 @@ public sealed class DesktopInteractor : MonoBehaviour
         float wheel = Input.GetAxis("Mouse ScrollWheel");
         if (wheel != 0) Rotate(Mathf.Sign(wheel) * RotateStep);
         if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) Remove(Target);
-        if (Input.GetKeyDown(KeyCode.T) && Station != null) Station.SelectTapePost(Target);
+        if (Input.GetKeyDown(KeyCode.T)) SelectTapePost(Target);
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
         if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
         if (Input.GetKeyDown(KeyCode.P) && EvidenceCamera != null) EvidenceCamera.CapturePhoto();
@@ -88,32 +68,22 @@ public sealed class DesktopInteractor : MonoBehaviour
         return View.ScreenPointToRay(point);
     }
 
-    public DeployedTool SpawnIntoHand(DemoToolKind kind)
+    public override void Hold(DeployedTool tool)
     {
-        if (Station == null) return null;
-        DeployedTool tool = Station.Spawn(kind);
-        if (tool == null) return null;
-        Hold(tool);
-        if (View != null) Carry(PointerRay());
-        return tool;
-    }
-
-    public void Hold(DeployedTool tool)
-    {
-        if (tool == null) return;
-        Held = tool;
+        base.Hold(tool);
+        if (Held == null) return;
         Hovered = null;
-        heldYaw = tool.transform.eulerAngles.y;
+        heldYaw = Held.transform.eulerAngles.y;
+        if (ReadDesktopInput && View != null) Carry(PointerRay());
     }
 
     // Move the held tool to the pointed surface. Only upward-facing surfaces
-    // inside the interior bounds count; otherwise it stays where it was.
+    // inside the interior count; otherwise it stays where it was.
     public void Carry(Ray ray)
     {
-        if (Held == null || !Raycast(ray, Held.transform, out RaycastHit hit) || hit.normal.y < 0.7f) return;
-        Vector3 point = hit.point;
-        if (Bounds != null) point = Bounds.Clamp(point);
-        Held.PlaceAt(point, heldYaw);
+        if (Held == null || !Raycast(ray, Reach, out RaycastHit hit, Held.transform,
+            Walker != null ? Walker.transform : null) || hit.normal.y < 0.7f) return;
+        Held.PlaceAt(Confine(hit.point), heldYaw);
     }
 
     public void Rotate(float degrees)
@@ -123,63 +93,10 @@ public sealed class DesktopInteractor : MonoBehaviour
         Held.PlaceAt(Held.transform.position, heldYaw);
     }
 
-    public void Place() { Held = null; }
-
-    public void Remove(DeployedTool tool)
+    public override void ReleaseAll()
     {
-        if (tool == null || Station == null) return;
-        if (tool == Held) Held = null;
-        if (tool == Hovered) Hovered = null;
-        Station.RemoveTool(tool);
-    }
-
-    // Camera held in front of the view, or returned to its rack. Its colliders
-    // are disabled while held so they neither block walking nor the pointer.
-    public void ToggleCamera()
-    {
-        if (EvidenceCamera == null || View == null) return;
-        Transform body = EvidenceCamera.transform;
-        HoldingCamera = !HoldingCamera;
-        if (HoldingCamera)
-        {
-            cameraRack = body.parent;
-            rackPosition = body.localPosition;
-            rackRotation = body.localRotation;
-            body.SetParent(View.transform, false);
-            body.localPosition = CameraHoldOffset;
-            body.localRotation = Quaternion.identity;
-        }
-        else
-        {
-            body.SetParent(cameraRack, false);
-            body.localPosition = rackPosition;
-            body.localRotation = rackRotation;
-            cameraRack = null;
-        }
-        foreach (Collider collider in body.GetComponentsInChildren<Collider>(true))
-            collider.enabled = !HoldingCamera;
-    }
-
-    // Releases everything before a session reset so parents and poses restore.
-    public void ReleaseAll()
-    {
-        Held = null;
+        base.ReleaseAll();
         Hovered = null;
-        if (HoldingCamera) ToggleCamera();
-    }
-
-    private bool Raycast(Ray ray, Transform ignore, out RaycastHit nearest)
-    {
-        nearest = default;
-        bool found = false;
-        int count = Physics.RaycastNonAlloc(ray, hits, Reach);
-        for (int i = 0; i < count; i++)
-        {
-            Transform hitTransform = hits[i].transform;
-            if (Walker != null && hitTransform == Walker.transform) continue;
-            if (ignore != null && hitTransform.IsChildOf(ignore)) continue;
-            if (!found || hits[i].distance < nearest.distance) { nearest = hits[i]; found = true; }
-        }
-        return found;
+        HoveringCamera = false;
     }
 }

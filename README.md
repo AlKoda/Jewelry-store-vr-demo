@@ -10,6 +10,8 @@ An instructor-led VR jewelry-store crime-scene sandbox for an opening-day demons
 
 WASD/arrows walk (Shift runs); hold right mouse to look; left click picks up and places tools; 1/2/3 spawn a cone, marker or tape post into the hand; T connects tape posts; F holds the camera and P photographs; Tab hides the presenter panel; Home returns to the inside start. The street is visible through the storefront while the player remains inside. Full list in [controls and integration](Docs/CONTROLS_AND_INTEGRATION.md).
 
+Build-Windows.cmd produces a standalone Windows demo in Builds\Windows; Run-Demo.cmd starts it. XR-ready movement and hand scripts are in place without toolkit dependencies; see [setup](Docs/SETUP.md) for the package plan.
+
 ## Previous verified milestone
 
 A generated Unity 6000.6.2f1 project snapshot and actual scene captures are available. Scripts compiled and 13 core runtime assertions passed in Editor Play mode on the user's PC. Quest setup and standalone build verification remain pending. See [verification report](Docs/VERIFICATION_2026-10-08.md), including the temporary Package Manager workaround.

@@ -19,6 +19,46 @@ public sealed class EvidenceCamera : MonoBehaviour
     public string Status { get; private set; } = "Ready";
     public bool IsCapturing { get; private set; }
     public string PhotoFolder => Path.Combine(Application.persistentDataPath,"EvidencePhotos");
+    // Hand or view currently carrying the camera body; null while on its rack.
+    public Transform Holder { get; private set; }
+
+    private Transform rack;
+    private Vector3 rackPosition;
+    private Quaternion rackRotation;
+
+    // Carry the camera body in front of a hand or view. Colliders are disabled so
+    // it neither blocks walking nor the pointer. Passing it between holders keeps
+    // the original rack pose.
+    public void HoldBy(Transform holder,Vector3 localOffset)
+    {
+        if(holder==null) return;
+        if(Holder==null)
+        {
+            rack=transform.parent;
+            rackPosition=transform.localPosition;
+            rackRotation=transform.localRotation;
+        }
+        Holder=holder;
+        transform.SetParent(holder,false);
+        transform.localPosition=localOffset;
+        transform.localRotation=Quaternion.identity;
+        SetCollidersEnabled(false);
+    }
+
+    public void ReturnToRack()
+    {
+        if(Holder==null) return;
+        transform.SetParent(rack,false);
+        transform.localPosition=rackPosition;
+        transform.localRotation=rackRotation;
+        Holder=null;
+        SetCollidersEnabled(true);
+    }
+
+    private void SetCollidersEnabled(bool enabled)
+    {
+        foreach(Collider collider in GetComponentsInChildren<Collider>(true)) collider.enabled=enabled;
+    }
 
     private readonly string sessionId = DateTime.Now.ToString("yyyyMMdd_HHmmss")+"_"+Guid.NewGuid().ToString("N").Substring(0,8);
     private int sequence;

@@ -15,6 +15,8 @@ public sealed class ToolStation : MonoBehaviour
     private DeployedTool pendingPost;
     public DeployedTool PendingPost => pendingPost;
     public int NextMarkerNumber => nextMarker;
+    // Active tools only; objects pending destruction are already inactive.
+    public int DeployedCount => DeploymentRoot != null ? DeploymentRoot.GetComponentsInChildren<DeployedTool>().Length : 0;
 
     public void SpawnCone() { Spawn(DemoToolKind.Cone); }
     public void SpawnMarker() { Spawn(DemoToolKind.Marker); }

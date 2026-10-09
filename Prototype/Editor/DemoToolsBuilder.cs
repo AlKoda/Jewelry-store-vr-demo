@@ -88,6 +88,23 @@ public static class DemoToolsBuilder
         panel.Station=station;
         panel.Session=session;
         panel.EvidenceCamera=evidence;
+
+        // Wall-mounted status text above the rack, facing into the showroom.
+        GameObject boardObject=new GameObject("StatusBoard");
+        boardObject.transform.SetParent(root.transform,false);
+        boardObject.transform.localPosition=new Vector3(-4.9f,1.9f,1);
+        boardObject.transform.localRotation=Quaternion.Euler(0,-90,0);
+        TextMesh boardText=boardObject.AddComponent<TextMesh>();
+        boardText.anchor=TextAnchor.MiddleCenter;
+        boardText.alignment=TextAlignment.Center;
+        boardText.fontSize=48;
+        boardText.characterSize=0.02f;
+        boardText.color=new Color(0.92f,0.86f,0.62f);
+        DeployedTool.EnsureFont(boardText);
+        DemoStatusBoard board=boardObject.AddComponent<DemoStatusBoard>();
+        board.Station=station;
+        board.Session=session;
+        board.EvidenceCamera=evidence;
         Selection.activeGameObject=root;
         Debug.Log("Tool station created. Save scene; XR grabbing/activation and lighting still require integration.",root);
     }
@@ -123,6 +140,9 @@ public static class DemoToolsBuilder
         ShopWalkController walker=player.AddComponent<ShopWalkController>();
         walker.View=camera.transform;
         walker.Bounds=bounds;
+        XRLocomotion locomotion=player.AddComponent<XRLocomotion>();
+        locomotion.Head=camera.transform;
+        locomotion.Bounds=bounds;
         DesktopInteractor interactor=player.AddComponent<DesktopInteractor>();
         interactor.View=camera;
         interactor.Walker=walker;
