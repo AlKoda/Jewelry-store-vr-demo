@@ -22,6 +22,25 @@ public sealed class DeployedTool : MonoBehaviour
         name = Kind == DemoToolKind.Marker ? "EvidenceMarker_" + number : Kind.ToString();
     }
 
+    public bool Highlighted { get; private set; }
+    private static MaterialPropertyBlock block;
+
+    // Lightens every mesh of the tool (not its number labels) so the pointed or
+    // nearest tool stands out; a property block leaves the shared materials alone.
+    public void SetHighlight(bool on)
+    {
+        if (Highlighted == on) return;
+        Highlighted = on;
+        if (block == null) block = new MaterialPropertyBlock();
+        foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
+        {
+            if (renderer.GetComponent<TextMesh>() != null || renderer.sharedMaterial == null) continue;
+            block.Clear();
+            if (on) block.SetColor("_Color", Color.Lerp(renderer.sharedMaterial.color, Color.white, 0.45f));
+            renderer.SetPropertyBlock(block);
+        }
+    }
+
     public static void EnsureFont(TextMesh text)
     {
         if (text == null || text.font != null) return;

@@ -123,6 +123,7 @@ public static class ShopCityValidation
         interactor.Place();
         DemoValidation.Check(interactor.Held == null && Vector3.Distance(cone.transform.position, new Vector3(-3.5f, 0, 5)) < 0.02f,
             "Pointer placement lands the tool on the floor");
+        DemoValidation.Check(cone.Highlighted, "Held tool is highlighted");
         interactor.Hold(cone);
         Vector3 placed = cone.transform.position;
         interactor.Carry(new Ray(new Vector3(0, 1, 1), Vector3.back));
@@ -168,6 +169,10 @@ public static class ShopCityValidation
         hand.RemoveHeld();
         DemoValidation.Check(hand.Held == null, "Hand removes the held tool");
 
+        hand.transform.position = desktop.Station.transform.Find("Sample_Marker").position + Vector3.up * 0.05f;
+        DemoValidation.Check(hand.Grab() && hand.Held != null && hand.Held.Kind == DemoToolKind.Marker,
+            "Grabbing a rack sample spawns that tool into the hand");
+        hand.RemoveHeld();
         hand.transform.position = evidence.transform.position;
         DemoValidation.Check(hand.Grab() && hand.HoldingCamera && evidence.Holder == hand.transform,
             "Hand grabs the camera from the rack");
@@ -185,6 +190,11 @@ public static class ShopCityValidation
 
     private static void BackdropChecks()
     {
+        DemoOverviewMap map = DemoValidation.Find<DemoOverviewMap>();
+        map.Render();
+        Vector2 uv = map.ToMap(DemoValidation.Find<ShopWalkController>().transform.position);
+        DemoValidation.Check(map.Texture != null && uv.x > 0 && uv.x < 1 && uv.y > 0 && uv.y < 1, "Overview map renders with the player inside it");
+        DemoValidation.Info("Third-party city models=" + (DemoAssetLibrary.Has("KenneyCityBuilder", "building-small-a") ? "present" : "absent"));
         GameObject city = GameObject.Find("CityBackdrop");
         DemoValidation.Check(city.GetComponentsInChildren<Collider>().Length == 0, "Backdrop has no physics colliders");
         int renderers = city.GetComponentsInChildren<MeshRenderer>().Length;

@@ -1,0 +1,9 @@
+Kenney — Starter Kit City Builder models
+Source: https://github.com/KenneyNL/Starter-Kit-City-Builder (models/*.glb), fetched October 9, 2026.
+Author: Kenney (https://kenney.nl). The repository README states the 3D models are CC0 licensed
+(Creative Commons Zero, https://creativecommons.org/publicdomain/zero/1.0/): no attribution required,
+free for commercial and non-commercial use, modification and redistribution.
+
+Files here are the original GLB models converted to OBJ/MTL with the shared palette texture, unchanged
+in shape. Models: building-small-a..d, building-garage, pavement-fountain, grass-trees, grass-trees-tall.
+Kenney's palette texture (colormap) is part of the same CC0 release.

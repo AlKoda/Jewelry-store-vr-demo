@@ -31,7 +31,7 @@ Pointer = mouse, or the screen centre while the right button is held for looking
 |---|---|
 | WASD / arrows, Shift | Walk, run (ShopWalkController) |
 | Hold right mouse | Look |
-| Left click | Pick up the pointed tool / place the held tool / pick up the camera |
+| Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
 | 1, 2, 3 | New cone, marker, tape post straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
 | T | SelectTapePost on the held or pointed post |
@@ -56,7 +56,7 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 
 | Controller | Action |
 |---|---|
-| Grip (either hand) | Hold the nearest tool within 25 cm, or the camera; release to put it down on the surface beneath |
+| Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; release puts it down on the surface beneath |
 | Trigger | Photograph while holding the camera; select a held tape post for tape |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
 | B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post) |

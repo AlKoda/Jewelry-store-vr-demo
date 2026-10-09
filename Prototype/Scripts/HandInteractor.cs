@@ -1,10 +1,11 @@
 using UnityEngine;
 
 // Tracked-hand adapter without any toolkit dependency. Something else moves this
-// transform (a TrackedPoseDriver once XR packages are installed) and input
-// bindings call Grab, Release, Trigger, SpawnIntoHand and RemoveHeld. Held
-// tools hang below the hand with the hand's heading; releasing drops them onto
-// the surface beneath (ToolHolder.Place).
+// transform (XRControllerInput now, a TrackedPoseDriver if ever needed) and
+// input bindings call Grab, Release, Trigger, SpawnIntoHand and RemoveHeld.
+// Held tools hang below the hand with the hand's heading; releasing drops them
+// onto the surface beneath (ToolHolder.Place). The nearest grabbable tool is
+// highlighted while the hand is empty.
 public sealed class HandInteractor : ToolHolder
 {
     public float GrabRadius = 0.25f;
@@ -13,21 +14,28 @@ public sealed class HandInteractor : ToolHolder
     protected override Transform CameraAnchor => transform;
 
     private readonly Collider[] overlaps = new Collider[32];
+    private ToolRackSample nearSample;
+    private bool nearCamera;
 
-    private void Update() { FollowHand(); }
+    private void Update()
+    {
+        if (Held != null) FollowHand();
+        else Highlight(NearestTool());
+    }
 
     public void FollowHand()
     {
         if (Held != null) Held.PlaceAt(transform.TransformPoint(HeldOffset), transform.eulerAngles.y);
     }
 
-    // Grab the nearest tool within reach, else the camera if it is within reach.
+    // Grab the nearest tool within reach; otherwise a rack sample (new tool) or the camera.
     public bool Grab()
     {
         if (Held != null || HoldingCamera) return false;
-        DeployedTool tool = NearestTool(out bool cameraNear);
+        DeployedTool tool = NearestTool();
         if (tool != null) { Hold(tool); return true; }
-        if (cameraNear) { ToggleCamera(); return true; }
+        if (nearSample != null) return TakeSample(nearSample) != null;
+        if (nearCamera) { ToggleCamera(); return true; }
         return false;
     }
 
@@ -49,24 +57,29 @@ public sealed class HandInteractor : ToolHolder
     public override void Hold(DeployedTool tool)
     {
         base.Hold(tool);
+        Highlight(Held);
         FollowHand();
     }
 
-    private DeployedTool NearestTool(out bool cameraNear)
+    // Nearest tool within GrabRadius; also notes a rack sample or the camera in reach.
+    private DeployedTool NearestTool()
     {
-        cameraNear = false;
+        nearSample = null;
+        nearCamera = false;
         DeployedTool best = null;
         float bestDistance = float.MaxValue;
         int count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius, overlaps);
         for (int i = 0; i < count; i++)
         {
-            DeployedTool tool = overlaps[i].GetComponentInParent<DeployedTool>();
+            Collider collider = overlaps[i];
+            DeployedTool tool = collider.GetComponentInParent<DeployedTool>();
             if (tool == null)
             {
-                cameraNear |= EvidenceCamera != null && overlaps[i].GetComponentInParent<EvidenceCamera>() == EvidenceCamera;
+                if (nearSample == null) nearSample = collider.GetComponentInParent<ToolRackSample>();
+                nearCamera |= EvidenceCamera != null && collider.GetComponentInParent<EvidenceCamera>() == EvidenceCamera;
                 continue;
             }
-            float distance = (overlaps[i].ClosestPoint(transform.position) - transform.position).sqrMagnitude;
+            float distance = (collider.ClosestPoint(transform.position) - transform.position).sqrMagnitude;
             if (distance < bestDistance) { best = tool; bestDistance = distance; }
         }
         return best;

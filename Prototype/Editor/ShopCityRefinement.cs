@@ -6,6 +6,7 @@ using static DemoGeometry;
 public static class ShopCityRefinement
 {
     private const string Folder="Assets/CrimeSceneDemo/CityGenerated";
+    private const string Pack="KenneyCityBuilder";
     private static Material stone, dark, metal, cream, road, glass, green, brick, white;
     private static Transform city;
 
@@ -85,16 +86,23 @@ public static class ShopCityRefinement
         // Side buildings form the continuation of the shop's street frontage.
         Building("Neighbor_Left",V(-12,0,2.7f),12,9,9,brick,"GALLERY",180);
         Building("Neighbor_Right",V(12,0,2.7f),12,12,9,stone,"PHARMACY",180);
+        string[] blocks={"building-small-a","building-small-b","building-small-c","building-small-d","building-garage"};
         for(int i=-4;i<=4;i++)
         {
-            Box("DistantBlock",city,V(i*13,10+(i+4)%3*2,-40),V(10,20+(i+4)%3*4,12),stone);
+            // Kenney CC0 buildings when the pack is present (1 m tiles scaled up), boxes otherwise.
+            if(DemoAssetLibrary.Place(Pack,blocks[(i+4)%blocks.Length],city,V(i*13,0,-40),(i%2==0)?0:180,12)==null)
+                Box("DistantBlock",city,V(i*13,10+(i+4)%3*2,-40),V(10,20+(i+4)%3*4,12),stone);
             if(i%2==0) Lamp(V(i*8,0,-11.8f));
         }
+        if(DemoAssetLibrary.Place(Pack,"pavement-fountain",city,V(2,-.02f,-13),0,4)!=null)
+            Box("FountainPlinth",city,V(2,-.015f,-13),V(4.2f,.03f,4.2f),cream);
         Car(V(-7,-.02f,-9.4f),dark);
         Car(V(10,-.02f,-4.5f),brick);
         Bench(V(-3,0,-12.3f));
         Bench(V(8,0,-12.3f));
-        for(int i=0;i<3;i++) Planter(V(-13+i*13,0,-13.2f));
+        for(int i=0;i<3;i++)
+            if(DemoAssetLibrary.Place(Pack,"grass-trees-tall",city,V(-13+i*13,0,-13.2f),i*90,3.5f)==null)
+                Planter(V(-13+i*13,0,-13.2f));
         // Consolidate static backdrop by material into persistent mesh assets.
         CombineByMaterial(city,Folder+"/CityMesh_","City_");
         RenderSettings.fog=true;

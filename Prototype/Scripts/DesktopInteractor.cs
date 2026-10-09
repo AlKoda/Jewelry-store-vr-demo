@@ -2,8 +2,9 @@ using UnityEngine;
 
 // Desktop pointer adapter: the pointer is the mouse, or the screen centre while
 // the right button locks the cursor for looking. Picks up, carries, rotates,
-// places and removes tools, holds the camera and reads hotkeys. Shared holding
-// rules live in ToolHolder; XR hands use HandInteractor instead.
+// places and removes tools, takes new ones from the rack samples, holds the
+// camera and reads hotkeys. Shared holding rules live in ToolHolder; XR hands
+// use HandInteractor instead.
 public sealed class DesktopInteractor : ToolHolder
 {
     public Camera View;
@@ -14,6 +15,7 @@ public sealed class DesktopInteractor : ToolHolder
     public bool ReadDesktopInput = true;
 
     public DeployedTool Hovered { get; private set; }
+    public ToolRackSample HoveredSample { get; private set; }
     public bool HoveringCamera { get; private set; }
 
     protected override Transform CameraAnchor => View != null ? View.transform : null;
@@ -27,6 +29,7 @@ public sealed class DesktopInteractor : ToolHolder
         if (Held != null)
         {
             Hovered = null;
+            HoveredSample = null;
             HoveringCamera = false;
             Carry(ray);
         }
@@ -34,15 +37,18 @@ public sealed class DesktopInteractor : ToolHolder
         {
             bool hit = Raycast(ray, Reach, out RaycastHit nearest, Walker != null ? Walker.transform : null);
             Hovered = hit ? nearest.collider.GetComponentInParent<DeployedTool>() : null;
-            HoveringCamera = hit && Hovered == null && EvidenceCamera != null &&
+            HoveredSample = hit && Hovered == null ? nearest.collider.GetComponentInParent<ToolRackSample>() : null;
+            HoveringCamera = hit && Hovered == null && HoveredSample == null && EvidenceCamera != null &&
                 nearest.collider.GetComponentInParent<EvidenceCamera>() == EvidenceCamera;
         }
+        Highlight(Held != null ? Held : Hovered);
 
         bool overPanel = Panel != null && Panel.PointerOverPanel;
         if (Input.GetMouseButtonDown(0) && !overPanel)
         {
             if (Held != null) Place();
             else if (Hovered != null) Hold(Hovered);
+            else if (HoveredSample != null) TakeSample(HoveredSample);
             else if (HoveringCamera) ToggleCamera();
         }
         if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnIntoHand(DemoToolKind.Cone);
@@ -59,6 +65,8 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.P)) Photograph();
     }
 
+    private DeployedTool Target => Held != null ? Held : Hovered;
+
     // Through the held camera's lens, or of the current view when it is on its rack.
     public void Photograph()
     {
@@ -66,8 +74,6 @@ public sealed class DesktopInteractor : ToolHolder
         if (HoldingCamera || View == null) EvidenceCamera.CapturePhoto();
         else EvidenceCamera.CaptureFromView(View.transform);
     }
-
-    private DeployedTool Target => Held != null ? Held : Hovered;
 
     public Ray PointerRay()
     {
@@ -81,6 +87,7 @@ public sealed class DesktopInteractor : ToolHolder
         base.Hold(tool);
         if (Held == null) return;
         Hovered = null;
+        Highlight(Held);
         heldYaw = Held.transform.eulerAngles.y;
         if (ReadDesktopInput && View != null) Carry(PointerRay());
     }
@@ -105,6 +112,7 @@ public sealed class DesktopInteractor : ToolHolder
     {
         base.ReleaseAll();
         Hovered = null;
+        HoveredSample = null;
         HoveringCamera = false;
     }
 }

@@ -38,6 +38,11 @@ public static class DemoToolsBuilder
         station.ConePrefab=SaveTool(DemoToolKind.Cone);
         station.MarkerPrefab=SaveTool(DemoToolKind.Marker);
         station.TapePostPrefab=SaveTool(DemoToolKind.TapePost);
+        // Half-size samples on the rack top; clicking or grabbing one spawns a new tool.
+        Transform rack=root.transform;
+        Sample(station.ConePrefab,rack,new Vector3(-4.05f,0.9f,1));
+        Sample(station.MarkerPrefab,rack,new Vector3(-3.6f,0.9f,1));
+        Sample(station.TapePostPrefab,rack,new Vector3(-3.15f,0.9f,1));
         SceneTape temporaryTape=DemoToolGeometry.CreateTape();
         GameObject tapePrefab=PrefabUtility.SaveAsPrefabAsset(temporaryTape.gameObject,Folder+"/SceneTape.prefab");
         Object.DestroyImmediate(temporaryTape.gameObject);
@@ -94,6 +99,11 @@ public static class DemoToolsBuilder
         review.Session=session;
         review.EvidenceCamera=evidence;
         panel.Review=review;
+
+        // Top-down map for the presenter panel; ceilings are hidden only for its render.
+        DemoOverviewMap map=root.AddComponent<DemoOverviewMap>();
+        map.Ceiling=store.transform.Find("Architecture/Ceiling_Optional");
+        panel.Map=map;
 
         // Wall-mounted status text above the rack, facing into the showroom.
         GameObject boardObject=new GameObject("StatusBoard");
@@ -158,6 +168,7 @@ public static class DemoToolsBuilder
         interactor.Walker=walker;
         interactor.Bounds=bounds;
         Wire(interactor);
+        if(interactor.Panel!=null) interactor.Panel.Player=player.transform;
 
         XRHeadTracking head=camera.gameObject.AddComponent<XRHeadTracking>();
         XRControllerInput left=CreateHand(player.transform,"LeftHand",UnityEngine.XR.XRNode.LeftHand,-1,locomotion,bounds);
@@ -178,11 +189,15 @@ public static class DemoToolsBuilder
         Transform hand=Group(name,rig);
         hand.localPosition=new Vector3(side*0.2f,1.1f,0.3f);
         Box("Visual",hand,Vector3.zero,new Vector3(.04f,.04f,.1f));
+        TextMesh label=Text("Label",hand,"",new Vector3(0,.04f,-.02f),0,.004f,Color.white);
+        label.transform.localRotation=Quaternion.Euler(45,0,0);
+        label.anchor=TextAnchor.LowerCenter;
         HandInteractor interactor=hand.gameObject.AddComponent<HandInteractor>();
         interactor.Bounds=bounds;
         Wire(interactor);
         XRControllerInput input=hand.gameObject.AddComponent<XRControllerInput>();
         input.Node=node;
+        input.Label=label;
         input.Locomotion=locomotion;
         hand.gameObject.SetActive(false);
         return input;
@@ -197,6 +212,18 @@ public static class DemoToolsBuilder
         if(desktop==null) return;
         desktop.Panel=Object.FindFirstObjectByType<DemoDesktopPanel>();
         if(desktop.Panel!=null) desktop.Panel.Interactor=desktop;
+    }
+
+    private static void Sample(DeployedTool prefab,Transform parent,Vector3 position)
+    {
+        GameObject sample=(GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject,parent);
+        PrefabUtility.UnpackPrefabInstance(sample,PrefabUnpackMode.Completely,InteractionMode.AutomatedAction);
+        sample.name="Sample_"+prefab.Kind;
+        Object.DestroyImmediate(sample.GetComponent<DeployedTool>());
+        Object.DestroyImmediate(sample.GetComponent<Rigidbody>());
+        sample.AddComponent<ToolRackSample>().Kind=prefab.Kind;
+        sample.transform.localPosition=position;
+        sample.transform.localScale=Vector3.one*0.5f;
     }
 
     private static DeployedTool SaveTool(DemoToolKind kind)

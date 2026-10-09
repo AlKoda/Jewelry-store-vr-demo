@@ -41,6 +41,20 @@ public abstract class ToolHolder : MonoBehaviour
         return tool;
     }
 
+    public DeployedTool TakeSample(ToolRackSample sample)
+        => sample != null ? SpawnIntoHand(sample.Kind) : null;
+
+    private DeployedTool highlighted;
+
+    // One highlighted tool per holder: the pointed, nearest or held one.
+    protected void Highlight(DeployedTool tool)
+    {
+        if (tool == highlighted) return;
+        if (highlighted != null) highlighted.SetHighlight(false);
+        highlighted = tool;
+        if (highlighted != null) highlighted.SetHighlight(true);
+    }
+
     // Taking a second tool first puts the current one down.
     public virtual void Hold(DeployedTool tool)
     {
@@ -83,6 +97,7 @@ public abstract class ToolHolder : MonoBehaviour
 
     public virtual void ReleaseAll()
     {
+        Highlight(null);
         Place();
         if (HoldingCamera) EvidenceCamera.ReturnToRack();
     }

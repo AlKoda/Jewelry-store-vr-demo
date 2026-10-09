@@ -15,6 +15,7 @@ public sealed class XRControllerInput : MonoBehaviour
     public bool Teleports = true;
     public bool SnapTurns;
     public DemoToolKind SpawnKind = DemoToolKind.Cone;
+    public TextMesh Label;
 
     private HandInteractor hand;
     private bool grip, trigger, primary, secondary, aiming, turned;
@@ -29,6 +30,15 @@ public sealed class XRControllerInput : MonoBehaviour
         marker.transform.localScale = new Vector3(0.4f, 0.01f, 0.4f);
         marker.SetActive(false);
         teleportMarker = marker.transform;
+        RefreshLabel();
+    }
+
+    // Small text on the back of the hand: which tool A/X spawns, and the grip hint.
+    private void RefreshLabel()
+    {
+        if (Label == null) return;
+        Label.text = (Node == XRNode.LeftHand ? "X" : "A") + ": new " + SpawnKind.ToString().ToLowerInvariant()
+            + "\n" + (Node == XRNode.LeftHand ? "Y" : "B") + ": remove / next kind";
     }
 
     private void OnDisable()
@@ -58,7 +68,7 @@ public sealed class XRControllerInput : MonoBehaviour
         if (Changed(device, CommonUsages.secondaryButton, ref secondary) && secondary)
         {
             if (hand.Held != null) hand.RemoveHeld();
-            else SpawnKind = (DemoToolKind)(((int)SpawnKind + 1) % 3);
+            else { SpawnKind = (DemoToolKind)(((int)SpawnKind + 1) % 3); RefreshLabel(); }
         }
         if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 stick)) Stick(stick);
     }
