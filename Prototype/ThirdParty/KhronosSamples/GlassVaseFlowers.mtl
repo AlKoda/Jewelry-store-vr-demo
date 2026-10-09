@@ -1,0 +1,15 @@
+newmtl GlassTransmission
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Flowers
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd GlassVaseFlowers_Flowers.png
+
+newmtl GlassAlpha
+Kd 0.149 0.149 0.149
+Ks 0.05 0.05 0.05
+d 0.298

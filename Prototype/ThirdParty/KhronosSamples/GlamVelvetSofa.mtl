@@ -1,0 +1,14 @@
+newmtl GlamVelvetSofa_feet
+Kd 1.000 0.800 0.698
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl GlamVelvetSofa_fabric_navy
+Kd 0.012 0.012 0.012
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl GlamVelvetSofa_legs
+Kd 0.020 0.020 0.020
+Ks 0.05 0.05 0.05
+d 1.000

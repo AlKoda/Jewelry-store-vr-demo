@@ -12,6 +12,37 @@ public static class DemoAssetLibrary
 
     public static bool Has(string pack, string model) => Load(pack, model) != null;
 
+    // One box collider on the root covering every renderer, in the root's local space.
+    public static BoxCollider AddBoundsCollider(GameObject instance)
+    {
+        Bounds bounds = LocalBounds(instance);
+        BoxCollider collider = instance.AddComponent<BoxCollider>();
+        collider.center = bounds.center;
+        collider.size = bounds.size;
+        return collider;
+    }
+
+    public static Bounds LocalBounds(GameObject instance)
+    {
+        Bounds bounds = new Bounds();
+        bool first = true;
+        foreach (MeshFilter filter in instance.GetComponentsInChildren<MeshFilter>())
+        {
+            if (filter.sharedMesh == null) continue;
+            Matrix4x4 toRoot = instance.transform.worldToLocalMatrix * filter.transform.localToWorldMatrix;
+            Bounds mesh = filter.sharedMesh.bounds;
+            for (int i = 0; i < 8; i++)
+            {
+                Vector3 corner = mesh.center + Vector3.Scale(mesh.extents,
+                    new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
+                Vector3 p = toRoot.MultiplyPoint3x4(corner);
+                if (first) { bounds = new Bounds(p, Vector3.zero); first = false; }
+                else bounds.Encapsulate(p);
+            }
+        }
+        return bounds;
+    }
+
     public static GameObject Load(string pack, string model)
         => AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/" + pack + "/" + model + ".obj");
 

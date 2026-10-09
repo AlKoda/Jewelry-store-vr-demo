@@ -1,0 +1,25 @@
+newmtl lens_exterior
+Kd 0.008 0.008 0.008
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl lens_interior
+Kd 0.016 0.016 0.016
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl temples
+Kd 0.918 0.918 0.918
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl nose_pads
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl earhooks
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd SunglassesKhronos_earhooks.png

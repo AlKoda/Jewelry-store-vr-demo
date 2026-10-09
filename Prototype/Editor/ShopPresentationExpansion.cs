@@ -128,6 +128,7 @@ public static class ShopPresentationExpansion
                     text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
                     r.sharedMaterial=text.font.material;text.color=Color.black;
                 }
+                else if(r.sharedMaterial!=null && r.sharedMaterial.mainTexture!=null) continue;
                 else r.sharedMaterial=prefab.Kind==DemoToolKind.Cone?orange:
                     prefab.Kind==DemoToolKind.Marker?yellow:charcoal;
             }

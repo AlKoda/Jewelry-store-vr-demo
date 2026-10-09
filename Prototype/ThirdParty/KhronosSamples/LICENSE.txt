@@ -1,0 +1,15 @@
+Khronos glTF Sample Assets — selected models
+Source: https://github.com/KhronosGroup/glTF-Sample-Assets (Models/<Name>/glTF-Binary/<Name>.glb), fetched October 9, 2026.
+Converted to OBJ/MTL with base-colour textures downscaled to 512–1024 px; shapes unchanged. Each model's own
+README in that repository states its license. Attribution for the CC BY models is reproduced here and in
+Docs/ASSET_REGISTER.md.
+
+TrafficCone — © 2024 hinndia. Creative Commons Attribution 4.0 International (CC BY 4.0).
+  https://creativecommons.org/licenses/by/4.0/ — ground plane removed; used as the scene-cone visual.
+SheenChair — © 2020 Wayfair, LLC. Creative Commons Zero v1.0 Universal (CC0).
+GlamVelvetSofa — © 2021 Wayfair, LLC. CC BY 4.0.
+SunglassesKhronos — © 2024 Darmstadt Graphics Group GmbH. CC BY 4.0.
+GlassVaseFlowers — © 2023, released to the public (CC0).
+WaterBottle — © 2017 Microsoft, released to the public (CC0).
+
+CC BY 4.0 requires that this attribution travels with the demo. Sample-asset READMEs: https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models

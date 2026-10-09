@@ -100,6 +100,18 @@ public static class DemoToolsBuilder
         review.EvidenceCamera=evidence;
         panel.Review=review;
 
+        // Last photograph on the wall above the rack, 16:9, facing the showroom.
+        GameObject frame=GameObject.CreatePrimitive(PrimitiveType.Quad);
+        frame.name="PhotoFrame";
+        Object.DestroyImmediate(frame.GetComponent<Collider>());
+        frame.transform.SetParent(root.transform,false);
+        frame.transform.localPosition=new Vector3(-4.95f,2.1f,2.6f);
+        frame.transform.localRotation=Quaternion.Euler(0,-90,0);
+        frame.transform.localScale=new Vector3(1.6f,0.9f,1);
+        PhotoFrame photoFrame=frame.AddComponent<PhotoFrame>();
+        photoFrame.EvidenceCamera=evidence;
+        panel.Frame=photoFrame;
+
         // Top-down map for the presenter panel; ceilings are hidden only for its render.
         DemoOverviewMap map=root.AddComponent<DemoOverviewMap>();
         map.Ceiling=store.transform.Find("Architecture/Ceiling_Optional");
@@ -214,6 +226,19 @@ public static class DemoToolsBuilder
         if(desktop.Panel!=null) desktop.Panel.Interactor=desktop;
     }
 
+    // Swap generated primitives for a third-party model, keeping one collider on the root.
+    private static void UseModel(GameObject tool,string pack,string model)
+    {
+        GameObject visual=DemoAssetLibrary.Place(pack,model,tool.transform,Vector3.zero,0,1);
+        if(visual==null) return;
+        for(int i=tool.transform.childCount-1;i>=0;i--)
+        {
+            Transform child=tool.transform.GetChild(i);
+            if(child!=visual.transform) Object.DestroyImmediate(child.gameObject);
+        }
+        DemoAssetLibrary.AddBoundsCollider(tool);
+    }
+
     private static void Sample(DeployedTool prefab,Transform parent,Vector3 position)
     {
         GameObject sample=(GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject,parent);
@@ -229,6 +254,7 @@ public static class DemoToolsBuilder
     private static DeployedTool SaveTool(DemoToolKind kind)
     {
         DeployedTool temporary=DemoToolGeometry.Create(kind);
+        if(kind==DemoToolKind.Cone) UseModel(temporary.gameObject,"KhronosSamples","TrafficCone");
         GameObject prefab=PrefabUtility.SaveAsPrefabAsset(temporary.gameObject,Folder+"/"+kind+".prefab");
         Object.DestroyImmediate(temporary.gameObject);
         return prefab.GetComponent<DeployedTool>();

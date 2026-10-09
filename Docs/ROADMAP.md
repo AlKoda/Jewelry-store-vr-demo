@@ -54,6 +54,8 @@ Batch 02 uploaded: tool lifecycle, tape connections, scene reset, desktop panel,
 
 October 8: All source compiled under Unity 6000.6.2f1. Store scene saved and actual images captured. Thirteen core runtime assertions passed in Editor Play mode. Full feature completion still awaits UI/VR checks. Package Manager launch issue remains open; current project runs with -noUpm. [Detailed verification](VERIFICATION_2026-10-08.md).
 
+October 9: batch 10 — photo frame on the wall and in the panel, Khronos CC0/CC BY props (armchair, sofa, vase, bottle, sunglasses), TrafficCone tool visual. Unverified. See [handoff](HANDOFF.md).
+
 October 9: batch 09 — rack samples, tool highlight, VR hand labels, presenter overview map and restyled panel, DemoAssetLibrary with Kenney CC0 city models (first third-party assets, see ASSET_REGISTER.md). Unverified. See [handoff](HANDOFF.md).
 
 October 9: batch 08 — single player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, VR control mapping. Unverified. See [handoff](HANDOFF.md).

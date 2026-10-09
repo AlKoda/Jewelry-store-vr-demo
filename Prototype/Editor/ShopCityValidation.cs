@@ -25,7 +25,7 @@ public static class ShopCityValidation
             JewelryStoreBuilder.CreateStore();
             DemoToolsBuilder.Create();
             ShopCityRefinement.Apply();
-            if (expanded) ShopPresentationExpansion.Apply();
+            if (expanded) { ShopPresentationExpansion.Apply(); ShopAssetDressing.Apply(); }
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             DemoValidation.SaveScene(expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
@@ -211,8 +211,11 @@ public static class ShopCityValidation
         GameObject street = GameObject.Find("StreetDetails");
         DemoValidation.Check(street.GetComponentsInChildren<MeshRenderer>().Length <= 6, "Street additions stay within renderer budget");
         DemoValidation.Check(street.GetComponentsInChildren<Collider>().Length == 0, "Street additions have no physics colliders");
-        DemoValidation.Check(GameObject.Find("JewelryStore_Blockout").transform.Find("PresentationDetails") != null,
-            "Presentation details present");
+        Transform store = GameObject.Find("JewelryStore_Blockout").transform;
+        DemoValidation.Check(store.Find("PresentationDetails") != null, "Presentation details present");
+        Transform dressing = store.Find("ThirdPartyDressing");
+        DemoValidation.Check(dressing != null && dressing.childCount == 5, "Third-party dressing placed (5 models)");
+        DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
     }
 }
 #endif

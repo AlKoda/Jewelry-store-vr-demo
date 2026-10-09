@@ -11,6 +11,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     public DesktopInteractor Interactor;
     public SessionReviewRecorder Review;
     public DemoOverviewMap Map;
+    public PhotoFrame Frame;
     public Transform Player;
     public bool Visible = true;
     public bool PointerOverPanel { get; private set; }
@@ -91,6 +92,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 && GUILayout.Button(Interactor.HoldingCamera ? "Return camera to rack (F)" : "Hold camera (F)", button))
                 Interactor.ToggleCamera();
             GUILayout.Label(EvidenceCamera.Status, body);
+            if (Frame != null && Frame.Current != null)
+                GUI.DrawTexture(GUILayoutUtility.GetRect(Width - 24, (Width - 24) * 9 / 16), Frame.Current, ScaleMode.ScaleToFit);
         }
         if (Review != null)
         {

@@ -1,0 +1,22 @@
+newmtl label
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd SheenChair_label.png
+
+newmtl metal
+Kd 0.278 0.259 0.231
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl wood_Brown
+Kd 0.141 0.071 0.012
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd SheenChair_wood_Brown.png
+
+newmtl fabric_Mystere_Mango_Velvet
+Kd 0.882 0.035 0.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd SheenChair_fabric_Mystere_Mango_Velvet.png

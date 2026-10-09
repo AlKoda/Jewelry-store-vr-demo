@@ -1,0 +1,5 @@
+newmtl ConeMatRetro
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd TrafficCone_ConeMatRetro.png
