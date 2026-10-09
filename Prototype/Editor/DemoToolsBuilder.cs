@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using static DemoGeometry;
 
 public static class DemoToolsBuilder
 {
@@ -20,10 +21,8 @@ public static class DemoToolsBuilder
             EditorUtility.DisplayDialog("Already created","Remove the existing ToolSystem before creating another.","OK");
             return;
         }
-        if(!AssetDatabase.IsValidFolder("Assets/CrimeSceneDemo"))
-            AssetDatabase.CreateFolder("Assets","CrimeSceneDemo");
-        if(!AssetDatabase.IsValidFolder(Folder))
-            AssetDatabase.CreateFolder("Assets/CrimeSceneDemo","GeneratedTools");
+        EnsureFolder("Assets/CrimeSceneDemo");
+        EnsureFolder(Folder);
 
         GameObject root=new GameObject("ToolSystem");
         root.transform.SetParent(store.transform,false);
@@ -105,6 +104,9 @@ public static class DemoToolsBuilder
         board.Station=station;
         board.Session=session;
         board.EvidenceCamera=evidence;
+        // A desktop player created before the station picks it up here.
+        DesktopInteractor existing=Object.FindFirstObjectByType<DesktopInteractor>();
+        if(existing!=null) Wire(existing);
         Selection.activeGameObject=root;
         Debug.Log("Tool station created. Save scene; XR grabbing/activation and lighting still require integration.",root);
     }
@@ -147,12 +149,17 @@ public static class DemoToolsBuilder
         interactor.View=camera;
         interactor.Walker=walker;
         interactor.Bounds=bounds;
+        Wire(interactor);
+        return walker;
+    }
+
+    private static void Wire(DesktopInteractor interactor)
+    {
         interactor.Station=Object.FindFirstObjectByType<ToolStation>();
         interactor.Session=Object.FindFirstObjectByType<DemoSession>();
         interactor.EvidenceCamera=Object.FindFirstObjectByType<EvidenceCamera>();
         interactor.Panel=Object.FindFirstObjectByType<DemoDesktopPanel>();
         if(interactor.Panel!=null) interactor.Panel.Interactor=interactor;
-        return walker;
     }
 
     private static DeployedTool SaveTool(DemoToolKind kind)

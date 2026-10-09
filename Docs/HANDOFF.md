@@ -34,6 +34,8 @@ Read the brief, roadmap and latest batch report. Preserve .meta files. Update so
 
 ## Batch 07 — consolidation (October 9, 2026, unverified)
 
+Review fixes: placing or releasing a tool always settles it on the surface beneath (no tools left floating at the rack); taking a second tool puts the first down; walkers and locomotion add default InteriorBounds when none is assigned; the tool station wires an already-created desktop player; XRLocomotion.Relocate is the one place that moves a CharacterController object. CLAUDE.md summarises the conventions for assistants.
+
 DemoGeometry holds the primitive, material, text, mesh-save and combine-by-material helpers the three generators each had their own copy of. SceneTape.Refresh replaces the SendMessage call in validation. The panel's reset needs two clicks within four seconds. Docs/REHEARSAL.md is the demonstration run sheet.
 
 ## Batch 06 — XR-ready adapters, status board, build script (October 9, 2026, unverified)

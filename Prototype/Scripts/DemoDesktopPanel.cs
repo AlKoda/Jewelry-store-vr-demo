@@ -37,6 +37,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private void OnDisable()
     {
+        PointerOverPanel = false;
         if (Station != null) Station.ToolsChanged.RemoveListener(Recount);
     }
 
@@ -49,8 +50,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         bool looking = Interactor != null && Interactor.Walker != null && Interactor.Walker.Looking;
         if (looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
-        PointerOverPanel = Visible && !looking && Area.Contains(Event.current.mousePosition);
-        if (!Visible || Station == null) return;
+        PointerOverPanel = Visible && Station != null && !looking && Area.Contains(Event.current.mousePosition);
+        if (!PointerOverPanel && (!Visible || Station == null)) return;
 
         GUILayout.BeginArea(Area, GUI.skin.box);
         GUILayout.Label("Crime Scene Demo — presenter controls");

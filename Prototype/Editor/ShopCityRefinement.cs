@@ -16,8 +16,7 @@ public static class ShopCityRefinement
         if(store==null) throw new System.InvalidOperationException("Generate the store first.");
         if(GameObject.Find("CityBackdrop")!=null)
             throw new System.InvalidOperationException("City already exists. Generate into a fresh scene.");
-        if(!AssetDatabase.IsValidFolder(Folder))
-            AssetDatabase.CreateFolder("Assets/CrimeSceneDemo","CityGenerated");
+        EnsureFolder(Folder);
         stone=Mat("WarmStone",new Color(.64f,.61f,.54f));
         cream=Mat("Ivory",new Color(.84f,.81f,.72f));
         dark=Mat("CharcoalWood",new Color(.16f,.19f,.19f));

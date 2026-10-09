@@ -1,6 +1,7 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using static DemoGeometry;
 
 // Package-free XR rig skeleton: a root with locomotion and bounds, a Head
 // placeholder and two hands with HandInteractor. After the XR packages are
@@ -46,10 +47,9 @@ public static class XRRigBuilder
 
     private static Transform Child(Transform parent,string name,Vector3 localPosition)
     {
-        GameObject g=new GameObject(name);
-        g.transform.SetParent(parent,false);
-        g.transform.localPosition=localPosition;
-        return g.transform;
+        Transform t=Group(name,parent);
+        t.localPosition=localPosition;
+        return t;
     }
 }
 #endif

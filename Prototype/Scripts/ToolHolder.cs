@@ -11,12 +11,16 @@ public abstract class ToolHolder : MonoBehaviour
     public EvidenceCamera EvidenceCamera;
     public InteriorBounds Bounds;
     public Vector3 CameraHoldOffset = new Vector3(0.22f, -0.12f, 0.35f);
+    public float DropSearchDepth = 2f;
 
     public DeployedTool Held { get; private set; }
-    public bool HoldingCamera => EvidenceCamera != null && EvidenceCamera.Holder == CameraAnchor;
+    public bool HoldingCamera =>
+        EvidenceCamera != null && CameraAnchor != null && EvidenceCamera.Holder == CameraAnchor;
 
     // Where the camera sits while this holder has it.
     protected abstract Transform CameraAnchor { get; }
+
+    private readonly RaycastHit[] hits = new RaycastHit[16];
 
     protected virtual void OnEnable()
     {
@@ -37,12 +41,26 @@ public abstract class ToolHolder : MonoBehaviour
         return tool;
     }
 
+    // Taking a second tool first puts the current one down.
     public virtual void Hold(DeployedTool tool)
     {
-        if (tool != null) Held = tool;
+        if (tool == null || tool == Held) return;
+        if (Held != null) Place();
+        Held = tool;
     }
 
-    public virtual void Place() { Held = null; }
+    // Lets go of the held tool and settles it on the surface beneath, inside the
+    // interior, so nothing is left floating at the rack or in mid-air.
+    public virtual void Place()
+    {
+        DeployedTool tool = Held;
+        Held = null;
+        if (tool == null) return;
+        Vector3 origin = Confine(tool.transform.position) + Vector3.up * 0.05f;
+        Vector3 landing = Raycast(new Ray(origin, Vector3.down), DropSearchDepth, out RaycastHit hit, tool.transform)
+            && hit.normal.y >= 0.7f ? hit.point : new Vector3(origin.x, Mathf.Max(0, origin.y - 0.05f), origin.z);
+        tool.PlaceAt(landing, tool.transform.eulerAngles.y);
+    }
 
     public void Remove(DeployedTool tool)
     {
@@ -65,34 +83,27 @@ public abstract class ToolHolder : MonoBehaviour
 
     public virtual void ReleaseAll()
     {
-        Held = null;
+        Place();
         if (HoldingCamera) EvidenceCamera.ReturnToRack();
     }
 
     // Nearest point inside the interior, when bounds are assigned.
     protected Vector3 Confine(Vector3 point) => Bounds != null ? Bounds.Clamp(point) : point;
 
-    private readonly RaycastHit[] hits = new RaycastHit[16];
-
     // Nearest hit along the ray, skipping colliders under the ignored transforms
     // (the held tool, the player) so they never block their own placement.
-    protected bool Raycast(Ray ray, float distance, out RaycastHit nearest, params Transform[] ignore)
+    protected bool Raycast(Ray ray, float distance, out RaycastHit nearest, Transform ignore = null, Transform alsoIgnore = null)
     {
         nearest = default;
         bool found = false;
         int count = Physics.RaycastNonAlloc(ray, hits, distance);
         for (int i = 0; i < count; i++)
         {
-            if (Ignored(hits[i].transform, ignore)) continue;
+            Transform hitTransform = hits[i].transform;
+            if (ignore != null && hitTransform.IsChildOf(ignore)) continue;
+            if (alsoIgnore != null && hitTransform.IsChildOf(alsoIgnore)) continue;
             if (!found || hits[i].distance < nearest.distance) { nearest = hits[i]; found = true; }
         }
         return found;
-    }
-
-    private static bool Ignored(Transform hit, Transform[] ignore)
-    {
-        foreach (Transform root in ignore)
-            if (root != null && hit.IsChildOf(root)) return true;
-        return false;
     }
 }

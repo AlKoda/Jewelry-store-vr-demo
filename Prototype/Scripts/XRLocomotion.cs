@@ -13,6 +13,11 @@ public sealed class XRLocomotion : MonoBehaviour
 
     private Transform HeadOrRoot => Head != null ? Head : transform;
 
+    private void Awake()
+    {
+        if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
+    }
+
     public bool TryTeleport(Ray pointer)
     {
         return Physics.Raycast(pointer, out RaycastHit hit, MaxTeleportDistance) && hit.normal.y >= 0.7f
@@ -23,7 +28,7 @@ public sealed class XRLocomotion : MonoBehaviour
     {
         if (Bounds != null && !Bounds.Contains(floorPoint)) return false;
         Vector3 head = HeadOrRoot.position;
-        Move(transform.position + new Vector3(floorPoint.x - head.x, floorPoint.y - transform.position.y, floorPoint.z - head.z));
+        Relocate(transform, transform.position + new Vector3(floorPoint.x - head.x, floorPoint.y - transform.position.y, floorPoint.z - head.z));
         return true;
     }
 
@@ -31,13 +36,14 @@ public sealed class XRLocomotion : MonoBehaviour
     public void SnapLeft() { SnapTurn(-SnapTurnDegrees); }
     public void SnapRight() { SnapTurn(SnapTurnDegrees); }
 
-    // A CharacterController on the same object must be off while its transform is set directly.
-    private void Move(Vector3 position)
+    // Sets a position directly. A CharacterController on the object must be off
+    // meanwhile or it keeps its old position; the walker uses this too.
+    public static void Relocate(Transform target, Vector3 position)
     {
-        CharacterController body = GetComponent<CharacterController>();
+        CharacterController body = target.GetComponent<CharacterController>();
         bool active = body != null && body.enabled;
         if (active) body.enabled = false;
-        transform.position = position;
+        target.position = position;
         if (active) body.enabled = true;
     }
 }

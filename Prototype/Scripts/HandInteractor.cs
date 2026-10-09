@@ -2,13 +2,12 @@ using UnityEngine;
 
 // Tracked-hand adapter without any toolkit dependency. Something else moves this
 // transform (a TrackedPoseDriver once XR packages are installed) and input
-// bindings call Grab, Release, Trigger, Spawn and RemoveHeld. Held tools hang
-// below the hand and keep the hand's heading; releasing drops them onto the
-// surface beneath, inside the interior bounds.
+// bindings call Grab, Release, Trigger, SpawnIntoHand and RemoveHeld. Held
+// tools hang below the hand with the hand's heading; releasing drops them onto
+// the surface beneath (ToolHolder.Place).
 public sealed class HandInteractor : ToolHolder
 {
     public float GrabRadius = 0.25f;
-    public float DropSearchDepth = 2f;
     public Vector3 HeldOffset = new Vector3(0, -0.15f, 0);
 
     protected override Transform CameraAnchor => transform;
@@ -51,17 +50,6 @@ public sealed class HandInteractor : ToolHolder
     {
         base.Hold(tool);
         FollowHand();
-    }
-
-    public override void Place()
-    {
-        DeployedTool tool = Held;
-        base.Place();
-        if (tool == null) return;
-        Vector3 origin = tool.transform.position + Vector3.up * 0.05f;
-        Vector3 landing = Raycast(new Ray(origin, Vector3.down), DropSearchDepth, out RaycastHit hit, tool.transform)
-            && hit.normal.y >= 0.7f ? hit.point : new Vector3(origin.x, Mathf.Max(0, origin.y - 0.05f), origin.z);
-        tool.PlaceAt(Confine(landing), tool.transform.eulerAngles.y);
     }
 
     private DeployedTool NearestTool(out bool cameraNear)

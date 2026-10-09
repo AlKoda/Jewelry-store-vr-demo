@@ -1,7 +1,8 @@
 using UnityEngine;
 
 // Desktop first-person walking. Walls and the front barrier collide normally;
-// InteriorBounds is the fallback that keeps the player inside everywhere else.
+// InteriorBounds (added with the shop defaults if unassigned) keeps the player
+// inside everywhere else.
 [RequireComponent(typeof(CharacterController))]
 public sealed class ShopWalkController : MonoBehaviour
 {
@@ -22,6 +23,7 @@ public sealed class ShopWalkController : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<CharacterController>();
+        if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
         spawn = transform.position;
         spawnRotation = transform.rotation;
     }
@@ -56,7 +58,7 @@ public sealed class ShopWalkController : MonoBehaviour
 
     public void ResetPosition()
     {
-        Teleport(spawn);
+        XRLocomotion.Relocate(transform, spawn);
         transform.rotation = spawnRotation;
         verticalSpeed = 0;
         pitch = 0;
@@ -66,17 +68,10 @@ public sealed class ShopWalkController : MonoBehaviour
     private void Move(Vector3 displacement)
     {
         if (body == null) body = GetComponent<CharacterController>();
+        if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
         body.Move(displacement);
-        if (Bounds == null) return;
         Vector3 inside = Bounds.Clamp(transform.position);
-        if ((inside - transform.position).sqrMagnitude > 0.00001f) Teleport(inside);
-    }
-
-    private void Teleport(Vector3 position)
-    {
-        body.enabled = false;
-        transform.position = position;
-        body.enabled = true;
+        if ((inside - transform.position).sqrMagnitude > 0.00001f) XRLocomotion.Relocate(transform, inside);
     }
 
     private void OnDisable()

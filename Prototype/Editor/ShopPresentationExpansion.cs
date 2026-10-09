@@ -14,7 +14,7 @@ public static class ShopPresentationExpansion
 
     public static void Apply()
     {
-        if(!AssetDatabase.IsValidFolder(Folder)) AssetDatabase.CreateFolder("Assets/CrimeSceneDemo","PresentationGenerated");
+        EnsureFolder(Folder);
         wood=Mat("Walnut",new Color(.22f,.13f,.08f));
         brass=Mat("SatinGold",new Color(.62f,.45f,.20f));
         ivory=Mat("Linen",new Color(.82f,.77f,.63f));
