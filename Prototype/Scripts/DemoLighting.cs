@@ -16,6 +16,8 @@ public sealed class DemoLighting : MonoBehaviour
     public float NightAmbientFactor = 0.3f;
     public float NightFogFactor = 0.35f;
     public Color FlashlightColor = new Color(1f, 0.95f, 0.85f);
+    // Assigned by the texture pass when the dusk panorama is present; day sky kept from the scene.
+    public Material NightSky;
 
     public bool Night { get; private set; }
     public Light FlashlightLight { get; private set; }
@@ -29,6 +31,7 @@ public sealed class DemoLighting : MonoBehaviour
     private Renderer[] fixtures = new Renderer[0];
     private Color[] emissions = new Color[0];
     private Color sky, equator, ground, fogColor, background;
+    private Material daySky;
     private float ambientIntensity, fogStart, fogEnd, fogDensity;
     private Camera view;
     private DemoModeSwitch mode;
@@ -120,6 +123,8 @@ public sealed class DemoLighting : MonoBehaviour
         RenderSettings.fogEndDistance = fogEnd * Mathf.Lerp(1, 0.6f, k);
         RenderSettings.fogDensity = fogDensity * Mathf.Lerp(1, 1.6f, k);
         if (view != null) view.backgroundColor = background * fog;
+        // The sky swaps to the dusk panorama past the midpoint of the fade.
+        if (NightSky != null && daySky != null) RenderSettings.skybox = k > 0.5f ? NightSky : daySky;
     }
 
     // Originals, taken once: every scene light except the flashlight, the ceiling
@@ -151,6 +156,7 @@ public sealed class DemoLighting : MonoBehaviour
         // Only a view clearing to a colour is dimmed; a skybox is left as it is.
         view = Camera.main != null && Camera.main.clearFlags == CameraClearFlags.SolidColor ? Camera.main : null;
         if (view != null) background = view.backgroundColor;
+        daySky = RenderSettings.skybox;
         mode = FindFirstObjectByType<DemoModeSwitch>();
     }
 

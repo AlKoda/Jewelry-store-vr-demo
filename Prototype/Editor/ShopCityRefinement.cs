@@ -115,6 +115,8 @@ public static class ShopCityRefinement
         Car(V(10,-.02f,-4.5f),brick,"car_taxi",-90);
         // A patrol car at the kerb in front of the window tells the story from inside the shop.
         Car(V(-1.5f,-.02f,-4.6f),white,"car_police",-90);
+        Car(V(-16,-.02f,-9.4f),stone,"car_hatchback",90);
+        Car(V(19,-.02f,-9.6f),glass,"car_stationwagon",90);
         Bench(V(-3,0,-12.3f));
         Bench(V(8,0,-12.3f));
         for(int i=0;i<3;i++)
@@ -222,6 +224,8 @@ public static class ShopCityRefinement
         Kit("trafficlight_A",g,V(10,0,-11.3f),0,KitScale);
         Kit("dumpster",g,V(-13.5f,0,-13.8f),0,KitScale);
         Kit("trash_A",g,V(-12.4f,0,-12.9f),40,KitScale);
+        Kit("box_A",g,V(-14.9f,0,-13.1f),15,KitScale);
+        Kit("box_B",g,V(-14.6f,0,-14.2f),70,KitScale);
         for(int i=-1;i<=2;i++) Kit("bush",g,V(-24+i*16,0,-14.3f),i*70,3);
     }
 

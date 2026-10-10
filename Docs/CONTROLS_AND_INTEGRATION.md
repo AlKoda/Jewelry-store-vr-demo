@@ -17,7 +17,7 @@ The instructor has unrestricted use. These are methods to connect through UI/XR 
 | Open photo folder on Windows | EvidenceCamera.OpenPhotoFolder() |
 | Reset session | DemoSession.ResetSession() |
 
-UnityEvents: ToolsChanged, SessionReset, PhotoSaved(string path), CaptureFailed(string message) and Shutter.
+UnityEvents: ToolsChanged, SessionReset, PhotoSaved(string path), CaptureFailed(string message) and Shutter. EvidenceCamera also exposes LastPhoto (texture of the last photograph), Viewfinder (live texture while the body is held) and PhotoCount.
 
 Placing successive new posts connects tape automatically. Moving an already placed post adjusts its existing tape without creating another ribbon. Remove a pointed tool with R/Delete, or open Tab and use its Placed tools > Remove button. Removing a post removes attached tape. In VR, grip the deployed tool and press B/Y to remove it.
 
@@ -36,16 +36,20 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | WASD / arrows, Shift | Walk, run (ShopWalkController) |
 | Right click / Escape | Toggle mouse look / release cursor |
 | Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
-| 1, 2, 3, 4 | New cone, marker, tape post or L-scale straight into the hand |
+| 1, 2, 3, 4, 5 | New cone, marker, tape post, L-scale or measuring reel straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
-| T | SelectTapePost on the held or pointed post |
+| T | SelectTapePost on the held or pointed post or measuring reel (same-kind pairs connect) |
 | X | CancelTapeSelection |
 | R / Delete / Backspace | Remove the held or pointed tool |
 | F | Hold the evidence camera in front of the view / return it to the rack |
 | P | CapturePhoto |
 | Home | Return to the start position |
 | I | Intact / robbed store view (CrimeSceneState; also a panel button) |
-| Tab | Show / hide the presenter panel (DemoDesktopPanel) |
+| N | Night / day lighting preset (DemoLighting) |
+| L | Flashlight on the view (DemoLighting) |
+| B | Instructor beacon at the pointed spot (DemoBeacon; also click the panel's overview map) |
+| Tab | Cycle the presenter panel: hidden → strip → full (DemoDesktopPanel) |
+| [ / ] | Presenter panel UI scale (persisted; also +/- buttons) |
 
 Walls, the storefront barrier and InteriorBounds keep the player inside. InteriorBounds.Contains/Clamp are the shared definition of the interior; use them to filter XR teleport destinations.
 
@@ -62,11 +66,13 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Controller | Action |
 |---|---|
 | Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; release puts it down on the surface beneath |
-| Trigger | Photograph while holding the camera; select a held tape post for tape |
+| Trigger | Photograph while holding the camera; select a held tape post or measuring reel |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
-| B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post) |
-| Left thumbstick forward, release | Teleport to the pointed floor spot (marker shows a valid target; refused outside the shop) |
-| Right thumbstick left / right | Snap turn 45° |
+| B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape) |
+| Left thumbstick forward, release | Teleport along a ballistic arc (green when the landing is valid, red otherwise; refused outside the shop); a comfort fade blinks on arrival |
+| Right thumbstick left / right | Snap turn 45° (with comfort fade) |
+| Right thumbstick click | Flashlight on the right hand |
+| Left menu button | Show / hide the hand hint labels |
 
 If controller poses do not arrive under a future OpenXR version, the fallback is a TrackedPoseDriver (Input System package) on the camera and both hands and an input binder that calls the same HandInteractor/XRLocomotion methods; nothing else changes.
 

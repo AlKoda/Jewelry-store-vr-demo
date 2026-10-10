@@ -10,8 +10,9 @@ public static class ShopAssetDressing
 {
     private const string Pack = "KhronosSamples";
     private const string Furniture = "KayKitFurniture";
+    private const string Storage = "KayKitPrototype";
     private const float FurnitureScale = 0.66f;
-    public const int Count = 16;
+    public const int Count = 22;
 
     [MenuItem("Crime Scene Demo/Add Third-Party Dressing")]
     public static void Apply()
@@ -46,6 +47,16 @@ public static class ShopAssetDressing
         placed += Place(Furniture, "shelf_B_large_decorated", group, new Vector3(4.1f, 1.3f, 7.97f), 180, FurnitureScale, false);
         placed += Place(Furniture, "cabinet_medium_decorated", group, new Vector3(1.35f, 0, 9.6f), 90, FurnitureScale, true);
         placed += Place(Furniture, "cactus_medium_A", group, new Vector3(3.7f, 0, 8.55f), 0, FurnitureScale, false);
+        // A low table with books on the rug completes the seating corner; a standing
+        // frame joins the counter decor.
+        placed += Place(Furniture, "table_low", group, new Vector3(3.3f, 0, 6.8f), 90, 0.5f, true);
+        placed += Place(Furniture, "book_set", group, new Vector3(3.3f, 0.38f, 6.8f), 70, 0.5f, false);
+        placed += Place(Furniture, "pictureframe_standing_A", group, new Vector3(-2.75f, 1.165f, 6.6f), -15, FurnitureScale, false);
+        // Robbery staging in the safe room: shipment boxes and a barrel still waiting
+        // to be unpacked (KayKit Prototype Bits, their own atlas).
+        placed += Place(Storage, "Box_A", group, new Vector3(3.45f, 0, 10.35f), 25, 1, false);
+        placed += Place(Storage, "Box_B", group, new Vector3(3.45f, 0.51f, 10.35f), 70, 1, false);
+        placed += Place(Storage, "Barrel_A", group, new Vector3(1.6f, 0.26f, 8.6f), 0, 0.52f, false);
         Debug.Log("Third-party dressing placed: " + placed + " of " + Count + " models.");
     }
 

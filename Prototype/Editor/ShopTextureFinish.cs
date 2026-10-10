@@ -17,7 +17,7 @@ public static class ShopTextureFinish
     public const string Folder = DemoAssetLibrary.Root + "/GeneratedTextures";
     public const string ScanPack = "CgbookcaseTextures";
     public const string EnvironmentPack = "Environments";
-    public const string SkyFile = "venetian_crossroads_2k.hdr", ReflectionFile = "lightroom_14b.hdr";
+    public const string SkyFile = "venetian_crossroads_2k.hdr", ReflectionFile = "lightroom_14b.hdr", NightSkyFile = "the_sky_is_on_fire_2k.hdr";
     public const int ExpectedTextured = 8;
     public static bool HasEnvironment => AssetDatabase.LoadAssetAtPath<Texture>(DemoAssetLibrary.Path(EnvironmentPack, SkyFile)) != null;
     public static bool HasScans => DemoAssetLibrary.HasTexture(ScanPack, "Parquet_flooring_05_Color.png");
@@ -85,16 +85,7 @@ public static class ShopTextureFinish
         if (!HasEnvironment) return 0;
         Texture sky = ImportEnvironment(SkyFile, TextureImporterShape.Texture2D, 2048);
         Texture room = ImportEnvironment(ReflectionFile, TextureImporterShape.TextureCube, 256);
-        Material skybox = AssetDatabase.LoadAssetAtPath<Material>("Assets/CrimeSceneDemo/CityGenerated/StreetSky.mat");
-        if (skybox == null)
-        {
-            skybox = new Material(Shader.Find("Skybox/Panoramic"));
-            AssetDatabase.CreateAsset(skybox, "Assets/CrimeSceneDemo/CityGenerated/StreetSky.mat");
-        }
-        skybox.SetTexture("_MainTex", sky);
-        skybox.SetFloat("_Exposure", 1.1f);
-        skybox.SetFloat("_Rotation", 200);
-        RenderSettings.skybox = skybox;
+        RenderSettings.skybox = Sky("StreetSky", sky, 1.1f, 200);
         if (room != null)
         {
             RenderSettings.defaultReflectionMode = UnityEngine.Rendering.DefaultReflectionMode.Custom;
@@ -103,7 +94,30 @@ public static class ShopTextureFinish
         }
         foreach (Camera camera in Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None))
             if (camera.targetTexture == null && camera.clearFlags == CameraClearFlags.SolidColor) camera.clearFlags = CameraClearFlags.Skybox;
+        // Dusk panorama for the night preset, handed to DemoLighting when both exist.
+        Texture dusk = ImportEnvironment(NightSkyFile, TextureImporterShape.Texture2D, 2048);
+        DemoLighting lighting = Object.FindFirstObjectByType<DemoLighting>(FindObjectsInactive.Include);
+        if (dusk != null && lighting != null)
+        {
+            Material nightSky = Sky("NightSky", dusk, 0.6f, 150);
+            lighting.NightSky = nightSky;
+        }
         return 1;
+    }
+
+    private static Material Sky(string name, Texture panorama, float exposure, float rotation)
+    {
+        string path = "Assets/CrimeSceneDemo/CityGenerated/" + name + ".mat";
+        Material m = AssetDatabase.LoadAssetAtPath<Material>(path);
+        if (m == null)
+        {
+            m = new Material(Shader.Find("Skybox/Panoramic"));
+            AssetDatabase.CreateAsset(m, path);
+        }
+        m.SetTexture("_MainTex", panorama);
+        m.SetFloat("_Exposure", exposure);
+        m.SetFloat("_Rotation", rotation);
+        return m;
     }
 
     private static Texture ImportEnvironment(string file, TextureImporterShape shape, int maxSize)

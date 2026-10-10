@@ -252,6 +252,8 @@ public static class ShopCityValidation
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         lighting.SetNight(true);
         lighting.Complete();
+        if (lighting.NightSky != null)
+            DemoValidation.Check(RenderSettings.skybox == lighting.NightSky, "Night preset swaps to the dusk sky");
         fixture.GetPropertyBlock(block);
         DemoValidation.Check(lighting.Night && reference.intensity < 0.5f * intensity
             && RenderSettings.ambientLight.maxColorComponent < 0.5f * ambientColor.maxColorComponent

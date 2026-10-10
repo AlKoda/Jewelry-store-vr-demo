@@ -1,3 +1,13 @@
+## October 10 — feature batches: panel, viewfinder, measure, review, lighting, VR comfort (Claude, unverified)
+
+- [x] Presenter panel Strip/Full layouts, UI scale, map glyphs, live camera viewfinder, photo count.
+- [x] Measuring-tape tool kind with distance labels and same-kind auto-connect.
+- [x] Review report: contact sheet, shot list, SVG scene sketch per entry with connections.
+- [x] Night preset with dusk sky, flashlight (desktop and VR), instructor beacon from pointer or panel map.
+- [x] Teleport arc, comfort fade, hand hint labels with menu-button toggle.
+- [x] KayKit Prototype Bits, two more cars, safe-room storage, coffee table and dusk HDR.
+- [ ] Run ShopCityValidation.RunTextured on the PC and report the count; check the panel on the projector and the arc in the headset.
+
 ## October 10 — imported kits, scanned textures, HDR environment (Claude, unverified)
 
 - [x] KayKit City and Furniture Bits (CC0) placed by the generators with primitive fallback; one atlas draw per kit.
