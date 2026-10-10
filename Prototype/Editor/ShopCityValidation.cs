@@ -171,7 +171,7 @@ public static class ShopCityValidation
         bool lands = locomotion.FindArcDestination(new Vector3(1, 1.6f, 2), new Vector3(0, 0.3f, 1).normalized, 6, arc, out Vector3 landing);
         DemoValidation.Check(lands && locomotion.Bounds.Contains(landing) && arc.Count > 5, "Teleport arc lands inside the shop");
         bool street = locomotion.FindArcDestination(new Vector3(0, 1.6f, 1), new Vector3(0, 0.3f, -1).normalized, 6, arc, out Vector3 outside);
-        DemoValidation.Check(!street || locomotion.Bounds.Contains(outside), "Teleport arc refuses the street");
+        DemoValidation.Check(!street, "Teleport arc refuses the street");
 
         // Fade and hint toggling only exist while the VR component set is live.
         DemoModeSwitch mode = DemoValidation.Find<DemoModeSwitch>();
