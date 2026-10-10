@@ -45,11 +45,11 @@ public sealed class HandInteractor : ToolHolder
         else if (HoldingCamera) ToggleCamera();
     }
 
-    // Use the held object: photograph with the camera, select a held tape post.
+    // Use the held object: photograph with the camera, select a held tape post or reel.
     public void Trigger()
     {
         if (HoldingCamera) EvidenceCamera.CapturePhoto();
-        else if (Held != null && Held.Kind == DemoToolKind.TapePost) SelectTapePost(Held);
+        else if (Held != null && Held.TapeAnchor != null) SelectTapePost(Held);
     }
 
     public void RemoveHeld() { Remove(Held); }

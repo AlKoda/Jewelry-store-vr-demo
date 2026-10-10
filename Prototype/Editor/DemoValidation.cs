@@ -169,6 +169,44 @@ public static class DemoValidation
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 3) < 0.01f, "Tape follows moved post");
         station.RemoveTool(post1);
         tape.Refresh();
+        // Measuring reels: placed like posts, they join each other with a labelled
+        // ribbon and never join barrier posts, whether placed or selected by hand.
+        DeployedTool reel1 = station.Spawn(DemoToolKind.Measure);
+        DeployedTool reel2 = station.Spawn(DemoToolKind.Measure);
+        reel1.PlaceAt(new Vector3(-1, 0, 2), 0);
+        station.NotifyPlaced(reel1);
+        reel2.PlaceAt(new Vector3(-1, 0, 3.5f), 0);
+        station.NotifyPlaced(reel2);
+        SceneTape measure = null;
+        foreach (SceneTape ribbon in station.DeploymentRoot.GetComponentsInChildren<SceneTape>())
+            if (ribbon.StartAnchor == reel1.TapeAnchor && ribbon.EndAnchor == reel2.TapeAnchor) measure = ribbon;
+        Check(measure != null && measure.ShowsDistance && measure.Flat && measure.DistanceLabel.text == "1.50 m",
+            "Measuring tape connects two reels and reads the distance");
+        reel2.PlaceAt(new Vector3(-1, 0, 4), 0);
+        measure.Refresh();
+        Check(measure.DistanceLabel.text == "2.00 m" && Mathf.Abs(measure.Ribbon.localScale.z - 2) < 0.01f,
+            "Measuring tape label follows the moved reel");
+        station.SelectTapePost(reel1);
+        Check(Find<DemoStatusBoard>().GetComponent<TextMesh>().text.Contains("second reel"), "Status board asks for the second reel");
+        station.CancelTapeSelection();
+        DeployedTool post3 = station.Spawn(DemoToolKind.TapePost);
+        post3.PlaceAt(new Vector3(-1, 0, 5), 0);
+        station.NotifyPlaced(post3);
+        bool placedApart = station.PendingPost == null && station.LastPlacedReel == reel2 && station.LastPlacedPost == post3;
+        station.SelectTapePost(reel2);
+        station.SelectTapePost(post3);
+        bool selectionSwitched = station.PendingPost == post3;
+        station.CancelTapeSelection();
+        int ribbons = 0;
+        foreach (SceneTape ribbon in station.DeploymentRoot.GetComponentsInChildren<SceneTape>())
+            if (ribbon.StartAnchor == post3.TapeAnchor || ribbon.EndAnchor == post3.TapeAnchor
+                || ribbon.StartAnchor == reel2.TapeAnchor || ribbon.EndAnchor == reel2.TapeAnchor) ribbons++;
+        Check(placedApart && selectionSwitched && ribbons == 1 && measure.gameObject.activeSelf,
+            "Measuring reels and barrier posts never cross-connect");
+        // Leave the deployed set as the photo and reset stages expect it (cone, two markers, one post).
+        station.RemoveTool(reel1);
+        station.RemoveTool(reel2);
+        station.RemoveTool(post3);
         evidence = Find<EvidenceCamera>();
         evidence.CaptureFailed.AddListener(message => failure = message);
         evidence.CaptureFromView(Camera.main.transform);

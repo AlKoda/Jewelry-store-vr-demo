@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum DemoToolKind { Cone, Marker, TapePost, Scale }
+public enum DemoToolKind { Cone, Marker, TapePost, Scale, Measure }
 
 [RequireComponent(typeof(Rigidbody))]
 public sealed class DeployedTool : MonoBehaviour
@@ -24,6 +24,19 @@ public sealed class DeployedTool : MonoBehaviour
         if (NumberLabel != null) NumberLabel.text = number.ToString();
         if (BackNumberLabel != null) BackNumberLabel.text = number.ToString();
         name = Kind == DemoToolKind.Marker ? "EvidenceMarker_" + number : Kind.ToString();
+    }
+
+    // Lower-case display name shared by the panel, the hand labels and prompts.
+    public static string KindName(DemoToolKind kind)
+    {
+        switch (kind)
+        {
+            case DemoToolKind.Cone: return "cone";
+            case DemoToolKind.Marker: return "marker";
+            case DemoToolKind.TapePost: return "tape post";
+            case DemoToolKind.Scale: return "scale";
+            default: return "measuring tape";
+        }
     }
 
     public bool Highlighted { get; private set; }

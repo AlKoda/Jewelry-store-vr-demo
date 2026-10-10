@@ -192,6 +192,11 @@ public static class ShopCityValidation
         DemoValidation.Check(scale != null && scale.Kind == DemoToolKind.Scale && scale.GetComponentsInChildren<Collider>().Length == 2
             && scale.GetComponentsInChildren<MeshRenderer>().Length == 30, "Evidence L-scale spawns with two collider arms and 28 bands");
         interactor.Remove(scale);
+        DeployedTool reel = interactor.SpawnIntoHand(DemoToolKind.Measure);
+        DemoValidation.Check(reel != null && reel.Kind == DemoToolKind.Measure && reel.GetComponentsInChildren<Collider>().Length == 1
+            && reel.GetComponentsInChildren<MeshRenderer>().Length == 3 && reel.TapeAnchor != null && reel.TapeAnchor.localPosition.y > 0.02f,
+            "Measuring reel spawns with a collider and a tape anchor");
+        interactor.Remove(reel);
         interactor.Hold(cone);
         interactor.Remove(cone);
         DemoValidation.Check(interactor.Held == null && interactor.Hovered == null, "Removing the held tool clears the hand and hover");

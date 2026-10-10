@@ -71,13 +71,13 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private const string DesktopGuide =
         "WASD / arrows: walk (Shift: faster)   Right click: toggle mouse look; Esc: release\n" +
         "Left click: pick up / place a tool, or take one from the rack\n" +
-        "1-4: new cone / marker / tape post / scale   Q / E, wheel: rotate\n" +
-        "T: select tape post   X: cancel tape   R / Delete: remove\n" +
+        "1-5: new cone / marker / tape post / scale / measuring tape   Q / E, wheel: rotate\n" +
+        "T: select tape post or reel   X: cancel tape   R / Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
         "I: intact / robbed store   Home: return to start\n" +
         "F9: VR mode   Tab: hidden / strip / full panel   [ ]: panel size";
     private const string VRGuide =
-        "Grip: hold tool / rack sample / camera   Trigger: photo, tape post\n" +
+        "Grip: hold tool / rack sample / camera   Trigger: photo, tape post or reel\n" +
         "A / X: new tool   B / Y: remove or next kind\n" +
         "Left stick: teleport   Right stick: snap turn   F9: desktop mode\n" +
         "Tab: hidden / strip / full panel   [ ]: panel size";
@@ -135,7 +135,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         if (Interactor != null && Interactor.isActiveAndEnabled)
         {
-            string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1-4: tools   P: photo";
+            string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1-5: tools   P: photo";
             if (Interactor.Hovered != null) hint = Interactor.Hovered.name + " — Click: move   R / Delete: remove";
             if (Interactor.Held != null) hint = Interactor.HasPlacementTarget
                 ? "Left click: place   Q/E or wheel: rotate   R: remove   Tab: tools"
@@ -153,7 +153,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUILayout.BeginHorizontal(tall);
         GUILayout.Label(vr ? "VR" : "DESKTOP", header, narrow, tall);
         string status = "Tools: " + deployed + "   Next marker: " + Station.NextMarkerNumber;
-        if (Station.PendingPost != null) status += "   Tape: choose the second post (T)";
+        if (Station.PendingPrompt != null) status += "   " + Station.PendingPrompt + " (T)";
         GUILayout.Label(status, stripLabel, narrow, tall);
         if (EvidenceCamera != null)
         {
@@ -192,9 +192,12 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         SpawnButton("Cone", DemoToolKind.Cone);
         SpawnButton("Marker", DemoToolKind.Marker);
         SpawnButton("Tape post", DemoToolKind.TapePost);
-        SpawnButton("Scale", DemoToolKind.Scale);
         GUILayout.EndHorizontal();
-        Station.AutoConnectTape = GUILayout.Toggle(Station.AutoConnectTape, "Connect new tape posts automatically");
+        GUILayout.BeginHorizontal();
+        SpawnButton("Scale", DemoToolKind.Scale);
+        SpawnButton("Measure", DemoToolKind.Measure);
+        GUILayout.EndHorizontal();
+        Station.AutoConnectTape = GUILayout.Toggle(Station.AutoConnectTape, "Connect new tape posts and reels automatically");
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Start a separate tape run", button)) Station.StartNewTapeRun();
         if (Station.PendingPost != null && GUILayout.Button("Cancel tape selection (X)", button)) Station.CancelTapeSelection();
@@ -240,7 +243,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (EvidenceCamera != null && EvidenceCamera.Holder != null)
                 DrawGlyph(mapRect, Map.ToMap(EvidenceCamera.transform.position), cameraDot, 5);
             if (Player != null) DrawGlyph(mapRect, Map.ToMap(Player.position), dot, 8);
-            GUILayout.Label("Green: visitor.  Orange cones, yellow markers, red tape posts, white scales, cyan camera.", body);
+            GUILayout.Label("Green: visitor.  Orange cones, yellow markers, red tape posts, white scales, violet reels, cyan camera.", body);
         }
 
         Section("SESSION");
@@ -301,14 +304,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private static string KindName(DemoToolKind kind, int count)
     {
-        string name;
-        switch (kind)
-        {
-            case DemoToolKind.Cone: name = "cone"; break;
-            case DemoToolKind.Marker: name = "marker"; break;
-            case DemoToolKind.TapePost: name = "tape post"; break;
-            default: name = "scale"; break;
-        }
+        string name = DeployedTool.KindName(kind);
         return count == 1 ? name : name + "s";
     }
 
@@ -383,7 +379,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             else if (Interactor.HoveredSample != null) text += "\nPointing at: rack (" + Interactor.HoveredSample.Kind + ")";
             else if (Interactor.HoveringCamera) text += "\nPointing at: camera";
         }
-        if (Station.PendingPost != null) text += "\nTape: choose the second post (T)";
+        if (Station.PendingPrompt != null) text += "\n" + Station.PendingPrompt + " (T)";
         return text;
     }
 
@@ -394,7 +390,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             case DemoToolKind.Cone: return new Color(1f, 0.55f, 0.1f);
             case DemoToolKind.Marker: return new Color(1f, 0.9f, 0.2f);
             case DemoToolKind.TapePost: return new Color(1f, 0.25f, 0.2f);
-            default: return Color.white;
+            case DemoToolKind.Scale: return Color.white;
+            default: return new Color(0.75f, 0.55f, 1f);
         }
     }
 

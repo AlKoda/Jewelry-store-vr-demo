@@ -41,16 +41,18 @@ public static class DemoToolsBuilder
         station.MarkerPrefab=SaveTool(DemoToolKind.Marker,useImportedAssets);
         station.TapePostPrefab=SaveTool(DemoToolKind.TapePost,useImportedAssets);
         station.ScalePrefab=SaveTool(DemoToolKind.Scale,useImportedAssets);
-        // Half-size samples on the rack top; clicking or grabbing one spawns a new tool.
+        station.MeasurePrefab=SaveTool(DemoToolKind.Measure,useImportedAssets);
+        // Half-size samples spaced 26 cm apart along the 1.4 m rack top (x -4.3 to -2.9);
+        // clicking or grabbing one spawns a new tool. The flat L-scale takes the middle
+        // slot because the handheld camera rests 15 cm above it.
         Transform rack=root.transform;
-        Sample(station.ConePrefab,rack,new Vector3(-4.1f,0.9f,1));
-        Sample(station.MarkerPrefab,rack,new Vector3(-3.72f,0.9f,1));
-        Sample(station.TapePostPrefab,rack,new Vector3(-3.35f,0.9f,1));
-        Sample(station.ScalePrefab,rack,new Vector3(-3.05f,0.9f,0.95f));
-        SceneTape temporaryTape=DemoToolGeometry.CreateTape();
-        GameObject tapePrefab=PrefabUtility.SaveAsPrefabAsset(temporaryTape.gameObject,Folder+"/SceneTape.prefab");
-        Object.DestroyImmediate(temporaryTape.gameObject);
-        station.TapePrefab=tapePrefab.GetComponent<SceneTape>();
+        Sample(station.ConePrefab,rack,new Vector3(-4.12f,0.9f,1));
+        Sample(station.MarkerPrefab,rack,new Vector3(-3.86f,0.9f,1));
+        Sample(station.ScalePrefab,rack,new Vector3(-3.64f,0.9f,0.96f));
+        Sample(station.TapePostPrefab,rack,new Vector3(-3.34f,0.9f,1));
+        Sample(station.MeasurePrefab,rack,new Vector3(-3.08f,0.9f,1));
+        station.TapePrefab=SaveTape(DemoToolGeometry.CreateTape(),"SceneTape");
+        station.MeasureTapePrefab=SaveTape(DemoToolGeometry.CreateMeasureTape(),"MeasureTape");
 
         GameObject spawn=new GameObject("SpawnPoint");
         spawn.transform.SetParent(root.transform,false);
@@ -270,6 +272,13 @@ public static class DemoToolsBuilder
         GameObject prefab=PrefabUtility.SaveAsPrefabAsset(temporary.gameObject,Folder+"/"+kind+".prefab");
         Object.DestroyImmediate(temporary.gameObject);
         return prefab.GetComponent<DeployedTool>();
+    }
+
+    private static SceneTape SaveTape(SceneTape temporary,string name)
+    {
+        GameObject prefab=PrefabUtility.SaveAsPrefabAsset(temporary.gameObject,Folder+"/"+name+".prefab");
+        Object.DestroyImmediate(temporary.gameObject);
+        return prefab.GetComponent<SceneTape>();
     }
 }
 #endif

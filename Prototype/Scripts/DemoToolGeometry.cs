@@ -49,16 +49,24 @@ public static class DemoToolGeometry
                 if (i>=2) Visual(band,root.transform,new Vector3(0.01f,0.0033f,0.005f+i*0.01f),new Vector3(0.016f,0.0006f,0.0095f));
             }
         }
+        else if (kind == DemoToolKind.Measure)
+        {
+            // Measuring-tape reel, 8 cm across and lying flat: the body collides, the
+            // label plate and hook are decoration. Measuring tape stretches between the
+            // anchors on top of two reels, exactly as barrier tape does between posts.
+            Primitive("Body",PrimitiveType.Cylinder,root.transform,
+                new Vector3(0,0.0125f,0),new Vector3(0.08f,0.0125f,0.08f));
+            Visual("Plate",root.transform,new Vector3(0,0.027f,0),new Vector3(0.045f,0.004f,0.03f));
+            Visual("Hook",root.transform,new Vector3(0.045f,0.006f,0),new Vector3(0.012f,0.012f,0.02f));
+            Anchor(tool,0.03f);
+        }
         else
         {
             Primitive("Base",PrimitiveType.Cylinder,root.transform,
                 new Vector3(0,0.025f,0),new Vector3(0.3f,0.025f,0.3f));
             Primitive("Post",PrimitiveType.Cylinder,root.transform,
                 new Vector3(0,0.47f,0),new Vector3(0.04f,0.44f,0.04f));
-            GameObject anchor=new GameObject("TapeAnchor");
-            anchor.transform.SetParent(root.transform,false);
-            anchor.transform.localPosition=new Vector3(0,0.86f,0);
-            tool.TapeAnchor=anchor.transform;
+            Anchor(tool,0.86f);
         }
         return tool;
     }
@@ -67,12 +75,39 @@ public static class DemoToolGeometry
     {
         GameObject root=new GameObject("SceneTape");
         SceneTape tape=root.AddComponent<SceneTape>();
-        GameObject ribbon=Cube("Ribbon",root.transform,Vector3.zero,Vector3.one);
-        Collider collider=ribbon.GetComponent<Collider>();
-        if (Application.isPlaying) Object.Destroy(collider);
-        else Object.DestroyImmediate(collider);
-        tape.Ribbon=ribbon.transform;
+        tape.Ribbon=Visual("Ribbon",root.transform,Vector3.zero,Vector3.one).transform;
         return tape;
+    }
+
+    // Measuring tape: a flat 2.5 cm ribbon with end caps and a distance label, read
+    // by SceneTape.Refresh; materials come from the presentation pass like the tools'.
+    public static SceneTape CreateMeasureTape()
+    {
+        SceneTape tape=CreateTape();
+        tape.name="MeasureTape";
+        tape.Flat=true;
+        tape.RibbonHeight=0.025f;
+        tape.StartCap=Visual("StartCap",tape.transform,Vector3.zero,new Vector3(0.03f,0.008f,0.02f)).transform;
+        tape.EndCap=Visual("EndCap",tape.transform,Vector3.zero,new Vector3(0.03f,0.008f,0.02f)).transform;
+        GameObject label=new GameObject("Distance");
+        label.transform.SetParent(tape.transform,false);
+        TextMesh text=label.AddComponent<TextMesh>();
+        DeployedTool.EnsureFont(text);
+        text.anchor=TextAnchor.LowerCenter;
+        text.alignment=TextAlignment.Center;
+        text.fontSize=64;
+        text.characterSize=0.006f;
+        text.color=Color.white;
+        tape.DistanceLabel=text;
+        return tape;
+    }
+
+    private static void Anchor(DeployedTool tool,float height)
+    {
+        GameObject anchor=new GameObject("TapeAnchor");
+        anchor.transform.SetParent(tool.transform,false);
+        anchor.transform.localPosition=new Vector3(0,height,0);
+        tool.TapeAnchor=anchor.transform;
     }
 
     private static TextMesh Label(Transform panel, bool reverse)

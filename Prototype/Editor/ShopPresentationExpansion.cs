@@ -113,7 +113,9 @@ public static class ShopPresentationExpansion
     private static void StyleTools()
     {
         ToolStation station=Object.FindFirstObjectByType<ToolStation>();
-        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab,station.ScalePrefab})
+        Material labelMat=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/ToolNumber.mat");
+        if(labelMat==null) {labelMat=new Material(Shader.Find("CrimeScene/WorldText"));AssetDatabase.CreateAsset(labelMat,Folder+"/ToolNumber.mat");}
+        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab,station.ScalePrefab,station.MeasurePrefab})
         {
             if(prefab==null) continue;
             string path=AssetDatabase.GetAssetPath(prefab);
@@ -121,17 +123,10 @@ public static class ShopPresentationExpansion
             foreach(MeshRenderer r in contents.GetComponentsInChildren<MeshRenderer>())
             {
                 TextMesh text=r.GetComponent<TextMesh>();
-                if(text!=null)
-                {
-                    text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                    Material labelMat=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/ToolNumber.mat");
-                    if(labelMat==null) {labelMat=new Material(Shader.Find("CrimeScene/WorldText"));AssetDatabase.CreateAsset(labelMat,Folder+"/ToolNumber.mat");}
-                    DepthTestedLabel label=text.GetComponent<DepthTestedLabel>();
-                    if(label==null) label=text.gameObject.AddComponent<DepthTestedLabel>();
-                    label.LabelMaterial=labelMat;label.Refresh();text.color=Color.black;
-                }
+                if(text!=null) { DepthTested(text,labelMat); text.color=Color.black; }
                 else if(r.sharedMaterial!=null && r.sharedMaterial.mainTexture!=null) continue;
                 else if(prefab.Kind==DemoToolKind.Scale) r.sharedMaterial=r.name=="BandBlack"?charcoal:ivory;
+                else if(prefab.Kind==DemoToolKind.Measure) r.sharedMaterial=r.name=="Body"?yellow:charcoal;
                 else r.sharedMaterial=prefab.Kind==DemoToolKind.Cone?orange:
                     prefab.Kind==DemoToolKind.Marker?yellow:charcoal;
             }
@@ -141,6 +136,26 @@ public static class ShopPresentationExpansion
         GameObject tape=PrefabUtility.LoadPrefabContents(tapePath);
         tape.GetComponentInChildren<MeshRenderer>().sharedMaterial=yellow;
         PrefabUtility.SaveAsPrefabAsset(tape,tapePath);PrefabUtility.UnloadPrefabContents(tape);
+        // Measuring tape: matte yellow ribbon, charcoal end caps, depth-tested white distance label.
+        string measurePath=AssetDatabase.GetAssetPath(station.MeasureTapePrefab);
+        GameObject measure=PrefabUtility.LoadPrefabContents(measurePath);
+        Transform ribbon=measure.GetComponent<SceneTape>().Ribbon;
+        foreach(MeshRenderer r in measure.GetComponentsInChildren<MeshRenderer>())
+        {
+            TextMesh text=r.GetComponent<TextMesh>();
+            if(text!=null) DepthTested(text,labelMat);
+            else r.sharedMaterial=r.transform==ribbon?yellow:charcoal;
+        }
+        PrefabUtility.SaveAsPrefabAsset(measure,measurePath);PrefabUtility.UnloadPrefabContents(measure);
+    }
+
+    // World text on the live font atlas with the depth-tested shader (see DepthTestedLabel).
+    private static void DepthTested(TextMesh text,Material labelMat)
+    {
+        text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        DepthTestedLabel label=text.GetComponent<DepthTestedLabel>();
+        if(label==null) label=text.gameObject.AddComponent<DepthTestedLabel>();
+        label.LabelMaterial=labelMat;label.Refresh();
     }
 
     private static void StreetDetails()

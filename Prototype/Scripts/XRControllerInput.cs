@@ -70,7 +70,7 @@ public sealed class XRControllerInput : MonoBehaviour
     {
         if (Label == null) return;
         bool left = Node == XRNode.LeftHand;
-        Label.text = (left ? "X" : "A") + ": new " + SpawnKind.ToString().ToLowerInvariant()
+        Label.text = (left ? "X" : "A") + ": new " + DeployedTool.KindName(SpawnKind)
             + "\n" + (left ? "Y" : "B") + ": remove / next kind";
     }
 

@@ -59,7 +59,7 @@ public sealed class DemoStatusBoard : MonoBehaviour
         if (Station == null) { text.text = photoLine; return; }
         text.text = "SCENE TOOLS\n"
             + Station.DeployedCount + " deployed, next marker " + Station.NextMarkerNumber + "\n"
-            + (Station.PendingPost != null ? "Tape: choose the second post" : "Tape: select two posts") + "\n"
+            + (Station.PendingPrompt ?? "Tape: select two posts or two reels") + "\n"
             + photoLine;
     }
 }

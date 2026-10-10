@@ -40,6 +40,7 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.Alpha2)) SpawnIntoHand(DemoToolKind.Marker);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnIntoHand(DemoToolKind.TapePost);
         if (Input.GetKeyDown(KeyCode.Alpha4)) SpawnIntoHand(DemoToolKind.Scale);
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SpawnIntoHand(DemoToolKind.Measure);
         if (Input.GetKeyDown(KeyCode.Q)) Rotate(-RotateStep);
         if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
         float wheel = Input.GetAxis("Mouse ScrollWheel");
