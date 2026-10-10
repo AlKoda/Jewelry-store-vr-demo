@@ -4,19 +4,19 @@
 
 All work lands on main; pull before editing.
 
-**Latest verified project: JewelryStoreForms**, October 10, 2026, Unity 6000.6.2f1 Built-in. All source compiled and 72 automated Editor Play mode assertions passed. See [GEOMETRY_FORMS.md](GEOMETRY_FORMS.md) for the changes, actual renders, measured budgets and limitations.
+**Latest verified scene: JewelryStoreInterior**, October 10, 2026. Unity 6000.6.2f1 Built-in; all source and the world-text shader compiled and **81 automated Editor Play mode checks passed**. See [INTERIOR_FINISH.md](INTERIOR_FINISH.md) for renders, material choices, measured budgets and limits.
 
-Download Downloads/JewelryStore_Forms_Unity6000.6.2f1.zip. Extract to UnityProject_Forms beside README; Open-Unity-Forms.cmd opens Assets/CrimeSceneDemo/Scenes/JewelryStoreForms.unity. The isolated PC project is already there. Prior UnityProject and UnityProject_Next remain unchanged.
+Download Downloads/JewelryStore_Interior_Unity6000.6.2f1.zip; extract into UnityProject_Interior beside README, use Open-Unity-Interior.cmd and open Assets/CrimeSceneDemo/Scenes/JewelryStoreInterior.unity. The same project is already on the PC.
 
-Run ShopCityValidation.RunForms in an isolated project to regenerate and validate. This mode uses procedural city, lamps and tools, skips ShopAssetDressing, then applies the intact overlay and ShopFormRefinement. RunExpanded retains the imported-assets path; that variant has not been rerun in this batch.
+Run ShopCityValidation.RunInterior in an isolated project to regenerate. RunForms and historical downloads remain available. Imported-assets RunExpanded was not rerun.
 
-New measured groups: shop detail 1,624 triangles / 24 renderers; city 5,044 / 19. These are not total-scene counts or measured FPS.
+Order: Forms -> ShopInteriorFinish (walls/floor/lights/doors) -> ShopDisplayFinish (glass/cases/jewelry/world labels). Keep Prototype/Shaders/WorldText.shader synchronized into Assets/CrimeSceneDemo/Shaders; Scripts/DepthTestedLabel.cs keeps the font atlas live. All materials use flat colors; no new texture maps. Glass has no refraction. The staff door is static, fixed open; the safe door still follows the intact/robbed toggle.
 
-Runtime fixes: HandInteractor compares tools/samples/camera by closest collider distance; DemoModeSwitch releases holders before hand deactivation to avoid Unity's reparenting restriction. Validator fixes: distinct photoFrame variable, Physics.SyncTransforms before immediate hand queries, and an active/rack-parent assertion after switching modes.
+Measured: finish floor/door geometry 358 triangles / 10 renderers; display strips 96 / 1; form detail 1,624 / 24; city 5,044 / 19. Initial active scene MeshFilters: 14,058 triangles / 322 mesh renderers, excluding text. Four shadowless lights; three local fills use vertex lighting. These are content counts, not FPS measurements.
 
-Desktop/VR adapters, teleport, snap turn and hand interactions were exercised programmatically, without a headset. Quest tracking/performance, hands-on interaction and standalone build remain pending. Package Manager needs -noUpm. The known Editor SearchDatabase exception still appears; validation completes.
+The inherited interaction fixes remain: closest item wins when grabbing; release holders before mode-switch deactivation; synchronous grab tests call Physics.SyncTransforms. Quest tracking, headset frame time/stereo, hands-on usability and standalone build remain pending. Package Manager needs -noUpm; the known Editor SearchDatabase exception did not prevent validation.
 
-PC root: C:\\Users\\MOBPC\\Documents\\Codex\\Jewelry-store-vr-demo\\Jewelry-store-vr-demo-main
+PC root: C:\Users\MOBPC\Documents\Codex\Jewelry-store-vr-demo\Jewelry-store-vr-demo-main
 
 ## Goal
 

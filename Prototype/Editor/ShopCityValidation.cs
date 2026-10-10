@@ -12,19 +12,22 @@ public static class ShopCityValidation
     private const string Key = "ShopCityValidationStage";
     private const string ExpandedKey = "ShopCityValidationExpanded";
     private const string FormsKey = "ShopCityValidationForms";
+    private const string InteriorKey = "ShopCityValidationInterior";
     static ShopCityValidation() { EditorApplication.update += Tick; }
 
     public static void Run() { Generate(false); }
     public static void RunExpanded() { Generate(true); }
     public static void RunForms() { Generate(true, true); }
+    public static void RunInterior() { Generate(true, true, true); }
 
-    private static void Generate(bool expanded, bool forms = false)
+    private static void Generate(bool expanded, bool forms = false, bool interior = false)
     {
         try
         {
             SessionState.SetBool(ExpandedKey, expanded);
             SessionState.SetBool(FormsKey, forms);
-            DemoValidation.Begin(forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
+            SessionState.SetBool(InteriorKey, interior);
+            DemoValidation.Begin(interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
             JewelryStoreBuilder.CreateStore();
             DemoToolsBuilder.Create(!forms);
             ShopCityRefinement.Apply(!forms);
@@ -36,15 +39,17 @@ public static class ShopCityValidation
                 if (forms) ShopFormRefinement.Apply();
             }
             Camera camera = DemoValidation.CreatePreviewCamera(150);
-            DemoValidation.SaveScene(forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
+            if (interior) { ShopInteriorFinish.ApplyShell(); ShopDisplayFinish.Apply(); }
+            DemoValidation.SaveScene(interior ? "JewelryStoreInterior" : forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
             if (expanded) DemoValidation.Capture(camera, "display-details.png", new Vector3(-.4f, 1.6f, 2), new Vector3(-2, 1, 3.7f));
             DemoValidation.Capture(camera, "street-from-inside.png", new Vector3(0, 1.65f, 1.5f), new Vector3(0, 2, -18));
             DemoValidation.Capture(camera, "safe-room.png", new Vector3(3.4f, 1.65f, 8.8f), new Vector3(2.1f, 0.9f, 10.5f));
+            if (interior) DemoValidation.Capture(camera, "entrance.png", new Vector3(-.2f, 1.65f, 2.1f), new Vector3(2.2f, 1.2f, -.05f));
             DemoValidation.CaptureOverview(camera);
             DemoToolsBuilder.CreatePlayer(camera);
             DemoValidation.SaveScene();
-            DemoValidation.EnterPlayMode(Key, (expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
+            DemoValidation.EnterPlayMode(Key, (interior ? "Interior scene generation and 6" : expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
                 + " actual Unity rendered captures passed.");
         }
         catch (Exception ex) { DemoValidation.Finish(Key, false, ex.ToString()); }
@@ -63,6 +68,7 @@ public static class ShopCityValidation
                 HandChecks();
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
+                if (SessionState.GetBool(InteriorKey, false)) { ShopInteriorFinish.CheckBudget(); ShopDisplayFinish.CheckBudget(); }
                 if (SessionState.GetBool(ExpandedKey, false)) ExpansionChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);

@@ -91,3 +91,9 @@ Panel merge repaired; generated scene and all source compiled. Forty automated E
 Chamfered cabinets, shaped busts, framed niches, storefront/rear-wall depth and tapered cars generated and inspected in actual Unity captures. All source compiled; 72 automated Editor Play mode checks passed. New shop detail: 1,624 triangles / 24 renderers. City: 5,044 triangles / 19 renderers. Fixed nearest-item camera grabbing and camera release before mode switching. Complete snapshot: Downloads/JewelryStore_Forms_Unity6000.6.2f1.zip. See [report and screenshots](GEOMETRY_FORMS.md).
 
 Quest frame time, real controller tracking, hands-on usability and standalone build remain pending. Imported-assets RunExpanded was not rerun; RunForms uses procedural assets.
+
+## October 10 interior finish — verified
+
+Completed the shell pass (walls, floor, lighting and doors), then the glass/display pass. All source and the world-text shader compiled; 81 Editor Play mode checks passed. Added floor/door geometry: 358 triangles / 10 renderers. Four shadowless lights; no new texture maps. Simplified jewelry loops and glass surfaces. Latest download: Downloads/JewelryStore_Interior_Unity6000.6.2f1.zip. See [report and screenshots](INTERIOR_FINISH.md).
+
+V01 now has a verified first material/lighting pass in desktop Unity; final polish and headset readability remain pending. Real Quest performance and a standalone build are still outstanding.

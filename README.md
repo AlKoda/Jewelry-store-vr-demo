@@ -4,13 +4,13 @@ Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, t
 
 ## Latest tested project
 
-[Download the Forms Unity project](Downloads/JewelryStore_Forms_Unity6000.6.2f1.zip) and [view the screenshots and report](Docs/GEOMETRY_FORMS.md).
+[Download the Interior Unity project](Downloads/JewelryStore_Interior_Unity6000.6.2f1.zip) and [view the screenshots/report](Docs/INTERIOR_FINISH.md).
 
-Extract into **UnityProject_Forms** beside this README, run **Open-Unity-Forms.cmd**, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreForms.unity**. Unity 6000.6.2f1, Built-in pipeline. The launcher uses the current -noUpm workaround.
+Extract into **UnityProject_Interior** beside this README, run **Open-Unity-Interior.cmd**, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreInterior.unity**. Unity 6000.6.2f1, Built-in pipeline; launcher uses the current -noUpm workaround.
 
-October 10: all source compiled and **72 automated Editor Play mode checks passed**. Refined cabinet/bust shapes, wall niches, storefront framing and tapered cars use flat materials and simple geometry. New shop detail: 1,624 triangles / 24 renderers; city backdrop: 5,044 / 19. These counts are not an FPS measurement.
+October 10: all source and the world-text shader compiled; **81 automated Editor Play mode checks passed**. First finishes for walls, stone flooring, lights, doors, glass and display cases use simple geometry and flat materials. Four shadowless lights; no new texture maps. Quest performance/tracking and standalone build remain pending.
 
-The Forms scene uses procedural environment and tool models. Historical Expanded and Review downloads remain available. This download is a Unity project; standalone build and Quest testing remain pending.
+Historical Forms, Expanded and Review projects remain available. This download is a Unity project, not an executable.
 
 ## Controls
 
@@ -23,6 +23,6 @@ The Forms scene uses procedural environment and tool models. Historical Expanded
 
 ## Development
 
-Prototype contains editable source; Downloads contains generated projects with Assets, .meta files and ProjectSettings. Keep current source and snapshots together. ShopCityValidation.RunForms regenerates the procedural variant and its verification report; RunExpanded retains the imported-assets variant.
+Prototype contains editable source; Downloads contains generated projects with Assets, .meta files and ProjectSettings. Keep current source and snapshots together. ShopCityValidation.RunInterior regenerates the finished procedural variant and its verification report; copy Prototype/Shaders alongside Editor and Scripts when syncing source; RunExpanded retains the imported-assets variant.
 
 VR adapters pass programmatic checks, but actual tracking requires OpenXR setup and Quest testing. Package Manager startup remains unresolved. See [setup](Docs/SETUP.md), [controls](Docs/CONTROLS_AND_INTEGRATION.md), [handoff](Docs/HANDOFF.md), [roadmap](Docs/ROADMAP.md), [brief](Docs/PROJECT_BRIEF.md), [rehearsal](Docs/REHEARSAL.md) and [asset register](Docs/ASSET_REGISTER.md).
