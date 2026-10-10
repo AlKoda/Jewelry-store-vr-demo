@@ -12,6 +12,7 @@ public sealed class DeployedTool : MonoBehaviour
     public int MarkerNumber { get; private set; }
     // The adapter currently carrying this tool; null when it rests in the scene.
     public ToolHolder Holder { get; set; }
+    public bool HasBeenPlaced { get; set; }
     public bool Free => Holder == null;
 
     public void SetMarkerNumber(int number)

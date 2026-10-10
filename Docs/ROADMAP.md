@@ -1,3 +1,16 @@
+## October 10 — glass and tools completed
+
+- [x] Seat all 32 fragments; smaller transparent pieces with physical edges.
+- [x] Correct marker A-frame and save depth-tested number labels into prefabs.
+- [x] Auto-connect placed tape posts; update moving endpoints; separate tape runs.
+- [x] R/Delete and explicit placed-tool Remove buttons; remove connected tape with posts.
+- [x] Static glass reflection, fracture outlines and clear glazing.
+- [x] Render and inspect both marker faces, tape, fragments and storefront; 137 automated assertions passed.
+- [ ] Quest 2 input/comfort and glass overdraw/FPS profiling.
+- [ ] Standalone build validation.
+
+See [report and screenshots](GLASS_AND_TOOLS.md).
+
 ## October 10 — robbery refinement completed
 
 - [x] Hide presenter menu at startup; compact controls hint.

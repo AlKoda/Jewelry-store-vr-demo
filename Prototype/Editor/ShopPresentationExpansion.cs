@@ -123,7 +123,11 @@ public static class ShopPresentationExpansion
                 if(text!=null)
                 {
                     text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
-                    r.sharedMaterial=text.font.material;text.color=Color.black;
+                    Material labelMat=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/ToolNumber.mat");
+                    if(labelMat==null) {labelMat=new Material(Shader.Find("CrimeScene/WorldText"));AssetDatabase.CreateAsset(labelMat,Folder+"/ToolNumber.mat");}
+                    DepthTestedLabel label=text.GetComponent<DepthTestedLabel>();
+                    if(label==null) label=text.gameObject.AddComponent<DepthTestedLabel>();
+                    label.LabelMaterial=labelMat;label.Refresh();text.color=Color.black;
                 }
                 else if(r.sharedMaterial!=null && r.sharedMaterial.mainTexture!=null) continue;
                 else r.sharedMaterial=prefab.Kind==DemoToolKind.Cone?orange:

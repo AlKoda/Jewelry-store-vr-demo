@@ -12,6 +12,7 @@ public static class ShopCityValidation
     private const string Key = "ShopCityValidationStage";
     private const string ExpandedKey = "ShopCityValidationExpanded";
     private const string FormsKey = "ShopCityValidationForms";
+    private const string GlassKey = "ShopCityValidationGlass";
     private const string RobberyKey = "ShopCityValidationRobbery";
     private const string InteriorKey = "ShopCityValidationInterior";
     static ShopCityValidation() { EditorApplication.update += Tick; }
@@ -19,18 +20,20 @@ public static class ShopCityValidation
     public static void Run() { Generate(false); }
     public static void RunExpanded() { Generate(true); }
     public static void RunForms() { Generate(true, true); }
+    public static void RunGlass() { Generate(true,true,true,true,true); }
     public static void RunRobbery() { Generate(true, true, true, true); }
     public static void RunInterior() { Generate(true, true, true); }
 
-    private static void Generate(bool expanded, bool forms = false, bool interior = false, bool robbery = false)
+    private static void Generate(bool expanded, bool forms = false, bool interior = false, bool robbery = false, bool glass = false)
     {
         try
         {
+            SessionState.SetBool(GlassKey,glass);
             SessionState.SetBool(RobberyKey, robbery);
             SessionState.SetBool(ExpandedKey, expanded);
             SessionState.SetBool(FormsKey, forms);
             SessionState.SetBool(InteriorKey, interior);
-            DemoValidation.Begin(robbery ? "VerificationRobbery" : interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
+            DemoValidation.Begin(glass ? "VerificationGlass" : robbery ? "VerificationRobbery" : interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
             JewelryStoreBuilder.CreateStore();
             DemoToolsBuilder.Create(!forms);
             ShopCityRefinement.Apply(!forms);
@@ -44,7 +47,8 @@ public static class ShopCityValidation
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             if (interior) { ShopInteriorFinish.ApplyShell(); ShopDisplayFinish.Apply(); }
             if (robbery) ShopRobberyDressing.Apply();
-            DemoValidation.SaveScene(robbery ? "JewelryStoreRobbery" : interior ? "JewelryStoreInterior" : forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
+            if(glass) ShopGlassRefinement.Apply();
+            DemoValidation.SaveScene(glass ? "JewelryStoreGlass" : robbery ? "JewelryStoreRobbery" : interior ? "JewelryStoreInterior" : forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
             if (expanded) DemoValidation.Capture(camera, "display-details.png", new Vector3(-.4f, 1.6f, 2), new Vector3(-2, 1, 3.7f));
             DemoValidation.Capture(camera, "street-from-inside.png", new Vector3(0, 1.65f, 1.5f), new Vector3(0, 2, -18));
@@ -58,9 +62,10 @@ public static class ShopCityValidation
                 state.ShowRobbed();
             }
             DemoValidation.CaptureOverview(camera);
+            if(glass) GlassToolValidation.Capture(camera);
             DemoToolsBuilder.CreatePlayer(camera);
             DemoValidation.SaveScene();
-            DemoValidation.EnterPlayMode(Key, (robbery ? "Robbery scene generation and 7" : interior ? "Interior scene generation and 6" : expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
+            DemoValidation.EnterPlayMode(Key, (glass ? "Glass scene generation and 10" : robbery ? "Robbery scene generation and 7" : interior ? "Interior scene generation and 6" : expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
                 + " actual Unity rendered captures passed.");
         }
         catch (Exception ex) { DemoValidation.Finish(Key, false, ex.ToString()); }
@@ -74,6 +79,7 @@ public static class ShopCityValidation
             if (stage == 1)
             {
                 if (SessionState.GetBool(RobberyKey, false)) ShopRobberyDressing.Check();
+                if(SessionState.GetBool(GlassKey,false)) GlassToolValidation.Check();
                 WalkingChecks();
                 LocomotionChecks();
                 InteractionChecks();

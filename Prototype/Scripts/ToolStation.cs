@@ -13,6 +13,9 @@ public sealed class ToolStation : MonoBehaviour
 
     private int nextMarker = 1;
     private DeployedTool pendingPost;
+    private DeployedTool lastPlacedPost;
+    public bool AutoConnectTape = true;
+    public DeployedTool LastPlacedPost => lastPlacedPost;
     public DeployedTool PendingPost => pendingPost;
     public int NextMarkerNumber => nextMarker;
     // Active tools only; objects pending destruction are already inactive.
@@ -60,12 +63,36 @@ public sealed class ToolStation : MonoBehaviour
             Debug.LogError("Assign tape prefab and post anchors.", this);
             return;
         }
+        foreach(SceneTape existing in DeploymentRoot.GetComponentsInChildren<SceneTape>())
+            if ((existing.StartAnchor==pendingPost.TapeAnchor && existing.EndAnchor==post.TapeAnchor) ||
+                (existing.EndAnchor==pendingPost.TapeAnchor && existing.StartAnchor==post.TapeAnchor))
+            { pendingPost=null; return; }
         SceneTape tape = Instantiate(TapePrefab, DeploymentRoot);
         tape.StartAnchor = pendingPost.TapeAnchor;
         tape.EndAnchor = post.TapeAnchor;
         pendingPost = null;
+        tape.Refresh();
         ToolsChanged.Invoke();
     }
+
+    // Called only on deliberate placement, not spawn, reset or mode switching.
+    public void NotifyPlaced(DeployedTool tool)
+    {
+        if(tool==null || tool.Kind!=DemoToolKind.TapePost || !tool.transform.IsChildOf(DeploymentRoot)) return;
+        if(!tool.HasBeenPlaced && AutoConnectTape)
+        {
+            if(lastPlacedPost!=null && lastPlacedPost.gameObject.activeInHierarchy)
+            {
+                pendingPost=lastPlacedPost;
+                SelectTapePost(tool);
+            }
+            lastPlacedPost=tool;
+        }
+        tool.HasBeenPlaced=true;
+        ToolsChanged.Invoke();
+    }
+
+    public void StartNewTapeRun() { lastPlacedPost=null; pendingPost=null; }
 
     public void CancelTapeSelection() { pendingPost = null; }
 
@@ -74,6 +101,10 @@ public sealed class ToolStation : MonoBehaviour
         if (tool == null || DeploymentRoot == null ||
             !tool.transform.IsChildOf(DeploymentRoot)) return;
         if (pendingPost == tool) pendingPost = null;
+        if(lastPlacedPost==tool) lastPlacedPost=null;
+        foreach(SceneTape tape in DeploymentRoot.GetComponentsInChildren<SceneTape>())
+            if(tape.StartAnchor==tool.TapeAnchor || tape.EndAnchor==tool.TapeAnchor)
+            { tape.gameObject.SetActive(false); Destroy(tape.gameObject); }
         tool.RemoveTool();
         ToolsChanged.Invoke();
     }
@@ -81,6 +112,7 @@ public sealed class ToolStation : MonoBehaviour
     public void ClearTools()
     {
         pendingPost = null;
+        lastPlacedPost = null;
         if (DeploymentRoot == null) return;
         for (int i = DeploymentRoot.childCount - 1; i >= 0; i--)
         {

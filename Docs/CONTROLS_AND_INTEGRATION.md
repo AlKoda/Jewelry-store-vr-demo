@@ -8,6 +8,8 @@ The instructor has unrestricted use. These are methods to connect through UI/XR 
 | New numbered marker | ToolStation.SpawnMarker() |
 | New tape post | ToolStation.SpawnTapePost() |
 | Select first/second tape endpoint | ToolStation.SelectTapePost(DeployedTool) |
+| Automatically connect deliberately placed post | ToolStation.NotifyPlaced(DeployedTool), called by ToolHolder.Place() |
+| Start a separate tape run | ToolStation.StartNewTapeRun() |
 | Cancel pending tape | ToolStation.CancelTapeSelection() |
 | Remove an existing tool | ToolStation.RemoveTool(DeployedTool) |
 | Place/reposition | DeployedTool.PlaceAt(Vector3, float), or XR grabbing |
@@ -17,6 +19,8 @@ The instructor has unrestricted use. These are methods to connect through UI/XR 
 
 UnityEvents: ToolsChanged, SessionReset, PhotoSaved(string path), CaptureFailed(string message) and Shutter.
 
+Placing successive new posts connects tape automatically. Moving an already placed post adjusts its existing tape without creating another ribbon. Remove a pointed tool with R/Delete, or open Tab and use its Placed tools > Remove button. Removing a post removes attached tape. In VR, grip the deployed tool and press B/Y to remove it.
+
 ## Ownership
 
 All deployed tools and ribbons belong under DeploymentRoot. Keep its scale at (1,1,1). XR grabbing must retain or restore that ownership; otherwise reset and station removal will not find reparented objects. Prevent reset while tools are actively held, or release XR selections first in the future adapter.
@@ -25,18 +29,18 @@ Static evidence belongs under FixedEvidence and is never deleted by tool reset. 
 
 ## Desktop adapter (DesktopInteractor)
 
-Pointer = mouse, or the screen centre while the right button is held for looking. Placement only lands on upward-facing surfaces inside InteriorBounds; otherwise the held tool stays put.
+Pointer = mouse, or the screen centre while right-click mouse look is toggled on. Placement only lands on upward-facing surfaces inside InteriorBounds; otherwise the held tool stays put and placement is refused. The panel starts closed; opening it pauses desktop walking and tool hotkeys.
 
 | Input | Action |
 |---|---|
 | WASD / arrows, Shift | Walk, run (ShopWalkController) |
-| Hold right mouse | Look |
+| Right click / Escape | Toggle mouse look / release cursor |
 | Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
 | 1, 2, 3 | New cone, marker, tape post straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
 | T | SelectTapePost on the held or pointed post |
 | X | CancelTapeSelection |
-| Delete / Backspace | Remove the held or pointed tool |
+| R / Delete / Backspace | Remove the held or pointed tool |
 | F | Hold the evidence camera in front of the view / return it to the rack |
 | P | CapturePhoto |
 | Home | Return to the start position |

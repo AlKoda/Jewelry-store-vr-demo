@@ -57,7 +57,7 @@ public abstract class ToolHolder : MonoBehaviour
         DemoSounds.Play(DemoSound.Click, tool.transform.position, 0.4f);
     }
 
-    public virtual void Place() { Settle(true); }
+    public virtual void Place() { DeployedTool placed=Held; Settle(true); if(Station!=null) Station.NotifyPlaced(placed); }
 
     // Lets go of the held tool and sets it on the nearest upward surface beneath it,
     // inside the interior; casting from above the tool clears any case it is inside.

@@ -1,3 +1,13 @@
+# Latest update: glass and tools
+
+Current project: **UnityProject_Glass**, scene **JewelryStoreGlass**. Download Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip; launcher Open-Unity-Glass.cmd. [Report and captures](GLASS_AND_TOOLS.md). 137 automated assertions passed; physical Quest input/FPS and standalone build still pending.
+
+Regenerate with ShopCityValidation.RunGlass. Copy all Scripts, Editor and Shaders. ShopGlassRefinement runs after the Interior and Robbery passes, bakes one 256px cubemap, seats all fragments, adds fracture edges and styles the tape prefab. Marker panel angles are fixed in DemoToolGeometry; ShopPresentationExpansion saves DepthTestedLabel into marker prefabs. Do not restore default font materials there.
+
+ToolHolder.Place calls ToolStation.NotifyPlaced; spawning or switching modes does not auto-connect tape. New posts connect to the previous placed post. Repositioning an existing post does not duplicate tape. StartNewTapeRun clears the chain. R/Delete or the panel removes placed tools; connected tape disappears with its endpoint. DesktopInteractor.Aim is shared by runtime pointer input and selection validation.
+
+Older milestone notes follow; use the Glass project above for current work.
+
 # Latest update: robbery refinement
 
 Use **JewelryStoreRobbery** in **UnityProject_Robbery**, or Downloads/JewelryStore_Robbery_Unity6000.6.2f1.zip and Open-Unity-Robbery.cmd. [Report and screenshots](ROBBERY_REFINEMENT.md). Regenerate with ShopCityValidation.RunRobbery. This runs the prior Interior chain then ShopRobberyDressing.Apply, preserving intact stock separately from disturbed stock. Never run dressing twice on the same scene.

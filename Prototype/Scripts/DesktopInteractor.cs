@@ -26,7 +26,32 @@ public sealed class DesktopInteractor : ToolHolder
     private void Update()
     {
         if (!ReadDesktopInput || View == null || (Panel != null && Panel.Visible)) return;
-        Ray ray = PointerRay();
+        Aim(PointerRay());
+
+        bool overPanel = Panel != null && Panel.PointerOverPanel;
+        if (Input.GetMouseButtonDown(0) && !overPanel)
+        {
+            if (Held != null) Place();
+            else if (Hovered != null) Hold(Hovered);
+            else if (HoveredSample != null) TakeSample(HoveredSample);
+            else if (HoveringCamera) ToggleCamera();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnIntoHand(DemoToolKind.Cone);
+        if (Input.GetKeyDown(KeyCode.Alpha2)) SpawnIntoHand(DemoToolKind.Marker);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnIntoHand(DemoToolKind.TapePost);
+        if (Input.GetKeyDown(KeyCode.Q)) Rotate(-RotateStep);
+        if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
+        float wheel = Input.GetAxis("Mouse ScrollWheel");
+        if (wheel != 0 && !overPanel) Rotate(Mathf.Sign(wheel) * RotateStep);
+        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) Remove(Target);
+        if (Input.GetKeyDown(KeyCode.T)) SelectTapePost(Target);
+        if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
+        if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
+        if (Input.GetKeyDown(KeyCode.P)) Photograph();
+    }
+
+    public void Aim(Ray ray)
+    {
         if (Held != null)
         {
             Hovered = null;
@@ -45,29 +70,9 @@ public sealed class DesktopInteractor : ToolHolder
         }
         Highlight(Held != null ? Held : Hovered);
 
-        bool overPanel = Panel != null && Panel.PointerOverPanel;
-        if (Input.GetMouseButtonDown(0) && !overPanel)
-        {
-            if (Held != null) Place();
-            else if (Hovered != null) Hold(Hovered);
-            else if (HoveredSample != null) TakeSample(HoveredSample);
-            else if (HoveringCamera) ToggleCamera();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnIntoHand(DemoToolKind.Cone);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SpawnIntoHand(DemoToolKind.Marker);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnIntoHand(DemoToolKind.TapePost);
-        if (Input.GetKeyDown(KeyCode.Q)) Rotate(-RotateStep);
-        if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
-        float wheel = Input.GetAxis("Mouse ScrollWheel");
-        if (wheel != 0 && !overPanel) Rotate(Mathf.Sign(wheel) * RotateStep);
-        if (Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) Remove(Target);
-        if (Input.GetKeyDown(KeyCode.T)) SelectTapePost(Target);
-        if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
-        if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
-        if (Input.GetKeyDown(KeyCode.P)) Photograph();
     }
 
-    private DeployedTool Target => Held != null ? Held : Hovered;
+    public DeployedTool Target => Held != null ? Held : Hovered;
 
     // Through the held camera's lens, or of the current view when it is on its rack.
     public void Photograph()

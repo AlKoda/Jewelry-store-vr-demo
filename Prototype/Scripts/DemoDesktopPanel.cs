@@ -36,7 +36,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         "WASD / arrows: walk (Shift: faster)   Right click: toggle mouse look; Esc: release\n" +
         "Left click: pick up / place a tool, or take one from the rack\n" +
         "1 / 2 / 3: new cone / marker / tape post   Q / E, wheel: rotate\n" +
-        "T: select tape post   X: cancel tape   Delete: remove\n" +
+        "T: select tape post   X: cancel tape   R / Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
         "I: intact / robbed store   Home: return to start\n" +
         "F9: VR mode   Tab: open / close this panel";
@@ -77,8 +77,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (Interactor != null && Interactor.isActiveAndEnabled)
             {
                 string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1/2/3: tools   P: photo";
+                if(Interactor.Hovered!=null) hint=Interactor.Hovered.name+" — Click: move   R / Delete: remove";
                 if (Interactor.Held != null) hint = Interactor.HasPlacementTarget
-                    ? "Left click: place   Q/E or wheel: rotate   Tab: tools"
+                    ? "Left click: place   Q/E or wheel: rotate   R: remove   Tab: tools"
                     : "Aim at a nearby floor or counter to place the held tool";
                 GUI.Box(new Rect(12, Screen.height - 42, Mathf.Min(760, Screen.width - 24), 30), hint);
             }
@@ -97,6 +98,22 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         SpawnButton("Marker", DemoToolKind.Marker);
         SpawnButton("Tape post", DemoToolKind.TapePost);
         GUILayout.EndHorizontal();
+        GUILayout.Label("Tape posts connect automatically when placed. X cancels manual selection.", body);
+        Station.AutoConnectTape=GUILayout.Toggle(Station.AutoConnectTape,"Connect new tape posts automatically");
+        if(GUILayout.Button("Start a separate tape run",button)) Station.StartNewTapeRun();
+        GUILayout.Label("PLACED TOOLS",header);
+        foreach(DeployedTool tool in Station.DeploymentRoot.GetComponentsInChildren<DeployedTool>())
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(tool.name,body);
+            if(GUILayout.Button("Remove",button,GUILayout.Width(80)))
+            {
+                if(tool.Holder!=null) tool.Holder.Remove(tool);
+                else if(Interactor!=null) Interactor.Remove(tool);
+                else Station.RemoveTool(tool);
+            }
+            GUILayout.EndHorizontal();
+        }
         if (Station.PendingPost != null && GUILayout.Button("Cancel tape selection", button))
             Station.CancelTapeSelection();
 

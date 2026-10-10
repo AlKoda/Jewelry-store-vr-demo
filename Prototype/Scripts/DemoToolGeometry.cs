@@ -26,12 +26,12 @@ public static class DemoToolGeometry
         else if (kind == DemoToolKind.Marker)
         {
             Cube("Foot",root.transform,new Vector3(0,0.012f,0),new Vector3(0.18f,0.024f,0.16f));
-            GameObject front = Cube("Front",root.transform,new Vector3(0,0.105f,-0.04f),
+            GameObject front = Cube("Front",root.transform,new Vector3(0,0.105f,-0.034f),
                 new Vector3(0.16f,0.2f,0.008f));
-            front.transform.localRotation=Quaternion.Euler(-20,0,0);
-            GameObject back = Cube("Back",root.transform,new Vector3(0,0.105f,0.04f),
+            front.transform.localRotation=Quaternion.Euler(20,0,0);
+            GameObject back = Cube("Back",root.transform,new Vector3(0,0.105f,0.034f),
                 new Vector3(0.16f,0.2f,0.008f));
-            back.transform.localRotation=Quaternion.Euler(20,0,0);
+            back.transform.localRotation=Quaternion.Euler(-20,0,0);
             tool.NumberLabel = Label(front.transform, false);
             tool.BackNumberLabel = Label(back.transform, true);
             tool.SetMarkerNumber(1);
@@ -76,7 +76,7 @@ public static class DemoToolGeometry
         text.anchor=TextAnchor.MiddleCenter;
         text.alignment=TextAlignment.Center;
         text.fontSize=64;
-        text.characterSize=0.025f;
+        text.characterSize=0.019f;
         text.color=Color.black;
         return text;
     }
