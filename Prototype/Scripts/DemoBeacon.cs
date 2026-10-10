@@ -77,15 +77,17 @@ public sealed class DemoBeacon : MonoBehaviour
         Cylinder("Column", new Vector3(0, ColumnHeight / 2, 0), new Vector3(0.3f, ColumnHeight / 2, 0.3f), columnMaterial);
     }
 
-    // Collider-free cylinder from the built-in mesh, so it never blocks the pointer or the walker.
+    // Collider-free cylinder, so it never blocks the pointer or the walker;
+    // CreatePrimitive guarantees the built-in mesh exists in player builds.
     private Transform Cylinder(string name, Vector3 position, Vector3 scale, Material material)
     {
-        GameObject g = new GameObject(name);
+        GameObject g = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        g.name = name;
+        Destroy(g.GetComponent<Collider>());
         g.transform.SetParent(marker, false);
         g.transform.localPosition = position;
         g.transform.localScale = scale;
-        g.AddComponent<MeshFilter>().sharedMesh = Resources.GetBuiltinResource<Mesh>("Cylinder.fbx");
-        MeshRenderer renderer = g.AddComponent<MeshRenderer>();
+        MeshRenderer renderer = g.GetComponent<MeshRenderer>();
         renderer.sharedMaterial = material;
         renderer.shadowCastingMode = ShadowCastingMode.Off;
         renderer.receiveShadows = false;
