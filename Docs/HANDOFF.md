@@ -2,6 +2,9 @@
 
 ## Current state
 
+**October 10 geometry source:** see [GEOMETRY_FORMS.md](GEOMETRY_FORMS.md). ShopFormRefinement and ShopCityValidation.RunForms generate a separate untextured JewelryStoreForms scene with procedural environment/tool fallbacks. Chamfered cabinets, shaped busts, wall niches and tapered cars are implemented but uncompiled: remote PC commands stalled. Existing Downloads snapshots do not contain these changes. The new overloads preserve the original imported-asset paths for other generators.
+
+
 All work now lands on `main` directly; there is no separate feature branch. Pull before editing.
 
 Verified on the PC (October 9, 2026, Unity 6000.6.2f1, Built-in pipeline): the expanded shop, pointer placement, current-view photography and the **instructor review recorder** — 40 assertions, see [REVIEW_BATCH_05.md](REVIEW_BATCH_05.md). That run used the source *before* the batches listed below were merged in.

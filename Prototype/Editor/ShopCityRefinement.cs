@@ -9,10 +9,14 @@ public static class ShopCityRefinement
     private const string Pack="KenneyCityBuilder";
     private static Material stone, dark, metal, cream, road, glass, green, brick, white, glow;
     private static Transform city;
+    private static bool importedAssets;
 
     [MenuItem("Crime Scene Demo/Refine Shop And Add Street")]
-    public static void Apply()
+    public static void Apply() { Apply(true); }
+
+    public static void Apply(bool useImportedAssets)
     {
+        importedAssets=useImportedAssets;
         GameObject store=GameObject.Find("JewelryStore_Blockout");
         if(store==null) throw new System.InvalidOperationException("Generate the store first.");
         if(GameObject.Find("CityBackdrop")!=null)
@@ -91,18 +95,18 @@ public static class ShopCityRefinement
         for(int i=-4;i<=4;i++)
         {
             // Kenney CC0 buildings when the pack is present (1 m tiles scaled up), boxes otherwise.
-            if(DemoAssetLibrary.Place(Pack,blocks[(i+4)%blocks.Length],city,V(i*13,0,-40),(i%2==0)?0:180,12)==null)
+            if(PlaceCityAsset(blocks[(i+4)%blocks.Length],city,V(i*13,0,-40),(i%2==0)?0:180,12)==null)
                 Box("DistantBlock",city,V(i*13,10+(i+4)%3*2,-40),V(10,20+(i+4)%3*4,12),stone);
             if(i%2==0) Lamp(V(i*8,0,-11.8f));
         }
-        if(DemoAssetLibrary.Place(Pack,"pavement-fountain",city,V(2,-.02f,-13),0,4)!=null)
+        if(PlaceCityAsset("pavement-fountain",city,V(2,-.02f,-13),0,4)!=null)
             Box("FountainPlinth",city,V(2,-.015f,-13),V(4.2f,.03f,4.2f),cream);
         Car(V(-7,-.02f,-9.4f),dark);
         Car(V(10,-.02f,-4.5f),brick);
         Bench(V(-3,0,-12.3f));
         Bench(V(8,0,-12.3f));
         for(int i=0;i<3;i++)
-            if(DemoAssetLibrary.Place(Pack,"grass-trees-tall",city,V(-13+i*13,0,-13.2f),i*90,3.5f)==null)
+            if(PlaceCityAsset("grass-trees-tall",city,V(-13+i*13,0,-13.2f),i*90,3.5f)==null)
                 Planter(V(-13+i*13,0,-13.2f));
         // Consolidate static backdrop by material into persistent mesh assets.
         CombineByMaterial(city,Folder+"/CityMesh_","City_");
@@ -144,17 +148,21 @@ public static class ShopCityRefinement
     private static void Car(Vector3 p,Material paint)
     {
         Transform g=Group("ParkedCar",city); g.localPosition=p;
-        Box("Body",g,V(0,.55f,0),V(4,.65f,1.65f),paint);
-        Box("Cabin",g,V(0,1.05f,0),V(2.1f,.55f,1.45f),glass);
+        Mesh body=ShopFormRefinement.Loft("CarBody",new float[]{-.5f,-.35f,.3f,.5f},new float[]{.91f,1,1,.86f},new float[]{.88f,1,1,.90f},.12f);
+        Mesh cabin=ShopFormRefinement.Loft("CarCabin",new float[]{-.5f,.5f},new float[]{1,.72f},new float[]{1,.85f},.08f);
+        Mesh wheel=ShopFormRefinement.Loft("CarWheel",new float[]{-.5f,.5f},new float[]{1,1},new float[]{1,1},.146447f);
+        ShopFormRefinement.Shape("Body",g,body,V(0,.55f,0),V(4,.65f,1.65f),paint);
+        ShopFormRefinement.Shape("Cabin",g,cabin,V(0,1.08f,0),V(2.1f,.55f,1.45f),glass);
         for(int x=-1;x<=1;x+=2)
         for(int z=-1;z<=1;z+=2)
-            Box("Wheel",g,V(x*1.3f,.32f,z*.77f),V(.62f,.62f,.25f),dark);
+            ShopFormRefinement.Shape("Wheel",g,wheel,V(x*1.3f,.32f,z*.77f),V(.62f,.25f,.62f),dark)
+                .transform.localRotation=Quaternion.Euler(90,0,0);
         Box("FrontLamp",g,V(2.02f,.65f,0),V(.03f,.17f,1.3f),cream);
     }
     private static void Lamp(Vector3 p)
     {
         Transform g=Group("StreetLamp",city); g.localPosition=p;
-        if(DemoAssetLibrary.Place("KhronosSamples","Lantern",g,Vector3.zero,0,1)!=null) return;
+        if(importedAssets && DemoAssetLibrary.Place("KhronosSamples","Lantern",g,Vector3.zero,0,1)!=null) return;
         Box("Post",g,V(0,2.2f,0),V(.09f,4.4f,.09f),dark);
         Box("Arm",g,V(0,4.35f,.45f),V(.09f,.09f,.9f),dark);
         Box("Head",g,V(0,4.28f,.9f),V(.3f,.10f,.5f),glow);
@@ -178,6 +186,9 @@ public static class ShopCityRefinement
             crown.transform.localRotation=Quaternion.Euler(0,i*30,0);
         }
     }
+
+    private static GameObject PlaceCityAsset(string model,Transform parent,Vector3 p,float yaw,float scale)
+        => importedAssets?DemoAssetLibrary.Place(Pack,model,parent,p,yaw,scale):null;
 
     private static Material Mat(string name,Color color) => DemoGeometry.Mat(Folder,name,color,.12f);
 }

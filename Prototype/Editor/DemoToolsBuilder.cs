@@ -8,7 +8,9 @@ public static class DemoToolsBuilder
     private const string Folder="Assets/CrimeSceneDemo/GeneratedTools";
 
     [MenuItem("Crime Scene Demo/Create Tool Station")]
-    public static void Create()
+    public static void Create() { Create(true); }
+
+    public static void Create(bool useImportedAssets)
     {
         GameObject store=GameObject.Find("JewelryStore_Blockout");
         if(store==null)
@@ -35,9 +37,9 @@ public static class DemoToolsBuilder
             deployed.transform.SetParent(store.transform,false);
             station.DeploymentRoot=deployed.transform;
         }
-        station.ConePrefab=SaveTool(DemoToolKind.Cone);
-        station.MarkerPrefab=SaveTool(DemoToolKind.Marker);
-        station.TapePostPrefab=SaveTool(DemoToolKind.TapePost);
+        station.ConePrefab=SaveTool(DemoToolKind.Cone,useImportedAssets);
+        station.MarkerPrefab=SaveTool(DemoToolKind.Marker,useImportedAssets);
+        station.TapePostPrefab=SaveTool(DemoToolKind.TapePost,useImportedAssets);
         // Half-size samples on the rack top; clicking or grabbing one spawns a new tool.
         Transform rack=root.transform;
         Sample(station.ConePrefab,rack,new Vector3(-4.05f,0.9f,1));
@@ -260,10 +262,10 @@ public static class DemoToolsBuilder
         sample.transform.localScale=Vector3.one*0.5f;
     }
 
-    private static DeployedTool SaveTool(DemoToolKind kind)
+    private static DeployedTool SaveTool(DemoToolKind kind,bool useImportedAssets)
     {
         DeployedTool temporary=DemoToolGeometry.Create(kind);
-        if(kind==DemoToolKind.Cone) UseModel(temporary.gameObject,"KhronosSamples","TrafficCone");
+        if(useImportedAssets && kind==DemoToolKind.Cone) UseModel(temporary.gameObject,"KhronosSamples","TrafficCone");
         GameObject prefab=PrefabUtility.SaveAsPrefabAsset(temporary.gameObject,Folder+"/"+kind+".prefab");
         Object.DestroyImmediate(temporary.gameObject);
         return prefab.GetComponent<DeployedTool>();

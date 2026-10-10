@@ -4,6 +4,9 @@ Instructor-led jewelry-store crime-scene prototype for the October 27, 2026 demo
 
 ## Latest project
 
+October 10 source update: [untextured geometry refinement](Docs/GEOMETRY_FORMS.md). Generate JewelryStoreForms through ShopCityValidation.RunForms. **Awaiting Unity verification; current Downloads ZIPs do not include these forms.**
+
+
 October 9: the verified review project is [JewelryStore_Review_Unity6000.6.2f1.zip](Downloads/JewelryStore_Review_Unity6000.6.2f1.zip) (40 assertions, [batch 05 report](Docs/REVIEW_BATCH_05.md)): the panel saves local instructor reviews with photographs and tool positions. The merged source below includes that recorder plus the unverified desktop/VR player rig; see the [handoff](Docs/HANDOFF.md) for what to run.
 
 [Download the expanded Unity project](Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip) and [see screenshots and the batch report](Docs/ENVIRONMENT_BATCH_04.md).

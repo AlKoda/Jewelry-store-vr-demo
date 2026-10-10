@@ -11,23 +11,32 @@ public static class ShopCityValidation
 {
     private const string Key = "ShopCityValidationStage";
     private const string ExpandedKey = "ShopCityValidationExpanded";
+    private const string FormsKey = "ShopCityValidationForms";
     static ShopCityValidation() { EditorApplication.update += Tick; }
 
     public static void Run() { Generate(false); }
     public static void RunExpanded() { Generate(true); }
+    public static void RunForms() { Generate(true, true); }
 
-    private static void Generate(bool expanded)
+    private static void Generate(bool expanded, bool forms = false)
     {
         try
         {
             SessionState.SetBool(ExpandedKey, expanded);
-            DemoValidation.Begin(expanded ? "VerificationExpanded" : "VerificationCity");
+            SessionState.SetBool(FormsKey, forms);
+            DemoValidation.Begin(forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
             JewelryStoreBuilder.CreateStore();
-            DemoToolsBuilder.Create();
-            ShopCityRefinement.Apply();
-            if (expanded) { ShopPresentationExpansion.Apply(); ShopAssetDressing.Apply(); IntactStateBuilder.Apply(); }
+            DemoToolsBuilder.Create(!forms);
+            ShopCityRefinement.Apply(!forms);
+            if (expanded)
+            {
+                ShopPresentationExpansion.Apply();
+                if (!forms) ShopAssetDressing.Apply();
+                IntactStateBuilder.Apply();
+                if (forms) ShopFormRefinement.Apply();
+            }
             Camera camera = DemoValidation.CreatePreviewCamera(150);
-            DemoValidation.SaveScene(expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
+            DemoValidation.SaveScene(forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
             if (expanded) DemoValidation.Capture(camera, "display-details.png", new Vector3(-.4f, 1.6f, 2), new Vector3(-2, 1, 3.7f));
             DemoValidation.Capture(camera, "street-from-inside.png", new Vector3(0, 1.65f, 1.5f), new Vector3(0, 2, -18));
@@ -53,6 +62,7 @@ public static class ShopCityValidation
                 InteractionChecks();
                 HandChecks();
                 BackdropChecks();
+                if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
                 if (SessionState.GetBool(ExpandedKey, false)) ExpansionChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
@@ -233,8 +243,13 @@ public static class ShopCityValidation
         Transform store = GameObject.Find("JewelryStore_Blockout").transform;
         DemoValidation.Check(store.Find("PresentationDetails") != null, "Presentation details present");
         Transform dressing = store.Find("ThirdPartyDressing");
-        DemoValidation.Check(dressing != null && dressing.childCount == ShopAssetDressing.Count, "Third-party dressing placed (" + ShopAssetDressing.Count + " models)");
-        DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
+        if (SessionState.GetBool(FormsKey, false))
+            DemoValidation.Check(dressing == null, "Geometry-only scene skips imported dressing");
+        else
+        {
+            DemoValidation.Check(dressing != null && dressing.childCount == ShopAssetDressing.Count, "Third-party dressing placed (" + ShopAssetDressing.Count + " models)");
+            DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
+        }
 
         CrimeSceneState state = DemoValidation.Find<CrimeSceneState>();
         state.ReadDesktopInput = false;
