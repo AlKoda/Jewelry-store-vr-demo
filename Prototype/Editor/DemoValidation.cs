@@ -133,6 +133,13 @@ public static class DemoValidation
 
     public static void Info(string text) { results.Add("INFO: " + text); }
 
+    private static int Count(string text, string part)
+    {
+        int count = 0;
+        for (int at = text.IndexOf(part, StringComparison.Ordinal); at >= 0; at = text.IndexOf(part, at + part.Length, StringComparison.Ordinal)) count++;
+        return count;
+    }
+
     public static T Find<T>() where T : UnityEngine.Object
     {
         T found = UnityEngine.Object.FindFirstObjectByType<T>();
@@ -236,8 +243,12 @@ public static class DemoValidation
         Check(File.Exists(Path.Combine(review.ReviewFolder, photo.photo)), "Review contains the copied photograph");
         string html = File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html"));
         Check(html.Contains(photo.photo), "HTML review references the photograph");
-        Check(html.Contains("class=\"contact-sheet\"") && html.Contains("<table class=\"shot-list\""), "HTML review contains the contact sheet and shot list");
-        Check(html.Contains("<svg") && html.Contains(">1</text>"), "HTML review sketches the scene with tool glyphs");
+        int shots = 0;
+        foreach (SessionReviewRecorder.Entry entry in document.entries) if (!string.IsNullOrEmpty(entry.photo)) shots++;
+        Check(html.Contains("<figcaption>#" + shots + " \u00b7 " + photo.photo + " \u00b7 entry " + document.entries.Count + " \u00b7 ") && html.Contains(" m \u00b7 yaw ")
+            && html.Contains("<a href=\"" + photo.photo + "\">" + photo.photo + "</a></td><td>" + photo.tools.Count + "</td><td>1, 2</td>"),
+            "HTML review contact sheet tile and shot list row carry the shot, entry, camera, tools and markers");
+        Check(html.Contains("<svg") && html.Contains(">1</text>") && html.Contains("<polygon class=\"camera\""), "HTML review sketches the scene with tool glyphs and the camera");
         Rect sketch = review.SketchViewBox();
         Check(sketch.Contains(SessionReviewRecorder.SketchPoint(new Vector3(0, 0, 4), sketch)), "Sketch maps a shop position inside the drawing");
         // A connected pair of posts goes into the snapshot so the review records the ribbon.
@@ -269,9 +280,13 @@ public static class DemoValidation
         Check(last >= 1 && document.entries[last - 1].reason == "Manual snapshot" && document.entries[last].reason == "Before scene reset"
             && document.entries[last].tools.Count >= 3, "Snapshot and reset append review entries with the tools");
         SessionReviewRecorder.Entry snapshot = document.entries[last - 1];
-        Check(snapshot.connections.Count == 1 && snapshot.tools[snapshot.connections[0].from].kind == "TapePost"
-            && File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html")).Contains("<line "),
-            "Snapshot records the tape connection and the sketch draws it");
+        string html = File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html"));
+        Check(snapshot.connections.Count == 1 && snapshot.tools[snapshot.connections[0].from].kind == "TapePost" && html.Contains("<line ")
+            && html.Contains("stroke=\"#" + ColorUtility.ToHtmlStringRGB(DemoDesktopPanel.KindColor(DemoToolKind.TapePost)) + "\""),
+            "Snapshot records the tape connection and the sketch draws it in the panel's colour");
+        // The stored camera pose is the last capture's, so the snapshot and reset entries neither draw nor caption a camera.
+        Check(Count(html, "<svg ") == document.entries.Count && Count(html, "<polygon class=\"camera\"") == 1 && Count(html, " \u00b7 yaw ") == 2,
+            "Camera glyph and caption appear only on the photograph entry");
         return true;
     }
 

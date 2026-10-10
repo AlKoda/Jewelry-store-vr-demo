@@ -383,7 +383,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         return text;
     }
 
-    private static Color KindColor(DemoToolKind kind)
+    // The one palette for tool kinds; SessionReviewRecorder's sketches use it too.
+    public static Color KindColor(DemoToolKind kind)
     {
         switch (kind)
         {

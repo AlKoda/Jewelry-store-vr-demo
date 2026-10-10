@@ -140,21 +140,23 @@ public sealed class SessionReviewRecorder : MonoBehaviour
         html.Append("<p>Started: "+Escape(document.startedUtc)+" (UTC). Times below are local. Positions are Unity world metres; sketches look down on the shop with the street at the bottom. Instructor interpretation is required.</p>");
 
         // Contact sheet: one lazy-loaded tile per photograph, numbered in capture order.
+        // Shots are not entries, so the caption also names the file and the entry row.
         html.Append("<section class=\"contact-sheet\"><h2>Contact sheet</h2>");
         StringBuilder tiles=new StringBuilder();
         int shot=0;
-        foreach(Entry entry in document.entries)
+        for(int i=0;i<document.entries.Count;i++)
         {
+            Entry entry=document.entries[i];
             if(string.IsNullOrEmpty(entry.photo)) continue;
             shot++;
             tiles.Append("<figure><a href=\""+Escape(entry.photo)+"\"><img loading=\"lazy\" alt=\"Photograph "+shot+"\" src=\""+Escape(entry.photo)+"\"></a>");
-            tiles.Append("<figcaption>#"+shot+" · "+LocalTime(entry.utc)+" · "+CameraCaption(entry)+"</figcaption></figure>");
+            tiles.Append("<figcaption>#"+shot+" · "+Escape(entry.photo)+" · entry "+(i+1)+" · "+LocalTime(entry.utc)+" · "+CameraCaption(entry)+"</figcaption></figure>");
         }
         html.Append(shot==0?"<p>No photographs yet.</p>":"<div class=\"sheet\">"+tiles+"</div>");
         html.Append("</section>");
 
         // Shot list: every entry on one row, photograph or not.
-        html.Append("<section class=\"shots\"><h2>Shot list</h2><table class=\"shot-list\"><tr><th>#</th><th>Time</th><th>Reason</th><th>Photo</th><th>Tools</th><th>Markers</th></tr>");
+        html.Append("<section class=\"shots\"><h2>Shot list</h2><table class=\"shot-list\"><tr><th>Entry</th><th>Time</th><th>Reason</th><th>Photo</th><th>Tools</th><th>Markers</th></tr>");
         for(int i=0;i<document.entries.Count;i++)
         {
             Entry entry=document.entries[i];
@@ -171,7 +173,9 @@ public sealed class SessionReviewRecorder : MonoBehaviour
             Entry entry=document.entries[i];
             html.Append("<article><div class=\"plan\">");
             AppendSketch(html,entry);
-            html.Append("</div><div class=\"details\"><h3>"+(i+1)+". "+Escape(entry.reason)+"</h3><p>"+LocalTime(entry.utc)+" local · "+Escape(entry.utc)+" · "+CameraCaption(entry)+"</p>");
+            // The stored camera pose is the last capture's, so only a photograph entry captions it.
+            html.Append("</div><div class=\"details\"><h3>"+(i+1)+". "+Escape(entry.reason)+"</h3><p>"+LocalTime(entry.utc)+" local · "+Escape(entry.utc)+
+                (string.IsNullOrEmpty(entry.photo)?"":" · "+CameraCaption(entry))+"</p>");
             if(!string.IsNullOrEmpty(entry.photo))
                 html.Append("<a href=\""+Escape(entry.photo)+"\"><img loading=\"lazy\" alt=\"Saved photograph\" src=\""+Escape(entry.photo)+"\"></a>");
             html.Append("<table><tr><th>Tool</th><th>Marker</th><th>Position (x, y, z)</th></tr>");
@@ -267,36 +271,44 @@ public sealed class SessionReviewRecorder : MonoBehaviour
         {
             if(link.from<0 || link.from>=entry.tools.Count || link.to<0 || link.to>=entry.tools.Count) continue;
             Vector2 a=SketchPoint(entry.tools[link.from].position,box), b=SketchPoint(entry.tools[link.to].position,box);
-            html.Append("<line x1=\""+F(a.x)+"\" y1=\""+F(a.y)+"\" x2=\""+F(b.x)+"\" y2=\""+F(b.y)+"\" stroke=\""+(link.kind=="Measure"?"#ffd54a":"#ff4033")+
-                "\" stroke-width=\"5\"/>");
+            html.Append("<line x1=\""+F(a.x)+"\" y1=\""+F(a.y)+"\" x2=\""+F(b.x)+"\" y2=\""+F(b.y)+"\" stroke=\""+Fill(link.kind)+"\" stroke-width=\"5\"/>");
         }
         foreach(ToolRecord tool in entry.tools) AppendGlyph(html,tool,SketchPoint(tool.position,box));
-        // No capture yet leaves the camera at the origin; drawing it there would mislead.
-        if(entry.cameraPosition!=Vector3.zero)
+        // The stored pose is the last capture's: on a snapshot or reset entry it would
+        // show where the camera was, not where it is, so only a photograph draws it.
+        if(!string.IsNullOrEmpty(entry.photo))
         {
             Vector2 c=SketchPoint(entry.cameraPosition,box);
-            html.Append("<polygon points=\"0,-42 24,18 -24,18\" fill=\"#3ee6ff\" transform=\"translate("+F(c.x)+" "+F(c.y)+") rotate("+F(entry.cameraRotation.y)+")\"/>");
+            html.Append("<polygon class=\"camera\" points=\"0,-42 24,18 -24,18\" fill=\"#3ee6ff\" transform=\"translate("+F(c.x)+" "+F(c.y)+") rotate("+F(entry.cameraRotation.y)+")\"/>");
         }
         html.Append("</svg>");
     }
 
-    // One glyph per kind in the presenter map's colours: cone triangle, numbered
-    // marker square, tape post circle, white L-scale, measuring reel dot. Unity yaw
-    // and SVG rotate both turn clockwise when seen from above.
+    // One glyph per kind: cone triangle, numbered marker square, tape post circle,
+    // L-scale, measuring reel dot. Unity yaw and SVG rotate both turn clockwise when
+    // seen from above.
     private static void AppendGlyph(StringBuilder html,ToolRecord tool,Vector2 p)
     {
-        string at="translate("+F(p.x)+" "+F(p.y)+")";
+        string at="translate("+F(p.x)+" "+F(p.y)+")", fill=Fill(tool.kind);
         switch(tool.kind)
         {
-            case "Cone": html.Append("<polygon points=\"0,-26 24,16 -24,16\" fill=\"#ff8c1a\" transform=\""+at+"\"/>"); break;
+            case "Cone": html.Append("<polygon points=\"0,-26 24,16 -24,16\" fill=\""+fill+"\" transform=\""+at+"\"/>"); break;
             case "Marker":
-                html.Append("<rect x=\"-22\" y=\"-22\" width=\"44\" height=\"44\" fill=\"#ffe633\" transform=\""+at+"\"/>");
+                html.Append("<rect x=\"-22\" y=\"-22\" width=\"44\" height=\"44\" fill=\""+fill+"\" transform=\""+at+"\"/>");
                 html.Append("<text font-size=\"34\" font-family=\"system-ui,sans-serif\" font-weight=\"bold\" text-anchor=\"middle\" dominant-baseline=\"central\" fill=\"#111\" transform=\""+at+"\">"+tool.markerNumber+"</text>");
                 break;
-            case "TapePost": html.Append("<circle r=\"17\" fill=\"#ff4033\" transform=\""+at+"\"/>"); break;
-            case "Scale": html.Append("<polyline points=\"0,-30 0,0 30,0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"8\" transform=\""+at+" rotate("+F(tool.rotation.y)+")\"/>"); break;
-            default: html.Append("<circle r=\"12\" fill=\"#ffd54a\" transform=\""+at+"\"/>"); break;
+            case "TapePost": html.Append("<circle r=\"17\" fill=\""+fill+"\" transform=\""+at+"\"/>"); break;
+            case "Scale": html.Append("<polyline points=\"0,-30 0,0 30,0\" fill=\"none\" stroke=\""+fill+"\" stroke-width=\"8\" transform=\""+at+" rotate("+F(tool.rotation.y)+")\"/>"); break;
+            default: html.Append("<circle r=\"12\" fill=\""+fill+"\" transform=\""+at+"\"/>"); break;
         }
+    }
+
+    // Glyph and ribbon colours are the presenter panel's palette, so the sketch
+    // matches the legend the audience learned (orange cones ... violet reels).
+    private static string Fill(string kind)
+    {
+        DemoToolKind parsed;
+        return "#"+ColorUtility.ToHtmlStringRGB(DemoDesktopPanel.KindColor(Enum.TryParse<DemoToolKind>(kind,out parsed)?parsed:DemoToolKind.Measure));
     }
 
     public void OpenReview()
