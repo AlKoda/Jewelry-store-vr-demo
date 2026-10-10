@@ -146,9 +146,21 @@ public static class DemoToolsBuilder
         board.Station=station;
         board.Session=session;
         board.EvidenceCamera=evidence;
+
+        // Day/night presets with the flashlight, and the instructor's floor beacon;
+        // both return to their defaults on a session reset. The beacon's bounds come
+        // from the player, which CreatePlayer wires.
+        DemoLighting lighting=root.AddComponent<DemoLighting>();
+        lighting.Session=session;
+        DemoBeacon beacon=root.AddComponent<DemoBeacon>();
+        beacon.Session=session;
+        panel.Lighting=lighting;
+        panel.Beacon=beacon;
         // A player created before the station is wired up here.
         foreach(ToolHolder existing in Object.FindObjectsByType<ToolHolder>(FindObjectsInactive.Include,FindObjectsSortMode.None))
             Wire(existing);
+        foreach(XRControllerInput hand in Object.FindObjectsByType<XRControllerInput>(FindObjectsInactive.Include,FindObjectsSortMode.None))
+            WireHand(hand);
         Selection.activeGameObject=root;
         Debug.Log("Tool station created. Save scene; XR grabbing/activation and lighting still require integration.",root);
     }
@@ -182,9 +194,11 @@ public static class DemoToolsBuilder
         if(RenderSettings.fog) { camera.backgroundColor=RenderSettings.fogColor; camera.farClipPlane=120; }
 
         InteriorBounds bounds=player.AddComponent<InteriorBounds>();
-        // The review sketches the shop from the same regions that bound the player.
+        // The review sketches the shop, and the beacon is clamped, by the regions that bound the player.
         SessionReviewRecorder review=Object.FindFirstObjectByType<SessionReviewRecorder>();
         if(review!=null) review.Bounds=bounds;
+        DemoBeacon beacon=Object.FindFirstObjectByType<DemoBeacon>();
+        if(beacon!=null) beacon.Bounds=bounds;
         XRLocomotion locomotion=player.AddComponent<XRLocomotion>();
         locomotion.Head=camera.transform;
         locomotion.Bounds=bounds;
@@ -203,6 +217,7 @@ public static class DemoToolsBuilder
         XRControllerInput right=CreateHand(player.transform,"RightHand",UnityEngine.XR.XRNode.RightHand,1,locomotion,bounds);
         left.Teleports=true; left.SnapTurns=false;
         right.Teleports=false; right.SnapTurns=true;
+        WireHand(right);
 
         DemoModeSwitch mode=player.AddComponent<DemoModeSwitch>();
         mode.DesktopOnly=new Behaviour[] {walker,interactor};
@@ -241,6 +256,14 @@ public static class DemoToolsBuilder
         if(desktop==null) return;
         desktop.Panel=Object.FindFirstObjectByType<DemoDesktopPanel>();
         if(desktop.Panel!=null) desktop.Panel.Interactor=desktop;
+        desktop.Lighting=Object.FindFirstObjectByType<DemoLighting>();
+        desktop.Beacon=Object.FindFirstObjectByType<DemoBeacon>();
+    }
+
+    // Only the right hand's stick click toggles the flashlight.
+    private static void WireHand(XRControllerInput hand)
+    {
+        if(hand.Node==UnityEngine.XR.XRNode.RightHand) hand.Lighting=Object.FindFirstObjectByType<DemoLighting>();
     }
 
     // Swap generated primitives for a third-party model, keeping one collider on the root.

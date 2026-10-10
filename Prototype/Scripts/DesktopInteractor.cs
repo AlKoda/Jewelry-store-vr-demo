@@ -3,13 +3,15 @@ using UnityEngine;
 // Desktop pointer adapter: the pointer is the mouse, or the screen centre while
 // the right button locks the cursor for looking. Picks up, carries, rotates,
 // places and removes tools, takes new ones from the rack samples, holds the
-// camera and reads hotkeys. Shared holding rules live in ToolHolder; XR hands
-// use HandInteractor instead.
+// camera, drops the instructor's beacon and reads hotkeys. Shared holding rules
+// live in ToolHolder; XR hands use HandInteractor instead.
 public sealed class DesktopInteractor : ToolHolder
 {
     public Camera View;
     public ShopWalkController Walker;
     public DemoDesktopPanel Panel;
+    public DemoLighting Lighting;
+    public DemoBeacon Beacon;
     public float Reach = 4f;
     public float RotateStep = 15f;
     public bool ReadDesktopInput = true;
@@ -17,6 +19,9 @@ public sealed class DesktopInteractor : ToolHolder
     public DeployedTool Hovered { get; private set; }
     public ToolRackSample HoveredSample { get; private set; }
     public bool HoveringCamera { get; private set; }
+    // The surface the pointer last reached, whatever it was; the beacon key uses it.
+    public bool PointerHit { get; private set; }
+    public Vector3 PointedPoint { get; private set; }
 
     protected override Transform CameraAnchor => View != null ? View.transform : null;
 
@@ -50,6 +55,9 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
         if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
         if (Input.GetKeyDown(KeyCode.P)) Photograph();
+        if (Input.GetKeyDown(KeyCode.L) && Lighting != null) Lighting.ToggleFlashlight();
+        if (Input.GetKeyDown(KeyCode.N) && Lighting != null) Lighting.ToggleNight();
+        if (Input.GetKeyDown(KeyCode.B) && Beacon != null && PointerHit) Beacon.Place(PointedPoint);
     }
 
     public void Aim(Ray ray)
@@ -63,7 +71,7 @@ public sealed class DesktopInteractor : ToolHolder
         }
         else
         {
-            bool hit = Raycast(ray, Reach, out RaycastHit nearest, Walker != null ? Walker.transform : null);
+            bool hit = Point(ray, null, out RaycastHit nearest);
             Hovered = hit ? nearest.collider.GetComponentInParent<DeployedTool>() : null;
             if (Hovered != null && !Hovered.Free) Hovered = null;
             HoveredSample = hit && Hovered == null ? nearest.collider.GetComponentInParent<ToolRackSample>() : null;
@@ -109,10 +117,18 @@ public sealed class DesktopInteractor : ToolHolder
     public void Carry(Ray ray)
     {
         HasPlacementTarget = false;
-        if (Held == null || !Raycast(ray, Reach, out RaycastHit hit, Held.transform,
-            Walker != null ? Walker.transform : null) || hit.normal.y < 0.7f) return;
+        if (Held == null || !Point(ray, Held.transform, out RaycastHit hit) || hit.normal.y < 0.7f) return;
         Held.PlaceAt(Confine(hit.point), heldYaw);
         HasPlacementTarget = true;
+    }
+
+    // The one pointer raycast: nearest surface within reach, skipping the rig and
+    // the given tool, remembered for the beacon key.
+    private bool Point(Ray ray, Transform ignore, out RaycastHit hit)
+    {
+        PointerHit = Raycast(ray, Reach, out hit, ignore, Walker != null ? Walker.transform : null);
+        PointedPoint = PointerHit ? hit.point : ray.origin;
+        return PointerHit;
     }
 
     public override void Place()
@@ -141,5 +157,6 @@ public sealed class DesktopInteractor : ToolHolder
         Hovered = null;
         HoveredSample = null;
         HoveringCamera = false;
+        PointerHit = false;
     }
 }

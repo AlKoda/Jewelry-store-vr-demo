@@ -56,6 +56,12 @@ public sealed class DemoOverviewMap : MonoBehaviour
         return new Vector2((world.x - Centre.x) / (2 * HalfSize) + 0.5f, (world.z - Centre.y) / (2 * HalfSize) + 0.5f);
     }
 
+    // The inverse: 0..1 texture coordinates to the point on the shop floor (y 0).
+    public Vector3 FromMap(Vector2 uv)
+    {
+        return new Vector3((uv.x - 0.5f) * 2 * HalfSize + Centre.x, 0, (uv.y - 0.5f) * 2 * HalfSize + Centre.y);
+    }
+
     private void OnDestroy()
     {
         if (Texture != null) Texture.Release();

@@ -7,12 +7,14 @@ using UnityEngine.XR;
 // the primary button (A/X) spawns the current tool kind, the secondary button
 // (B/Y) removes the held tool or, with empty hands, cycles the kind. The
 // thumbstick teleports (push forward, release) or snap turns (left/right),
-// depending on which role this hand has.
+// depending on which role this hand has; clicking it toggles the flashlight on
+// the hand that has Lighting wired (the right one).
 [RequireComponent(typeof(HandInteractor))]
 public sealed class XRControllerInput : MonoBehaviour
 {
     public XRNode Node = XRNode.RightHand;
     public XRLocomotion Locomotion;
+    public DemoLighting Lighting;
     public bool Teleports = true;
     public bool SnapTurns;
     public DemoToolKind SpawnKind = DemoToolKind.Cone;
@@ -20,7 +22,7 @@ public sealed class XRControllerInput : MonoBehaviour
 
     private static readonly int KindCount = Enum.GetValues(typeof(DemoToolKind)).Length;
     private HandInteractor hand;
-    private bool grip, trigger, primary, secondary, aiming, aimValid, turned;
+    private bool grip, trigger, primary, secondary, stickClick, aiming, aimValid, turned;
     private Vector3 aimPoint;
     private Transform teleportMarker;
 
@@ -62,6 +64,7 @@ public sealed class XRControllerInput : MonoBehaviour
             if (hand.Held != null) hand.RemoveHeld();
             else { SpawnKind = (DemoToolKind)(((int)SpawnKind + 1) % KindCount); RefreshLabel(); }
         }
+        if (Lighting != null && Changed(device, CommonUsages.primary2DAxisClick, ref stickClick) && stickClick) Lighting.ToggleFlashlight();
         if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 stick)) Stick(stick);
     }
 

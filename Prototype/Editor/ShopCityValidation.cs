@@ -95,6 +95,7 @@ public static class ShopCityValidation
                 WalkingChecks();
                 LocomotionChecks();
                 InteractionChecks();
+                LightingChecks();
                 PanelChecks();
                 HandChecks();
                 BackdropChecks();
@@ -212,6 +213,56 @@ public static class ShopCityValidation
             "Camera returns to its rack");
     }
 
+    // Night and day are completed at once (the presenter sees a one-second fade), the
+    // flashlight is checked in desktop mode here and on the hand in HandChecks, and
+    // the beacon goes through the same map maths the panel's click uses.
+    private static void LightingChecks()
+    {
+        DemoLighting lighting = DemoValidation.Find<DemoLighting>();
+        Light reference = null;
+        foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+            if (light.intensity > 0 && light != lighting.FlashlightLight) { reference = light; break; }
+        Renderer fixture = GameObject.Find("JewelryStore_Blockout").transform.Find("ShopDetails/CeilingLight").GetComponent<Renderer>();
+        float intensity = reference.intensity, ambient = RenderSettings.ambientIntensity;
+        Color ambientColor = RenderSettings.ambientLight, equator = RenderSettings.ambientEquatorColor, fog = RenderSettings.fogColor;
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        lighting.SetNight(true);
+        lighting.Complete();
+        fixture.GetPropertyBlock(block);
+        DemoValidation.Check(lighting.Night && reference.intensity < 0.5f * intensity
+            && RenderSettings.ambientLight.maxColorComponent < 0.5f * ambientColor.maxColorComponent
+            && RenderSettings.ambientIntensity <= 0.5f * ambient && RenderSettings.fogColor.maxColorComponent < fog.maxColorComponent
+            && !block.isEmpty && block.GetColor("_EmissionColor").maxColorComponent < 0.01f,
+            "Night preset dims lights and fixtures");
+        lighting.SetNight(false);
+        lighting.Complete();
+        fixture.GetPropertyBlock(block);
+        DemoValidation.Check(!lighting.Night && Mathf.Abs(reference.intensity - intensity) < 0.01f
+            && Mathf.Abs(RenderSettings.ambientIntensity - ambient) < 0.01f && Close(RenderSettings.ambientLight, ambientColor)
+            && Close(RenderSettings.ambientEquatorColor, equator) && Close(RenderSettings.fogColor, fog) && block.isEmpty,
+            "Day restores the original lighting");
+
+        lighting.Flashlight(true);
+        Light spot = lighting.FlashlightLight;
+        bool lit = spot != null && spot.enabled && lighting.FlashlightOn && spot.type == LightType.Spot
+            && spot.transform.parent == Camera.main.transform && spot.shadows == LightShadows.None;
+        lighting.Flashlight(false);
+        DemoValidation.Check(lit && !spot.enabled && !spot.gameObject.activeSelf && !lighting.FlashlightOn, "Flashlight toggles a spot light on the view");
+
+        DemoOverviewMap map = DemoValidation.Find<DemoOverviewMap>();
+        Vector3 point = new Vector3(2, 0, 5);
+        DemoValidation.Check(Vector3.Distance(map.FromMap(map.ToMap(point)), point) < 0.05f, "Overview map maps a point there and back");
+
+        DemoBeacon beacon = DemoValidation.Find<DemoBeacon>();
+        InteriorBounds bounds = DemoValidation.Find<ShopWalkController>().Bounds;
+        beacon.Place(new Vector3(9, 0, 4));
+        bool inside = beacon.Active && bounds.Contains(beacon.Position) && Mathf.Abs(beacon.Position.x - 4.7f) < 0.001f;
+        DemoValidation.Find<DemoSession>().ResetSession();
+        DemoValidation.Check(inside && !beacon.Active, "Beacon lands inside the interior and clears on reset");
+    }
+
+    private static bool Close(Color a, Color b) => ((Vector4)a - (Vector4)b).sqrMagnitude < 0.0001f;
+
     // The presenter panel never draws in batch mode (OnGUI does not run), so its
     // layout state, scaled hit test and the camera's live view are exercised directly.
     private static void PanelChecks()
@@ -259,6 +310,11 @@ public static class ShopCityValidation
         HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
         DemoValidation.Check(!desktop.enabled && hand.isActiveAndEnabled && hand.Station == desktop.Station,
             "VR mode enables wired hands and disables desktop input");
+        DemoLighting lighting = DemoValidation.Find<DemoLighting>();
+        lighting.Flashlight(true);
+        DemoValidation.Check(lighting.FlashlightLight.transform.parent == hand.transform && hand.GetComponent<XRControllerInput>().Lighting == lighting,
+            "Flashlight rides on the right hand in VR mode");
+        lighting.Flashlight(false);
 
         hand.transform.position = new Vector3(-3, 1, 5);
         DeployedTool marker = hand.SpawnIntoHand(DemoToolKind.Marker);

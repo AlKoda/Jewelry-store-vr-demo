@@ -18,6 +18,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     public SessionReviewRecorder Review;
     public DemoOverviewMap Map;
     public CrimeSceneState SceneState;
+    public DemoLighting Lighting;
+    public DemoBeacon Beacon;
     public Transform Player;
 
     public PanelLayout Layout { get; set; } = PanelLayout.Hidden;
@@ -74,12 +76,12 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         "1-5: new cone / marker / tape post / scale / measuring tape   Q / E, wheel: rotate\n" +
         "T: select tape post or reel   X: cancel tape   R / Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
-        "I: intact / robbed store   Home: return to start\n" +
-        "F9: VR mode   Tab: hidden / strip / full panel   [ ]: panel size";
+        "I: intact / robbed store   L: flashlight   N: night / day   B: beacon where the pointer hits\n" +
+        "Home: return to start   F9: VR mode   Tab: hidden / strip / full panel   [ ]: panel size";
     private const string VRGuide =
         "Grip: hold tool / rack sample / camera   Trigger: photo, tape post or reel\n" +
         "A / X: new tool   B / Y: remove or next kind\n" +
-        "Left stick: teleport   Right stick: snap turn   F9: desktop mode\n" +
+        "Left stick: teleport   Right stick: snap turn, click: flashlight   F9: desktop mode\n" +
         "Tab: hidden / strip / full panel   [ ]: panel size";
     private const string Credits =
         "Models: Kenney, KayKit (CC0); Khronos glTF samples (CC0 / CC BY 4.0); textures cgbookcase, HDRIs HDRI Haven (CC0). See ThirdParty licenses.";
@@ -91,7 +93,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private bool showControls;
     private Vector2 scroll;
     private GUIStyle panel, header, body, button, stripLabel, liveTag;
-    private Texture2D background, dot, cameraDot, border, tagBackground;
+    private Texture2D background, dot, cameraDot, beaconDot, border, tagBackground;
     private readonly Texture2D[] kindDots = new Texture2D[KindCount];
     private readonly int[] kindCounts = new int[KindCount];
     private GUILayoutOption tall, narrow;
@@ -151,7 +153,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         Rect area = Area;
         GUILayout.BeginArea(area, panel);
         GUILayout.BeginHorizontal(tall);
-        GUILayout.Label(vr ? "VR" : "DESKTOP", header, narrow, tall);
+        GUILayout.Label((vr ? "VR" : "DESKTOP") + (Lighting != null && Lighting.Night ? "  NIGHT" : ""), header, narrow, tall);
         string status = "Tools: " + deployed + "   Next marker: " + Station.NextMarkerNumber;
         if (Station.PendingPrompt != null) status += "   " + Station.PendingPrompt + " (T)";
         GUILayout.Label(status, stripLabel, narrow, tall);
@@ -243,7 +245,33 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (EvidenceCamera != null && EvidenceCamera.Holder != null)
                 DrawGlyph(mapRect, Map.ToMap(EvidenceCamera.transform.position), cameraDot, 5);
             if (Player != null) DrawGlyph(mapRect, Map.ToMap(Player.position), dot, 8);
-            GUILayout.Label("Green: visitor.  Orange cones, yellow markers, red tape posts, white scales, violet reels, cyan camera.", body);
+            if (Beacon != null)
+            {
+                // A click on the map sends the beacon there: the square texture fills the
+                // square rectangle, so the inverse of DrawGlyph gives the map coordinate.
+                Event e = Event.current;
+                if (e.type == EventType.MouseDown && e.button == 0 && mapRect.Contains(e.mousePosition))
+                {
+                    Vector2 uv = new Vector2((e.mousePosition.x - mapRect.x) / mapRect.width, 1 - (e.mousePosition.y - mapRect.y) / mapRect.height);
+                    Beacon.Place(Map.FromMap(uv));
+                    e.Use();
+                }
+                if (Beacon.Active) DrawGlyph(mapRect, Map.ToMap(Beacon.Position), beaconDot, 7);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(Beacon.Active ? "Beacon: active. Click the map to move it." : "Beacon: none. Click the map to place one.", body);
+                if (Beacon.Active && GUILayout.Button("Clear beacon", button, GUILayout.Width(110))) Beacon.Clear();
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.Label("Green: visitor.  Orange cones, yellow markers, red tape posts, white scales, violet reels, cyan camera, amber beacon.", body);
+        }
+
+        if (Lighting != null)
+        {
+            Section("LIGHTING");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button(Lighting.Night ? "Day lighting (N)" : "Night lighting (N)", button)) Lighting.ToggleNight();
+            if (GUILayout.Button(Lighting.FlashlightOn ? "Flashlight off (L)" : "Flashlight on (L)", button)) Lighting.ToggleFlashlight();
+            GUILayout.EndHorizontal();
         }
 
         Section("SESSION");
@@ -380,6 +408,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             else if (Interactor.HoveringCamera) text += "\nPointing at: camera";
         }
         if (Station.PendingPrompt != null) text += "\n" + Station.PendingPrompt + " (T)";
+        if (Beacon != null) text += "\nBeacon: " + (Beacon.Active ? "active" : "none");
         return text;
     }
 
@@ -401,6 +430,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         background = Solid(new Color(0.08f, 0.09f, 0.11f, 0.88f));
         dot = Solid(new Color(0.4f, 1f, 0.45f));
         cameraDot = Solid(Color.cyan);
+        beaconDot = Solid(new Color(1f, 0.65f, 0.15f));
         border = Solid(new Color(0.9f, 0.9f, 0.9f));
         tagBackground = Solid(new Color(0.75f, 0.1f, 0.1f, 0.9f));
         for (int i = 0; i < kindDots.Length; i++) kindDots[i] = Solid(KindColor((DemoToolKind)i));
@@ -432,6 +462,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (background != null) Destroy(background);
         if (dot != null) Destroy(dot);
         if (cameraDot != null) Destroy(cameraDot);
+        if (beaconDot != null) Destroy(beaconDot);
         if (border != null) Destroy(border);
         if (tagBackground != null) Destroy(tagBackground);
         foreach (Texture2D glyph in kindDots) if (glyph != null) Destroy(glyph);
