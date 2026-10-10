@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -163,6 +164,29 @@ public static class ShopCityValidation
         DemoValidation.Check(Mathf.Abs(Mathf.DeltaAngle(locomotion.transform.eulerAngles.y, yawBefore + 45)) < 0.01f
             && Vector3.Distance(head.position, headBefore) < 0.001f, "Snap turn pivots around an offset head");
         head.localPosition = headLocal;
+
+        // The arc shares FindDestination's validation: a parabola down the right-hand
+        // aisle lands on open floor, one aimed out the entrance never lands inside.
+        List<Vector3> arc = new List<Vector3>();
+        bool lands = locomotion.FindArcDestination(new Vector3(1, 1.6f, 2), new Vector3(0, 0.3f, 1).normalized, 6, arc, out Vector3 landing);
+        DemoValidation.Check(lands && locomotion.Bounds.Contains(landing) && arc.Count > 5, "Teleport arc lands inside the shop");
+        bool street = locomotion.FindArcDestination(new Vector3(0, 1.6f, 1), new Vector3(0, 0.3f, -1).normalized, 6, arc, out Vector3 outside);
+        DemoValidation.Check(!street || locomotion.Bounds.Contains(outside), "Teleport arc refuses the street");
+
+        // Fade and hint toggling only exist while the VR component set is live.
+        DemoModeSwitch mode = DemoValidation.Find<DemoModeSwitch>();
+        XRComfortFade fade = head.GetComponent<XRComfortFade>();
+        mode.Apply(true);
+        bool faded = fade != null && locomotion.TryTeleport(new Vector3(-2, 0, 6)) && (fade.Alpha > 0 || fade.Fading);
+        XRControllerInput[] hands = UnityEngine.Object.FindObjectsByType<XRControllerInput>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        bool shown = hands.Length == 2 && hands[0].Label.GetComponent<Renderer>().enabled && hands[1].Label.GetComponent<Renderer>().enabled;
+        XRControllerInput.ToggleHints();
+        bool hidden = shown && !hands[0].Label.GetComponent<Renderer>().enabled && !hands[1].Label.GetComponent<Renderer>().enabled;
+        XRControllerInput.ToggleHints();
+        bool restored = hidden && hands[0].Label.GetComponent<Renderer>().enabled && hands[1].Label.GetComponent<Renderer>().enabled;
+        mode.Apply(false);
+        DemoValidation.Check(faded && fade != null && !fade.enabled, "Comfort fade runs on teleport");
+        DemoValidation.Check(restored, "Hand hints toggle together");
         walker.ResetPosition();
     }
 

@@ -213,6 +213,9 @@ public static class DemoToolsBuilder
         if(interactor.Panel!=null) interactor.Panel.Player=player.transform;
 
         XRHeadTracking head=camera.gameObject.AddComponent<XRHeadTracking>();
+        // Comfort blink on the head camera; VR-only, so the desktop view never shows it.
+        XRComfortFade fade=camera.gameObject.AddComponent<XRComfortFade>();
+        locomotion.ComfortFade=fade;
         XRControllerInput left=CreateHand(player.transform,"LeftHand",UnityEngine.XR.XRNode.LeftHand,-1,locomotion,bounds);
         XRControllerInput right=CreateHand(player.transform,"RightHand",UnityEngine.XR.XRNode.RightHand,1,locomotion,bounds);
         left.Teleports=true; left.SnapTurns=false;
@@ -222,7 +225,7 @@ public static class DemoToolsBuilder
         DemoModeSwitch mode=player.AddComponent<DemoModeSwitch>();
         mode.DesktopOnly=new Behaviour[] {walker,interactor};
         mode.DesktopColliders=new Collider[] {cc};
-        mode.VROnly=new Behaviour[] {head};
+        mode.VROnly=new Behaviour[] {head,fade};
         mode.VRObjects=new [] {left.gameObject,right.gameObject};
         return walker;
     }
