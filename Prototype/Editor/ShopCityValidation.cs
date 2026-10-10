@@ -221,12 +221,14 @@ public static class ShopCityValidation
         panel.CycleLayout();
         DemoValidation.Check(strip && full && panel.Layout == PanelLayout.Hidden && !panel.Visible, "Panel layout cycles hidden, strip, full");
 
-        // At scale 2 the 330 px sidebar spans 684 screen pixels, so x=500 is over it and x=800 is not;
-        // at scale 1 the same x=500 lies beside it. The preference is restored afterwards.
+        // The strip is 56 GUI units tall whatever the screen size, so the hit test uses it with
+        // points placed relative to Screen.height (which Contains subtracts): screen y = height - 80
+        // is GUI y 40 at scale 2 (inside) and 80 at scale 1 (outside); height - 130 is GUI y 65 at
+        // scale 2 (outside). Only Screen.width >= 2 is assumed. The preference is restored afterwards.
         float scale = panel.Scale;
-        panel.Layout = PanelLayout.Full;
+        panel.Layout = PanelLayout.Strip;
         panel.Scale = 2;
-        Vector2 inside = new Vector2(500, Screen.height / 2f), outside = new Vector2(800, Screen.height / 2f);
+        Vector2 inside = new Vector2(1, Screen.height - 80), outside = new Vector2(1, Screen.height - 130);
         bool scaled = panel.Contains(inside) && !panel.Contains(outside);
         panel.Scale = 1;
         DemoValidation.Check(scaled && !panel.Contains(inside), "Panel pointer test respects UI scale");
