@@ -277,12 +277,26 @@ public static class ShopCityValidation
         DemoValidation.Check(!desktop.GetComponent<CharacterController>().enabled, "VR mode disables the walking collider");
         hand.RemoveHeld();
         DemoValidation.Check(hand.Held == null, "Hand removes the held tool");
+        // The trigger selects any held tool with a tape anchor, so a reel starts a measurement.
+        DeployedTool reel = hand.SpawnIntoHand(DemoToolKind.Measure);
+        hand.Trigger();
+        DemoValidation.Check(reel != null && desktop.Station.PendingPost == reel && desktop.Station.PendingPrompt.Contains("second reel"),
+            "Trigger selects the held reel for measuring");
+        desktop.Station.CancelTapeSelection();
+        hand.RemoveHeld();
 
         hand.transform.position = desktop.Station.transform.Find("Sample_Marker").position + Vector3.up * 0.05f;
         Physics.SyncTransforms(); // Test moves colliders repeatedly without a physics tick.
         DemoValidation.Check(hand.Grab() && hand.Held != null && hand.Held.Kind == DemoToolKind.Marker,
             "Grabbing a rack sample spawns that tool into the hand");
         hand.RemoveHeld();
+        hand.transform.position = desktop.Station.transform.Find("Sample_Measure").position + Vector3.up * 0.05f;
+        Physics.SyncTransforms(); // Test moves colliders repeatedly without a physics tick.
+        DemoValidation.Check(hand.Grab() && hand.Held != null && hand.Held.Kind == DemoToolKind.Measure,
+            "Grabbing the reel sample spawns a measuring reel");
+        hand.RemoveHeld();
+        // XRControllerInput.Awake wrote the label when VR mode activated the hand; A/X spawns a cone by default.
+        DemoValidation.Check(hand.GetComponent<XRControllerInput>().Label.text.Contains("new cone"), "Hand label names the spawn kind");
         hand.transform.position = evidence.transform.position;
         Physics.SyncTransforms(); // Test moves colliders repeatedly without a physics tick.
         DemoValidation.Check(hand.Grab() && hand.HoldingCamera && evidence.Holder == hand.transform,
