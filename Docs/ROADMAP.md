@@ -1,3 +1,10 @@
+## October 10 — textures and L-scale (Claude, unverified)
+
+- [x] Tools/make_textures.py: nine tileable albedo + normal textures, project-owned.
+- [x] ShopTextureFinish and RunTextured: textured floor, walls, ceiling, counter, cabinets, trims, carpet, street, pavement with world-size tiling.
+- [x] Forensic L-scale tool (key 4 / rack / panel / VR cycle).
+- [ ] Run RunTextured on the PC; inspect captures; check headset cost of normal maps.
+
 ## October 10 — glass and tools completed
 
 - [x] Seat all 32 fragments; smaller transparent pieces with physical edges.

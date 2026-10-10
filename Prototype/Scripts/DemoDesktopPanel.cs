@@ -35,7 +35,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private const string DesktopGuide =
         "WASD / arrows: walk (Shift: faster)   Right click: toggle mouse look; Esc: release\n" +
         "Left click: pick up / place a tool, or take one from the rack\n" +
-        "1 / 2 / 3: new cone / marker / tape post   Q / E, wheel: rotate\n" +
+        "1-4: new cone / marker / tape post / scale   Q / E, wheel: rotate\n" +
         "T: select tape post   X: cancel tape   R / Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
         "I: intact / robbed store   Home: return to start\n" +
@@ -76,7 +76,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             if (Interactor != null && Interactor.isActiveAndEnabled)
             {
-                string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1/2/3: tools   P: photo";
+                string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1-4: tools   P: photo";
                 if(Interactor.Hovered!=null) hint=Interactor.Hovered.name+" — Click: move   R / Delete: remove";
                 if (Interactor.Held != null) hint = Interactor.HasPlacementTarget
                     ? "Left click: place   Q/E or wheel: rotate   R: remove   Tab: tools"
@@ -97,6 +97,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         SpawnButton("Cone", DemoToolKind.Cone);
         SpawnButton("Marker", DemoToolKind.Marker);
         SpawnButton("Tape post", DemoToolKind.TapePost);
+        SpawnButton("Scale", DemoToolKind.Scale);
         GUILayout.EndHorizontal();
         GUILayout.Label("Tape posts connect automatically when placed. X cancels manual selection.", body);
         Station.AutoConnectTape=GUILayout.Toggle(Station.AutoConnectTape,"Connect new tape posts automatically");

@@ -6,6 +6,7 @@ public sealed class ToolStation : MonoBehaviour
     public DeployedTool ConePrefab;
     public DeployedTool MarkerPrefab;
     public DeployedTool TapePostPrefab;
+    public DeployedTool ScalePrefab;
     public SceneTape TapePrefab;
     public Transform DeploymentRoot;
     public Transform SpawnPoint;
@@ -21,6 +22,17 @@ public sealed class ToolStation : MonoBehaviour
     // Active tools only; objects pending destruction are already inactive.
     public int DeployedCount => DeploymentRoot != null ? DeploymentRoot.GetComponentsInChildren<DeployedTool>().Length : 0;
 
+    public DeployedTool Prefab(DemoToolKind kind)
+    {
+        switch (kind)
+        {
+            case DemoToolKind.Cone: return ConePrefab;
+            case DemoToolKind.Marker: return MarkerPrefab;
+            case DemoToolKind.TapePost: return TapePostPrefab;
+            default: return ScalePrefab;
+        }
+    }
+
     public void SpawnCone() { Spawn(DemoToolKind.Cone); }
     public void SpawnMarker() { Spawn(DemoToolKind.Marker); }
     public void SpawnTapePost() { Spawn(DemoToolKind.TapePost); }
@@ -32,8 +44,7 @@ public sealed class ToolStation : MonoBehaviour
             Debug.LogError("Assign deployment root and spawn point.", this);
             return null;
         }
-        DeployedTool prefab = kind == DemoToolKind.Cone ? ConePrefab :
-            kind == DemoToolKind.Marker ? MarkerPrefab : TapePostPrefab;
+        DeployedTool prefab = Prefab(kind);
         if (prefab == null)
         {
             Debug.LogError("Missing tool prefab: " + kind, this);

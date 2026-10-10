@@ -15,7 +15,7 @@ Historical Forms, Expanded and Review projects remain available. This download i
 ## Controls
 
 - WASD/arrows: walk; right click: toggle mouse look; Escape: release cursor; Home: return inside.
-- Click: pick up/place; 1/2/3: cone, marker or tape post.
+- Click: pick up/place; 1/2/3/4: cone, marker, tape post or L-scale (photo size reference).
 - Q/E or wheel: rotate; R/Delete: remove pointed tool; T/X: manually connect/cancel tape.
 - F: hold/return camera; P: photograph.
 - I: intact/robbed shop; Tab: presenter panel; F9: desktop/VR mode.

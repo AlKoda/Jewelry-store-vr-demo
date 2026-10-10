@@ -113,8 +113,9 @@ public static class ShopPresentationExpansion
     private static void StyleTools()
     {
         ToolStation station=Object.FindFirstObjectByType<ToolStation>();
-        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab})
+        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab,station.ScalePrefab})
         {
+            if(prefab==null) continue;
             string path=AssetDatabase.GetAssetPath(prefab);
             GameObject contents=PrefabUtility.LoadPrefabContents(path);
             foreach(MeshRenderer r in contents.GetComponentsInChildren<MeshRenderer>())
@@ -130,6 +131,7 @@ public static class ShopPresentationExpansion
                     label.LabelMaterial=labelMat;label.Refresh();text.color=Color.black;
                 }
                 else if(r.sharedMaterial!=null && r.sharedMaterial.mainTexture!=null) continue;
+                else if(prefab.Kind==DemoToolKind.Scale) r.sharedMaterial=r.name=="BandBlack"?charcoal:ivory;
                 else r.sharedMaterial=prefab.Kind==DemoToolKind.Cone?orange:
                     prefab.Kind==DemoToolKind.Marker?yellow:charcoal;
             }

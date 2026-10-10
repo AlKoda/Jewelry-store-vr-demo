@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum DemoToolKind { Cone, Marker, TapePost }
+public enum DemoToolKind { Cone, Marker, TapePost, Scale }
 
 [RequireComponent(typeof(Rigidbody))]
 public sealed class DeployedTool : MonoBehaviour

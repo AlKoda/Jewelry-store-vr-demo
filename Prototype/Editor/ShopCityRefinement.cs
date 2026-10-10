@@ -76,8 +76,10 @@ public static class ShopCityRefinement
         city=Group("CityBackdrop",null);
         Box("DistantGround",city,V(0,-.22f,-22),V(180,.2f,160),stone);
         Box("Street",city,V(0,-.09f,-7),V(140,.1f,8),road);
-        Box("NearSidewalk",city,V(0,-.10f,-1.5f),V(140,.2f,3),stone);
-        Box("FarSidewalk",city,V(0,-.1f,-13),V(140,.2f,4),stone);
+        // Sidewalks get their own (identical-looking) material so a texture pass can tile them alone.
+        Material pavement=Mat("Pavement",stone.color);
+        Box("NearSidewalk",city,V(0,-.10f,-1.5f),V(140,.2f,3),pavement);
+        Box("FarSidewalk",city,V(0,-.1f,-13),V(140,.2f,4),pavement);
         Box("NearKerb",city,V(0,-.015f,-3),V(140,.15f,.16f),cream);
         Box("FarKerb",city,V(0,-.015f,-11),V(140,.15f,.16f),cream);
         for(int i=-16;i<=16;i++)

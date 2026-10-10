@@ -40,11 +40,13 @@ public static class DemoToolsBuilder
         station.ConePrefab=SaveTool(DemoToolKind.Cone,useImportedAssets);
         station.MarkerPrefab=SaveTool(DemoToolKind.Marker,useImportedAssets);
         station.TapePostPrefab=SaveTool(DemoToolKind.TapePost,useImportedAssets);
+        station.ScalePrefab=SaveTool(DemoToolKind.Scale,useImportedAssets);
         // Half-size samples on the rack top; clicking or grabbing one spawns a new tool.
         Transform rack=root.transform;
-        Sample(station.ConePrefab,rack,new Vector3(-4.05f,0.9f,1));
-        Sample(station.MarkerPrefab,rack,new Vector3(-3.6f,0.9f,1));
-        Sample(station.TapePostPrefab,rack,new Vector3(-3.15f,0.9f,1));
+        Sample(station.ConePrefab,rack,new Vector3(-4.1f,0.9f,1));
+        Sample(station.MarkerPrefab,rack,new Vector3(-3.72f,0.9f,1));
+        Sample(station.TapePostPrefab,rack,new Vector3(-3.35f,0.9f,1));
+        Sample(station.ScalePrefab,rack,new Vector3(-3.05f,0.9f,0.95f));
         SceneTape temporaryTape=DemoToolGeometry.CreateTape();
         GameObject tapePrefab=PrefabUtility.SaveAsPrefabAsset(temporaryTape.gameObject,Folder+"/SceneTape.prefab");
         Object.DestroyImmediate(temporaryTape.gameObject);

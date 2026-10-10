@@ -36,7 +36,7 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | WASD / arrows, Shift | Walk, run (ShopWalkController) |
 | Right click / Escape | Toggle mouse look / release cursor |
 | Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
-| 1, 2, 3 | New cone, marker, tape post straight into the hand |
+| 1, 2, 3, 4 | New cone, marker, tape post or L-scale straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
 | T | SelectTapePost on the held or pointed post |
 | X | CancelTapeSelection |

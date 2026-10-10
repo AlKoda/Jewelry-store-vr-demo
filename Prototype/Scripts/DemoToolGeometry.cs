@@ -36,6 +36,19 @@ public static class DemoToolGeometry
             tool.BackNumberLabel = Label(back.transform, true);
             tool.SetMarkerNumber(1);
         }
+        else if (kind == DemoToolKind.Scale)
+        {
+            // Forensic L-scale: two 15 cm arms with 1 cm black/white bands, laid flat
+            // beside evidence so photographs carry a size reference. Arms collide; bands do not.
+            Cube("ArmX",root.transform,new Vector3(0.075f,0.0015f,0.01f),new Vector3(0.15f,0.003f,0.02f));
+            Cube("ArmZ",root.transform,new Vector3(0.01f,0.0015f,0.085f),new Vector3(0.02f,0.003f,0.15f));
+            for (int i=0;i<15;i++)
+            {
+                string band = i%2==0 ? "BandBlack" : "BandWhite";
+                Visual(band,root.transform,new Vector3(0.005f+i*0.01f,0.0033f,0.01f),new Vector3(0.0095f,0.0006f,0.016f));
+                if (i>=2) Visual(band,root.transform,new Vector3(0.01f,0.0033f,0.005f+i*0.01f),new Vector3(0.016f,0.0006f,0.0095f));
+            }
+        }
         else
         {
             Primitive("Base",PrimitiveType.Cylinder,root.transform,
@@ -83,6 +96,15 @@ public static class DemoToolGeometry
 
     private static GameObject Cube(string name,Transform parent,Vector3 p,Vector3 size)
         => Primitive(name,PrimitiveType.Cube,parent,p,size);
+    // Decoration without a collider, so grabbing and pointing go by the arms.
+    private static GameObject Visual(string name,Transform parent,Vector3 p,Vector3 size)
+    {
+        GameObject g=Cube(name,parent,p,size);
+        Collider collider=g.GetComponent<Collider>();
+        if (Application.isPlaying) Object.Destroy(collider);
+        else Object.DestroyImmediate(collider);
+        return g;
+    }
     private static GameObject Primitive(string name,PrimitiveType type,Transform parent,Vector3 p,Vector3 size)
     {
         GameObject g=GameObject.CreatePrimitive(type);

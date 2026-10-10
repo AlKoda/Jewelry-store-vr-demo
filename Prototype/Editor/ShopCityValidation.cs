@@ -15,6 +15,8 @@ public static class ShopCityValidation
     private const string GlassKey = "ShopCityValidationGlass";
     private const string RobberyKey = "ShopCityValidationRobbery";
     private const string InteriorKey = "ShopCityValidationInterior";
+    private const string TexturedKey = "ShopCityValidationTextured";
+    private const string TexturedCountKey = "ShopCityValidationTexturedCount";
     static ShopCityValidation() { EditorApplication.update += Tick; }
 
     public static void Run() { Generate(false); }
@@ -23,17 +25,19 @@ public static class ShopCityValidation
     public static void RunGlass() { Generate(true,true,true,true,true); }
     public static void RunRobbery() { Generate(true, true, true, true); }
     public static void RunInterior() { Generate(true, true, true); }
+    public static void RunTextured() { Generate(true, true, true, true, true, true); }
 
-    private static void Generate(bool expanded, bool forms = false, bool interior = false, bool robbery = false, bool glass = false)
+    private static void Generate(bool expanded, bool forms = false, bool interior = false, bool robbery = false, bool glass = false, bool textured = false)
     {
         try
         {
+            SessionState.SetBool(TexturedKey, textured);
             SessionState.SetBool(GlassKey,glass);
             SessionState.SetBool(RobberyKey, robbery);
             SessionState.SetBool(ExpandedKey, expanded);
             SessionState.SetBool(FormsKey, forms);
             SessionState.SetBool(InteriorKey, interior);
-            DemoValidation.Begin(glass ? "VerificationGlass" : robbery ? "VerificationRobbery" : interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
+            DemoValidation.Begin(textured ? "VerificationTextured" : glass ? "VerificationGlass" : robbery ? "VerificationRobbery" : interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
             JewelryStoreBuilder.CreateStore();
             DemoToolsBuilder.Create(!forms);
             ShopCityRefinement.Apply(!forms);
@@ -48,7 +52,8 @@ public static class ShopCityValidation
             if (interior) { ShopInteriorFinish.ApplyShell(); ShopDisplayFinish.Apply(); }
             if (robbery) ShopRobberyDressing.Apply();
             if(glass) ShopGlassRefinement.Apply();
-            DemoValidation.SaveScene(glass ? "JewelryStoreGlass" : robbery ? "JewelryStoreRobbery" : interior ? "JewelryStoreInterior" : forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
+            if (textured) SessionState.SetInt(TexturedCountKey, ShopTextureFinish.Apply());
+            DemoValidation.SaveScene(textured ? "JewelryStoreTextured" : glass ? "JewelryStoreGlass" : robbery ? "JewelryStoreRobbery" : interior ? "JewelryStoreInterior" : forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
             if (expanded) DemoValidation.Capture(camera, "display-details.png", new Vector3(-.4f, 1.6f, 2), new Vector3(-2, 1, 3.7f));
             DemoValidation.Capture(camera, "street-from-inside.png", new Vector3(0, 1.65f, 1.5f), new Vector3(0, 2, -18));
@@ -65,7 +70,7 @@ public static class ShopCityValidation
             if(glass) GlassToolValidation.Capture(camera);
             DemoToolsBuilder.CreatePlayer(camera);
             DemoValidation.SaveScene();
-            DemoValidation.EnterPlayMode(Key, (glass ? "Glass scene generation and 10" : robbery ? "Robbery scene generation and 7" : interior ? "Interior scene generation and 6" : expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
+            DemoValidation.EnterPlayMode(Key, (textured ? "Textured scene generation and 10" : glass ? "Glass scene generation and 10" : robbery ? "Robbery scene generation and 7" : interior ? "Interior scene generation and 6" : expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
                 + " actual Unity rendered captures passed.");
         }
         catch (Exception ex) { DemoValidation.Finish(Key, false, ex.ToString()); }
@@ -87,6 +92,7 @@ public static class ShopCityValidation
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
                 if (SessionState.GetBool(InteriorKey, false)) { ShopInteriorFinish.CheckBudget(); ShopDisplayFinish.CheckBudget(); }
+                if (SessionState.GetBool(TexturedKey, false)) ShopTextureFinish.CheckBudget(SessionState.GetInt(TexturedCountKey, 0));
                 if (SessionState.GetBool(ExpandedKey, false)) ExpansionChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
@@ -174,6 +180,11 @@ public static class ShopCityValidation
         DemoValidation.Check(Mathf.Abs(cone.transform.position.z - 0.3f) < 0.001f, "Placement is clamped inside the interior");
         interactor.Rotate(30);
         DemoValidation.Check(Mathf.Abs(Mathf.DeltaAngle(cone.transform.eulerAngles.y, 30)) < 0.01f, "Held tool rotates");
+        DeployedTool scale = interactor.SpawnIntoHand(DemoToolKind.Scale);
+        DemoValidation.Check(scale != null && scale.Kind == DemoToolKind.Scale && scale.GetComponentsInChildren<Collider>().Length == 2
+            && scale.GetComponentsInChildren<MeshRenderer>().Length == 30, "Evidence L-scale spawns with two collider arms and 28 bands");
+        interactor.Remove(scale);
+        interactor.Hold(cone);
         interactor.Remove(cone);
         DemoValidation.Check(interactor.Held == null && interactor.Hovered == null, "Removing the held tool clears the hand and hover");
 
