@@ -183,8 +183,8 @@ public static class DemoValidation
         ToolStation station = Find<ToolStation>();
         Check(station.DeploymentRoot.GetComponentInChildren<SceneTape>() == null, "Tape removed after endpoint removal");
         Check(File.Exists(evidence.LastPhotoPath), "Runtime photograph saved");
-        PhotoFrame frame = UnityEngine.Object.FindFirstObjectByType<PhotoFrame>();
-        Check(frame != null && frame.Current != null && frame.Current.width == 1920, "Photo frame shows the saved photograph");
+        PhotoFrame photoFrame = UnityEngine.Object.FindFirstObjectByType<PhotoFrame>();
+        Check(photoFrame != null && photoFrame.Current != null && photoFrame.Current.width == 1920, "Photo frame shows the saved photograph");
         Check(Vector3.Distance(evidence.transform.Find("PhotoCamera").localPosition, new Vector3(0, 0, 0.1f)) < 0.001f,
             "View photograph restores dedicated camera pose");
         File.Copy(evidence.LastPhotoPath, Path.Combine(Output, "runtime-photo.png"), true);

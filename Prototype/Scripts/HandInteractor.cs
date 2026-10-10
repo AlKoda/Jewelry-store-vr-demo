@@ -28,7 +28,7 @@ public sealed class HandInteractor : ToolHolder
         if (Held != null) Held.PlaceAt(transform.TransformPoint(HeldOffset), transform.eulerAngles.y);
     }
 
-    // Grab the nearest tool within reach; otherwise a rack sample (new tool) or the camera.
+    // Grab the closest available tool, rack sample or camera within reach.
     public bool Grab()
     {
         if (Held != null || HoldingCamera) return false;
@@ -61,7 +61,7 @@ public sealed class HandInteractor : ToolHolder
         FollowHand();
     }
 
-    // Nearest tool within GrabRadius; also notes a rack sample or the camera in reach.
+    // Compare all grabbable types by distance; a nearby rack sample must not mask the camera.
     private DeployedTool NearestTool()
     {
         nearSample = null;
@@ -74,14 +74,18 @@ public sealed class HandInteractor : ToolHolder
             Collider collider = overlaps[i];
             DeployedTool tool = collider.GetComponentInParent<DeployedTool>();
             if (tool != null && !tool.Free) continue;
-            if (tool == null)
+            ToolRackSample sample=tool==null?collider.GetComponentInParent<ToolRackSample>():null;
+            bool camera=tool==null && EvidenceCamera!=null &&
+                collider.GetComponentInParent<EvidenceCamera>()==EvidenceCamera;
+            if(tool==null && sample==null && !camera) continue;
+            float distance=(collider.ClosestPoint(transform.position)-transform.position).sqrMagnitude;
+            if(distance<bestDistance)
             {
-                if (nearSample == null) nearSample = collider.GetComponentInParent<ToolRackSample>();
-                nearCamera |= EvidenceCamera != null && collider.GetComponentInParent<EvidenceCamera>() == EvidenceCamera;
-                continue;
+                bestDistance=distance;
+                best=tool;
+                nearSample=sample;
+                nearCamera=camera;
             }
-            float distance = (collider.ClosestPoint(transform.position) - transform.position).sqrMagnitude;
-            if (distance < bestDistance) { best = tool; bestDistance = distance; }
         }
         return best;
     }

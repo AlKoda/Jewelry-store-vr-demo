@@ -2,18 +2,21 @@
 
 ## Current state
 
-**October 10 geometry source:** see [GEOMETRY_FORMS.md](GEOMETRY_FORMS.md). ShopFormRefinement and ShopCityValidation.RunForms generate a separate untextured JewelryStoreForms scene with procedural environment/tool fallbacks. Chamfered cabinets, shaped busts, wall niches and tapered cars are implemented but uncompiled: remote PC commands stalled. Existing Downloads snapshots do not contain these changes. The new overloads preserve the original imported-asset paths for other generators.
+All work lands on main; pull before editing.
 
+**Latest verified project: JewelryStoreForms**, October 10, 2026, Unity 6000.6.2f1 Built-in. All source compiled and 72 automated Editor Play mode assertions passed. See [GEOMETRY_FORMS.md](GEOMETRY_FORMS.md) for the changes, actual renders, measured budgets and limitations.
 
-All work now lands on `main` directly; there is no separate feature branch. Pull before editing.
+Download Downloads/JewelryStore_Forms_Unity6000.6.2f1.zip. Extract to UnityProject_Forms beside README; Open-Unity-Forms.cmd opens Assets/CrimeSceneDemo/Scenes/JewelryStoreForms.unity. The isolated PC project is already there. Prior UnityProject and UnityProject_Next remain unchanged.
 
-Verified on the PC (October 9, 2026, Unity 6000.6.2f1, Built-in pipeline): the expanded shop, pointer placement, current-view photography and the **instructor review recorder** — 40 assertions, see [REVIEW_BATCH_05.md](REVIEW_BATCH_05.md). That run used the source *before* the batches listed below were merged in.
+Run ShopCityValidation.RunForms in an isolated project to regenerate and validate. This mode uses procedural city, lamps and tools, skips ShopAssetDressing, then applies the intact overlay and ShopFormRefinement. RunExpanded retains the imported-assets path; that variant has not been rerun in this batch.
 
-Unverified since then: the single Player rig for desktop and VR (DemoModeSwitch, F9), head and controller tracking through the built-in XR input API, ToolHolder/HandInteractor/XRLocomotion, the status board, DemoGeometry, the build script, and the removal of DesktopToolPlacement in favour of DesktopInteractor. **Run `ShopCityValidation.RunExpanded`** (isolated project, -executeMethod) to regenerate JewelryStoreExpanded.unity, captures and results. Expected: 70 assertions. Then check by hand: marker digits visible, click-to-pick-up and place, P photographs the view, F then P through the camera, review HTML opens, F9 flips to VR mode and back.
+New measured groups: shop detail 1,624 triangles / 24 renderers; city 5,044 / 19. These are not total-scene counts or measured FPS.
 
-Latest snapshot with the merged source: Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip (scene files inside predate this merge; the validation run regenerates them). Downloads/JewelryStore_Review_Unity6000.6.2f1.zip is the verified batch-05 project. Older snapshots are history.
+Runtime fixes: HandInteractor compares tools/samples/camera by closest collider distance; DemoModeSwitch releases holders before hand deactivation to avoid Unity's reparenting restriction. Validator fixes: distinct photoFrame variable, Physics.SyncTransforms before immediate hand queries, and an active/rack-parent assertion after switching modes.
 
-PC root: C:\Users\MOBPC\Documents\Codex\Jewelry-store-vr-demo\Jewelry-store-vr-demo-main (UnityProject, and UnityProject_Next for the review batch).
+Desktop/VR adapters, teleport, snap turn and hand interactions were exercised programmatically, without a headset. Quest tracking/performance, hands-on interaction and standalone build remain pending. Package Manager needs -noUpm. The known Editor SearchDatabase exception still appears; validation completes.
+
+PC root: C:\\Users\\MOBPC\\Documents\\Codex\\Jewelry-store-vr-demo\\Jewelry-store-vr-demo-main
 
 ## Goal
 

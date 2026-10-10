@@ -28,6 +28,9 @@ public sealed class DemoModeSwitch : MonoBehaviour
 
     public void Apply(bool vr)
     {
+        // Release before disabling hand objects: Unity forbids reparenting a child
+        // from inside its parent\'s SetActive/OnDisable traversal.
+        foreach (ToolHolder holder in GetComponentsInChildren<ToolHolder>(true)) holder.ReleaseAll();
         VRActive = vr;
         foreach (Behaviour b in DesktopOnly) if (b != null) b.enabled = !vr;
         foreach (Collider c in DesktopColliders) if (c != null) c.enabled = !vr;

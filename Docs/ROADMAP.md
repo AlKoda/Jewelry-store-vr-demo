@@ -86,6 +86,8 @@ When testing begins, record date, build/version, device, result and any remainin
 
 Panel merge repaired; generated scene and all source compiled. Forty automated Editor Play mode assertions passed, including instructor review photo copies, tool positions, manual snapshots and before-reset records. Latest snapshot: Downloads/JewelryStore_Review_Unity6000.6.2f1.zip. See [report](REVIEW_BATCH_05.md). UPM normal startup still fails; XR and hands-on input checks remain pending. Merged on October 9 with the Claude batches (DesktopToolPlacement superseded by DesktopInteractor; review checks moved into DemoValidation); that merged state is unverified.
 
-## October 10 geometry pass
+## October 10 geometry pass — verified
 
-Implemented in source; awaiting Unity verification. Shaped display cabinets and busts, framed niches, storefront/rear-wall depth and tapered cars. RunForms skips imported environment/tool visuals and checks a 5,000-triangle / 32-renderer added-detail budget. No added textures or realtime lights. Remote commands stalled, so scene captures, refreshed ZIP and Quest FPS remain pending. See [GEOMETRY_FORMS.md](GEOMETRY_FORMS.md).
+Chamfered cabinets, shaped busts, framed niches, storefront/rear-wall depth and tapered cars generated and inspected in actual Unity captures. All source compiled; 72 automated Editor Play mode checks passed. New shop detail: 1,624 triangles / 24 renderers. City: 5,044 triangles / 19 renderers. Fixed nearest-item camera grabbing and camera release before mode switching. Complete snapshot: Downloads/JewelryStore_Forms_Unity6000.6.2f1.zip. See [report and screenshots](GEOMETRY_FORMS.md).
+
+Quest frame time, real controller tracking, hands-on usability and standalone build remain pending. Imported-assets RunExpanded was not rerun; RunForms uses procedural assets.
