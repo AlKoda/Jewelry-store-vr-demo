@@ -182,6 +182,9 @@ public static class DemoToolsBuilder
         if(RenderSettings.fog) { camera.backgroundColor=RenderSettings.fogColor; camera.farClipPlane=120; }
 
         InteriorBounds bounds=player.AddComponent<InteriorBounds>();
+        // The review sketches the shop from the same regions that bound the player.
+        SessionReviewRecorder review=Object.FindFirstObjectByType<SessionReviewRecorder>();
+        if(review!=null) review.Bounds=bounds;
         XRLocomotion locomotion=player.AddComponent<XRLocomotion>();
         locomotion.Head=camera.transform;
         locomotion.Bounds=bounds;

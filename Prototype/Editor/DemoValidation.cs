@@ -234,7 +234,19 @@ public static class DemoValidation
         SessionReviewRecorder.Entry photo = document.entries[document.entries.Count - 1];
         Check(photo.reason == "Photograph" && photo.tools.Count >= 3, "Photograph records deployed tools in the review");
         Check(File.Exists(Path.Combine(review.ReviewFolder, photo.photo)), "Review contains the copied photograph");
-        Check(File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html")).Contains(photo.photo), "HTML review references the photograph");
+        string html = File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html"));
+        Check(html.Contains(photo.photo), "HTML review references the photograph");
+        Check(html.Contains("class=\"contact-sheet\"") && html.Contains("<table class=\"shot-list\""), "HTML review contains the contact sheet and shot list");
+        Check(html.Contains("<svg") && html.Contains(">1</text>"), "HTML review sketches the scene with tool glyphs");
+        Rect sketch = review.SketchViewBox();
+        Check(sketch.Contains(SessionReviewRecorder.SketchPoint(new Vector3(0, 0, 4), sketch)), "Sketch maps a shop position inside the drawing");
+        // A connected pair of posts goes into the snapshot so the review records the ribbon.
+        DeployedTool postA = station.Spawn(DemoToolKind.TapePost);
+        DeployedTool postB = station.Spawn(DemoToolKind.TapePost);
+        postA.PlaceAt(new Vector3(2, 0, 3), 0);
+        postB.PlaceAt(new Vector3(3, 0, 3), 0);
+        station.SelectTapePost(postA);
+        station.SelectTapePost(postB);
         review.SaveSnapshot();
         evidence.transform.position = new Vector3(0, 1.5f, 4);
         Find<DemoSession>().ResetSession();
@@ -251,10 +263,15 @@ public static class DemoValidation
         Check(station.NextMarkerNumber == 1, "Reset restarts marker numbering");
         Check(File.Exists(evidence.LastPhotoPath), "Reset preserves photographs");
         Check(Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f, "Reset restores handheld camera");
-        SessionReviewRecorder.ReviewDocument document = ReadReview(Find<SessionReviewRecorder>());
+        SessionReviewRecorder review = Find<SessionReviewRecorder>();
+        SessionReviewRecorder.ReviewDocument document = ReadReview(review);
         int last = document.entries.Count - 1;
         Check(last >= 1 && document.entries[last - 1].reason == "Manual snapshot" && document.entries[last].reason == "Before scene reset"
             && document.entries[last].tools.Count >= 3, "Snapshot and reset append review entries with the tools");
+        SessionReviewRecorder.Entry snapshot = document.entries[last - 1];
+        Check(snapshot.connections.Count == 1 && snapshot.tools[snapshot.connections[0].from].kind == "TapePost"
+            && File.ReadAllText(Path.Combine(review.ReviewFolder, "review.html")).Contains("<line "),
+            "Snapshot records the tape connection and the sketch draws it");
         return true;
     }
 
