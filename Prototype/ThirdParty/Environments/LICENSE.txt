@@ -1,0 +1,4 @@
+HDRI Haven (now Poly Haven) panoramas, as redistributed in google/filament (third_party/environments).
+Source: https://github.com/google/filament/tree/main/third_party/environments (CC0.html, URL.txt -> https://hdrihaven.com/),
+fetched October 10, 2026. License: Creative Commons Zero v1.0 Universal (CC0 1.0). No attribution required.
+Files: lightroom_14b.hdr (studio, used for glass and metal reflections) and venetian_crossroads_2k.hdr (street, used as the sky).

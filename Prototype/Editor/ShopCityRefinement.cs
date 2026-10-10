@@ -7,6 +7,9 @@ public static class ShopCityRefinement
 {
     private const string Folder="Assets/CrimeSceneDemo/CityGenerated";
     private const string Pack="KenneyCityBuilder";
+    // KayKit City Kit (CC0): low-poly props and buildings sharing one atlas texture.
+    private const string KitPack="KayKitCity";
+    private const float KitScale=4.5f;
     private static Material stone, dark, metal, cream, road, glass, green, brick, white, glow;
     private static Transform city;
     private static bool importedAssets;
@@ -32,8 +35,10 @@ public static class ShopCityRefinement
         brick=Mat("Terracotta",new Color(.48f,.29f,.22f));
         white=Mat("RoadMarking",new Color(.83f,.84f,.80f));
         glow=Glowing(Mat("LampGlow",new Color(.95f,.92f,.82f)),new Color(1f,.93f,.75f)*1.4f);
+        Transform tools=store.transform.Find("ToolSystem");
         foreach(Renderer r in store.GetComponentsInChildren<Renderer>())
         {
+            if(tools!=null && r.transform.IsChildOf(tools)) continue;
             string n=r.name.ToLowerInvariant();
             Material m=cream;
             if(n.Contains("floor")) m=stone;
@@ -94,22 +99,28 @@ public static class ShopCityRefinement
         Building("Neighbor_Left",V(-12,0,2.7f),12,9,9,brick,"GALLERY",180);
         Building("Neighbor_Right",V(12,0,2.7f),12,12,9,stone,"PHARMACY",180);
         string[] blocks={"building-small-a","building-small-b","building-small-c","building-small-d","building-garage"};
+        string[] towers={"building_H_withoutBase","building_C_withoutBase","building_D_withoutBase","building_F_withoutBase"};
         for(int i=-4;i<=4;i++)
         {
-            // Kenney CC0 buildings when the pack is present (1 m tiles scaled up), boxes otherwise.
-            if(PlaceCityAsset(blocks[(i+4)%blocks.Length],city,V(i*13,0,-40),(i%2==0)?0:180,12)==null)
-                Box("DistantBlock",city,V(i*13,10+(i+4)%3*2,-40),V(10,20+(i+4)%3*4,12),stone);
+            // Odd slots take KayKit towers (bases removed, so they sink 0.1 units), even slots
+            // Kenney CC0 buildings (1 m tiles scaled up); boxes stand in for missing packs.
+            GameObject block=i%2!=0?Kit(towers[(i+3)/2],city,V(i*13,-.7f,-40),0,7):null;
+            if(block==null) block=PlaceCityAsset(blocks[(i+4)%blocks.Length],city,V(i*13,0,-40),(i%2==0)?0:180,12);
+            if(block==null) Box("DistantBlock",city,V(i*13,10+(i+4)%3*2,-40),V(10,20+(i+4)%3*4,12),stone);
             if(i%2==0) Lamp(V(i*8,0,-11.8f));
         }
         if(PlaceCityAsset("pavement-fountain",city,V(2,-.02f,-13),0,4)!=null)
             Box("FountainPlinth",city,V(2,-.015f,-13),V(4.2f,.03f,4.2f),cream);
-        Car(V(-7,-.02f,-9.4f),dark);
-        Car(V(10,-.02f,-4.5f),brick);
+        Car(V(-7,-.02f,-9.4f),dark,"car_sedan",90);
+        Car(V(10,-.02f,-4.5f),brick,"car_taxi",-90);
+        // A patrol car at the kerb in front of the window tells the story from inside the shop.
+        Car(V(-1.5f,-.02f,-4.6f),white,"car_police",-90);
         Bench(V(-3,0,-12.3f));
         Bench(V(8,0,-12.3f));
         for(int i=0;i<3;i++)
             if(PlaceCityAsset("grass-trees-tall",city,V(-13+i*13,0,-13.2f),i*90,3.5f)==null)
                 Planter(V(-13+i*13,0,-13.2f));
+        StreetFurniture();
         // Consolidate static backdrop by material into persistent mesh assets.
         CombineByMaterial(city,Folder+"/CityMesh_","City_");
         RenderSettings.fog=true;
@@ -147,9 +158,16 @@ public static class ShopCityRefinement
         Box("Awning",g,V(0,2.56f,face+.48f),V(width-.3f,.08f,1),wall);
     }
 
-    private static void Car(Vector3 p,Material paint)
+    private static void Car(Vector3 p,Material paint,string model,float yaw)
     {
         Transform g=Group("ParkedCar",city); g.localPosition=p;
+        // KayKit cars are modelled lengthwise along z with the wheel bottoms 0.06 units below the origin.
+        if(Kit(model,g,V(0,.06f*KitScale,0),yaw,KitScale)!=null)
+        {
+            foreach(string corner in new[]{"front_left","front_right","rear_left","rear_right"})
+                Kit(model+"_wheel_"+corner,g,V(0,.06f*KitScale,0),yaw,KitScale);
+            return;
+        }
         Mesh body=ShopFormRefinement.Loft("CarBody",new float[]{-.5f,-.35f,.3f,.5f},new float[]{.91f,1,1,.86f},new float[]{.88f,1,1,.90f},.12f);
         Mesh cabin=ShopFormRefinement.Loft("CarCabin",new float[]{-.5f,.5f},new float[]{1,.72f},new float[]{1,.85f},.08f);
         Mesh wheel=ShopFormRefinement.Loft("CarWheel",new float[]{-.5f,.5f},new float[]{1,1},new float[]{1,1},.146447f);
@@ -164,6 +182,8 @@ public static class ShopCityRefinement
     private static void Lamp(Vector3 p)
     {
         Transform g=Group("StreetLamp",city); g.localPosition=p;
+        // The KayKit light arm points along -x; yaw 90 swings it over the street.
+        if(Kit("streetlight",g,Vector3.zero,90,KitScale)!=null) return;
         if(importedAssets && DemoAssetLibrary.Place("KhronosSamples","Lantern",g,Vector3.zero,0,1)!=null) return;
         Box("Post",g,V(0,2.2f,0),V(.09f,4.4f,.09f),dark);
         Box("Arm",g,V(0,4.35f,.45f),V(.09f,.09f,.9f),dark);
@@ -172,6 +192,7 @@ public static class ShopCityRefinement
     private static void Bench(Vector3 p)
     {
         Transform g=Group("Bench",city);g.localPosition=p;
+        if(Kit("bench",g,Vector3.zero,0,KitScale)!=null) return;
         Box("Seat",g,V(0,.48f,0),V(1.8f,.10f,.45f),dark);
         Box("Back",g,V(0,.78f,-.2f),V(1.8f,.5f,.08f),dark);
         for(int x=-1;x<=1;x+=2) Box("Leg",g,V(x*.65f,.24f,0),V(.08f,.48f,.4f),metal);
@@ -189,8 +210,25 @@ public static class ShopCityRefinement
         }
     }
 
+    // Kerbside detail that only exists with the KayKit pack: hydrant by the shop, traffic
+    // lights at both ends of the crossing, a dumpster in the gap between the far buildings,
+    // bushes along the far pavement. Nothing stands in for them when the pack is absent.
+    private static void StreetFurniture()
+    {
+        if(!importedAssets || !DemoAssetLibrary.Has(KitPack,"firehydrant")) return;
+        Transform g=Group("StreetFurniture",city);
+        Kit("firehydrant",g,V(-5.5f,0,-2.6f),0,KitScale);
+        Kit("trafficlight_A",g,V(14,0,-2.7f),180,KitScale);
+        Kit("trafficlight_A",g,V(10,0,-11.3f),0,KitScale);
+        Kit("dumpster",g,V(-13.5f,0,-13.8f),0,KitScale);
+        Kit("trash_A",g,V(-12.4f,0,-12.9f),40,KitScale);
+        for(int i=-1;i<=2;i++) Kit("bush",g,V(-24+i*16,0,-14.3f),i*70,3);
+    }
+
     private static GameObject PlaceCityAsset(string model,Transform parent,Vector3 p,float yaw,float scale)
         => importedAssets?DemoAssetLibrary.Place(Pack,model,parent,p,yaw,scale):null;
+    private static GameObject Kit(string model,Transform parent,Vector3 p,float yaw,float scale)
+        => importedAssets?DemoAssetLibrary.Place(KitPack,model,parent,p,yaw,scale):null;
 
     private static Material Mat(string name,Color color) => DemoGeometry.Mat(Folder,name,color,.12f);
 }

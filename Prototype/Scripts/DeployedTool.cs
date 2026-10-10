@@ -40,7 +40,7 @@ public sealed class DeployedTool : MonoBehaviour
         {
             if (renderer.GetComponent<TextMesh>() != null || renderer.sharedMaterial == null) continue;
             block.Clear();
-            if (on) block.SetColor("_Color", Color.Lerp(renderer.sharedMaterial.color, Color.white, 0.45f));
+            if (on) block.SetColor("_Color", Color.Lerp(renderer.sharedMaterial.color, new Color(1f, 0.85f, 0.25f), 0.5f));
             renderer.SetPropertyBlock(block);
         }
     }

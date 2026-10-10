@@ -158,6 +158,7 @@ public static class DemoValidation
         post1.PlaceAt(new Vector3(0, 0, 1), 0);
         post2.PlaceAt(new Vector3(2, 0, 1), 0);
         station.SelectTapePost(post1);
+        Check(Find<DemoStatusBoard>().GetComponent<TextMesh>().text.Contains("second post"), "Status board shows the pending tape selection");
         station.SelectTapePost(post2);
         SceneTape tape = station.DeploymentRoot.GetComponentInChildren<SceneTape>();
         Check(tape != null, "Tape connection");

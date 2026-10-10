@@ -1,0 +1,4 @@
+cgbookcase.com PBR texture sets, as redistributed in google/filament (third_party/textures).
+Source: https://github.com/google/filament/tree/main/third_party/textures (CC0.html, URL.txt -> https://www.cgbookcase.com/downloads/),
+fetched October 10, 2026. License: Creative Commons Zero v1.0 Universal (CC0 1.0). No attribution required.
+Sets here: Parquet_flooring_05 (Color, Normal) and Dirty_gold_01 (Color, Normal), downscaled from 2048 to 1024 px.

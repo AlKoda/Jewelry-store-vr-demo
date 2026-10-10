@@ -96,11 +96,35 @@ public static class DemoGeometry
     // Persists a generated mesh; an existing asset at the path is updated and reused.
     public static void SaveMesh(ref Mesh mesh, string path)
     {
+        PrepareForTextures(mesh);
         Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(path);
         if (existing == null) { AssetDatabase.CreateAsset(mesh, path); return; }
         EditorUtility.CopySerialized(mesh, existing);
         Object.DestroyImmediate(mesh);
         mesh = existing;
+    }
+
+    // Generated meshes carry positions only; textured materials need UVs and normal
+    // maps need tangents. Box projection (one metre per repeat) from the dominant
+    // normal axis suits the boxy lofts, tiles and loops the generators produce.
+    public static void PrepareForTextures(Mesh mesh)
+    {
+        if (mesh.vertexCount == 0) return;
+        if (mesh.normals == null || mesh.normals.Length != mesh.vertexCount) mesh.RecalculateNormals();
+        if (mesh.uv == null || mesh.uv.Length != mesh.vertexCount)
+        {
+            Vector3[] vertices = mesh.vertices;
+            Vector3[] normals = mesh.normals;
+            Vector2[] uv = new Vector2[vertices.Length];
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Vector3 n = normals[i], v = vertices[i];
+                float ax = Mathf.Abs(n.x), ay = Mathf.Abs(n.y), az = Mathf.Abs(n.z);
+                uv[i] = ay >= ax && ay >= az ? new Vector2(v.x, v.z) : ax >= az ? new Vector2(v.z, v.y) : new Vector2(v.x, v.y);
+            }
+            mesh.uv = uv;
+        }
+        mesh.RecalculateTangents();
     }
 
     // Replaces every mesh under root with one combined, shadowless mesh per material.

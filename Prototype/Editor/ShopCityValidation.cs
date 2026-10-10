@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ public static class ShopCityValidation
     private const string RobberyKey = "ShopCityValidationRobbery";
     private const string InteriorKey = "ShopCityValidationInterior";
     private const string TexturedKey = "ShopCityValidationTextured";
+    private const string AssetsKey = "ShopCityValidationAssets";
     private const string TexturedCountKey = "ShopCityValidationTexturedCount";
     static ShopCityValidation() { EditorApplication.update += Tick; }
 
@@ -25,12 +27,17 @@ public static class ShopCityValidation
     public static void RunGlass() { Generate(true,true,true,true,true); }
     public static void RunRobbery() { Generate(true, true, true, true); }
     public static void RunInterior() { Generate(true, true, true); }
-    public static void RunTextured() { Generate(true, true, true, true, true, true); }
+    // Full variant: finished procedural shop plus textures, imported models and HDR environment.
+    public static void RunTextured() { Generate(true, true, true, true, true, true, true); }
 
-    private static void Generate(bool expanded, bool forms = false, bool interior = false, bool robbery = false, bool glass = false, bool textured = false)
+    private static void Generate(bool expanded, bool forms = false, bool interior = false, bool robbery = false, bool glass = false,
+        bool textured = false, bool? importedAssets = null)
     {
+        // Historically the forms flag also meant "no imported models"; RunTextured brings them back.
+        bool assets = importedAssets ?? !forms;
         try
         {
+            SessionState.SetBool(AssetsKey, assets);
             SessionState.SetBool(TexturedKey, textured);
             SessionState.SetBool(GlassKey,glass);
             SessionState.SetBool(RobberyKey, robbery);
@@ -39,20 +46,20 @@ public static class ShopCityValidation
             SessionState.SetBool(InteriorKey, interior);
             DemoValidation.Begin(textured ? "VerificationTextured" : glass ? "VerificationGlass" : robbery ? "VerificationRobbery" : interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
             JewelryStoreBuilder.CreateStore();
-            DemoToolsBuilder.Create(!forms);
-            ShopCityRefinement.Apply(!forms);
+            DemoToolsBuilder.Create(assets);
+            ShopCityRefinement.Apply(assets);
             if (expanded)
             {
                 ShopPresentationExpansion.Apply();
-                if (!forms) ShopAssetDressing.Apply();
+                if (assets) ShopAssetDressing.Apply();
                 IntactStateBuilder.Apply();
                 if (forms) ShopFormRefinement.Apply();
             }
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             if (interior) { ShopInteriorFinish.ApplyShell(); ShopDisplayFinish.Apply(); }
             if (robbery) ShopRobberyDressing.Apply();
-            if(glass) ShopGlassRefinement.Apply();
             if (textured) SessionState.SetInt(TexturedCountKey, ShopTextureFinish.Apply());
+            if(glass) ShopGlassRefinement.Apply();
             DemoValidation.SaveScene(textured ? "JewelryStoreTextured" : glass ? "JewelryStoreGlass" : robbery ? "JewelryStoreRobbery" : interior ? "JewelryStoreInterior" : forms ? "JewelryStoreForms" : expanded ? "JewelryStoreExpanded" : "JewelryStoreCity");
             DemoValidation.Capture(camera, "showroom.png", new Vector3(3.6f, 1.65f, 0.8f), new Vector3(-0.2f, 1, 4.5f));
             if (expanded) DemoValidation.Capture(camera, "display-details.png", new Vector3(-.4f, 1.6f, 2), new Vector3(-2, 1, 3.7f));
@@ -92,7 +99,7 @@ public static class ShopCityValidation
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
                 if (SessionState.GetBool(InteriorKey, false)) { ShopInteriorFinish.CheckBudget(); ShopDisplayFinish.CheckBudget(); }
-                if (SessionState.GetBool(TexturedKey, false)) ShopTextureFinish.CheckBudget(SessionState.GetInt(TexturedCountKey, 0));
+                if (SessionState.GetBool(TexturedKey, false)) { ShopTextureFinish.CheckBudget(SessionState.GetInt(TexturedCountKey, 0)); GeneratedMeshChecks(); }
                 if (SessionState.GetBool(ExpandedKey, false)) ExpansionChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
@@ -252,6 +259,21 @@ public static class ShopCityValidation
             "Status board reflects the reset");
     }
 
+    // Every mesh the generators saved (lofts, loops, combined city) must carry UVs and
+    // tangents, or the textured materials show as flat colour with broken normal maps.
+    private static void GeneratedMeshChecks()
+    {
+        int generated = 0, textured = 0;
+        foreach (MeshFilter filter in UnityEngine.Object.FindObjectsByType<MeshFilter>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            Mesh mesh = filter.sharedMesh;
+            if (mesh == null || !AssetDatabase.GetAssetPath(mesh).StartsWith("Assets/CrimeSceneDemo/")) continue;
+            generated++;
+            if (mesh.uv.Length == mesh.vertexCount && mesh.tangents.Length == mesh.vertexCount) textured++;
+        }
+        DemoValidation.Check(generated > 0 && textured == generated, "Generated meshes carry UVs and tangents (" + textured + "/" + generated + ")");
+    }
+
     private static void BackdropChecks()
     {
         DemoOverviewMap map = DemoValidation.Find<DemoOverviewMap>();
@@ -266,8 +288,18 @@ public static class ShopCityValidation
         int triangles = 0;
         foreach (MeshFilter filter in city.GetComponentsInChildren<MeshFilter>())
             triangles += filter.sharedMesh.triangles.Length / 3;
-        DemoValidation.Check(triangles < 20000, "Backdrop triangle budget");
+        // Boxes and Kenney tiles stay under 20k; the KayKit kit (cars, towers, props) adds about 10k more.
+        DemoValidation.Check(triangles < 40000, "Backdrop triangle budget");
         DemoValidation.Info("City renderers=" + renderers + "; triangles=" + triangles);
+        if (SessionState.GetBool(AssetsKey, true) && DemoAssetLibrary.Has("KayKitCity", "car_police"))
+        {
+            Transform kit = city.transform.Find("City_citybits_texture");
+            Mesh kitMesh = kit != null ? kit.GetComponent<MeshFilter>().sharedMesh : null;
+            DemoValidation.Check(kitMesh != null && kitMesh.uv.Length == kitMesh.vertexCount && kitMesh.vertexCount > 5000
+                && kit.GetComponent<MeshRenderer>().sharedMaterial.mainTexture != null, "KayKit street kit combines into one atlas-textured draw");
+            DemoValidation.Check(city.transform.Find("StreetFurniture") != null && city.GetComponentsInChildren<Transform>().Count(t => t.name == "ParkedCar") == 3,
+                "Street furniture and three kit cars placed");
+        }
         DemoValidation.Check(DemoSounds.Clip(DemoSound.Click).length > 0.02f && DemoSounds.Clip(DemoSound.Ambience).length > 3,
             "Generated sounds are available");
         Renderer fixture = GameObject.Find("JewelryStore_Blockout").transform.Find("ShopDetails/CeilingLight").GetComponent<Renderer>();
@@ -285,12 +317,21 @@ public static class ShopCityValidation
         Transform store = GameObject.Find("JewelryStore_Blockout").transform;
         DemoValidation.Check(store.Find("PresentationDetails") != null, "Presentation details present");
         Transform dressing = store.Find("ThirdPartyDressing");
-        if (SessionState.GetBool(FormsKey, false))
+        if (!SessionState.GetBool(AssetsKey, true))
             DemoValidation.Check(dressing == null, "Geometry-only scene skips imported dressing");
         else
         {
             DemoValidation.Check(dressing != null && dressing.childCount == ShopAssetDressing.Count, "Third-party dressing placed (" + ShopAssetDressing.Count + " models)");
             DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
+            if (DemoAssetLibrary.Has("KayKitFurniture", "cabinet_medium_decorated"))
+            {
+                Transform cabinet = dressing.Find("cabinet_medium_decorated"), lamp = dressing.Find("lamp_standing");
+                DemoValidation.Check(cabinet != null && cabinet.GetComponent<BoxCollider>() != null && lamp != null && lamp.GetComponent<BoxCollider>() != null
+                    && cabinet.GetComponentInChildren<MeshRenderer>().sharedMaterial == lamp.GetComponentInChildren<MeshRenderer>().sharedMaterial,
+                    "KayKit furniture is solid and shares one atlas material");
+                DemoValidation.Check(cabinet != null && cabinet.position.x > 1 && cabinet.position.x < 1.7f && cabinet.position.z > 8.25f && cabinet.position.z < 10.75f,
+                    "Safe room cabinet stands against the back room's left wall");
+            }
         }
 
         CrimeSceneState state = DemoValidation.Find<CrimeSceneState>();

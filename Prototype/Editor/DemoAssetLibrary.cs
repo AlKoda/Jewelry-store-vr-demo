@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -46,6 +47,21 @@ public static class DemoAssetLibrary
     public static GameObject Load(string pack, string model)
         => AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/" + pack + "/" + model + ".obj");
 
+    public static string Path(string pack, string file) => Root + "/" + pack + "/" + file;
+    public static bool HasTexture(string pack, string file) => Texture(pack, file) != null;
+    public static Texture2D Texture(string pack, string file) => AssetDatabase.LoadAssetAtPath<Texture2D>(Path(pack, file));
+
+    // Each imported OBJ carries its own copy of the pack's atlas material. Models of
+    // one pack share the first copy seen, so a kit combines into one draw per atlas.
+    private static readonly Dictionary<string, Material> atlases = new Dictionary<string, Material>();
+    private static Material Shared(string pack, Material material)
+    {
+        if (material == null) return null;
+        string key = pack + "/" + material.name;
+        if (!atlases.TryGetValue(key, out Material shared) || shared == null) atlases[key] = shared = material;
+        return shared;
+    }
+
     // Unpacked instance (meshes still reference the asset), uniformly scaled, without colliders or shadows.
     public static GameObject Place(string pack, string model, Transform parent, Vector3 localPosition, float yaw, float scale)
     {
@@ -62,6 +78,7 @@ public static class DemoAssetLibrary
         {
             renderer.shadowCastingMode = ShadowCastingMode.Off;
             renderer.receiveShadows = false;
+            if (renderer.sharedMaterials.Length == 1) renderer.sharedMaterial = Shared(pack, renderer.sharedMaterial);
         }
         return instance;
     }

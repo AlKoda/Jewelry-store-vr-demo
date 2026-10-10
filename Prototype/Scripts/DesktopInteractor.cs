@@ -98,7 +98,9 @@ public sealed class DesktopInteractor : ToolHolder
         Highlight(Held);
         heldYaw = Held.transform.eulerAngles.y;
         HasPlacementTarget = false;
-        if (ReadDesktopInput && View != null) Carry(PointerRay());
+        // A tool taken from the panel waits at the rack until the panel closes.
+        bool panelOpen = Panel != null && Panel.Visible;
+        if (ReadDesktopInput && View != null && !panelOpen) Carry(PointerRay());
     }
 
     // Move the held tool to the pointed surface. Only upward-facing surfaces

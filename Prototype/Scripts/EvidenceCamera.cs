@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 using UnityEngine.Events;
 
 [Serializable] public sealed class PhotoPathEvent : UnityEvent<string> { }
@@ -124,6 +126,7 @@ public sealed class EvidenceCamera : MonoBehaviour
     private void OnDestroy()
     {
         if(generatedClick!=null) Destroy(generatedClick);
+        if(LastPhoto!=null) Destroy(LastPhoto);
     }
 
     private IEnumerator Capture()
@@ -155,44 +158,57 @@ public sealed class EvidenceCamera : MonoBehaviour
         float deadline=Time.realtimeSinceStartup+10f;
         while(!rendered && Time.realtimeSinceStartup<deadline) yield return null;
         if(!rendered) { Fail("Photo camera did not render within 10 seconds."); Restore(); yield break; }
-        string path=null;
-        try { path=SaveImage(); }
+        byte[] pixels=null;
+        try { pixels=ReadPixels(); }
         catch(Exception exception) { Fail(exception.Message); }
-        finally { Restore(); }
+        finally { RestoreCamera(); }
+        if(pixels==null) { IsCapturing=false; yield break; }
 
-        if (path != null)
+        // The shutter fires at the moment of capture; encoding and writing the
+        // PNG (about 100 ms at 1920x1080) run off the main thread so neither the
+        // headset nor the presenter view drops frames.
+        if (shutterAudio != null && shutterAudio.clip != null) shutterAudio.Play();
+        Shutter.Invoke();
+        Status="Saving...";
+        int number=sequence+1;
+        string path=Path.Combine(PhotoFolder,"Photo_"+sessionId+"_"+number.ToString("D4")+".png");
+        int w=width, h=height;
+        Task save=Task.Run(() =>
         {
-            LastPhotoPath=path;
-            Status="Saved photo "+sequence.ToString("D4");
-            if (shutterAudio != null && shutterAudio.clip != null) shutterAudio.Play();
-            Debug.Log("Photo saved: "+path,this);
-            Shutter.Invoke();
-            PhotoSaved.Invoke(path);
-        }
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllBytes(path, ImageConversion.EncodeArrayToPNG(pixels, GraphicsFormat.R8G8B8_UNorm, (uint)w, (uint)h));
+        });
+        while(!save.IsCompleted) yield return null;
+        IsCapturing=false;
+        if(save.IsFaulted) { Fail(save.Exception.GetBaseException().Message); yield break; }
+        sequence=number;
+        LastPhotoPath=path;
+        Status="Saved photo "+sequence.ToString("D4");
+        Debug.Log("Photo saved: "+path,this);
+        PhotoSaved.Invoke(path);
     }
 
-    private string SaveImage()
+    // The most recent photograph as a texture, kept for the wall frame and the
+    // panel preview so neither has to read the PNG back from disk.
+    public Texture2D LastPhoto { get; private set; }
+
+    // Copies the rendered frame into LastPhoto and returns its raw RGB bytes.
+    private byte[] ReadPixels()
     {
-        Directory.CreateDirectory(PhotoFolder);
         RenderTexture previousActive=RenderTexture.active;
-        Texture2D photo=null;
         try
         {
             RenderTexture.active=target;
-            photo=new Texture2D(width,height,TextureFormat.RGB24,false);
-            photo.ReadPixels(new Rect(0,0,width,height),0,0);
-            photo.Apply();
-            int number=sequence+1;
-            string path=Path.Combine(PhotoFolder,"Photo_"+sessionId+"_"+number.ToString("D4")+".png");
-            File.WriteAllBytes(path,photo.EncodeToPNG());
-            sequence=number;
-            return path;
+            if(LastPhoto==null || LastPhoto.width!=width || LastPhoto.height!=height)
+            {
+                if(LastPhoto!=null) Destroy(LastPhoto);
+                LastPhoto=new Texture2D(width,height,TextureFormat.RGB24,false) { name="LastEvidencePhoto" };
+            }
+            LastPhoto.ReadPixels(new Rect(0,0,width,height),0,0);
+            LastPhoto.Apply(false);
+            return LastPhoto.GetRawTextureData();
         }
-        finally
-        {
-            RenderTexture.active=previousActive;
-            if(photo!=null) Destroy(photo);
-        }
+        finally { RenderTexture.active=previousActive; }
     }
 
     private void OnCameraRendered(Camera camera)
@@ -207,6 +223,12 @@ public sealed class EvidenceCamera : MonoBehaviour
 
     private void Restore()
     {
+        RestoreCamera();
+        IsCapturing=false;
+    }
+
+    private void RestoreCamera()
+    {
         Camera.onPostRender-=OnCameraRendered;
         UnityEngine.Rendering.RenderPipelineManager.endCameraRendering-=OnPipelineCameraRendered;
         if (IsCapturing && photoCamera != null)
@@ -217,7 +239,6 @@ public sealed class EvidenceCamera : MonoBehaviour
         }
         if(target!=null) RenderTexture.ReleaseTemporary(target);
         target=null;
-        IsCapturing=false;
         RestorePhotoPose();
     }
 

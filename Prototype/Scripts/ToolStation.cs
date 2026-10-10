@@ -66,6 +66,7 @@ public sealed class ToolStation : MonoBehaviour
         if (pendingPost == null || !pendingPost.gameObject.activeInHierarchy)
         {
             pendingPost = post;
+            ToolsChanged.Invoke();
             return;
         }
         if (pendingPost == post) return;
@@ -77,7 +78,7 @@ public sealed class ToolStation : MonoBehaviour
         foreach(SceneTape existing in DeploymentRoot.GetComponentsInChildren<SceneTape>())
             if ((existing.StartAnchor==pendingPost.TapeAnchor && existing.EndAnchor==post.TapeAnchor) ||
                 (existing.EndAnchor==pendingPost.TapeAnchor && existing.StartAnchor==post.TapeAnchor))
-            { pendingPost=null; return; }
+            { pendingPost=null; ToolsChanged.Invoke(); return; }
         SceneTape tape = Instantiate(TapePrefab, DeploymentRoot);
         tape.StartAnchor = pendingPost.TapeAnchor;
         tape.EndAnchor = post.TapeAnchor;
@@ -103,9 +104,9 @@ public sealed class ToolStation : MonoBehaviour
         ToolsChanged.Invoke();
     }
 
-    public void StartNewTapeRun() { lastPlacedPost=null; pendingPost=null; }
+    public void StartNewTapeRun() { lastPlacedPost=null; pendingPost=null; ToolsChanged.Invoke(); }
 
-    public void CancelTapeSelection() { pendingPost = null; }
+    public void CancelTapeSelection() { pendingPost = null; ToolsChanged.Invoke(); }
 
     public void RemoveTool(DeployedTool tool)
     {

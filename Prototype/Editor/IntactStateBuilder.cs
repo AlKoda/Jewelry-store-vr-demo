@@ -39,6 +39,11 @@ public static class IntactStateBuilder
             foreach (string prefix in DamagePrefixes)
                 if (t.name.StartsWith(prefix)) { robbed.Add(t.gameObject); break; }
 
+        // Nothing that appears or vanishes with the state may support a tool.
+        foreach (GameObject g in robbed)
+            foreach (Collider c in g.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
+        foreach (Collider c in overlay.GetComponentsInChildren<Collider>(true)) Object.DestroyImmediate(c);
+
         CrimeSceneState state = store.AddComponent<CrimeSceneState>();
         state.RobbedOnly = robbed.ToArray();
         state.IntactOnly = new[] { overlay.gameObject };

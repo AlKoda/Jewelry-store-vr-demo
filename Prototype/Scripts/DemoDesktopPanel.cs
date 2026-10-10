@@ -122,11 +122,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             GUILayout.Label("PHOTOGRAPHS", header);
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Take photograph (P)", button))
-            {
-                if (Interactor != null && Interactor.isActiveAndEnabled) Interactor.Photograph();
-                else EvidenceCamera.CapturePhoto();
-            }
+            if (GUILayout.Button("Take photograph (P)", button)) Photograph();
             if (GUILayout.Button("Open photo folder", button)) EvidenceCamera.OpenPhotoFolder();
             GUILayout.EndHorizontal();
             if (Interactor != null && Interactor.isActiveAndEnabled
@@ -195,6 +191,15 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (!GUILayout.Button(label, button)) return;
         if (Interactor != null && Interactor.isActiveAndEnabled) Interactor.SpawnIntoHand(kind);
         else Station.Spawn(kind);
+    }
+
+    // Desktop: through the interactor (held lens or view). VR: the held lens, else the headset view.
+    public void Photograph()
+    {
+        if (EvidenceCamera == null) return;
+        if (Interactor != null && Interactor.isActiveAndEnabled) Interactor.Photograph();
+        else if (EvidenceCamera.Holder != null || Camera.main == null) EvidenceCamera.CapturePhoto();
+        else EvidenceCamera.CaptureFromView(Camera.main.transform);
     }
 
     private void Recount() { deployed = Station.DeployedCount; }
