@@ -34,7 +34,7 @@ public sealed class ShopWalkController : MonoBehaviour
     private void Update()
     {
         if (!ReadDesktopInput) return;
-        if (panel != null && panel.Visible || Input.GetKeyDown(KeyCode.Escape)) Looking = false;
+        if (panel != null && panel.CapturesInput || Input.GetKeyDown(KeyCode.Escape)) Looking = false;
         else if (Input.GetMouseButtonDown(1)) Looking = !Looking;
         Cursor.lockState = Looking ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !Looking;
@@ -44,7 +44,7 @@ public sealed class ShopWalkController : MonoBehaviour
             pitch = Mathf.Clamp(pitch - Input.GetAxisRaw("Mouse Y") * LookSensitivity, -75, 75);
             View.localRotation = Quaternion.Euler(pitch, 0, 0);
         }
-        if (panel != null && panel.Visible) return;
+        if (panel != null && panel.CapturesInput) return;
         Vector3 direction = transform.right * Input.GetAxisRaw("Horizontal")
             + transform.forward * Input.GetAxisRaw("Vertical");
         float speed = Speed * (Input.GetKey(KeyCode.LeftShift) ? SprintMultiplier : 1);

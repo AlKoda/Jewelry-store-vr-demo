@@ -16,7 +16,8 @@ public sealed class DemoOverviewMap : MonoBehaviour
 
     private Camera overview;
     private DemoDesktopPanel panel;
-    public bool ShouldRender => panel != null && panel.isActiveAndEnabled && panel.Visible;
+    // Only the full sidebar shows the map; the strip and hidden layouts skip the render.
+    public bool ShouldRender => panel != null && panel.isActiveAndEnabled && panel.Layout == PanelLayout.Full;
     private float nextRender;
 
     private void Awake()

@@ -114,7 +114,6 @@ public static class DemoToolsBuilder
         frame.transform.localScale=new Vector3(1.6f,0.9f,1);
         PhotoFrame photoFrame=frame.AddComponent<PhotoFrame>();
         photoFrame.EvidenceCamera=evidence;
-        panel.Frame=photoFrame;
 
         // Street ambience heard through the broken window.
         GameObject ambience=new GameObject("StreetAmbience");

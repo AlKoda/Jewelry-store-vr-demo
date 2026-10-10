@@ -95,6 +95,7 @@ public static class ShopCityValidation
                 WalkingChecks();
                 LocomotionChecks();
                 InteractionChecks();
+                PanelChecks();
                 HandChecks();
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
@@ -204,6 +205,42 @@ public static class ShopCityValidation
         DemoValidation.Check(!interactor.HoldingCamera && evidence.transform.parent == rack
             && Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f,
             "Camera returns to its rack");
+    }
+
+    // The presenter panel never draws in batch mode (OnGUI does not run), so its
+    // layout state, scaled hit test and the camera's live view are exercised directly.
+    private static void PanelChecks()
+    {
+        DemoDesktopPanel panel = DemoValidation.Find<DemoDesktopPanel>();
+        EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
+        panel.Layout = PanelLayout.Hidden;
+        panel.CycleLayout();
+        bool strip = panel.Layout == PanelLayout.Strip && panel.Visible && !panel.CapturesInput;
+        panel.CycleLayout();
+        bool full = panel.Layout == PanelLayout.Full && panel.Visible && panel.CapturesInput;
+        panel.CycleLayout();
+        DemoValidation.Check(strip && full && panel.Layout == PanelLayout.Hidden && !panel.Visible, "Panel layout cycles hidden, strip, full");
+
+        // At scale 2 the 330 px sidebar spans 684 screen pixels, so x=500 is over it and x=800 is not;
+        // at scale 1 the same x=500 lies beside it. The preference is restored afterwards.
+        float scale = panel.Scale;
+        panel.Layout = PanelLayout.Full;
+        panel.Scale = 2;
+        Vector2 inside = new Vector2(500, Screen.height / 2f), outside = new Vector2(800, Screen.height / 2f);
+        bool scaled = panel.Contains(inside) && !panel.Contains(outside);
+        panel.Scale = 1;
+        DemoValidation.Check(scaled && !panel.Contains(inside), "Panel pointer test respects UI scale");
+        panel.Scale = scale;
+        panel.Layout = PanelLayout.Hidden;
+
+        Camera photo = evidence.transform.Find("PhotoCamera").GetComponent<Camera>();
+        bool racked = evidence.Viewfinder == null;
+        evidence.HoldBy(Camera.main.transform, new Vector3(0.22f, -0.12f, 0.35f));
+        bool live = evidence.Viewfinder != null && evidence.Viewfinder.width == 480 && evidence.Holder == Camera.main.transform
+            && photo.targetTexture == null && !photo.enabled;
+        evidence.ReturnToRack();
+        DemoValidation.Check(racked && live && evidence.Viewfinder == null && evidence.Holder == null,
+            "Viewfinder renders only while the camera is held");
     }
 
     private static void HandChecks()

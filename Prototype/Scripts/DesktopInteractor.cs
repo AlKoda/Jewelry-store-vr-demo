@@ -25,7 +25,7 @@ public sealed class DesktopInteractor : ToolHolder
 
     private void Update()
     {
-        if (!ReadDesktopInput || View == null || (Panel != null && Panel.Visible)) return;
+        if (!ReadDesktopInput || View == null || (Panel != null && Panel.CapturesInput)) return;
         Aim(PointerRay());
 
         bool overPanel = Panel != null && Panel.PointerOverPanel;
@@ -98,8 +98,8 @@ public sealed class DesktopInteractor : ToolHolder
         Highlight(Held);
         heldYaw = Held.transform.eulerAngles.y;
         HasPlacementTarget = false;
-        // A tool taken from the panel waits at the rack until the panel closes.
-        bool panelOpen = Panel != null && Panel.Visible;
+        // A tool taken from the full panel waits at the rack until the sidebar closes.
+        bool panelOpen = Panel != null && Panel.CapturesInput;
         if (ReadDesktopInput && View != null && !panelOpen) Carry(PointerRay());
     }
 

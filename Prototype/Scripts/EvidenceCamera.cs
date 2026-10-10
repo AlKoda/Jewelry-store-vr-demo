@@ -25,10 +25,20 @@ public sealed class EvidenceCamera : MonoBehaviour
     public string PhotoFolder => Path.Combine(Application.persistentDataPath,"EvidencePhotos");
     // Hand or view currently carrying the camera body; null while on its rack.
     public Transform Holder { get; private set; }
+    // Photographs saved this session; the sequence number of the last one.
+    public int PhotoCount => sequence;
+    // Live view through the lens for the presenter panel, non-null only while the
+    // body is held. The dedicated camera stays disabled and renders into this
+    // texture about 15 times a second from a coroutine, so holding the camera
+    // costs a fraction of a second camera instead of one per frame.
+    public Texture Viewfinder => viewfinder;
+    public float ViewfinderInterval = 1f/15;
 
     private Transform rack;
     private Vector3 rackPosition;
     private Quaternion rackRotation;
+    private RenderTexture viewfinder;
+    private Coroutine viewfinderLoop;
 
     // Carry the camera body in front of a hand or view. Colliders are disabled so
     // it neither blocks walking nor the pointer. Passing it between holders keeps
@@ -47,16 +57,62 @@ public sealed class EvidenceCamera : MonoBehaviour
         transform.localPosition=localOffset;
         transform.localRotation=Quaternion.identity;
         SetCollidersEnabled(false);
+        StartViewfinder();
     }
 
     public void ReturnToRack()
     {
         if(Holder==null) return;
+        StopViewfinder();
         transform.SetParent(rack,false);
         transform.localPosition=rackPosition;
         transform.localRotation=rackRotation;
         Holder=null;
         SetCollidersEnabled(true);
+    }
+
+    // The texture exists from the moment the camera is taken (the first frame is
+    // rendered right away, so the panel never shows a black box) until it is returned.
+    private void StartViewfinder()
+    {
+        if(viewfinder!=null || photoCamera==null || !isActiveAndEnabled) return;
+        viewfinder=new RenderTexture(480,270,24) { name="Viewfinder" };
+        TickViewfinder();
+        viewfinderLoop=StartCoroutine(RenderViewfinder());
+    }
+
+    private void StopViewfinder()
+    {
+        if(viewfinderLoop!=null) StopCoroutine(viewfinderLoop);
+        viewfinderLoop=null;
+        if(viewfinder==null) return;
+        viewfinder.Release();
+        Destroy(viewfinder);
+        viewfinder=null;
+    }
+
+    private IEnumerator RenderViewfinder()
+    {
+        float next=Time.unscaledTime+ViewfinderInterval;
+        while(viewfinder!=null)
+        {
+            yield return null;
+            if(Time.unscaledTime<next) continue;
+            next=Time.unscaledTime+ViewfinderInterval;
+            TickViewfinder();
+        }
+    }
+
+    // One manual render into the viewfinder; the camera's target, enabled state
+    // and pose are exactly as before afterwards, and a capture in progress owns
+    // the camera, so ticks wait until it has finished.
+    private void TickViewfinder()
+    {
+        if(IsCapturing || viewfinder==null || photoCamera==null || !photoCamera.gameObject.activeInHierarchy) return;
+        RenderTexture previous=photoCamera.targetTexture;
+        photoCamera.targetTexture=viewfinder;
+        photoCamera.Render();
+        photoCamera.targetTexture=previous;
     }
 
     private void SetCollidersEnabled(bool enabled)
@@ -249,9 +305,16 @@ public sealed class EvidenceCamera : MonoBehaviour
         CaptureFailed.Invoke(message);
     }
 
+    private void OnEnable()
+    {
+        if(Holder!=null) StartViewfinder();
+    }
+
     private void OnDisable()
     {
         StopAllCoroutines();
+        viewfinderLoop=null;
+        StopViewfinder();
         Restore();
     }
 
