@@ -83,7 +83,9 @@ public sealed class DemoBeacon : MonoBehaviour
     {
         GameObject g = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         g.name = name;
-        Destroy(g.GetComponent<Collider>());
+        // Immediate: a deferred Destroy would leave the collider live for the
+        // rest of the frame, catching the pointer ray or nudging the walker.
+        Object.DestroyImmediate(g.GetComponent<Collider>());
         g.transform.SetParent(marker, false);
         g.transform.localPosition = position;
         g.transform.localScale = scale;
