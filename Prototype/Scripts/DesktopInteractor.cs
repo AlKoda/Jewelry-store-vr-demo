@@ -21,10 +21,11 @@ public sealed class DesktopInteractor : ToolHolder
     protected override Transform CameraAnchor => View != null ? View.transform : null;
 
     private float heldYaw;
+    public bool HasPlacementTarget { get; private set; }
 
     private void Update()
     {
-        if (!ReadDesktopInput || View == null) return;
+        if (!ReadDesktopInput || View == null || (Panel != null && Panel.Visible)) return;
         Ray ray = PointerRay();
         if (Held != null)
         {
@@ -90,6 +91,7 @@ public sealed class DesktopInteractor : ToolHolder
         Hovered = null;
         Highlight(Held);
         heldYaw = Held.transform.eulerAngles.y;
+        HasPlacementTarget = false;
         if (ReadDesktopInput && View != null) Carry(PointerRay());
     }
 
@@ -97,9 +99,18 @@ public sealed class DesktopInteractor : ToolHolder
     // inside the interior count; otherwise it stays where it was.
     public void Carry(Ray ray)
     {
+        HasPlacementTarget = false;
         if (Held == null || !Raycast(ray, Reach, out RaycastHit hit, Held.transform,
             Walker != null ? Walker.transform : null) || hit.normal.y < 0.7f) return;
         Held.PlaceAt(Confine(hit.point), heldYaw);
+        HasPlacementTarget = true;
+    }
+
+    public override void Place()
+    {
+        if (!HasPlacementTarget) return;
+        base.Place();
+        HasPlacementTarget = false;
     }
 
     public void Rotate(float degrees)

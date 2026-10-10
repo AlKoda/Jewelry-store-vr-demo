@@ -1,3 +1,14 @@
+## October 10 — robbery refinement completed
+
+- [x] Hide presenter menu at startup; compact controls hint.
+- [x] Toggle mouse look; suspend desktop movement and tool shortcuts while menu is open.
+- [x] Reject tool placement without a valid surface; skip hidden overview renders.
+- [x] Empty/disturbed displays, overturned and fallen stands, scattered jewelry and open tray.
+- [x] Restore tidy stock in intact mode; preserve reset behavior.
+- [x] Actual Unity renders and automated Editor Play mode validation; see [report](ROBBERY_REFINEMENT.md).
+- [ ] Physical Quest 2 control feel, tracking and FPS test.
+- [ ] Standalone build verification.
+
 # Roadmap
 
 Updated: October 9, 2026.

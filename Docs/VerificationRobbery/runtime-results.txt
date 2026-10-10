@@ -1,0 +1,101 @@
+Unity 6000.6.2f1; Built-in pipeline
+Robbery scene generation and 7 actual Unity rendered captures passed.
+PASS: Robbed dressing visible at startup
+PASS: Fallen stand and dropped jewelry present
+PASS: Robbery dressing adds no walking obstacles
+PASS: Robbery dressing below 3000 triangles
+PASS: Intact mode restores tidy stock and hides mess
+PASS: Robbed mode restores disturbed stock
+PASS: Presenter menu starts closed
+PASS: Hidden overview skips automatic rendering
+PASS: Overview rendering resumes when menu opens
+INFO: Robbery dressing triangles=1908; jewelry remaining=3; dropped=2
+PASS: Player spawns inside
+PASS: Desktop walking moves player
+PASS: Entrance boundary keeps player inside
+PASS: Side wall keeps player inside
+PASS: Rear safe room remains accessible
+PASS: Front boundary blocks movement without blocking view
+PASS: Interior bounds reject the street and clamp beside the safe room
+PASS: Teleport refuses the street
+PASS: Teleport lands the head over the target
+PASS: Teleport refuses surfaces above step height
+PASS: Snap turn pivots around an offset head
+PASS: Spawned tool is held
+PASS: Pointer placement lands the tool on the floor
+PASS: Held tool is highlighted
+PASS: Invalid aim cannot place at a stale position
+PASS: Front barrier prevents placement through the storefront
+PASS: Placement is clamped inside the interior
+PASS: Held tool rotates
+PASS: Removing the held tool clears the hand and hover
+PASS: Camera held in front of the view
+PASS: Camera returns to its rack
+PASS: VR mode enables wired hands and disables desktop input
+PASS: Hand carries the spawned tool below the hand
+PASS: Released tool drops onto the floor
+PASS: Hand grabs the nearest tool
+PASS: A held tool cannot be taken by the other hand
+PASS: VR mode disables the walking collider
+PASS: Hand removes the held tool
+PASS: Grabbing a rack sample spawns that tool into the hand
+PASS: Hand grabs the camera from the rack
+PASS: No tool spawns into a hand holding the camera
+PASS: Desktop mode releases the hands and returns the camera
+PASS: First reset request only arms the button
+PASS: Second reset request resets the session
+PASS: Reset returns the camera to its rack
+PASS: Status board reflects the reset
+PASS: Overview map renders with the player inside it
+INFO: Third-party city models=absent
+PASS: Backdrop has no physics colliders
+PASS: Backdrop renderer budget
+PASS: Backdrop triangle budget
+INFO: City renderers=19; triangles=5044
+PASS: Generated sounds are available
+PASS: Ceiling fixtures use an emissive material
+PASS: Street ambience source is configured
+PASS: Form detail fits 5000-triangle / 32-renderer budget
+PASS: Form detail adds no physics or realtime lights
+PASS: Form detail uses opaque untextured materials
+INFO: Form detail triangles=1624; renderers=24
+PASS: Interior shell fits 1500-triangle / 16-renderer budget
+PASS: Only the fixed-open staff door adds collision
+PASS: Interior finish adds no realtime lights
+PASS: Staff door is solid and fixed open
+PASS: Lighting uses at most four shadowless lights
+INFO: Interior finish triangles=358; renderers=10; lights=4
+PASS: All 16 jewelry loops refined across robbed and intact stock
+PASS: Six glass surfaces use thin panes
+PASS: Display diffusers share one mesh and add no lights or colliders
+PASS: World signage uses depth-tested text
+INFO: Active scene MeshFilter triangles=13494; mesh renderers=321 (excludes text meshes)
+INFO: Jewelry loops=16 at 96 triangles each; glass panes=6 at 4 triangles each
+PASS: Street additions stay within renderer budget
+PASS: Street additions have no physics colliders
+PASS: Presentation details present
+PASS: Geometry-only scene skips imported dressing
+PASS: Intact view hides evidence, closes the safe and restores glass and stock
+PASS: Reset returns to the robbed view
+PASS: Tool station exists
+PASS: Sequential marker numbers
+PASS: Marker label and font assigned
+PASS: Tool placement
+PASS: Tape connection
+PASS: Tape length
+PASS: Tape follows moved post
+PASS: Tape removed after endpoint removal
+PASS: Runtime photograph saved
+PASS: Photo frame shows the saved photograph
+PASS: View photograph restores dedicated camera pose
+PASS: Review session JSON written
+PASS: Photograph records deployed tools in the review
+PASS: Review contains the copied photograph
+PASS: HTML review references the photograph
+PASS: Reset clears deployed objects
+PASS: Reset restarts marker numbering
+PASS: Reset preserves photographs
+PASS: Reset restores handheld camera
+PASS: Review session JSON written
+PASS: Snapshot and reset append review entries with the tools
+PASS: Validation completed

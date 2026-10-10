@@ -1,3 +1,11 @@
+# Latest update: robbery refinement
+
+Use **JewelryStoreRobbery** in **UnityProject_Robbery**, or Downloads/JewelryStore_Robbery_Unity6000.6.2f1.zip and Open-Unity-Robbery.cmd. [Report and screenshots](ROBBERY_REFINEMENT.md). Regenerate with ShopCityValidation.RunRobbery. This runs the prior Interior chain then ShopRobberyDressing.Apply, preserving intact stock separately from disturbed stock. Never run dressing twice on the same scene.
+
+91 automated assertions passed (92 PASS lines with completion). Desktop panel starts closed; right click toggles look, Escape releases; Tab opens the panel and suspends walking/tool hotkeys. Overview rendering is suspended while hidden. Invalid pointer targets cannot place a tool at an old location. Physical Quest input/performance and standalone builds are still pending.
+
+Previous milestone notes follow for context; use the Robbery project above for current work.
+
 # Assistant handoff
 
 ## Current state

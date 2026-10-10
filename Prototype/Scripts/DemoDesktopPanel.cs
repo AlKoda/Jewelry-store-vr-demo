@@ -3,6 +3,7 @@ using UnityEngine;
 // Presenter panel on IMGUI, so it needs no packages: status, tool buttons,
 // photo and review buttons, a top-down map and the controls guide. It is the
 // monitor view in both desktop and VR modes; Tab hides it. Not a headset HUD.
+[DefaultExecutionOrder(-200)]
 public sealed class DemoDesktopPanel : MonoBehaviour
 {
     public ToolStation Station;
@@ -14,7 +15,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     public PhotoFrame Frame;
     public CrimeSceneState SceneState;
     public Transform Player;
-    public bool Visible = true;
+    public bool Visible = false;
 
     // Evaluated on demand so the interactor's Update sees this frame's pointer.
     public bool PointerOverPanel
@@ -32,13 +33,13 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private const float Width = 330;
     private const string DesktopGuide =
-        "WASD / arrows: walk (Shift: faster)   Hold right mouse: look\n" +
+        "WASD / arrows: walk (Shift: faster)   Right click: toggle mouse look; Esc: release\n" +
         "Left click: pick up / place a tool, or take one from the rack\n" +
         "1 / 2 / 3: new cone / marker / tape post   Q / E, wheel: rotate\n" +
         "T: select tape post   X: cancel tape   Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
         "I: intact / robbed store   Home: return to start\n" +
-        "F9: VR mode   Tab: hide this panel";
+        "F9: VR mode   Tab: open / close this panel";
     private const string VRGuide =
         "Grip: hold tool / rack sample / camera   Trigger: photo, tape post\n" +
         "A / X: new tool   B / Y: remove or next kind\n" +
@@ -71,7 +72,18 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         if (panel == null) BuildStyles();
         if (Looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
-        if (!Visible || Station == null) return;
+        if (!Visible || Station == null)
+        {
+            if (Interactor != null && Interactor.isActiveAndEnabled)
+            {
+                string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1/2/3: tools   P: photo";
+                if (Interactor.Held != null) hint = Interactor.HasPlacementTarget
+                    ? "Left click: place   Q/E or wheel: rotate   Tab: tools"
+                    : "Aim at a nearby floor or counter to place the held tool";
+                GUI.Box(new Rect(12, Screen.height - 42, Mathf.Min(760, Screen.width - 24), 30), hint);
+            }
+            return;
+        }
 
         GUILayout.BeginArea(Area, panel);
         scroll = GUILayout.BeginScrollView(scroll);

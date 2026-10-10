@@ -15,10 +15,13 @@ public sealed class DemoOverviewMap : MonoBehaviour
     public RenderTexture Texture { get; private set; }
 
     private Camera overview;
+    private DemoDesktopPanel panel;
+    public bool ShouldRender => panel != null && panel.isActiveAndEnabled && panel.Visible;
     private float nextRender;
 
     private void Awake()
     {
+        panel = GetComponent<DemoDesktopPanel>();
         Texture = new RenderTexture(Resolution, Resolution, 16) { name = "OverviewMap" };
         GameObject rig = new GameObject("OverviewCamera");
         rig.transform.SetParent(transform, false);
@@ -39,7 +42,7 @@ public sealed class DemoOverviewMap : MonoBehaviour
 
     private void Update()
     {
-        if (Time.unscaledTime < nextRender) return;
+        if (!ShouldRender || Time.unscaledTime < nextRender) return;
         nextRender = Time.unscaledTime + Interval;
         Render();
     }

@@ -3,6 +3,7 @@ using UnityEngine;
 // Desktop first-person walking. Walls and the front barrier collide normally;
 // InteriorBounds (added with the shop defaults if unassigned) keeps the player
 // inside everywhere else.
+[DefaultExecutionOrder(-100)]
 [RequireComponent(typeof(CharacterController))]
 public sealed class ShopWalkController : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public sealed class ShopWalkController : MonoBehaviour
     public bool ReadDesktopInput = true;
     public bool Looking { get; private set; }
 
+    private DemoDesktopPanel panel;
     private CharacterController body;
     private float pitch;
     private float verticalSpeed;
@@ -23,6 +25,7 @@ public sealed class ShopWalkController : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<CharacterController>();
+        panel = FindFirstObjectByType<DemoDesktopPanel>();
         if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
         spawn = transform.position;
         spawnRotation = transform.rotation;
@@ -31,15 +34,17 @@ public sealed class ShopWalkController : MonoBehaviour
     private void Update()
     {
         if (!ReadDesktopInput) return;
-        Looking = Input.GetMouseButton(1);
+        if (panel != null && panel.Visible || Input.GetKeyDown(KeyCode.Escape)) Looking = false;
+        else if (Input.GetMouseButtonDown(1)) Looking = !Looking;
         Cursor.lockState = Looking ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !Looking;
         if (Looking && View != null)
         {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * LookSensitivity, 0);
-            pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * LookSensitivity, -75, 75);
+            transform.Rotate(0, Input.GetAxisRaw("Mouse X") * LookSensitivity, 0);
+            pitch = Mathf.Clamp(pitch - Input.GetAxisRaw("Mouse Y") * LookSensitivity, -75, 75);
             View.localRotation = Quaternion.Euler(pitch, 0, 0);
         }
+        if (panel != null && panel.Visible) return;
         Vector3 direction = transform.right * Input.GetAxisRaw("Horizontal")
             + transform.forward * Input.GetAxisRaw("Vertical");
         float speed = Speed * (Input.GetKey(KeyCode.LeftShift) ? SprintMultiplier : 1);
@@ -85,6 +90,11 @@ public sealed class ShopWalkController : MonoBehaviour
         if (View == null) return;
         View.localPosition = EyeHeight;
         View.localRotation = Quaternion.identity;
+    }
+
+    private void OnApplicationFocus(bool focused)
+    {
+        if (!focused) { Looking = false; Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
     }
 
     private void OnDisable()
