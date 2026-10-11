@@ -178,11 +178,12 @@ public static class DemoToolGeometry
         spot.type = LightType.Spot;
         spot.color = new Color(1f, 0.97f, 0.92f);
         spot.intensity = 1.6f;
-        spot.range = 8;
+        spot.range = LampRange;
         spot.spotAngle = 75;
         // Low-resolution hard shadows so the 8 m beam stops at walls, partitions and
         // counters; ToolStation.UpdateLampShadows keeps it on one lamp at a time, and
-        // only while the flashlight (the scene's one realtime shadow) is off.
+        // only while the flashlight (the scene's one realtime shadow) is off. A lamp
+        // without its shadow shrinks to LampUnshadowedRange so it cannot light through walls.
         spot.shadows = LightShadows.Hard;
         spot.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
 #if UNITY_EDITOR
@@ -192,6 +193,7 @@ public static class DemoToolGeometry
         tool.Lamp = spot;
     }
 
+    public const float LampRange = 8, LampUnshadowedRange = 3.5f;
     public const float LampPanelY = 1.5f, LampPanelWidth = 0.3f, LampPanelHeight = 0.2f, LampTilt = 15;
     private const float LampCollar = 0.62f, LampSpread = 0.36f;
 

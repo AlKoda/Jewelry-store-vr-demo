@@ -116,15 +116,22 @@ public sealed class ToolStation : MonoBehaviour
     // One realtime shadow map at a time keeps the night within its VR budget: the
     // white flashlight's while it is on (DemoLighting calls this when it switches),
     // otherwise the lamp lit last. Other lit lamps light without shadows, so their
-    // beams may pass a wall; the shadowed one is the lamp the visitor just set up.
+    // beams are cut to DemoToolGeometry.LampUnshadowedRange so they light the lamp's own
+    // surroundings rather than passing walls; the shadowed one keeps its full range and
+    // is the lamp the visitor just set up.
     public void UpdateLampShadows()
     {
         PruneLamps();
         DemoLighting lighting = GetComponent<DemoLighting>();
         bool torch = lighting != null && lighting.FlashlightOn;
         for (int i = 0; i < litLamps.Count; i++)
-            if (litLamps[i].Lamp != null)
-                litLamps[i].Lamp.shadows = !torch && i == litLamps.Count - 1 ? LightShadows.Hard : LightShadows.None;
+        {
+            Light lamp = litLamps[i].Lamp;
+            if (lamp == null) continue;
+            bool shadowed = !torch && i == litLamps.Count - 1;
+            lamp.shadows = shadowed ? LightShadows.Hard : LightShadows.None;
+            lamp.range = shadowed ? DemoToolGeometry.LampRange : DemoToolGeometry.LampUnshadowedRange;
+        }
     }
 
     // Removed lamps are inactive before Destroy lands; they no longer count.

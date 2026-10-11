@@ -500,16 +500,18 @@ public static class NightStoreValidation
         int before = station.DeployedCount;
         DeployedTool first = station.Spawn(DemoToolKind.Lamp), second = station.Spawn(DemoToolKind.Lamp);
         RealtimeLights(group, out int lamps, out _, out int lampShadows);
-        bool newest = second != null && second.Lamp.shadows != LightShadows.None && first != null && first.Lamp.shadows == LightShadows.None;
+        bool newest = second != null && second.Lamp.shadows != LightShadows.None && first != null && first.Lamp.shadows == LightShadows.None
+            && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f && Mathf.Abs(first.Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f;
         lighting.Flashlight(true);
         RealtimeLights(group, out int withTorch, out _, out int torchShadows);
-        bool torchOwns = lighting.FlashlightLight.shadows != LightShadows.None && second.Lamp.shadows == LightShadows.None;
+        bool torchOwns = lighting.FlashlightLight.shadows != LightShadows.None && second.Lamp.shadows == LightShadows.None
+            && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f;
         lighting.UVTorch(true);
         RealtimeLights(group, out int withUV, out _, out int uvShadows);
-        bool handedBack = second.Lamp.shadows != LightShadows.None;
+        bool handedBack = second.Lamp.shadows != LightShadows.None && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         lighting.UVTorch(false);
         station.RemoveTool(second);
-        bool remaining = first.Lamp.shadows != LightShadows.None;
+        bool remaining = first.Lamp.shadows != LightShadows.None && Mathf.Abs(first.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         station.RemoveTool(first);
         RealtimeLights(group, out int after, out _, out _);
         DemoValidation.Info("Realtime lights: arrival " + arrivalRealtime + " (+" + arrivalFallback + " quick-preview stand-ins); two lamps " + lamps
@@ -815,8 +817,15 @@ public static class NightStoreValidation
         bool shared = beacon.Bounds == walker.Bounds && SameRegions(walker.Bounds.Regions);
         beacon.Place(new Vector3(0, 0, -15));
         bool street = Vector3.Distance(beacon.Position, new Vector3(0, L.StreetY, L.StagingBay.MinZ)) < 0.001f;
-        beacon.Place(new Vector3(20, 1, 5));
-        bool wall = Vector3.Distance(beacon.Position, new Vector3(L.Showroom.MaxX, 0, 5)) < 0.001f;
+        // The side probe is built from the layout and asserted to be nearest the showroom,
+        // so a later retune of the pavement or bay cannot silently move the target.
+        Vector3 side = new Vector3(L.Showroom.MaxX + 1, 1, (L.Showroom.MinZ + L.Showroom.MaxZ) * 0.5f);
+        float showroomDistance = (L.Showroom.Clamp(side) - side).sqrMagnitude;
+        bool wall = true;
+        foreach (InteriorBounds.Region r in L.Regions())
+            if (!r.Equals(L.Showroom)) wall &= (r.Clamp(side) - side).sqrMagnitude > showroomDistance;
+        beacon.Place(side);
+        wall &= Vector3.Distance(beacon.Position, new Vector3(L.Showroom.MaxX, 0, side.z)) < 0.001f;
         Vector3 office = new Vector3(0.5f, 0, 10.5f);
         beacon.Place(office);
         bool kept = Vector3.Distance(beacon.Position, office) < 0.001f && L.Office.Contains(office);

@@ -40,16 +40,34 @@ public sealed class DemoModeSwitch : MonoBehaviour
         if (!applied || vr != VRActive) Apply(vr);
     }
 
-    // After the head tracking's Update has applied this frame's pose.
+    // After the head tracking's Update has applied this frame's pose. A valid device can
+    // still report an identity pose for a few frames before tracking starts (OpenXR,
+    // Quest Link), so the recentre waits for consecutive frames with a tracked position
+    // and rotation; a drop in tracking starts the count again.
+    private const int RecentreTrackedFrames = 2;
+    private int trackedFrames;
+
     private void LateUpdate()
     {
-        if (RecentrePending && VRActive && InputDevices.GetDeviceAtXRNode(XRNode.CenterEye).isValid) RecentreNow();
+        if (!RecentrePending || !VRActive) { trackedFrames = 0; return; }
+        trackedFrames = HeadTracked() ? trackedFrames + 1 : 0;
+        if (trackedFrames >= RecentreTrackedFrames) RecentreNow();
+    }
+
+    private static bool HeadTracked()
+    {
+        InputDevice head = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
+        if (!head.isValid) return false;
+        if (!head.TryGetFeatureValue(CommonUsages.isTracked, out bool tracked) || !tracked) return false;
+        const InputTrackingState pose = InputTrackingState.Position | InputTrackingState.Rotation;
+        return !head.TryGetFeatureValue(CommonUsages.trackingState, out InputTrackingState state) || (state & pose) == pose;
     }
 
     // Puts the head over the recorded point, facing the recorded heading.
     public void RecentreNow()
     {
         RecentrePending = false;
+        trackedFrames = 0;
         XRLocomotion locomotion = GetComponent<XRLocomotion>();
         if (locomotion != null) locomotion.Recentre(recentrePoint, recentreYaw);
     }
