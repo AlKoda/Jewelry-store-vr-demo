@@ -205,9 +205,12 @@ public static class NightStoreLayout
     public static DemoToolsBuilder.ToolLayout Tools => new DemoToolsBuilder.ToolLayout
     {
         StoreRoot = Root, CeilingPath = CeilingPath,
-        // The shop rack's sample spacing, on the table top.
+        // The shop rack's sample spacing, on the table top (the lamp beside the table).
         Cone = Table + V(-0.52f, TableTop, 0), Marker = Table + V(-0.26f, TableTop, 0), Scale = Table + V(-0.04f, TableTop, -0.04f),
         TapePost = Table + V(0.26f, TableTop, 0), Measure = Table + V(0.52f, TableTop, 0),
+        // The lamp's tripod would crowd the table top: it stands on the pavement at the
+        // table's left end, clear of the bollard behind the table.
+        Lamp = Table + V(-1.0f, 0, -0.05f),
         SpawnPoint = Table + V(0, TableTop, 0), Camera = Table + V(0, TableTop + 0.2f, 0), CameraYaw = 90,
         // Facing the visitor on the pavement (looking +z); 3 cm in front of the board.
         PhotoFrame = Easel + V(0, 1.85f, -0.045f), PhotoFrameYaw = 0,

@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.Rendering;
 
 // Tool visuals shared by the Editor prefab builder and Play mode (DemoLighting builds
-// its flashlight at runtime). Primitive parts (markers, scale, reel) get no material
-// here and are styled by the presentation pass; the procedural parts (cone shell,
-// stanchion, flashlights, DSLR) carry their own "Tool..." materials from Paint(),
-// which the presentation pass leaves alone. DemoToolsBuilder saves the procedural
+// its flashlight and UV torch at runtime). Primitive parts (markers, scale, reel) get
+// no material here and are styled by the presentation pass; the procedural parts (cone
+// shell, stanchion, scene lamp, flashlights, DSLR) carry their own "Tool..." materials
+// from Paint(), which the presentation pass leaves alone. DemoToolsBuilder saves the procedural
 // meshes and materials as assets before they go into a prefab or scene.
 public static class DemoToolGeometry
 {
@@ -78,6 +78,7 @@ public static class DemoToolGeometry
             Visual("Hook",root.transform,new Vector3(0.045f,0.006f,0),new Vector3(0.012f,0.012f,0.02f));
             Anchor(tool,0.03f);
         }
+        else if (kind == DemoToolKind.Lamp) Lamp(tool);
         else
         {
             // Retractable-belt stanchion: weighted round base (0.32 m), black pole and
@@ -105,6 +106,90 @@ public static class DemoToolGeometry
         }
         return tool;
     }
+
+    // ------------------------------------------------------------------ scene lamp
+
+    // Portable LED panel on a light stand (02-store-fixtures-sheet), about 1.6 m tall:
+    // three splayed legs on a collar with spreader braces, a two-section centre column,
+    // a yoke with tilt knobs and a 0.30 x 0.20 panel tilted 15 degrees down along the
+    // tool's forward (+z). The face ("Face") glows only while lit (DeployedTool.LampGlow);
+    // the shadowless spot ("LampLight", off in the prefab) sits just in front of it.
+    // About 370 triangles; a box round the legs, a capsule round the column and a box
+    // round the panel are the colliders (grabbing, pointing and settling use them).
+    private static void Lamp(DeployedTool tool)
+    {
+        Transform root = tool.transform;
+        Material black = Paint("ToolStandBlack", new Color(0.035f, 0.035f, 0.04f), 0.45f, 0.3f);
+        ProceduralMesh stand = new ProceduralMesh();
+        Vector3 collar = new Vector3(0, LampCollar, 0);
+        for (int i = 0; i < 3; i++)
+        {
+            // One leg straight back, two forward-sides: the panel's weight sits over the base.
+            float a = (90 + 120 * i) * Mathf.Deg2Rad;
+            Vector3 out1 = new Vector3(Mathf.Cos(a), 0, -Mathf.Sin(a));
+            Vector3 foot = out1 * LampSpread + new Vector3(0, 0.02f, 0);
+            stand.Cylinder(null, collar + out1 * 0.025f, foot, 0.011f, 6, false);
+            stand.Cylinder(null, foot + new Vector3(0, -0.02f, 0), foot, 0.016f, 6);
+            stand.Cylinder(null, new Vector3(0, 0.32f, 0), Vector3.Lerp(collar, foot, 0.55f), 0.006f, 4, false);
+        }
+        stand.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.026f, 0.026f }, new[] { LampCollar - 0.03f, LampCollar + 0.03f }, 10, true, true, true);
+        stand.Cylinder(null, new Vector3(0, 0.3f, 0), new Vector3(0, 1.02f, 0), 0.017f, 8);
+        stand.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.022f, 0.022f }, new[] { 1.0f, 1.05f }, 10, true, true, true);
+        stand.Cylinder(null, new Vector3(0, 1.05f, 0), new Vector3(0, LampPanelY - 0.13f, 0), 0.012f, 8, false);
+        // Yoke: a cross bar under the panel and two arms up to the tilt knobs.
+        float arm = LampPanelWidth * 0.5f + 0.02f;
+        stand.Box(null, new Vector3(0, LampPanelY - 0.13f, 0), new Vector3(2 * arm + 0.016f, 0.016f, 0.02f));
+        for (int s = -1; s <= 1; s += 2)
+        {
+            stand.Box(null, new Vector3(s * arm, LampPanelY - 0.065f, 0), new Vector3(0.016f, 0.13f, 0.02f));
+            stand.Cylinder(null, new Vector3(s * arm, LampPanelY, 0), new Vector3(s * (arm + 0.025f), LampPanelY, 0), 0.016f, 8);
+        }
+        BoxCollider legs = Part("Stand", root, stand, black).AddComponent<BoxCollider>();
+        legs.center = new Vector3(0, 0.15f, 0);
+        legs.size = new Vector3(LampSpread * 1.8f, 0.3f, LampSpread * 1.6f);
+        CapsuleCollider column = legs.gameObject.AddComponent<CapsuleCollider>();
+        column.center = new Vector3(0, 0.95f, 0);
+        column.radius = 0.04f;
+        column.height = 1.3f;
+
+        // Panel housing and its face, in a head pivot tilted down about the knob axis.
+        Transform head = new GameObject("Head").transform;
+        head.SetParent(root, false);
+        head.localPosition = new Vector3(0, LampPanelY, 0);
+        head.localRotation = Quaternion.Euler(LampTilt, 0, 0);
+        ProceduralMesh housing = new ProceduralMesh();
+        housing.ChamferBox(null, new Vector3(0, 0, -0.012f), new Vector3(LampPanelWidth, LampPanelHeight, 0.03f), 0.006f, Quaternion.identity);
+        housing.Box(null, new Vector3(0, 0, -0.03f), new Vector3(LampPanelWidth * 0.7f, LampPanelHeight * 0.6f, 0.012f));
+        BoxCollider panel = Part("Housing", head, housing, black).AddComponent<BoxCollider>();
+        panel.center = new Vector3(0, 0, -0.015f);
+        panel.size = new Vector3(LampPanelWidth, LampPanelHeight, 0.04f);
+        ProceduralMesh face = new ProceduralMesh();
+        float fx = LampPanelWidth * 0.5f - 0.015f, fy = LampPanelHeight * 0.5f - 0.015f;
+        face.Face(null, Vector3.forward, new Vector3(-fx, -fy, 0.0035f), new Vector3(fx, -fy, 0.0035f), new Vector3(fx, fy, 0.0035f), new Vector3(-fx, fy, 0.0035f));
+        GameObject faceObject = Part("Face", head, face, Glow(Paint("ToolLampPanel", new Color(0.92f, 0.92f, 0.9f), 0.6f), Color.black));
+        tool.LampFace = faceObject.GetComponent<MeshRenderer>();
+        foreach (MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>())
+            renderer.shadowCastingMode = ShadowCastingMode.Off; // The lamp never shadows its own beam.
+
+        GameObject lightObject = new GameObject("LampLight");
+        lightObject.transform.SetParent(head, false);
+        lightObject.transform.localPosition = new Vector3(0, 0, 0.02f);
+        Light spot = lightObject.AddComponent<Light>();
+        spot.type = LightType.Spot;
+        spot.color = new Color(1f, 0.97f, 0.92f);
+        spot.intensity = 1.6f;
+        spot.range = 8;
+        spot.spotAngle = 75;
+        spot.shadows = LightShadows.None;
+#if UNITY_EDITOR
+        spot.lightmapBakeType = LightmapBakeType.Realtime; // Placed at runtime: never part of the bake.
+#endif
+        spot.enabled = false;
+        tool.Lamp = spot;
+    }
+
+    public const float LampPanelY = 1.5f, LampPanelWidth = 0.3f, LampPanelHeight = 0.2f, LampTilt = 15;
+    private const float LampCollar = 0.62f, LampSpread = 0.36f;
 
     private const float ConeBase = 0.13f, ConeTop = 0.022f, ConeFoot = 0.035f, ConeHeight = 0.46f;
     private static float ConeRadius(float y) => Mathf.Lerp(ConeBase, ConeTop, (y - ConeFoot) / (ConeHeight - ConeFoot));

@@ -17,6 +17,9 @@ public static class DemoToolsBuilder
         public string CeilingPath;
         // Half-size rack samples, each standing on the rack or table top.
         public Vector3 Cone,Marker,Scale,TapePost,Measure;
+        // The scene lamp's sample (1.6 m stand, so 0.8 m as a sample) where it fits;
+        // null leaves it off the rack (the small shop's rack has the photo frame above it).
+        public Vector3? Lamp;
         public Vector3 SpawnPoint;
         public Vector3 Camera; public float CameraYaw;
         public Vector3 PhotoFrame; public float PhotoFrameYaw;
@@ -77,6 +80,7 @@ public static class DemoToolsBuilder
         station.TapePostPrefab=SaveTool(DemoToolKind.TapePost,useImportedAssets);
         station.ScalePrefab=SaveTool(DemoToolKind.Scale,useImportedAssets);
         station.MeasurePrefab=SaveTool(DemoToolKind.Measure,useImportedAssets);
+        station.LampPrefab=SaveTool(DemoToolKind.Lamp,useImportedAssets);
         // Clicking or grabbing a rack sample spawns a new tool.
         Transform rack=root.transform;
         Sample(station.ConePrefab,rack,layout.Cone);
@@ -84,6 +88,7 @@ public static class DemoToolsBuilder
         Sample(station.ScalePrefab,rack,layout.Scale);
         Sample(station.TapePostPrefab,rack,layout.TapePost);
         Sample(station.MeasurePrefab,rack,layout.Measure);
+        if(layout.Lamp.HasValue) Sample(station.LampPrefab,rack,layout.Lamp.Value);
         station.TapePrefab=SaveTape(DemoToolGeometry.CreateTape(),"SceneTape");
         station.MeasureTapePrefab=SaveTape(DemoToolGeometry.CreateMeasureTape(),"MeasureTape");
 
@@ -258,6 +263,7 @@ public static class DemoToolsBuilder
         XRControllerInput right=CreateHand(player.transform,"RightHand",UnityEngine.XR.XRNode.RightHand,1,locomotion,bounds);
         left.Teleports=true; left.SnapTurns=false;
         right.Teleports=false; right.SnapTurns=true;
+        WireHand(left);
         WireHand(right);
 
         DemoModeSwitch mode=player.AddComponent<DemoModeSwitch>();
@@ -301,10 +307,12 @@ public static class DemoToolsBuilder
         desktop.Beacon=Object.FindFirstObjectByType<DemoBeacon>();
     }
 
-    // Only the right hand's stick click toggles the flashlight.
+    // The right hand's stick click toggles the white flashlight, the left hand's the UV torch.
     private static void WireHand(XRControllerInput hand)
     {
-        if(hand.Node==UnityEngine.XR.XRNode.RightHand) hand.Lighting=Object.FindFirstObjectByType<DemoLighting>();
+        DemoLighting lighting=Object.FindFirstObjectByType<DemoLighting>();
+        if(hand.Node==UnityEngine.XR.XRNode.RightHand) hand.Lighting=lighting;
+        else hand.UVLighting=lighting;
     }
 
     // Swap generated primitives for a third-party model, keeping one collider on the root.
@@ -325,6 +333,8 @@ public static class DemoToolsBuilder
         GameObject sample=(GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject,parent);
         PrefabUtility.UnpackPrefabInstance(sample,PrefabUnpackMode.Completely,InteractionMode.AutomatedAction);
         sample.name="Sample_"+prefab.Kind;
+        // A sample is a static display: the lamp's light goes (its face stays unlit).
+        foreach(Light light in sample.GetComponentsInChildren<Light>(true)) Object.DestroyImmediate(light.gameObject);
         Object.DestroyImmediate(sample.GetComponent<DeployedTool>());
         Object.DestroyImmediate(sample.GetComponent<Rigidbody>());
         sample.AddComponent<ToolRackSample>().Kind=prefab.Kind;

@@ -73,15 +73,15 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private const string DesktopGuide =
         "WASD / arrows: walk (Shift: faster)   Right click: toggle mouse look; Esc: release\n" +
         "Left click: pick up / place a tool, or take one from the rack\n" +
-        "1-5: new cone / marker / tape post / scale / measuring tape   Q / E, wheel: rotate\n" +
-        "T: select tape post or reel   X: cancel tape   R / Delete: remove\n" +
+        "1-6: new cone / marker / tape post / scale / measuring tape / scene lamp   Q / E, wheel: rotate\n" +
+        "T: select tape post or reel, switch a scene lamp   X: cancel tape   R / Delete: remove\n" +
         "F or click the camera: hold / return it   P: photograph\n" +
-        "I: intact / robbed store   L: flashlight   N: night / day   B: beacon where the pointer hits\n" +
+        "I: intact / robbed store   L: flashlight   U: UV torch   N: night / day   B: beacon where the pointer hits\n" +
         "Home: return to start   F9: VR mode   Tab: hidden / strip / full panel   [ ]: panel size";
     private const string VRGuide =
-        "Grip: hold tool / rack sample / camera   Trigger: photo, tape post or reel\n" +
+        "Grip: hold tool / rack sample / camera   Trigger: photo, tape post or reel, lamp on / off\n" +
         "A / X: new tool   B / Y: remove or next kind\n" +
-        "Left stick: teleport   Right stick: snap turn, click: flashlight   F9: desktop mode\n" +
+        "Left stick: teleport, click: UV torch   Right stick: snap turn, click: flashlight   F9: desktop mode\n" +
         "Tab: hidden / strip / full panel   [ ]: panel size";
     private const string Credits =
         "Models: Kenney, KayKit (CC0); Khronos glTF samples (CC0 / CC BY 4.0); textures cgbookcase, HDRIs HDRI Haven (CC0). See ThirdParty licenses.";
@@ -137,7 +137,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         if (Interactor != null && Interactor.isActiveAndEnabled)
         {
-            string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1-5: tools   P: photo";
+            string hint = "WASD: walk   Right click: mouse look   Tab: tools / settings   1-6: tools   P: photo";
             if (Interactor.Hovered != null) hint = Interactor.Hovered.name + " — Click: move   R / Delete: remove";
             if (Interactor.Held != null) hint = Interactor.HasPlacementTarget
                 ? "Left click: place   Q/E or wheel: rotate   R: remove   Tab: tools"
@@ -153,7 +153,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         Rect area = Area;
         GUILayout.BeginArea(area, panel);
         GUILayout.BeginHorizontal(tall);
-        GUILayout.Label((vr ? "VR" : "DESKTOP") + (Lighting != null && Lighting.Night ? "  NIGHT" : ""), header, narrow, tall);
+        GUILayout.Label((vr ? "VR" : "DESKTOP") + (Lighting != null && Lighting.Night ? "  NIGHT" : "") + (Lighting != null && Lighting.UVTorchOn ? "  UV" : ""),
+            header, narrow, tall);
         string status = "Tools: " + deployed + "   Next marker: " + Station.NextMarkerNumber;
         if (Station.PendingPrompt != null) status += "   " + Station.PendingPrompt + " (T)";
         GUILayout.Label(status, stripLabel, narrow, tall);
@@ -198,6 +199,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUILayout.BeginHorizontal();
         SpawnButton("Scale", DemoToolKind.Scale);
         SpawnButton("Measure", DemoToolKind.Measure);
+        SpawnButton("Scene lamp", DemoToolKind.Lamp);
         GUILayout.EndHorizontal();
         Station.AutoConnectTape = GUILayout.Toggle(Station.AutoConnectTape, "Connect new tape posts and reels automatically");
         GUILayout.BeginHorizontal();
@@ -262,7 +264,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 if (Beacon.Active && GUILayout.Button("Clear beacon", button, GUILayout.Width(110))) Beacon.Clear();
                 GUILayout.EndHorizontal();
             }
-            GUILayout.Label("Green: visitor.  Orange cones, yellow markers, red tape posts, white scales, violet reels, cyan camera, amber beacon.", body);
+            GUILayout.Label("Green: visitor.  Orange cones, yellow markers, red tape posts, white scales, violet reels, pink lamps, cyan camera, amber beacon.", body);
         }
 
         if (Lighting != null)
@@ -274,6 +276,14 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (GUILayout.Button(Lighting.Night ? day : night, button)) Lighting.ToggleNight();
             if (GUILayout.Button(Lighting.FlashlightOn ? "Flashlight off (L)" : "Flashlight on (L)", button)) Lighting.ToggleFlashlight();
             GUILayout.EndHorizontal();
+            if (GUILayout.Button(Lighting.UVTorchOn ? "UV torch off (U)" : "UV torch on (U)", button)) Lighting.ToggleUVTorch();
+            if (Lighting.UVExamples != null)
+            {
+                if (GUILayout.Button("UV example traces on/off (now " + (Lighting.UVExamplesVisible ? "shown" : "hidden") + ")", button))
+                    Lighting.ToggleUVExamples();
+                GUILayout.Label("Placeholder traces: what they represent is the instructor's choice.", body);
+            }
+            if (Station.LitLampCount > 0) GUILayout.Label("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, body);
         }
 
         Section("SESSION");
@@ -423,6 +433,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             case DemoToolKind.Marker: return new Color(1f, 0.9f, 0.2f);
             case DemoToolKind.TapePost: return new Color(1f, 0.25f, 0.2f);
             case DemoToolKind.Scale: return Color.white;
+            case DemoToolKind.Lamp: return new Color(1f, 0.5f, 0.78f);
             default: return new Color(0.75f, 0.55f, 1f);
         }
     }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,6 +9,7 @@ public sealed class ToolStation : MonoBehaviour
     public DeployedTool TapePostPrefab;
     public DeployedTool ScalePrefab;
     public DeployedTool MeasurePrefab;
+    public DeployedTool LampPrefab;
     public SceneTape TapePrefab;
     public SceneTape MeasureTapePrefab;
     public Transform DeploymentRoot;
@@ -19,6 +21,10 @@ public sealed class ToolStation : MonoBehaviour
     // Separate chains, so a reel laid during a barrier run does not break the run.
     private DeployedTool lastPlacedPost, lastPlacedReel;
     public bool AutoConnectTape = true;
+    // Each lit lamp is a realtime spot light; two keep the night scene within its
+    // pixel-light budget beside the flashlight. Lit lamps in the order they were lit.
+    public const int MaxLitLamps = 2;
+    private readonly List<DeployedTool> litLamps = new List<DeployedTool>();
     public DeployedTool LastPlacedPost => lastPlacedPost;
     public DeployedTool LastPlacedReel => lastPlacedReel;
     public DeployedTool PendingPost => pendingPost;
@@ -37,6 +43,7 @@ public sealed class ToolStation : MonoBehaviour
             case DemoToolKind.Marker: return MarkerPrefab;
             case DemoToolKind.TapePost: return TapePostPrefab;
             case DemoToolKind.Scale: return ScalePrefab;
+            case DemoToolKind.Lamp: return LampPrefab;
             default: return MeasurePrefab;
         }
     }
@@ -65,8 +72,51 @@ public sealed class ToolStation : MonoBehaviour
         DeployedTool tool = Instantiate(prefab, SpawnPoint.position,
             SpawnPoint.rotation, DeploymentRoot);
         if (kind == DemoToolKind.Marker) tool.SetMarkerNumber(nextMarker++);
+        // A new lamp comes on in the hand, so it can be aimed while it is carried.
+        if (kind == DemoToolKind.Lamp) LightLamp(tool, true);
         ToolsChanged.Invoke();
         return tool;
+    }
+
+    public int LitLampCount
+    {
+        get { PruneLamps(); return litLamps.Count; }
+    }
+
+    // Lighting a lamp beyond MaxLitLamps switches off the one lit longest ago.
+    public void SetLampLit(DeployedTool lamp, bool lit)
+    {
+        if (lamp == null || lamp.Lamp == null) return;
+        LightLamp(lamp, lit);
+        ToolsChanged.Invoke();
+    }
+
+    public void ToggleLamp(DeployedTool lamp)
+    {
+        if (lamp != null && lamp.Lamp != null) SetLampLit(lamp, !lamp.LampLit);
+    }
+
+    private void LightLamp(DeployedTool lamp, bool lit)
+    {
+        litLamps.Remove(lamp);
+        PruneLamps();
+        if (lit)
+        {
+            while (litLamps.Count >= MaxLitLamps)
+            {
+                litLamps[0].SetLampLit(false);
+                litLamps.RemoveAt(0);
+            }
+            litLamps.Add(lamp);
+        }
+        lamp.SetLampLit(lit);
+    }
+
+    // Removed lamps are inactive before Destroy lands; they no longer count.
+    private void PruneLamps()
+    {
+        for (int i = litLamps.Count - 1; i >= 0; i--)
+            if (litLamps[i] == null || !litLamps[i].gameObject.activeInHierarchy) litLamps.RemoveAt(i);
     }
 
     // Select two existing posts (or two reels) to connect them; selecting the other
@@ -133,6 +183,7 @@ public sealed class ToolStation : MonoBehaviour
         if (pendingPost == tool) pendingPost = null;
         if(lastPlacedPost==tool) lastPlacedPost=null;
         if(lastPlacedReel==tool) lastPlacedReel=null;
+        litLamps.Remove(tool);
         if(tool.TapeAnchor!=null)
             foreach(SceneTape tape in DeploymentRoot.GetComponentsInChildren<SceneTape>())
                 if(tape.StartAnchor==tool.TapeAnchor || tape.EndAnchor==tool.TapeAnchor)
@@ -146,6 +197,7 @@ public sealed class ToolStation : MonoBehaviour
         pendingPost = null;
         lastPlacedPost = null;
         lastPlacedReel = null;
+        litLamps.Clear();
         if (DeploymentRoot == null) return;
         for (int i = DeploymentRoot.childCount - 1; i >= 0; i--)
         {

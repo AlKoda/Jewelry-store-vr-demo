@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public enum DemoToolKind { Cone, Marker, TapePost, Scale, Measure }
+// Append only: kinds are stored by name in reviews and by value in prefabs and scenes.
+public enum DemoToolKind { Cone, Marker, TapePost, Scale, Measure, Lamp }
 
 [RequireComponent(typeof(Rigidbody))]
 public sealed class DeployedTool : MonoBehaviour
@@ -9,6 +10,10 @@ public sealed class DeployedTool : MonoBehaviour
     public Transform TapeAnchor;
     public TextMesh NumberLabel;
     public TextMesh BackNumberLabel;
+    // Scene lamp only: its spot light and emissive panel face. ToolStation decides
+    // which lamps are lit (at most two at once).
+    public Light Lamp;
+    public MeshRenderer LampFace;
     public int MarkerNumber { get; private set; }
     // The adapter currently carrying this tool; null when it rests in the scene.
     public ToolHolder Holder { get; set; }
@@ -35,11 +40,16 @@ public sealed class DeployedTool : MonoBehaviour
             case DemoToolKind.Marker: return "marker";
             case DemoToolKind.TapePost: return "tape post";
             case DemoToolKind.Scale: return "scale";
+            case DemoToolKind.Lamp: return "scene lamp";
             default: return "measuring tape";
         }
     }
 
     public bool Highlighted { get; private set; }
+    public bool LampLit => Lamp != null && Lamp.enabled;
+    // Panel face emission while lit; the saved face material's own emission is black,
+    // so an unlit lamp (and the table sample) never glows.
+    public static readonly Color LampGlow = new Color(1f, 0.97f, 0.92f) * 2f;
     private static MaterialPropertyBlock block;
 
     // Lightens every mesh of the tool (not its number labels) so the pointed or
@@ -48,14 +58,31 @@ public sealed class DeployedTool : MonoBehaviour
     {
         if (Highlighted == on) return;
         Highlighted = on;
-        if (block == null) block = new MaterialPropertyBlock();
         foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
         {
-            if (renderer.GetComponent<TextMesh>() != null || renderer.sharedMaterial == null) continue;
-            block.Clear();
-            if (on) block.SetColor("_Color", Color.Lerp(renderer.sharedMaterial.color, new Color(1f, 0.85f, 0.25f), 0.5f));
-            renderer.SetPropertyBlock(block);
+            if (renderer.GetComponent<TextMesh>() != null) continue;
+            Tint(renderer);
         }
+    }
+
+    // Switches the lamp's light and its glowing face; call through ToolStation.SetLampLit,
+    // which keeps the number of lit lamps within its limit.
+    public void SetLampLit(bool lit)
+    {
+        if (Lamp == null) return;
+        Lamp.enabled = lit;
+        Tint(LampFace);
+    }
+
+    // One property block per renderer carries both the highlight and the lamp glow.
+    private void Tint(MeshRenderer renderer)
+    {
+        if (renderer == null || renderer.sharedMaterial == null) return;
+        if (block == null) block = new MaterialPropertyBlock();
+        block.Clear();
+        if (Highlighted) block.SetColor("_Color", Color.Lerp(renderer.sharedMaterial.color, new Color(1f, 0.85f, 0.25f), 0.5f));
+        if (renderer == LampFace && LampLit) block.SetColor("_EmissionColor", LampGlow);
+        renderer.SetPropertyBlock(block);
     }
 
     public static void EnsureFont(TextMesh text)

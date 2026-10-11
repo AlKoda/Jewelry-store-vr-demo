@@ -57,9 +57,11 @@ public sealed class DemoStatusBoard : MonoBehaviour
     public void Refresh()
     {
         if (Station == null) { text.text = photoLine; return; }
+        int lamps = Station.LitLampCount;
         text.text = "SCENE TOOLS\n"
             + Station.DeployedCount + " deployed, next marker " + Station.NextMarkerNumber + "\n"
             + (Station.PendingPrompt ?? "Tape: select two posts or two reels") + "\n"
+            + (lamps > 0 ? "Scene lamps lit: " + lamps + " of " + ToolStation.MaxLitLamps + "\n" : "")
             + photoLine;
     }
 }

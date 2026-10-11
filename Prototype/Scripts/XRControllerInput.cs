@@ -9,15 +9,17 @@ using UnityEngine.XR;
 // (B/Y) removes the held tool or, with empty hands, cycles the kind. The
 // thumbstick teleports (push forward: a ballistic arc with a landing marker;
 // release: go) or snap turns (left/right), depending on which role this hand
-// has; clicking it toggles the flashlight on the hand that has Lighting wired
-// (the right one). The left controller's menu button hides or shows the hint
-// labels on both hands.
+// has; clicking it toggles the white flashlight on the hand that has Lighting
+// wired (the right one) or the UV torch on the hand with UVLighting (the left
+// one). The trigger also switches a held scene lamp. The left controller's menu
+// button hides or shows the hint labels on both hands.
 [RequireComponent(typeof(HandInteractor))]
 public sealed class XRControllerInput : MonoBehaviour
 {
     public XRNode Node = XRNode.RightHand;
     public XRLocomotion Locomotion;
     public DemoLighting Lighting;
+    public DemoLighting UVLighting;
     public bool Teleports = true;
     public bool SnapTurns;
     public float ArcSpeed = 6f;
@@ -78,7 +80,11 @@ public sealed class XRControllerInput : MonoBehaviour
             if (hand.Held != null) hand.RemoveHeld();
             else { SpawnKind = (DemoToolKind)(((int)SpawnKind + 1) % KindCount); RefreshLabel(); }
         }
-        if (Lighting != null && Changed(device, CommonUsages.primary2DAxisClick, ref stickClick) && stickClick) Lighting.ToggleFlashlight();
+        if ((Lighting != null || UVLighting != null) && Changed(device, CommonUsages.primary2DAxisClick, ref stickClick) && stickClick)
+        {
+            if (Lighting != null) Lighting.ToggleFlashlight();
+            else UVLighting.ToggleUVTorch();
+        }
         if (Node == XRNode.LeftHand && Changed(device, CommonUsages.menuButton, ref menu) && menu) ToggleHints();
         if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 stick)) Stick(stick);
     }
@@ -90,7 +96,8 @@ public sealed class XRControllerInput : MonoBehaviour
         if (Label == null) return;
         bool left = Node == XRNode.LeftHand;
         Label.text = "grip: grab   trigger: use"
-            + "\nstick: " + (Teleports ? "teleport" : "turn") + (Lighting != null ? "   click: light" : left ? "   menu: hints" : "")
+            + "\nstick: " + (Teleports ? "teleport" : "turn") + (Lighting != null ? "   click: light" : UVLighting != null ? "   click: UV" : "")
+            + (left ? "   menu: hints" : "")
             + "\n" + (left ? "X" : "A") + ": new " + DeployedTool.KindName(SpawnKind)
             + "   " + (left ? "Y" : "B") + ": remove / next kind";
     }

@@ -215,6 +215,21 @@ public static class ShopCityValidation
                 toolParts &= renderer != null && DemoToolGeometry.IsPainted(renderer.sharedMaterial);
             }
         DemoValidation.Check(toolParts, "Stanchion and cone tool visuals keep their parts and materials");
+        // The scene lamp was appended to DemoToolKind: the original rack keeps a sample of
+        // every original kind and no lamp sample, and each kind still spawns as itself
+        // (markers only by prefab, so the shared stage's numbering still starts at 1).
+        bool originalRack = station.transform.Find("Sample_" + DemoToolKind.Lamp) == null;
+        foreach (DemoToolKind kind in new[] { DemoToolKind.Cone, DemoToolKind.Marker, DemoToolKind.TapePost, DemoToolKind.Scale, DemoToolKind.Measure })
+        {
+            Transform rackEntry = station.transform.Find("Sample_" + kind);
+            ToolRackSample rackSample = rackEntry != null ? rackEntry.GetComponent<ToolRackSample>() : null;
+            originalRack &= rackSample != null && rackSample.Kind == kind && station.Prefab(kind) != null && station.Prefab(kind).Kind == kind;
+            if (kind == DemoToolKind.Marker) continue;
+            DeployedTool spawned = station.Spawn(kind);
+            originalRack &= spawned != null && spawned.Kind == kind && spawned.Lamp == null;
+            if (spawned != null) station.RemoveTool(spawned);
+        }
+        DemoValidation.Check(originalRack, "Old tool rack still spawns every original kind");
         DeployedTool cone = interactor.SpawnIntoHand(DemoToolKind.Cone);
         DemoValidation.Check(cone != null && interactor.Held == cone, "Spawned tool is held");
         // A clear patch of showroom floor, pointed at from above.

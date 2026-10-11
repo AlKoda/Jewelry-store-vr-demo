@@ -186,6 +186,7 @@ public static class NightStoreValidation
                 PlacementChecks();
                 GlassChecks();
                 MapChecks();
+                InspectionChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
             }
@@ -462,6 +463,90 @@ public static class NightStoreValidation
                 && p.y - hit.point.y >= -0.0005f && p.y - hit.point.y <= 0.002f) flush++;
         DemoValidation.Info("Entrance glass vertices=" + points.Count + "; flush=" + flush);
         DemoValidation.Check(points.Count > 300 && flush == points.Count, "Loose glass sits flush on its surfaces");
+    }
+
+    // ---------------------------------------------------------------- inspection equipment
+
+    // UV torch, the hidden placeholder traces and the scene lamp. The torch is posed
+    // directly (it rides the desktop view) and the traces settled at once, so every
+    // check is synchronous; everything is switched off and removed afterwards.
+    private static void InspectionChecks()
+    {
+        Transform root = Root();
+        DemoLighting lighting = DemoValidation.Find<DemoLighting>();
+        Transform examples = root.Find(UVTraceBuilder.ExamplesName);
+        UVTrace[] traces = examples != null ? examples.GetComponentsInChildren<UVTrace>(true) : new UVTrace[0];
+        DemoValidation.Check(examples != null && lighting.UVExamples == examples.gameObject && !lighting.UVExamplesVisible
+            && traces.Length == 3 && UVTrace.ActiveCount == 0, "UV example traces start hidden");
+
+        lighting.Flashlight(true);
+        lighting.UVTorch(true);
+        bool uvOnly = lighting.UVTorchOn && !lighting.FlashlightOn;
+        lighting.Flashlight(true);
+        bool whiteOnly = lighting.FlashlightOn && !lighting.UVTorchOn;
+        lighting.Flashlight(false);
+        Light uv = lighting.UVTorchLight;
+        bool tuned = uv != null && uv.type == LightType.Spot && uv.shadows == LightShadows.None && Mathf.Abs(uv.range - 6) < 0.01f
+            && Mathf.Abs(uv.spotAngle - 32) < 0.01f && lighting.UVTorchModel != null;
+        DemoValidation.Check(uvOnly && whiteOnly && tuned && !lighting.UVTorchOn && !lighting.FlashlightOn, "UV torch and white flashlight are exclusive");
+
+        lighting.SetUVExamples(true);
+        lighting.UVTorch(true);
+        Physics.SyncTransforms();
+        Transform dropsObject = examples.Find("UVTrace_SafeDrops");
+        UVTrace drops = dropsObject != null ? dropsObject.GetComponent<UVTrace>() : null;
+        if (drops == null) throw new Exception("FAILED: UVTrace_SafeDrops missing");
+        Vector3 target = drops.transform.position, above = target + new Vector3(0, 1.5f, -0.8f);
+        float inside = AimUV(lighting, above, target, drops);
+        DemoValidation.Check(inside > 0.9f && UVTrace.ActiveCount == 3 && Shader.GetGlobalVector(DemoLighting.UVParamsId).z > 0.99f,
+            "UV trace glows inside the beam");
+        DemoValidation.Check(AimUV(lighting, above, above + Vector3.forward, drops) < 0.01f, "UV trace stays dark outside the cone");
+        // In the side room beyond the office's right partition, aimed straight at the drops:
+        // in range and in the cone, so only the wall can keep the trace dark.
+        Vector3 beyond = new Vector3(L.OfficeHalf + 1.5f, 1.5f, target.z);
+        bool wall = Vector3.Distance(beyond, target) < uv.range && beyond.x > L.OfficeHalf + L.Partition;
+        DemoValidation.Check(wall && AimUV(lighting, beyond, target, drops) < 0.01f, "UV trace stays dark behind a wall");
+        lighting.UVTorch(false);
+        lighting.SetUVExamples(false);
+
+        ToolStation station = DemoValidation.Find<ToolStation>();
+        int before = station.DeployedCount;
+        Transform sample = station.transform.Find("Sample_" + DemoToolKind.Lamp);
+        DeployedTool first = station.Spawn(DemoToolKind.Lamp), second = station.Spawn(DemoToolKind.Lamp), third = station.Spawn(DemoToolKind.Lamp);
+        Light spot = third != null ? third.Lamp : null;
+        float tilt = spot != null ? Vector3.Angle(spot.transform.forward, third.transform.forward) : 0;
+        bool lamp = spot != null && spot.type == LightType.Spot && spot.shadows == LightShadows.None && Mathf.Abs(spot.range - 8) < 0.01f
+            && Mathf.Abs(spot.spotAngle - 75) < 0.01f && tilt > 14 && tilt < 16 && spot.transform.forward.y < 0;
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        bool glow = third != null && third.LampFace != null && first.LampFace != null;
+        if (glow)
+        {
+            third.LampFace.GetPropertyBlock(block);
+            glow = block.GetColor("_EmissionColor").maxColorComponent > 1;
+            first.LampFace.GetPropertyBlock(block);
+            glow &= block.GetColor("_EmissionColor").maxColorComponent < 0.01f;
+        }
+        DemoValidation.Check(sample != null && sample.GetComponentsInChildren<Light>(true).Length == 0 && lamp && glow
+            && !first.LampLit && second.LampLit && third.LampLit && station.LitLampCount == ToolStation.MaxLitLamps,
+            "Scene lamp lights its spot and limits lit lamps to two");
+        station.RemoveTool(second);
+        bool remaining = station.LitLampCount == 1 && third.LampLit && !first.LampLit;
+        station.RemoveTool(first);
+        station.RemoveTool(third);
+        int orphans = 0;
+        foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+            if (light.isActiveAndEnabled && light.GetComponentInParent<DeployedTool>() == null && light.name == "LampLight") orphans++;
+        int lampLights = station.DeploymentRoot.GetComponentsInChildren<Light>().Length;
+        DemoValidation.Check(remaining && orphans == 0 && lampLights == 0 && station.LitLampCount == 0 && station.DeployedCount == before,
+            "Scene lamp removes cleanly");
+    }
+
+    // Poses the UV torch at from, aimed at at, settles the traces and returns the trace's visibility.
+    private static float AimUV(DemoLighting lighting, Vector3 from, Vector3 at, UVTrace trace)
+    {
+        lighting.UVTorchLight.transform.SetPositionAndRotation(from, Quaternion.LookRotation(at - from));
+        lighting.SettleUVTraces();
+        return trace.Visibility;
     }
 
     private static void MapChecks()

@@ -46,16 +46,18 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnIntoHand(DemoToolKind.TapePost);
         if (Input.GetKeyDown(KeyCode.Alpha4)) SpawnIntoHand(DemoToolKind.Scale);
         if (Input.GetKeyDown(KeyCode.Alpha5)) SpawnIntoHand(DemoToolKind.Measure);
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SpawnIntoHand(DemoToolKind.Lamp);
         if (Input.GetKeyDown(KeyCode.Q)) Rotate(-RotateStep);
         if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
         float wheel = Input.GetAxis("Mouse ScrollWheel");
         if (wheel != 0 && !overPanel) Rotate(Mathf.Sign(wheel) * RotateStep);
         if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) Remove(Target);
-        if (Input.GetKeyDown(KeyCode.T)) SelectTapePost(Target);
+        if (Input.GetKeyDown(KeyCode.T)) Use(Target);
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
         if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
         if (Input.GetKeyDown(KeyCode.P)) Photograph();
         if (Input.GetKeyDown(KeyCode.L) && Lighting != null) Lighting.ToggleFlashlight();
+        if (Input.GetKeyDown(KeyCode.U) && Lighting != null) Lighting.ToggleUVTorch();
         if (Input.GetKeyDown(KeyCode.N) && Lighting != null) Lighting.ToggleNight();
         if (Input.GetKeyDown(KeyCode.B) && Beacon != null && PointerHit) Beacon.Place(PointedPoint);
     }
@@ -83,6 +85,13 @@ public sealed class DesktopInteractor : ToolHolder
     }
 
     public DeployedTool Target => Held != null ? Held : Hovered;
+
+    // T on a scene lamp switches it; on a tape post or reel it selects the endpoint.
+    public void Use(DeployedTool tool)
+    {
+        if (tool != null && tool.Lamp != null && Station != null) Station.ToggleLamp(tool);
+        else SelectTapePost(tool);
+    }
 
     // Through the held camera's lens, or of the current view when it is on its rack.
     public void Photograph()

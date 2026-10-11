@@ -285,8 +285,9 @@ public sealed class SessionReviewRecorder : MonoBehaviour
     }
 
     // One glyph per kind: cone triangle, numbered marker square, tape post circle,
-    // L-scale, measuring reel dot. Unity yaw and SVG rotate both turn clockwise when
-    // seen from above.
+    // L-scale, measuring reel dot, scene lamp (a dot with its beam wedge pointing the
+    // way the lamp shines). Unity yaw and SVG rotate both turn clockwise when seen
+    // from above, and the sketch's up is +z (the scale's z arm draws upwards).
     private static void AppendGlyph(StringBuilder html,ToolRecord tool,Vector2 p)
     {
         string at="translate("+F(p.x)+" "+F(p.y)+")", fill=Fill(tool.kind);
@@ -299,6 +300,10 @@ public sealed class SessionReviewRecorder : MonoBehaviour
                 break;
             case "TapePost": html.Append("<circle r=\"17\" fill=\""+fill+"\" transform=\""+at+"\"/>"); break;
             case "Scale": html.Append("<polyline points=\"0,-30 0,0 30,0\" fill=\"none\" stroke=\""+fill+"\" stroke-width=\"8\" transform=\""+at+" rotate("+F(tool.rotation.y)+")\"/>"); break;
+            case "Lamp":
+                html.Append("<polygon points=\"0,-8 -26,-56 26,-56\" fill=\""+fill+"\" fill-opacity=\"0.45\" transform=\""+at+" rotate("+F(tool.rotation.y)+")\"/>");
+                html.Append("<circle r=\"12\" fill=\""+fill+"\" stroke=\"#111\" stroke-width=\"3\" transform=\""+at+"\"/>");
+                break;
             default: html.Append("<circle r=\"12\" fill=\""+fill+"\" transform=\""+at+"\"/>"); break;
         }
     }

@@ -10,6 +10,8 @@ public sealed class HandInteractor : ToolHolder
 {
     public float GrabRadius = 0.25f;
     public Vector3 HeldOffset = new Vector3(0, -0.15f, 0);
+    // A scene lamp is carried by its column, the feet just above the floor.
+    public Vector3 LampHeldOffset = new Vector3(0, -0.9f, 0);
 
     protected override Transform CameraAnchor => transform;
 
@@ -25,7 +27,7 @@ public sealed class HandInteractor : ToolHolder
 
     public void FollowHand()
     {
-        if (Held != null) Held.PlaceAt(transform.TransformPoint(HeldOffset), transform.eulerAngles.y);
+        if (Held != null) Held.PlaceAt(transform.TransformPoint(Held.Kind == DemoToolKind.Lamp ? LampHeldOffset : HeldOffset), transform.eulerAngles.y);
     }
 
     // Grab the closest available tool, rack sample or camera within reach.
@@ -45,10 +47,12 @@ public sealed class HandInteractor : ToolHolder
         else if (HoldingCamera) ToggleCamera();
     }
 
-    // Use the held object: photograph with the camera, select a held tape post or reel.
+    // Use the held object: photograph with the camera, select a held tape post or reel,
+    // switch a held scene lamp on or off.
     public void Trigger()
     {
         if (HoldingCamera) EvidenceCamera.CapturePhoto();
+        else if (Held != null && Held.Lamp != null && Station != null) Station.ToggleLamp(Held);
         else if (Held != null && Held.TapeAnchor != null) SelectTapePost(Held);
     }
 

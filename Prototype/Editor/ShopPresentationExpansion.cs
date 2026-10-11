@@ -115,7 +115,7 @@ public static class ShopPresentationExpansion
         ToolStation station=Object.FindFirstObjectByType<ToolStation>();
         Material labelMat=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/ToolNumber.mat");
         if(labelMat==null) {labelMat=new Material(Shader.Find("CrimeScene/WorldText"));AssetDatabase.CreateAsset(labelMat,Folder+"/ToolNumber.mat");}
-        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab,station.ScalePrefab,station.MeasurePrefab})
+        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab,station.ScalePrefab,station.MeasurePrefab,station.LampPrefab})
         {
             if(prefab==null) continue;
             string path=AssetDatabase.GetAssetPath(prefab);

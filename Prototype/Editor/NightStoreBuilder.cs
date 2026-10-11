@@ -12,8 +12,9 @@ using L = NightStoreLayout;
 // bays, forced entrance, cladding), Exterior (pavement, kerb, wet street, buildings,
 // bollards, streetlights, police car, equipment table and easel, play-area walls),
 // Showroom and Office (StoreKit fixtures), Dressing (NightStoreDressing) and Anchors,
-// then the tool station with the night ToolLayout. CreatePlayer puts the rig at the
-// spawn beside the car with the layout's movement regions.
+// the hidden UV trace examples (UVTraceBuilder), then the tool station with the night
+// ToolLayout. CreatePlayer puts the rig at the spawn beside the car with the layout's
+// movement regions.
 //
 // Surfaces are KitMesh parts built in world coordinates, so the metric UVs (and the
 // ReferenceTextures tiling) run continuously across walls and slabs, with lightmap
@@ -83,7 +84,11 @@ public static class NightStoreBuilder
             if (r != null) r.scaleInLightmap = NightLighting.FarScale;
         }
 
+        // Placeholder UV traces, hidden; the presenter panel shows them through DemoLighting.
+        GameObject examples = UVTraceBuilder.NightExamples(root.transform);
         DemoToolsBuilder.Create(useImportedAssets, L.Tools);
+        DemoLighting lighting = UnityEngine.Object.FindFirstObjectByType<DemoLighting>();
+        if (lighting != null) lighting.UVExamples = examples;
         AssetDatabase.SaveAssets();
         return root;
     }
