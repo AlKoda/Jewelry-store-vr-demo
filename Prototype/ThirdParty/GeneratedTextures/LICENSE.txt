@@ -1,0 +1,4 @@
+GeneratedTextures — project-owned.
+
+Made procedurally by Tools/make_textures.py (periodic noise, no external images).
+No third-party material; free to use and redistribute with the project.
