@@ -194,6 +194,27 @@ public static class ShopCityValidation
     {
         DesktopInteractor interactor = DemoValidation.Find<DesktopInteractor>();
         interactor.ReadDesktopInput = false;
+        ToolStation station = DemoValidation.Find<ToolStation>();
+        // Stanchion: base, pole, yellow belt cassette with the tape leaving from inside it,
+        // and every part keeps its own painted material (StyleTools skips those).
+        Transform post = station.TapePostPrefab.transform;
+        CapsuleCollider shaft = post.Find("Post") != null ? post.Find("Post").GetComponent<CapsuleCollider>() : null;
+        Transform anchor = station.TapePostPrefab.TapeAnchor;
+        bool toolParts = post.Find("Base") != null && post.Find("Head") != null && shaft != null
+            && shaft.center.y + shaft.height * 0.5f >= 0.95f && anchor != null
+            && anchor.localPosition.y >= 0.905f && anchor.localPosition.y <= 0.955f;
+        foreach (MeshRenderer part in post.GetComponentsInChildren<MeshRenderer>())
+            toolParts &= DemoToolGeometry.IsPainted(part.sharedMaterial);
+        // The procedural cone (the imported one has no Shell) keeps its base, shell and band.
+        Transform coneRoot = station.ConePrefab.transform;
+        if (coneRoot.Find("Shell") != null)
+            foreach (string name in new[] { "Base", "Shell", "Band" })
+            {
+                Transform part = coneRoot.Find(name);
+                MeshRenderer renderer = part != null ? part.GetComponent<MeshRenderer>() : null;
+                toolParts &= renderer != null && DemoToolGeometry.IsPainted(renderer.sharedMaterial);
+            }
+        DemoValidation.Check(toolParts, "Stanchion and cone tool visuals keep their parts and materials");
         DeployedTool cone = interactor.SpawnIntoHand(DemoToolKind.Cone);
         DemoValidation.Check(cone != null && interactor.Held == cone, "Spawned tool is held");
         // A clear patch of showroom floor, pointed at from above.
@@ -274,12 +295,25 @@ public static class ShopCityValidation
         bool lit = spot != null && spot.enabled && lighting.FlashlightOn && spot.type == LightType.Spot
             && spot.transform.parent == Camera.main.transform && spot.shadows == LightShadows.Hard;
         GameObject model = lighting.FlashlightModel;
-        bool shown = model != null && model.activeInHierarchy && model.transform.IsChildOf(Camera.main.transform)
+        // Light and model both stay inside the player's 0.23 m capsule, so neither passes through a wall.
+        bool shown = model != null && model.activeInHierarchy && model.transform.parent == Camera.main.transform
             && model.GetComponentsInChildren<MeshRenderer>().Length > 0
+            && spot.transform.localPosition.magnitude < 0.23f && model.transform.localPosition.z < 0.23f
             && lighting.FlashlightCookie != null && spot.cookie == lighting.FlashlightCookie;
+        // Any camera but the presenter's view (photo, viewfinder) renders without the desktop torch.
+        MeshRenderer[] torchParts = model != null ? model.GetComponentsInChildren<MeshRenderer>() : new MeshRenderer[0];
+        Camera photo = new GameObject("TorchCullProbe").AddComponent<Camera>();
+        photo.enabled = false;
+        bool hiddenDuring = torchParts.Length > 0, shownAfter = true;
+        if (Camera.onPreCull != null) Camera.onPreCull(photo);
+        foreach (MeshRenderer part in torchParts) hiddenDuring &= part.forceRenderingOff;
+        if (Camera.onPostRender != null) Camera.onPostRender(photo);
+        foreach (MeshRenderer part in torchParts) shownAfter &= !part.forceRenderingOff;
+        UnityEngine.Object.DestroyImmediate(photo.gameObject);
         lighting.Flashlight(false);
         DemoValidation.Check(lit && !spot.enabled && !spot.gameObject.activeSelf && !lighting.FlashlightOn, "Flashlight toggles a spot light on the view");
         DemoValidation.Check(shown && !model.activeInHierarchy, "Flashlight shows its model and uses the cookie");
+        DemoValidation.Check(hiddenDuring && shownAfter, "Desktop torch model is hidden from photo cameras");
 
         DemoOverviewMap map = DemoValidation.Find<DemoOverviewMap>();
         Vector3 point = new Vector3(2, 0, 5);

@@ -310,10 +310,8 @@ public static class DemoToolsBuilder
         {
             Mesh mesh=filter.sharedMesh;
             if(mesh==null || !string.IsNullOrEmpty(AssetDatabase.GetAssetPath(mesh))) continue;
-            string path=Folder+"/"+prefix+"_"+filter.name+".asset";
-            Mesh existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
-            if(existing==null) AssetDatabase.CreateAsset(mesh,path);
-            else { EditorUtility.CopySerialized(mesh,existing); filter.sharedMesh=existing; }
+            DemoGeometry.SaveMesh(ref mesh,Folder+"/"+prefix+"_"+filter.name+".asset");
+            filter.sharedMesh=mesh;
         }
         foreach(MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>(true))
         {

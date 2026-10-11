@@ -64,7 +64,9 @@ public static partial class StoreKit
     private static void PropPalette()
     {
         // Polished metals: almost all their look comes from the baked reflection probes.
-        Gold = Surface("KitGold", new Color(0.86f, 0.66f, 0.32f), 0.75f, 1, null, 1);
+        // Yellow gold at its measured reflectance (linear F0 about 1.0, 0.71, 0.29), shared
+        // with ShopDisplayFinish's JewelryGold so the cases and the scattered pieces match.
+        Gold = Surface("KitGold", new Color(0.98f, 0.84f, 0.55f), 0.8f, 1, null, 1);
         Silver = Surface("KitSilver", new Color(0.82f, 0.82f, 0.84f), 0.8f, 1, null, 1);
         Leather = Surface("KitLeather", new Color(0.16f, 0.14f, 0.13f), 0.35f, 0, null, 1);
         Leatherette = Surface("KitLeatherette", new Color(0.07f, 0.07f, 0.075f), 0.3f, 0, null, 1);

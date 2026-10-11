@@ -20,8 +20,9 @@ public static class ShopDisplayFinish
         Material linen=Mat(Folder,"CounterStone",new Color(.77f,.75f,.69f),.21f);
         Material pad=Mat(Folder,"DisplayVelvet",new Color(.16f,.21f,.23f),.04f);
         Material suede=Mat(Folder,"DisplaySuede",new Color(.55f,.58f,.53f),.06f);
-        Material gold=Mat(Folder,"JewelryGold",new Color(.78f,.56f,.22f),.55f);
-        gold.SetFloat("_Metallic",.65f);
+        // Same gold as StoreKitProps' KitGold, so cased and scattered jewellery match.
+        Material gold=Mat(Folder,"JewelryGold",new Color(.98f,.84f,.55f),.8f);
+        gold.SetFloat("_Metallic",1f);
         Material glass=Translucent(Mat(Folder,"ClearGlass",new Color(.78f,.88f,.90f,.07f),.55f));
         Material broken=Translucent(Mat(Folder,"BrokenGlass",new Color(.46f,.71f,.75f,.25f),.35f));
         Material shard=Mat(Folder,"GlassShardEdges",new Color(.40f,.60f,.64f),.35f);
