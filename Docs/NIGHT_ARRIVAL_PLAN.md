@@ -6,7 +6,7 @@ A nearby resident hears a disturbance during the night and calls police. The res
 
 This remains a freely explorable, instructor-led demonstration: no forced action order, scoring, countdown, automatic evidence identification or mandatory tutorial. The instructor supplies operational procedure. No suspects, casualties or active confrontation are assumed for this version.
 
-The expanded store should closely follow the user's visual reference. **No reference image or link was present in the planning message. Exact footprint, facade, room arrangement and measurements remain pending.** Do not invent those details or scale up the entire old scene uniformly.
+The expanded store should closely follow the user's visual reference. **The reference has now been received and inspected: [store-reference.jpg](../store-reference.jpg).** See [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md) for observed features, proposed dimensions and the migration order. Dimensions and obscured rooms remain estimates; do not scale up the entire old scene uniformly.
 
 Store lighting is off at arrival. Nighttime and lights being off are confirmed; deliberate power sabotage is not established by the story. Do not add a cut cable or electrical clue without a case decision.
 
@@ -36,7 +36,7 @@ These describe available activities, not an enforced sequence. The player can st
 Use a generic black DSLR-style body, lens, grip and shutter button, without a Canon logo. An exact camera model requires a separate reference; do not delay the first blockout for it.
 
 ## Layout organization
-Provisional functional zones, with positions determined from the missing reference:
+Functional zones, now organized around the supplied reference (see REFERENCE_LAYOUT_PLAN.md):
 - Parked response car and equipment access.
 - Small walkable pavement/frontage area for tape and cones.
 - Broken storefront and accessible entrance.
@@ -95,6 +95,6 @@ Keep batch 4's portable lamp as a stretch item if headlights plus flashlight are
 - Work toward the October 27 demo date, with layout/blockout decisions first and visual finish afterward.
 
 ## Information still needed
-Required for an almost-identical layout: the referenced image(s), video or floor plan. Multiple angles help, but a single reference can start the blockout; unseen rooms will need explicitly marked assumptions.
+The reference image is received and sufficient to start the blockout. Additional angles or one known measurement would improve accuracy but are not required to begin. Hidden rooms and working dimensions remain explicitly marked assumptions.
 
 Optional: approximate frontage width (or one known-size object), whether the intended break-in is through the large window or door, and what UV demonstration trace the instructor wants. Proposed default arrival is beside a parked car; a driving sequence is not included in the initial scope.

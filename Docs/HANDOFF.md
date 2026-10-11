@@ -1,3 +1,9 @@
+# Reference received — October 11
+
+Read [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md) alongside the nighttime scenario. store-reference.jpg is now visually inspected: wide glazed frontage/central breakage, broad showroom with central and side displays, rear office with two safes, rear side partitions and front-right seating. Proposed 16 x 12 m footprint is an estimate, not a measured fact. The isometric cutaway does not mean a roofless first-person scene. Image UI and pre-placed tape/markers are not required features.
+
+This remains a documentation-only planning update. Preserve the previous shop and build the new layout in a separate scene; no code/build changes yet. Earlier notes saying the reference is missing are superseded.
+
 # Current user direction — October 11: expanded store, nighttime first response
 
 **Planning only.** Read [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md) before implementing. The user wants a larger store closely matching a reference, but no image/link was attached. Do not invent exact proportions. Preserve the previous shop and reuse its components in a new scene.

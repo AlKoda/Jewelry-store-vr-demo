@@ -3,7 +3,8 @@
 The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It supersedes the immediate texture pass. Existing completion entries below are historical; newer source remains unverified until run in Unity.
 
 - [x] Record scenario, reuse strategy, dependencies and phased work.
-- [ ] Obtain the missing store reference and establish an annotated layout.
+- [x] Receive and inspect store-reference.jpg; record observed layout and proposed blockout dimensions in [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md).
+- [ ] Build and compare the proposed 16 x 12 m blockout; dimensions remain estimates.
 - [ ] Preserve baseline and create a separate expanded low-poly scene.
 - [ ] Add parked police car, staging area and connected indoor/outdoor navigation.
 - [ ] Extend tape/cone placement, map and review bounds to the accessible exterior.
