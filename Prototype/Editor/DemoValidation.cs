@@ -70,6 +70,8 @@ public static class DemoValidation
         SessionState.SetString(OutputKey, outputFolder);
         SessionState.SetInt(EditChecksKey, 0);
         Directory.CreateDirectory(Output);
+        // Start a fresh results file so a generation failure is not appended to the previous run.
+        WriteHeader("Scene generation started (Edit mode).");
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
     }
 

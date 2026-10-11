@@ -77,6 +77,8 @@ public static class ShopCityValidation
             DemoValidation.CaptureOverview(camera);
             if(glass) GlassToolValidation.Capture(camera);
             DemoToolsBuilder.CreatePlayer(camera);
+            // CreatePlayer resets the camera to a solid clear; the textured shop keeps the HDR sky.
+            if (textured && ShopTextureFinish.HasEnvironment && RenderSettings.skybox != null) camera.clearFlags = CameraClearFlags.Skybox;
             DemoValidation.SaveScene();
             DemoValidation.EnterPlayMode(Key, (textured ? "Textured scene generation and 10" : glass ? "Glass scene generation and 10" : robbery ? "Robbery scene generation and 7" : interior ? "Interior scene generation and 6" : expanded ? "Expanded scene generation and 5" : "City scene generation and 4")
                 + " actual Unity rendered captures passed.");
@@ -559,8 +561,8 @@ public static class ShopCityValidation
             Mesh kitMesh = kit != null ? kit.GetComponent<MeshFilter>().sharedMesh : null;
             DemoValidation.Check(kitMesh != null && kitMesh.uv.Length == kitMesh.vertexCount && kitMesh.vertexCount > 5000
                 && kit.GetComponent<MeshRenderer>().sharedMaterial.mainTexture != null, "KayKit street kit combines into one atlas-textured draw");
-            DemoValidation.Check(city.transform.Find("StreetFurniture") != null && city.GetComponentsInChildren<Transform>().Count(t => t.name == "ParkedCar") == 3,
-                "Street furniture and three kit cars placed");
+            DemoValidation.Check(city.transform.Find("StreetFurniture") != null && city.GetComponentsInChildren<Transform>().Count(t => t.name == "ParkedCar") == ShopCityRefinement.ParkedCars,
+                "Street furniture and the five kit cars placed");
         }
         DemoValidation.Check(DemoSounds.Clip(DemoSound.Click).length > 0.02f && DemoSounds.Clip(DemoSound.Ambience).length > 3,
             "Generated sounds are available");

@@ -102,6 +102,7 @@ public static class ShopCityRefinement
         }
         if(PlaceCityAsset("pavement-fountain",city,V(2,-.02f,-13),0,4)!=null)
             Box("FountainPlinth",city,V(2,-.015f,-13),V(4.2f,.03f,4.2f),cream);
+        // Five parked cars; ShopCityValidation counts them through ParkedCars.
         Car(V(-7,-.02f,-9.4f),dark,"car_sedan",90);
         Car(V(10,-.02f,-4.5f),brick,"car_taxi",-90);
         // A patrol car at the kerb in front of the window tells the story from inside the shop.
@@ -165,6 +166,7 @@ public static class ShopCityRefinement
         Box("Awning",g,V(0,2.56f,face+.48f),V(width-.3f,.08f,1),wall);
     }
 
+    public const int ParkedCars = 5;
     private static void Car(Vector3 p,Material paint,string model,float yaw) { Car(city,p,paint,model,yaw); }
 
     // A parked car ("ParkedCar" under parent at p): the KayKit model and its four wheels

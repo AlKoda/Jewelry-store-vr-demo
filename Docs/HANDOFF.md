@@ -21,6 +21,8 @@ What exists now:
 
 Known open points (from the batch reports): kerb climbing by the CharacterController and some physics assumptions are untested; baked light intensities assume inverse-square falloff; KayKit headlamp quads may not line up exactly with the car model; no intact/robbed toggle in the night store yet; lamps without the shadow can still light through walls within their shortened LampUnshadowedRange; the desktop torch model is hidden from photo, viewfinder and map cameras (unverified until run in Unity); editing in diagnostic daylight and saving would bake the wrong baseline (warning logged).
 
+Old-pipeline audit fixes (Oct 11, unverified in Unity): the backdrop check counts ShopCityRefinement.ParkedCars (5 kit cars, was 3); RunTextured keeps the player camera on the HDR sky after CreatePlayer; DemoValidation.Begin starts a fresh runtime-results.txt so an Edit-mode generation failure is not appended to the previous run's PASS lines. Still open: the Glass zip lacks Shaders/UVFluorescence.shader.meta, and CLAUDE.md still names the Expanded zip (both left for the user).
+
 # Reference received — October 11
 
 Read [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md) alongside the nighttime scenario. store-reference.jpg is now visually inspected: wide glazed frontage/central breakage, broad showroom with central and side displays, rear office with two safes, rear side partitions and front-right seating. Proposed 16 x 12 m footprint is an estimate, not a measured fact. The isometric cutaway does not mean a roofless first-person scene. Image UI and pre-placed tape/markers are not required features.
