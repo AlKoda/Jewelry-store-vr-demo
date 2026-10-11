@@ -2,8 +2,10 @@ using UnityEngine;
 
 // Brief blink in front of the eyes that masks teleports and snap turns. Lives on
 // the XR head camera; DemoModeSwitch enables it only in VR, so the desktop view
-// never shows the quad. Fade() runs alpha 0 -> 1 -> 0 over Duration (unscaled);
-// the quad is created lazily and disabled whenever the alpha is back at zero.
+// never shows the quad. Fade() is called in the same frame as the move, before it
+// renders, and starts at full black, so the jump itself is never seen; the view
+// then fades back in over Duration (unscaled). The quad is created lazily and
+// disabled whenever the alpha is back at zero.
 public sealed class XRComfortFade : MonoBehaviour
 {
     public bool Enabled = true;
@@ -20,6 +22,7 @@ public sealed class XRComfortFade : MonoBehaviour
         if (!Enabled || !isActiveAndEnabled) return;
         elapsed = 0;
         Fading = true;
+        SetAlpha(1);
     }
 
     private void Update()
@@ -27,8 +30,7 @@ public sealed class XRComfortFade : MonoBehaviour
         if (!Fading) return;
         elapsed += Time.unscaledDeltaTime;
         if (elapsed >= Duration) { Fading = false; SetAlpha(0); return; }
-        float half = Duration * 0.5f;
-        SetAlpha(1f - Mathf.Abs(elapsed - half) / half);
+        SetAlpha(1f - elapsed / Duration);
     }
 
     private void OnDisable() { Fading = false; SetAlpha(0); }
@@ -44,7 +46,8 @@ public sealed class XRComfortFade : MonoBehaviour
         material.color = new Color(0, 0, 0, alpha);
     }
 
-    // A quad half a metre ahead covers the view; transparent unlit shader, no collider.
+    // A quad just past the near clip plane covers the view, so nothing in the scene can
+    // sit in front of it; drawn last in the overlay queue. Transparent unlit, no collider.
     private void CreateQuad()
     {
         GameObject cover = GameObject.CreatePrimitive(PrimitiveType.Quad);
@@ -53,14 +56,17 @@ public sealed class XRComfortFade : MonoBehaviour
         blocker.enabled = false; // Destroy only lands at frame end; never block rays meanwhile.
         Destroy(blocker);
         cover.transform.SetParent(transform, false);
-        cover.transform.localPosition = new Vector3(0, 0, 0.5f);
-        cover.transform.localScale = new Vector3(2f, 2f, 1f);
+        Camera head = GetComponent<Camera>();
+        float z = (head != null ? head.nearClipPlane : 0.01f) + 0.01f;
+        cover.transform.localPosition = new Vector3(0, 0, z);
+        cover.transform.localScale = new Vector3(Mathf.Max(0.5f, z * 8f), Mathf.Max(0.5f, z * 8f), 1f);
         quad = cover.GetComponent<MeshRenderer>();
         quad.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         quad.receiveShadows = false;
         Shader shader = Shader.Find("Sprites/Default");
         if (shader == null) shader = Shader.Find("Legacy Shaders/Transparent/Diffuse");
         material = new Material(shader);
+        material.renderQueue = 5000;
         quad.sharedMaterial = material;
     }
 }

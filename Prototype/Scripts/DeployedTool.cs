@@ -45,7 +45,10 @@ public sealed class DeployedTool : MonoBehaviour
         }
     }
 
-    public bool Highlighted { get; private set; }
+    // One request per holder that points at, is nearest to, or holds this tool, so one
+    // hand letting go of the highlight does not clear it for the other.
+    private int highlightRequests;
+    public bool Highlighted => highlightRequests > 0;
     public bool LampLit => Lamp != null && Lamp.enabled;
     // Panel face emission while lit; the saved face material's own emission is black,
     // so an unlit lamp (and the table sample) never glows.
@@ -56,8 +59,9 @@ public sealed class DeployedTool : MonoBehaviour
     // nearest tool stands out; a property block leaves the shared materials alone.
     public void SetHighlight(bool on)
     {
-        if (Highlighted == on) return;
-        Highlighted = on;
+        bool was = Highlighted;
+        highlightRequests = Mathf.Max(0, highlightRequests + (on ? 1 : -1));
+        if (Highlighted == was) return;
         foreach (MeshRenderer renderer in GetComponentsInChildren<MeshRenderer>())
         {
             if (renderer.GetComponent<TextMesh>() != null) continue;

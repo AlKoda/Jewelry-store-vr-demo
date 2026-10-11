@@ -177,7 +177,7 @@ public static class ShopCityValidation
         DemoModeSwitch mode = DemoValidation.Find<DemoModeSwitch>();
         XRComfortFade fade = head.GetComponent<XRComfortFade>();
         mode.Apply(true);
-        bool faded = fade != null && locomotion.TryTeleport(new Vector3(-2, 0, 6)) && (fade.Alpha > 0 || fade.Fading);
+        bool faded = fade != null && locomotion.TryTeleport(new Vector3(-2, 0, 6)) && fade.Alpha >= 0.99f && fade.Fading;
         XRControllerInput[] hands = UnityEngine.Object.FindObjectsByType<XRControllerInput>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         bool shown = hands.Length == 2 && hands[0].Label.GetComponent<Renderer>().enabled && hands[1].Label.GetComponent<Renderer>().enabled;
         XRControllerInput.ToggleHints();
@@ -465,6 +465,19 @@ public static class ShopCityValidation
         other.transform.position = hand.transform.position;
         Physics.SyncTransforms();
         DemoValidation.Check(!other.Grab() && other.Held == null && marker.Holder == hand, "A held tool cannot be taken by the other hand");
+        // Highlights are counted per holder: the empty hand dropping its highlight of a tool
+        // the other hand just grabbed must not untint the held tool.
+        System.Reflection.MethodInfo handUpdate = typeof(HandInteractor).GetMethod("Update",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        hand.Release();
+        hand.transform.position = marker.transform.position + Vector3.up * 0.1f;
+        other.transform.position = hand.transform.position;
+        Physics.SyncTransforms();
+        handUpdate.Invoke(other, null);
+        bool otherLit = marker.Highlighted;
+        bool regrabbed = hand.Grab() && hand.Held == marker;
+        handUpdate.Invoke(other, null);
+        DemoValidation.Check(otherLit && regrabbed && marker.Highlighted, "A held tool stays highlighted when the other hand moves on");
         DemoValidation.Check(!desktop.GetComponent<CharacterController>().enabled, "VR mode disables the walking collider");
         hand.RemoveHeld();
         DemoValidation.Check(hand.Held == null, "Hand removes the held tool");

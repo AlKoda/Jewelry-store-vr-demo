@@ -22,7 +22,7 @@ The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It superse
 - [x] Measuring-tape tool kind with distance labels and same-kind auto-connect.
 - [x] Review report: contact sheet, shot list, SVG scene sketch per entry with connections.
 - [x] Night preset with dusk sky, flashlight (desktop and VR), instructor beacon from pointer or panel map.
-- [x] Teleport arc, comfort fade, hand hint labels with menu-button toggle.
+- [x] Teleport arc, comfort fade (fade-from-black on the move frame since the Oct 11 audit, unverified), hand hint labels with menu-button toggle.
 - [x] KayKit Prototype Bits, two more cars, safe-room storage, coffee table and dusk HDR.
 - [ ] Run ShopCityValidation.RunTextured on the PC and report the count; check the panel on the projector and the arc in the headset.
 
