@@ -30,6 +30,7 @@ public static class NightStoreValidation
             // Fixture library first (it builds and removes its galleries at the origin).
             StoreKitValidation.Check();
             GameObject root = NightStoreBuilder.Build(true);
+            StaticChecks(root.transform);
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             DemoValidation.SaveScene(L.SceneName);
             Captures(camera, root.transform);
@@ -47,7 +48,11 @@ public static class NightStoreValidation
     {
         Transform ceiling = root.Find(L.CeilingPath);
         ceiling.gameObject.SetActive(false);
+        // Baked occlusion data ignores hidden objects, so the cutaway renders without it.
+        bool occlusion = camera.useOcclusionCulling;
+        camera.useOcclusionCulling = false;
         DemoValidation.Capture(camera, "night-01-cutaway-overview.png", new Vector3(-13, 17, -13), new Vector3(0.5f, 0, 4.5f));
+        camera.useOcclusionCulling = occlusion;
         ceiling.gameObject.SetActive(true);
         DemoValidation.Capture(camera, "night-02-exterior-wide.png", new Vector3(0, 1.6f, -10), new Vector3(0, 1.5f, 3));
         DemoValidation.Capture(camera, "night-03-entrance-interior.png", new Vector3(0, 1.6f, -0.5f), new Vector3(0, 1.1f, 11));
@@ -56,6 +61,58 @@ public static class NightStoreValidation
         DemoValidation.Capture(camera, "night-06-central-display.png", new Vector3(0.3f, 1.4f, 3.2f), new Vector3(0, 0.75f, 5.2f));
         DemoValidation.Capture(camera, "night-07-office.png", new Vector3(0, 1.6f, 8.0f), new Vector3(0, 0.9f, 11.6f));
         DemoValidation.Capture(camera, "night-08-entrance-closeup.png", new Vector3(0.3f, 1.5f, -2.4f), new Vector3(0, 0.6f, 0.6f));
+    }
+
+    // The bake policy of StoreKit.MarkStatic as the builder applies it, in edit mode.
+    private static void StaticChecks(Transform root)
+    {
+        StaticEditorFlags baked = StaticEditorFlags.ContributeGI | StaticEditorFlags.OccluderStatic;
+        bool shell = true;
+        foreach (string path in new[] { "Architecture/Walls", "Architecture/Floor" })
+        {
+            MeshRenderer r = root.Find(path).GetComponent<MeshRenderer>();
+            shell &= (GameObjectUtility.GetStaticEditorFlags(r.gameObject) & baked) == baked && r.receiveGI == ReceiveGI.Lightmaps;
+        }
+        foreach (MeshRenderer r in root.Find(L.CeilingPath).GetComponentsInChildren<MeshRenderer>(true))
+            shell &= (GameObjectUtility.GetStaticEditorFlags(r.gameObject) & StaticEditorFlags.OccluderStatic) == 0;
+        // Small props stay out of GI; GI contributors without a second UV set take probes.
+        int small = 0, wrong = 0;
+        foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            StaticEditorFlags flags = GameObjectUtility.GetStaticEditorFlags(r.gameObject);
+            if ((flags & StaticEditorFlags.BatchingStatic) == 0) continue;
+            Vector3 size = r.bounds.size;
+            bool gi = (flags & StaticEditorFlags.ContributeGI) != 0;
+            MeshFilter filter = r.GetComponent<MeshFilter>();
+            Mesh mesh = filter != null ? filter.sharedMesh : null;
+            bool uv2 = mesh != null && mesh.vertexCount > 0 && mesh.uv2.Length == mesh.vertexCount;
+            if (size.x < StoreKit.SmallProp && size.y < StoreKit.SmallProp && size.z < StoreKit.SmallProp)
+            {
+                small++;
+                if (gi) wrong++;
+            }
+            else if (gi && r.receiveGI == ReceiveGI.Lightmaps && !uv2) wrong++;
+        }
+        // Nothing moves at night: the open safe doors bake like the rest of the office.
+        bool doors = true;
+        foreach (string safe in new[] { "Office/SafeLarge/Door", "Office/SafeTall/Door" })
+        {
+            Transform door = root.Find(safe);
+            bool any = false;
+            if (door != null)
+                foreach (MeshRenderer r in door.GetComponentsInChildren<MeshRenderer>(true))
+                    any |= (GameObjectUtility.GetStaticEditorFlags(r.gameObject) & StaticEditorFlags.ContributeGI) != 0;
+            doors &= any;
+        }
+        bool fans = true;
+        foreach (string name in NightStoreDressing.Unbatched)
+        {
+            Transform fan = root.Find("Dressing/" + name);
+            fans &= fan != null && GameObjectUtility.GetStaticEditorFlags(fan.gameObject) == 0;
+        }
+        DemoValidation.Info("Static policy: small probe-lit props=" + small + "; violations=" + wrong
+            + "; textured shell=" + (StoreKit.Floor.mainTexture != null) + "/" + (StoreKit.Plaster.mainTexture != null) + "/" + (StoreKit.Asphalt.mainTexture != null));
+        DemoValidation.Check(shell && small > 0 && wrong == 0 && doors && fans, "Night store static flags follow the bake policy");
     }
 
     // Edit mode numbers (static batching merges meshes in Play mode, so count here).
@@ -128,10 +185,19 @@ public static class NightStoreValidation
         DemoValidation.Check(safes == 2 && open == 2, "Office holds exactly two open safes");
     }
 
-    // A walker-sized capsule passes the forced entrance; the same cast through an intact bay is stopped.
+    // A walker-sized capsule passes the forced entrance; a ray at the middle of an intact
+    // bay (clear of its mullions) is stopped by the pane's own thin collider.
     private static void EntranceChecks()
     {
-        DemoValidation.Check(!Cast(0) && Cast(6), "Entrance is open between the forced door leaves");
+        DemoValidation.Check(!Cast(0) && PaneStops(6), "Entrance is open between the forced door leaves");
+    }
+
+    private static bool PaneStops(int bay)
+    {
+        if (!Physics.Raycast(new Vector3(L.BayCentre(bay), 1.5f, -1), Vector3.forward, out RaycastHit hit, 1.2f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+            return false;
+        BoxCollider box = hit.collider as BoxCollider;
+        return box != null && hit.collider.transform == Root().Find("Facade/Bay_" + bay) && box.size.z < 0.02f && Mathf.Abs(hit.point.z) < 0.02f;
     }
 
     private static bool Cast(float x)

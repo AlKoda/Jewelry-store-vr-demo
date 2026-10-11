@@ -166,7 +166,7 @@ public static class NightStoreDressing
 
     // Small flat shards in a fan from the threshold (side -1 outside, +1 inside), denser
     // near the doors, kept off the sill line and the bollards. One mesh per fan, all
-    // lying GlassLift above the floor or pavement (y 0).
+    // with their bases GlassLift above the floor or pavement (y 0).
     private static void GlassFan(Transform parent, string name, Vector3 centre, float side, float radius, int count, int seed, string folder)
     {
         KitMesh k = new KitMesh { Lightmapped = false };
@@ -177,14 +177,25 @@ public static class NightStoreDressing
             Vector3 c = centre + V(Mathf.Sin(phi), 0, side * Mathf.Cos(phi)) * r;
             if (side * c.z < 0.16f || NearBollard(c)) continue;
             float size = Mathf.Lerp(0.07f, 0.025f, r / radius) * Range(rng, 0.6f, 1.3f), a0 = Range(rng, 0, Mathf.PI * 2);
-            Vector3[] points = new Vector3[3];
+            // A 3-6 mm thick sliver: its top tilts a few degrees so each one catches the
+            // headlights and streetlights on its own; the base lies flat at GlassLift.
+            Vector3[] points = new Vector3[3], tops = new Vector3[3];
             for (int i = 0; i < 3; i++)
             {
                 float a = a0 + i * Mathf.PI * 2 / 3 + Range(rng, -0.35f, 0.35f);
                 points[i] = c + V(Mathf.Cos(a), 0, Mathf.Sin(a)) * size * Range(rng, 0.45f, 1f);
                 points[i].y = GlassLift;
+                tops[i] = points[i] + Vector3.up * Range(rng, 0.003f, 0.006f);
             }
-            k.Face(StoreKit.Glass, Vector3.up, points);
+            k.Face(StoreKit.ShardGlass, Vector3.up, tops);
+            Vector3 mid = (points[0] + points[1] + points[2]) / 3;
+            for (int i = 0; i < 3; i++)
+            {
+                int j = (i + 1) % 3;
+                Vector3 outward = (points[i] + points[j]) * 0.5f - mid;
+                outward.y = 0;
+                k.Face(StoreKit.ShardGlass, outward, points[i], points[j], tops[j], tops[i]);
+            }
             made++;
         }
         k.Emit(name, parent, Vector3.zero, Quaternion.identity, folder, "night_" + name.ToLowerInvariant());
@@ -225,7 +236,7 @@ public static class NightStoreDressing
 
     private static float Range(System.Random rng, float a, float b) => a + (float)rng.NextDouble() * (b - a);
 
-    // Loose glass pieces (vertices of the fans) for the flush check, in world space.
+    // The resting (base) vertices of the fans' shards for the flush check, in world space.
     public static List<Vector3> GlassVertices(Transform dressing)
     {
         List<Vector3> points = new List<Vector3>();
@@ -234,7 +245,8 @@ public static class NightStoreDressing
             Transform fan = dressing.Find(name);
             MeshFilter filter = fan != null ? fan.GetComponent<MeshFilter>() : null;
             if (filter == null || filter.sharedMesh == null) continue;
-            foreach (Vector3 v in filter.sharedMesh.vertices) points.Add(fan.TransformPoint(v));
+            foreach (Vector3 v in filter.sharedMesh.vertices)
+                if (v.y <= GlassLift + 0.0001f) points.Add(fan.TransformPoint(v));
         }
         return points;
     }

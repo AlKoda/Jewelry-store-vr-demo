@@ -54,17 +54,32 @@ public static class NightStoreBuilder
             if (name == "PlayerSpawn") anchor.localRotation = Quaternion.Euler(0, L.PlayerYaw, 0);
         }
 
-        StoreKit.MarkStatic(zone["Architecture"].gameObject, false, true);
-        StoreKit.MarkStatic(zone["Facade"].gameObject, false);
+        // Nothing in the night scene moves at runtime (forced leaves, open safe doors,
+        // the pulled drawer and the closed side-room doors stay put), so door leaves and
+        // drawers bake with everything else; small parts still go to the probes.
+        StoreKit.MarkStatic(zone["Architecture"].gameObject, true, true);
+        // The ceiling slab is also the roof: as an occluder it would hide the whole
+        // interior from the top-down map and overview cameras once occlusion is baked.
+        foreach (MeshRenderer r in root.transform.Find(L.CeilingPath).GetComponentsInChildren<MeshRenderer>(true))
+            GameObjectUtility.SetStaticEditorFlags(r.gameObject, GameObjectUtility.GetStaticEditorFlags(r.gameObject) & ~StaticEditorFlags.OccluderStatic);
+        StoreKit.MarkStatic(zone["Facade"].gameObject, true);
         StoreKit.MarkStatic(zone["Exterior"].gameObject, false);
         StoreKit.MarkStatic(zone["Exterior"].Find("Buildings").gameObject, false, true);
-        StoreKit.MarkStatic(zone["Showroom"].gameObject, false);
-        StoreKit.MarkStatic(zone["Office"].gameObject, false);
-        StoreKit.MarkStatic(zone["Dressing"].gameObject, false);
+        StoreKit.MarkStatic(zone["Showroom"].gameObject, true);
+        StoreKit.MarkStatic(zone["Office"].gameObject, true);
+        StoreKit.MarkStatic(zone["Dressing"].gameObject, true);
         foreach (string name in NightStoreDressing.Unbatched)
         {
             Transform fan = zone["Dressing"].Find(name);
             if (fan != null) GameObjectUtility.SetStaticEditorFlags(fan.gameObject, 0);
+        }
+        // Exterior surfaces mostly out of view (far pavement, neighbour roofs and backs)
+        // take a coarser lightmap; the near pavement and the street keep full density.
+        foreach (string path in new[] { "Ground/FarPavement", "Buildings/Neighbours" })
+        {
+            Transform t = zone["Exterior"].Find(path);
+            MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
+            if (r != null) r.scaleInLightmap = path == "Ground/FarPavement" ? 0.25f : 0.5f;
         }
 
         DemoToolsBuilder.Create(useImportedAssets, L.Tools);
@@ -187,15 +202,16 @@ public static class NightStoreBuilder
     {
         Transform ground = Group("Ground", parent);
         GameObject solid = Group("Colliders", ground).gameObject;
-        KitMesh paving = new KitMesh(), kerbs = new KitMesh(), road = new KitMesh();
+        KitMesh paving = new KitMesh(), kerbs = new KitMesh(), road = new KitMesh(), far = new KitMesh();
         float hx = L.StreetHalfX, kerb = 0.18f;
         // Near pavement and kerb (the 0.12 m step down to the street), wet street, far side.
         Slab(paving, solid, StoreKit.Pavement, V(-hx, -0.3f, L.KerbZ + kerb), V(hx, 0, L.MinZ), false);
         Slab(kerbs, solid, StoreKit.Concrete, V(-hx, -0.3f, L.KerbZ), V(hx, 0, L.KerbZ + kerb), false);
         Slab(road, solid, StoreKit.Asphalt, V(-hx, L.StreetY - 0.3f, L.FarKerbZ), V(hx, L.StreetY, L.KerbZ), false);
         Slab(kerbs, solid, StoreKit.Concrete, V(-hx, -0.3f, L.FarKerbZ - kerb), V(hx, 0, L.FarKerbZ), false);
-        // The far pavement runs on under the buildings across the street and the skyline towers.
-        Slab(paving, solid, StoreKit.Pavement, V(-hx, -0.3f, L.FarPavementZ - 25), V(hx, 0, L.FarKerbZ - kerb), false);
+        // The far pavement runs on under the buildings across the street, ending at their
+        // backs (the skyline towers stand on nothing anyone sees); it bakes coarsely.
+        Slab(far, solid, StoreKit.Pavement, V(-hx, -0.3f, L.FarPavementZ - 10), V(hx, 0, L.FarKerbZ - kerb), false);
         // Dashed centre line, 2 mm proud of the asphalt.
         float lineZ = (L.KerbZ + L.FarKerbZ) * 0.5f, y = L.StreetY + 0.002f;
         for (float x = -hx + 1; x + 2 <= hx; x += 4)
@@ -203,6 +219,7 @@ public static class NightStoreBuilder
         paving.Emit("Pavement", ground, Vector3.zero, Quaternion.identity, Folder, "night_pavement");
         kerbs.Emit("Kerbs", ground, Vector3.zero, Quaternion.identity, Folder, "night_kerbs");
         road.Emit("Street", ground, Vector3.zero, Quaternion.identity, Folder, "night_street");
+        far.Emit("FarPavement", ground, Vector3.zero, Quaternion.identity, Folder, "night_far_pavement");
 
         Transform bollards = Group("Bollards", parent);
         for (int i = 0; i < L.BollardX.Length; i++)
@@ -211,6 +228,15 @@ public static class NightStoreBuilder
         PoliceCar(parent, imported);
         Equipment(Group("Equipment", parent));
         Buildings(Group("Buildings", parent), imported);
+        // Kit props share the atlas with shadows off; the car, lamp posts and towers need
+        // their contact shadows on the wet street under the headlights and streetlights.
+        foreach (string name in new[] { "PoliceCar", "Streetlights", "Buildings" })
+            foreach (MeshRenderer r in parent.Find(name).GetComponentsInChildren<MeshRenderer>(true))
+            {
+                if (r.sharedMaterial != null && r.sharedMaterial.renderQueue >= 3000) continue;
+                r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                r.receiveShadows = true;
+            }
 
         GameObject walls = Group("Boundary", parent).gameObject;
         for (int i = 0; i + 1 < L.BoundaryWalls.Length; i += 2)

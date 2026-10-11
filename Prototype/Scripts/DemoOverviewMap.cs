@@ -38,6 +38,8 @@ public sealed class DemoOverviewMap : MonoBehaviour
         overview.backgroundColor = new Color(0.12f, 0.13f, 0.15f);
         overview.targetTexture = Texture;
         overview.cullingMask = ~(1 << HiddenLayer);
+        // Baked occlusion ignores the culling mask: the hidden roof would still hide the interior.
+        overview.useOcclusionCulling = false;
         overview.stereoTargetEye = StereoTargetEyeMask.None;
     }
 

@@ -101,6 +101,8 @@ public static partial class StoreKit
     public static Material Foliage { get; private set; }
     public static Material Soil { get; private set; }
     public static Material GlassCrack { get; private set; }
+    // Loose fragments on the floor: denser than a pane so they read at standing height.
+    public static Material ShardGlass { get; private set; }
     // Emitters: lenses, shelf strips and screens start off (black emission); the exit
     // sign and the keypad LED glow modestly. All are flagged for baked emission so the
     // lightmapper, not a realtime light, carries their light.
@@ -155,7 +157,7 @@ public static partial class StoreKit
         AlarmLed = Emissive(Surface("KitAlarmLed", new Color(0.5f, 0.02f, 0.02f), 0.6f, 0, null, 1), new Color(0.9f, 0.05f, 0.04f));
         Floor = Surface("KitFloorTile", new Color(0.80f, 0.74f, 0.64f), 0.55f, 0, "FloorTile", 1.2f);
         Plaster = Surface("KitPlaster", new Color(0.80f, 0.76f, 0.69f), 0.12f, 0, "PlasterWarm", 2.0f);
-        CeilingPaint = Surface("KitCeiling", new Color(0.86f, 0.85f, 0.82f), 0.08f, 0, "PlasterWarm", 2.0f);
+        CeilingPaint = Surface("KitCeiling", new Color(0.86f, 0.85f, 0.82f), 0.08f, 0, "CeilingPaint", 2.0f);
         Cladding = Surface("KitCladding", new Color(0.33f, 0.32f, 0.31f), 0.35f, 0, null, 1);
         Pavement = Surface("KitPavement", new Color(0.46f, 0.45f, 0.43f), 0.35f, 0, "PavementSlab", 1.2f);
         // Wet asphalt: dark and glossy, so headlights and streetlights streak in the baked probes.
@@ -177,6 +179,9 @@ public static partial class StoreKit
         GlassCrack.SetFloat("_Metallic", 0);
         GlassCrack.renderQueue = 3001;
         EditorUtility.SetDirty(GlassCrack);
+        ShardGlass = Translucent(Mat(Folder, "KitShardGlass", new Color(0.75f, 0.85f, 0.85f, 0.4f), 0.95f));
+        ShardGlass.SetFloat("_Metallic", 0);
+        EditorUtility.SetDirty(ShardGlass);
         AssetDatabase.SaveAssets();
     }
 
@@ -185,7 +190,9 @@ public static partial class StoreKit
     // Generated tileable textures standing in for a palette texture until a reference one exists.
     private static readonly Dictionary<string, string> GeneratedFallback = new Dictionary<string, string>
     {
-        { "Walnut", "Walnut" }, { "BronzeBrushed", "BrushedBrass" }, { "StoneTop", "Marble" }
+        { "Walnut", "Walnut" }, { "BronzeBrushed", "BrushedBrass" }, { "StoneTop", "Marble" },
+        { "FloorTile", "StoneTiles" }, { "PlasterWarm", "Plaster" }, { "CeilingPaint", "Ceiling" },
+        { "PavementSlab", "Pavement" }, { "AsphaltWet", "Asphalt" }
     };
 
     // Standard material; with ReferenceTextures/<texture>_Color.png present (else the

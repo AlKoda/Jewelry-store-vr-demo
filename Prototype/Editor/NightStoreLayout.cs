@@ -173,17 +173,30 @@ public static class NightStoreLayout
     public static InteriorBounds.Region[] Regions() => new[] { Showroom, Office, Threshold, Pavement, StagingBay };
 
     // Invisible walls just outside the accessible exterior (centre, size), so the
-    // walker, teleport arcs and pointer stop at the edge of the play area.
-    public static readonly Vector3[] BoundaryWalls =
+    // walker, teleport arcs and pointer stop at the edge of the play area. Derived from
+    // the pavement, the kerb and the staging bay (declared above), so they follow a retune.
+    public const float BoundaryMargin = 0.3f, BoundaryThickness = 0.1f;
+    public static readonly Vector3[] BoundaryWalls = Boundary();
+
+    private static Vector3[] Boundary()
     {
-        V(-PavementHalfX + 0.05f, 1.2f, KerbZ * 0.5f - 0.1f), V(0.1f, 2.6f, -KerbZ + 0.2f),
-        V(PavementHalfX - 0.05f, 1.2f, KerbZ * 0.5f - 0.1f), V(0.1f, 2.6f, -KerbZ + 0.2f),
-        V((-PavementHalfX - 2.3f) * 0.5f, 1.2f, KerbZ - 0.15f), V(PavementHalfX - 2.3f, 2.6f, 0.1f),
-        V((PavementHalfX + 9.3f) * 0.5f, 1.2f, KerbZ - 0.15f), V(PavementHalfX - 9.3f, 2.6f, 0.1f),
-        V(-2.3f, 1.2f, -5.7f), V(0.1f, 2.6f, 5.3f),
-        V(9.3f, 1.2f, -5.7f), V(0.1f, 2.6f, 5.3f),
-        V(3.5f, 1.2f, -8.3f), V(11.7f, 2.6f, 0.1f),
-    };
+        float t = BoundaryThickness, h = 2.6f, y = 1.2f;
+        float x0 = StagingBay.MinX - BoundaryMargin, x1 = StagingBay.MaxX + BoundaryMargin, zb = StagingBay.MinZ - BoundaryMargin;
+        float kerbWall = KerbZ - 0.15f, bayZ = (zb + KerbZ) * 0.5f - t * 0.5f;
+        return new[]
+        {
+            // Pavement ends, from the kerb line to the facade.
+            V(-PavementHalfX + t * 0.5f, y, KerbZ * 0.5f - 0.1f), V(t, h, -KerbZ + 0.2f),
+            V(PavementHalfX - t * 0.5f, y, KerbZ * 0.5f - 0.1f), V(t, h, -KerbZ + 0.2f),
+            // Kerb either side of the staging bay.
+            V((-PavementHalfX + x0) * 0.5f, y, kerbWall), V(x0 + PavementHalfX, h, t),
+            V((PavementHalfX + x1) * 0.5f, y, kerbWall), V(PavementHalfX - x1, h, t),
+            // Staging bay sides and back.
+            V(x0, y, bayZ), V(t, h, KerbZ - zb),
+            V(x1, y, bayZ), V(t, h, KerbZ - zb),
+            V((x0 + x1) * 0.5f, y, zb), V(x1 - x0 + t, h, t),
+        };
+    }
 
     // ---------------------------------------------------------------- tools and map
     public static readonly Vector2 MapCentre = new Vector2(0.5f, 2f);
