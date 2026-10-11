@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static DemoGeometry;
 using L = NightStoreLayout;
 
@@ -24,13 +25,81 @@ public static class NightStoreBuilder
 {
     public const string Folder = "Assets/CrimeSceneDemo/NightStoreGenerated";
 
-    [MenuItem("Crime Scene Demo/Night Store/Build Night Store In New Scene")]
-    public static void BuildMenu()
+    // ---------------------------------------------------------------- menu
+    // The validator's generation steps without the checks and captures: a quick build
+    // previews the lights as realtime shadowless lights; Build And Bake (minutes) or
+    // Bake Lighting Only gives the shipped look. Both save Scenes/JewelryStoreNight.
+    private const string Menu = "Crime Scene Demo/Night Store/";
+
+    [MenuItem(Menu + "Build (quick)", false, 0)]
+    public static void BuildQuickMenu() { BuildScene(false); }
+
+    [MenuItem(Menu + "Build And Bake", false, 1)]
+    public static void BuildAndBakeMenu() { BuildScene(true); }
+
+    [MenuItem(Menu + "Bake Lighting Only", false, 2)]
+    public static void BakeMenu()
     {
-        if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-        EditorSceneManager.NewScene(NewSceneSetup.DefaultGameObjects, NewSceneMode.Single);
-        Build(true);
-        if (Camera.main != null) CreatePlayer(Camera.main);
+        if (EditorApplication.isPlaying) return;
+        GameObject root = GameObject.Find(L.Root);
+        if (root == null || root.transform.Find(NightLighting.GroupName) == null)
+        {
+            EditorUtility.DisplayDialog("Night store required", "Open or build the night store (with its lighting) first.", "OK");
+            return;
+        }
+        // A quick build's realtime preview lights go back to baked before the bake.
+        NightLighting.UseBaked(root.transform);
+        if (string.IsNullOrEmpty(SceneManager.GetActiveScene().path)) DemoValidation.SaveScene(L.SceneName, false);
+        else DemoValidation.SaveScene();
+        NightLighting.Bake(out string report);
+        Debug.Log(report);
+        DemoValidation.SaveScene();
+    }
+
+    // Edit mode: the same switch the presenter panel makes in Play mode (DemoLighting),
+    // a shadowless realtime sun and a grey ambient. Switch back to night before saving.
+    [MenuItem(Menu + "Toggle Diagnostic Daylight", false, 20)]
+    public static void ToggleDaylightMenu()
+    {
+        DemoLighting lighting = UnityEngine.Object.FindFirstObjectByType<DemoLighting>();
+        GameObject root = GameObject.Find(L.Root);
+        if (lighting == null || lighting.DiagnosticSun == null || root == null)
+        {
+            EditorUtility.DisplayDialog("Night store required", "Open or build the night store (with its lighting) first.", "OK");
+            return;
+        }
+        if (EditorApplication.isPlaying) { lighting.ToggleNight(); return; }
+        bool day = !lighting.DiagnosticSun.enabled;
+        lighting.DiagnosticSun.enabled = day;
+        RenderSettings.ambientLight = day ? lighting.DiagnosticAmbient : NightLighting.NightAmbientFor(root.transform);
+        EditorUtility.SetDirty(lighting.DiagnosticSun);
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log(day ? "Diagnostic daylight on (edit mode). Toggle it off again before saving the night scene." : "Night restored.");
+    }
+
+    [MenuItem(Menu + "Store Kit Gallery", false, 40)]
+    public static void GalleryMenu() { StoreKit.GalleryMenu(); }
+
+    private static void BuildScene(bool bake)
+    {
+        if (EditorApplication.isPlaying || !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        NightLighting.UseLinearColorSpace();
+        ThirdPartyModelImport.GenerateLightmapUVs();
+        EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
+        Camera camera = DemoValidation.CreatePreviewCamera(150);
+        GameObject root = Build(true);
+        NightLighting.Apply(root.transform, camera);
+        DemoValidation.SaveScene(L.SceneName, false);
+        if (bake)
+        {
+            NightLighting.Bake(out string report);
+            Debug.Log(report);
+        }
+        else NightLighting.UseRealtimeFallback(root.transform);
+        // The rig is created after the bake so it never enters it (as in the validator).
+        CreatePlayer(camera);
+        NightLighting.ConfigureCamera(camera);
+        DemoValidation.SaveScene();
     }
 
     public static GameObject Build(bool useImportedAssets)
@@ -48,6 +117,7 @@ public static class NightStoreBuilder
         Exterior(zone["Exterior"], useImportedAssets);
         foreach (L.Fixture f in L.Fixtures) Place(f, zone[f.Zone]);
         NightStoreDressing.Apply(zone["Dressing"], zone["Showroom"], Folder);
+        MergeCaseGlass(zone["Showroom"]);
         foreach (string name in L.AnchorNames)
         {
             Transform anchor = Group(name, zone["Anchors"]);
@@ -74,6 +144,7 @@ public static class NightStoreBuilder
             Transform fan = zone["Dressing"].Find(name);
             if (fan != null) GameObjectUtility.SetStaticEditorFlags(fan.gameObject, 0);
         }
+        NightStoreDressing.CombineLoose(zone["Dressing"], Folder);
         // Exterior surfaces mostly out of view (far pavement, neighbour roofs and backs)
         // take a coarser lightmap; the near pavement keeps full density, the street 0.6
         // (NightLighting.LightmapScales sets every zone; the meshes' chart margins match).
@@ -91,6 +162,47 @@ public static class NightStoreBuilder
         if (lighting != null) lighting.UVExamples = examples;
         AssetDatabase.SaveAssets();
         return root;
+    }
+
+    // A case's four or five panes share KitGlass, but as separate renderers each is its
+    // own sorted, unbatched transparent draw per eye (about 60 for the fourteen cases).
+    // One glass mesh per case keeps them to one. Any child of a pane (the cracked top's
+    // CrackPlane) moves to the case first. Cases of the same kind and glass state share
+    // the mesh asset, since the panes sit identically in fixture space.
+    private static void MergeCaseGlass(Transform showroom)
+    {
+        foreach (L.Fixture f in L.Fixtures)
+        {
+            if (f.Kit != "display_case" && f.Kit != "wall_case") continue;
+            Transform fixture = showroom.Find(f.Name);
+            if (fixture == null) continue;
+            List<CombineInstance> panes = new List<CombineInstance>();
+            List<GameObject> merged = new List<GameObject>();
+            Material glass = null;
+            foreach (Transform pane in fixture)
+            {
+                MeshFilter filter = pane.GetComponent<MeshFilter>();
+                MeshRenderer renderer = pane.GetComponent<MeshRenderer>();
+                if (!pane.name.StartsWith("Glass_") || filter == null || renderer == null || filter.sharedMesh == null) continue;
+                glass = renderer.sharedMaterial;
+                panes.Add(new CombineInstance { mesh = filter.sharedMesh, transform = fixture.worldToLocalMatrix * pane.localToWorldMatrix });
+                merged.Add(pane.gameObject);
+            }
+            if (panes.Count < 2) continue;
+            foreach (GameObject pane in merged)
+                for (int i = pane.transform.childCount - 1; i >= 0; i--) pane.transform.GetChild(i).SetParent(fixture, true);
+            Mesh mesh = new Mesh { name = "CaseGlass" };
+            mesh.CombineMeshes(panes.ToArray(), true, true);
+            SaveMesh(ref mesh, Folder + "/night_case_glass_" + f.Kit + "_" + NightStoreDressing.CaseGlass(f.Name) + ".asset");
+            GameObject g = new GameObject("Glass");
+            g.transform.SetParent(fixture, false);
+            g.AddComponent<MeshFilter>().sharedMesh = mesh;
+            MeshRenderer r = g.AddComponent<MeshRenderer>();
+            r.sharedMaterial = glass;
+            r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            r.receiveShadows = false;
+            foreach (GameObject pane in merged) UnityEngine.Object.DestroyImmediate(pane);
+        }
     }
 
     public static ShopWalkController CreatePlayer(Camera camera)

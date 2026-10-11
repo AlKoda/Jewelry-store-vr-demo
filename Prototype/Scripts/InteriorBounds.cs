@@ -8,10 +8,13 @@ public sealed class InteriorBounds : MonoBehaviour
     public struct Region
     {
         public float MinX, MaxX, MinZ, MaxZ;
+        // Ground height of the region (0 indoors; the night store's street sits lower),
+        // so a beacon placed in it stands on its ground rather than floating.
+        public float FloorY;
 
-        public Region(float minX, float maxX, float minZ, float maxZ)
+        public Region(float minX, float maxX, float minZ, float maxZ, float floorY = 0)
         {
-            MinX = minX; MaxX = maxX; MinZ = minZ; MaxZ = maxZ;
+            MinX = minX; MaxX = maxX; MinZ = minZ; MaxZ = maxZ; FloorY = floorY;
         }
 
         public bool Contains(Vector3 p) =>
@@ -41,6 +44,14 @@ public sealed class InteriorBounds : MonoBehaviour
         foreach (Region region in Regions)
             if (region.Contains(p)) return true;
         return false;
+    }
+
+    // Ground height under p: the first region containing it, else 0.
+    public float FloorAt(Vector3 p)
+    {
+        foreach (Region region in Regions)
+            if (region.Contains(p)) return region.FloorY;
+        return 0;
     }
 
     // Nearest point inside any region; height is preserved.

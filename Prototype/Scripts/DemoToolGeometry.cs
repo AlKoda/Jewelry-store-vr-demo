@@ -181,7 +181,8 @@ public static class DemoToolGeometry
         spot.range = 8;
         spot.spotAngle = 75;
         // Low-resolution hard shadows so the 8 m beam stops at walls, partitions and
-        // counters; ToolStation.MaxLitLamps caps this at two small spot shadow maps.
+        // counters; ToolStation.UpdateLampShadows keeps it on one lamp at a time, and
+        // only while the flashlight (the scene's one realtime shadow) is off.
         spot.shadows = LightShadows.Hard;
         spot.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
 #if UNITY_EDITOR

@@ -110,6 +110,21 @@ public sealed class ToolStation : MonoBehaviour
             litLamps.Add(lamp);
         }
         lamp.SetLampLit(lit);
+        UpdateLampShadows();
+    }
+
+    // One realtime shadow map at a time keeps the night within its VR budget: the
+    // white flashlight's while it is on (DemoLighting calls this when it switches),
+    // otherwise the lamp lit last. Other lit lamps light without shadows, so their
+    // beams may pass a wall; the shadowed one is the lamp the visitor just set up.
+    public void UpdateLampShadows()
+    {
+        PruneLamps();
+        DemoLighting lighting = GetComponent<DemoLighting>();
+        bool torch = lighting != null && lighting.FlashlightOn;
+        for (int i = 0; i < litLamps.Count; i++)
+            if (litLamps[i].Lamp != null)
+                litLamps[i].Lamp.shadows = !torch && i == litLamps.Count - 1 ? LightShadows.Hard : LightShadows.None;
     }
 
     // Removed lamps are inactive before Destroy lands; they no longer count.
@@ -183,12 +198,14 @@ public sealed class ToolStation : MonoBehaviour
         if (pendingPost == tool) pendingPost = null;
         if(lastPlacedPost==tool) lastPlacedPost=null;
         if(lastPlacedReel==tool) lastPlacedReel=null;
-        litLamps.Remove(tool);
+        bool wasLit = litLamps.Remove(tool);
         if(tool.TapeAnchor!=null)
             foreach(SceneTape tape in DeploymentRoot.GetComponentsInChildren<SceneTape>())
                 if(tape.StartAnchor==tool.TapeAnchor || tape.EndAnchor==tool.TapeAnchor)
                 { tape.gameObject.SetActive(false); Destroy(tape.gameObject); }
         tool.RemoveTool();
+        // The remaining lit lamp may take over the shadow.
+        if (wasLit) UpdateLampShadows();
         ToolsChanged.Invoke();
     }
 

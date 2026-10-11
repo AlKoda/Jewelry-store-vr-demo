@@ -16,8 +16,13 @@ public sealed class DemoModeSwitch : MonoBehaviour
     public Behaviour[] VROnly = new Behaviour[0];
     public GameObject[] VRObjects = new GameObject[0];
     public bool VRActive { get; private set; }
+    // Entering VR records where the rig stands and faces (the spawn at startup); once
+    // the headset reports a pose the head is recentred there (XRLocomotion.Recentre).
+    public bool RecentrePending { get; private set; }
 
     private bool applied;
+    private Vector3 recentrePoint;
+    private float recentreYaw;
 
     private void Start() { Sync(); }
 
@@ -35,11 +40,32 @@ public sealed class DemoModeSwitch : MonoBehaviour
         if (!applied || vr != VRActive) Apply(vr);
     }
 
+    // After the head tracking's Update has applied this frame's pose.
+    private void LateUpdate()
+    {
+        if (RecentrePending && VRActive && InputDevices.GetDeviceAtXRNode(XRNode.CenterEye).isValid) RecentreNow();
+    }
+
+    // Puts the head over the recorded point, facing the recorded heading.
+    public void RecentreNow()
+    {
+        RecentrePending = false;
+        XRLocomotion locomotion = GetComponent<XRLocomotion>();
+        if (locomotion != null) locomotion.Recentre(recentrePoint, recentreYaw);
+    }
+
     public void Apply(bool vr)
     {
         // Release before disabling hand objects: Unity forbids reparenting a child
         // from inside its parent\'s SetActive/OnDisable traversal.
         foreach (ToolHolder holder in GetComponentsInChildren<ToolHolder>(true)) holder.ReleaseAll();
+        if (vr && (!applied || !VRActive))
+        {
+            RecentrePending = true;
+            recentrePoint = transform.position;
+            recentreYaw = transform.eulerAngles.y;
+        }
+        else if (!vr) RecentrePending = false;
         VRActive = vr;
         applied = true;
         if (vr) SetFloorTrackingOrigin();

@@ -41,6 +41,25 @@ public static class DemoValidation
 
     public static ToolTestPoints TestPoints = new ToolTestPoints();
 
+    // Runs just before the photo stage resets the session, so a scene's validator can
+    // put things in a state the reset must undo (null for the small shop; assigned in
+    // Play mode like TestPoints).
+    public static Action BeforeReset;
+
+    private const string EditChecksKey = "DemoValidationEditChecks";
+
+    // Checks passed so far in this run: those written before entering Play mode plus
+    // those since.
+    public static int ChecksPassed
+    {
+        get
+        {
+            int passed = SessionState.GetInt(EditChecksKey, 0);
+            foreach (string line in results) if (line.StartsWith("PASS: ", StringComparison.Ordinal)) passed++;
+            return passed;
+        }
+    }
+
     private static string Output =>
         Path.GetFullPath(Path.Combine(Application.dataPath, "../../Docs/" + SessionState.GetString(OutputKey, "Verification")));
 
@@ -49,6 +68,7 @@ public static class DemoValidation
     public static void Begin(string outputFolder)
     {
         SessionState.SetString(OutputKey, outputFolder);
+        SessionState.SetInt(EditChecksKey, 0);
         Directory.CreateDirectory(Output);
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
     }
@@ -139,6 +159,7 @@ public static class DemoValidation
     {
         WriteHeader(header);
         // Edit mode checks would be lost with the Play mode domain reload; write them first.
+        SessionState.SetInt(EditChecksKey, ChecksPassed);
         if (results.Count > 0) File.AppendAllText(Path.Combine(Output, "runtime-results.txt"), string.Join("\n", results) + "\n");
         results.Clear();
         SessionState.SetInt(stageKey, 1);
@@ -290,6 +311,7 @@ public static class DemoValidation
         station.SelectTapePost(postB);
         review.SaveSnapshot();
         evidence.transform.position = TestPoints.CameraDrop;
+        if (BeforeReset != null) BeforeReset();
         Find<DemoSession>().ResetSession();
         frame = Time.frameCount;
         return true;

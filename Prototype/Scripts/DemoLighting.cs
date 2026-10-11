@@ -249,6 +249,8 @@ public sealed class DemoLighting : MonoBehaviour
     {
         if (on && TorchesExclusive) UVTorch(false);
         Switch(white, on);
+        // The flashlight takes the one realtime shadow from a lit scene lamp, and hands it back.
+        if (Session != null && Session.Station != null) Session.Station.UpdateLampShadows();
     }
 
     public void ToggleUVTorch() { UVTorch(!UVTorchOn); }

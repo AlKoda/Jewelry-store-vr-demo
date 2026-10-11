@@ -160,23 +160,49 @@ public static class DemoGeometry
     }
 
     // Replaces every mesh under root with one combined, shadowless mesh per material.
+    // Reads each renderer's first material and submesh only (the small shop's parts are
+    // single-material primitives); CombineSubmeshesByMaterial handles multi-material parts.
     public static void CombineByMaterial(Transform root, string assetPrefix, string namePrefix)
+    {
+        Combine(root, assetPrefix, namePrefix, false);
+    }
+
+    // For multi-material parts (KitMesh props): every submesh joins its material's mesh,
+    // and the parts' whole hierarchies under root (root itself carries no mesh) are
+    // replaced by one renderer per material. Opaque batches keep their shadows, so
+    // props still shadow under the flashlight; transparent ones cast and receive none.
+    public static List<MeshRenderer> CombineSubmeshesByMaterial(Transform root, string assetPrefix, string namePrefix)
+    {
+        return Combine(root, assetPrefix, namePrefix, true);
+    }
+
+    private static List<MeshRenderer> Combine(Transform root, string assetPrefix, string namePrefix, bool submeshes)
     {
         Dictionary<Material, List<CombineInstance>> batches = new Dictionary<Material, List<CombineInstance>>();
         List<GameObject> originals = new List<GameObject>();
+        List<GameObject> parts = new List<GameObject>();
+        foreach (Transform child in root) parts.Add(child.gameObject);
         foreach (MeshFilter filter in root.GetComponentsInChildren<MeshFilter>())
         {
             MeshRenderer renderer = filter.GetComponent<MeshRenderer>();
             if (renderer == null || filter.sharedMesh == null) continue;
-            Material material = renderer.sharedMaterial;
-            if (!batches.ContainsKey(material)) batches[material] = new List<CombineInstance>();
-            batches[material].Add(new CombineInstance
+            Material[] materials = renderer.sharedMaterials;
+            int count = submeshes ? Mathf.Min(filter.sharedMesh.subMeshCount, materials.Length) : 1;
+            for (int i = 0; i < count; i++)
             {
-                mesh = filter.sharedMesh,
-                transform = root.worldToLocalMatrix * filter.transform.localToWorldMatrix
-            });
+                Material material = submeshes ? materials[i] : renderer.sharedMaterial;
+                if (submeshes && material == null) continue;
+                if (!batches.ContainsKey(material)) batches[material] = new List<CombineInstance>();
+                batches[material].Add(new CombineInstance
+                {
+                    mesh = filter.sharedMesh,
+                    subMeshIndex = i,
+                    transform = root.worldToLocalMatrix * filter.transform.localToWorldMatrix
+                });
+            }
             originals.Add(filter.gameObject);
         }
+        List<MeshRenderer> made = new List<MeshRenderer>();
         int serial = 0;
         foreach (KeyValuePair<Material, List<CombineInstance>> batch in batches)
         {
@@ -188,10 +214,14 @@ public static class DemoGeometry
             g.AddComponent<MeshFilter>().sharedMesh = mesh;
             MeshRenderer r = g.AddComponent<MeshRenderer>();
             r.sharedMaterial = batch.Key;
-            r.shadowCastingMode = ShadowCastingMode.Off;
-            r.receiveShadows = false;
+            bool shadows = submeshes && batch.Key.renderQueue < 3000;
+            r.shadowCastingMode = shadows ? ShadowCastingMode.On : ShadowCastingMode.Off;
+            r.receiveShadows = shadows;
+            made.Add(r);
         }
-        foreach (GameObject g in originals) Object.DestroyImmediate(g);
+        if (submeshes) foreach (GameObject g in parts) Object.DestroyImmediate(g);
+        else foreach (GameObject g in originals) Object.DestroyImmediate(g);
+        return made;
     }
 }
 #endif

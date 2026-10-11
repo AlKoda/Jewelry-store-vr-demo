@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using static DemoGeometry;
 
@@ -39,6 +40,12 @@ public static class NightStoreDressing
     public static readonly Vector3 ChairPosition = V(-1.2f, 0, 10.45f);
     public const float ChairYaw = -100;
 
+    // Groups whose children CombineLoose merges: each case's deck stock, and the floor
+    // scatter in LooseCell metre cells (each merged mesh takes one light probe sample at
+    // its centre, so a cell must stay small enough for the headlight falloff to read).
+    public const string DisplaysGroup = "Displays", LooseGroup = "Loose";
+    public const float LooseCell = 2.5f;
+
     // Renderers kept out of static batching so validators can read their meshes in Play mode.
     public static readonly string[] Unbatched = { "EntranceGlass_Outside", "EntranceGlass_Inside" };
     public const float GlassLift = 0.0012f;
@@ -50,16 +57,18 @@ public static class NightStoreDressing
     public static void Apply(Transform dressing, Transform showroom, string meshFolder)
     {
         StoreKit.Palette();
-        Transform displays = Group("Displays", dressing);
+        Transform displays = Group(DisplaysGroup, dressing);
+        // One group per case, so CombineLoose merges each deck's stock into its own meshes.
         foreach (NightStoreLayout.Fixture f in NightStoreLayout.Fixtures)
-            if (f.Kit == "display_case" || f.Kit == "wall_case") Stock(displays, showroom.Find(f.Name), f);
+            if (f.Kit == "display_case" || f.Kit == "wall_case") Stock(Group(f.Name, displays), showroom.Find(f.Name), f);
         Crack(showroom.Find(CrackedTop));
         KnockedDrawer(dressing, showroom.Find("KnockedCase"));
         Transform drawer = showroom.Find("CentralCase_Middle/Drawer");
         if (drawer != null) Put(StoreKit.RingTray(dressing), drawer, V(-0.35f, -0.035f, 0.22f), 6).name = "DrawerTray";
 
-        Transform loose = Group("Loose", dressing);
+        Transform loose = Group(LooseGroup, dressing);
         Scatter(loose);
+        Cells(loose);
         GameObject chair = StoreKit.OfficeChair(dressing, true);
         Put(chair, null, ChairPosition, ChairYaw);
 
@@ -206,6 +215,48 @@ public static class NightStoreDressing
         foreach (float x in NightStoreLayout.BollardX)
             if (new Vector2(p.x - x, p.z - NightStoreLayout.BollardZ).sqrMagnitude < 0.16f * 0.16f) return true;
         return false;
+    }
+
+    // Sorts the scattered pieces into Cell_<i>_<j> groups by their floor position.
+    private static void Cells(Transform loose)
+    {
+        List<Transform> pieces = new List<Transform>();
+        foreach (Transform t in loose) pieces.Add(t);
+        foreach (Transform t in pieces)
+        {
+            string name = "Cell_" + Mathf.FloorToInt(t.position.x / LooseCell) + "_" + Mathf.FloorToInt(t.position.z / LooseCell);
+            Transform cell = loose.Find(name);
+            if (cell == null) cell = Group(name, loose);
+            t.SetParent(cell, true);
+        }
+    }
+
+    // Loose props cost one renderer per part and material (about 150 for the decks and
+    // the scatter); after the static flags are set, each case's stock and each loose cell
+    // become one mesh per material. They stay probe-lit, out of GI like the small props
+    // they were, and batch statically. Returns the renderers left in those groups.
+    public static int CombineLoose(Transform dressing, string meshFolder)
+    {
+        int renderers = 0;
+        foreach (string groupName in new[] { DisplaysGroup, LooseGroup })
+        {
+            Transform group = dressing.Find(groupName);
+            if (group == null) continue;
+            foreach (Transform part in group)
+            {
+                string prefix = "night_dressing_" + groupName.ToLowerInvariant() + "_" + part.name.ToLowerInvariant() + "_";
+                foreach (MeshRenderer r in DemoGeometry.CombineSubmeshesByMaterial(part, meshFolder + "/" + prefix, part.name + "_"))
+                {
+                    bool transparent = r.sharedMaterial.renderQueue >= 3000;
+                    StaticEditorFlags flags = StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccludeeStatic;
+                    if (!transparent) flags |= StaticEditorFlags.ReflectionProbeStatic;
+                    GameObjectUtility.SetStaticEditorFlags(r.gameObject, flags);
+                    r.receiveGI = ReceiveGI.LightProbes;
+                    renderers++;
+                }
+            }
+        }
+        return renderers;
     }
 
     // Places a built prop at a point in frame's space (world when frame is null), turned by yaw.

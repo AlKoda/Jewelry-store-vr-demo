@@ -397,6 +397,9 @@ public static class NightLighting
         Lightmapping.lightingSettings = s;
     }
 
+    // Duration of the last Bake in this editor session (seconds).
+    public static double LastBakeSeconds { get; private set; }
+
     // Synchronous bake of the saved, open scene (lightmaps, light probes and the baked
     // reflection probes); works in batch mode. Returns false when the bake fails.
     public static bool Bake(out string report)
@@ -405,6 +408,7 @@ public static class NightLighting
         System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
         bool baked = Lightmapping.Bake();
         watch.Stop();
+        LastBakeSeconds = watch.Elapsed.TotalSeconds;
         LightmapData[] maps = LightmapSettings.lightmaps;
         int largest = 0;
         foreach (LightmapData map in maps)
@@ -442,6 +446,36 @@ public static class NightLighting
         }
         RenderSettings.ambientLight = FallbackAmbient.gamma;
         Debug.LogWarning("NightLighting: not baked (RunNightQuick). Baked lights switched to realtime without shadows and the ambient lifted; run RunNight for the real look.");
+    }
+
+    // The inverse of UseRealtimeFallback, before a bake of a quick build: every scene
+    // light baked with soft shadows at the baked intensities, the night ambient back.
+    public static void UseBaked(Transform root)
+    {
+        Transform group = root.Find(GroupName);
+        if (group == null) return;
+        foreach (Light light in group.GetComponentsInChildren<Light>(true))
+        {
+            if (light.name == "DiagnosticSun") continue;
+            light.lightmapBakeType = LightmapBakeType.Baked;
+            light.shadows = LightShadows.Soft;
+            light.renderMode = LightRenderMode.Auto;
+            if (light.name.StartsWith("Headlight_")) light.intensity = HeadlightIntensity;
+            else if (light.name.StartsWith("Streetlight_")) light.intensity = StreetlightIntensity;
+            else if (light.name == "Moonlight") light.intensity = MoonIntensity;
+        }
+        RenderSettings.ambientLight = NightAmbient.gamma;
+    }
+
+    // The ambient the night uses with the lights as they are: lifted while the realtime
+    // fallback stands in for the bake.
+    public static Color NightAmbientFor(Transform root)
+    {
+        Transform group = root.Find(GroupName);
+        if (group != null)
+            foreach (Light light in group.GetComponentsInChildren<Light>(true))
+                if (light.name != "DiagnosticSun" && light.lightmapBakeType != LightmapBakeType.Baked) return FallbackAmbient.gamma;
+        return NightAmbient.gamma;
     }
 }
 #endif

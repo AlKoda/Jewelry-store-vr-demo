@@ -169,7 +169,8 @@ public static class NightStoreLayout
     public static readonly InteriorBounds.Region Office = new InteriorBounds.Region(-OfficeHalf + 0.2f, OfficeHalf - 0.2f, RearZ - 0.25f, MaxZ - 0.25f);
     public static readonly InteriorBounds.Region Threshold = new InteriorBounds.Region(-DoorHalf + 0.1f, DoorHalf - 0.1f, -0.35f, 0.35f);
     public static readonly InteriorBounds.Region Pavement = new InteriorBounds.Region(-PavementHalfX + 0.5f, PavementHalfX - 0.5f, KerbZ + 0.1f, -0.35f);
-    public static readonly InteriorBounds.Region StagingBay = new InteriorBounds.Region(-2, 9, -8, KerbZ + 0.1f);
+    // On the street, a kerb below the pavement (the beacon stands on the street there).
+    public static readonly InteriorBounds.Region StagingBay = new InteriorBounds.Region(-2, 9, -8, KerbZ + 0.1f, StreetY);
     public static InteriorBounds.Region[] Regions() => new[] { Showroom, Office, Threshold, Pavement, StagingBay };
 
     // Invisible walls just outside the accessible exterior (centre, size), so the
@@ -199,8 +200,24 @@ public static class NightStoreLayout
     }
 
     // ---------------------------------------------------------------- tools and map
-    public static readonly Vector2 MapCentre = new Vector2(0.5f, 2f);
-    public const float MapHalfSize = 10.5f;
+    // The overview map frames the movement regions (their bounding square plus a
+    // margin), so it follows a retuned layout; the beacon and the review sketch read the
+    // same regions through the player's InteriorBounds.
+    public const float MapMargin = 0.75f;
+    public static Vector2 MapCentre => RegionRect().center;
+    public static float MapHalfSize => Mathf.Max(RegionRect().width, RegionRect().height) * 0.5f + MapMargin;
+
+    // x/z extent of all movement regions (Rect x = world x, y = world z).
+    public static Rect RegionRect()
+    {
+        float x0 = float.MaxValue, x1 = float.MinValue, z0 = float.MaxValue, z1 = float.MinValue;
+        foreach (InteriorBounds.Region r in Regions())
+        {
+            x0 = Mathf.Min(x0, r.MinX); x1 = Mathf.Max(x1, r.MaxX);
+            z0 = Mathf.Min(z0, r.MinZ); z1 = Mathf.Max(z1, r.MaxZ);
+        }
+        return Rect.MinMaxRect(x0, z0, x1, z1);
+    }
 
     public static DemoToolsBuilder.ToolLayout Tools => new DemoToolsBuilder.ToolLayout
     {

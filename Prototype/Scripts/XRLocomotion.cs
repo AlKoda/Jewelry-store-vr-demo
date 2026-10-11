@@ -97,6 +97,21 @@ public sealed class XRLocomotion : MonoBehaviour
     public void SnapLeft() { SnapTurn(-SnapTurnDegrees); }
     public void SnapRight() { SnapTurn(SnapTurnDegrees); }
 
+    // Turns and moves the rig so the tracked head stands over floorPoint looking along
+    // yaw. Floor-relative tracking puts the head wherever the visitor stands in the
+    // play area, facing wherever they face, so without this a VR session would not
+    // start at the spawn facing the shop. The root goes to floorPoint's height.
+    public void Recentre(Vector3 floorPoint, float yaw)
+    {
+        Transform head = HeadOrRoot;
+        Vector3 forward = head.forward;
+        forward.y = 0;
+        float current = forward.sqrMagnitude > 1e-4f ? Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg : transform.eulerAngles.y;
+        transform.rotation = Quaternion.AngleAxis(Mathf.DeltaAngle(current, yaw), Vector3.up) * transform.rotation;
+        Vector3 at = head.position;
+        Relocate(transform, transform.position + new Vector3(floorPoint.x - at.x, floorPoint.y - transform.position.y, floorPoint.z - at.z));
+    }
+
     // Sets a position directly. A CharacterController on the object must be off
     // meanwhile or it keeps its old position; the walker uses this too.
     public static void Relocate(Transform target, Vector3 position)

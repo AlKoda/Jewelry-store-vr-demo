@@ -37,7 +37,7 @@ public sealed class DemoBeacon : MonoBehaviour
         if (marker == null) Build();
         if (Bounds == null) Bounds = FindFirstObjectByType<InteriorBounds>();
         Vector3 p = Bounds != null ? Bounds.Clamp(worldPoint) : worldPoint;
-        p.y = FloorY;
+        p.y = FloorY + (Bounds != null ? Bounds.FloorAt(p) : 0);
         marker.position = p;
         marker.gameObject.SetActive(true);
     }
