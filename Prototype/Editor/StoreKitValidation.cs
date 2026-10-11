@@ -18,7 +18,7 @@ public static class StoreKitValidation
         try
         {
             DemoValidation.Begin("VerificationStoreKit");
-            DemoValidation.WriteHeader("Store kit gallery generation and Edit mode checks; 2 actual Unity rendered captures.");
+            DemoValidation.WriteHeader("Store kit gallery generation and Edit mode checks; 3 actual Unity rendered captures.");
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             Check(true);
             // Every fixture and variant was just built, so mesh fingerprints nothing used are stale.
@@ -27,6 +27,7 @@ public static class StoreKitValidation
             DemoValidation.SaveScene("StoreKitGallery", false);
             DemoValidation.Capture(camera, "store-kit-gallery.png", new Vector3(0, 11, -10), new Vector3(0, 0.5f, 5.5f));
             DemoValidation.Capture(camera, "store-kit-closeup.png", new Vector3(-6.5f, 1.7f, -3.5f), new Vector3(-6.5f, 0.8f, 0));
+            DemoValidation.Capture(camera, "store-kit-props.png", new Vector3(0, 1.3f, -5.4f), new Vector3(0, 0.05f, -3.35f));
             DemoValidation.Finish(Key, true, null);
         }
         catch (Exception ex) { DemoValidation.Finish(Key, false, ex.ToString()); }
@@ -35,9 +36,12 @@ public static class StoreKitValidation
     // For other validators: builds, checks and removes the gallery.
     public static void Check() { Check(false); }
 
+    // The fixture gallery is returned; the prop gallery ("StoreKitProps") is a separate
+    // root beside it, kept or removed with it.
     public static Transform Check(bool keepGallery)
     {
         Transform gallery = StoreKit.BuildGallery(null);
+        Transform props = StoreKit.BuildPropGallery(null);
         try
         {
             FixtureChecks(gallery);
@@ -46,12 +50,108 @@ public static class StoreKitValidation
             ColliderChecks(gallery);
             CeilingChecks(gallery);
             EmissionChecks(gallery);
+            PropChecks(props);
+            LidChecks(props);
+            CameraBodyChecks();
         }
         finally
         {
-            if (!keepGallery) UnityEngine.Object.DestroyImmediate(gallery.gameObject);
+            if (!keepGallery)
+            {
+                UnityEngine.Object.DestroyImmediate(gallery.gameObject);
+                UnityEngine.Object.DestroyImmediate(props.gameObject);
+            }
         }
         return keepGallery ? gallery : null;
+    }
+
+    // Every prop and variant builds with UVs and normals inside its budget; loose props
+    // carry no lightmap UVs, lightmapped ones do except their probe-lit jewelry parts.
+    private static void PropChecks(Transform props)
+    {
+        bool ok = props.childCount > 0;
+        int total = 0, renderers = 0, entries = 0;
+        foreach (string name in StoreKit.PropNames) ok &= props.Find(name) != null;
+        foreach (string name in StoreKit.PropVariants) ok &= props.Find(name) != null;
+        foreach (Transform entry in props)
+        {
+            if (entry.name.StartsWith("Label_")) continue;
+            entries++;
+            int triangles = Triangles(entry), budget = StoreKit.Budget(entry.name);
+            total += triangles;
+            renderers += entry.GetComponentsInChildren<MeshRenderer>(true).Length;
+            DemoValidation.Info(entry.name + " triangles=" + triangles + " budget=" + budget);
+            ok &= budget > 0 && triangles > 0 && triangles <= budget;
+            bool loose = StoreKit.IsLoose(entry.name);
+            foreach (MeshFilter filter in entry.GetComponentsInChildren<MeshFilter>(true))
+            {
+                Mesh mesh = filter.sharedMesh;
+                int n = mesh != null ? mesh.vertexCount : 0;
+                bool probeLit = loose || Array.IndexOf(StoreKit.ProbeLitParts, filter.name) >= 0;
+                ok &= n > 0 && mesh.uv.Length == n && mesh.normals.Length == n && (probeLit ? mesh.uv2.Length == 0 : mesh.uv2.Length == n);
+            }
+        }
+        ok &= entries == StoreKit.PropNames.Length + StoreKit.PropVariants.Length;
+        DemoValidation.Info("Store kit props triangles=" + total + "; renderers=" + renderers);
+        DemoValidation.Check(ok, "Store kit jewelry props build and stay within budgets");
+    }
+
+    // A lid's pivot is the base's rear top edge and its mesh runs forward (-z) from it:
+    // closed, its free edge rests on the base's front rim; open, it stands above the base.
+    private static void LidChecks(Transform props)
+    {
+        bool hinged = true;
+        foreach (string name in new[] { "jewelry_box", "jewelry_box__Bracelet", "jewelry_box__Necklace", "jewelry_box__Closed" })
+        {
+            Transform entry = props.Find(name);
+            Transform body = entry != null ? entry.Find("Body") : null, lid = entry != null ? entry.Find("Lid") : null;
+            if (body == null || lid == null || lid.GetComponent<MeshFilter>() == null) { hinged = false; continue; }
+            Bounds b = body.GetComponent<MeshFilter>().sharedMesh.bounds, l = lid.GetComponent<MeshFilter>().sharedMesh.bounds;
+            hinged &= Mathf.Abs(lid.localPosition.z - b.max.z) < 0.003f && Mathf.Abs(lid.localPosition.y - b.max.y) < 0.003f
+                && l.max.z <= 0.001f && l.min.z < -0.03f && l.min.y > -0.001f;
+            Vector3 free = entry.InverseTransformPoint(lid.TransformPoint(new Vector3(l.center.x, 0, l.min.z)));
+            if (name.EndsWith("Closed")) hinged &= Mathf.Abs(free.z - b.min.z) < 0.003f && Mathf.Abs(free.y - b.max.y) < 0.003f;
+            else hinged &= free.y > b.max.y + 0.03f;
+        }
+        DemoValidation.Check(hinged, "Jewelry box lids hinge at the rear");
+    }
+
+    // The handheld camera's procedural body on a scratch root: a DSLR (no box primitive)
+    // within budget whose geometry stops short of the photo camera's pose at (0, 0, 0.1),
+    // with the grab colliders on "Body" and "Lens" and the rear screen script. A scene
+    // that already has the tool station's camera is checked for the same contract.
+    private static void CameraBodyChecks()
+    {
+        GameObject scratch = new GameObject("CameraBodyProbe");
+        try
+        {
+            DemoToolGeometry.CreateCameraBody(scratch.transform);
+            Transform body = scratch.transform.Find("Body"), lens = scratch.transform.Find("Lens"), screen = scratch.transform.Find("Screen");
+            Bounds bounds = DemoAssetLibrary.LocalBounds(scratch);
+            int triangles = Triangles(scratch.transform);
+            bool ok = body != null && lens != null && screen != null && body.GetComponent<BoxCollider>() != null
+                && lens.GetComponent<CapsuleCollider>() != null && screen.GetComponent<CameraScreen>() != null
+                && body.GetComponent<MeshFilter>().sharedMesh.name != "Cube"
+                && triangles > 300 && triangles <= 2500 && bounds.max.z < 0.1f
+                && bounds.size.x > 0.13f && bounds.size.x < 0.16f && bounds.size.y > 0.09f && bounds.size.y < 0.14f;
+            GameObject placed = GameObject.Find("HandheldCamera");
+            if (placed != null)
+            {
+                Transform photo = placed.transform.Find("PhotoCamera");
+                ok &= photo != null && Vector3.Distance(photo.localPosition, new Vector3(0, 0, 0.1f)) < 0.001f
+                    && placed.GetComponentInChildren<CameraScreen>() != null && placed.transform.Find("Body") != null
+                    && DemoAssetLibrary.LocalBounds(placed).max.z < 0.1f;
+            }
+            DemoValidation.Info("DSLR camera body triangles=" + triangles + "; size=" + bounds.size.ToString("F3"));
+            DemoValidation.Check(ok, "DSLR camera body replaces the box and keeps the photo camera pose");
+        }
+        finally
+        {
+            foreach (MeshFilter filter in scratch.GetComponentsInChildren<MeshFilter>(true))
+                if (filter.sharedMesh != null && string.IsNullOrEmpty(AssetDatabase.GetAssetPath(filter.sharedMesh)))
+                    UnityEngine.Object.DestroyImmediate(filter.sharedMesh);
+            UnityEngine.Object.DestroyImmediate(scratch);
+        }
     }
 
     private static void FixtureChecks(Transform gallery)

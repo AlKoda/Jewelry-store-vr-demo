@@ -124,7 +124,8 @@ public static class ShopPresentationExpansion
             {
                 TextMesh text=r.GetComponent<TextMesh>();
                 if(text!=null) { DepthTested(text,labelMat); text.color=Color.black; }
-                else if(r.sharedMaterial!=null && r.sharedMaterial.mainTexture!=null) continue;
+                // Imported textured models and DemoToolGeometry's own materials (cone, stanchion) stay.
+                else if(r.sharedMaterial!=null && (r.sharedMaterial.mainTexture!=null || DemoToolGeometry.IsPainted(r.sharedMaterial))) continue;
                 else if(prefab.Kind==DemoToolKind.Scale) r.sharedMaterial=r.name=="BandBlack"?charcoal:ivory;
                 else if(prefab.Kind==DemoToolKind.Measure) r.sharedMaterial=r.name=="Body"?yellow:charcoal;
                 else r.sharedMaterial=prefab.Kind==DemoToolKind.Cone?orange:

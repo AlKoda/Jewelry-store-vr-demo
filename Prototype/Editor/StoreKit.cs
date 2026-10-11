@@ -25,7 +25,7 @@ using static DemoGeometry;
 // Prototype/ThirdParty/StoreKit/<name>.obj or .fbx (synced to
 // Assets/CrimeSceneDemo/ThirdParty/StoreKit) and only builds the procedural fixture
 // when there is none, so image-to-3D replacements need no code change.
-public static class StoreKit
+public static partial class StoreKit
 {
     public const string Folder = "Assets/CrimeSceneDemo/StoreKitGenerated";
     public const string OverridePack = "StoreKit";
@@ -70,7 +70,8 @@ public static class StoreKit
         { "downlight", 200 }, { "pos_terminal", 100 }, { "alarm_keypad", 200 }
     };
 
-    public static int Budget(string entry) => Budgets.TryGetValue(entry, out int budget) ? budget : 0;
+    public static int Budget(string entry) => Budgets.TryGetValue(entry, out int budget) ? budget
+        : PropBudgets.TryGetValue(entry, out budget) ? budget : 0;
 
     // Gallery-only variants beside the defaults, so broken/open states are built and checked too.
     public static readonly string[] Variants =
@@ -112,7 +113,7 @@ public static class StoreKit
 
     public static void Palette()
     {
-        if (Walnut != null && Glass != null) return;
+        if (Walnut != null && Glass != null && Gold != null) return;
         EnsureFolder("Assets/CrimeSceneDemo");
         EnsureFolder(Folder);
         Walnut = Surface("KitWalnut", new Color(0.30f, 0.20f, 0.14f), 0.35f, 0, "Walnut", 0.6f);
@@ -139,6 +140,7 @@ public static class StoreKit
         ExitGreen = Emissive(Surface("KitExitGreen", new Color(0.05f, 0.45f, 0.20f), 0.5f, 0, null, 1), new Color(0.05f, 0.6f, 0.25f));
         ExitLetters = Emissive(Surface("KitExitLetters", new Color(0.92f, 0.97f, 0.94f), 0.5f, 0, null, 1), new Color(0.7f, 0.8f, 0.75f));
         AlarmLed = Emissive(Surface("KitAlarmLed", new Color(0.5f, 0.02f, 0.02f), 0.6f, 0, null, 1), new Color(0.9f, 0.05f, 0.04f));
+        PropPalette();
         // One cheap Standard transparent material: no grab pass, reflections come from
         // whichever (baked, box-projected) reflection probe the pane sits in.
         Glass = Translucent(Mat(Folder, "KitGlass", new Color(0.80f, 0.90f, 0.88f, 0.10f), 0.95f));
@@ -222,10 +224,10 @@ public static class StoreKit
         return built;
     }
 
-    // Procedural fixture with default parameters, at the parent's origin.
+    // Procedural fixture or jewelry prop (StoreKitProps.cs) with default parameters, at the parent's origin.
     public static GameObject Build(string name, Transform parent)
     {
-        if (!Builders.TryGetValue(name, out Func<Transform, GameObject> builder))
+        if (!Builders.TryGetValue(name, out Func<Transform, GameObject> builder) && !PropBuilders.TryGetValue(name, out builder))
             throw new ArgumentException("Unknown store kit fixture: " + name);
         return builder(parent);
     }
@@ -239,8 +241,9 @@ public static class StoreKit
         return k.Emit(name, parent, centre, Quaternion.identity, Folder, "MetricBox");
     }
 
-    // Static flags for baking: opaque parts contribute to GI and reflection probes; glass
-    // only batches. Hinged leaves and drawers are skipped unless they never move at runtime.
+    // Static flags for baking: opaque parts contribute to GI and reflection probes (kit
+    // parts without lightmap UVs only to the probes; they are probe-lit); glass only
+    // batches. Hinged leaves and drawers are skipped unless they never move at runtime.
     public static void MarkStatic(GameObject root, bool includeMovingParts)
     {
         foreach (MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>(true))
@@ -248,9 +251,18 @@ public static class StoreKit
             if (!includeMovingParts && IsMovingPart(renderer.transform, root.transform)) continue;
             bool transparent = renderer.sharedMaterial != null && renderer.sharedMaterial.renderQueue >= 3000;
             StaticEditorFlags flags = StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccludeeStatic;
-            if (!transparent) flags |= StaticEditorFlags.ContributeGI | StaticEditorFlags.ReflectionProbeStatic;
+            if (!transparent) flags |= StaticEditorFlags.ReflectionProbeStatic;
+            if (!transparent && !ProbeLit(renderer)) flags |= StaticEditorFlags.ContributeGI;
             GameObjectUtility.SetStaticEditorFlags(renderer.gameObject, flags);
         }
+    }
+
+    // Kit parts saved without lightmap UVs (Lightmapped false) take light probes instead.
+    private static bool ProbeLit(MeshRenderer renderer)
+    {
+        MeshFilter filter = renderer.GetComponent<MeshFilter>();
+        Mesh mesh = filter != null ? filter.sharedMesh : null;
+        return mesh != null && mesh.uv2.Length == 0 && AssetDatabase.GetAssetPath(mesh).StartsWith(Folder);
     }
 
     private static bool IsMovingPart(Transform t, Transform root)

@@ -1,6 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-// Shared by the Editor prefab builder. No materials or textures are assigned.
+// Tool visuals shared by the Editor prefab builder and Play mode (DemoLighting builds
+// its flashlight at runtime). Primitive parts (markers, scale, reel) get no material
+// here and are styled by the presentation pass; the procedural parts (cone shell,
+// stanchion, flashlights, DSLR) carry their own "Tool..." materials from Paint(),
+// which the presentation pass leaves alone. DemoToolsBuilder saves the procedural
+// meshes and materials as assets before they go into a prefab or scene.
 public static class DemoToolGeometry
 {
     public static DeployedTool Create(DemoToolKind kind)
@@ -14,14 +21,25 @@ public static class DemoToolGeometry
 
         if (kind == DemoToolKind.Cone)
         {
-            Cube("Base", root.transform, new Vector3(0,0.025f,0), new Vector3(0.3f,0.05f,0.3f));
-            // Stepped taper avoids a custom mesh asset in this first batch.
-            for (int i=0;i<8;i++)
-            {
-                float diameter = 0.24f - i*0.025f;
-                Primitive("Taper", PrimitiveType.Cylinder, root.transform,
-                    new Vector3(0,0.075f+i*0.05f,0), new Vector3(diameter,0.025f,diameter));
-            }
+            // 45 cm traffic cone on a square black base with one reflective white band
+            // (the imported Khronos cone replaces all of this when it is present).
+            ProceduralMesh basis = new ProceduralMesh();
+            basis.ChamferBox(null, new Vector3(0, 0.0175f, 0), new Vector3(0.36f, 0.035f, 0.36f), 0.01f, Quaternion.identity);
+            BoxCollider foot = Part("Base", root.transform, basis, Paint("ToolConeBase", new Color(0.05f, 0.05f, 0.05f), 0.25f))
+                .AddComponent<BoxCollider>();
+            foot.center = new Vector3(0, 0.0175f, 0);
+            foot.size = new Vector3(0.36f, 0.035f, 0.36f);
+            ProceduralMesh shell = new ProceduralMesh();
+            shell.Lathe(null, Vector3.zero, Quaternion.identity, new[] { ConeBase, ConeTop }, new[] { ConeFoot, ConeHeight }, 20, true, false, true);
+            CapsuleCollider cone = Part("Shell", root.transform, shell, Paint("ToolConeOrange", new Color(0.95f, 0.30f, 0.04f), 0.35f))
+                .AddComponent<CapsuleCollider>();
+            cone.center = new Vector3(0, 0.25f, 0);
+            cone.radius = 0.1f;
+            cone.height = 0.42f;
+            ProceduralMesh band = new ProceduralMesh();
+            band.Lathe(null, Vector3.zero, Quaternion.identity, new[] { ConeRadius(0.22f) + 0.0015f, ConeRadius(0.31f) + 0.0015f },
+                new[] { 0.22f, 0.31f }, 20, true, false, false);
+            Part("Band", root.transform, band, Paint("ToolReflectiveWhite", new Color(0.92f, 0.92f, 0.9f), 0.7f));
         }
         else if (kind == DemoToolKind.Marker)
         {
@@ -62,13 +80,194 @@ public static class DemoToolGeometry
         }
         else
         {
-            Primitive("Base",PrimitiveType.Cylinder,root.transform,
-                new Vector3(0,0.025f,0),new Vector3(0.3f,0.025f,0.3f));
-            Primitive("Post",PrimitiveType.Cylinder,root.transform,
-                new Vector3(0,0.47f,0),new Vector3(0.04f,0.44f,0.04f));
-            Anchor(tool,0.86f);
+            // Retractable-belt stanchion: weighted round base (0.32 m), black pole and
+            // a yellow belt cassette with its black slot; the tape leaves from the slot.
+            Material black = Paint("ToolStanchionBlack", new Color(0.04f, 0.04f, 0.045f), 0.45f);
+            ProceduralMesh basis = new ProceduralMesh();
+            basis.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.16f, 0.16f, 0.14f, 0.045f, 0 },
+                new[] { 0f, 0.018f, 0.032f, 0.045f, 0.045f }, 24, true, true, false);
+            BoxCollider foot = Part("Base", root.transform, basis, black).AddComponent<BoxCollider>();
+            foot.center = new Vector3(0, 0.0225f, 0);
+            foot.size = new Vector3(0.32f, 0.045f, 0.32f);
+            ProceduralMesh pole = new ProceduralMesh();
+            pole.Cylinder(null, new Vector3(0, 0.045f, 0), new Vector3(0, 0.89f, 0), 0.019f, 12, false);
+            pole.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.036f, 0.036f }, new[] { 0.885f, 0.905f }, 20, true, true, false);
+            pole.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.036f, 0.036f, 0.03f }, new[] { 0.955f, 0.975f, 0.98f }, 20, true, false, true);
+            pole.Box(null, new Vector3(0.036f, 0.93f, 0), new Vector3(0.014f, 0.045f, 0.032f));
+            CapsuleCollider shaft = Part("Post", root.transform, pole, black).AddComponent<CapsuleCollider>();
+            shaft.center = new Vector3(0, 0.51f, 0);
+            shaft.radius = 0.036f;
+            shaft.height = 0.94f;
+            ProceduralMesh head = new ProceduralMesh();
+            head.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.035f, 0.035f }, new[] { 0.905f, 0.955f }, 20, true, false, false);
+            Part("Head", root.transform, head, Paint("ToolStanchionYellow", new Color(0.95f, 0.78f, 0.06f), 0.45f));
+            Anchor(tool, 0.93f);
         }
         return tool;
+    }
+
+    private const float ConeBase = 0.13f, ConeTop = 0.022f, ConeFoot = 0.035f, ConeHeight = 0.46f;
+    private static float ConeRadius(float y) => Mathf.Lerp(ConeBase, ConeTop, (y - ConeFoot) / (ConeHeight - ConeFoot));
+
+    // ------------------------------------------------------------------ flashlights
+
+    // Handheld torch, 3 cm across the body and 16 cm long, with its pivot at the lens
+    // centre and the beam along local +z, so a spot light at the same pose sits at the
+    // lens. White: polished reflector around a warm LED; UV: purple bezel and a purple
+    // front glass. The lens glows (emission) because the model is only shown while the
+    // torch is on. It casts no shadows, so it never blocks or speckles its own beam.
+    public static GameObject CreateFlashlight(bool uv)
+    {
+        GameObject root = new GameObject(uv ? "UVFlashlightModel" : "FlashlightModel");
+        Quaternion forward = Quaternion.Euler(90, 0, 0); // Lathe heights run along +z.
+        Vector3 tail = new Vector3(0, 0, -FlashlightLength);
+        Material anodised = Paint("ToolAnodisedBlack", new Color(0.05f, 0.05f, 0.055f), 0.55f, 0.6f);
+
+        ProceduralMesh body = new ProceduralMesh();
+        body.Lathe(null, tail, forward, new[] { 0.011f, 0.0135f, 0.0135f, 0.0125f, 0.0125f, 0.0135f, 0.0165f, 0.0175f, 0.0175f },
+            new[] { 0.004f, 0.006f, 0.03f, 0.032f, 0.098f, 0.104f, 0.122f, 0.126f, 0.148f }, 16, true, true, false);
+        Part("Body", root.transform, body, anodised);
+
+        ProceduralMesh button = new ProceduralMesh();
+        button.Lathe(null, tail, forward, new[] { 0.008f, 0.008f }, new[] { 0f, 0.004f }, 12, true, true, false);
+        Part("Switch", root.transform, button, Paint("ToolRubber", new Color(0.03f, 0.03f, 0.03f), 0.15f));
+
+        ProceduralMesh bezel = new ProceduralMesh();
+        bezel.Lathe(null, tail, forward, new[] { 0.0175f, 0.0185f, 0.0185f, 0.0165f }, new[] { 0.148f, 0.150f, 0.16f, 0.16f }, 16, true, false, false);
+        Part("Bezel", root.transform, bezel, uv ? Paint("ToolAnodisedPurple", new Color(0.30f, 0.07f, 0.52f), 0.6f, 0.6f) : anodised);
+
+        // Reflector cone from the bezel's inner edge back to the LED, facing forwards.
+        ProceduralMesh reflector = new ProceduralMesh();
+        reflector.Lathe(null, tail, forward, new[] { 0.0165f, 0.005f }, new[] { 0.157f, 0.148f }, 16, true, false, false);
+        Part("Reflector", root.transform, reflector, Paint("ToolChrome", new Color(0.9f, 0.9f, 0.9f), 0.9f, 1));
+
+        ProceduralMesh lens = new ProceduralMesh();
+        float radius = uv ? 0.0166f : 0.005f, depth = uv ? -0.003f : -0.0118f;
+        lens.Face(null, Vector3.forward, ProceduralMesh.Ring(new Vector3(0, 0, depth), forward, radius, 0, 16, 0));
+        Part("Lens", root.transform, lens, uv
+            ? Glow(Paint("ToolUVGlass", new Color(0.25f, 0.05f, 0.45f), 0.9f), new Color(0.45f, 0.1f, 0.9f))
+            : Glow(Paint("ToolLED", new Color(1f, 0.95f, 0.8f), 0.9f), new Color(1f, 0.92f, 0.75f) * 1.5f));
+
+        foreach (MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>())
+        {
+            renderer.shadowCastingMode = ShadowCastingMode.Off;
+            renderer.receiveShadows = false;
+        }
+        return root;
+    }
+
+    public const float FlashlightLength = 0.16f;
+
+    // ------------------------------------------------------------------ handheld camera
+
+    // Unbranded DSLR (body about 14 x 10 x 9 cm with a 9 cm lens, about 1000 triangles)
+    // built under an existing camera root: grip on the right (+x seen from behind),
+    // pentaprism hump with hot shoe, mode and command dials, shutter button, metal
+    // lens mount, two-step lens barrel with a recessed dark front element, and a rear
+    // screen ("Screen", 16:9, UVs 0..1) showing the viewfinder through CameraScreen.
+    // The lens faces local +z and its front stops at z = 0.093, short of the photo
+    // camera at (0, 0, 0.1), so the body never appears in its own photographs. "Body"
+    // and "Lens" carry the colliders that grabbing and pointing use.
+    public static void CreateCameraBody(Transform root)
+    {
+        Material shell = Paint("ToolCameraBody", new Color(0.045f, 0.045f, 0.05f), 0.3f);
+        Material rubber = Paint("ToolRubber", new Color(0.03f, 0.03f, 0.03f), 0.15f);
+        Material metal = Paint("ToolMetalDark", new Color(0.35f, 0.35f, 0.36f), 0.55f, 0.8f);
+        Quaternion forward = Quaternion.Euler(90, 0, 0);
+
+        ProceduralMesh body = new ProceduralMesh();
+        body.ChamferBox(null, new Vector3(0, 0.0025f, -0.035f), new Vector3(0.14f, 0.095f, 0.07f), 0.01f, Quaternion.identity);
+        // Rotated so the bevelled edges are the grip's vertical ones (local x is world y).
+        body.ChamferBox(null, new Vector3(0.05f, -0.003f, -0.0075f), new Vector3(0.087f, 0.04f, 0.055f), 0.012f, Quaternion.Euler(0, 0, 90));
+        body.Lathe(null, new Vector3(0, 0, -0.038f), Quaternion.identity, new[] { 0.032f * 1.4142f, 0.019f * 1.4142f }, new[] { 0.05f, 0.079f },
+            4, false, false, true, 45);
+        body.Cylinder(null, new Vector3(-0.045f, 0.05f, -0.035f), new Vector3(-0.045f, 0.062f, -0.035f), 0.012f, 16);
+        body.Cylinder(null, new Vector3(0.045f, 0.05f, -0.045f), new Vector3(0.045f, 0.057f, -0.045f), 0.01f, 16);
+        body.Cylinder(null, new Vector3(0.05f, 0.0405f, 0.008f), new Vector3(0.05f, 0.0465f, 0.008f), 0.006f, 12);
+        body.Box(null, new Vector3(0, 0.062f, -0.076f), new Vector3(0.034f, 0.024f, 0.012f));
+        for (int i = 0; i < 4; i++) body.Box(null, new Vector3(0.05f, 0.028f - i * 0.016f, -0.0715f), new Vector3(0.008f, 0.008f, 0.003f));
+        for (int s = -1; s <= 1; s += 2) body.Box(null, new Vector3(s * 0.0715f, 0.035f, -0.035f), new Vector3(0.006f, 0.012f, 0.008f));
+        BoxCollider grip = Part("Body", root, body, shell).AddComponent<BoxCollider>();
+        grip.center = new Vector3(0, 0.012f, -0.03f);
+        grip.size = new Vector3(0.145f, 0.115f, 0.09f);
+
+        ProceduralMesh trim = new ProceduralMesh();
+        trim.Box(null, new Vector3(0, 0.0825f, -0.038f), new Vector3(0.022f, 0.007f, 0.02f));
+        trim.Lathe(null, Vector3.zero, forward, new[] { 0.036f, 0.036f }, new[] { 0f, 0.005f }, 24, true, false, true);
+        Part("Mount", root, trim, metal);
+
+        ProceduralMesh barrel = new ProceduralMesh();
+        barrel.Lathe(null, new Vector3(0, 0, 0.005f), forward, new[] { 0.031f, 0.031f, 0.034f, 0.034f, 0.0365f, 0.0365f, 0.029f, 0.029f },
+            new[] { 0f, 0.034f, 0.036f, 0.068f, 0.07f, 0.088f, 0.088f, 0.082f }, 24, true, false, false);
+        CapsuleCollider lensCollider = Part("Lens", root, barrel, rubber).AddComponent<CapsuleCollider>();
+        lensCollider.direction = 2;
+        lensCollider.center = new Vector3(0, 0, 0.05f);
+        lensCollider.radius = 0.037f;
+        lensCollider.height = 0.09f;
+
+        ProceduralMesh glass = new ProceduralMesh();
+        glass.Lathe(null, new Vector3(0, 0, 0.005f), forward, new[] { 0.029f, 0.02f, 0 }, new[] { 0.082f, 0.0845f, 0.0855f }, 24, true, false, false);
+        Part("LensGlass", root, glass, Paint("ToolLensGlass", new Color(0.02f, 0.04f, 0.05f), 0.95f, 0.5f));
+
+        // Rear screen: its own quad with 0..1 UVs so a render texture fills it, facing -z.
+        const float x0 = -0.052f, x1 = 0.028f, y0 = -0.036f, y1 = 0.009f, z = -0.0702f;
+        Mesh quad = new Mesh { name = "CameraScreen" };
+        quad.vertices = new[] { new Vector3(x0, y0, z), new Vector3(x0, y1, z), new Vector3(x1, y1, z), new Vector3(x1, y0, z) };
+        quad.normals = new[] { Vector3.back, Vector3.back, Vector3.back, Vector3.back };
+        quad.uv = new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) };
+        quad.triangles = new[] { 0, 1, 2, 0, 2, 3 };
+        quad.RecalculateBounds();
+        quad.RecalculateTangents();
+        GameObject screen = new GameObject("Screen");
+        screen.transform.SetParent(root, false);
+        screen.AddComponent<MeshFilter>().sharedMesh = quad;
+        MeshRenderer screenRenderer = screen.AddComponent<MeshRenderer>();
+        screenRenderer.sharedMaterial = Paint("ToolCameraScreen", Color.white, 0, 0, "Unlit/Texture");
+        screenRenderer.shadowCastingMode = ShadowCastingMode.Off;
+        screen.AddComponent<CameraScreen>();
+    }
+
+    // ------------------------------------------------------------------ shared
+
+    private static readonly Dictionary<string, Material> paints = new Dictionary<string, Material>();
+
+    // Shared tool material, created once per name (Standard unless another shader is
+    // named). Materials made in Play mode work in a build because the scene's own
+    // Standard materials keep the shader in it.
+    public static Material Paint(string name, Color color, float smoothness, float metallic = 0, string shader = "Standard")
+    {
+        if (paints.TryGetValue(name, out Material cached) && cached != null) return cached;
+        Shader found = Shader.Find(shader);
+        if (found == null) found = Shader.Find("Standard");
+        if (found == null) return null;
+        Material m = new Material(found) { name = name };
+        if (m.HasProperty("_Color")) m.color = color;
+        if (m.HasProperty("_Glossiness")) m.SetFloat("_Glossiness", smoothness);
+        if (m.HasProperty("_Metallic")) m.SetFloat("_Metallic", metallic);
+        paints[name] = m;
+        return m;
+    }
+
+    // True for the materials Paint() makes (or their saved copies), which restyling passes keep.
+    public static bool IsPainted(Material material) => material != null && material.name.StartsWith("Tool") && material.name != "ToolNumber";
+
+    private static Material Glow(Material m, Color emission)
+    {
+        if (m == null) return null;
+        m.EnableKeyword("_EMISSION");
+        m.SetColor("_EmissionColor", emission);
+        m.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None; // A handheld glow, not a light source for GI.
+        return m;
+    }
+
+    // One renderer for one procedural part.
+    private static GameObject Part(string name, Transform parent, ProceduralMesh mesh, Material material)
+    {
+        GameObject g = new GameObject(name);
+        g.transform.SetParent(parent, false);
+        g.AddComponent<MeshFilter>().sharedMesh = mesh.ToMesh(name);
+        g.AddComponent<MeshRenderer>().sharedMaterial = material;
+        return g;
     }
 
     public static SceneTape CreateTape()

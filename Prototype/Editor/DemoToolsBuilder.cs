@@ -65,19 +65,12 @@ public static class DemoToolsBuilder
         cameraBody.transform.SetParent(root.transform,false);
         cameraBody.transform.localPosition=new Vector3(-3.6f,1.1f,1);
         cameraBody.transform.localRotation=Quaternion.Euler(0,90,0);
-        GameObject body=GameObject.CreatePrimitive(PrimitiveType.Cube);
-        body.name="Body";
-        body.transform.SetParent(cameraBody.transform,false);
-        body.transform.localScale=new Vector3(0.16f,0.1f,0.06f);
+        // Procedural unbranded DSLR ("Body" and "Lens" keep the grab colliders).
+        DemoToolGeometry.CreateCameraBody(cameraBody.transform);
+        Persist(cameraBody,"HandheldCamera");
         Rigidbody rigidbody=cameraBody.AddComponent<Rigidbody>();
         rigidbody.isKinematic=true;
         rigidbody.useGravity=false;
-        GameObject lens=GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        lens.name="Lens";
-        lens.transform.SetParent(cameraBody.transform,false);
-        lens.transform.localPosition=new Vector3(0,0,0.055f);
-        lens.transform.localRotation=Quaternion.Euler(90,0,0);
-        lens.transform.localScale=new Vector3(0.065f,0.035f,0.065f);
         GameObject view=new GameObject("PhotoCamera");
         view.transform.SetParent(cameraBody.transform,false);
         view.transform.localPosition=new Vector3(0,0,0.1f);
@@ -91,6 +84,7 @@ public static class DemoToolsBuilder
         SerializedObject serialized=new SerializedObject(evidence);
         serialized.FindProperty("photoCamera").objectReferenceValue=camera;
         serialized.ApplyModifiedPropertiesWithoutUndo();
+        cameraBody.GetComponentInChildren<CameraScreen>().Evidence=evidence;
 
         ResettableSceneObject resettable=cameraBody.AddComponent<ResettableSceneObject>();
         session.SceneObjects=new ResettableSceneObject[] {resettable};
@@ -152,6 +146,7 @@ public static class DemoToolsBuilder
         // from the player, which CreatePlayer wires.
         DemoLighting lighting=root.AddComponent<DemoLighting>();
         lighting.Session=session;
+        lighting.FlashlightCookie=FlashlightCookie();
         DemoBeacon beacon=root.AddComponent<DemoBeacon>();
         beacon.Session=session;
         panel.Lighting=lighting;
@@ -298,9 +293,83 @@ public static class DemoToolsBuilder
     {
         DeployedTool temporary=DemoToolGeometry.Create(kind);
         if(useImportedAssets && kind==DemoToolKind.Cone) UseModel(temporary.gameObject,"KhronosSamples","TrafficCone");
+        Persist(temporary.gameObject,kind.ToString());
         GameObject prefab=PrefabUtility.SaveAsPrefabAsset(temporary.gameObject,Folder+"/"+kind+".prefab");
         Object.DestroyImmediate(temporary.gameObject);
         return prefab.GetComponent<DeployedTool>();
+    }
+
+    // Saves the procedural meshes and Paint() materials DemoToolGeometry made in
+    // memory as assets (<prefix>_<part>.asset, <material>.mat), so prefabs and scenes
+    // keep them. Existing assets are updated in place to keep their references.
+    public static void Persist(GameObject root,string prefix)
+    {
+        EnsureFolder("Assets/CrimeSceneDemo");
+        EnsureFolder(Folder);
+        foreach(MeshFilter filter in root.GetComponentsInChildren<MeshFilter>(true))
+        {
+            Mesh mesh=filter.sharedMesh;
+            if(mesh==null || !string.IsNullOrEmpty(AssetDatabase.GetAssetPath(mesh))) continue;
+            string path=Folder+"/"+prefix+"_"+filter.name+".asset";
+            Mesh existing=AssetDatabase.LoadAssetAtPath<Mesh>(path);
+            if(existing==null) AssetDatabase.CreateAsset(mesh,path);
+            else { EditorUtility.CopySerialized(mesh,existing); filter.sharedMesh=existing; }
+        }
+        foreach(MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            Material[] materials=renderer.sharedMaterials;
+            bool changed=false;
+            for(int i=0;i<materials.Length;i++)
+            {
+                Material m=materials[i];
+                if(m==null || !string.IsNullOrEmpty(AssetDatabase.GetAssetPath(m))) continue;
+                string path=Folder+"/"+m.name+".mat";
+                Material existing=AssetDatabase.LoadAssetAtPath<Material>(path);
+                if(existing==null) AssetDatabase.CreateAsset(m,path);
+                else { EditorUtility.CopySerialized(m,existing); materials[i]=existing; changed=true; }
+            }
+            if(changed) renderer.sharedMaterials=materials;
+        }
+        AssetDatabase.SaveAssets();
+    }
+
+    // 128 px spot cookie: a bright hotspot inside a soft-edged main beam and a faint
+    // outer ring, as a real reflector torch throws. Alpha carries the luminance (the
+    // Built-in spot cookie reads alpha); the border stays black so clamping cannot streak.
+    public static Texture2D FlashlightCookie()
+    {
+        const int size=128;
+        string path=Folder+"/FlashlightCookie.asset";
+        EnsureFolder("Assets/CrimeSceneDemo");
+        EnsureFolder(Folder);
+        Texture2D cookie=AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+        bool create=cookie==null || !cookie.isReadable || cookie.width!=size || cookie.height!=size;
+        if(create) cookie=new Texture2D(size,size,TextureFormat.RGBA32,true,true) {name="FlashlightCookie"};
+        Color32[] pixels=new Color32[size*size];
+        float half=size*0.5f-2;
+        for(int y=0;y<size;y++)
+            for(int x=0;x<size;x++)
+            {
+                float r=new Vector2(x+0.5f-size*0.5f,y+0.5f-size*0.5f).magnitude/half;
+                float hotspot=Mathf.Exp(-(r/0.28f)*(r/0.28f));
+                float beam=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(0.5f,0.9f,r));
+                float ring=Mathf.Exp(-((r-0.86f)/0.04f)*((r-0.86f)/0.04f));
+                float v=r>=1?0:Mathf.Clamp01(0.6f*beam+0.4f*hotspot+0.12f*ring);
+                byte b=(byte)Mathf.RoundToInt(v*255);
+                pixels[y*size+x]=new Color32(b,b,b,b);
+            }
+        cookie.SetPixels32(pixels);
+        cookie.wrapMode=TextureWrapMode.Clamp;
+        cookie.filterMode=FilterMode.Bilinear;
+        cookie.Apply(true,false);
+        if(create)
+        {
+            if(AssetDatabase.LoadAssetAtPath<Texture2D>(path)!=null) AssetDatabase.DeleteAsset(path);
+            AssetDatabase.CreateAsset(cookie,path);
+        }
+        else EditorUtility.SetDirty(cookie);
+        AssetDatabase.SaveAssets();
+        return cookie;
     }
 
     private static SceneTape SaveTape(SceneTape temporary,string name)

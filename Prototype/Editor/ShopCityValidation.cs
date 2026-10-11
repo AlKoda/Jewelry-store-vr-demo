@@ -270,10 +270,16 @@ public static class ShopCityValidation
 
         lighting.Flashlight(true);
         Light spot = lighting.FlashlightLight;
+        // Low-resolution hard shadows since the night-store batch: the one realtime shadow in the scene.
         bool lit = spot != null && spot.enabled && lighting.FlashlightOn && spot.type == LightType.Spot
-            && spot.transform.parent == Camera.main.transform && spot.shadows == LightShadows.None;
+            && spot.transform.parent == Camera.main.transform && spot.shadows == LightShadows.Hard;
+        GameObject model = lighting.FlashlightModel;
+        bool shown = model != null && model.activeInHierarchy && model.transform.IsChildOf(Camera.main.transform)
+            && model.GetComponentsInChildren<MeshRenderer>().Length > 0
+            && lighting.FlashlightCookie != null && spot.cookie == lighting.FlashlightCookie;
         lighting.Flashlight(false);
         DemoValidation.Check(lit && !spot.enabled && !spot.gameObject.activeSelf && !lighting.FlashlightOn, "Flashlight toggles a spot light on the view");
+        DemoValidation.Check(shown && !model.activeInHierarchy, "Flashlight shows its model and uses the cookie");
 
         DemoOverviewMap map = DemoValidation.Find<DemoOverviewMap>();
         Vector3 point = new Vector3(2, 0, 5);
@@ -322,9 +328,28 @@ public static class ShopCityValidation
         evidence.HoldBy(Camera.main.transform, new Vector3(0.22f, -0.12f, 0.35f));
         bool live = evidence.Viewfinder != null && evidence.Viewfinder.width == 480 && evidence.Holder == Camera.main.transform
             && photo.targetTexture == null && !photo.enabled;
+        // The rear screen is refreshed directly (LateUpdate has not run between these calls).
+        CameraScreen screen = evidence.GetComponentInChildren<CameraScreen>(true);
+        MeshRenderer screenRenderer = screen != null ? screen.GetComponent<MeshRenderer>() : null;
+        MaterialPropertyBlock screenBlock = new MaterialPropertyBlock();
+        bool screenLive = false;
+        if (screen != null)
+        {
+            screen.Refresh();
+            screenRenderer.GetPropertyBlock(screenBlock);
+            screenLive = evidence.Viewfinder != null && screenBlock.GetTexture("_MainTex") == evidence.Viewfinder;
+        }
         evidence.ReturnToRack();
         DemoValidation.Check(racked && live && evidence.Viewfinder == null && evidence.Holder == null,
             "Viewfinder renders only while the camera is held");
+        bool screenDark = false;
+        if (screen != null)
+        {
+            screen.Refresh();
+            screenRenderer.GetPropertyBlock(screenBlock);
+            screenDark = screenBlock.GetTexture("_MainTex") == Texture2D.blackTexture;
+        }
+        DemoValidation.Check(screenLive && screenDark, "Camera screen shows the viewfinder while held");
     }
 
     private static void HandChecks()
