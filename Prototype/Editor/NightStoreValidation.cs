@@ -23,8 +23,10 @@ public static class NightStoreValidation
     private const string RenderersKey = "NightStoreValidationRenderers";
 
     // VR budgets for a PC-tethered Quest (see Budgets). Each holds the measured scene
-    // with headroom for the instructor's tools (materials: +6 for the five staged NightGraphics
-    // sign materials, October 11, unverified); the transparency budget became
+    // with headroom for the instructor's tools (materials: 96, +6 over the old 90, October 11,
+    // unverified; it must cover both the five staged NightGraphics sign materials and up to five
+    // styled tool materials from DemoToolsBuilder.StyleStation, so set it from the logged
+    // "Budget: materials=" value after the first RunNightQuick); the transparency budget became
     // reachable once each case's panes were merged (NightStoreBuilder.MergeCaseGlass).
     public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 96, TextureBudget = 2048;
     public const int TransparentBudget = 70, FacadePaneBudget = 10;
