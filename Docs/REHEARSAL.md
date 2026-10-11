@@ -5,7 +5,7 @@ For the October 27, 2026 opening day. Roughly eight minutes per visitor group. T
 ## Before the doors open
 
 1. Charge the headset and both controllers; test the Quest connection (or, for the desktop fallback, the mouse and keyboard).
-2. Start the demo from Run-Demo.cmd (standalone build) or, as a fallback, from the Editor with the Expanded scene and Play.
+2. Start the demo from Run-Demo.cmd (standalone build) or, as a fallback, from the Editor with the Glass scene (UnityProject_Glass, JewelryStoreGlass) and Play.
 3. Confirm the monitor shows the headset view and the presenter panel (Tab toggles the panel on the desktop view).
 4. Open the photo folder once (panel button) so it is already indexed and the path is known.
 5. Reset the scene (two clicks on the reset button) so the first group starts from the untouched state.

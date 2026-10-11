@@ -38,7 +38,7 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
 | 1–6 | New cone, marker, tape post, L-scale, measuring reel or scene lamp straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
-| T | SelectTapePost on the held or pointed post or measuring reel (same-kind pairs connect) |
+| T | On a held or pointed scene lamp, switch it on/off (at most two lit, the oldest goes out); otherwise SelectTapePost on the held or pointed post or measuring reel (same-kind pairs connect) |
 | X | CancelTapeSelection |
 | R / Delete / Backspace | Remove the held or pointed tool |
 | F | Hold the evidence camera in front of the view / return it to the rack |
@@ -67,9 +67,9 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Controller | Action |
 |---|---|
 | Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; release puts it down on the surface beneath |
-| Trigger | Photograph while holding the camera; select a held tape post or measuring reel |
+| Trigger | Photograph while holding the camera; switch a held scene lamp on/off (at most two lit, the oldest goes out); select a held tape post or measuring reel |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
-| B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape) |
+| B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape → scene lamp) |
 | Left thumbstick forward, release | Teleport along a ballistic arc (green when the landing is valid, red otherwise; refused outside the shop); a comfort fade blinks on arrival |
 | Right thumbstick left / right | Snap turn 45° (with comfort fade) |
 | Right thumbstick click | Flashlight on the right hand |
@@ -83,7 +83,7 @@ If controller poses do not arrive under a future OpenXR version, the fallback is
 | Method | Effect |
 |---|---|
 | HandInteractor.Grab() / Release() | Hold the nearest tool or the camera; drop onto the surface below, inside the bounds |
-| HandInteractor.Trigger() | Photograph with the held camera; select a held tape post |
+| HandInteractor.Trigger() | Photograph with the held camera; switch a held scene lamp; select a held tape post or reel |
 | HandInteractor.SpawnIntoHand(kind) / RemoveHeld() | New tool in the hand; remove the held one |
 | XRLocomotion.FindDestination(Ray, out Vector3) | Valid floor point under the pointer for a preview marker, or false |
 | XRLocomotion.TryTeleport(Ray) / TryTeleport(Vector3) | Move the rig so the head lands over the target; refused outside InteriorBounds or more than MaxStepHeight above the floor |
