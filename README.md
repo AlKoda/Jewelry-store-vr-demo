@@ -2,6 +2,10 @@
 
 Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, timers or forced sequence.
 
+## Night store source — October 11 (unverified)
+
+The expanded night store is now in source: run NightStoreValidation.RunNightQuick (no bake) or RunNight (bake) after syncing Scripts, Editor, Shaders and ThirdParty. See the top of [HANDOFF](Docs/HANDOFF.md).
+
 ## Current plan — October 11
 
 The next scene is an **expanded store with a nighttime police arrival**, reusing existing tools and low-poly assets. See the [scenario and migration plan](Docs/NIGHT_ARRIVAL_PLAN.md). The reference is now received: see the [reference-based layout plan](Docs/REFERENCE_LAYOUT_PLAN.md), with proposed dimensions and asset reuse. This is planning work, not a new build.

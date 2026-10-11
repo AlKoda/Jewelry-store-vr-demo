@@ -36,7 +36,7 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | WASD / arrows, Shift | Walk, run (ShopWalkController) |
 | Right click / Escape | Toggle mouse look / release cursor |
 | Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
-| 1, 2, 3, 4, 5 | New cone, marker, tape post, L-scale or measuring reel straight into the hand |
+| 1–6 | New cone, marker, tape post, L-scale, measuring reel or scene lamp straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
 | T | SelectTapePost on the held or pointed post or measuring reel (same-kind pairs connect) |
 | X | CancelTapeSelection |
@@ -45,8 +45,9 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | P | CapturePhoto |
 | Home | Return to the start position |
 | I | Intact / robbed store view (CrimeSceneState; also a panel button) |
-| N | Night / day lighting preset (DemoLighting) |
-| L | Flashlight on the view (DemoLighting) |
+| N | Night / day lighting preset; in the night store: diagnostic daylight on/off |
+| L | White flashlight on the view (DemoLighting) |
+| U | UV torch (exclusive with the white flashlight; night store) |
 | B | Instructor beacon at the pointed spot (DemoBeacon; also click the panel's overview map) |
 | Tab | Cycle the presenter panel: hidden → strip → full (DemoDesktopPanel) |
 | [ / ] | Presenter panel UI scale (persisted; also +/- buttons) |
@@ -73,6 +74,7 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Right thumbstick left / right | Snap turn 45° (with comfort fade) |
 | Right thumbstick click | Flashlight on the right hand |
 | Left menu button | Show / hide the hand hint labels |
+| Left thumbstick click | UV torch in the left hand |
 
 If controller poses do not arrive under a future OpenXR version, the fallback is a TrackedPoseDriver (Input System package) on the camera and both hands and an input binder that calls the same HandInteractor/XRLocomotion methods; nothing else changes.
 

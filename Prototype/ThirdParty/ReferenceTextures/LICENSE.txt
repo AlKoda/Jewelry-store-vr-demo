@@ -1,0 +1,11 @@
+ReferenceTextures — TEST PLACEHOLDERS, project-owned.
+
+Made by Tools/reference_textures.py (October 11, 2026) from the project's own reference
+renders in Docs/LayoutReferences, which the user supplied for this project. Walnut,
+VelvetCharcoal, SuedeCream and SafeSteel are crops of those renders (lighting flattened,
+made seamless); FloorTile, StoneTop, BronzeBrushed, PlasterWarm, PavementSlab and
+AsphaltWet are synthesised with colours sampled from them. No third-party material.
+
+These are a test ride only. The user will supply final textures: drop files with the
+same names (<Name>_Color.png, <Name>_Normal.png) into this folder to replace them;
+StoreKit and the night store pick them up without code changes.

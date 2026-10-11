@@ -4,13 +4,15 @@ The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It superse
 
 - [x] Record scenario, reuse strategy, dependencies and phased work.
 - [x] Receive and inspect store-reference.jpg; record observed layout and proposed blockout dimensions in [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md).
-- [ ] Build and compare the proposed 16 x 12 m blockout; dimensions remain estimates.
-- [ ] Preserve baseline and create a separate expanded low-poly scene.
-- [ ] Add parked police car, staging area and connected indoor/outdoor navigation.
-- [ ] Extend tape/cone placement, map and review bounds to the accessible exterior.
-- [ ] Establish midnight appearance, fixtures off, headlights and handheld white light.
-- [ ] Add bounded/occluded UV trace demonstration and unbranded DSLR visual.
-- [ ] Optional placeable scene lamp.
+- [x] Build the proposed 16 x 12 m store from one layout definition (Claude, unverified; NightStoreValidation.RunNightQuick / RunNight).
+- [ ] Run it on the PC, compare the eight capture views with the references, tune dimensions after a walkthrough.
+- [x] Preserve baseline and create a separate expanded low-poly scene (JewelryStoreNight; StoreKit library; unverified).
+- [x] Add parked police car, staging area and connected indoor/outdoor navigation (unverified).
+- [x] Extend tape/cone placement, map and review bounds to the accessible exterior (unverified).
+- [x] Establish midnight appearance: baked headlights/streetlights/moonlight, probes, fixtures off, flashlight with cookie (unverified; bake time and FPS to measure).
+- [x] Add bounded/occluded UV trace demonstration (placeholder traces hidden by default) and unbranded DSLR visual (unverified).
+- [x] Optional placeable scene lamp (unverified).
+- [ ] Replace ReferenceTextures test placeholders and procedural StoreKit pieces with the user's final textures and converted models (same names).
 - [ ] Re-stage robbery evidence, verify reset/photos and profile on Quest.
 - [ ] Resume store materials after the blockout is accepted.
 

@@ -21,8 +21,9 @@ public static class StoreKitValidation
             DemoValidation.WriteHeader("Store kit gallery generation and Edit mode checks; 3 actual Unity rendered captures.");
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             Check(true);
-            // Every fixture and variant was just built, so mesh fingerprints nothing used are stale.
-            DemoValidation.Info("Store kit stale meshes deleted=" + KitMesh.DeleteUntouched(StoreKit.Folder));
+            // Not deleted: the night store builds kit meshes the gallery does not (sidelights,
+            // cracked tops, door variants), and deleting them would break a generated night scene.
+            DemoValidation.Info("Store kit meshes not used by the gallery=" + KitMesh.CountUntouched(StoreKit.Folder));
             // Not registered as the build scene, so running this in a working project keeps its build list.
             DemoValidation.SaveScene("StoreKitGallery", false);
             DemoValidation.Capture(camera, "store-kit-gallery.png", new Vector3(0, 11, -10), new Vector3(0, 0.5f, 5.5f));

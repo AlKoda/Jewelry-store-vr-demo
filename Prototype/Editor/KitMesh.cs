@@ -39,6 +39,18 @@ public sealed class KitMesh : ProceduralMesh
     // Deletes mesh assets in folder that nothing saved or reused in this editor session,
     // i.e. the fingerprints left behind by earlier geometry. Call it only after building
     // everything that should keep its meshes (the gallery run builds every fixture).
+    public static int CountUntouched(string folder)
+    {
+        if (!AssetDatabase.IsValidFolder(folder)) return 0;
+        int count = 0;
+        foreach (string guid in AssetDatabase.FindAssets("t:Mesh", new[] { folder }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (path.EndsWith(".asset") && !touched.Contains(path)) count++;
+        }
+        return count;
+    }
+
     public static int DeleteUntouched(string folder)
     {
         if (!AssetDatabase.IsValidFolder(folder)) return 0;
