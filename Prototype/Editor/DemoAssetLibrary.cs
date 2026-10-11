@@ -44,12 +44,32 @@ public static class DemoAssetLibrary
         return bounds;
     }
 
+    // OBJ first (what the package-free project imports from glTF via Tools/glb_to_obj.py),
+    // then FBX for models converted elsewhere. GLB needs a package and is not tried.
     public static GameObject Load(string pack, string model)
-        => AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/" + pack + "/" + model + ".obj");
+    {
+        GameObject obj = AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/" + pack + "/" + model + ".obj");
+        return obj != null ? obj : AssetDatabase.LoadAssetAtPath<GameObject>(Root + "/" + pack + "/" + model + ".fbx");
+    }
 
     public static string Path(string pack, string file) => Root + "/" + pack + "/" + file;
     public static bool HasTexture(string pack, string file) => Texture(pack, file) != null;
     public static Texture2D Texture(string pack, string file) => AssetDatabase.LoadAssetAtPath<Texture2D>(Path(pack, file));
+
+    // A normal map from a pack, re-imported as a normal map the first time so the
+    // Standard shader unpacks it correctly; null when the file is absent.
+    public static Texture2D NormalMap(string pack, string file)
+    {
+        string path = Path(pack, file);
+        TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null) return null;
+        if (importer.textureType != TextureImporterType.NormalMap)
+        {
+            importer.textureType = TextureImporterType.NormalMap;
+            importer.SaveAndReimport();
+        }
+        return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+    }
 
     // Each imported OBJ carries its own copy of the pack's atlas material. Models of
     // one pack share the first copy seen, so a kit combines into one draw per atlas.

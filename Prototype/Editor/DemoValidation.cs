@@ -55,7 +55,7 @@ public static class DemoValidation
 
     // First call saves under the name and registers it as the build scene;
     // later calls re-save the same scene.
-    public static void SaveScene(string sceneName = null)
+    public static void SaveScene(string sceneName = null, bool registerBuildScene = true)
     {
         Scene scene = SceneManager.GetActiveScene();
         if (sceneName == null)
@@ -67,7 +67,7 @@ public static class DemoValidation
             Directory.CreateDirectory(ScenesFolder);
             string path = ScenesFolder + "/" + sceneName + ".unity";
             EditorSceneManager.SaveScene(scene, path);
-            EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(path, true) };
+            if (registerBuildScene) EditorBuildSettings.scenes = new[] { new EditorBuildSettingsScene(path, true) };
         }
         AssetDatabase.SaveAssets();
     }
@@ -108,10 +108,16 @@ public static class DemoValidation
         ceiling.gameObject.SetActive(true);
     }
 
-    public static void EnterPlayMode(string stageKey, string header)
+    // Starts runtime-results.txt; Finish appends the results to it.
+    public static void WriteHeader(string header)
     {
         File.WriteAllText(Path.Combine(Output, "runtime-results.txt"),
             "Unity " + Application.unityVersion + "; Built-in pipeline\n" + header + "\n");
+    }
+
+    public static void EnterPlayMode(string stageKey, string header)
+    {
+        WriteHeader(header);
         SessionState.SetInt(stageKey, 1);
         EditorApplication.isPlaying = true;
     }

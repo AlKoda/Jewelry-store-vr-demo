@@ -94,9 +94,11 @@ public static class DemoGeometry
     }
 
     // Persists a generated mesh; an existing asset at the path is updated and reused.
-    public static void SaveMesh(ref Mesh mesh, string path)
+    // lightmapUVs is opt-in so the historical generators keep their meshes unchanged.
+    public static void SaveMesh(ref Mesh mesh, string path, bool lightmapUVs = false)
     {
         PrepareForTextures(mesh);
+        if (lightmapUVs) PrepareForLightmaps(mesh);
         Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(path);
         if (existing == null) { AssetDatabase.CreateAsset(mesh, path); return; }
         EditorUtility.CopySerialized(mesh, existing);
@@ -124,6 +126,15 @@ public static class DemoGeometry
             }
             mesh.uv = uv;
         }
+        mesh.RecalculateTangents();
+    }
+
+    // Non-overlapping second UV set so the mesh can receive baked lightmaps. The
+    // unwrap may split vertices along seams, so tangents are rebuilt afterwards.
+    public static void PrepareForLightmaps(Mesh mesh)
+    {
+        if (mesh.vertexCount == 0) return;
+        Unwrapping.GenerateSecondaryUVSet(mesh);
         mesh.RecalculateTangents();
     }
 
