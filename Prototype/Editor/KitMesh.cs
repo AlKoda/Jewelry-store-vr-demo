@@ -13,6 +13,8 @@ using UnityEngine.Rendering;
 public sealed class KitMesh : ProceduralMesh
 {
     public bool Lightmapped = true;
+    // Planned scaleInLightmap of the emitted renderer: sizes the lightmap chart margin.
+    public float LightmapScale = 1;
 
     // Stable fingerprint of the geometry: identical parts resolve to one saved asset.
     private int Signature()
@@ -24,6 +26,7 @@ public sealed class KitMesh : ProceduralMesh
                 h = h * 31 + Mathf.RoundToInt(p.x * 1000) * 7 + Mathf.RoundToInt(p.y * 1000) * 13 + Mathf.RoundToInt(p.z * 1000);
             foreach (Material m in materials) h = h * 31 + (m != null ? m.name.GetHashCode() : 0);
             if (!Lightmapped) h = h * 31 + 1; // Same geometry without uv2 is a different asset.
+            else if (LightmapScale != 1) h = h * 31 + Mathf.RoundToInt(LightmapScale * 1000); // Different chart margins.
             return h;
         }
     }
@@ -57,7 +60,7 @@ public sealed class KitMesh : ProceduralMesh
         touched.Add(path);
         if (saved.TryGetValue(path, out Mesh cached) && cached != null) return cached;
         Mesh mesh = BuildMesh(name);
-        DemoGeometry.SaveMesh(ref mesh, path, Lightmapped);
+        DemoGeometry.SaveMesh(ref mesh, path, Lightmapped, LightmapScale);
         saved[path] = mesh;
         return mesh;
     }

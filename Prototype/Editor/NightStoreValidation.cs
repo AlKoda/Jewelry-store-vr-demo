@@ -190,9 +190,14 @@ public static class NightStoreValidation
                 SessionState.SetInt(Key, 2);
             }
             else if (stage == 2 && DemoValidation.PhotoStage()) SessionState.SetInt(Key, 3);
-            else if (stage == 3 && DemoValidation.ResetStage()) DemoValidation.Finish(Key, true, null);
+            else if (stage == 3 && DemoValidation.ResetStage())
+            {
+                // The night's QualitySettings are project settings: put them back before exit.
+                DemoValidation.Check(NightQuality.Restore(), "Night quality settings restored after the run");
+                DemoValidation.Finish(Key, true, null);
+            }
         }
-        catch (Exception ex) { DemoValidation.Finish(Key, false, ex.ToString()); }
+        catch (Exception ex) { NightQuality.Restore(); DemoValidation.Finish(Key, false, ex.ToString()); }
     }
 
     private static Transform Root()
@@ -214,8 +219,8 @@ public static class NightStoreValidation
         Transform group = root.Find(NightLighting.GroupName);
         DemoLighting lighting = DemoValidation.Find<DemoLighting>();
         DemoValidation.Info("Night lighting " + (baked ? "baked" : "not baked: realtime shadowless fallback (RunNightQuick)"));
-        DemoValidation.Check(PlayerSettings.colorSpace == ColorSpace.Linear && QualitySettings.activeColorSpace == ColorSpace.Linear,
-            "Night scene renders in linear colour space");
+        DemoValidation.Check(PlayerSettings.colorSpace == ColorSpace.Linear && QualitySettings.activeColorSpace == ColorSpace.Linear
+            && UnityEngine.Rendering.GraphicsSettings.lightsUseLinearIntensity, "Night scene renders in linear colour space");
 
         Bounds store = new Bounds(new Vector3((L.MinX + L.MaxX) * 0.5f, L.CeilingY * 0.5f, (L.MinZ + L.MaxZ) * 0.5f),
             new Vector3(L.MaxX - L.MinX, L.CeilingY, L.MaxZ - L.MinZ));

@@ -74,12 +74,13 @@ public static class NightStoreBuilder
             if (fan != null) GameObjectUtility.SetStaticEditorFlags(fan.gameObject, 0);
         }
         // Exterior surfaces mostly out of view (far pavement, neighbour roofs and backs)
-        // take a coarser lightmap; the near pavement and the street keep full density.
+        // take a coarser lightmap; the near pavement keeps full density, the street 0.6
+        // (NightLighting.LightmapScales sets every zone; the meshes' chart margins match).
         foreach (string path in new[] { "Ground/FarPavement", "Buildings/Neighbours" })
         {
             Transform t = zone["Exterior"].Find(path);
             MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
-            if (r != null) r.scaleInLightmap = path == "Ground/FarPavement" ? 0.25f : 0.5f;
+            if (r != null) r.scaleInLightmap = NightLighting.FarScale;
         }
 
         DemoToolsBuilder.Create(useImportedAssets, L.Tools);
@@ -184,7 +185,7 @@ public static class NightStoreBuilder
 
         // Transom panel over the doors, then the stone-clad end piers, fascia and coping.
         GameObject solid = Group("Colliders", parent).gameObject;
-        KitMesh frame = new KitMesh(), stone = new KitMesh();
+        KitMesh frame = new KitMesh { LightmapScale = NightLighting.FixtureScale }, stone = new KitMesh { LightmapScale = NightLighting.FixtureScale };
         Slab(frame, solid, StoreKit.FrameMetal, V(-L.DoorHalf, L.DoorHeight, -0.06f), V(L.DoorHalf, L.CeilingY, 0.06f));
         frame.Emit("Transom", parent, Vector3.zero, Quaternion.identity, Folder, "night_transom");
         const float front = -0.2f, back = 0.25f;
@@ -202,7 +203,7 @@ public static class NightStoreBuilder
     {
         Transform ground = Group("Ground", parent);
         GameObject solid = Group("Colliders", ground).gameObject;
-        KitMesh paving = new KitMesh(), kerbs = new KitMesh(), road = new KitMesh(), far = new KitMesh();
+        KitMesh paving = new KitMesh(), kerbs = new KitMesh(), road = new KitMesh { LightmapScale = NightLighting.StreetScale }, far = new KitMesh { LightmapScale = NightLighting.FarScale };
         float hx = L.StreetHalfX, kerb = 0.18f;
         // Near pavement and kerb (the 0.12 m step down to the street), wet street, far side.
         Slab(paving, solid, StoreKit.Pavement, V(-hx, -0.3f, L.KerbZ + kerb), V(hx, 0, L.MinZ), false);
@@ -259,7 +260,7 @@ public static class NightStoreBuilder
             GameObject model = imported ? DemoAssetLibrary.Place(ShopCityRefinement.KitPack, "streetlight", lamp, Vector3.zero, yaw, ShopCityRefinement.KitScale) : null;
             if (model == null)
             {
-                KitMesh k = new KitMesh();
+                KitMesh k = new KitMesh { LightmapScale = NightLighting.KitScale };
                 k.Box(StoreKit.FrameMetal, V(0, 2.15f, 0), V(0.12f, 4.3f, 0.12f));
                 Quaternion turn = Quaternion.Euler(0, yaw, 0);
                 k.Box(StoreKit.FrameMetal, turn * V(-0.5f, 4.3f, 0), V(1.0f, 0.08f, 0.08f), turn);
@@ -294,7 +295,7 @@ public static class NightStoreBuilder
     {
         Transform table = Group("FoldingTable", parent);
         table.localPosition = L.Table;
-        KitMesh k = new KitMesh();
+        KitMesh k = new KitMesh { LightmapScale = NightLighting.KitScale };
         float tw = L.TableWidth, td = L.TableDepth, th = L.TableTop;
         k.Box(StoreKit.PaintedGrey, V(0, th - 0.015f, 0), V(tw, 0.03f, td));
         for (int s = -1; s <= 1; s += 2)
@@ -310,7 +311,7 @@ public static class NightStoreBuilder
 
         Transform easel = Group("Easel", parent);
         easel.localPosition = L.Easel;
-        KitMesh e = new KitMesh();
+        KitMesh e = new KitMesh { LightmapScale = NightLighting.KitScale };
         float bw = L.EaselWidth, b0 = L.EaselBottom, b1 = L.EaselTop;
         e.Box(StoreKit.DeviceBlack, V(0, (b0 + b1) * 0.5f, 0), V(bw, b1 - b0, 0.03f));
         for (int s = -1; s <= 1; s += 2)
@@ -330,7 +331,7 @@ public static class NightStoreBuilder
     private static void Buildings(Transform parent, bool imported)
     {
         System.Random rng = new System.Random(5);
-        KitMesh near = new KitMesh(), across = new KitMesh { Lightmapped = false };
+        KitMesh near = new KitMesh { LightmapScale = NightLighting.FarScale }, across = new KitMesh { Lightmapped = false };
         GameObject solid = Group("Colliders", parent).gameObject;
         foreach (float s in new[] { -1f, 1f })
         {

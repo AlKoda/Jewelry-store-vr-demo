@@ -19,14 +19,16 @@ using L = NightStoreLayout;
 // Apply after NightStoreBuilder.Build, Bake after the scene is saved; without a bake
 // UseRealtimeFallback makes the same lights realtime and shadowless so the scene
 // still reads. Intensities assume the lightmapper's inverse-square falloff (baked)
-// and Unity's legacy falloff (realtime fallback, flashlight), in linear colour space.
+// and Unity's legacy falloff (realtime fallback, flashlight), in linear colour space
+// with linear light intensities (UseLinearColorSpace sets both).
 public static class NightLighting
 {
     public const string GroupName = "Lighting";
     public const string SettingsPath = "Assets/CrimeSceneDemo/NightLighting.lighting";
     public const string MaterialFolder = NightStoreBuilder.Folder;
 
-    public static readonly Vector3 HeadlightTarget = V(0, 1.0f, 2.0f);
+    // The headlights follow the car's aim, raised to case height.
+    public static readonly Vector3 HeadlightTarget = L.CarAim + Vector3.up * 1.0f;
     public static readonly Color MoonColour = new Color(0.55f, 0.65f, 1.0f);
     public static readonly Color StreetColour = new Color(1.0f, 0.82f, 0.6f);
     public static readonly Color HeadlightColour = new Color(1.0f, 0.97f, 0.9f);
@@ -49,16 +51,31 @@ public static class NightLighting
 
     // Box-projected reflection probes: name, centre, size.
     public static readonly string[] ProbeNames = { "ReflectionProbe_Showroom", "ReflectionProbe_Office", "ReflectionProbe_Exterior" };
-    private static readonly Vector3[] ProbeCentres = { V(0, 1.5f, 4.25f), V(0, 1.5f, 10.25f), V(2, 2.5f, -5) };
-    private static readonly Vector3[] ProbeSizes = { V(16, 3, 8.5f), V(6, 3, 3.5f), V(24, 6, 12) };
+    // Boxes from the layout: the showroom and office volumes, and the pavement and
+    // staging bay out to the car (the box projection must match the walls).
+    private static readonly Bounds[] ProbeBoxes =
+    {
+        ProbeBox(V(L.MinX, 0, L.MinZ), V(L.MaxX, L.CeilingY, L.RearZ)),
+        ProbeBox(V(-L.OfficeHalf, 0, L.RearZ), V(L.OfficeHalf, L.CeilingY, L.MaxZ)),
+        ProbeBox(V(-L.PavementHalfX, -0.5f, L.StagingBay.MinZ - 3), V(L.PavementHalfX + L.CarPosition.x, 5.5f, L.MinZ + 1)),
+    };
+    private static Bounds ProbeBox(Vector3 min, Vector3 max) { Bounds b = new Bounds(); b.SetMinMax(min, max); return b; }
     public const int ReflectionResolution = 128;
 
-    // Project-wide: the night bake and its intensities assume linear lighting. Older
-    // scenes stay valid but render in linear from now on.
+    // Project-wide: the night bake and its intensities assume linear lighting and
+    // linear light intensities (Built-in defaults to intensities applied in gamma,
+    // i.e. (colour * intensity)^2.2, which would blow the headlights out and black out
+    // the moon). Older scenes stay valid but render in linear from now on, and their
+    // lights above or below intensity 1 shift accordingly.
     public static void UseLinearColorSpace()
     {
         if (PlayerSettings.colorSpace != ColorSpace.Linear) PlayerSettings.colorSpace = ColorSpace.Linear;
+        if (!GraphicsSettings.lightsUseLinearIntensity) GraphicsSettings.lightsUseLinearIntensity = true;
     }
+
+    // Lightmap texel scale (scaleInLightmap) by zone; the builder's KitMeshes size their
+    // chart margins from the same values (KitMesh.LightmapScale).
+    public const float ShellScale = 1, FixtureScale = 0.8f, KitScale = 0.5f, StreetScale = 0.6f, FarScale = 0.2f;
 
     // Builds NightStore/Lighting and sets the environment and bake settings. Removes
     // the validator's preview sun (its grey ambient is replaced here).
@@ -305,12 +322,12 @@ public static class NightLighting
         for (int i = 0; i < ProbeNames.Length; i++)
         {
             Transform t = Group(ProbeNames[i], group);
-            t.position = ProbeCentres[i];
+            t.position = ProbeBoxes[i].center;
             ReflectionProbe probe = t.gameObject.AddComponent<ReflectionProbe>();
             probe.mode = ReflectionProbeMode.Baked;
             probe.boxProjection = true;
             probe.center = Vector3.zero;
-            probe.size = ProbeSizes[i];
+            probe.size = ProbeBoxes[i].size;
             probe.resolution = ReflectionResolution;
             probe.hdr = true;
             probe.intensity = 1;
@@ -321,19 +338,21 @@ public static class NightLighting
 
     // ---------------------------------------------------------------- lightmaps
 
-    // Texel density by zone: the interior shell full, fixtures 0.8, kit models 0.5, the
-    // street and pavement 0.3 and what is mostly out of view (far pavement, buildings) 0.2.
+    // Texel density by zone: the interior shell and the near pavement and kerbs (where
+    // the player walks, under the bollard and car shadows) full, fixtures 0.8, the street
+    // 0.6, kit models 0.5 and what is mostly out of view (far pavement, buildings) 0.2.
     private static void LightmapScales(Transform root)
     {
         foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
         {
             if (r.receiveGI != ReceiveGI.Lightmaps) continue;
             string path = PathUnder(r.transform, root);
-            float scale = 0.8f;
-            if (path.StartsWith("Architecture/")) scale = 1;
-            else if (path.StartsWith("Exterior/Ground/FarPavement") || path.StartsWith("Exterior/Buildings/")) scale = 0.2f;
-            else if (path.StartsWith("Exterior/Ground/")) scale = 0.3f;
-            else if (path.StartsWith("Exterior/")) scale = 0.5f;
+            float scale = FixtureScale;
+            if (path.StartsWith("Architecture/")) scale = ShellScale;
+            else if (path.StartsWith("Exterior/Ground/FarPavement") || path.StartsWith("Exterior/Buildings/")) scale = FarScale;
+            else if (path.StartsWith("Exterior/Ground/Street")) scale = StreetScale;
+            else if (path.StartsWith("Exterior/Ground/")) scale = ShellScale;
+            else if (path.StartsWith("Exterior/")) scale = KitScale;
             r.scaleInLightmap = scale;
         }
     }
@@ -370,7 +389,8 @@ public static class NightLighting
         s.maxBounces = 2;
         s.ao = true;
         s.aoMaxDistance = 0.6f;
-        s.lightmapCompression = LightmapCompression.NormalQuality;
+        // BC6H/BC7-class blocks at the same size: NormalQuality bands the dark gradients.
+        s.lightmapCompression = LightmapCompression.HighQuality;
         s.directionalityMode = LightmapsMode.NonDirectional;
         EditorUtility.SetDirty(s);
         AssetDatabase.SaveAssets();

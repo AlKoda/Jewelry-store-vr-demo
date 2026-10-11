@@ -95,10 +95,11 @@ public static class DemoGeometry
 
     // Persists a generated mesh; an existing asset at the path is updated and reused.
     // lightmapUVs is opt-in so the historical generators keep their meshes unchanged.
-    public static void SaveMesh(ref Mesh mesh, string path, bool lightmapUVs = false)
+    // lightmapScale is the renderer's planned scaleInLightmap (sizes the chart margin).
+    public static void SaveMesh(ref Mesh mesh, string path, bool lightmapUVs = false, float lightmapScale = 1)
     {
         PrepareForTextures(mesh);
-        if (lightmapUVs) PrepareForLightmaps(mesh);
+        if (lightmapUVs) PrepareForLightmaps(mesh, lightmapScale);
         Mesh existing = AssetDatabase.LoadAssetAtPath<Mesh>(path);
         if (existing == null) { AssetDatabase.CreateAsset(mesh, path); return; }
         EditorUtility.CopySerialized(mesh, existing);
@@ -134,14 +135,15 @@ public static class DemoGeometry
     public const float LightmapTexelsPerMetre = 10;
 
     // Non-overlapping second UV set so the mesh can receive baked lightmaps. The pack
-    // margin is about two lightmap texels at the planned density (Unity's default
-    // 1/256 is a fraction of a texel on a small mesh, so neighbouring charts bleed).
-    // The unwrap may split vertices along seams, so tangents are rebuilt afterwards.
-    public static void PrepareForLightmaps(Mesh mesh)
+    // margin is about two lightmap texels at the planned density, i.e. the bake's
+    // texels per metre times the renderer's scaleInLightmap (lightmapScale); Unity's
+    // default 1/256 is a fraction of a texel on a small mesh, so neighbouring charts
+    // bleed. The unwrap may split vertices along seams, so tangents are rebuilt afterwards.
+    public static void PrepareForLightmaps(Mesh mesh, float lightmapScale = 1)
     {
         if (mesh.vertexCount == 0) return;
         UnwrapParam.SetDefaults(out UnwrapParam settings);
-        float side = Mathf.Sqrt(Mathf.Max(SurfaceArea(mesh), 1e-6f)) * LightmapTexelsPerMetre;
+        float side = Mathf.Sqrt(Mathf.Max(SurfaceArea(mesh), 1e-6f)) * LightmapTexelsPerMetre * Mathf.Max(lightmapScale, 0.01f);
         settings.packMargin = Mathf.Clamp(2f / side, 1f / 256, 0.05f);
         Unwrapping.GenerateSecondaryUVSet(mesh, settings);
         mesh.RecalculateTangents();
