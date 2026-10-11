@@ -1,0 +1,278 @@
+[
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/car_police.obj",
+    "triangles": 740,
+    "source_bounds_min": [
+      -0.209476,
+      -0.03,
+      -0.472335
+    ],
+    "source_bounds_max": [
+      0.209485,
+      0.351592,
+      0.465738
+    ],
+    "source_size_xyz": [
+      0.418961,
+      0.381592,
+      0.938073
+    ],
+    "sha256": "5c412fb099396f9900eb2d4b93f6b8832251890d1f30e216273f4413f8a8820b",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/car_police_wheel_front_left.obj",
+    "triangles": 144,
+    "source_bounds_min": [
+      0.145369,
+      -0.061043,
+      0.173105
+    ],
+    "source_bounds_max": [
+      0.206601,
+      0.083556,
+      0.317704
+    ],
+    "source_size_xyz": [
+      0.061232,
+      0.144599,
+      0.144599
+    ],
+    "sha256": "0fa0350ffc713f8e4fd00ea68661502d3dd1191560cad7f95b27ab28deffa4dd",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/car_police_wheel_front_right.obj",
+    "triangles": 144,
+    "source_bounds_min": [
+      -0.206604,
+      -0.061043,
+      0.173105
+    ],
+    "source_bounds_max": [
+      -0.145372,
+      0.083556,
+      0.317704
+    ],
+    "source_size_xyz": [
+      0.061232,
+      0.144599,
+      0.144599
+    ],
+    "sha256": "24a3e75e04b26132807c41ed3d9520e86320d7030c3b31fa3800d5ddf809a4ef",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/car_police_wheel_rear_left.obj",
+    "triangles": 144,
+    "source_bounds_min": [
+      0.145369,
+      -0.061043,
+      -0.328478
+    ],
+    "source_bounds_max": [
+      0.206601,
+      0.083556,
+      -0.183879
+    ],
+    "source_size_xyz": [
+      0.061232,
+      0.144599,
+      0.144599
+    ],
+    "sha256": "9281e3281b986754e007cca1fff1cb64a780c221d3c92d111dea2cd4fb4f7c3f",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/car_police_wheel_rear_right.obj",
+    "triangles": 144,
+    "source_bounds_min": [
+      -0.206604,
+      -0.061043,
+      -0.328478
+    ],
+    "source_bounds_max": [
+      -0.145372,
+      0.083556,
+      -0.183879
+    ],
+    "source_size_xyz": [
+      0.061232,
+      0.144599,
+      0.144599
+    ],
+    "sha256": "3933f19ae3908c2ac2e1188a18f36a508502bdb7f1500325b93faf3e881be489",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/streetlight.obj",
+    "triangles": 176,
+    "source_bounds_min": [
+      -0.23921,
+      9e-06,
+      -0.034511
+    ],
+    "source_bounds_max": [
+      0.030097,
+      0.959924,
+      0.034511
+    ],
+    "source_size_xyz": [
+      0.269307,
+      0.959915,
+      0.069022
+    ],
+    "sha256": "27d8474ee89a31bd54be85dd512ea3bd948c04fc807674fa4d7d9161f6af1484",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitCity/bench.obj",
+    "triangles": 44,
+    "source_bounds_min": [
+      -0.2,
+      0.0,
+      -0.075
+    ],
+    "source_bounds_max": [
+      0.2,
+      0.1,
+      0.075
+    ],
+    "source_size_xyz": [
+      0.4,
+      0.1,
+      0.15
+    ],
+    "sha256": "82d80c965c8ba38248ebea5b6e26e1fd5cd592c7a9627ca1388d1c4f48d106f5",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitCity/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitFurniture/chair_A.obj",
+    "triangles": 308,
+    "source_bounds_min": [
+      -0.375,
+      -0.0,
+      -0.470129
+    ],
+    "source_bounds_max": [
+      0.375,
+      1.258326,
+      0.375
+    ],
+    "source_size_xyz": [
+      0.75,
+      1.258326,
+      0.845129
+    ],
+    "sha256": "b45002b32de9f1829080af76f49979a6f65697b368a7743475eb7eaf48e3441e",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitFurniture/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitFurniture/couch.obj",
+    "triangles": 636,
+    "source_bounds_min": [
+      -1.5,
+      0.0,
+      -0.75
+    ],
+    "source_bounds_max": [
+      1.5,
+      1.22406,
+      0.85
+    ],
+    "source_size_xyz": [
+      3.0,
+      1.22406,
+      1.6
+    ],
+    "sha256": "2aec51f08fc9336f4cec5214ae40e65f5f37cf38a4437b041d2445a2f3b28245",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitFurniture/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitFurniture/table_low.obj",
+    "triangles": 276,
+    "source_bounds_min": [
+      -1.2,
+      0.0,
+      -0.75
+    ],
+    "source_bounds_max": [
+      1.2,
+      0.5,
+      0.75
+    ],
+    "source_size_xyz": [
+      2.4,
+      0.5,
+      1.5
+    ],
+    "sha256": "28aeb2c8d866a8e73fcae1eba9278eb48d33cfc7e54edbfa336a57b3d2af5be7",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitFurniture/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitFurniture/cactus_medium_A.obj",
+    "triangles": 448,
+    "source_bounds_min": [
+      -0.439963,
+      2e-06,
+      -0.418422
+    ],
+    "source_bounds_max": [
+      0.439947,
+      0.827248,
+      0.418422
+    ],
+    "source_size_xyz": [
+      0.87991,
+      0.827246,
+      0.836844
+    ],
+    "sha256": "99eee19d619e4d95e461ba007f0a2ec44ac7ce2c06d78e4c18c739ae14665e92",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitFurniture/LICENSE.txt"
+  },
+  {
+    "file": "Prototype/ThirdParty/KayKitFurniture/cabinet_small_decorated.obj",
+    "triangles": 464,
+    "source_bounds_min": [
+      -0.544425,
+      -0.0,
+      -0.5
+    ],
+    "source_bounds_max": [
+      0.503245,
+      1.617515,
+      0.603883
+    ],
+    "source_size_xyz": [
+      1.04767,
+      1.617515,
+      1.103883
+    ],
+    "sha256": "40ef307e043a9f8fef1ebc1eeb3316b1d2468148e3e5bcb9938d9da31a8b6449",
+    "license": "CC0-1.0",
+    "author": "Kay Lousberg",
+    "license_file": "Prototype/ThirdParty/KayKitFurniture/LICENSE.txt"
+  }
+]

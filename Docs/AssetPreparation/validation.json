@@ -1,0 +1,442 @@
+{
+  "scope": "File-level audit only; Unity import, audio listening and headset testing not performed.",
+  "textures": [
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/AsphaltWet_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "a0311d753e975344d6a58bd719f491d0ebb23aae7eee397dec807cba7dbdf212"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/AsphaltWet_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "dce9e2012e89f76e4f19a5a4ad00461e4ddd9fdc4552ee5481c2e8254670dd38"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/BronzeBrushed_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "e5ed82ad656454ca435454ee9011708c0a58dc4cb5d39d56eaff75d861e31d66"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/BronzeBrushed_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "f2ce5f056f1529c01d685dc31900a964060bcc6e0a5bad58771db14f0fae5d6a"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/CeilingPaint_Color.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 315724,
+      "sha256": "097b14f2ec8506494e2f84d0816ed23307b40f997cab77b7c540ff23ddddeff0"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/CeilingPaint_MetallicSmoothness.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 149375,
+      "sha256": "7b124acd57db4cee99971248a436225038dc23fd17aaedf4a7cb96365df750e3"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/CeilingPaint_Normal.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGB",
+      "bytes": 592147,
+      "sha256": "feccda86b7bfaf6cc16f87043b27d877f7b0ecc1339d6e14734144603d87c30b"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/CeilingPaint_Roughness.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "L",
+      "bytes": 107621,
+      "sha256": "a744891225dfec03b8f2efa402eed31f2dcc08f3b52a2f37f2e7cba7311aa24e"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/FacadeStone_Color.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 1798345,
+      "sha256": "d44e0a2b040249c629a67aace4bf0f82a79c33199f1817d55cb1d199bbcefea2"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/FacadeStone_MetallicSmoothness.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 737796,
+      "sha256": "5fece1e317b57af78395016bf7a65c784157429c4800feec2a1299a17e69f3e1"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/FacadeStone_Normal.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "RGB",
+      "bytes": 538862,
+      "sha256": "a61a93414470559bc5e7c1286b7bb93ea234546a315669161249c3f6433a8015"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/FacadeStone_Roughness.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "mode": "L",
+      "bytes": 538509,
+      "sha256": "426ef1f5b8dcabf2b8266546a5654708c8649c37b8302c36cf5c5f256a82ab84"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/FloorTile_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "938ce14799a00f61a2bc5fd14d9c395d68edb9c9522766c6866e626321f3c8ad"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/FloorTile_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "92d2f5fc51469fe0bcfa05d0e387df05196edace46b0b8e43ffe54e309a2fd3b"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/PavementSlab_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "f40e6baa3341cb34de80dfa952c3f13fdc6b065bd95f2868455b6d9e5967b2df"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/PavementSlab_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "9d0f3c32653c3499c82210bdbdba69819a06413b59f751fbbfae094bb90b6834"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/PlasterWarm_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "4fd0237368392b44f871d7cb62d19a455ce6c609bd7a93e6c51beaaefdceca04"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/PlasterWarm_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "33a675fbdf784dcb1121eddaf3d7f33dfb82c7ea16bb1ef04120bd78356aa742"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/SafeSteel_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "bb68be8cf8ebabd42ad3c9b3715379c3ed71ad5281537d036f20810a372e3b33"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/SafeSteel_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "9d0f3c32653c3499c82210bdbdba69819a06413b59f751fbbfae094bb90b6834"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/StoneTop_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "72bb50d6c2175e76eb566756ced1b8bf0f2d8c64978875ec16ccae5a1592d5d5"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/StoneTop_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "b13d01717c21a5cb2708bca7b186e6ef1d6318cb7b527d3a92a717d0beaebbef"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/SuedeCream_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "eedf90f74101d4e0dd362c92a57f3fd228cdbc6d8d8a7cd9aa03943264e46ca1"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/SuedeCream_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "62294f074fee762fefe784670c8334c6739f5bb3bf78e2bee966dbedadf21635"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/VelvetCharcoal_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "eedf90f74101d4e0dd362c92a57f3fd228cdbc6d8d8a7cd9aa03943264e46ca1"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/VelvetCharcoal_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "62294f074fee762fefe784670c8334c6739f5bb3bf78e2bee966dbedadf21635"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/Walnut_MetallicSmoothness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "RGBA",
+      "bytes": 94,
+      "sha256": "f40e6baa3341cb34de80dfa952c3f13fdc6b065bd95f2868455b6d9e5967b2df"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightMaterials/Walnut_Roughness.png",
+      "size": [
+        16,
+        16
+      ],
+      "mode": "L",
+      "bytes": 75,
+      "sha256": "9d0f3c32653c3499c82210bdbdba69819a06413b59f751fbbfae094bb90b6834"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/Closed.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 6326,
+      "sha256": "2e0e766773b5cd8ed6520417259a37acc12773f633cfc6a0265727b13390a51a"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/CollectionNecklaces.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 7476,
+      "sha256": "3c0a82be60a7d35758455a2b7c61b22e411b8278d6f9223dbdf3d9515435240d"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/CollectionRings.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 7039,
+      "sha256": "de6f47fd8e47f2ab164bfede96a81358288b605fb496c93ca6b4f06c1215b345"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/DustSmear_Generic.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 3762,
+      "sha256": "6cf2dc8115a0c92d1317c92ca9d3c326e91ed105b8d2e5019f1464369125b169"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/MarkerNumbers.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 6388,
+      "sha256": "b4e56af697a08971a25430b7f071325bc2540441ae0ca4190d65b1af6b372f3c"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/SceneTape.png",
+      "size": [
+        1024,
+        128
+      ],
+      "mode": "RGBA",
+      "bytes": 5829,
+      "sha256": "67dab222a503792e33a733f7b9063ddb74403b5e43757a713911dfb9c8c74e87"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/Scuff_Generic.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 7533,
+      "sha256": "88246d1511c6ef44776493afb3d3ba85ef52f68c28ed03fb510beff37fdbce48"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/ShoeTrace_Generic.png",
+      "size": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "bytes": 8113,
+      "sha256": "9a906acf87f4889c167c425662b043eab55fc0f4b501cdbed7137a5129e6b427"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/ShopFascia.png",
+      "size": [
+        1024,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 12595,
+      "sha256": "9b1f19cb89da88b4acc7d040f191c93ffea4dc6305c0fbd8d58190f37a807998"
+    },
+    {
+      "file": "Prototype/ThirdParty/NightGraphics/StaffOnly.png",
+      "size": [
+        512,
+        256
+      ],
+      "mode": "RGBA",
+      "bytes": 5369,
+      "sha256": "3c8f22745d5646fbfc41f30273d2e82df7e5303e44d36d4f0d3b12c18ee93eca"
+    }
+  ],
+  "normal_checks": {
+    "CeilingPaint_Normal.png": {
+      "max_length_error": 0.005722
+    },
+    "FacadeStone_Normal.png": {
+      "max_length_error": 7.7e-05
+    }
+  },
+  "audio": [
+    {
+      "file": "CameraClick.wav",
+      "seconds": 0.1,
+      "sample_rate": 44100,
+      "peak_dbfs": -16.9,
+      "rms_dbfs": -41.41,
+      "dc": -0.0004798,
+      "wrap_jump": 0.0
+    },
+    {
+      "file": "DistantAir_Loop.wav",
+      "seconds": 16.0,
+      "sample_rate": 24000,
+      "peak_dbfs": -21.94,
+      "rms_dbfs": -34.98,
+      "dc": -1.53e-05,
+      "wrap_jump": 0.000763
+    },
+    {
+      "file": "FlashlightSwitch.wav",
+      "seconds": 0.6177,
+      "sample_rate": 44100,
+      "peak_dbfs": -12.04,
+      "rms_dbfs": -38.88,
+      "dc": -2.85e-05,
+      "wrap_jump": 0.0
+    },
+    {
+      "file": "PanelSelect.wav",
+      "seconds": 0.0433,
+      "sample_rate": 44100,
+      "peak_dbfs": -12.56,
+      "rms_dbfs": -29.64,
+      "dc": -0.0001412,
+      "wrap_jump": 0.0
+    },
+    {
+      "file": "ToolSetDown.wav",
+      "seconds": 0.1098,
+      "sample_rate": 44100,
+      "peak_dbfs": -15.81,
+      "rms_dbfs": -33.38,
+      "dc": -0.0006438,
+      "wrap_jump": 0.0
+    }
+  ],
+  "reused_model_count": 12,
+  "reference_color_normal_files_preserved": 20
+}

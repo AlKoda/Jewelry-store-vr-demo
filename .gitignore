@@ -32,3 +32,6 @@ EvidencePhotos/
 
 # Local instructor records
 InstructorReviews/
+
+# Local asset downloads and temporary processing dependencies
+.asset-cache/

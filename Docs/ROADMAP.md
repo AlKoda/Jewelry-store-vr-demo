@@ -164,3 +164,14 @@ Quest frame time, real controller tracking, hands-on usability and standalone bu
 Completed the shell pass (walls, floor, lighting and doors), then the glass/display pass. All source and the world-text shader compiled; 81 Editor Play mode checks passed. Added floor/door geometry: 358 triangles / 10 renderers. Four shadowless lights; no new texture maps. Simplified jewelry loops and glass surfaces. Latest download: Downloads/JewelryStore_Interior_Unity6000.6.2f1.zip. See [report and screenshots](INTERIOR_FINISH.md).
 
 V01 now has a verified first material/lighting pass in desktop Unity; final polish and headset readability remain pending. Real Quest performance and a standalone build are still outstanding.
+
+## October 11 — asset preparation (staged, not Unity-integrated)
+
+- [x] Inspect and preserve all ten ReferenceTextures Color/Normal sets.
+- [x] Prepare missing ceiling/facade PBR maps, constant roughness support, fictional signage and generic decals.
+- [x] Curate existing CC0 models and prepare four CC0 interaction sounds plus original ambience.
+- [x] Save sources/licenses, previews, file validation, asset-only package and root for Koda.md.
+- [ ] Integrate selected assets after blockout validation; retain pending scenario decisions.
+- [ ] Audition audio, inspect in Unity, bake and test Quest comfort/FPS with Koda.
+
+See [asset preparation report](ASSET_PREPARATION_2026-10-11.md). Historical validation claims do not apply to these newly prepared assets.

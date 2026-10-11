@@ -1,0 +1,22 @@
+NightModelReuse — manifest only, October 11, 2026
+
+All 12 model files referenced by models.json already exist in this repository.
+Author: Kay Lousberg / KayKit, https://www.kaylousberg.com/
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+
+City Builder Bits 1.0 source recorded in the existing asset register:
+https://github.com/KayLousberg/KayKit_CityBuilderBits
+Publisher: https://kaylousberg.itch.io/city-builder-bits
+Local original notice: ../KayKitCity/LICENSE.txt
+
+Furniture Bits 1.0 source recorded in the existing asset register:
+https://github.com/KayLousberg/KayKit_FurnitureBits
+Publisher: https://kaylousberg.itch.io/furniture-bits
+Local original notice: ../KayKitFurniture/LICENSE.txt
+
+Licenses reviewed from the actual bundled notices. No model download, conversion
+or model-license change in this batch. Original raw GitHub license paths were not
+available during the web check; these are historical source URLs, not new downloads.
+Redistribution/modification permitted; voluntary credit: KayKit by Kay Lousberg.
+models.json records exact existing paths, SHA256 hashes and measured OBJ budgets.

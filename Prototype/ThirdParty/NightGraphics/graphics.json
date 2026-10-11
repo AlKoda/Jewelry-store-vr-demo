@@ -1,0 +1,64 @@
+{
+  "author": "Original project vector artwork generated with Codex",
+  "fictionalShop": "Aurel & Finch",
+  "files": [
+    {
+      "name": "ShopFascia",
+      "width": 1024,
+      "height": 256
+    },
+    {
+      "name": "CollectionRings",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "name": "CollectionNecklaces",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "name": "Closed",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "name": "StaffOnly",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "name": "SceneTape",
+      "width": 1024,
+      "height": 128
+    },
+    {
+      "name": "MarkerNumbers",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "name": "ShoeTrace_Generic",
+      "width": 512,
+      "height": 512
+    },
+    {
+      "name": "Scuff_Generic",
+      "width": 512,
+      "height": 256
+    },
+    {
+      "name": "DustSmear_Generic",
+      "width": 512,
+      "height": 256
+    }
+  ],
+  "markerAtlas": {
+    "columns": 4,
+    "rows": 2,
+    "order": "1–4 top, 5–8 bottom",
+    "cellPixels": 128,
+    "paddingPixels": 16
+  },
+  "decals": "Straight alpha; no emission or UV interpretation"
+}

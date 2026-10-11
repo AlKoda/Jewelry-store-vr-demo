@@ -33,3 +33,16 @@ Store furniture, jewelry props, architectural materials, torch props and pavemen
 For every asset, inspect the actual license and record restrictions. If repository redistribution is prohibited, record acquisition/import instructions instead of uploading the asset. Check render-pipeline compatibility, texture sizes and dependencies before importing a pack.
 
 Prefer a small number of consistent assets. Do not commit whole unrelated asset collections.
+
+## October 11 asset preparation
+
+See [batch report](ASSET_PREPARATION_2026-10-11.md) for previews and validation. These are staged, not assigned to the scene.
+
+| Pack | Source/author/license | Content and changes | Location |
+|---|---|---|---|
+| NightMaterials | ambientCG / Lennart Demes, CC0 1.0; project-authored constants | PaintedPlaster017 (512px) and Marble006 (1024px), Color/NormalGL/Roughness/packed metallic-smoothness; ten constant finish pairs. URLs/hashes in sources.json; no replacement of ReferenceTextures | Prototype/ThirdParty/NightMaterials |
+| NightGraphics | Original project vector artwork with Codex, no third-party restrictions | Fictional Aurel & Finch shop signs; generic tape, numbers, shoe/scuff/dust decals. Ten SVG/PNG pairs, no external font or logo | Prototype/ThirdParty/NightGraphics |
+| NightAudio | Kenney Interface Sounds 1.0, CC0 1.0; original project synthesis | Four selected OGG originals, prepared mono PCM16 WAVs (downmix/DC removal/level/fades), one 16-second synthetic ambience bed. URLs/hashes in sources.json | Prototype/ThirdParty/NightAudio |
+| NightModelReuse | Existing Kay Lousberg/KayKit City and Furniture Bits, CC0 1.0 | Manifest for 12 existing OBJ files with hashes, triangle counts, raw bounds and license paths. No new model download or geometry change | Prototype/ThirdParty/NightModelReuse |
+
+Each new pack has LICENSE.txt with source, author, license and modification details. Original bundled model notices and prior CC-BY obligations remain unchanged.

@@ -1,0 +1,25 @@
+NightMaterials — asset preparation batch, October 11, 2026
+
+CeilingPaint_*: PaintedPlaster017 by Lennart Demes / ambientCG
+Source: https://ambientcg.com/view?id=PaintedPlaster017
+FacadeStone_*: Marble006 by Lennart Demes / ambientCG
+Source: https://ambientcg.com/view?id=Marble006
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+Publisher license: https://docs.ambientcg.com/license/
+Redistribution, modification and commercial use permitted; attribution not required.
+Voluntary credit: Created using PaintedPlaster017 and Marble006 from ambientCG.com,
+licensed under the Creative Commons CC0 1.0 Universal License.
+
+Downloaded October 11, 2026 as 1K PNG archives. Archive hashes and exact URLs are
+in sources.json. Color and Roughness maps resized to the recorded size. NormalGL
+maps resized, renormalized and renamed Normal. Original OpenGL (+Y) convention.
+MetallicSmoothness derived: R=0, G=B=0, A=255-Roughness for these two dielectrics.
+No displacement geometry or baked lighting added. FacadeStone is a proposed
+marble-cladding finish, not a measured match to the reference facade.
+
+The ten other Roughness/MetallicSmoothness pairs are original project-generated
+constant maps from the scalar values in StoreKit.cs, not scanned roughness data.
+Author/source: project preparation with Codex; Tools/prepare_night_materials.py.
+No third-party content in those constant maps; no third-party attribution required.
+Existing ReferenceTextures Color/Normal maps have not been replaced or relicensed.

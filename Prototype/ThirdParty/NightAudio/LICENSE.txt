@@ -1,0 +1,20 @@
+NightAudio — preparation batch, October 11, 2026
+
+CameraClick.wav, FlashlightSwitch.wav, ToolSetDown.wav, PanelSelect.wav and the four
+OGG files in Originals derive from Interface Sounds 1.0 by Kenney (www.kenney.nl).
+Source: https://kenney.nl/assets/interface-sounds
+License: Creative Commons CC0 1.0 Universal
+https://creativecommons.org/publicdomain/zero/1.0/
+The author's original notice is preserved in Originals/License.txt.
+Redistribution, modification and commercial use permitted; attribution not required.
+Voluntary credit: Interface Sounds by Kenney, CC0 1.0.
+
+Exact archive URL, archive SHA256 and original member names/hashes: sources.json.
+Modified by the project with Codex: mono downmix, DC removal, conservative peak
+normalization and 2ms edge fades; exported as 16-bit PCM WAV. Original OGGs unchanged.
+The final peak may be below -12 dBFS after the fades. These are generic interaction
+sounds, not recordings of a specific camera, police radio or forensic equipment.
+
+DistantAir_Loop.wav is original project-generated periodic filtered noise, created
+with Codex in Tools/prepare_night_audio.py. No sampled recording, speech, music or
+external sound input. No third-party attribution or redistribution restrictions.

@@ -1,3 +1,6 @@
+# Asset preparation — October 11, 2026
+
+New staged assets and reuse manifest are documented in [ASSET_PREPARATION_2026-10-11.md](ASSET_PREPARATION_2026-10-11.md). Read root [for Koda.md](../for%20Koda.md) for decisions and remaining integration. ReferenceTextures preserved; NightMaterials, NightGraphics, NightAudio and NightModelReuse added. File-level checks passed; no Unity/headset run or runtime integration in this batch. Downloads/JewelryStore_NightAssets_20261011.zip is asset-only, not a tested Unity project.
 # Latest source change: expanded NIGHT store built from the references (October 11, Claude, unverified)
 
 Implements batches 1–5 of [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md) following [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md). Six sequential implement → three-lens review (compile, behaviour, VR performance/realism) → fix passes. **Nothing has been compiled or run in Unity.** The old shop and every old validator are kept; shared builders were made layout-driven with defaults equal to the old values (DemoToolsBuilder.ToolLayout.Shop, DemoValidation.ToolTestPoints).

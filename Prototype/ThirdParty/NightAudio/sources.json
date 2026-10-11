@@ -1,0 +1,51 @@
+{
+  "download_date": "2026-10-11",
+  "author": "Kenney",
+  "license": "CC0-1.0",
+  "source": "https://kenney.nl/assets/interface-sounds",
+  "download": "https://kenney.nl/media/pages/assets/interface-sounds/fa43c1dd4d-1677589452/kenney_interface-sounds.zip",
+  "archive_sha256": "f2193d072726d6758a5f7871b2dcc54dcce0d5c35c6f0a62f92549b327c81232",
+  "selection": [
+    {
+      "file": "CameraClick.wav",
+      "source_member": "Audio/click_001.ogg",
+      "source_sha256": "ccfb7fa0cccdd9faec0eb16033c732b1e308d139d80f799161495d58f7adcdb9",
+      "duration_seconds": 0.1,
+      "sample_rate": 44100,
+      "changes": "mono downmix, DC removal, -12 dBFS peak, 2ms edge fades"
+    },
+    {
+      "file": "FlashlightSwitch.wav",
+      "source_member": "Audio/switch_001.ogg",
+      "source_sha256": "3b74efad87f1e69dbd1d05c5ad952ab90859b5a3d11da6ec5bd79b4f03b42afa",
+      "duration_seconds": 0.6177,
+      "sample_rate": 44100,
+      "changes": "mono downmix, DC removal, -12 dBFS peak, 2ms edge fades"
+    },
+    {
+      "file": "ToolSetDown.wav",
+      "source_member": "Audio/drop_001.ogg",
+      "source_sha256": "692ee3a6f1821402ca649ff735bee9591dc4846c8098fc7d6a90fd15fa57c1af",
+      "duration_seconds": 0.1098,
+      "sample_rate": 44100,
+      "changes": "mono downmix, DC removal, -12 dBFS peak, 2ms edge fades"
+    },
+    {
+      "file": "PanelSelect.wav",
+      "source_member": "Audio/select_001.ogg",
+      "source_sha256": "aec0c31ea934a35936ae0d2ab8fac8123c93aa5647f935853a58dbaf90278b7a",
+      "duration_seconds": 0.0433,
+      "sample_rate": 44100,
+      "changes": "mono downmix, DC removal, -12 dBFS peak, 2ms edge fades"
+    }
+  ],
+  "DistantAir_Loop.wav": {
+    "author": "Project synthesis with Codex",
+    "source": "Tools/prepare_night_audio.py",
+    "license": "Project-generated, no third-party content",
+    "seconds": 16,
+    "sample_rate": 24000,
+    "seed": 27102026,
+    "loop": "periodic FFT noise"
+  }
+}

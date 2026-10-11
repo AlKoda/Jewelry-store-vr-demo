@@ -1,0 +1,13 @@
+NightGraphics — original project artwork, October 11, 2026
+
+Author/source: original vector artwork and geometric lettering created with Codex
+for AlKoda's Jewelry-store-vr-demo. Reproducible source: Tools/make_night_graphics.cjs.
+No downloaded images, logos, typefaces, font binaries or forensic reference prints.
+SVG masters and rasterized PNGs are project-generated assets; no third-party
+attribution or redistribution restrictions apply to this artwork.
+
+Aurel & Finch is a fictional shop label created for this demo, not a claim of
+affiliation with a real retailer. It can be renamed in the generator.
+ShoeTrace_Generic is an illustrative outsole pattern, not a real shoe identification
+reference. Scuff and dust smear have no assigned evidential or biological meaning.
+No police-service crest, country identifier or UV-fluorescence meaning is included.

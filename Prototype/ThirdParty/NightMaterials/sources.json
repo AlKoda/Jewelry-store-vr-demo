@@ -1,0 +1,22 @@
+[
+  {
+    "name": "CeilingPaint",
+    "source": "https://ambientcg.com/view?id=PaintedPlaster017",
+    "download": "https://ambientcg.com/get?file=PaintedPlaster017_1K-PNG.zip",
+    "archive_sha256": "b03f902257f07d1d07963e20c59ab4998c394a801b3929ebbd2fd3b5e2737407",
+    "author": "Lennart Demes / ambientCG",
+    "license": "CC0-1.0",
+    "size": 512,
+    "normal": "OpenGL +Y, renormalized after resize"
+  },
+  {
+    "name": "FacadeStone",
+    "source": "https://ambientcg.com/view?id=Marble006",
+    "download": "https://ambientcg.com/get?file=Marble006_1K-PNG.zip",
+    "archive_sha256": "073962c8093e893f3eb3a5da04a88704cdcb09d80eccb6d7b8cd6f3f4d21eb61",
+    "author": "Lennart Demes / ambientCG",
+    "license": "CC0-1.0",
+    "size": 1024,
+    "normal": "OpenGL +Y, renormalized after resize"
+  }
+]
