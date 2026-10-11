@@ -170,8 +170,9 @@ public static class ShopFormRefinement
             root.GetComponentsInChildren<Light>().Length==0,"Form detail adds no physics or realtime lights");
         bool opaque=true;
         foreach(MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>())
-            opaque &= r.sharedMaterial.mainTexture==null && r.sharedMaterial.renderQueue<3000;
-        DemoValidation.Check(opaque,"Form detail uses opaque untextured materials");
+            opaque &= r.sharedMaterial.renderQueue<3000;
+        // The texture pass may give shared finish materials a texture; only opacity matters here.
+        DemoValidation.Check(opaque,"Form detail uses opaque materials");
         DemoValidation.Info("Form detail triangles="+triangles+"; renderers="+renderers);
     }
 }

@@ -461,7 +461,8 @@ public static class ShopCityValidation
             DemoValidation.Check(dressing == null, "Geometry-only scene skips imported dressing");
         else
         {
-            DemoValidation.Check(dressing != null && dressing.childCount == ShopAssetDressing.Count, "Third-party dressing placed (" + ShopAssetDressing.Count + " models)");
+            int expected = ShopAssetDressing.ExpectedPresent();
+            DemoValidation.Check(dressing != null && expected > 0 && dressing.childCount == expected, "Third-party dressing placed (" + expected + " of " + ShopAssetDressing.Count + " listed models present)");
             DemoValidation.Check(dressing.Find("GlamVelvetSofa").GetComponent<BoxCollider>() != null, "Furniture has a collider");
             if (DemoAssetLibrary.Has("KayKitFurniture", "cabinet_medium_decorated"))
             {

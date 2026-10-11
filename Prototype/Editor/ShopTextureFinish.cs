@@ -186,16 +186,39 @@ public static class ShopTextureFinish
 
     // Per-renderer tiling so one material shows the texture at `metres` per repeat on
     // boxes of any size: the two largest world extents of the renderer's bounds count.
+    // Property blocks are not saved with a scene, so the tiling lives in material
+    // variants (<material>_<x>x<y>.mat beside the original, tiling rounded to a quarter
+    // repeat); renderers of the same size share one variant and still batch.
     public static void TileByWorldSize(Renderer renderer, float metres)
     {
+        Material source = renderer.sharedMaterial;
+        if (source == null) return;
         Vector3 size = renderer.bounds.size;
         float[] extents = { size.x, size.y, size.z };
         System.Array.Sort(extents);
-        Vector2 tiling = new Vector2(Mathf.Max(1, extents[2] / metres), Mathf.Max(1, extents[1] / metres));
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
-        renderer.GetPropertyBlock(block);
-        block.SetVector("_MainTex_ST", new Vector4(tiling.x, tiling.y, 0, 0));
-        renderer.SetPropertyBlock(block);
+        Vector2 tiling = new Vector2(Quarter(extents[2] / metres), Quarter(extents[1] / metres));
+        renderer.sharedMaterial = Variant(source, tiling);
+    }
+
+    private static float Quarter(float repeats) => Mathf.Max(1, Mathf.Round(repeats * 4) / 4);
+
+    // The base material stays the reference; variants copy its current settings.
+    private static Material Variant(Material source, Vector2 tiling)
+    {
+        string basePath = AssetDatabase.GetAssetPath(source);
+        if (string.IsNullOrEmpty(basePath)) { source.mainTextureScale = tiling; return source; }
+        string path = basePath.Substring(0, basePath.Length - 4) + "_" + tiling.x.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)
+            + "x" + tiling.y.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + ".mat";
+        Material variant = AssetDatabase.LoadAssetAtPath<Material>(path);
+        if (variant == null)
+        {
+            variant = new Material(source);
+            AssetDatabase.CreateAsset(variant, path);
+        }
+        else variant.CopyPropertiesFromMaterial(source);
+        variant.mainTextureScale = tiling;
+        EditorUtility.SetDirty(variant);
+        return variant;
     }
 
     public static void CheckBudget(int textured)
@@ -205,14 +228,13 @@ public static class ShopTextureFinish
         DemoValidation.Check(plaster != null && plaster.mainTexture != null && plaster.IsKeywordEnabled("_NORMALMAP"), "Walls use albedo and normal maps");
         Transform store = GameObject.Find("JewelryStore_Blockout").transform;
         Renderer floor = store.Find("Architecture/ShowroomFloor").GetComponent<Renderer>();
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
-        floor.GetPropertyBlock(block);
-        Vector4 st = block.GetVector("_MainTex_ST");
-        DemoValidation.Check(floor.sharedMaterial.mainTexture != null && st.x > 4 && st.y > 3, "Floor texture tiles by world size");
+        Vector2 st = floor.sharedMaterial.mainTextureScale;
+        DemoValidation.Check(floor.sharedMaterial.mainTexture != null && st.x > 4 && st.y > 3
+            && AssetDatabase.GetAssetPath(floor.sharedMaterial).EndsWith(".mat"), "Floor texture tiles by world size in a saved material");
         DemoValidation.Check(store.Find("InteriorFinish/StoneTiles") == null || !store.Find("InteriorFinish/StoneTiles").gameObject.activeSelf,
             "Tile skins hidden under the textured floor");
         Renderer safeFloor = store.Find("Architecture/SafeRoomFloor").GetComponent<Renderer>();
-        DemoValidation.Check(safeFloor.sharedMaterial.name == "SafeRoomFloor" && safeFloor.sharedMaterial.mainTexture != null,
+        DemoValidation.Check(safeFloor.sharedMaterial.name.StartsWith("SafeRoomFloor") && safeFloor.sharedMaterial.mainTexture != null,
             "Safe room floor has its own textured material");
         DemoValidation.Info("Scanned textures=" + (HasScans ? "present" : "absent") + "; environment=" + (HasEnvironment ? "present" : "absent"));
         if (HasScans)
