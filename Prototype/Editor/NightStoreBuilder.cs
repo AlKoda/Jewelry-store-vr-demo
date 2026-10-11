@@ -47,6 +47,8 @@ public static class NightStoreBuilder
             EditorUtility.DisplayDialog("Night store required", "Open or build the night store (with its lighting) first.", "OK");
             return;
         }
+        // The baked intensities assume linear colour space with linear light intensities.
+        NightLighting.UseLinearColorSpace();
         // A quick build's realtime preview lights go back to baked before the bake.
         NightLighting.UseBaked(root.transform);
         if (string.IsNullOrEmpty(SceneManager.GetActiveScene().path)) DemoValidation.SaveScene(L.SceneName, false);
