@@ -12,7 +12,7 @@ The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It superse
 - [x] Establish midnight appearance: baked headlights/streetlights/moonlight, probes, fixtures off, flashlight with cookie (unverified; bake time and FPS to measure).
 - [x] Add bounded/occluded UV trace demonstration (placeholder traces hidden by default) and unbranded DSLR visual (unverified).
 - [x] Optional placeable scene lamp (unverified).
-- [ ] Replace ReferenceTextures test placeholders and procedural StoreKit pieces with the user's final textures and converted models (same names).
+- [ ] Replace ReferenceTextures test placeholders and procedural StoreKit pieces with the user's final textures and converted models (same names; overrides apply only to Instantiate-placed fixtures, stateful cases/safes/doors/windows/dressing props need a builder change that keeps their Door/Lid/Glass_* children).
 - [ ] Re-stage robbery evidence, verify reset/photos and profile on Quest.
 - [ ] Resume store materials after the blockout is accepted.
 

@@ -36,9 +36,9 @@ public sealed class KitMesh : ProceduralMesh
     // Every mesh asset path saved or reused since the editor domain loaded.
     private static readonly HashSet<string> touched = new HashSet<string>();
 
-    // Deletes mesh assets in folder that nothing saved or reused in this editor session,
-    // i.e. the fingerprints left behind by earlier geometry. Call it only after building
-    // everything that should keep its meshes (the gallery run builds every fixture).
+    // Counts mesh assets in folder that nothing saved or reused in this editor session,
+    // i.e. the fingerprints left behind by earlier geometry (reported, not removed). Only
+    // meaningful after building everything that should keep its meshes; the gallery run reports it.
     public static int CountUntouched(string folder)
     {
         if (!AssetDatabase.IsValidFolder(folder)) return 0;
@@ -51,6 +51,9 @@ public sealed class KitMesh : ProceduralMesh
         return count;
     }
 
+    // Deletes those untouched mesh assets. Call it only after building everything that
+    // should keep its meshes (the gallery run builds every fixture), or it removes meshes
+    // used by scenes this session did not rebuild. Not called automatically; run it by hand.
     public static int DeleteUntouched(string folder)
     {
         if (!AssetDatabase.IsValidFolder(folder)) return 0;

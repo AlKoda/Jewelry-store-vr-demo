@@ -6,7 +6,8 @@ using static DemoGeometry;
 
 // Small jewelry props for the night store, in the StoreKit conventions: pivot at the
 // bottom centre, front towards -z, metric UVs, one renderer per rigid part and a
-// user-model override through StoreKit.Instantiate. Display pieces that stay on the
+// user-model override only when placed through StoreKit.Instantiate (NightStoreDressing
+// builds them directly, so the night store always uses the procedural props). Display pieces that stay on the
 // decks (bust, stands, ring tray, risers) are lightmapped; loose pieces the robbery
 // dressing scatters (boxes, trays, bags, dropped rings) and the tiny jewelry on the
 // displays ("Chain", "Rings") have no lightmap UVs and are lit by light probes.

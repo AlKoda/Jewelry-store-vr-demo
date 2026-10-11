@@ -24,7 +24,10 @@ using static DemoGeometry;
 // Instantiate(name, ...) first looks for a user-converted model at
 // Prototype/ThirdParty/StoreKit/<name>.obj or .fbx (synced to
 // Assets/CrimeSceneDemo/ThirdParty/StoreKit) and only builds the procedural fixture
-// when there is none, so image-to-3D replacements need no code change.
+// when there is none, so image-to-3D replacements need no code change. Pieces the
+// night store builds by calling their builders directly (cases, safes, doors, window
+// modules, storefront doors, the dressing's chair and jewelry props) never look up an
+// override, because they carry hinged Door/Lid or Glass_* children.
 public static partial class StoreKit
 {
     public const string Folder = "Assets/CrimeSceneDemo/StoreKitGenerated";
