@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-11",
+  "basePrompt": "Create a professional 3D GAME ASSET modeling reference sheet, landscape 3:2, pure white background, spacious 2 by 2 grid of FOUR isolated objects, each completely visible, no overlaps. Consistent orthographic three-quarter view and faint contact shadows. Semi-realistic simple low-poly-friendly geometry, broad smooth surfaces, minimal bevels, no tiny details. Matching jewelry store palette: dark walnut brown, muted bronze, charcoal, pale beige. No brands or watermarks, no people or environment. Small clear labels beneath objects, never on geometry. Objects are separate crop-ready product renders. ",
+  "sheets": [
+    {
+      "file": "05-doors.png",
+      "title": "Doors",
+      "prompt": "Four doors each with its own frame: top left elegant double glass storefront door in dark bronze frame, vertical pull handles, very pale blue clear panes; top right single solid walnut office door, bronze lever, closed in frame; bottom left gray steel rear service door with simple horizontal panic bar on inside face; bottom right walnut office door partially open in matching frame so hinges and leaf thickness are clear. Labels STOREFRONT DOORS, OFFICE DOOR, SERVICE DOOR, OPEN OFFICE DOOR."
+    },
+    {
+      "file": "06-glass-modules.png",
+      "title": "Glass and frames",
+      "prompt": "Four architectural glazing assets: top left intact rectangular shopfront glazing module in slender dark bronze frame; top right matching damaged glazing frame with ONE large irregular opening through center, remaining pane only along frame edges, no airborne shards; bottom left intact shallow rectangular display-case glass hood with slim bronze corner supports; bottom right small cluster of six broad flat glass fragments resting on a light gray rectangular presentation tile, ALL fragments touching tile, none floating. Glass is pale blue transparent with restrained visible edge thickness. Labels WINDOW MODULE, BROKEN WINDOW, CASE GLASS, FLOOR FRAGMENTS. No dramatic explosion, no sparkling floating particles."
+    },
+    {
+      "file": "07-safe-variants.png",
+      "title": "Safes",
+      "prompt": "Four views/variants of ONE consistent simple dark charcoal rectangular jewelry safe: top left closed full safe with plain mechanical dial and three spoke handle; top right same safe with door open 105 degrees showing two empty shelves; bottom left same open safe with empty pullout tray extended; bottom right isolated thick safe door seen from inside with simple three locking bolts along edge and hinges on opposite edge. No cash jewels or weapons. Broad solid box geometry. Labels CLOSED SAFE, OPEN SAFE, SAFE WITH TRAY, INNER DOOR."
+    },
+    {
+      "file": "08-jewelry-boxes.png",
+      "title": "Jewelry boxes",
+      "prompt": "Four empty jewelry presentation boxes, generous scale in cells: top left small square hinged ring box open with cream slotted cushion inside, charcoal exterior; top right slim long hinged bracelet box open, charcoal exterior cream insert; bottom left broad square hinged necklace presentation box open with cream flat shaped insert; bottom right small closed square ring box, charcoal exterior, thin bronze edge. No jewelry inside, no branding, no tiny clasps. All open lids attached correctly at back hinges. Labels RING BOX, BRACELET BOX, NECKLACE BOX, CLOSED BOX."
+    },
+    {
+      "file": "09-display-inserts.png",
+      "title": "Display inserts",
+      "prompt": "Four small separate jewelry display props: top left charcoal velvet horizontal T-bar bracelet stand with sturdy rectangular base; top right charcoal upright earring board with two tiny empty holes on compact base; bottom left low cream ring display tray with four broad parallel padded rolls inside shallow walnut frame; bottom right three simple cream jewelry plinth blocks arranged together, different heights, square footprints, standing on ground. NO jewelry, no lettering on objects. Labels BRACELET STAND, EARRING STAND, RING TRAY, DISPLAY RISERS."
+    },
+    {
+      "file": "10-shop-furniture.png",
+      "title": "Shop furniture",
+      "prompt": "Four matching modest luxury jewelry store furniture assets: top left compact charcoal upholstered two-seat sofa with simple walnut feet; top right low rectangular walnut coffee table with pale beige top; bottom left slim tall walnut wall display cabinet with open front, two shelves and bronze trim, glass omitted; bottom right low walnut lockable storage drawer unit, three drawers, one half open and empty. Simple practical low-poly-friendly silhouettes, no elaborate stitching. Labels WAITING SOFA, SIDE TABLE, WALL DISPLAY, DRAWER UNIT."
+    },
+    {
+      "file": "11-shop-fittings.png",
+      "title": "Shop fittings",
+      "prompt": "Four simple isolated store hardware props: top left unbranded compact CCTV security camera, pale gray rectangular housing and dark lens, short mounting bracket; top right slim black track light bar with three short cylindrical adjustable spotlights mounted along it, lights off; bottom left unbranded compact black point-of-sale monitor on simple angled pedestal stand, screen off; bottom right small wall mounted pale gray alarm keypad with blank dark display and nine broad plain buttons. No text on devices, no wiring tangles. Labels SECURITY CAMERA, TRACK LIGHTS, POS TERMINAL, ALARM KEYPAD."
+    },
+    {
+      "file": "12-small-props.png",
+      "title": "Small shop props",
+      "prompt": "Four isolated small jewelry store prop groups, each in its own cell: top left three simple unbranded beige paper shopping bags with broad handles, one upright and two lying flat; top right two empty slim charcoal jewelry transport trays stacked with upper tray offset; bottom left a small group of three plain gold rings and one simple gold bangle resting flat on white ground, no fine filigree; bottom right small walnut desk with one empty drawer slightly open, four straight legs, no objects on top. Labels SHOPPING BAGS, TRANSPORT TRAYS, DROPPED JEWELRY, OFFICE DESK. All parts supported physically, no floating pieces."
+    }
+  ]
+}
