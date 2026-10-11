@@ -23,9 +23,10 @@ public static class NightStoreValidation
     private const string RenderersKey = "NightStoreValidationRenderers";
 
     // VR budgets for a PC-tethered Quest (see Budgets). Each holds the measured scene
-    // with headroom for the instructor's tools; the transparency budget became
+    // with headroom for the instructor's tools (materials: +6 for the five staged NightGraphics
+    // sign materials, October 11, unverified); the transparency budget became
     // reachable once each case's panes were merged (NightStoreBuilder.MergeCaseGlass).
-    public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 90, TextureBudget = 2048;
+    public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 96, TextureBudget = 2048;
     public const int TransparentBudget = 70, FacadePaneBudget = 10;
     public const int LightmapBudget = 8, LightmapSizeBudget = 1024;
     // Realtime lights at once with a torch and two lit lamps; one of them may shadow.
@@ -52,6 +53,7 @@ public static class NightStoreValidation
             GameObject root = NightStoreBuilder.Build(true);
             StaticChecks(root.transform);
             DressingChecks(root.transform);
+            StagedAssetChecks(root.transform);
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             NightLighting.Apply(root.transform, camera);
             DemoValidation.SaveScene(L.SceneName);
@@ -196,6 +198,132 @@ public static class NightStoreValidation
         DemoValidation.Check(merged && groups >= 14 && combined >= groups && unbatched == 0, "Night dressing is combined by material");
     }
 
+    // ---------------------------------------------------------------- staged night assets
+
+    // Edit mode: the NightMaterials packed maps and finishes and the NightGraphics signs,
+    // each checked only when its files were synced into the project (otherwise the
+    // builder keeps the previous scalar finishes and places no sign, and this reports it).
+    private static void StagedAssetChecks(Transform root)
+    {
+        const string pack = StoreKit.NightMaterialPack;
+        int packed = 0, expected = 0;
+        bool maps = true;
+        foreach (KeyValuePair<Material, string> entry in StoreKit.PaletteTextures)
+        {
+            if (!DemoAssetLibrary.HasTexture(pack, entry.Value + "_MetallicSmoothness.png")) continue;
+            expected++;
+            Texture map = entry.Key.GetTexture("_MetallicGlossMap");
+            bool ok = map != null && map.name == entry.Value + "_MetallicSmoothness" && entry.Key.IsKeywordEnabled("_METALLICGLOSSMAP")
+                && entry.Key.GetFloat("_SmoothnessTextureChannel") == 0 && Mathf.Approximately(entry.Key.GetFloat("_GlossMapScale"), 1);
+            TextureImporter importer = map != null ? AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(map)) as TextureImporter : null;
+            ok &= importer != null && !importer.sRGBTexture;
+            if (ok) packed++;
+            maps &= ok;
+        }
+        DemoValidation.Info("Night materials with packed metallic-smoothness maps: " + packed + " of " + expected + " staged");
+        if (expected > 0) DemoValidation.Check(maps, "Night materials use packed metallic-smoothness maps");
+
+        bool ceiling = DemoAssetLibrary.HasTexture(pack, "CeilingPaint_Color.png") && !DemoAssetLibrary.HasTexture(StoreKit.TexturePack, "CeilingPaint_Color.png");
+        bool facade = DemoAssetLibrary.HasTexture(pack, "FacadeStone_Color.png") && !DemoAssetLibrary.HasTexture(StoreKit.TexturePack, "FacadeStone_Color.png");
+        if (ceiling || facade)
+        {
+            bool ok = true;
+            if (ceiling) ok &= Textured(root.Find(L.CeilingPath + "/CeilingSlab"), "CeilingPaint_Color");
+            if (facade) ok &= Textured(root.Find("Facade/Cladding"), "FacadeStone_Color");
+            DemoValidation.Check(ok, "Night ceiling and facade use the staged plaster and marble");
+        }
+        else DemoValidation.Info("Staged ceiling/facade finishes not present (or overridden by ReferenceTextures): skipped");
+
+        const string graphics = NightStoreBuilder.GraphicsPack;
+        if (DemoAssetLibrary.HasTexture(graphics, "ShopFascia.png"))
+        {
+            Transform sign = root.Find("Facade/" + NightStoreBuilder.FasciaSign);
+            bool ok = SignShows(sign, "ShopFascia") && sign.position.y > L.CeilingY && sign.position.y < L.ParapetY
+                && Mathf.Abs(sign.position.x) < 0.01f && sign.position.z < -0.2f && Vector3.Dot(sign.forward, Vector3.forward) > 0.99f;
+            DemoValidation.Check(ok, "Fascia shows the shop sign");
+        }
+        else DemoValidation.Info("NightGraphics fascia not present: skipped");
+        if (DemoAssetLibrary.HasTexture(graphics, "StaffOnly.png") && DemoAssetLibrary.HasTexture(graphics, "Closed.png"))
+        {
+            bool ok = SignShows(root.Find("Facade/EntranceDoors/DoorLeft/" + NightStoreBuilder.ClosedSign), "Closed");
+            foreach (string door in NightStoreBuilder.StaffDoors)
+                ok &= SignShows(root.Find("Office/" + door + "/Door/" + NightStoreBuilder.StaffSign), "StaffOnly");
+            DemoValidation.Check(ok, "Closed sign on the entrance door and Staff Only on the side-room doors");
+        }
+        else DemoValidation.Info("NightGraphics door signs not present: skipped");
+        if (DemoAssetLibrary.HasTexture(graphics, "CollectionRings.png") && DemoAssetLibrary.HasTexture(graphics, "CollectionNecklaces.png")
+            && !DemoAssetLibrary.Has(StoreKit.OverridePack, "sign_frame"))
+        {
+            bool ok = true;
+            foreach (string frame in NightStoreBuilder.RingSigns) ok &= SignShows(root.Find("Showroom/" + frame + "/" + NightStoreBuilder.CollectionSign), "CollectionRings");
+            foreach (string frame in NightStoreBuilder.NecklaceSigns) ok &= SignShows(root.Find("Showroom/" + frame + "/" + NightStoreBuilder.CollectionSign), "CollectionNecklaces");
+            DemoValidation.Check(ok, "Collection signs sit in the wall sign frames");
+        }
+        else DemoValidation.Info("NightGraphics collection signs not placed: skipped");
+        // Case decision pending (for Koda.md): no decal from the pack may be placed yet.
+        bool decals = false;
+        foreach (Renderer r in root.GetComponentsInChildren<Renderer>(true))
+            foreach (Material m in r.sharedMaterials)
+                if (m != null && m.mainTexture != null && (m.mainTexture.name.StartsWith("ShoeTrace") || m.mainTexture.name.StartsWith("Scuff") || m.mainTexture.name.StartsWith("DustSmear")))
+                    decals = true;
+        DemoValidation.Check(!decals, "Staged floor decals stay unplaced");
+    }
+
+    private static bool Textured(Transform t, string texture)
+    {
+        MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
+        if (r == null) return false;
+        foreach (Material m in r.sharedMaterials)
+            if (m != null && m.mainTexture != null && m.mainTexture.name == texture) return true;
+        return false;
+    }
+
+    // An opaque, non-emissive sign quad without a collider showing the named image.
+    private static bool SignShows(Transform t, string texture)
+    {
+        MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
+        Material m = r != null ? r.sharedMaterial : null;
+        return m != null && m.mainTexture != null && m.mainTexture.name == texture && m.renderQueue < 3000
+            && !m.IsKeywordEnabled("_EMISSION") && t.GetComponent<Collider>() == null;
+    }
+
+    // Play mode: with NightAudio synced the builder's DemoSoundBank supplies the recorded
+    // clips (as scene-referenced assets, so a player build carries them) in place of the
+    // generated ones; the generated clips stay available as the fallback.
+    private static void StagedSoundChecks()
+    {
+        DemoSoundBank bank = UnityEngine.Object.FindFirstObjectByType<DemoSoundBank>();
+        string[] files = { "CameraClick.wav", "FlashlightSwitch.wav", "ToolSetDown.wav", "PanelSelect.wav", "DistantAir_Loop.wav" };
+        bool any = false;
+        foreach (string file in files) any |= AssetDatabase.LoadAssetAtPath<AudioClip>(DemoAssetLibrary.Path(NightStoreBuilder.AudioPack, file)) != null;
+        bool generated = DemoSounds.Generated(DemoSound.Click) != null && DemoSounds.Generated(DemoSound.Thud) != null
+            && DemoSounds.Generated(DemoSound.Ambience) != null && DemoSounds.Generated(DemoSound.Ambience).length > 3;
+        if (!any)
+        {
+            DemoValidation.Info("NightAudio not present: generated sounds only");
+            DemoValidation.Check(bank == null && generated && DemoSounds.Clip(DemoSound.Thud) == DemoSounds.Generated(DemoSound.Thud),
+                "Generated sounds stay without staged audio");
+            return;
+        }
+        bool ok = bank != null && DemoSounds.Bank == bank && generated;
+        if (ok)
+        {
+            foreach (DemoSound sound in new[] { DemoSound.Shutter, DemoSound.Switch, DemoSound.Thud, DemoSound.Select, DemoSound.Ambience })
+            {
+                AudioClip clip = bank.ClipFor(sound);
+                if (clip == null) continue;
+                ok &= DemoSounds.Clip(sound) == clip && AssetDatabase.Contains(clip);
+            }
+            ok &= DemoSounds.Clip(DemoSound.Click) == DemoSounds.Generated(DemoSound.Click);
+        }
+        AmbientSound ambience = UnityEngine.Object.FindFirstObjectByType<AmbientSound>();
+        AudioSource source = ambience != null ? ambience.GetComponent<AudioSource>() : null;
+        bool bed = bank == null || bank.Ambience == null || (source != null && source.loop && source.clip == bank.Ambience);
+        DemoValidation.Info("Staged sounds: shutter=" + (bank != null && bank.CameraClick != null) + ", switch=" + (bank != null && bank.FlashlightSwitch != null)
+            + ", set-down=" + (bank != null && bank.ToolSetDown != null) + ", panel=" + (bank != null && bank.PanelSelect != null) + ", ambience=" + (bank != null && bank.Ambience != null));
+        DemoValidation.Check(ok && bed, "Staged sounds replace generated clips");
+    }
+
     // Edit mode, right after the bake (or without one): the lightmaps the scene ships.
     private static void LightmapChecks(bool bake)
     {
@@ -327,6 +455,7 @@ public static class NightStoreValidation
                 MapChecks();
                 InspectionChecks();
                 RealtimeLightChecks();
+                StagedSoundChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
             }

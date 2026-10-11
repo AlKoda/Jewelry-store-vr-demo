@@ -36,13 +36,13 @@ Prefer a small number of consistent assets. Do not commit whole unrelated asset 
 
 ## October 11 asset preparation
 
-See [batch report](ASSET_PREPARATION_2026-10-11.md) for previews and validation. These are staged, not assigned to the scene.
+See [batch report](ASSET_PREPARATION_2026-10-11.md) for previews and validation. Staged October 11; NightMaterials, NightGraphics (signs only) and NightAudio wired into the night store the same day (Status column; never compiled or run in Unity).
 
-| Pack | Source/author/license | Content and changes | Location |
-|---|---|---|---|
-| NightMaterials | ambientCG / Lennart Demes, CC0 1.0; project-authored constants | PaintedPlaster017 (512px) and Marble006 (1024px), Color/NormalGL/Roughness/packed metallic-smoothness; ten constant finish pairs. URLs/hashes in sources.json; no replacement of ReferenceTextures | Prototype/ThirdParty/NightMaterials |
-| NightGraphics | Original project vector artwork with Codex, no third-party restrictions | Fictional Aurel & Finch shop signs; generic tape, numbers, shoe/scuff/dust decals. Ten SVG/PNG pairs, no external font or logo | Prototype/ThirdParty/NightGraphics |
-| NightAudio | Kenney Interface Sounds 1.0, CC0 1.0; original project synthesis | Four selected OGG originals, prepared mono PCM16 WAVs (downmix/DC removal/level/fades), one 16-second synthetic ambience bed. URLs/hashes in sources.json | Prototype/ThirdParty/NightAudio |
-| NightModelReuse | Existing Kay Lousberg/KayKit City and Furniture Bits, CC0 1.0 | Manifest for 12 existing OBJ files with hashes, triangle counts, raw bounds and license paths. No new model download or geometry change | Prototype/ThirdParty/NightModelReuse |
+| Pack | Source/author/license | Content and changes | Location | Status |
+|---|---|---|---|---|
+| NightMaterials | ambientCG / Lennart Demes, CC0 1.0; project-authored constants | PaintedPlaster017 (512px) and Marble006 (1024px), Color/NormalGL/Roughness/packed metallic-smoothness; ten constant finish pairs. URLs/hashes in sources.json; no replacement of ReferenceTextures | Prototype/ThirdParty/NightMaterials | Wired, unverified: StoreKit.Surface assigns every `<Name>_MetallicSmoothness.png` as the Standard metallic map (linear import, smoothness from metallic alpha, scale 1); CeilingPaint Color/Normal (normal 0.25) on the night ceiling and FacadeStone (normal 0.4, 2 m tile) on KitCladding (piers, fascia band, parapet) unless ReferenceTextures has the same names. Roughness maps unused (source/interchange) |
+| NightGraphics | Original project vector artwork with Codex, no third-party restrictions | Fictional Aurel & Finch shop signs; generic tape, numbers, shoe/scuff/dust decals. Ten SVG/PNG pairs, no external font or logo | Prototype/ThirdParty/NightGraphics | Signs wired, unverified: ShopFascia on the fascia above the entrance, Closed inside the left entrance-door glass, StaffOnly on both side-room doors, CollectionRings/Necklaces in the left/right wall sign frames (opaque Standard, no emission). Decals, SceneTape and MarkerNumbers unused (decals await the case decision; TextMesh markers kept) |
+| NightAudio | Kenney Interface Sounds 1.0, CC0 1.0; original project synthesis | Four selected OGG originals, prepared mono PCM16 WAVs (downmix/DC removal/level/fades), one 16-second synthetic ambience bed. URLs/hashes in sources.json | Prototype/ThirdParty/NightAudio | Wired, unverified and not auditioned: NightStoreBuilder puts the WAVs (PCM, decompress on load) on a DemoSoundBank: shutter, torch/UV toggle, tool set-down, panel buttons, street ambience at the README volumes; generated clips remain the fallback. Originals/ unused |
+| NightModelReuse | Existing Kay Lousberg/KayKit City and Furniture Bits, CC0 1.0 | Manifest for 12 existing OBJ files with hashes, triangle counts, raw bounds and license paths. No new model download or geometry change | Prototype/ThirdParty/NightModelReuse | Manifest only; nothing wired |
 
 Each new pack has LICENSE.txt with source, author, license and modification details. Original bundled model notices and prior CC-BY obligations remain unchanged.

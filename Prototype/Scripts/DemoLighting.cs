@@ -239,7 +239,9 @@ public sealed class DemoLighting : MonoBehaviour
         mode = FindFirstObjectByType<DemoModeSwitch>();
     }
 
-    public void ToggleFlashlight() { Flashlight(!FlashlightOn); }
+    // Instructor and visitor toggles click (recorded switch from a DemoSoundBank, silent
+    // without one); Flashlight/UVTorch themselves stay silent for resets and scripts.
+    public void ToggleFlashlight() { Flashlight(!FlashlightOn); SwitchSound(white); }
 
     // Warm spot light at the lens of a visible torch model, created on first use and
     // re-attached whenever it is switched on, since the holder depends on the mode at
@@ -253,7 +255,13 @@ public sealed class DemoLighting : MonoBehaviour
         if (Session != null && Session.Station != null) Session.Station.UpdateLampShadows();
     }
 
-    public void ToggleUVTorch() { UVTorch(!UVTorchOn); }
+    public void ToggleUVTorch() { UVTorch(!UVTorchOn); SwitchSound(uv); }
+
+    private void SwitchSound(Torch torch)
+    {
+        Vector3 at = torch.Light != null ? torch.Light.transform.position : transform.position;
+        DemoSounds.Play(DemoSound.Switch, at, 0.25f);
+    }
 
     // Violet spot without shadows (the trace's own line-of-sight test keeps the glow
     // out of occluded places); switching it off darkens every trace at once.

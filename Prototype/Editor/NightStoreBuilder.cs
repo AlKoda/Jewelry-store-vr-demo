@@ -118,6 +118,7 @@ public static class NightStoreBuilder
         Facade(zone["Facade"]);
         Exterior(zone["Exterior"], useImportedAssets);
         foreach (L.Fixture f in L.Fixtures) Place(f, zone[f.Zone]);
+        InteriorSigns(zone["Showroom"], zone["Office"]);
         NightStoreDressing.Apply(zone["Dressing"], zone["Showroom"], Folder);
         MergeCaseGlass(zone["Showroom"]);
         foreach (string name in L.AnchorNames)
@@ -160,6 +161,7 @@ public static class NightStoreBuilder
         // Placeholder UV traces, hidden; the presenter panel shows them through DemoLighting.
         GameObject examples = UVTraceBuilder.NightExamples(root.transform);
         DemoToolsBuilder.Create(useImportedAssets, L.Tools);
+        StagedSounds();
         DemoLighting lighting = UnityEngine.Object.FindFirstObjectByType<DemoLighting>();
         if (lighting != null) lighting.UVExamples = examples;
         AssetDatabase.SaveAssets();
@@ -314,6 +316,83 @@ public static class NightStoreBuilder
         Slab(stone, solid, StoreKit.Cladding, V(L.MinX, L.CeilingY, front), V(L.MaxX, L.ParapetY, back));
         Slab(stone, null, StoreKit.Concrete, V(L.MinX - pier - 0.05f, L.ParapetY, front - 0.05f), V(L.MaxX + pier + 0.05f, L.ParapetY + 0.06f, back + 0.05f));
         stone.Emit("Cladding", parent, Vector3.zero, Quaternion.identity, Folder, "night_cladding");
+
+        // Shop name on the fascia band above the entrance, 5 mm proud of the cladding.
+        Sign(FasciaSign, "ShopFascia", parent, V(0, (L.CeilingY + L.ParapetY) * 0.5f, front - 0.005f), new Vector2(2.2f, 0.55f));
+        // Small Closed card inside the left door's glass, above the hole, read from the
+        // street; its plain back faces the shop.
+        Transform leaf = doors.transform.Find("DoorLeft");
+        if (leaf != null && Sign(ClosedSign, "Closed", leaf, V(0.4575f, 2.02f, -0.019f), new Vector2(0.4f, 0.2f)) != null)
+        {
+            GameObject card = Primitive(ClosedSign + "Back", PrimitiveType.Quad, leaf, V(0.4575f, 2.02f, -0.018f), new Vector3(0.4f, 0.2f, 1), StoreKit.Lacquer);
+            card.transform.localRotation = Quaternion.Euler(0, 180, 0);
+            card.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        }
+    }
+
+    // ---------------------------------------------------------------- staged signs and sounds
+
+    // Prototype/ThirdParty/NightGraphics (fictional Aurel & Finch family). The decals,
+    // tape and marker atlas in that pack are deliberately not placed here.
+    public const string GraphicsPack = "NightGraphics";
+    public const string FasciaSign = "FasciaSign", ClosedSign = "ClosedSign", StaffSign = "StaffOnlySign", CollectionSign = "CollectionSign";
+    public static readonly string[] StaffDoors = { "OfficeDoor", "ServiceDoor" };
+    // Collection signs in the procedural sign frames over the wall cases (rings left,
+    // necklaces right); the rear and counter frames keep their emblem.
+    public static readonly string[] RingSigns = { "Sign_Left0", "Sign_Left1", "Sign_Left2" };
+    public static readonly string[] NecklaceSigns = { "Sign_Right0", "Sign_Right1" };
+
+    // Opaque, unlit-by-emission Standard quad showing NightGraphics/<file>.png, facing the
+    // parent's -z; null (nothing placed) when the image is absent.
+    private static GameObject Sign(string name, string file, Transform parent, Vector3 position, Vector2 size)
+    {
+        Texture2D texture = DemoAssetLibrary.SignTexture(GraphicsPack, file + ".png");
+        if (texture == null) return null;
+        Material m = Mat(Folder, "NightSign_" + file, Color.white, 0.2f);
+        m.mainTexture = texture;
+        m.SetFloat("_Metallic", 0);
+        m.DisableKeyword("_EMISSION");
+        EditorUtility.SetDirty(m);
+        GameObject quad = Primitive(name, PrimitiveType.Quad, parent, position, new Vector3(size.x, size.y, 1), m);
+        quad.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        return quad;
+    }
+
+    // Staff Only on the showroom face of both closed side-room doors (on the leaf, so it
+    // would swing with it), and the collection signs inside the procedural sign frames
+    // (a user-converted sign_frame model keeps its own face).
+    private static void InteriorSigns(Transform showroom, Transform office)
+    {
+        foreach (string door in StaffDoors)
+        {
+            Transform leaf = office.Find(door + "/Door");
+            if (leaf != null) Sign(StaffSign, "StaffOnly", leaf, V(0.447f, 1.55f, -0.042f), new Vector2(0.4f, 0.2f));
+        }
+        if (DemoAssetLibrary.Has(StoreKit.OverridePack, "sign_frame")) return;
+        foreach (string[] group in new[] { RingSigns, NecklaceSigns })
+            foreach (string frame in group)
+            {
+                Transform t = showroom.Find(frame);
+                if (t != null) Sign(CollectionSign, group == RingSigns ? "CollectionRings" : "CollectionNecklaces", t, V(0, 0.35f, -0.026f), new Vector2(0.7f, 0.35f));
+            }
+    }
+
+    // Prototype/ThirdParty/NightAudio clips as assets on a DemoSoundBank beside the tool
+    // station, so they ship with the scene; without any file no bank is added and the
+    // generated sounds stay.
+    public const string AudioPack = "NightAudio";
+    private static void StagedSounds()
+    {
+        AmbientSound ambience = UnityEngine.Object.FindFirstObjectByType<AmbientSound>();
+        GameObject holder = new GameObject("StagedSounds");
+        if (ambience != null) holder.transform.SetParent(ambience.transform.parent, false);
+        DemoSoundBank bank = holder.AddComponent<DemoSoundBank>();
+        bank.CameraClick = DemoAssetLibrary.Audio(AudioPack, "CameraClick.wav");
+        bank.FlashlightSwitch = DemoAssetLibrary.Audio(AudioPack, "FlashlightSwitch.wav");
+        bank.ToolSetDown = DemoAssetLibrary.Audio(AudioPack, "ToolSetDown.wav");
+        bank.PanelSelect = DemoAssetLibrary.Audio(AudioPack, "PanelSelect.wav");
+        bank.Ambience = DemoAssetLibrary.Audio(AudioPack, "DistantAir_Loop.wav");
+        if (!bank.Any) UnityEngine.Object.DestroyImmediate(holder);
     }
 
     // ---------------------------------------------------------------- exterior

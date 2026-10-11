@@ -13,6 +13,8 @@ The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It superse
 - [x] Add bounded/occluded UV trace demonstration (placeholder traces hidden by default) and unbranded DSLR visual (unverified).
 - [x] Optional placeable scene lamp (unverified).
 - [x] Night tool prefabs styled like the shop's and saved in their own folder; carried lamp follows the staging-bay street level (Oct 11 audit, unverified).
+- [x] Wire the staged NightMaterials packed maps and ceiling/facade finishes, NightGraphics signs (fascia, Closed, Staff Only, collection) and NightAudio clips (DemoSoundBank) with fallbacks (Oct 11, unverified; decals, SceneTape and MarkerNumbers deliberately not placed).
+- [ ] Audition the NightAudio clips in Unity/headset and check sign readability and the marble/plaster maps under the flashlight.
 - [ ] Replace ReferenceTextures test placeholders and procedural StoreKit pieces with the user's final textures and converted models (same names; overrides apply only to Instantiate-placed fixtures, stateful cases/safes/doors/windows/dressing props need a builder change that keeps their Door/Lid/Glass_* children).
 - [ ] Re-stage robbery evidence, verify reset/photos and profile on Quest.
 - [ ] Resume store materials after the blockout is accepted.

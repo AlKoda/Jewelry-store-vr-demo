@@ -1,6 +1,7 @@
 using UnityEngine;
 
-// Quiet generated street ambience looping from the storefront.
+// Quiet street ambience looping from the storefront: the generated loop, or the
+// recorded one (at the bank's level) when a DemoSoundBank supplies it.
 [RequireComponent(typeof(AudioSource))]
 public sealed class AmbientSound : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public sealed class AmbientSound : MonoBehaviour
         source.spatialBlend = 0.6f;
         source.minDistance = 3;
         source.maxDistance = 25;
-        source.volume = Volume;
+        if (DemoSounds.Staged(DemoSound.Ambience) != null) source.dopplerLevel = 0;
+        source.volume = DemoSounds.Volume(DemoSound.Ambience, Volume);
         source.Play();
     }
 }

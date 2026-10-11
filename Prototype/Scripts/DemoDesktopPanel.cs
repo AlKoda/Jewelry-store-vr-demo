@@ -122,6 +122,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private void OnGUI()
     {
         if (panel == null) BuildStyles();
+        // A button or toggle that takes the mouse release uses the event: answer it with
+        // the recorded panel click (DemoSoundBank; silent without one).
+        bool release = Event.current.type == EventType.MouseUp;
         if (Looking) GUI.Box(new Rect(Screen.width / 2f - 3, Screen.height / 2f - 3, 6, 6), GUIContent.none);
         GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1));
         bool vr = Interactor != null && !Interactor.isActiveAndEnabled;
@@ -129,6 +132,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         else if (Layout == PanelLayout.Strip) DrawStrip(vr);
         else DrawFull(vr);
         GUI.matrix = Matrix4x4.identity;
+        if (release && Event.current.type == EventType.Used) DemoSounds.PlayInterface(DemoSound.Select);
     }
 
     // Hint bar for the desktop visitor and, while the camera is carried, the live

@@ -230,7 +230,10 @@ public sealed class EvidenceCamera : MonoBehaviour
         // The shutter fires at the moment of capture; encoding and writing the
         // PNG (about 100 ms at 1920x1080) run off the main thread so neither the
         // headset nor the presenter view drops frames.
-        if (shutterAudio != null && shutterAudio.clip != null) shutterAudio.Play();
+        // A recorded shutter (DemoSoundBank) replaces the generated click, never both.
+        AudioClip staged=DemoSounds.Staged(DemoSound.Shutter);
+        if (shutterAudio != null && staged != null) shutterAudio.PlayOneShot(staged,DemoSounds.Volume(DemoSound.Shutter,1));
+        else if (shutterAudio != null && shutterAudio.clip != null) shutterAudio.Play();
         Shutter.Invoke();
         Status="Saving...";
         int number=sequence+1;

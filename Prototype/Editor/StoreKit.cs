@@ -161,7 +161,8 @@ public static partial class StoreKit
         Floor = Surface("KitFloorTile", new Color(0.80f, 0.74f, 0.64f), 0.55f, 0, "FloorTile", 1.2f);
         Plaster = Surface("KitPlaster", new Color(0.80f, 0.76f, 0.69f), 0.12f, 0, "PlasterWarm", 2.0f);
         CeilingPaint = Surface("KitCeiling", new Color(0.86f, 0.85f, 0.82f), 0.08f, 0, "CeilingPaint", 2.0f);
-        Cladding = Surface("KitCladding", new Color(0.33f, 0.32f, 0.31f), 0.35f, 0, null, 1);
+        // Facade piers, fascia band and parapet: the staged dark marble when present.
+        Cladding = Surface("KitCladding", new Color(0.33f, 0.32f, 0.31f), 0.35f, 0, "FacadeStone", 2.0f);
         Pavement = Surface("KitPavement", new Color(0.46f, 0.45f, 0.43f), 0.35f, 0, "PavementSlab", 1.2f);
         // Wet asphalt: dark and glossy, so headlights and streetlights streak in the baked probes.
         Asphalt = Surface("KitAsphalt", new Color(0.09f, 0.09f, 0.10f), 0.7f, 0, "AsphaltWet", 3.0f);
@@ -198,9 +199,24 @@ public static partial class StoreKit
         { "PavementSlab", "Pavement" }, { "AsphaltWet", "Asphalt" }
     };
 
+    // Staged night finishes (Prototype/ThirdParty/NightMaterials): Color/Normal for the
+    // ceiling and facade, packed <texture>_MetallicSmoothness maps for every textured
+    // palette surface. Normal strengths are the pack README's starting values.
+    public const string NightMaterialPack = "NightMaterials";
+    private static readonly Dictionary<string, float> NightBump = new Dictionary<string, float>
+    {
+        { "CeilingPaint", 0.25f }, { "FacadeStone", 0.4f }
+    };
+
+    // Palette materials with a texture name, for the validator's packed-map check.
+    private static readonly Dictionary<Material, string> paletteTextures = new Dictionary<Material, string>();
+    public static IEnumerable<KeyValuePair<Material, string>> PaletteTextures => paletteTextures;
+
     // Standard material; with ReferenceTextures/<texture>_Color.png present (else the
-    // GeneratedTextures stand-in) the texture carries the colour (light tint kept) and
-    // tiles once per `metres` on metric UVs.
+    // NightMaterials set, else the GeneratedTextures stand-in) the texture carries the
+    // colour (light tint kept) and tiles once per `metres` on metric UVs. A packed
+    // NightMaterials/<texture>_MetallicSmoothness.png replaces the scalar metallic and
+    // smoothness (the constant ones match them); without it the scalars stay.
     private static Material Surface(string name, Color color, float smoothness, float metallic, string texture, float metres)
     {
         Material m = Mat(Folder, name, color, smoothness);
@@ -209,16 +225,27 @@ public static partial class StoreKit
         m.SetTexture("_BumpMap", null);
         m.DisableKeyword("_NORMALMAP");
         m.mainTextureScale = Vector2.one / metres;
+        DemoAssetLibrary.ApplyMetallicSmoothness(m, null);
         if (texture != null)
         {
+            paletteTextures[m] = texture;
+            float bump = 0.8f;
             Texture2D albedo = DemoAssetLibrary.Texture(TexturePack, texture + "_Color.png");
             Texture2D normal = albedo != null ? DemoAssetLibrary.NormalMap(TexturePack, texture + "_Normal.png") : null;
+            if (albedo == null && NightBump.TryGetValue(texture, out float nightBump))
+            {
+                albedo = DemoAssetLibrary.Texture(NightMaterialPack, texture + "_Color.png");
+                normal = albedo != null ? DemoAssetLibrary.NormalMap(NightMaterialPack, texture + "_Normal.png") : null;
+                bump = nightBump;
+            }
             if (albedo == null && GeneratedFallback.TryGetValue(texture, out string generated))
             {
                 albedo = DemoAssetLibrary.Texture(FallbackTexturePack, generated + ".png");
                 normal = albedo != null ? DemoAssetLibrary.NormalMap(FallbackTexturePack, generated + "_Normal.png") : null;
+                bump = 0.8f;
             }
-            if (albedo != null) DemoAssetLibrary.ApplyTextures(m, albedo, normal, 0.8f);
+            if (albedo != null) DemoAssetLibrary.ApplyTextures(m, albedo, normal, bump);
+            DemoAssetLibrary.ApplyMetallicSmoothness(m, DemoAssetLibrary.DataMap(NightMaterialPack, texture + "_MetallicSmoothness.png"));
         }
         EditorUtility.SetDirty(m);
         return m;

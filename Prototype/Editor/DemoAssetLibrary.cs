@@ -72,6 +72,77 @@ public static class DemoAssetLibrary
         return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
     }
 
+    // A linear data texture from a pack (packed metallic/smoothness, roughness): imported
+    // with sRGB off the first time; null when the file is absent.
+    public static Texture2D DataMap(string pack, string file)
+    {
+        string path = Path(pack, file);
+        TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null) return null;
+        if (importer.textureType != TextureImporterType.Default || importer.sRGBTexture)
+        {
+            importer.textureType = TextureImporterType.Default;
+            importer.sRGBTexture = false;
+            importer.SaveAndReimport();
+        }
+        return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+    }
+
+    // A sign or label image (sRGB, mipmapped, clamped so the edges do not bleed);
+    // null when the file is absent.
+    public static Texture2D SignTexture(string pack, string file)
+    {
+        string path = Path(pack, file);
+        TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
+        if (importer == null) return null;
+        if (importer.textureType != TextureImporterType.Default || !importer.sRGBTexture || !importer.mipmapEnabled
+            || importer.wrapMode != TextureWrapMode.Clamp)
+        {
+            importer.textureType = TextureImporterType.Default;
+            importer.sRGBTexture = true;
+            importer.mipmapEnabled = true;
+            importer.wrapMode = TextureWrapMode.Clamp;
+            importer.SaveAndReimport();
+        }
+        return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+    }
+
+    // An audio clip from a pack as an asset, so a scene component can reference it and
+    // it ships in a player build (uncompressed PCM, decompressed on load: these are a
+    // few short mono clips); null when the file is absent.
+    public static AudioClip Audio(string pack, string file)
+    {
+        string path = Path(pack, file);
+        AudioImporter importer = AssetImporter.GetAtPath(path) as AudioImporter;
+        if (importer == null) return null;
+        AudioImporterSampleSettings settings = importer.defaultSampleSettings;
+        if (settings.compressionFormat != AudioCompressionFormat.PCM || settings.loadType != AudioClipLoadType.DecompressOnLoad)
+        {
+            settings.compressionFormat = AudioCompressionFormat.PCM;
+            settings.loadType = AudioClipLoadType.DecompressOnLoad;
+            importer.defaultSampleSettings = settings;
+            importer.SaveAndReimport();
+        }
+        return AssetDatabase.LoadAssetAtPath<AudioClip>(path);
+    }
+
+    // Built-in Standard metallic workflow with a packed map (R metallic, A smoothness):
+    // smoothness from the metallic alpha at multiplier 1. null clears the map, so a
+    // regenerated material falls back to its scalar metallic and smoothness.
+    public static void ApplyMetallicSmoothness(Material m, Texture2D packed)
+    {
+        m.SetTexture("_MetallicGlossMap", packed);
+        if (packed == null)
+        {
+            m.DisableKeyword("_METALLICGLOSSMAP");
+            return;
+        }
+        m.EnableKeyword("_METALLICGLOSSMAP");
+        m.DisableKeyword("_SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A");
+        m.SetFloat("_SmoothnessTextureChannel", 0);
+        m.SetFloat("_GlossMapScale", 1);
+    }
+
     // Gives a saved material an albedo (the texture carries the colour, a light tint of
     // the saved colour is kept so it does not darken it) and an optional normal map.
     public static void ApplyTextures(Material m, Texture2D albedo, Texture2D normal, float bump)

@@ -1,26 +1,61 @@
 using UnityEngine;
 
-public enum DemoSound { Click, Thud, Ambience }
+// Shutter, Switch and Select have no generated version: they sound only when a
+// DemoSoundBank supplies a recorded clip. New values go at the end (the index is stored).
+public enum DemoSound { Click, Thud, Ambience, Shutter, Switch, Select }
 
 // Small generated sounds, so the demo has audio feedback without audio assets:
 // a click when a tool is taken, a thud when it is set down, and a quiet
-// street-ambience loop. Clips are built once per session.
+// street-ambience loop. Clips are built once per session. A DemoSoundBank in the
+// scene (the night store's, filled from Prototype/ThirdParty/NightAudio by the
+// builder) replaces them with recorded clips at its own volumes; an empty slot
+// keeps the generated sound.
 public static class DemoSounds
 {
     private const int SampleRate = 22050;
     private static readonly AudioClip[] clips = new AudioClip[3];
+    private static DemoSoundBank bank;
 
+    public static DemoSoundBank Bank => bank;
+
+    public static void Use(DemoSoundBank soundBank) { bank = soundBank; }
+    public static void Release(DemoSoundBank soundBank) { if (bank == soundBank) bank = null; }
+
+    // The bank's recorded clip for the sound, or null.
+    public static AudioClip Staged(DemoSound sound) => bank != null ? bank.ClipFor(sound) : null;
+
+    // The recorded clip when a bank supplies one, else the generated clip (null for
+    // the sounds that have none).
     public static AudioClip Clip(DemoSound sound)
     {
+        AudioClip staged = Staged(sound);
+        return staged != null ? staged : Generated(sound);
+    }
+
+    public static AudioClip Generated(DemoSound sound)
+    {
         int index = (int)sound;
+        if (index >= clips.Length) return null;
         if (clips[index] == null) clips[index] = Build(sound);
         return clips[index];
     }
 
+    // volume applies to the generated clip; a recorded one plays at the bank's level.
+    public static float Volume(DemoSound sound, float generatedVolume)
+        => Staged(sound) != null ? bank.VolumeFor(sound) : generatedVolume;
+
     public static void Play(DemoSound sound, Vector3 position, float volume = 0.6f)
     {
         AudioClip clip = Clip(sound);
-        if (clip != null) AudioSource.PlayClipAtPoint(clip, position, volume);
+        if (clip != null) AudioSource.PlayClipAtPoint(clip, position, Volume(sound, volume));
+    }
+
+    // Non-spatial feedback (presenter panel buttons) through the bank's 2D source;
+    // silent without a bank or a recorded clip.
+    public static void PlayInterface(DemoSound sound)
+    {
+        AudioClip clip = Staged(sound);
+        if (clip != null && bank.Interface != null) bank.Interface.PlayOneShot(clip, bank.VolumeFor(sound));
     }
 
     private static AudioClip Build(DemoSound sound)
