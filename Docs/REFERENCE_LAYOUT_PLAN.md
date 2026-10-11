@@ -1,4 +1,6 @@
 # Reference-based store layout
+
+**Eight generated modeling references are now available:** [gallery and original PNGs](LayoutReferences/NightStore/README.md). These are concept images, not a tested build; use the written layout for dimensions and read the gallery's consistency notes.
 October 11, 2026 — design plan, not an implemented or tested scene.
 
 Reference: [store-reference.jpg](../store-reference.jpg), inspected visually. Git blob: 967fbbf953a426fe0b700551a65986b589243754. The larger original screenshot remains in the repository.

@@ -1,0 +1,58 @@
+[
+  {
+    "file": "01-cutaway-overview.png",
+    "title": "Cutaway overview — primary spatial reference",
+    "view": "High south-west isometric. Roof hidden only for illustration; diagnostic lighting.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "diagnostic modeling illumination"
+  },
+  {
+    "file": "02-night-exterior-wide.png",
+    "title": "Night exterior — wide frontage and arrival",
+    "view": "Exterior south, facing north. Parked car and headlight mood; facade dimensions still follow the plan.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "night scenario concept"
+  },
+  {
+    "file": "03-entrance-interior-wide.png",
+    "title": "Entrance interior — main showroom sightline",
+    "view": "Entrance facing rear office. Diagnostic lights on for shape readability.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "diagnostic modeling illumination"
+  },
+  {
+    "file": "04-left-display-aisle.png",
+    "title": "Left display aisle — circulation and wall cases",
+    "view": "Left-side aisle view. Illustrative perspective, not a surveyed camera transform.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "diagnostic modeling illumination"
+  },
+  {
+    "file": "05-right-aisle-and-seating.png",
+    "title": "Right aisle and seating — southeast corner",
+    "view": "Front-right corner toward center/rear. Sofa/table should remain in southeast zone.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "diagnostic modeling illumination"
+  },
+  {
+    "file": "06-central-display-detail.png",
+    "title": "Central display detail — glass, cabinetry and drawer",
+    "view": "South face of center island. Construction/material reference only; simplify mesh details.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "diagnostic modeling illumination"
+  },
+  {
+    "file": "07-rear-safe-office.png",
+    "title": "Rear safe office — two safes and workstation",
+    "view": "Rear office from its south opening. Keep exactly two safes, not a new room layout.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "diagnostic modeling illumination"
+  },
+  {
+    "file": "08-night-entrance-closeup.png",
+    "title": "Night entrance close-up — broken frontage and light",
+    "view": "Pavement at central threshold facing north. Lights-off scenario mood and supported debris.",
+    "kind": "AI-generated concept reference; not Unity render",
+    "lighting": "night scenario concept"
+  }
+]

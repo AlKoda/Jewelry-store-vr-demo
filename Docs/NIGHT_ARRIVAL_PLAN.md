@@ -1,4 +1,6 @@
 # Expanded store: nighttime first-response scenario
+
+**Eight generated modeling references are now available:** [gallery and original PNGs](LayoutReferences/NightStore/README.md). These are concept images, not a tested build; use the written layout for dimensions and read the gallery's consistency notes.
 October 11, 2026 — planning only; no scene, code or asset changes made.
 
 ## Direction and scenario
