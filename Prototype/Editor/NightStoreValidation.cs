@@ -321,6 +321,8 @@ public static class NightStoreValidation
                 WalkChecks();
                 TeleportChecks();
                 PlacementChecks();
+                ToolStylingChecks();
+                CarriedLampChecks();
                 GlassChecks();
                 MapChecks();
                 InspectionChecks();
@@ -668,6 +670,48 @@ public static class NightStoreValidation
         interactor.ReadDesktopInput = false;
         DemoValidation.Check(Place(interactor, new Vector3(3, 0, -1.5f)), "Tools can be placed on the pavement");
         DemoValidation.Check(Place(interactor, new Vector3(6.5f, L.StreetY, -4.0f)), "Tools can be placed in the staging bay");
+    }
+
+    // The night build styles its own tool prefabs (DemoToolsBuilder.StyleStation) in its
+    // own folder, so it never overwrites the shop's GeneratedTools prefabs.
+    private static void ToolStylingChecks()
+    {
+        ToolStation station = DemoValidation.Find<ToolStation>();
+        Material black = null, white = null;
+        foreach (MeshRenderer r in station.ScalePrefab.GetComponentsInChildren<MeshRenderer>())
+        {
+            if (r.name == "BandBlack") black = r.sharedMaterial;
+            if (r.name == "BandWhite") white = r.sharedMaterial;
+        }
+        bool bands = black != null && white != null && black != white && black.name != "Default-Material" && white.name != "Default-Material";
+        TextMesh number = station.MarkerPrefab.NumberLabel;
+        MeshRenderer numberRenderer = number != null ? number.GetComponent<MeshRenderer>() : null;
+        bool label = number != null && number.GetComponent<DepthTestedLabel>() != null && numberRenderer.sharedMaterial != null
+            && numberRenderer.sharedMaterial.shader.name == "CrimeScene/WorldText";
+        MeshRenderer ribbon = station.TapePrefab != null && station.TapePrefab.Ribbon != null ? station.TapePrefab.Ribbon.GetComponent<MeshRenderer>() : null;
+        bool tape = ribbon != null && ribbon.sharedMaterial != null && ribbon.sharedMaterial.shader.name == "CrimeScene/Tape"
+            && station.TapePrefab.FrontWarning != null && station.TapePrefab.BackWarning != null;
+        DemoValidation.Check(bands && label && tape, "Night tool prefabs are styled (scale bands, depth-tested numbers, police tape)");
+        bool own = true;
+        foreach (UnityEngine.Object prefab in new UnityEngine.Object[] { station.ConePrefab, station.MarkerPrefab, station.TapePostPrefab,
+            station.ScalePrefab, station.MeasurePrefab, station.LampPrefab, station.TapePrefab, station.MeasureTapePrefab })
+            own &= prefab != null && AssetDatabase.GetAssetPath(prefab).StartsWith(NightStoreBuilder.Folder + "/");
+        DemoValidation.Check(own, "Night tool prefabs live in the night store's own folder");
+    }
+
+    // A lamp carried low over the staging bay rests its feet on the street, not at the
+    // showroom floor height (HandInteractor clamps to Bounds.FloorAt).
+    private static void CarriedLampChecks()
+    {
+        DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
+        HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
+        Vector3 position = hand.transform.position;
+        hand.transform.position = new Vector3(6.5f, 0.3f, -4.0f);
+        DeployedTool lamp = hand.SpawnIntoHand(DemoToolKind.Lamp);
+        float lampBase = lamp != null ? lamp.transform.position.y : 99;
+        if (lamp != null) hand.RemoveHeld();
+        hand.transform.position = position;
+        DemoValidation.Check(lamp != null && Mathf.Abs(lampBase - L.StreetY) < 0.001f, "Carried lamp rests on the street in the staging bay");
     }
 
     private static bool Place(DesktopInteractor interactor, Vector3 floor)

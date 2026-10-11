@@ -1,11 +1,15 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using static DemoGeometry;
 
 public static class DemoToolsBuilder
 {
-    private const string Folder="Assets/CrimeSceneDemo/GeneratedTools";
+    private const string DefaultFolder="Assets/CrimeSceneDemo/GeneratedTools";
+    // Where Create saves prefabs, meshes, materials and the cookie: the layout's own
+    // folder, so one store's build never overwrites another store's tool prefabs.
+    private static string Folder=DefaultFolder;
 
     // Where the station's pieces go, in the store root's space (all stores sit at the
     // world origin). Shop reproduces the original small shop exactly; the night store
@@ -26,6 +30,12 @@ public static class DemoToolsBuilder
         public Vector3 StatusBoard; public float StatusBoardYaw;
         public Vector3 Ambience;
         public Vector2 MapCentre; public float MapHalfSize;
+        // Asset folder for this layout's tool prefabs; null keeps GeneratedTools (the shop).
+        public string AssetFolder;
+        // Style the prefabs here (materials, depth-tested labels, police tape) before the
+        // rack samples are made. The shop leaves this off: its later passes
+        // (ShopPresentationExpansion, ShopGlassRefinement) style the same prefabs.
+        public bool Styled;
 
         // Half-size samples spaced 26 cm apart along the 1.4 m rack top (x -4.3 to -2.9);
         // the flat L-scale takes the middle slot because the handheld camera rests 15 cm
@@ -61,8 +71,8 @@ public static class DemoToolsBuilder
             EditorUtility.DisplayDialog("Already created","Remove the existing ToolSystem before creating another.","OK");
             return;
         }
-        EnsureFolder("Assets/CrimeSceneDemo");
-        EnsureFolder(Folder);
+        Folder=string.IsNullOrEmpty(layout.AssetFolder)?DefaultFolder:layout.AssetFolder;
+        EnsureFolderPath(Folder);
 
         GameObject root=new GameObject("ToolSystem");
         root.transform.SetParent(store.transform,false);
@@ -81,6 +91,10 @@ public static class DemoToolsBuilder
         station.ScalePrefab=SaveTool(DemoToolKind.Scale,useImportedAssets);
         station.MeasurePrefab=SaveTool(DemoToolKind.Measure,useImportedAssets);
         station.LampPrefab=SaveTool(DemoToolKind.Lamp,useImportedAssets);
+        station.TapePrefab=SaveTape(DemoToolGeometry.CreateTape(),"SceneTape");
+        station.MeasureTapePrefab=SaveTape(DemoToolGeometry.CreateMeasureTape(),"MeasureTape");
+        // Styled before the samples, so the rack samples are instantiated from styled prefabs.
+        Material labelMaterial=layout.Styled?StyleStation(station,Folder):null;
         // Clicking or grabbing a rack sample spawns a new tool.
         Transform rack=root.transform;
         Sample(station.ConePrefab,rack,layout.Cone);
@@ -89,8 +103,6 @@ public static class DemoToolsBuilder
         Sample(station.TapePostPrefab,rack,layout.TapePost);
         Sample(station.MeasurePrefab,rack,layout.Measure);
         if(layout.Lamp.HasValue) Sample(station.LampPrefab,rack,layout.Lamp.Value);
-        station.TapePrefab=SaveTape(DemoToolGeometry.CreateTape(),"SceneTape");
-        station.MeasureTapePrefab=SaveTape(DemoToolGeometry.CreateMeasureTape(),"MeasureTape");
 
         GameObject spawn=new GameObject("SpawnPoint");
         spawn.transform.SetParent(root.transform,false);
@@ -176,6 +188,7 @@ public static class DemoToolsBuilder
         boardText.characterSize=0.02f;
         boardText.color=new Color(0.92f,0.86f,0.62f);
         DeployedTool.EnsureFont(boardText);
+        if(labelMaterial!=null) DepthTested(boardText,labelMaterial);
         DemoStatusBoard board=boardObject.AddComponent<DemoStatusBoard>();
         board.Station=station;
         board.Session=session;
@@ -357,8 +370,7 @@ public static class DemoToolsBuilder
     // keep them. Existing assets are updated in place to keep their references.
     public static void Persist(GameObject root,string prefix)
     {
-        EnsureFolder("Assets/CrimeSceneDemo");
-        EnsureFolder(Folder);
+        EnsureFolderPath(Folder);
         foreach(MeshFilter filter in root.GetComponentsInChildren<MeshFilter>(true))
         {
             Mesh mesh=filter.sharedMesh;
@@ -391,8 +403,7 @@ public static class DemoToolsBuilder
     {
         const int size=128;
         string path=Folder+"/FlashlightCookie.asset";
-        EnsureFolder("Assets/CrimeSceneDemo");
-        EnsureFolder(Folder);
+        EnsureFolderPath(Folder);
         Texture2D cookie=AssetDatabase.LoadAssetAtPath<Texture2D>(path);
         bool create=cookie==null || !cookie.isReadable || cookie.width!=size || cookie.height!=size;
         if(create) cookie=new Texture2D(size,size,TextureFormat.RGBA32,true,true) {name="FlashlightCookie"};
@@ -421,6 +432,138 @@ public static class DemoToolsBuilder
         else EditorUtility.SetDirty(cookie);
         AssetDatabase.SaveAssets();
         return cookie;
+    }
+
+    // Creates every missing folder along an Assets/... path.
+    private static void EnsureFolderPath(string path)
+    {
+        string[] parts=path.Split('/');
+        string current=parts[0];
+        for(int i=1;i<parts.Length;i++) { current+="/"+parts[i]; EnsureFolder(current); }
+    }
+
+    // ---------------------------------------------------------------- tool styling
+    // The presentation pass for the tool prefabs, shared by the shop's passes
+    // (ShopPresentationExpansion.StyleTools, ShopGlassRefinement.StyleTape) and by Create
+    // for layouts with Styled set (the night store). Materials live in the given
+    // folder under the shop's names; returns the depth-tested label material.
+    public static Material StyleStation(ToolStation station,string folder)
+    {
+        EnsureFolderPath(folder);
+        Material charcoal=DemoGeometry.Mat(folder,"Graphite",new Color(.10f,.12f,.13f),.18f);
+        Material ivory=DemoGeometry.Mat(folder,"Linen",new Color(.82f,.77f,.63f),.18f);
+        Material orange=DemoGeometry.Mat(folder,"ConeOrange",new Color(.95f,.29f,.03f),.18f);
+        Material yellow=DemoGeometry.Mat(folder,"EvidenceYellow",new Color(.95f,.75f,.08f),.18f);
+        Material label=ShaderMaterial(folder,"ToolNumber","CrimeScene/WorldText");
+        Material tape=ShaderMaterial(folder,"PoliceTape","CrimeScene/Tape");
+        StylePrefabs(station,charcoal,ivory,yellow,orange,label);
+        StyleSceneTape(station,tape,FlexibleRibbon(folder+"/FlexibleRibbon.asset"),label);
+        AssetDatabase.SaveAssets();
+        return label;
+    }
+
+    private static Material ShaderMaterial(string folder,string name,string shader)
+    {
+        string path=folder+"/"+name+".mat";
+        Material material=AssetDatabase.LoadAssetAtPath<Material>(path);
+        if(material==null) { material=new Material(Shader.Find(shader)); AssetDatabase.CreateAsset(material,path); }
+        return material;
+    }
+
+    // Charcoal/ivory scale bands, yellow markers and reels, orange cone, depth-tested
+    // black numbers; the measuring tape gets a yellow ribbon, charcoal caps and a
+    // depth-tested distance label. Imported textured models and DemoToolGeometry's own
+    // painted parts (cone, stanchion, lamp) keep their materials.
+    public static void StylePrefabs(ToolStation station,Material charcoal,Material ivory,Material yellow,Material orange,Material labelMat)
+    {
+        foreach(DeployedTool prefab in new []{station.ConePrefab,station.MarkerPrefab,station.TapePostPrefab,station.ScalePrefab,station.MeasurePrefab,station.LampPrefab})
+        {
+            if(prefab==null) continue;
+            string path=AssetDatabase.GetAssetPath(prefab);
+            GameObject contents=PrefabUtility.LoadPrefabContents(path);
+            foreach(MeshRenderer r in contents.GetComponentsInChildren<MeshRenderer>())
+            {
+                TextMesh text=r.GetComponent<TextMesh>();
+                if(text!=null) { DepthTested(text,labelMat); text.color=Color.black; }
+                else if(r.sharedMaterial!=null && (r.sharedMaterial.mainTexture!=null || DemoToolGeometry.IsPainted(r.sharedMaterial))) continue;
+                else if(prefab.Kind==DemoToolKind.Scale) r.sharedMaterial=r.name=="BandBlack"?charcoal:ivory;
+                else if(prefab.Kind==DemoToolKind.Measure) r.sharedMaterial=r.name=="Body"?yellow:charcoal;
+                else r.sharedMaterial=prefab.Kind==DemoToolKind.Cone?orange:
+                    prefab.Kind==DemoToolKind.Marker?yellow:charcoal;
+            }
+            PrefabUtility.SaveAsPrefabAsset(contents,path);PrefabUtility.UnloadPrefabContents(contents);
+        }
+        string tapePath=AssetDatabase.GetAssetPath(station.TapePrefab);
+        GameObject tape=PrefabUtility.LoadPrefabContents(tapePath);
+        tape.GetComponentInChildren<MeshRenderer>().sharedMaterial=yellow;
+        PrefabUtility.SaveAsPrefabAsset(tape,tapePath);PrefabUtility.UnloadPrefabContents(tape);
+        string measurePath=AssetDatabase.GetAssetPath(station.MeasureTapePrefab);
+        GameObject measure=PrefabUtility.LoadPrefabContents(measurePath);
+        Transform ribbon=measure.GetComponent<SceneTape>().Ribbon;
+        foreach(MeshRenderer r in measure.GetComponentsInChildren<MeshRenderer>())
+        {
+            TextMesh text=r.GetComponent<TextMesh>();
+            if(text!=null) DepthTested(text,labelMat);
+            else r.sharedMaterial=r.transform==ribbon?yellow:charcoal;
+        }
+        PrefabUtility.SaveAsPrefabAsset(measure,measurePath);PrefabUtility.UnloadPrefabContents(measure);
+    }
+
+    // Barrier tape: flexible ribbon mesh, CrimeScene/Tape material and depth-tested
+    // CRIME SCENE warnings on both faces (added once; a re-run reuses them).
+    public static void StyleSceneTape(ToolStation station,Material tape,Mesh ribbonMesh,Material ink)
+    {
+        string path=AssetDatabase.GetAssetPath(station.TapePrefab);
+        GameObject contents=PrefabUtility.LoadPrefabContents(path);
+        SceneTape component=contents.GetComponent<SceneTape>();
+        MeshRenderer ribbon=component.Ribbon!=null?component.Ribbon.GetComponent<MeshRenderer>():null;
+        if(ribbon==null) ribbon=contents.GetComponentInChildren<MeshRenderer>();
+        ribbon.GetComponent<MeshFilter>().sharedMesh=ribbonMesh;
+        ribbon.sharedMaterial=tape;
+        TextMesh front=component.FrontWarning!=null?component.FrontWarning:
+            Text("FrontWarning",contents.transform,"CRIME SCENE - DO NOT CROSS",Vector3.zero,90,.012f,Color.black);
+        TextMesh back=component.BackWarning!=null?component.BackWarning:
+            Text("BackWarning",contents.transform,"CRIME SCENE - DO NOT CROSS",Vector3.zero,-90,.012f,Color.black);
+        foreach(TextMesh text in new[]{front,back})
+        {
+            DepthTestedLabel label=text.GetComponent<DepthTestedLabel>();
+            if(label==null) label=text.gameObject.AddComponent<DepthTestedLabel>();
+            label.LabelMaterial=ink;label.Refresh();
+        }
+        component.FrontWarning=front;component.BackWarning=back;
+        PrefabUtility.SaveAsPrefabAsset(contents,path);PrefabUtility.UnloadPrefabContents(contents);
+    }
+
+    // Unit box ribbon in eight segments along z (SceneTape scales it to the run).
+    public static Mesh FlexibleRibbon(string path)
+    {
+        var vertices=new List<Vector3>();var triangles=new List<int>();
+        for(int i=0;i<=8;i++)
+        {
+            float z=-.5f+i/8f;
+            vertices.Add(V(-.5f,-.5f,z));vertices.Add(V(.5f,-.5f,z));
+            vertices.Add(V(.5f,.5f,z));vertices.Add(V(-.5f,.5f,z));
+        }
+        for(int i=0;i<8;i++)for(int j=0;j<4;j++)
+        {
+            int a=i*4+j,b=i*4+(j+1)%4,c=b+4,d=a+4;
+            triangles.Add(a);triangles.Add(b);triangles.Add(c);triangles.Add(a);triangles.Add(c);triangles.Add(d);
+        }
+        triangles.AddRange(new[]{0,2,1,0,3,2,32,33,34,32,34,35});
+        Mesh ribbonMesh=new Mesh{name="FlexibleRibbon",vertices=vertices.ToArray(),triangles=triangles.ToArray()};
+        ribbonMesh.RecalculateNormals();ribbonMesh.RecalculateBounds();
+        ribbonMesh.bounds=new Bounds(Vector3.zero,new Vector3(1,2,1));
+        SaveMesh(ref ribbonMesh,path);
+        return ribbonMesh;
+    }
+
+    // World text on the live font atlas with the depth-tested shader (see DepthTestedLabel).
+    public static void DepthTested(TextMesh text,Material labelMat)
+    {
+        text.font=Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        DepthTestedLabel label=text.GetComponent<DepthTestedLabel>();
+        if(label==null) label=text.gameObject.AddComponent<DepthTestedLabel>();
+        label.LabelMaterial=labelMat;label.Refresh();
     }
 
     private static SceneTape SaveTape(SceneTape temporary,string name)

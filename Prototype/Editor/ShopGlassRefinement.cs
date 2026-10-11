@@ -145,37 +145,11 @@ public static class ShopGlassRefinement
     static void StyleTape()
     {
         ToolStation station=Object.FindFirstObjectByType<ToolStation>();
-        string path=AssetDatabase.GetAssetPath(station.TapePrefab);
-        GameObject contents=PrefabUtility.LoadPrefabContents(path);
         Material tape=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/PoliceTape.mat");
         if(tape==null) {tape=new Material(Shader.Find("CrimeScene/Tape"));AssetDatabase.CreateAsset(tape,Folder+"/PoliceTape.mat");}
-        var vertices=new List<Vector3>();var triangles=new List<int>();
-        for(int i=0;i<=8;i++)
-        {
-            float z=-.5f+i/8f;
-            vertices.Add(V(-.5f,-.5f,z));vertices.Add(V(.5f,-.5f,z));
-            vertices.Add(V(.5f,.5f,z));vertices.Add(V(-.5f,.5f,z));
-        }
-        for(int i=0;i<8;i++)for(int j=0;j<4;j++)
-        {
-            int a=i*4+j,b=i*4+(j+1)%4,c=b+4,d=a+4;
-            triangles.Add(a);triangles.Add(b);triangles.Add(c);triangles.Add(a);triangles.Add(c);triangles.Add(d);
-        }
-        triangles.AddRange(new[]{0,2,1,0,3,2,32,33,34,32,34,35});
-        Mesh ribbonMesh=new Mesh{name="FlexibleRibbon",vertices=vertices.ToArray(),triangles=triangles.ToArray()};
-        ribbonMesh.RecalculateNormals();ribbonMesh.RecalculateBounds();
-        ribbonMesh.bounds=new Bounds(Vector3.zero,new Vector3(1,2,1));
-        SaveMesh(ref ribbonMesh,Folder+"/FlexibleRibbon.asset");
-        contents.GetComponentInChildren<MeshFilter>().sharedMesh=ribbonMesh;
-        contents.GetComponentInChildren<MeshRenderer>().sharedMaterial=tape;
-        SceneTape component=contents.GetComponent<SceneTape>();
         Material ink=AssetDatabase.LoadAssetAtPath<Material>("Assets/CrimeSceneDemo/PresentationGenerated/ToolNumber.mat");
-        TextMesh front=Text("FrontWarning",contents.transform,"CRIME SCENE - DO NOT CROSS",Vector3.zero,90,.012f,Color.black);
-        TextMesh back=Text("BackWarning",contents.transform,"CRIME SCENE - DO NOT CROSS",Vector3.zero,-90,.012f,Color.black);
-        foreach(TextMesh text in new[]{front,back})
-        {var label=text.gameObject.AddComponent<DepthTestedLabel>();label.LabelMaterial=ink;label.Refresh();}
-        component.FrontWarning=front;component.BackWarning=back;
-        PrefabUtility.SaveAsPrefabAsset(contents,path);PrefabUtility.UnloadPrefabContents(contents);
+        // Shared with the night store (DemoToolsBuilder.StyleStation).
+        DemoToolsBuilder.StyleSceneTape(station,tape,DemoToolsBuilder.FlexibleRibbon(Folder+"/FlexibleRibbon.asset"),ink);
     }
 }
 #endif

@@ -12,7 +12,8 @@ public sealed class HandInteractor : ToolHolder
     public Vector3 HeldOffset = new Vector3(0, -0.15f, 0);
     // A scene lamp is carried by its column, the feet just above the floor.
     public Vector3 LampHeldOffset = new Vector3(0, -0.9f, 0);
-    // Shop floor height; a carried lamp is clamped to it.
+    // Fallback floor height without bounds; a carried lamp is clamped to the floor of
+    // the region under it (Bounds.FloorAt: the night staging bay's street is lower).
     public float FloorY = 0f;
 
     protected override Transform CameraAnchor => transform;
@@ -34,7 +35,7 @@ public sealed class HandInteractor : ToolHolder
         Vector3 p = Held.Kind == DemoToolKind.Lamp
             ? transform.position + Vector3.down * Mathf.Abs(LampHeldOffset.y)
             : transform.TransformPoint(HeldOffset);
-        if (Held.Kind == DemoToolKind.Lamp) p.y = Mathf.Max(p.y, FloorY);
+        if (Held.Kind == DemoToolKind.Lamp) p.y = Mathf.Max(p.y, Bounds != null ? Bounds.FloorAt(p) : FloorY);
         Held.PlaceAt(p, transform.eulerAngles.y);
     }
 

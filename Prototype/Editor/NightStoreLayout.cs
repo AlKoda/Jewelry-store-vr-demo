@@ -233,7 +233,9 @@ public static class NightStoreLayout
         PhotoFrame = Easel + V(0, 1.85f, -0.045f), PhotoFrameYaw = 0,
         StatusBoard = Easel + V(0, 1.15f, -0.045f), StatusBoardYaw = 0,
         Ambience = V(0, 2.5f, -8f),
-        MapCentre = MapCentre, MapHalfSize = MapHalfSize
+        MapCentre = MapCentre, MapHalfSize = MapHalfSize,
+        // Own prefab folder (never the shop's GeneratedTools), styled at build time.
+        AssetFolder = NightStoreBuilder.Folder + "/Tools", Styled = true
     };
 
     // Open showroom floor for the shared tool, photo and reset stages.
