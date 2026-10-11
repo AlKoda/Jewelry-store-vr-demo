@@ -129,8 +129,9 @@ public static class DemoGeometry
         mesh.RecalculateTangents();
     }
 
-    // Texel density the night bake is planned at; sets the lightmap chart margin.
-    public const float LightmapTexelsPerMetre = 15;
+    // Texel density of the night bake (NightLighting's lightmapResolution); sets the
+    // lightmap chart margin, so the two stay in step.
+    public const float LightmapTexelsPerMetre = 10;
 
     // Non-overlapping second UV set so the mesh can receive baked lightmaps. The pack
     // margin is about two lightmap texels at the planned density (Unity's default

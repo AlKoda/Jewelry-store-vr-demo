@@ -269,7 +269,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             Section("LIGHTING");
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button(Lighting.Night ? "Day lighting (N)" : "Night lighting (N)", button)) Lighting.ToggleNight();
+            // A baked night scene's day is the diagnostic daylight for comparing the layout.
+            string day = Lighting.BakedNight ? "Diagnostic daylight (N)" : "Day lighting (N)", night = Lighting.BakedNight ? "Baked night (N)" : "Night lighting (N)";
+            if (GUILayout.Button(Lighting.Night ? day : night, button)) Lighting.ToggleNight();
             if (GUILayout.Button(Lighting.FlashlightOn ? "Flashlight off (L)" : "Flashlight on (L)", button)) Lighting.ToggleFlashlight();
             GUILayout.EndHorizontal();
         }

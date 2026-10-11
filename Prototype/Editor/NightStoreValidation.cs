@@ -7,8 +7,9 @@ using L = NightStoreLayout;
 
 // Night store generation and checks, in the ShopCityValidation pattern: generate the
 // JewelryStoreNight scene, capture it, enter Play mode and run staged checks, then the
-// shared tool, photo and reset stages with the night store's test points. RunNightQuick
-// skips baking; RunNight is where the lighting batch adds the bake (same flow for now).
+// shared tool, photo and reset stages with the night store's test points. RunNight
+// bakes the night lighting (NightLighting) before the captures; RunNightQuick skips
+// the bake and previews the same lights as shadowless realtime lights instead.
 // Output goes to Docs/VerificationNight. Invoke either with -executeMethod.
 [InitializeOnLoad]
 public static class NightStoreValidation
@@ -16,6 +17,7 @@ public static class NightStoreValidation
     private const string Key = "NightStoreValidationStage";
     private const string BakeKey = "NightStoreValidationBake";
     private const string StatsKey = "NightStoreValidationStats";
+    private const string BakedKey = "NightStoreValidationBaked";
     static NightStoreValidation() { EditorApplication.update += Tick; }
 
     public static void RunNightQuick() { Generate(false); }
@@ -26,41 +28,70 @@ public static class NightStoreValidation
         try
         {
             SessionState.SetBool(BakeKey, bake);
+            SessionState.SetBool(BakedKey, false);
+            // Before any content: textures, materials and the bake all assume linear.
+            NightLighting.UseLinearColorSpace();
+            int reimported = ThirdPartyModelImport.GenerateLightmapUVs();
             DemoValidation.Begin("VerificationNight");
+            if (reimported > 0) DemoValidation.Info("Third-party models reimported with lightmap UVs: " + reimported);
             // Fixture library first (it builds and removes its galleries at the origin).
             StoreKitValidation.Check();
             GameObject root = NightStoreBuilder.Build(true);
             StaticChecks(root.transform);
             Camera camera = DemoValidation.CreatePreviewCamera(150);
+            NightLighting.Apply(root.transform, camera);
             DemoValidation.SaveScene(L.SceneName);
+            if (bake)
+            {
+                bool baked = NightLighting.Bake(out string report);
+                DemoValidation.Info(report);
+                DemoValidation.Check(baked && LightmapSettings.lightmaps.Length > 0, "Night lighting bakes");
+                SessionState.SetBool(BakedKey, true);
+                DemoValidation.SaveScene();
+            }
+            else NightLighting.UseRealtimeFallback(root.transform);
             Captures(camera, root.transform);
             NightStoreBuilder.CreatePlayer(camera);
+            NightLighting.ConfigureCamera(camera);
             SessionState.SetString(StatsKey, Stats(root.transform));
             DemoValidation.SaveScene();
-            DemoValidation.EnterPlayMode(Key, "Night store generation" + (bake ? "" : " (no bake)") + " and 8 actual Unity rendered captures passed.");
+            DemoValidation.EnterPlayMode(Key, "Night store generation" + (bake ? " with baked lighting" : " (no bake, realtime fallback)")
+                + " and 11 actual Unity rendered captures passed.");
         }
         catch (Exception ex) { DemoValidation.Finish(Key, false, ex.ToString()); }
     }
 
-    // The eight concept views of Docs/LayoutReferences/NightStore (manifest.json), with
-    // the temporary preview light; the ceiling and roof are hidden for the overview only.
+    // The eight concept views of Docs/LayoutReferences/NightStore (manifest.json) at
+    // night (night_*), then three in the instructor's diagnostic daylight (day_*) for
+    // comparing the layout; the ceiling and roof are hidden for the overview only.
     private static void Captures(Camera camera, Transform root)
+    {
+        Overview(camera, root, "night_01-cutaway-overview.png");
+        DemoValidation.Capture(camera, "night_02-exterior-wide.png", new Vector3(0, 1.6f, -10), new Vector3(0, 1.5f, 3));
+        DemoValidation.Capture(camera, "night_03-entrance-interior.png", new Vector3(0, 1.6f, -0.5f), new Vector3(0, 1.1f, 11));
+        DemoValidation.Capture(camera, "night_04-left-aisle.png", new Vector3(-6.1f, 1.6f, 0.8f), new Vector3(-5.6f, 0.9f, 8));
+        DemoValidation.Capture(camera, "night_05-right-aisle-seating.png", new Vector3(7.3f, 1.7f, 0.5f), new Vector3(1.5f, 0.8f, 6.5f));
+        DemoValidation.Capture(camera, "night_06-central-display.png", new Vector3(0.3f, 1.4f, 3.2f), new Vector3(0, 0.75f, 5.2f));
+        DemoValidation.Capture(camera, "night_07-office.png", new Vector3(0, 1.6f, 8.0f), new Vector3(0, 0.9f, 11.6f));
+        DemoValidation.Capture(camera, "night_08-entrance-closeup.png", new Vector3(0.3f, 1.5f, -2.4f), new Vector3(0, 0.6f, 0.6f));
+        DemoLighting lighting = UnityEngine.Object.FindFirstObjectByType<DemoLighting>();
+        lighting.SetNight(false);
+        Overview(camera, root, "day_01-cutaway-overview.png");
+        DemoValidation.Capture(camera, "day_02-exterior-wide.png", new Vector3(0, 1.6f, -10), new Vector3(0, 1.5f, 3));
+        DemoValidation.Capture(camera, "day_03-entrance-interior.png", new Vector3(0, 1.6f, -0.5f), new Vector3(0, 1.1f, 11));
+        lighting.SetNight(true);
+    }
+
+    private static void Overview(Camera camera, Transform root, string file)
     {
         Transform ceiling = root.Find(L.CeilingPath);
         ceiling.gameObject.SetActive(false);
         // Baked occlusion data ignores hidden objects, so the cutaway renders without it.
         bool occlusion = camera.useOcclusionCulling;
         camera.useOcclusionCulling = false;
-        DemoValidation.Capture(camera, "night-01-cutaway-overview.png", new Vector3(-13, 17, -13), new Vector3(0.5f, 0, 4.5f));
+        DemoValidation.Capture(camera, file, new Vector3(-13, 17, -13), new Vector3(0.5f, 0, 4.5f));
         camera.useOcclusionCulling = occlusion;
         ceiling.gameObject.SetActive(true);
-        DemoValidation.Capture(camera, "night-02-exterior-wide.png", new Vector3(0, 1.6f, -10), new Vector3(0, 1.5f, 3));
-        DemoValidation.Capture(camera, "night-03-entrance-interior.png", new Vector3(0, 1.6f, -0.5f), new Vector3(0, 1.1f, 11));
-        DemoValidation.Capture(camera, "night-04-left-aisle.png", new Vector3(-6.1f, 1.6f, 0.8f), new Vector3(-5.6f, 0.9f, 8));
-        DemoValidation.Capture(camera, "night-05-right-aisle-seating.png", new Vector3(7.3f, 1.7f, 0.5f), new Vector3(1.5f, 0.8f, 6.5f));
-        DemoValidation.Capture(camera, "night-06-central-display.png", new Vector3(0.3f, 1.4f, 3.2f), new Vector3(0, 0.75f, 5.2f));
-        DemoValidation.Capture(camera, "night-07-office.png", new Vector3(0, 1.6f, 8.0f), new Vector3(0, 0.9f, 11.6f));
-        DemoValidation.Capture(camera, "night-08-entrance-closeup.png", new Vector3(0.3f, 1.5f, -2.4f), new Vector3(0, 0.6f, 0.6f));
     }
 
     // The bake policy of StoreKit.MarkStatic as the builder applies it, in edit mode.
@@ -118,7 +149,7 @@ public static class NightStoreValidation
     // Edit mode numbers (static batching merges meshes in Play mode, so count here).
     private static string Stats(Transform root)
     {
-        int triangles = 0, renderers = 0, statics = 0, lightmapped = 0, lights = 0;
+        int triangles = 0, renderers = 0, statics = 0, lightmapped = 0, baked = 0, realtime = 0;
         foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
         {
             MeshFilter filter = r.GetComponent<MeshFilter>();
@@ -129,9 +160,13 @@ public static class NightStoreValidation
             if ((flags & StaticEditorFlags.BatchingStatic) != 0) statics++;
             if ((flags & StaticEditorFlags.ContributeGI) != 0 && r.receiveGI == ReceiveGI.Lightmaps) lightmapped++;
         }
-        lights = UnityEngine.Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+        foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            if (light.lightmapBakeType == LightmapBakeType.Baked) baked++;
+            else realtime++;
+        LightProbeGroup probes = root.GetComponentInChildren<LightProbeGroup>();
         return "Night store triangles=" + triangles + "; renderers=" + renderers + "; static=" + statics + "; lightmapped=" + lightmapped
-            + "; lights in scene=" + lights + " (temporary preview sun included)";
+            + "; lights baked=" + baked + ", realtime=" + realtime + " (diagnostic sun, off; the flashlight is created at runtime)"
+            + "; light probes placed=" + (probes != null ? probes.probePositions.Length : 0);
     }
 
     private static void Tick()
@@ -143,6 +178,7 @@ public static class NightStoreValidation
             {
                 DemoValidation.Info(SessionState.GetString(StatsKey, "stats missing"));
                 DemoValidation.TestPoints = L.TestPoints();
+                LightingChecks();
                 ZoneChecks();
                 EntranceChecks();
                 WalkChecks();
@@ -165,6 +201,137 @@ public static class NightStoreValidation
         if (root == null) throw new Exception("FAILED: " + L.Root + " missing from scene");
         return root.transform;
     }
+
+    // ---------------------------------------------------------------- lighting
+
+    // Runs first in Play mode: the arrival state (night, fixtures off, flashlight off)
+    // is checked before anything toggles it. RunNightQuick has no bake: the baked
+    // lights are then the realtime shadowless fallback and the bake-only checks skip.
+    private static void LightingChecks()
+    {
+        bool baked = SessionState.GetBool(BakedKey, false);
+        Transform root = Root();
+        Transform group = root.Find(NightLighting.GroupName);
+        DemoLighting lighting = DemoValidation.Find<DemoLighting>();
+        DemoValidation.Info("Night lighting " + (baked ? "baked" : "not baked: realtime shadowless fallback (RunNightQuick)"));
+        DemoValidation.Check(PlayerSettings.colorSpace == ColorSpace.Linear && QualitySettings.activeColorSpace == ColorSpace.Linear,
+            "Night scene renders in linear colour space");
+
+        Bounds store = new Bounds(new Vector3((L.MinX + L.MaxX) * 0.5f, L.CeilingY * 0.5f, (L.MinZ + L.MaxZ) * 0.5f),
+            new Vector3(L.MaxX - L.MinX, L.CeilingY, L.MaxZ - L.MinZ));
+        int inside = 0, lenses = 0;
+        bool dark = true;
+        foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+            if (light.isActiveAndEnabled && light.type != LightType.Directional && store.Contains(light.transform.position)) inside++;
+        foreach (Renderer r in root.Find(L.CeilingPath).GetComponentsInChildren<Renderer>(true))
+            foreach (Material m in r.sharedMaterials)
+                if (m != null && (m.name.StartsWith("KitLightLens") || m.name.StartsWith("KitStripLight")))
+                {
+                    lenses++;
+                    dark &= m.GetColor("_EmissionColor").maxColorComponent < 0.01f;
+                }
+        DemoValidation.Check(lighting.Night && lighting.BakedNight && !lighting.FlashlightOn && inside == 0 && lenses > 0 && dark,
+            "Store fixtures are off at arrival");
+
+        LightmapBakeType expected = baked ? LightmapBakeType.Baked : LightmapBakeType.Realtime;
+        bool aimed = true;
+        foreach (string side in new[] { "Left", "Right" })
+        {
+            Light beam = LightAt(group, "Headlight_" + side);
+            aimed &= beam != null && beam.type == LightType.Spot && beam.lightmapBakeType == expected && beam.isActiveAndEnabled
+                && Vector3.Dot(beam.transform.forward, (NightLighting.HeadlightTarget - beam.transform.position).normalized) > 0.95f;
+        }
+        DemoValidation.Check(aimed, "Headlights are baked spots aimed at the entrance");
+
+        Light moon = LightAt(group, "Moonlight");
+        bool outside = moon != null && moon.type == LightType.Directional && moon.lightmapBakeType == expected && RenderSettings.sun == moon;
+        for (int i = 0; i < L.Streetlights.Length; i++)
+        {
+            Light lamp = LightAt(group, "Streetlight_" + i);
+            outside &= lamp != null && lamp.lightmapBakeType == expected && Vector3.Distance(lamp.transform.position, root.TransformPoint(NightLighting.LampPosition(i))) < 0.01f;
+        }
+        DemoValidation.Check(outside, "Streetlights and moonlight are baked");
+
+        lighting.Flashlight(true);
+        int casters = 0;
+        bool torch = false;
+        foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
+            if (light.isActiveAndEnabled && light.shadows != LightShadows.None && light.lightmapBakeType != LightmapBakeType.Baked)
+            {
+                casters++;
+                torch |= light == lighting.FlashlightLight;
+            }
+        Light spot = lighting.FlashlightLight;
+        bool tuned = spot.shadows == LightShadows.Hard && spot.intensity >= 2.5f && spot.intensity <= 3f && Mathf.Abs(spot.range - 14) < 0.01f;
+        lighting.Flashlight(false);
+        DemoValidation.Check(casters == 1 && torch && tuned, "Only the flashlight casts realtime shadows");
+
+        Camera view = Camera.main;
+        DemoValidation.Check(QualitySettings.pixelLightCount == 4 && QualitySettings.antiAliasing == 4 && !QualitySettings.realtimeReflectionProbes
+            && QualitySettings.shadows == ShadowQuality.HardOnly && view != null && !view.allowHDR && view.allowMSAA
+            && view.clearFlags == CameraClearFlags.Skybox && view.renderingPath == RenderingPath.Forward, "Night quality settings applied");
+
+        LightProbeGroup probeGroup = group.GetComponentInChildren<LightProbeGroup>();
+        List<Vector3> probes = new List<Vector3>();
+        if (probeGroup != null) foreach (Vector3 p in probeGroup.probePositions) probes.Add(probeGroup.transform.TransformPoint(p));
+        int count = baked ? (LightmapSettings.lightProbes != null ? LightmapSettings.lightProbes.count : 0) : probes.Count;
+        bool covered = true;
+        foreach (InteriorBounds.Region region in L.Regions())
+        {
+            Vector2 centre = new Vector2((region.MinX + region.MaxX) * 0.5f, (region.MinZ + region.MaxZ) * 0.5f);
+            float nearest = float.MaxValue;
+            foreach (Vector3 p in probes) nearest = Mathf.Min(nearest, Vector2.Distance(centre, new Vector2(p.x, p.z)));
+            covered &= nearest < 2.5f;
+        }
+        DemoValidation.Info("Light probes=" + count + " (placed " + probes.Count + ")");
+        DemoValidation.Check(count > 150 && covered, "Light probes cover the accessible areas");
+
+        bool reflections = true;
+        foreach (string name in NightLighting.ProbeNames)
+        {
+            Transform t = group.Find(name);
+            ReflectionProbe probe = t != null ? t.GetComponent<ReflectionProbe>() : null;
+            reflections &= probe != null && probe.mode == UnityEngine.Rendering.ReflectionProbeMode.Baked && probe.boxProjection
+                && probe.resolution == NightLighting.ReflectionResolution && (!baked || probe.bakedTexture != null);
+        }
+        DemoValidation.Check(reflections, "Reflection probes are baked for showroom, office and street");
+
+        if (baked)
+        {
+            LightmapData[] maps = LightmapSettings.lightmaps;
+            bool budget = maps.Length >= 1 && maps.Length <= 8;
+            foreach (LightmapData map in maps)
+                budget &= map.lightmapColor != null && map.lightmapColor.width <= 1024 && map.lightmapColor.height <= 1024;
+            DemoValidation.Info("Lightmaps=" + maps.Length);
+            DemoValidation.Check(budget, "Lightmaps baked within budget");
+        }
+
+        Color night = RenderSettings.ambientLight;
+        lighting.SetNight(false);
+        Light sun = lighting.DiagnosticSun;
+        bool day = !lighting.Night && sun != null && sun.isActiveAndEnabled && sun.shadows == LightShadows.None
+            && sun.lightmapBakeType == LightmapBakeType.Realtime && RenderSettings.ambientLight.grayscale > 0.2f;
+        lighting.SetNight(true);
+        bool restored = lighting.Night && !sun.isActiveAndEnabled && Close(RenderSettings.ambientLight, night);
+        DemoValidation.Check(day && restored, "Diagnostic daylight toggles and restores the night");
+
+        LightBarBlink bar = DemoValidation.Find<LightBarBlink>();
+        bar.Apply(0.1f / bar.Hertz);
+        bool red = bar.RedLit && bar.Emission(bar.Red).maxColorComponent > 5 * bar.Emission(bar.Blue).maxColorComponent;
+        bar.Apply(0.6f / bar.Hertz);
+        bool blue = !bar.RedLit && bar.Emission(bar.Blue).maxColorComponent > 5 * bar.Emission(bar.Red).maxColorComponent;
+        Transform car = root.Find("Exterior/PoliceCar");
+        DemoValidation.Check(red && blue && bar.transform.IsChildOf(car) && car.GetComponentsInChildren<Light>(true).Length == 0,
+            "Light bar blinks without realtime lights");
+    }
+
+    private static Light LightAt(Transform group, string name)
+    {
+        Transform t = group != null ? group.Find(name) : null;
+        return t != null ? t.GetComponent<Light>() : null;
+    }
+
+    private static bool Close(Color a, Color b) => Mathf.Abs(a.r - b.r) < 0.002f && Mathf.Abs(a.g - b.g) < 0.002f && Mathf.Abs(a.b - b.b) < 0.002f;
 
     private static void ZoneChecks()
     {
