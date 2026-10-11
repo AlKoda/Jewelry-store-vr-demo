@@ -1,3 +1,11 @@
+# Current user direction — October 11: expanded store, nighttime first response
+
+**Planning only.** Read [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md) before implementing. The user wants a larger store closely matching a reference, but no image/link was attached. Do not invent exact proportions. Preserve the previous shop and reuse its components in a new scene.
+
+Scenario: a neighbor hears a nighttime disturbance, calls police, and the visitor arrives at a ransacked jewelry store. Proposed initial spawn is beside a parked car facing the frontage, headlights on. Exterior staging is now playable; revise InteriorBounds, IndoorBoundary_Front, teleport/tool limits and map/review framing together. Store fixtures start off. Reuse tape, cones, markers, photos and white flashlight; plan an unbranded DSLR visual, UV trace demonstration and optional portable lamp.
+
+This direction takes priority over immediate texturing. No code, scene, build or asset changes were made in the planning pass. All earlier validation claims below apply to their historical revisions.
+
 # Latest source change: five feature batches — panel, viewfinder, measuring tape, review report, lighting, VR comfort (October 10, unverified)
 
 Implemented and self-reviewed in sequence on top of the imported-kits batch below; every batch added its own checks. Regenerate with **ShopCityValidation.RunTextured** (RunGlass still works for the untextured variant). None of it has been compiled or run in Unity yet.

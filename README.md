@@ -2,6 +2,10 @@
 
 Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, timers or forced sequence.
 
+## Current plan — October 11
+
+The next scene is an **expanded store with a nighttime police arrival**, reusing existing tools and low-poly assets. See the [scenario and migration plan](Docs/NIGHT_ARRIVAL_PLAN.md). Exact layout awaits the user's reference image. This is planning work, not a new build.
+
 ## Latest tested project
 
 [Download the Glass and Tools Unity project](Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip) and [view the screenshots/report](Docs/GLASS_AND_TOOLS.md).

@@ -1,3 +1,18 @@
+## October 11 — expanded store and nighttime arrival (current priority; planning only)
+
+The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It supersedes the immediate texture pass. Existing completion entries below are historical; newer source remains unverified until run in Unity.
+
+- [x] Record scenario, reuse strategy, dependencies and phased work.
+- [ ] Obtain the missing store reference and establish an annotated layout.
+- [ ] Preserve baseline and create a separate expanded low-poly scene.
+- [ ] Add parked police car, staging area and connected indoor/outdoor navigation.
+- [ ] Extend tape/cone placement, map and review bounds to the accessible exterior.
+- [ ] Establish midnight appearance, fixtures off, headlights and handheld white light.
+- [ ] Add bounded/occluded UV trace demonstration and unbranded DSLR visual.
+- [ ] Optional placeable scene lamp.
+- [ ] Re-stage robbery evidence, verify reset/photos and profile on Quest.
+- [ ] Resume store materials after the blockout is accepted.
+
 ## October 10 — feature batches: panel, viewfinder, measure, review, lighting, VR comfort (Claude, unverified)
 
 - [x] Presenter panel Strip/Full layouts, UI scale, map glyphs, live camera viewfinder, photo count.
