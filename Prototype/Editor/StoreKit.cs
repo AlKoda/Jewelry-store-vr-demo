@@ -110,6 +110,19 @@ public static partial class StoreKit
     public static Material ExitGreen { get; private set; }
     public static Material ExitLetters { get; private set; }
     public static Material AlarmLed { get; private set; }
+    // Shell and street surfaces for the night store (NightStoreBuilder); metric UVs throughout.
+    public static Material Floor { get; private set; }
+    public static Material Plaster { get; private set; }
+    public static Material CeilingPaint { get; private set; }
+    public static Material Cladding { get; private set; }
+    public static Material Pavement { get; private set; }
+    public static Material Asphalt { get; private set; }
+    public static Material Concrete { get; private set; }
+    public static Material Render { get; private set; }
+    public static Material RoadLine { get; private set; }
+    public static Material WindowDark { get; private set; }
+    // Neighbours' lit rooms: a baked emitter, so the street gets a little warm bounce for free.
+    public static Material WindowLit { get; private set; }
 
     public static void Palette()
     {
@@ -140,6 +153,18 @@ public static partial class StoreKit
         ExitGreen = Emissive(Surface("KitExitGreen", new Color(0.05f, 0.45f, 0.20f), 0.5f, 0, null, 1), new Color(0.05f, 0.6f, 0.25f));
         ExitLetters = Emissive(Surface("KitExitLetters", new Color(0.92f, 0.97f, 0.94f), 0.5f, 0, null, 1), new Color(0.7f, 0.8f, 0.75f));
         AlarmLed = Emissive(Surface("KitAlarmLed", new Color(0.5f, 0.02f, 0.02f), 0.6f, 0, null, 1), new Color(0.9f, 0.05f, 0.04f));
+        Floor = Surface("KitFloorTile", new Color(0.80f, 0.74f, 0.64f), 0.55f, 0, "FloorTile", 1.2f);
+        Plaster = Surface("KitPlaster", new Color(0.80f, 0.76f, 0.69f), 0.12f, 0, "PlasterWarm", 2.0f);
+        CeilingPaint = Surface("KitCeiling", new Color(0.86f, 0.85f, 0.82f), 0.08f, 0, "PlasterWarm", 2.0f);
+        Cladding = Surface("KitCladding", new Color(0.33f, 0.32f, 0.31f), 0.35f, 0, null, 1);
+        Pavement = Surface("KitPavement", new Color(0.46f, 0.45f, 0.43f), 0.35f, 0, "PavementSlab", 1.2f);
+        // Wet asphalt: dark and glossy, so headlights and streetlights streak in the baked probes.
+        Asphalt = Surface("KitAsphalt", new Color(0.09f, 0.09f, 0.10f), 0.7f, 0, "AsphaltWet", 3.0f);
+        Concrete = Surface("KitConcrete", new Color(0.56f, 0.55f, 0.52f), 0.2f, 0, null, 1);
+        Render = Surface("KitRender", new Color(0.44f, 0.41f, 0.37f), 0.1f, 0, null, 1);
+        RoadLine = Surface("KitRoadLine", new Color(0.72f, 0.72f, 0.68f), 0.4f, 0, null, 1);
+        WindowDark = Surface("KitWindowDark", new Color(0.04f, 0.05f, 0.06f), 0.85f, 0, null, 1);
+        WindowLit = Emissive(Surface("KitWindowLit", new Color(0.85f, 0.75f, 0.55f), 0.5f, 0, null, 1), new Color(1.0f, 0.72f, 0.42f) * 0.9f);
         PropPalette();
         // One cheap Standard transparent material: no grab pass, reflections come from
         // whichever (baked, box-projected) reflection probe the pane sits in.
@@ -241,28 +266,46 @@ public static partial class StoreKit
         return k.Emit(name, parent, centre, Quaternion.identity, Folder, "MetricBox");
     }
 
-    // Static flags for baking: opaque parts contribute to GI and reflection probes (kit
-    // parts without lightmap UVs only to the probes; they are probe-lit); glass only
-    // batches. Hinged leaves and drawers are skipped unless they never move at runtime.
-    public static void MarkStatic(GameObject root, bool includeMovingParts)
+    // Renderers whose bounds stay under this (metres) are probe-lit props: they take
+    // light probes and stay out of the bake so they do not bloat the lightmaps.
+    public const float SmallProp = 0.3f;
+
+    // Static flags for baking. Opaque parts batch and go into the reflection probes;
+    // larger ones also contribute to GI, lightmapped when their mesh has a second UV
+    // set and probe-lit otherwise (imported kit models, loose props). Occluders (walls,
+    // slabs, buildings) also hide what is behind them. Glass only batches. Hinged
+    // leaves and drawers are skipped unless they never move at runtime.
+    public static void MarkStatic(GameObject root, bool includeMovingParts, bool occluders = false)
     {
         foreach (MeshRenderer renderer in root.GetComponentsInChildren<MeshRenderer>(true))
         {
             if (!includeMovingParts && IsMovingPart(renderer.transform, root.transform)) continue;
-            bool transparent = renderer.sharedMaterial != null && renderer.sharedMaterial.renderQueue >= 3000;
             StaticEditorFlags flags = StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccludeeStatic;
-            if (!transparent) flags |= StaticEditorFlags.ReflectionProbeStatic;
-            if (!transparent && !ProbeLit(renderer)) flags |= StaticEditorFlags.ContributeGI;
+            if (!Transparent(renderer))
+            {
+                bool small = renderer.bounds.size.x < SmallProp && renderer.bounds.size.y < SmallProp && renderer.bounds.size.z < SmallProp;
+                flags |= StaticEditorFlags.ReflectionProbeStatic;
+                if (!small) flags |= StaticEditorFlags.ContributeGI;
+                if (!small && occluders) flags |= StaticEditorFlags.OccluderStatic;
+                renderer.receiveGI = !small && Lightmappable(renderer) ? ReceiveGI.Lightmaps : ReceiveGI.LightProbes;
+            }
             GameObjectUtility.SetStaticEditorFlags(renderer.gameObject, flags);
         }
     }
 
-    // Kit parts saved without lightmap UVs (Lightmapped false) take light probes instead.
-    private static bool ProbeLit(MeshRenderer renderer)
+    private static bool Transparent(Renderer renderer)
+    {
+        foreach (Material m in renderer.sharedMaterials)
+            if (m == null || m.renderQueue < 3000) return false;
+        return true;
+    }
+
+    // Meshes with a second UV set (saved KitMesh parts unless loose) can take lightmaps.
+    private static bool Lightmappable(MeshRenderer renderer)
     {
         MeshFilter filter = renderer.GetComponent<MeshFilter>();
         Mesh mesh = filter != null ? filter.sharedMesh : null;
-        return mesh != null && mesh.uv2.Length == 0 && AssetDatabase.GetAssetPath(mesh).StartsWith(Folder);
+        return mesh != null && mesh.vertexCount > 0 && mesh.uv2.Length == mesh.vertexCount;
     }
 
     private static bool IsMovingPart(Transform t, Transform root)
@@ -948,12 +991,14 @@ public static partial class StoreKit
     // kick panel to 0.35, sill, transom bar at 2.6, fascia and head, one "Glass" child.
     // Cracked adds radial crack lines ("Cracks" under Glass); Broken leaves a jagged
     // hole in the pane and fragments ("Shards") on the floor inside and out and on the sill.
-    public static GameObject WindowModule(Transform parent, Pane state = Pane.Intact)
+    // width (default 2.0) narrows the bay for sidelights; the frame sections stay the same.
+    public static GameObject WindowModule(Transform parent, Pane state = Pane.Intact, float width = 2.0f)
     {
-        const float gw = 1.92f, gy0 = 0.43f, gy1 = 2.56f;
+        const float gy0 = 0.43f, gy1 = 2.56f;
+        float gw = width - 0.08f, mullion = width * 0.5f - 0.02f;
         GameObject root = Root("window_module", parent);
         KitMesh k = new KitMesh();
-        for (int s = -1; s <= 1; s += 2) k.Box(FrameMetal, V(s * 0.98f, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
+        for (int s = -1; s <= 1; s += 2) k.Box(FrameMetal, V(s * mullion, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
         k.Box(FrameMetal, V(0, 0.175f, 0), V(gw, 0.35f, 0.10f), false);
         k.Box(FrameMetal, V(0, 0.39f, 0), V(gw, 0.08f, 0.14f));
         k.Box(FrameMetal, V(0, 2.6f, 0), V(gw, 0.08f, 0.12f));
@@ -961,7 +1006,7 @@ public static partial class StoreKit
         k.Box(FrameMetal, V(0, 2.96f, 0), V(gw, 0.08f, 0.14f));
         foreach (float y in new[] { 0.05f, 0.30f }) k.Box(Bronze, V(0, y, -0.052f), V(gw - 0.12f, 0.008f, 0.004f));
         Part(k, "Frame", root, Vector3.zero, "window_frame");
-        for (int s = -1; s <= 1; s += 2) Collide(root, V(s * 0.98f, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
+        for (int s = -1; s <= 1; s += 2) Collide(root, V(s * mullion, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
         Collide(root, V(0, gy0 * 0.5f, 0), V(gw, gy0, 0.14f));
         Collide(root, V(0, (gy1 + 3.0f) * 0.5f, 0), V(gw, 3.0f - gy1, 0.14f));
         float gh = gy1 - gy0;
@@ -973,16 +1018,18 @@ public static partial class StoreKit
         {
             KitMesh shards = new KitMesh();
             System.Random rng = new System.Random(13);
-            Spill(shards, rng, V(0, 0.003f, 0.65f), 0.9f, 0.55f, 11);
-            Spill(shards, rng, V(0, 0.003f, -0.35f), 0.9f, 0.25f, 7);
-            Spill(shards, rng, V(0, 0.432f, 0), 0.85f, 0.03f, 4);
+            Spill(shards, rng, V(0, 0.003f, 0.65f), width * 0.45f, 0.55f, 11);
+            Spill(shards, rng, V(0, 0.003f, -0.35f), width * 0.45f, 0.25f, 7);
+            Spill(shards, rng, V(0, 0.432f, 0), width * 0.425f, 0.03f, 4);
             Part(shards, "Shards", root, Vector3.zero, "window_shards");
         }
         return root;
     }
 
-    // Radial crack lines from an impact point plus two rings, drawn 5.5 mm off both faces.
-    private static void Cracks(Transform glass, float gw, float gh)
+    // Radial crack lines from an impact point plus two rings, drawn 5.5 mm off both faces
+    // of a gw x gh pane in glass's local xy plane ("Cracks" child; the night dressing
+    // also cracks a case's top pane through a rotated child).
+    public static void Cracks(Transform glass, float gw, float gh)
     {
         KitMesh k = new KitMesh();
         System.Random rng = new System.Random(3);

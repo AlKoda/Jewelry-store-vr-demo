@@ -70,8 +70,8 @@ public static class JewelryStoreBuilder
         Box("ServiceCounter", furniture, V(-1.8f,0.55f,6.5f), V(3.8f,1.1f,0.75f));
         Box("ToolRack_Placeholder", furniture, V(-3.6f,0.45f,1), V(1.4f,0.9f,0.6f));
         Safe();
-        ShoePrint(V(2.6f,0.009f,6.5f));
-        Torch();
+        ShoePrint(evidence,V(2.6f,0.009f,6.5f),20);
+        Torch(evidence);
 
         // Deterministic debris, no rigidbodies or loose physics.
         System.Random random = new System.Random(27);
@@ -165,11 +165,12 @@ public static class JewelryStoreBuilder
         hinge.localRotation=Quaternion.Euler(0,110,0);
     }
 
-    private static void ShoePrint(Vector3 p)
+    // Also reused by the night store's dressing (NightStoreDressing), hence the parent.
+    public static Transform ShoePrint(Transform parent,Vector3 p,float yaw)
     {
-        Transform g = Group("ShoePrint_GeometryPlaceholder",evidence);
+        Transform g = Group("ShoePrint_GeometryPlaceholder",parent);
         g.localPosition=p;
-        g.localRotation=Quaternion.Euler(0,20,0);
+        g.localRotation=Quaternion.Euler(0,yaw,0);
         // Flat raised tread geometry for now; final decal/material deferred.
         for(int row=0;row<5;row++)
         for(int side=0;side<2;side++)
@@ -178,11 +179,15 @@ public static class JewelryStoreBuilder
         for(int i=0;i<3;i++)
             Box("HeelTread",g,V(0,0,-0.09f+i*0.019f),V(0.075f,0.003f,0.011f),false);
         Box("ToeTread",g,V(0,0,0.175f),V(0.065f,0.003f,0.014f),false);
+        return g;
     }
 
-    private static void Torch()
+    // Cutting torch set beside the old safe room door. Its parts keep their original
+    // shop coordinates (cylinder at 3.55, 9.5), so a reuse moves the returned group.
+    public const float TorchCylinderX=3.55f, TorchCylinderZ=9.5f;
+    public static Transform Torch(Transform parent)
     {
-        Transform g = Group("DiscardedTorch_Placeholder",evidence);
+        Transform g = Group("DiscardedTorch_Placeholder",parent);
         Primitive("Cylinder",PrimitiveType.Cylinder,g,V(3.55f,0.3f,9.5f),
             V(0.22f,0.3f,0.22f),true);
         Box("Valve",g,V(3.55f,0.65f,9.5f),V(0.12f,0.1f,0.08f));
@@ -197,6 +202,7 @@ public static class JewelryStoreBuilder
         for(int i=0;i<8;i++)
             Box("HoseSegment",g,V(3.45f-i*0.04f,0.025f,9.45f-i*0.04f),
                 V(0.045f,0.025f,0.08f),false);
+        return g;
     }
 
     private static void Ring(string name,Transform parent,Vector3 center,

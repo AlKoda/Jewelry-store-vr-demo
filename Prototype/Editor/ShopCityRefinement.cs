@@ -8,8 +8,8 @@ public static class ShopCityRefinement
     private const string Folder="Assets/CrimeSceneDemo/CityGenerated";
     private const string Pack="KenneyCityBuilder";
     // KayKit City Kit (CC0): low-poly props and buildings sharing one atlas texture.
-    private const string KitPack="KayKitCity";
-    private const float KitScale=4.5f;
+    public const string KitPack="KayKitCity";
+    public const float KitScale=4.5f;
     private static Material stone, dark, metal, cream, road, glass, green, brick, white, glow;
     private static Transform city;
     private static bool importedAssets;
@@ -25,16 +25,7 @@ public static class ShopCityRefinement
         if(GameObject.Find("CityBackdrop")!=null)
             throw new System.InvalidOperationException("City already exists. Generate into a fresh scene.");
         EnsureFolder(Folder);
-        stone=Mat("WarmStone",new Color(.64f,.61f,.54f));
-        cream=Mat("Ivory",new Color(.84f,.81f,.72f));
-        dark=Mat("CharcoalWood",new Color(.16f,.19f,.19f));
-        metal=Mat("BrushedBrass",new Color(.48f,.36f,.19f));
-        road=Mat("Asphalt",new Color(.18f,.20f,.22f));
-        glass=Mat("OpaqueWindow",new Color(.19f,.30f,.35f));
-        green=Mat("Foliage",new Color(.21f,.30f,.23f));
-        brick=Mat("Terracotta",new Color(.48f,.29f,.22f));
-        white=Mat("RoadMarking",new Color(.83f,.84f,.80f));
-        glow=Glowing(Mat("LampGlow",new Color(.95f,.92f,.82f)),new Color(1f,.93f,.75f)*1.4f);
+        Materials();
         Transform tools=store.transform.Find("ToolSystem");
         foreach(Renderer r in store.GetComponentsInChildren<Renderer>())
         {
@@ -133,6 +124,20 @@ public static class ShopCityRefinement
         AssetDatabase.SaveAssets();
     }
 
+    private static void Materials()
+    {
+        stone=Mat("WarmStone",new Color(.64f,.61f,.54f));
+        cream=Mat("Ivory",new Color(.84f,.81f,.72f));
+        dark=Mat("CharcoalWood",new Color(.16f,.19f,.19f));
+        metal=Mat("BrushedBrass",new Color(.48f,.36f,.19f));
+        road=Mat("Asphalt",new Color(.18f,.20f,.22f));
+        glass=Mat("OpaqueWindow",new Color(.19f,.30f,.35f));
+        green=Mat("Foliage",new Color(.21f,.30f,.23f));
+        brick=Mat("Terracotta",new Color(.48f,.29f,.22f));
+        white=Mat("RoadMarking",new Color(.83f,.84f,.80f));
+        glow=Glowing(Mat("LampGlow",new Color(.95f,.92f,.82f)),new Color(1f,.93f,.75f)*1.4f);
+    }
+
     private static void Building(string name,Vector3 p,float width,float height,float depth,
         Material wall,string sign,float facing)
     {
@@ -160,15 +165,34 @@ public static class ShopCityRefinement
         Box("Awning",g,V(0,2.56f,face+.48f),V(width-.3f,.08f,1),wall);
     }
 
-    private static void Car(Vector3 p,Material paint,string model,float yaw)
+    private static void Car(Vector3 p,Material paint,string model,float yaw) { Car(city,p,paint,model,yaw); }
+
+    // A parked car ("ParkedCar" under parent at p): the KayKit model and its four wheels
+    // when the pack is present and imported assets are on, else the procedural stand-in.
+    // KayKit cars are modelled lengthwise along z, nose towards +z (the hood is the
+    // longer, lower end and the cabin sits towards the rear), turned by yaw; the
+    // stand-in lies along x with its nose at +x and ignores yaw, as it always has.
+    public static Transform Car(Transform parent,Vector3 p,Material paint,string model,float yaw,bool useImportedAssets)
     {
-        Transform g=Group("ParkedCar",city); g.localPosition=p;
+        importedAssets=useImportedAssets;
+        if(dark==null || glass==null || cream==null)
+        {
+            EnsureFolder("Assets/CrimeSceneDemo");
+            EnsureFolder(Folder);
+            Materials();
+        }
+        return Car(parent,p,paint,model,yaw);
+    }
+
+    private static Transform Car(Transform parent,Vector3 p,Material paint,string model,float yaw)
+    {
+        Transform g=Group("ParkedCar",parent); g.localPosition=p;
         // KayKit cars are modelled lengthwise along z with the wheel bottoms 0.06 units below the origin.
         if(Kit(model,g,V(0,.06f*KitScale,0),yaw,KitScale)!=null)
         {
             foreach(string corner in new[]{"front_left","front_right","rear_left","rear_right"})
                 Kit(model+"_wheel_"+corner,g,V(0,.06f*KitScale,0),yaw,KitScale);
-            return;
+            return g;
         }
         Mesh body=ShopFormRefinement.Loft("CarBody",new float[]{-.5f,-.35f,.3f,.5f},new float[]{.91f,1,1,.86f},new float[]{.88f,1,1,.90f},.12f);
         Mesh cabin=ShopFormRefinement.Loft("CarCabin",new float[]{-.5f,.5f},new float[]{1,.72f},new float[]{1,.85f},.08f);
@@ -180,6 +204,7 @@ public static class ShopCityRefinement
             ShopFormRefinement.Shape("Wheel",g,wheel,V(x*1.3f,.32f,z*.77f),V(.62f,.25f,.62f),dark)
                 .transform.localRotation=Quaternion.Euler(90,0,0);
         Box("FrontLamp",g,V(2.02f,.65f,0),V(.03f,.17f,1.3f),cream);
+        return g;
     }
     private static void Lamp(Vector3 p)
     {

@@ -7,12 +7,47 @@ public static class DemoToolsBuilder
 {
     private const string Folder="Assets/CrimeSceneDemo/GeneratedTools";
 
+    // Where the station's pieces go, in the store root's space (all stores sit at the
+    // world origin). Shop reproduces the original small shop exactly; the night store
+    // passes NightStoreLayout.Tools.
+    public struct ToolLayout
+    {
+        public string StoreRoot;
+        // Hidden from the overview map's camera (the ceilings).
+        public string CeilingPath;
+        // Half-size rack samples, each standing on the rack or table top.
+        public Vector3 Cone,Marker,Scale,TapePost,Measure;
+        public Vector3 SpawnPoint;
+        public Vector3 Camera; public float CameraYaw;
+        public Vector3 PhotoFrame; public float PhotoFrameYaw;
+        public Vector3 StatusBoard; public float StatusBoardYaw;
+        public Vector3 Ambience;
+        public Vector2 MapCentre; public float MapHalfSize;
+
+        // Half-size samples spaced 26 cm apart along the 1.4 m rack top (x -4.3 to -2.9);
+        // the flat L-scale takes the middle slot because the handheld camera rests 15 cm
+        // above it. Last photograph on the wall above the rack, the status text beside it.
+        public static ToolLayout Shop => new ToolLayout
+        {
+            StoreRoot="JewelryStore_Blockout",CeilingPath="Architecture/Ceiling_Optional",
+            Cone=new Vector3(-4.12f,0.9f,1),Marker=new Vector3(-3.86f,0.9f,1),Scale=new Vector3(-3.64f,0.9f,0.96f),
+            TapePost=new Vector3(-3.34f,0.9f,1),Measure=new Vector3(-3.08f,0.9f,1),
+            SpawnPoint=new Vector3(-3.6f,0.9f,1),Camera=new Vector3(-3.6f,1.1f,1),CameraYaw=90,
+            PhotoFrame=new Vector3(-4.95f,2.1f,2.6f),PhotoFrameYaw=-90,
+            StatusBoard=new Vector3(-4.9f,1.9f,1),StatusBoardYaw=-90,
+            Ambience=new Vector3(-1,1.5f,-0.5f),
+            MapCentre=new Vector2(0,5.5f),MapHalfSize=6
+        };
+    }
+
     [MenuItem("Crime Scene Demo/Create Tool Station")]
     public static void Create() { Create(true); }
 
-    public static void Create(bool useImportedAssets)
+    public static void Create(bool useImportedAssets) { Create(useImportedAssets,ToolLayout.Shop); }
+
+    public static void Create(bool useImportedAssets,ToolLayout layout)
     {
-        GameObject store=GameObject.Find("JewelryStore_Blockout");
+        GameObject store=GameObject.Find(layout.StoreRoot);
         if(store==null)
         {
             EditorUtility.DisplayDialog("Store required","Create the store blockout first.","OK");
@@ -42,29 +77,27 @@ public static class DemoToolsBuilder
         station.TapePostPrefab=SaveTool(DemoToolKind.TapePost,useImportedAssets);
         station.ScalePrefab=SaveTool(DemoToolKind.Scale,useImportedAssets);
         station.MeasurePrefab=SaveTool(DemoToolKind.Measure,useImportedAssets);
-        // Half-size samples spaced 26 cm apart along the 1.4 m rack top (x -4.3 to -2.9);
-        // clicking or grabbing one spawns a new tool. The flat L-scale takes the middle
-        // slot because the handheld camera rests 15 cm above it.
+        // Clicking or grabbing a rack sample spawns a new tool.
         Transform rack=root.transform;
-        Sample(station.ConePrefab,rack,new Vector3(-4.12f,0.9f,1));
-        Sample(station.MarkerPrefab,rack,new Vector3(-3.86f,0.9f,1));
-        Sample(station.ScalePrefab,rack,new Vector3(-3.64f,0.9f,0.96f));
-        Sample(station.TapePostPrefab,rack,new Vector3(-3.34f,0.9f,1));
-        Sample(station.MeasurePrefab,rack,new Vector3(-3.08f,0.9f,1));
+        Sample(station.ConePrefab,rack,layout.Cone);
+        Sample(station.MarkerPrefab,rack,layout.Marker);
+        Sample(station.ScalePrefab,rack,layout.Scale);
+        Sample(station.TapePostPrefab,rack,layout.TapePost);
+        Sample(station.MeasurePrefab,rack,layout.Measure);
         station.TapePrefab=SaveTape(DemoToolGeometry.CreateTape(),"SceneTape");
         station.MeasureTapePrefab=SaveTape(DemoToolGeometry.CreateMeasureTape(),"MeasureTape");
 
         GameObject spawn=new GameObject("SpawnPoint");
         spawn.transform.SetParent(root.transform,false);
-        spawn.transform.localPosition=new Vector3(-3.6f,0.9f,1);
+        spawn.transform.localPosition=layout.SpawnPoint;
         station.SpawnPoint=spawn.transform;
 
         DemoSession session=root.AddComponent<DemoSession>();
         session.Station=station;
         GameObject cameraBody=new GameObject("HandheldCamera");
         cameraBody.transform.SetParent(root.transform,false);
-        cameraBody.transform.localPosition=new Vector3(-3.6f,1.1f,1);
-        cameraBody.transform.localRotation=Quaternion.Euler(0,90,0);
+        cameraBody.transform.localPosition=layout.Camera;
+        cameraBody.transform.localRotation=Quaternion.Euler(0,layout.CameraYaw,0);
         // Procedural unbranded DSLR ("Body" and "Lens" keep the grab colliders).
         DemoToolGeometry.CreateCameraBody(cameraBody.transform);
         Persist(cameraBody,"HandheldCamera");
@@ -100,13 +133,13 @@ public static class DemoToolsBuilder
         review.EvidenceCamera=evidence;
         panel.Review=review;
 
-        // Last photograph on the wall above the rack, 16:9, facing the showroom.
+        // Last photograph, 16:9, facing the visitor.
         GameObject frame=GameObject.CreatePrimitive(PrimitiveType.Quad);
         frame.name="PhotoFrame";
         Object.DestroyImmediate(frame.GetComponent<Collider>());
         frame.transform.SetParent(root.transform,false);
-        frame.transform.localPosition=new Vector3(-4.95f,2.1f,2.6f);
-        frame.transform.localRotation=Quaternion.Euler(0,-90,0);
+        frame.transform.localPosition=layout.PhotoFrame;
+        frame.transform.localRotation=Quaternion.Euler(0,layout.PhotoFrameYaw,0);
         frame.transform.localScale=new Vector3(1.6f,0.9f,1);
         PhotoFrame photoFrame=frame.AddComponent<PhotoFrame>();
         photoFrame.EvidenceCamera=evidence;
@@ -114,21 +147,23 @@ public static class DemoToolsBuilder
         // Street ambience heard through the broken window.
         GameObject ambience=new GameObject("StreetAmbience");
         ambience.transform.SetParent(root.transform,false);
-        ambience.transform.localPosition=new Vector3(-1,1.5f,-0.5f);
+        ambience.transform.localPosition=layout.Ambience;
         ambience.AddComponent<AudioSource>().playOnAwake=false;
         ambience.AddComponent<AmbientSound>();
 
         // Top-down map for the presenter panel; ceilings are hidden only for its render.
         DemoOverviewMap map=root.AddComponent<DemoOverviewMap>();
-        foreach(Transform t in store.transform.Find("Architecture/Ceiling_Optional").GetComponentsInChildren<Transform>(true))
+        map.Centre=layout.MapCentre;
+        map.HalfSize=layout.MapHalfSize;
+        foreach(Transform t in store.transform.Find(layout.CeilingPath).GetComponentsInChildren<Transform>(true))
             t.gameObject.layer=map.HiddenLayer;
         panel.Map=map;
 
-        // Wall-mounted status text above the rack, facing into the showroom.
+        // Status text facing the visitor (on the wall above the shop's rack).
         GameObject boardObject=new GameObject("StatusBoard");
         boardObject.transform.SetParent(root.transform,false);
-        boardObject.transform.localPosition=new Vector3(-4.9f,1.9f,1);
-        boardObject.transform.localRotation=Quaternion.Euler(0,-90,0);
+        boardObject.transform.localPosition=layout.StatusBoard;
+        boardObject.transform.localRotation=Quaternion.Euler(0,layout.StatusBoardYaw,0);
         TextMesh boardText=boardObject.AddComponent<TextMesh>();
         boardText.anchor=TextAnchor.MiddleCenter;
         boardText.alignment=TextAlignment.Center;
@@ -175,10 +210,17 @@ public static class DemoToolsBuilder
     // two controller-driven hands for VR. DemoModeSwitch enables one set at a time.
     public static ShopWalkController CreatePlayer(Camera camera)
     {
-        GameObject player=new GameObject("Player");
         Transform start=GameObject.Find("JewelryStore_Blockout")?.transform.Find("ReferencePoints/SuggestedPlayerStart");
-        player.transform.position=start!=null?start.position:new Vector3(3.65f,0,1.3f);
-        player.transform.rotation=Quaternion.Euler(0,-30,0);
+        return CreatePlayer(camera,start!=null?start.position:new Vector3(3.65f,0,1.3f),-30,null);
+    }
+
+    // Player at a spawn pose; regions (null keeps InteriorBounds' small-shop defaults)
+    // bound walking, teleport, tool placement, the beacon and the review sketch.
+    public static ShopWalkController CreatePlayer(Camera camera,Vector3 position,float yaw,InteriorBounds.Region[] regions)
+    {
+        GameObject player=new GameObject("Player");
+        player.transform.position=position;
+        player.transform.rotation=Quaternion.Euler(0,yaw,0);
         CharacterController cc=player.AddComponent<CharacterController>();
         cc.height=1.75f; cc.radius=.23f; cc.center=new Vector3(0,.875f,0);
         cc.stepOffset=.15f; cc.skinWidth=.025f;
@@ -189,6 +231,7 @@ public static class DemoToolsBuilder
         if(RenderSettings.fog) { camera.backgroundColor=RenderSettings.fogColor; camera.farClipPlane=120; }
 
         InteriorBounds bounds=player.AddComponent<InteriorBounds>();
+        if(regions!=null) bounds.Regions=(InteriorBounds.Region[])regions.Clone();
         // The review sketches the shop, and the beacon is clamped, by the regions that bound the player.
         SessionReviewRecorder review=Object.FindFirstObjectByType<SessionReviewRecorder>();
         if(review!=null) review.Bounds=bounds;

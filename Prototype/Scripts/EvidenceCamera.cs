@@ -37,6 +37,9 @@ public sealed class EvidenceCamera : MonoBehaviour
     private Transform rack;
     private Vector3 rackPosition;
     private Quaternion rackRotation;
+    // The local pose the body rests in on its rack (recorded at Awake, kept while held).
+    public Vector3 RackPosition => rackPosition;
+    public Quaternion RackRotation => rackRotation;
     private RenderTexture viewfinder;
     private Coroutine viewfinderLoop;
 
@@ -166,6 +169,9 @@ public sealed class EvidenceCamera : MonoBehaviour
     private AudioClip generatedClick;
     private void Awake()
     {
+        rack=transform.parent;
+        rackPosition=transform.localPosition;
+        rackRotation=transform.localRotation;
         if(shutterAudio!=null) return;
         shutterAudio=gameObject.AddComponent<AudioSource>();
         shutterAudio.playOnAwake=false;

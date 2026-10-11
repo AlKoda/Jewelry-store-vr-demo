@@ -21,6 +21,26 @@ public static class DemoValidation
     private static EvidenceCamera evidence;
     private static string failure;
 
+    // Floor points the shared tool, photo and reset stages use. The defaults are the
+    // small shop's open floor; another scene's validator assigns its own set in Play
+    // mode before ToolStage (statics reset on the domain reload).
+    public sealed class ToolTestPoints
+    {
+        public Vector3 Cone = new Vector3(-2, 0, 2);
+        // Barrier posts at Tape and 2 m along +x; the second then moves to 3 m.
+        public Vector3 Tape = new Vector3(0, 0, 1);
+        // Measuring reels at Reels and 1.5 m along +z (then 2 m), a post 3 m along.
+        public Vector3 Reels = new Vector3(-1, 0, 2);
+        // Two connected posts for the review snapshot, 1 m apart along +x.
+        public Vector3 Pair = new Vector3(2, 0, 3);
+        // Where the photo stage leaves the handheld camera before the reset.
+        public Vector3 CameraDrop = new Vector3(0, 1.5f, 4);
+        // A floor point the review sketch must draw inside its view box.
+        public Vector3 Sketch = new Vector3(0, 0, 4);
+    }
+
+    public static ToolTestPoints TestPoints = new ToolTestPoints();
+
     private static string Output =>
         Path.GetFullPath(Path.Combine(Application.dataPath, "../../Docs/" + SessionState.GetString(OutputKey, "Verification")));
 
@@ -118,6 +138,9 @@ public static class DemoValidation
     public static void EnterPlayMode(string stageKey, string header)
     {
         WriteHeader(header);
+        // Edit mode checks would be lost with the Play mode domain reload; write them first.
+        if (results.Count > 0) File.AppendAllText(Path.Combine(Output, "runtime-results.txt"), string.Join("\n", results) + "\n");
+        results.Clear();
         SessionState.SetInt(stageKey, 1);
         EditorApplication.isPlaying = true;
     }
@@ -164,12 +187,13 @@ public static class DemoValidation
         DeployedTool marker2 = station.Spawn(DemoToolKind.Marker);
         Check(marker1.MarkerNumber == 1 && marker2.MarkerNumber == 2, "Sequential marker numbers");
         Check(!string.IsNullOrEmpty(marker1.NumberLabel.text) && marker1.NumberLabel.font != null, "Marker label and font assigned");
-        cone.PlaceAt(new Vector3(-2, 0, 2), 45);
-        Check(Vector3.Distance(cone.transform.position, new Vector3(-2, 0, 2)) < 0.001f, "Tool placement");
+        ToolTestPoints points = TestPoints;
+        cone.PlaceAt(points.Cone, 45);
+        Check(Vector3.Distance(cone.transform.position, points.Cone) < 0.001f, "Tool placement");
         DeployedTool post1 = station.Spawn(DemoToolKind.TapePost);
         DeployedTool post2 = station.Spawn(DemoToolKind.TapePost);
-        post1.PlaceAt(new Vector3(0, 0, 1), 0);
-        post2.PlaceAt(new Vector3(2, 0, 1), 0);
+        post1.PlaceAt(points.Tape, 0);
+        post2.PlaceAt(points.Tape + new Vector3(2, 0, 0), 0);
         station.SelectTapePost(post1);
         Check(Find<DemoStatusBoard>().GetComponent<TextMesh>().text.Contains("second post"), "Status board shows the pending tape selection");
         station.SelectTapePost(post2);
@@ -177,7 +201,7 @@ public static class DemoValidation
         Check(tape != null, "Tape connection");
         tape.Refresh();
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 2) < 0.01f, "Tape length");
-        post2.PlaceAt(new Vector3(3, 0, 1), 0);
+        post2.PlaceAt(points.Tape + new Vector3(3, 0, 0), 0);
         tape.Refresh();
         Check(Mathf.Abs(tape.Ribbon.localScale.z - 3) < 0.01f, "Tape follows moved post");
         station.RemoveTool(post1);
@@ -186,16 +210,16 @@ public static class DemoValidation
         // ribbon and never join barrier posts, whether placed or selected by hand.
         DeployedTool reel1 = station.Spawn(DemoToolKind.Measure);
         DeployedTool reel2 = station.Spawn(DemoToolKind.Measure);
-        reel1.PlaceAt(new Vector3(-1, 0, 2), 0);
+        reel1.PlaceAt(points.Reels, 0);
         station.NotifyPlaced(reel1);
-        reel2.PlaceAt(new Vector3(-1, 0, 3.5f), 0);
+        reel2.PlaceAt(points.Reels + new Vector3(0, 0, 1.5f), 0);
         station.NotifyPlaced(reel2);
         SceneTape measure = null;
         foreach (SceneTape ribbon in station.DeploymentRoot.GetComponentsInChildren<SceneTape>())
             if (ribbon.StartAnchor == reel1.TapeAnchor && ribbon.EndAnchor == reel2.TapeAnchor) measure = ribbon;
         Check(measure != null && measure.ShowsDistance && measure.Flat && measure.DistanceLabel.text == "1.50 m",
             "Measuring tape connects two reels and reads the distance");
-        reel2.PlaceAt(new Vector3(-1, 0, 4), 0);
+        reel2.PlaceAt(points.Reels + new Vector3(0, 0, 2), 0);
         measure.Refresh();
         Check(measure.DistanceLabel.text == "2.00 m" && Mathf.Abs(measure.Ribbon.localScale.z - 2) < 0.01f,
             "Measuring tape label follows the moved reel");
@@ -203,7 +227,7 @@ public static class DemoValidation
         Check(Find<DemoStatusBoard>().GetComponent<TextMesh>().text.Contains("second reel"), "Status board asks for the second reel");
         station.CancelTapeSelection();
         DeployedTool post3 = station.Spawn(DemoToolKind.TapePost);
-        post3.PlaceAt(new Vector3(-1, 0, 5), 0);
+        post3.PlaceAt(points.Reels + new Vector3(0, 0, 3), 0);
         station.NotifyPlaced(post3);
         bool placedApart = station.PendingPost == null && station.LastPlacedReel == reel2 && station.LastPlacedPost == post3;
         station.SelectTapePost(reel2);
@@ -256,16 +280,16 @@ public static class DemoValidation
             "HTML review contact sheet tile and shot list row carry the shot, entry, camera, tools and markers");
         Check(html.Contains("<svg") && html.Contains(">1</text>") && html.Contains("<polygon class=\"camera\""), "HTML review sketches the scene with tool glyphs and the camera");
         Rect sketch = review.SketchViewBox();
-        Check(sketch.Contains(SessionReviewRecorder.SketchPoint(new Vector3(0, 0, 4), sketch)), "Sketch maps a shop position inside the drawing");
+        Check(sketch.Contains(SessionReviewRecorder.SketchPoint(TestPoints.Sketch, sketch)), "Sketch maps a shop position inside the drawing");
         // A connected pair of posts goes into the snapshot so the review records the ribbon.
         DeployedTool postA = station.Spawn(DemoToolKind.TapePost);
         DeployedTool postB = station.Spawn(DemoToolKind.TapePost);
-        postA.PlaceAt(new Vector3(2, 0, 3), 0);
-        postB.PlaceAt(new Vector3(3, 0, 3), 0);
+        postA.PlaceAt(TestPoints.Pair, 0);
+        postB.PlaceAt(TestPoints.Pair + new Vector3(1, 0, 0), 0);
         station.SelectTapePost(postA);
         station.SelectTapePost(postB);
         review.SaveSnapshot();
-        evidence.transform.position = new Vector3(0, 1.5f, 4);
+        evidence.transform.position = TestPoints.CameraDrop;
         Find<DemoSession>().ResetSession();
         frame = Time.frameCount;
         return true;
@@ -279,7 +303,7 @@ public static class DemoValidation
         Check(station.DeploymentRoot.childCount == 0, "Reset clears deployed objects");
         Check(station.NextMarkerNumber == 1, "Reset restarts marker numbering");
         Check(File.Exists(evidence.LastPhotoPath), "Reset preserves photographs");
-        Check(Vector3.Distance(evidence.transform.localPosition, new Vector3(-3.6f, 1.1f, 1)) < 0.001f, "Reset restores handheld camera");
+        Check(Vector3.Distance(evidence.transform.localPosition, evidence.RackPosition) < 0.001f, "Reset restores handheld camera");
         SessionReviewRecorder review = Find<SessionReviewRecorder>();
         SessionReviewRecorder.ReviewDocument document = ReadReview(review);
         int last = document.entries.Count - 1;
