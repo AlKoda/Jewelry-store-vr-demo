@@ -250,6 +250,15 @@ public static class NightStoreLayout
         return Streetlights[i] + arm + V(0, 4.2f, 0);
     }
 
+    // UV trace placeholders (UVTraceBuilder.NightExamples), derived from the layout so
+    // they follow the safe and the office opening: drops on the floor just in front of
+    // the large safe's face, a partial sole just inside the office opening.
+    public static Vector3 UVDrops => Find("SafeLarge").Position + V(-0.1f, 0, -0.63f);
+    public static Vector3 UVSole => Anchor("OfficeOpening") + V(0.3f, 0, 0.6f);
+    // On the right entrance leaf's shop-side face, on the lock stile beside the push
+    // bar (leaf space: StoreKit.StorefrontDoors puts that face at local z 0).
+    public static readonly Vector3 UVDoorSmearLocal = V(-0.88f, 1.15f, 0);
+
     public static Vector3 Anchor(string name)
     {
         switch (name)

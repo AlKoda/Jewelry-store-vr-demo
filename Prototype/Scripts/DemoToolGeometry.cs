@@ -113,7 +113,7 @@ public static class DemoToolGeometry
     // three splayed legs on a collar with spreader braces, a two-section centre column,
     // a yoke with tilt knobs and a 0.30 x 0.20 panel tilted 15 degrees down along the
     // tool's forward (+z). The face ("Face") glows only while lit (DeployedTool.LampGlow);
-    // the shadowless spot ("LampLight", off in the prefab) sits just in front of it.
+    // the hard-shadowed spot ("LampLight", off in the prefab) sits just in front of it.
     // About 370 triangles; a box round the legs, a capsule round the column and a box
     // round the panel are the colliders (grabbing, pointing and settling use them).
     private static void Lamp(DeployedTool tool)
@@ -180,7 +180,10 @@ public static class DemoToolGeometry
         spot.intensity = 1.6f;
         spot.range = 8;
         spot.spotAngle = 75;
-        spot.shadows = LightShadows.None;
+        // Low-resolution hard shadows so the 8 m beam stops at walls, partitions and
+        // counters; ToolStation.MaxLitLamps caps this at two small spot shadow maps.
+        spot.shadows = LightShadows.Hard;
+        spot.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
 #if UNITY_EDITOR
         spot.lightmapBakeType = LightmapBakeType.Realtime; // Placed at runtime: never part of the bake.
 #endif

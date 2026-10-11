@@ -261,6 +261,17 @@ public static class ShopCityValidation
         interactor.Hold(cone);
         interactor.Remove(cone);
         DemoValidation.Check(interactor.Held == null && interactor.Hovered == null, "Removing the held tool clears the hand and hover");
+        // Desktop T: a scene lamp switches, a tape post is still selected as an endpoint.
+        DeployedTool useLamp = station.Spawn(DemoToolKind.Lamp), usePost = station.Spawn(DemoToolKind.TapePost);
+        station.CancelTapeSelection();
+        bool lampWasLit = useLamp != null && useLamp.LampLit;
+        interactor.Use(useLamp);
+        bool lampSwitched = lampWasLit && !useLamp.LampLit && station.PendingPost == null;
+        interactor.Use(usePost);
+        DemoValidation.Check(lampSwitched && usePost != null && station.PendingPost == usePost, "Desktop use switches a lamp and selects a tape post");
+        station.CancelTapeSelection();
+        if (useLamp != null) station.RemoveTool(useLamp);
+        if (usePost != null) station.RemoveTool(usePost);
 
         EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
         Transform rack = evidence.transform.parent;
@@ -415,6 +426,30 @@ public static class ShopCityValidation
         DemoValidation.Check(lighting.FlashlightLight.transform.parent == hand.transform && hand.GetComponent<XRControllerInput>().Lighting == lighting,
             "Flashlight rides on the right hand in VR mode");
         lighting.Flashlight(false);
+        HandInteractor left = desktop.transform.Find("LeftHand").GetComponent<HandInteractor>();
+        lighting.UVTorch(true);
+        DemoValidation.Check(lighting.UVTorchLight.transform.parent == left.transform && left.GetComponent<XRControllerInput>().UVLighting == lighting
+            && left.GetComponent<XRControllerInput>().Lighting == null && !lighting.FlashlightOn,
+            "UV torch rides on the left hand in VR mode");
+        lighting.UVTorch(false);
+
+        // The lamp hangs straight below a pitched hand and never sinks below the floor;
+        // the trigger switches it rather than selecting a tape endpoint.
+        Quaternion handRotation = hand.transform.rotation;
+        hand.transform.SetPositionAndRotation(new Vector3(-3, 1.2f, 5), Quaternion.Euler(40, 30, 0));
+        DeployedTool lamp = hand.SpawnIntoHand(DemoToolKind.Lamp);
+        Vector3 lampBase = lamp != null ? lamp.transform.position : Vector3.zero;
+        hand.transform.position = new Vector3(-3, 0.5f, 5);
+        hand.FollowHand();
+        float lowBase = lamp != null ? lamp.transform.position.y : -1;
+        DemoValidation.Check(lamp != null && Vector3.Distance(lampBase, new Vector3(-3, 1.2f - Mathf.Abs(hand.LampHeldOffset.y), 5)) < 0.001f
+            && Mathf.Abs(lowBase - hand.FloorY) < 0.001f,
+            "Carried lamp hangs below a pitched hand and stays above the floor");
+        bool lit = lamp != null && lamp.LampLit;
+        hand.Trigger();
+        DemoValidation.Check(lit && !lamp.LampLit && desktop.Station.PendingPost == null, "Trigger switches a held scene lamp");
+        hand.RemoveHeld();
+        hand.transform.rotation = handRotation;
 
         hand.transform.position = new Vector3(-3, 1, 5);
         DeployedTool marker = hand.SpawnIntoHand(DemoToolKind.Marker);

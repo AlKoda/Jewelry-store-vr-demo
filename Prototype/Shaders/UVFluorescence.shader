@@ -12,7 +12,7 @@ Shader "CrimeScene/UVFluorescence"
     {
         _MainTex ("Trace mask (alpha)", 2D) = "white" {}
         _GlowColor ("Glow colour", Color) = (0.55, 0.95, 0.85, 1)
-        _Intensity ("Glow intensity", Range(0, 8)) = 2.5
+        _Intensity ("Glow intensity", Range(0, 8)) = 0.9
         _Visibility ("Visibility (set by UVTrace)", Range(0, 1)) = 0
         _EdgeSoftness ("Beam edge softness (cosine)", Range(0.001, 0.2)) = 0.025
     }

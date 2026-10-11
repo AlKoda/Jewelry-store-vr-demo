@@ -16,15 +16,9 @@ public static class UVTraceBuilder
     public const string ShaderName = "CrimeScene/UVFluorescence";
     public const string ExamplesName = "UVTraceExamples";
     private const int Size = 256;
+    public const float GlowIntensity = 0.9f;
 
     public enum Mask { Drops, Smear, SolePrint }
-
-    // Night store examples (store-root space), shared with the validator.
-    public static readonly Vector3 DropsPosition = V(1.2f, 0, 10.72f);
-    public static readonly Vector3 SolePosition = V(0.3f, 0, 9.1f);
-    // On the right entrance leaf's shop-side face, on the lock stile beside the push
-    // bar (leaf space: StoreKit.StorefrontDoors puts that face at local z 0).
-    public static readonly Vector3 DoorSmearLocal = V(-0.88f, 1.15f, 0);
 
     // A trace quad lying on the surface at position (facing along normal), size in
     // metres (width, height) and spin in degrees about the normal. Not static: it
@@ -69,9 +63,9 @@ public static class UVTraceBuilder
         Transform group = Group(ExamplesName, root);
         Transform leaf = root.Find("Facade/EntranceDoors/DoorRight");
         if (leaf != null)
-            Add("UVTrace_DoorSmear", group, leaf.TransformPoint(DoorSmearLocal), leaf.TransformDirection(Vector3.forward), new Vector2(0.07f, 0.22f), Mask.Smear);
-        Add("UVTrace_SafeDrops", group, root.TransformPoint(DropsPosition), Vector3.up, new Vector2(0.3f, 0.3f), Mask.Drops, 20);
-        Add("UVTrace_PartialSole", group, root.TransformPoint(SolePosition), Vector3.up, new Vector2(0.12f, 0.3f), Mask.SolePrint, -8);
+            Add("UVTrace_DoorSmear", group, leaf.TransformPoint(NightStoreLayout.UVDoorSmearLocal), leaf.TransformDirection(Vector3.forward), new Vector2(0.07f, 0.22f), Mask.Smear);
+        Add("UVTrace_SafeDrops", group, root.TransformPoint(NightStoreLayout.UVDrops), Vector3.up, new Vector2(0.3f, 0.3f), Mask.Drops, 20);
+        Add("UVTrace_PartialSole", group, root.TransformPoint(NightStoreLayout.UVSole), Vector3.up, new Vector2(0.12f, 0.3f), Mask.SolePrint, -8);
         group.gameObject.SetActive(false);
         return group.gameObject;
     }
@@ -91,6 +85,9 @@ public static class UVTraceBuilder
         }
         m.shader = shader;
         m.mainTexture = MaskTexture(mask);
+        // Kept below the LDR clip (max glow colour * intensity <= 1 in linear) so the
+        // mask's rims and streaks stay distinct instead of flattening to one value.
+        m.SetFloat("_Intensity", GlowIntensity);
         EditorUtility.SetDirty(m);
         return m;
     }

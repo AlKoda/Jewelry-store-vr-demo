@@ -496,6 +496,17 @@ public static class NightStoreValidation
         Transform dropsObject = examples.Find("UVTrace_SafeDrops");
         UVTrace drops = dropsObject != null ? dropsObject.GetComponent<UVTrace>() : null;
         if (drops == null) throw new Exception("FAILED: UVTrace_SafeDrops missing");
+        // Placed from the layout: on the office floor, clear of the large safe's front face.
+        L.Fixture safe = L.Find("SafeLarge");
+        // (Safe 0.9 m deep; the drop quad's centre at least 0.15 m clear of its front face.)
+        Vector3 dropsLocal = root.InverseTransformPoint(drops.transform.position);
+        DemoValidation.Check(L.Office.Contains(dropsLocal) && dropsLocal.z < safe.Position.z - 0.45f - 0.15f,
+            "UV drops lie in the office in front of the large safe");
+        // Peak glow (linear colour * intensity) stays at or below 1 in the LDR night view.
+        Material traceMaterial = drops.GetComponent<MeshRenderer>().sharedMaterial;
+        Color glowLinear = traceMaterial.GetColor("_GlowColor").linear;
+        DemoValidation.Check(glowLinear.maxColorComponent * traceMaterial.GetFloat("_Intensity") <= 1.0f,
+            "UV trace glow keeps its mask detail below the LDR clip");
         Vector3 target = drops.transform.position, above = target + new Vector3(0, 1.5f, -0.8f);
         float inside = AimUV(lighting, above, target, drops);
         DemoValidation.Check(inside > 0.9f && UVTrace.ActiveCount == 3 && Shader.GetGlobalVector(DemoLighting.UVParamsId).z > 0.99f,
@@ -515,7 +526,8 @@ public static class NightStoreValidation
         DeployedTool first = station.Spawn(DemoToolKind.Lamp), second = station.Spawn(DemoToolKind.Lamp), third = station.Spawn(DemoToolKind.Lamp);
         Light spot = third != null ? third.Lamp : null;
         float tilt = spot != null ? Vector3.Angle(spot.transform.forward, third.transform.forward) : 0;
-        bool lamp = spot != null && spot.type == LightType.Spot && spot.shadows == LightShadows.None && Mathf.Abs(spot.range - 8) < 0.01f
+        bool lamp = spot != null && spot.type == LightType.Spot && spot.shadows == LightShadows.Hard
+            && spot.shadowResolution == UnityEngine.Rendering.LightShadowResolution.Low && Mathf.Abs(spot.range - 8) < 0.01f
             && Mathf.Abs(spot.spotAngle - 75) < 0.01f && tilt > 14 && tilt < 16 && spot.transform.forward.y < 0;
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         bool glow = third != null && third.LampFace != null && first.LampFace != null;
