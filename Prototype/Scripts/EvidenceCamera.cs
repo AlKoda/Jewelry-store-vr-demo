@@ -189,6 +189,7 @@ public sealed class EvidenceCamera : MonoBehaviour
     {
         if(generatedClick!=null) Destroy(generatedClick);
         if(LastPhoto!=null) Destroy(LastPhoto);
+        if(scratch!=null) Destroy(scratch);
     }
 
     private IEnumerator Capture()
@@ -243,6 +244,15 @@ public sealed class EvidenceCamera : MonoBehaviour
         while(!save.IsCompleted) yield return null;
         IsCapturing=false;
         if(save.IsFaulted) { Fail(save.Exception.GetBaseException().Message); yield break; }
+        // Only a photo that reached disk replaces LastPhoto, so the wall frame
+        // and panel thumbnail never show a shot whose save failed.
+        if(LastPhoto==null || LastPhoto.width!=w || LastPhoto.height!=h)
+        {
+            if(LastPhoto!=null) Destroy(LastPhoto);
+            LastPhoto=new Texture2D(w,h,TextureFormat.RGB24,false) { name="LastEvidencePhoto" };
+        }
+        LastPhoto.LoadRawTextureData(pixels);
+        LastPhoto.Apply(false);
         sequence=number;
         LastPhotoPath=path;
         Status="Saved photo "+sequence.ToString("D4");
@@ -254,21 +264,25 @@ public sealed class EvidenceCamera : MonoBehaviour
     // panel preview so neither has to read the PNG back from disk.
     public Texture2D LastPhoto { get; private set; }
 
-    // Copies the rendered frame into LastPhoto and returns its raw RGB bytes.
+    // Scratch texture the rendered frame is read into; LastPhoto is only
+    // updated after the PNG has been written.
+    private Texture2D scratch;
+
+    // Copies the rendered frame into the scratch texture and returns a copy of its raw RGB bytes.
     private byte[] ReadPixels()
     {
         RenderTexture previousActive=RenderTexture.active;
         try
         {
             RenderTexture.active=target;
-            if(LastPhoto==null || LastPhoto.width!=width || LastPhoto.height!=height)
+            if(scratch==null || scratch.width!=width || scratch.height!=height)
             {
-                if(LastPhoto!=null) Destroy(LastPhoto);
-                LastPhoto=new Texture2D(width,height,TextureFormat.RGB24,false) { name="LastEvidencePhoto" };
+                if(scratch!=null) Destroy(scratch);
+                scratch=new Texture2D(width,height,TextureFormat.RGB24,false) { name="EvidencePhotoScratch" };
             }
-            LastPhoto.ReadPixels(new Rect(0,0,width,height),0,0);
-            LastPhoto.Apply(false);
-            return LastPhoto.GetRawTextureData();
+            scratch.ReadPixels(new Rect(0,0,width,height),0,0);
+            scratch.Apply(false);
+            return scratch.GetRawTextureData();
         }
         finally { RenderTexture.active=previousActive; }
     }

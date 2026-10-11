@@ -30,7 +30,7 @@ The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It superse
 
 - [x] KayKit City and Furniture Bits (CC0) placed by the generators with primitive fallback; one atlas draw per kit.
 - [x] cgbookcase parquet and gold maps; HDRI Haven sky and reflection environment.
-- [x] Async photo encoding with LastPhoto texture; status-board tape prompt; nine reliability fixes (see HANDOFF).
+- [x] Async photo encoding with LastPhoto texture (updated only after a successful save since the Oct 11 audit, unverified); status-board tape prompt; nine reliability fixes (see HANDOFF).
 - [ ] Run RunTextured on the PC; inspect the street from inside the shop, the safe room and the reflections; report the count.
 - [ ] Next: presenter panel redesign (strip/full modes, UI scale, photo thumbnail), live viewfinder, measuring tape, photo log in the review, flashlight/night preset, instructor beacon, smoothed spectator camera.
 
