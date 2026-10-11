@@ -58,9 +58,10 @@ public static class DemoAssetLibrary
 
     // A normal map from a pack, re-imported as a normal map the first time so the
     // Standard shader unpacks it correctly; null when the file is absent.
-    public static Texture2D NormalMap(string pack, string file)
+    public static Texture2D NormalMap(string pack, string file) => NormalMapAt(Path(pack, file));
+
+    public static Texture2D NormalMapAt(string path)
     {
-        string path = Path(pack, file);
         TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
         if (importer == null) return null;
         if (importer.textureType != TextureImporterType.NormalMap)
@@ -69,6 +70,18 @@ public static class DemoAssetLibrary
             importer.SaveAndReimport();
         }
         return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+    }
+
+    // Gives a saved material an albedo (the texture carries the colour, a light tint of
+    // the saved colour is kept so it does not darken it) and an optional normal map.
+    public static void ApplyTextures(Material m, Texture2D albedo, Texture2D normal, float bump)
+    {
+        m.mainTexture = albedo;
+        m.color = Color.Lerp(m.color, Color.white, 0.75f);
+        if (normal == null) return;
+        m.EnableKeyword("_NORMALMAP");
+        m.SetTexture("_BumpMap", normal);
+        m.SetFloat("_BumpScale", bump);
     }
 
     // Each imported OBJ carries its own copy of the pack's atlas material. Models of
@@ -82,8 +95,11 @@ public static class DemoAssetLibrary
         return shared;
     }
 
-    // Unpacked instance (meshes still reference the asset), uniformly scaled, without colliders or shadows.
-    public static GameObject Place(string pack, string model, Transform parent, Vector3 localPosition, float yaw, float scale)
+    // Unpacked instance (meshes still reference the asset), uniformly scaled, without colliders.
+    // Kit props (the default) drop shadows and share the pack's atlas material by name; a
+    // full-size model (kitProp false: StoreKit overrides) keeps its own materials, whose
+    // names image-to-3D exports repeat across models, and casts and receives shadows.
+    public static GameObject Place(string pack, string model, Transform parent, Vector3 localPosition, float yaw, float scale, bool kitProp = true)
     {
         GameObject asset = Load(pack, model);
         if (asset == null) return null;
@@ -96,9 +112,9 @@ public static class DemoAssetLibrary
         foreach (Collider collider in instance.GetComponentsInChildren<Collider>()) Object.DestroyImmediate(collider);
         foreach (MeshRenderer renderer in instance.GetComponentsInChildren<MeshRenderer>())
         {
-            renderer.shadowCastingMode = ShadowCastingMode.Off;
-            renderer.receiveShadows = false;
-            if (renderer.sharedMaterials.Length == 1) renderer.sharedMaterial = Shared(pack, renderer.sharedMaterial);
+            renderer.shadowCastingMode = kitProp ? ShadowCastingMode.Off : ShadowCastingMode.On;
+            renderer.receiveShadows = !kitProp;
+            if (kitProp && renderer.sharedMaterials.Length == 1) renderer.sharedMaterial = Shared(pack, renderer.sharedMaterial);
         }
         return instance;
     }

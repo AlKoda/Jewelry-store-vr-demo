@@ -11,14 +11,15 @@ using static DemoGeometry;
 // centre of the footprint and its front facing -z. Exceptions: wall-mounted pieces
 // (sign_frame, exit_sign, alarm_keypad, security_camera) pivot at the bottom centre
 // of their back, which sits on z = 0; ceiling pieces (track_light, downlight) pivot
-// at the ceiling contact and hang below y = 0. Door frames pivot at the bottom
+// at the ceiling contact and stay entirely at or below y = 0. Door frames pivot at the bottom
 // centre of the opening; every hinged leaf ("Door", "DoorLeft", "DoorRight") is a
 // child whose pivot is on its hinge axis, so rotating it about local y swings it.
 // Drawers ("Drawer", "Drawer0".."Drawer2") slide along local -z.
 //
 // Each rigid part is one KitMesh: one renderer with a submesh per material, metric
 // UVs and lightmap UVs, saved under Folder. Materials come from Palette() and pick
-// up tileable textures from the ReferenceTextures pack when present.
+// up tileable textures from the ReferenceTextures pack when present, else the
+// GeneratedTextures stand-ins (walnut, brushed brass, marble).
 //
 // Instantiate(name, ...) first looks for a user-converted model at
 // Prototype/ThirdParty/StoreKit/<name>.obj or .fbx (synced to
@@ -119,18 +120,19 @@ public static class StoreKit
         Velvet = Surface("KitVelvet", new Color(0.13f, 0.13f, 0.14f), 0.05f, 0, "VelvetCharcoal", 0.25f);
         Bronze = Surface("KitBronze", new Color(0.55f, 0.42f, 0.26f), 0.45f, 0.8f, "BronzeBrushed", 0.3f);
         Stone = Surface("KitStone", new Color(0.82f, 0.77f, 0.68f), 0.5f, 0, "StoneTop", 0.8f);
-        SafeSteel = Surface("KitSafeSteel", new Color(0.20f, 0.21f, 0.22f), 0.35f, 0.6f, "SafeSteel", 0.5f);
-        FrameMetal = Surface("KitFrameMetal", new Color(0.12f, 0.12f, 0.13f), 0.4f, 0.7f, null, 1);
+        // Dark finishes are powder-coated dielectrics: a dark albedo with high metallic
+        // leaves almost no diffuse and a lower F0 than paint, so they read flat black at night.
+        SafeSteel = Surface("KitSafeSteel", new Color(0.22f, 0.23f, 0.24f), 0.35f, 0.1f, "SafeSteel", 0.5f);
+        FrameMetal = Surface("KitFrameMetal", new Color(0.16f, 0.16f, 0.17f), 0.45f, 0, null, 1);
         Lacquer = Surface("KitLacquer", new Color(0.84f, 0.81f, 0.74f), 0.4f, 0, null, 1);
         Fabric = Surface("KitFabric", new Color(0.16f, 0.16f, 0.17f), 0.1f, 0, null, 1);
         SafeLining = Surface("KitSafeLining", new Color(0.36f, 0.30f, 0.23f), 0.3f, 0.3f, null, 1);
         PaintedGrey = Surface("KitPaintedGrey", new Color(0.33f, 0.34f, 0.35f), 0.35f, 0.3f, null, 1);
         Stainless = Surface("KitStainless", new Color(0.62f, 0.62f, 0.60f), 0.55f, 0.8f, null, 1);
-        DeviceBlack = Surface("KitDeviceBlack", new Color(0.05f, 0.05f, 0.055f), 0.45f, 0, null, 1);
+        DeviceBlack = Surface("KitDeviceBlack", new Color(0.10f, 0.10f, 0.11f), 0.4f, 0, null, 1);
         DeviceGrey = Surface("KitDeviceGrey", new Color(0.58f, 0.58f, 0.56f), 0.45f, 0.2f, null, 1);
         Foliage = Surface("KitFoliage", new Color(0.17f, 0.30f, 0.13f), 0.25f, 0, null, 1);
         Soil = Surface("KitSoil", new Color(0.12f, 0.09f, 0.07f), 0.05f, 0, null, 1);
-        GlassCrack = Surface("KitGlassCrack", new Color(0.80f, 0.86f, 0.85f), 0.7f, 0, null, 1);
         LightLens = Emissive(Surface("KitLightLens", new Color(0.85f, 0.85f, 0.82f), 0.8f, 0, null, 1), Color.black);
         StripLight = Emissive(Surface("KitStripLight", new Color(0.85f, 0.84f, 0.80f), 0.6f, 0, null, 1), Color.black);
         DeviceScreen = Emissive(Surface("KitScreen", new Color(0.02f, 0.02f, 0.025f), 0.9f, 0, null, 1), Color.black);
@@ -142,28 +144,56 @@ public static class StoreKit
         Glass = Translucent(Mat(Folder, "KitGlass", new Color(0.80f, 0.90f, 0.88f, 0.10f), 0.95f));
         Glass.SetFloat("_Metallic", 0);
         EditorUtility.SetDirty(Glass);
+        // Crack lines: faint translucent strips drawn after the pane, so they read as
+        // glints rather than paint, cast no shadow and stay out of the lightmap.
+        GlassCrack = Translucent(Mat(Folder, "KitGlassCrack", new Color(0.85f, 0.90f, 0.90f, 0.35f), 0.95f));
+        GlassCrack.SetFloat("_Metallic", 0);
+        GlassCrack.renderQueue = 3001;
+        EditorUtility.SetDirty(GlassCrack);
         AssetDatabase.SaveAssets();
     }
 
-    // Standard material; with ReferenceTextures/<texture>_Color.png present the texture
-    // carries the colour (light tint kept) and tiles once per `metres` on metric UVs.
+    public const string FallbackTexturePack = "GeneratedTextures";
+
+    // Generated tileable textures standing in for a palette texture until a reference one exists.
+    private static readonly Dictionary<string, string> GeneratedFallback = new Dictionary<string, string>
+    {
+        { "Walnut", "Walnut" }, { "BronzeBrushed", "BrushedBrass" }, { "StoneTop", "Marble" }
+    };
+
+    // Standard material; with ReferenceTextures/<texture>_Color.png present (else the
+    // GeneratedTextures stand-in) the texture carries the colour (light tint kept) and
+    // tiles once per `metres` on metric UVs.
     private static Material Surface(string name, Color color, float smoothness, float metallic, string texture, float metres)
     {
         Material m = Mat(Folder, name, color, smoothness);
         m.SetFloat("_Metallic", metallic);
-        Texture2D albedo = texture == null ? null : DemoAssetLibrary.Texture(TexturePack, texture + "_Color.png");
-        Texture2D normal = texture == null ? null : DemoAssetLibrary.NormalMap(TexturePack, texture + "_Normal.png");
-        m.mainTexture = albedo;
+        m.mainTexture = null;
+        m.SetTexture("_BumpMap", null);
+        m.DisableKeyword("_NORMALMAP");
         m.mainTextureScale = Vector2.one / metres;
-        if (albedo != null) m.color = Color.Lerp(color, Color.white, 0.75f);
-        if (normal != null)
+        if (texture != null)
         {
-            m.EnableKeyword("_NORMALMAP");
-            m.SetTexture("_BumpMap", normal);
-            m.SetFloat("_BumpScale", 0.8f);
+            Texture2D albedo = DemoAssetLibrary.Texture(TexturePack, texture + "_Color.png");
+            Texture2D normal = albedo != null ? DemoAssetLibrary.NormalMap(TexturePack, texture + "_Normal.png") : null;
+            if (albedo == null && GeneratedFallback.TryGetValue(texture, out string generated))
+            {
+                albedo = DemoAssetLibrary.Texture(FallbackTexturePack, generated + ".png");
+                normal = albedo != null ? DemoAssetLibrary.NormalMap(FallbackTexturePack, generated + "_Normal.png") : null;
+            }
+            if (albedo != null) DemoAssetLibrary.ApplyTextures(m, albedo, normal, 0.8f);
         }
         EditorUtility.SetDirty(m);
         return m;
+    }
+
+    // Palette materials that ended up with an albedo texture (for validator reports).
+    public static List<string> TexturedPalette()
+    {
+        List<string> names = new List<string>();
+        foreach (Material m in new[] { Walnut, Suede, Velvet, Bronze, Stone, SafeSteel })
+            if (m != null && m.mainTexture != null) names.Add(m.name + "=" + m.mainTexture.name);
+        return names;
     }
 
     private static Material Emissive(Material m, Color emission)
@@ -180,7 +210,7 @@ public static class StoreKit
     // User-converted model when present (Prototype/ThirdParty/StoreKit/<name>.obj|.fbx), else the procedural build.
     public static GameObject Instantiate(string name, Transform parent, Vector3 position, float yaw)
     {
-        GameObject model = DemoAssetLibrary.Place(OverridePack, name, parent, position, yaw, 1);
+        GameObject model = DemoAssetLibrary.Place(OverridePack, name, parent, position, yaw, 1, false);
         if (model != null)
         {
             DemoAssetLibrary.AddBoundsCollider(model);
@@ -457,7 +487,15 @@ public static class StoreKit
             Drawer(tray, w - 0.14f, 0.11f, 0.45f, Walnut, Suede);
             Part(tray, "Drawer", root, V(0, 0.59f, -(d * 0.5f - 0.01f) - drawerOut), kind + "_drawer");
         }
-        Collide(root, V(0, h * 0.5f, 0), V(w, h, d));
+        // Solid cabinet up to the deck, then one thin box per pane still standing, so the
+        // deck stays reachable through a broken pane and tools settle on it, not on a lid.
+        Collide(root, V(0, deck * 0.5f, 0), V(w, deck, d));
+        const float slab = 0.02f;
+        if (!frontBroken) Collide(root, V(0, paneCy, -(d * 0.5f - rail)), V(w, paneH, slab));
+        if (backPanel || !allBroken) Collide(root, V(0, paneCy, d * 0.5f - rail), V(w, paneH, slab));
+        if (!allBroken)
+            for (int s = -1; s <= 1; s += 2) Collide(root, V(s * (w * 0.5f - rail), paneCy, 0), V(slab, paneH, d));
+        if (!allBroken) Collide(root, V(0, h - post * 0.5f, 0), V(w, post, d));
         return root;
     }
 
@@ -695,7 +733,12 @@ public static class StoreKit
         }
         GameObject leaf = door.Emit("Door", root.transform, V(hingeX, 0, -d * 0.5f), Quaternion.Euler(0, -openAngle, 0), Folder, kind + "_door");
         Collide(leaf, V(-W * 0.5f, dy, wall * 0.5f), V(W, H, wall));
-        Collide(root, V(0, cy, 0), V(w, hb, d));
+        // Shell walls and shelves, not one solid box, so the open safe's interior is reachable.
+        Collide(root, V(0, h - wall * 0.5f, 0), V(w, wall, d));
+        Collide(root, V(0, foot * 0.5f + wall * 0.5f, 0), V(w, foot + wall, d));
+        for (int s = -1; s <= 1; s += 2) Collide(root, V(s * (w * 0.5f - wall * 0.5f), cy, 0), V(wall, hb - 2 * wall, d));
+        Collide(root, V(0, cy, d * 0.5f - wall * 0.5f), V(w - 2 * wall, hb - 2 * wall, wall));
+        for (int i = 1; i <= 2; i++) Collide(root, V(0, y0 + (y1 - y0) * i / 3f, (zf + zb) * 0.5f), V(2 * ix, 0.02f, zb - zf));
         return root;
     }
 
@@ -799,7 +842,8 @@ public static class StoreKit
     // ---------------------------------------------------------------- doors and facade
 
     // Double glass doors in a dark metal frame (2.0 x 2.4). DoorLeft hinges at the left
-    // jamb, DoorRight at the right; positive angles open both into the shop (+z).
+    // jamb, DoorRight at the right; positive angles open both into the shop (+z). Each
+    // hinge axis lies on the leaf's +z face, so an opened leaf swings clear of the jamb.
     public static GameObject StorefrontDoors(Transform parent, float openLeft = 0, float openRight = 0, bool brokenLeft = false, bool brokenRight = false)
     {
         const float half = 0.92f, leafW = 0.915f, leafH = 2.30f, hinge = half - 0.0025f;
@@ -809,6 +853,9 @@ public static class StoreKit
         frame.Box(FrameMetal, V(0, 2.36f, 0), V(2 * half, 0.08f, 0.12f));
         frame.Box(Stainless, V(0, 0.005f, 0), V(2 * half, 0.01f, 0.14f), false);
         Part(frame, "Frame", root, Vector3.zero, "storefront_frame");
+        for (int s = -1; s <= 1; s += 2) Collide(root, V(s * 0.96f, 1.2f, 0), V(0.08f, 2.4f, 0.12f));
+        Collide(root, V(0, 2.36f, 0), V(2 * half, 0.08f, 0.12f));
+        const float t = 0.05f, zc = -t * 0.5f;
         KitMesh shards = new KitMesh();
         System.Random rng = new System.Random(11);
         for (int s = -1; s <= 1; s += 2)
@@ -817,22 +864,22 @@ public static class StoreKit
             float x = -s;
             bool broken = s < 0 ? brokenLeft : brokenRight;
             KitMesh leaf = new KitMesh();
-            leaf.Box(FrameMetal, V(x * 0.035f, 0.01f + leafH * 0.5f, 0), V(0.07f, leafH, 0.05f));
-            leaf.Box(FrameMetal, V(x * (leafW - 0.035f), 0.01f + leafH * 0.5f, 0), V(0.07f, leafH, 0.05f));
-            leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.01f + leafH - 0.035f, 0), V(leafW - 0.14f, 0.07f, 0.05f));
-            leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.01f + 0.09f, 0), V(leafW - 0.14f, 0.18f, 0.05f));
+            leaf.Box(FrameMetal, V(x * 0.035f, 0.01f + leafH * 0.5f, zc), V(0.07f, leafH, t));
+            leaf.Box(FrameMetal, V(x * (leafW - 0.035f), 0.01f + leafH * 0.5f, zc), V(0.07f, leafH, t));
+            leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.01f + leafH - 0.035f, zc), V(leafW - 0.14f, 0.07f, t));
+            leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.01f + 0.09f, zc), V(leafW - 0.14f, 0.18f, t));
             for (int f = -1; f <= 1; f += 2)
             {
-                leaf.Box(Bronze, V(x * (leafW - 0.1f), 1.05f, f * 0.06f), V(0.025f, 0.6f, 0.025f));
+                leaf.Box(Bronze, V(x * (leafW - 0.1f), 1.05f, zc + f * 0.06f), V(0.025f, 0.6f, 0.025f));
                 for (int e = -1; e <= 1; e += 2)
-                    leaf.Box(Bronze, V(x * (leafW - 0.1f), 1.05f + e * 0.25f, f * 0.0375f), V(0.015f, 0.015f, 0.025f));
+                    leaf.Box(Bronze, V(x * (leafW - 0.1f), 1.05f + e * 0.25f, zc + f * 0.0375f), V(0.015f, 0.015f, 0.025f));
             }
             float angle = s < 0 ? -openLeft : openRight;
-            GameObject leafObject = leaf.Emit(s < 0 ? "DoorLeft" : "DoorRight", root.transform, V(s * hinge, 0, 0),
+            GameObject leafObject = leaf.Emit(s < 0 ? "DoorLeft" : "DoorRight", root.transform, V(s * hinge, 0, -zc),
                 Quaternion.Euler(0, angle, 0), Folder, s < 0 ? "storefront_leaf_left" : "storefront_leaf_right");
             float gw = leafW - 0.14f, gh = leafH - 0.25f;
-            PaneChild("Glass", leafObject.transform, V(x * leafW * 0.5f, 0.19f + gh * 0.5f, 0), gw, gh, 0.008f, broken, 20 + s, new Vector2(0.05f, -0.1f));
-            Collide(leafObject, V(x * leafW * 0.5f, 0.01f + leafH * 0.5f, 0), V(leafW, leafH, 0.05f));
+            PaneChild("Glass", leafObject.transform, V(x * leafW * 0.5f, 0.19f + gh * 0.5f, zc), gw, gh, 0.008f, broken, 20 + s, new Vector2(0.05f, -0.1f));
+            Collide(leafObject, V(x * leafW * 0.5f, 0.01f + leafH * 0.5f, zc), V(leafW, leafH, t));
             if (broken) Spill(shards, rng, V(s * 0.45f, 0.003f, 0.45f), 0.45f, 0.4f, 12);
         }
         if (brokenLeft || brokenRight) Part(shards, "Shards", root, Vector3.zero, "storefront_shards");
@@ -847,37 +894,41 @@ public static class StoreKit
     public static GameObject ServiceDoor(Transform parent, float open = 0)
         => HingedDoor("service_door", parent, PaintedGrey, Stainless, true, open);
 
-    // Single leaf in a 0.9 x 2.1 opening, hinged on the left seen from the front.
+    // Single leaf in a 0.9 x 2.1 opening, hinged on the left seen from the front. The
+    // hinge axis (and the butt hinges) lie on the leaf's +z face, the side it opens
+    // towards, so the opened leaf's back corner swings into the opening, not the casing.
     private static GameObject HingedDoor(string kind, Transform parent, Material leafMaterial, Material hardware, bool service, float open)
     {
-        const float half = 0.45f, leafW = 0.894f, leafH = 2.09f, casing = 0.07f;
+        const float half = 0.45f, leafW = 0.894f, leafH = 2.09f, casing = 0.07f, t = 0.04f, zc = -t * 0.5f;
         GameObject root = Root(kind, parent);
         KitMesh frame = new KitMesh();
         for (int s = -1; s <= 1; s += 2) frame.Box(leafMaterial, V(s * (half + casing * 0.5f), (2.1f + casing) * 0.5f, 0), V(casing, 2.1f + casing, 0.14f));
         frame.Box(leafMaterial, V(0, 2.1f + casing * 0.5f, 0), V(2 * half, casing, 0.14f));
-        foreach (float y in new[] { 0.25f, 1.05f, 1.85f }) frame.Box(hardware, V(-half + 0.002f, y, -0.02f), V(0.012f, 0.1f, 0.025f));
+        foreach (float y in new[] { 0.25f, 1.05f, 1.85f }) frame.Box(hardware, V(-half + 0.002f, y, -zc), V(0.012f, 0.1f, 0.025f));
         Part(frame, "Frame", root, Vector3.zero, kind + "_frame");
+        for (int s = -1; s <= 1; s += 2) Collide(root, V(s * (half + casing * 0.5f), (2.1f + casing) * 0.5f, 0), V(casing, 2.1f + casing, 0.14f));
+        Collide(root, V(0, 2.1f + casing * 0.5f, 0), V(2 * half, casing, 0.14f));
         KitMesh leaf = new KitMesh();
         float cx = leafW * 0.5f, cy = 0.005f + leafH * 0.5f;
-        leaf.Box(leafMaterial, V(cx, cy, 0), V(leafW, leafH, 0.04f));
+        leaf.Box(leafMaterial, V(cx, cy, zc), V(leafW, leafH, t));
         if (service)
         {
-            leaf.Box(hardware, V(cx, 1.0f, -0.055f), V(0.66f, 0.035f, 0.03f));
-            for (int e = -1; e <= 1; e += 2) leaf.Box(hardware, V(cx + e * 0.36f, 1.0f, -0.045f), V(0.07f, 0.09f, 0.05f));
-            leaf.Box(hardware, V(cx, 0.13f, -0.0215f), V(leafW - 0.04f, 0.25f, 0.003f));
+            leaf.Box(hardware, V(cx, 1.0f, zc - 0.055f), V(0.66f, 0.035f, 0.03f));
+            for (int e = -1; e <= 1; e += 2) leaf.Box(hardware, V(cx + e * 0.36f, 1.0f, zc - 0.045f), V(0.07f, 0.09f, 0.05f));
+            leaf.Box(hardware, V(cx, 0.13f, zc - 0.0215f), V(leafW - 0.04f, 0.25f, 0.003f));
         }
         else
         {
             float hx = leafW - 0.07f;
             for (int f = -1; f <= 1; f += 2)
             {
-                leaf.Cylinder(hardware, V(hx, 1.0f, f * 0.02f), V(hx, 1.0f, f * 0.03f), 0.026f, 10);
-                leaf.Box(hardware, V(hx, 1.0f, f * 0.037f), V(0.018f, 0.018f, 0.016f));
-                leaf.Box(hardware, V(hx - 0.055f, 1.0f, f * 0.045f), V(0.12f, 0.018f, 0.018f));
+                leaf.Cylinder(hardware, V(hx, 1.0f, zc + f * 0.02f), V(hx, 1.0f, zc + f * 0.03f), 0.026f, 10);
+                leaf.Box(hardware, V(hx, 1.0f, zc + f * 0.037f), V(0.018f, 0.018f, 0.016f));
+                leaf.Box(hardware, V(hx - 0.055f, 1.0f, zc + f * 0.045f), V(0.12f, 0.018f, 0.018f));
             }
         }
-        GameObject leafObject = leaf.Emit("Door", root.transform, V(-half + 0.002f, 0, 0), Quaternion.Euler(0, -open, 0), Folder, kind + "_leaf");
-        Collide(leafObject, V(cx, cy, 0), V(leafW, leafH, 0.04f));
+        GameObject leafObject = leaf.Emit("Door", root.transform, V(-half + 0.002f, 0, -zc), Quaternion.Euler(0, -open, 0), Folder, kind + "_leaf");
+        Collide(leafObject, V(cx, cy, zc), V(leafW, leafH, t));
         return root;
     }
 
@@ -898,7 +949,12 @@ public static class StoreKit
         k.Box(FrameMetal, V(0, 2.96f, 0), V(gw, 0.08f, 0.14f));
         foreach (float y in new[] { 0.05f, 0.30f }) k.Box(Bronze, V(0, y, -0.052f), V(gw - 0.12f, 0.008f, 0.004f));
         Part(k, "Frame", root, Vector3.zero, "window_frame");
+        for (int s = -1; s <= 1; s += 2) Collide(root, V(s * 0.98f, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
+        Collide(root, V(0, gy0 * 0.5f, 0), V(gw, gy0, 0.14f));
+        Collide(root, V(0, (gy1 + 3.0f) * 0.5f, 0), V(gw, 3.0f - gy1, 0.14f));
         float gh = gy1 - gy0;
+        // An intact or cracked pane stops pointer, teleport and settling rays; a broken one leaves the hole open.
+        if (state != Pane.Broken) Collide(root, V(0, (gy0 + gy1) * 0.5f, 0), V(gw, gh, 0.01f));
         GameObject glass = PaneChild("Glass", root.transform, V(0, (gy0 + gy1) * 0.5f, 0), gw, gh, 0.01f, state == Pane.Broken, 5, new Vector2(0.1f, -0.15f));
         if (state == Pane.Cracked) Cracks(glass.transform, gw, gh);
         if (state == Pane.Broken)
@@ -932,21 +988,21 @@ public static class StoreKit
                 float turn = Range(rng, -0.35f, 0.35f);
                 Vector2 d = new Vector2(dirs[i].x * Mathf.Cos(turn) - dirs[i].y * Mathf.Sin(turn), dirs[i].x * Mathf.Sin(turn) + dirs[i].y * Mathf.Cos(turn));
                 Vector2 q = Clamp(p + d * segment, gw, gh);
-                CrackLine(k, p, q);
+                CrackLine(k, p, q, 0.006f - 0.001f * s); // 6 mm at the impact tapering to 4 mm, wide enough not to shimmer.
                 p = q;
             }
         }
         foreach (float r in new[] { 0.12f, 0.28f })
             for (int i = 0; i < rays; i++)
-                CrackLine(k, Clamp(impact + dirs[i] * r, gw, gh), Clamp(impact + dirs[(i + 1) % rays] * r, gw, gh));
+                CrackLine(k, Clamp(impact + dirs[i] * r, gw, gh), Clamp(impact + dirs[(i + 1) % rays] * r, gw, gh), r < 0.2f ? 0.005f : 0.004f);
         k.Emit("Cracks", glass, Vector3.zero, Quaternion.identity, Folder, "window_cracks");
     }
 
-    private static void CrackLine(KitMesh k, Vector2 a, Vector2 b)
+    private static void CrackLine(KitMesh k, Vector2 a, Vector2 b, float width)
     {
         if ((b - a).sqrMagnitude < 1e-6f) return;
-        k.Stroke(GlassCrack, P(a, -0.0055f), P(b, -0.0055f), 0.003f, Vector3.back);
-        k.Stroke(GlassCrack, P(a, 0.0055f), P(b, 0.0055f), 0.003f, Vector3.forward);
+        k.Stroke(GlassCrack, P(a, -0.0055f), P(b, -0.0055f), width, Vector3.back);
+        k.Stroke(GlassCrack, P(a, 0.0055f), P(b, 0.0055f), width, Vector3.forward);
     }
 
     private static Vector2 Clamp(Vector2 p, float w, float h)
@@ -1028,14 +1084,16 @@ public static class StoreKit
         return root;
     }
 
-    // Recessed ceiling downlight (pivot at the ceiling plane): trim ring, reflector, lens off.
+    // Low ceiling downlight (pivot at the ceiling plane, everything at or below it, so no
+    // ceiling opening is needed): 12 mm trim ring, short reflector stepping back up to
+    // a lens 4 mm below the ceiling (off), visible from the floor.
     public static GameObject Downlight(Transform parent)
     {
         GameObject root = Root("downlight", parent);
         KitMesh k = new KitMesh();
-        Quaternion down = Quaternion.Euler(180, 0, 0);
-        k.Lathe(Lacquer, Vector3.zero, down, new[] { 0.085f, 0.085f, 0.06f, 0.05f }, new[] { 0f, 0.008f, 0.008f, -0.03f }, 16, true, false, false);
-        k.Face(LightLens, Vector3.down, KitMesh.Ring(Vector3.zero, down, 0.05f, -0.03f, 16, 0));
+        Quaternion down = Quaternion.Euler(180, 0, 0); // Local lathe heights run downwards from the ceiling.
+        k.Lathe(Lacquer, Vector3.zero, down, new[] { 0.085f, 0.085f, 0.06f, 0.05f }, new[] { 0f, 0.012f, 0.012f, 0.004f }, 16, true, false, false);
+        k.Face(LightLens, Vector3.down, KitMesh.Ring(Vector3.zero, down, 0.05f, 0.004f, 16, 0));
         Part(k, "Body", root, Vector3.zero, "downlight");
         return root;
     }

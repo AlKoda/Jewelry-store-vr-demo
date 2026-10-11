@@ -129,13 +129,31 @@ public static class DemoGeometry
         mesh.RecalculateTangents();
     }
 
-    // Non-overlapping second UV set so the mesh can receive baked lightmaps. The
-    // unwrap may split vertices along seams, so tangents are rebuilt afterwards.
+    // Texel density the night bake is planned at; sets the lightmap chart margin.
+    public const float LightmapTexelsPerMetre = 15;
+
+    // Non-overlapping second UV set so the mesh can receive baked lightmaps. The pack
+    // margin is about two lightmap texels at the planned density (Unity's default
+    // 1/256 is a fraction of a texel on a small mesh, so neighbouring charts bleed).
+    // The unwrap may split vertices along seams, so tangents are rebuilt afterwards.
     public static void PrepareForLightmaps(Mesh mesh)
     {
         if (mesh.vertexCount == 0) return;
-        Unwrapping.GenerateSecondaryUVSet(mesh);
+        UnwrapParam.SetDefaults(out UnwrapParam settings);
+        float side = Mathf.Sqrt(Mathf.Max(SurfaceArea(mesh), 1e-6f)) * LightmapTexelsPerMetre;
+        settings.packMargin = Mathf.Clamp(2f / side, 1f / 256, 0.05f);
+        Unwrapping.GenerateSecondaryUVSet(mesh, settings);
         mesh.RecalculateTangents();
+    }
+
+    public static float SurfaceArea(Mesh mesh)
+    {
+        Vector3[] vertices = mesh.vertices;
+        int[] triangles = mesh.triangles;
+        float area = 0;
+        for (int i = 0; i + 2 < triangles.Length; i += 3)
+            area += Vector3.Cross(vertices[triangles[i + 1]] - vertices[triangles[i]], vertices[triangles[i + 2]] - vertices[triangles[i]]).magnitude * 0.5f;
+        return area;
     }
 
     // Replaces every mesh under root with one combined, shadowless mesh per material.

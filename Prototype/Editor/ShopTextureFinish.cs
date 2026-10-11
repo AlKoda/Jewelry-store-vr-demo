@@ -159,30 +159,12 @@ public static class ShopTextureFinish
         Material m = AssetDatabase.LoadAssetAtPath<Material>("Assets/CrimeSceneDemo/" + folder + "/" + material + ".mat");
         Texture2D albedo = AssetDatabase.LoadAssetAtPath<Texture2D>(albedoPath);
         if (m == null || albedo == null) return null;
-        Texture2D normal = AssetDatabase.LoadAssetAtPath<Texture2D>(normalPath);
-        if (normal != null) MarkNormalMap(normalPath);
-        m.mainTexture = albedo;
-        // The texture carries the colour; keep a light tint so the saved colour does not darken it.
-        m.color = Color.Lerp(m.color, Color.white, 0.75f);
-        if (normal != null)
-        {
-            m.EnableKeyword("_NORMALMAP");
-            m.SetTexture("_BumpMap", normal);
-            m.SetFloat("_BumpScale", bump);
-        }
+        DemoAssetLibrary.ApplyTextures(m, albedo, DemoAssetLibrary.NormalMapAt(normalPath), bump);
         return m;
     }
 
     public static bool Has(string texture) => Load(texture) != null;
     private static Texture2D Load(string texture) => AssetDatabase.LoadAssetAtPath<Texture2D>(Folder + "/" + texture + ".png");
-
-    private static void MarkNormalMap(string path)
-    {
-        TextureImporter importer = AssetImporter.GetAtPath(path) as TextureImporter;
-        if (importer == null || importer.textureType == TextureImporterType.NormalMap) return;
-        importer.textureType = TextureImporterType.NormalMap;
-        importer.SaveAndReimport();
-    }
 
     // Per-renderer tiling so one material shows the texture at `metres` per repeat on
     // boxes of any size: the two largest world extents of the renderer's bounds count.

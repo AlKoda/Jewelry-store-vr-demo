@@ -21,6 +21,8 @@ public static class StoreKitValidation
             DemoValidation.WriteHeader("Store kit gallery generation and Edit mode checks; 2 actual Unity rendered captures.");
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             Check(true);
+            // Every fixture and variant was just built, so mesh fingerprints nothing used are stale.
+            DemoValidation.Info("Store kit stale meshes deleted=" + KitMesh.DeleteUntouched(StoreKit.Folder));
             // Not registered as the build scene, so running this in a working project keeps its build list.
             DemoValidation.SaveScene("StoreKitGallery", false);
             DemoValidation.Capture(camera, "store-kit-gallery.png", new Vector3(0, 11, -10), new Vector3(0, 0.5f, 5.5f));
@@ -41,6 +43,8 @@ public static class StoreKitValidation
             FixtureChecks(gallery);
             HingeChecks(gallery);
             PaneChecks(gallery);
+            ColliderChecks(gallery);
+            CeilingChecks(gallery);
             EmissionChecks(gallery);
         }
         finally
@@ -70,6 +74,9 @@ public static class StoreKitValidation
             filters++;
         }
         DemoValidation.Check(meshes && filters > 0, "Store kit meshes carry metric UVs, normals and lightmap UVs");
+        DemoValidation.Check(MetricUVs(), "Store kit UVs are metric (a 2 x 1 face spans 2 x 1 UV units)");
+        DemoValidation.Check(LightmapUVs(gallery), "Store kit lightmap UVs lie inside [0,1] and are unwrapped");
+        DemoValidation.Info("Store kit textured palette: " + string.Join(", ", StoreKit.TexturedPalette()));
 
         bool budgets = true;
         int total = 0, renderers = 0;
@@ -85,6 +92,39 @@ public static class StoreKitValidation
         }
         DemoValidation.Info("Store kit gallery triangles=" + total + "; renderers=" + renderers);
         DemoValidation.Check(budgets, "Store kit fixtures stay within their triangle budgets");
+    }
+
+    // A 2 x 1 x 0.5 box: its UVs span 2 by 1 units, the largest face's world edges.
+    private static bool MetricUVs()
+    {
+        GameObject box = StoreKit.MetricBox("UVProbe", null, Vector3.zero, new Vector3(2, 1, 0.5f), StoreKit.Walnut);
+        try
+        {
+            Vector2[] uv = box.GetComponent<MeshFilter>().sharedMesh.uv;
+            if (uv.Length == 0) return false;
+            Vector2 min = uv[0], max = uv[0];
+            foreach (Vector2 p in uv) { min = Vector2.Min(min, p); max = Vector2.Max(max, p); }
+            Vector2 span = max - min;
+            return Mathf.Abs(span.x - 2) < 0.001f && Mathf.Abs(span.y - 1) < 0.001f;
+        }
+        finally { UnityEngine.Object.DestroyImmediate(box); }
+    }
+
+    private static bool LightmapUVs(Transform gallery)
+    {
+        bool ok = true;
+        foreach (MeshFilter filter in gallery.GetComponentsInChildren<MeshFilter>(true))
+        {
+            Vector2[] uv2 = filter.sharedMesh != null ? filter.sharedMesh.uv2 : new Vector2[0];
+            bool nonZero = false;
+            foreach (Vector2 p in uv2)
+            {
+                ok &= p.x >= -1e-4f && p.y >= -1e-4f && p.x <= 1.0001f && p.y <= 1.0001f;
+                nonZero |= p.sqrMagnitude > 1e-8f;
+            }
+            ok &= uv2.Length > 0 && nonZero;
+        }
+        return ok;
     }
 
     public static int Triangles(Transform root)
@@ -138,6 +178,53 @@ public static class StoreKitValidation
         bool panes = intact != null && broken != null && Panes(intact) == 5 && Panes(broken) == 4
             && broken.Find("Glass_Front") == null && shards != null && Triangles(shards) > 0;
         DemoValidation.Check(panes, "Display case glass panes are separate children");
+    }
+
+    // Root colliders follow the open parts: the deck of a case with its glass gone, the
+    // inside of an open safe, and facade frames and intact glass that stop rays.
+    private static void ColliderChecks(Transform gallery)
+    {
+        Physics.SyncTransforms();
+        bool reach = Hits(gallery, "display_case__AllBroken", new Vector3(0, 2, 0), Vector3.down, out Vector3 deck) && Mathf.Abs(deck.y - 0.70f) < 0.02f;
+        reach &= Hits(gallery, "display_case__FrontBroken", new Vector3(0, 0.88f, -1.5f), Vector3.forward, out Vector3 back) && back.z > 0.2f;
+        reach &= Hits(gallery, "safe_large", new Vector3(0, 0.35f, -1.5f), Vector3.forward, out Vector3 lining) && lining.z > 0.3f;
+        reach &= Hits(gallery, "display_case", new Vector3(0, 0.88f, -1.5f), Vector3.forward, out Vector3 front) && front.z < -0.2f;
+        DemoValidation.Check(reach, "Case decks and the open safe's interior are reachable; intact glass blocks");
+
+        bool facade = true;
+        foreach (string name in new[] { "window_module", "storefront_doors", "office_door", "service_door" })
+        {
+            Transform entry = gallery.Find(name);
+            facade &= entry != null && entry.GetComponentsInChildren<Collider>().Length > 0;
+        }
+        facade &= Hits(gallery, "window_module", new Vector3(0, 1.5f, -1.5f), Vector3.forward, out Vector3 pane) && Mathf.Abs(pane.z) < 0.02f;
+        facade &= !Hits(gallery, "window_module__Broken", new Vector3(0.1f, 1.345f, -1.5f), Vector3.forward, out _);
+        DemoValidation.Check(facade, "Facade bays and door frames carry colliders; intact window glass blocks rays");
+    }
+
+    // Ray in the entry's local space; true when the nearest hit within 3 m belongs to it (point in its local space).
+    private static bool Hits(Transform gallery, string name, Vector3 origin, Vector3 direction, out Vector3 local)
+    {
+        local = Vector3.zero;
+        Transform entry = gallery.Find(name);
+        if (entry == null) return false;
+        Ray ray = new Ray(entry.TransformPoint(origin), entry.TransformDirection(direction));
+        if (!Physics.Raycast(ray, out RaycastHit hit, 3, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) return false;
+        if (!hit.transform.IsChildOf(entry)) return false;
+        local = entry.InverseTransformPoint(hit.point);
+        return true;
+    }
+
+    // Ceiling pieces hang entirely at or below their pivot (the ceiling plane).
+    private static void CeilingChecks(Transform gallery)
+    {
+        bool below = true;
+        foreach (string name in new[] { "track_light", "downlight" })
+        {
+            Transform entry = gallery.Find(name);
+            below &= entry != null && DemoAssetLibrary.LocalBounds(entry.gameObject).max.y <= 0.001f;
+        }
+        DemoValidation.Check(below, "Ceiling lights stay at or below the ceiling plane");
     }
 
     private static int Panes(Transform fixture)

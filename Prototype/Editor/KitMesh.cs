@@ -228,11 +228,31 @@ public sealed class KitMesh
 
     private static readonly Dictionary<string, Mesh> saved = new Dictionary<string, Mesh>();
 
+    // Every mesh asset path saved or reused since the editor domain loaded.
+    private static readonly HashSet<string> touched = new HashSet<string>();
+
+    // Deletes mesh assets in folder that nothing saved or reused in this editor session,
+    // i.e. the fingerprints left behind by earlier geometry. Call it only after building
+    // everything that should keep its meshes (the gallery run builds every fixture).
+    public static int DeleteUntouched(string folder)
+    {
+        if (!AssetDatabase.IsValidFolder(folder)) return 0;
+        int deleted = 0;
+        foreach (string guid in AssetDatabase.FindAssets("t:Mesh", new[] { folder }))
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            if (!path.EndsWith(".asset") || touched.Contains(path)) continue;
+            if (AssetDatabase.DeleteAsset(path)) deleted++;
+        }
+        return deleted;
+    }
+
     // Saves (or reuses) the mesh as <folder>/<name>_<fingerprint>.asset. Parts with
     // identical geometry share one asset, so repeated fixtures do not re-unwrap.
     public Mesh Save(string folder, string name)
     {
         string path = folder + "/" + name + "_" + Signature().ToString("x8") + ".asset";
+        touched.Add(path);
         if (saved.TryGetValue(path, out Mesh cached) && cached != null) return cached;
         Mesh mesh = new Mesh { name = name };
         mesh.SetVertices(vertices);
