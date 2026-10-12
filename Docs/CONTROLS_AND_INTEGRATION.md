@@ -49,6 +49,7 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | L | White flashlight on the view (DemoLighting) |
 | U | UV torch (exclusive with the white flashlight; night store) |
 | B | Instructor beacon at the pointed spot (DemoBeacon; also click the panel's overview map) |
+| F10 | Back to the start menu (built program) |
 | Tab | Cycle the presenter panel: hidden → strip → full (DemoDesktopPanel) |
 | [ / ] | Presenter panel UI scale (persisted; also +/- buttons) |
 

@@ -118,6 +118,11 @@ public static class NightStoreValidation
     // The bake policy of StoreKit.MarkStatic as the builder applies it, in edit mode.
     private static void StaticChecks(Transform root)
     {
+        // The Windows build opens on DemoLauncher; the night store must head its list.
+        var menu = DemoLauncher.Entries(new[] { DemoBuild.LauncherScene, DemoValidation.ScenesFolder + "/JewelryStoreGlass.unity",
+            DemoValidation.ScenesFolder + "/" + NightStoreLayout.SceneName + ".unity" }, 0);
+        DemoValidation.Check(menu.Count == 2 && menu[0].Scene == NightStoreLayout.SceneName && menu[0].BuildIndex == 2,
+            "Start menu lists the night store first and leaves itself out");
         StaticEditorFlags baked = StaticEditorFlags.ContributeGI | StaticEditorFlags.OccluderStatic;
         bool shell = true;
         foreach (string path in new[] { "Architecture/Walls", "Architecture/Floor" })

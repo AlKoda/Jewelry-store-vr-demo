@@ -1,5 +1,9 @@
 # Jewelry Store VR Demo
 
+## Run it — double-click Start-Demo.cmd
+
+On the Windows PC with Unity 6000.6.2f1 installed, double-click **Start-Demo.cmd** in this folder. The first time it unpacks the project into UnityProject_Demo and builds **Builds\Windows\JewelryStoreDemo.exe** (5–15 minutes, no Unity window); after that it only rebuilds when the source changed (git checkout) and otherwise starts the existing build at once. The program opens on a start menu listing the maps, newest first, with the build date and source commit: Enter starts the night store, F10 in a map returns to the menu. `Start-Demo.cmd bake` rebuilds with baked lighting (slower, final look); `Start-Demo.cmd rebuild` forces a rebuild after downloading a newer ZIP; `Start-Demo.cmd run` just starts it. If a build fails, the window lists the errors from build-latest.log. Copy the whole Builds\Windows folder to show the demo on another PC; that PC needs no Unity. *Not yet run on the PC (unverified).*
+
 Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, timers or forced sequence.
 
 ## Night store source — October 11 (unverified)

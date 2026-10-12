@@ -1,3 +1,8 @@
+## October 12 — one-click build (Claude, unverified)
+
+- [x] Start-Demo.cmd: update, sync, build and start; DemoBuild.BuildLatest; in-game start menu (DemoLauncher, F10 back).
+- [ ] First run on the PC; keep the resulting Builds\Windows folder as the tested backup.
+
 ## October 11 — expanded store and nighttime arrival (current priority; planning only)
 
 The next milestone is [NIGHT_ARRIVAL_PLAN.md](NIGHT_ARRIVAL_PLAN.md). It supersedes the immediate texture pass. Existing completion entries below are historical; newer source remains unverified until run in Unity.

@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 public static class DemoValidation
 {
     private const string OutputKey = "DemoValidationOutput";
-    private const string ScenesFolder = "Assets/CrimeSceneDemo/Scenes";
+    public const string ScenesFolder = "Assets/CrimeSceneDemo/Scenes";
     private static readonly List<string> results = new List<string>();
     private static float started;
     private static int frame;

@@ -82,9 +82,10 @@ public static class NightStoreBuilder
     [MenuItem(Menu + "Store Kit Gallery", false, 40)]
     public static void GalleryMenu() { StoreKit.GalleryMenu(); }
 
-    private static void BuildScene(bool bake)
+    // askToSave is false for DemoBuild.BuildLatest, which runs in batch mode with no one to ask.
+    public static void BuildScene(bool bake, bool askToSave = true)
     {
-        if (EditorApplication.isPlaying || !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
+        if (EditorApplication.isPlaying || (askToSave && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())) return;
         NightLighting.UseLinearColorSpace();
         ThirdPartyModelImport.GenerateLightmapUVs();
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);

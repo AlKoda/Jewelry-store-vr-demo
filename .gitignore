@@ -35,3 +35,7 @@ InstructorReviews/
 
 # Local asset downloads and temporary processing dependencies
 .asset-cache/
+
+# Local project made by Start-Demo.cmd
+UnityProject_Demo/
+build-latest.log
