@@ -2,6 +2,33 @@
 
 Researched October 12, 2026 (official help pages, the Tripo API/SDK source, the ComfyUI Tripo nodes, Tripo's blog and independent reviews; sources at the end). Tripo changes fast: **Studio always shows the credit cost before you click — trust that over this page.**
 
+## Exactly what to do with each picture
+
+**You upload the picture and type nothing.** Image-to-3D has no text box that matters: the picture is the prompt. The text prompts further down are only for the few items without a picture, or as a second try if a picture fails.
+
+All pictures are in [`Docs/TripoInputs/`](TripoInputs/) and in one download, [`Downloads/TripoInputs.zip`](../Downloads/TripoInputs.zip). **The file name tells you the settings:** `03_P2_3000f_tape_stanchion.jpg` means item 3, route **P2**, **3,000 faces**, save the result as `tape_stanchion`.
+
+**Route P2 (Smart Mesh P2.0)** — files with `_P2_`:
+1. Tripo Studio → **3D Workspace** → **Smart Topology Mesh** (Smart Mesh) → version **P2.0**.
+2. Upload the picture (single image, not multi-view).
+3. Topology **Triangle**; face count = the number in the file name.
+4. Texture on (Standard), PBR on. Optional on Pro: Number of Generations **2**, turn off *Use Same Polygon Count*, second count = half the first.
+5. **Generate** (about 100 credits).
+
+**Route LP (normal generate + Smart Low-poly)** — files with `_LP_`:
+1. Tripo Studio → **Image to 3D** (the normal generator) → model **v3.1** (H3.1).
+2. Upload the picture.
+3. Turn on **Smart Low-poly** (may be labelled *Low Poly*); face count = the number in the file name (500 minimum).
+4. Texture on (Standard), PBR on. Leave *Ultra* / *HD geometry* off.
+5. **Generate** (about 55 credits).
+
+**`_RETEXTURE_`** (UV flashlight): do not generate. Open the finished white flashlight → **Texture** → prompt `same flashlight, lens ring anodized purple, deep violet lens glass`.
+**`_OPTIONAL_`**: only if you want a closed safe as well.
+
+Then for every model: check it from all sides → **Export → FBX** (textures included, scale 1) → rename to the name at the end of the file name (`tape_stanchion.fbx`) → put it with its textures in `Prototype/ThirdParty/StoreKit/` (or send it to Claude/ChatGPT).
+
+If Studio's labels differ slightly (Tripo renames things often), the choices to look for are the same: *Smart Mesh / P2.0*, *Triangle*, *face count*, *Smart Low-poly*.
+
 ## The decisions in short
 
 1. **One object per generation** for everything you will see up close or touch (tools, cases, safes, busts, furniture). Tripo's "4 in one run" (P2.0 multi-version) gives **four versions of the same object** at different polycounts, not four different objects. A sheet of 4–5 different tools tends to fuse them, and they then share one face budget and one texture.
@@ -46,7 +73,7 @@ Image inputs need no prompt (image-to-3D has no prompt or negative prompt). For 
 
 ## Prompts and settings
 
-Face targets are triangles. "Input" is the file in `Docs/TripoInputs/`. "Text" is for text-to-3D or as a fallback.
+Face targets are triangles. "Input" names the picture; in `Docs/TripoInputs/` it carries its number and settings as a prefix (e.g. `evidence_marker.jpg` is `01_LP_1500f_evidence_marker.jpg`). "Text" is for text-to-3D or as a fallback.
 
 ### Batch 1 — scene tools (seen in the hand, highest priority)
 
@@ -128,7 +155,7 @@ Text: `Walnut wood jewelry tray with four cream suede ring rolls, low rim, 30 cm
 Input: `bracelet_stand.jpg`
 Text: `Bracelet display T-bar stand, horizontal charcoal velvet roll on a short bronze post, rectangular walnut base`
 
-**20. `earring_stand`** — H3.1 + Smart Low-poly, target **300**, Standard
+**20. `earring_stand`** — H3.1 + Smart Low-poly, target **500** (Tripo's minimum), Standard
 Input: `earring_stand.jpg`
 Text: `Earring display board, upright charcoal velvet panel with small holes, leaning slightly back on a walnut wedge base`
 
