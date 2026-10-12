@@ -101,7 +101,7 @@ public static class DemoBuild
     {
         Directory.CreateDirectory(Path.GetDirectoryName(BuildInfoAsset));
         string commit = Environment.GetEnvironmentVariable("JEWELRY_COMMIT");
-        if (string.IsNullOrEmpty(commit)) commit = GitCommit();
+        if (string.IsNullOrEmpty(commit) || commit == "unknown") commit = GitCommit();
         File.WriteAllText(BuildInfoAsset, "Built " + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "   ·   source " + commit
             + "   ·   lighting " + (bake ? "baked" : "preview (run Start-Demo.cmd bake for baked lighting)"));
         AssetDatabase.ImportAsset(BuildInfoAsset);

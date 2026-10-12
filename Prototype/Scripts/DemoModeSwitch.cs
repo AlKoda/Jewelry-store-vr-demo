@@ -27,10 +27,12 @@ public sealed class DemoModeSwitch : MonoBehaviour
     private void Start() { Sync(); }
 
     // Auto keeps following the runtime: Quest Link or Air Link may come up after Play
-    // starts. F9 pins the mode by hand and stops the automatic choice.
+    // starts. F9 pins the mode by hand and stops the automatic choice. A build without
+    // a running XR device ignores F9, since forcing VR there would only switch off the
+    // desktop controls.
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F9)) { Mode = VRActive ? DemoMode.Desktop : DemoMode.VR; Apply(!VRActive); return; }
+        if (Input.GetKeyDown(KeyCode.F9) && (Application.isEditor || XRSettings.isDeviceActive || VRActive)) { Mode = VRActive ? DemoMode.Desktop : DemoMode.VR; Apply(!VRActive); return; }
         if (Mode == DemoMode.Auto) Sync();
     }
 

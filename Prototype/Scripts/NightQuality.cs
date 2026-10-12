@@ -4,11 +4,11 @@ using UnityEngine;
 // the only realtime light is the flashlight: four pixel lights leave room for it and
 // the diagnostic sun, hard low-cost shadows over the flashlight's 14 m reach, 4x
 // MSAA instead of post-process anti-aliasing, and no realtime reflection probes (the
-// three box-projected probes are baked). Applied in Awake. In a build they are not
-// restored (another scene loaded afterwards keeps them; a scene that needs others
-// sets its own). In the Editor they are project QualitySettings that Play mode would
-// leave changed, so the previous values are restored when the component is destroyed
-// (leaving Play mode) or when the validator calls Restore.
+// three box-projected probes are baked). Applied in Awake; the previous values are
+// saved first and restored when the component is destroyed: in a build when another
+// map is loaded (F10 back to the start menu, then the daytime shop keeps its own
+// settings), in the Editor when Play mode ends (they are project QualitySettings), or
+// when the validator calls Restore.
 public sealed class NightQuality : MonoBehaviour
 {
     public int PixelLights = 4;
@@ -28,7 +28,6 @@ public sealed class NightQuality : MonoBehaviour
 
     private void Awake()
     {
-#if UNITY_EDITOR
         if (!previous.HasValue)
             previous = new Snapshot
             {
@@ -41,16 +40,13 @@ public sealed class NightQuality : MonoBehaviour
                 RealtimeProbes = QualitySettings.realtimeReflectionProbes,
                 SoftParticles = QualitySettings.softParticles,
             };
-#endif
         Apply();
     }
 
-#if UNITY_EDITOR
     private void OnDestroy() { Restore(); }
-#endif
 
-    // Puts back the QualitySettings saved in Awake (Editor only; nothing is saved in a
-    // build). True when something was restored and the settings now match it.
+    // Puts back the QualitySettings saved in Awake. True when something was restored
+    // and the settings now match it.
     public static bool Restore()
     {
         if (!previous.HasValue) return false;

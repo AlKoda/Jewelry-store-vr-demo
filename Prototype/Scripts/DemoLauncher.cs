@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 // First scene of the Windows build: a start menu that lists every map in the build,
 // newest first, with the build date and source commit (Resources/DemoBuildInfo, written
 // by DemoBuild.BuildLatest). Enter or 1 starts the newest map; F10 in any map returns
-// here. IMGUI on the monitor, so it needs no packages; a headset shows the map once one
-// is chosen.
+// here. IMGUI on the monitor, so it needs no packages. Desktop only for now: the build
+// has no XR plug-in until XR Plug-in Management and OpenXR are installed.
 public sealed class DemoLauncher : MonoBehaviour
 {
     public struct Entry
@@ -79,7 +79,7 @@ public sealed class DemoLauncher : MonoBehaviour
         float width = Screen.width / scale, x = (width - 900) / 2;
         GUILayout.BeginArea(new Rect(x, 110, 900, 860));
         GUILayout.Label("Jewelry Store Crime Scene", title);
-        GUILayout.Label("Police training demonstration · desktop or VR (F9 inside a map)", body);
+        GUILayout.Label("Police training demonstration · desktop (VR needs the OpenXR plug-in, not yet in this build)", body);
         GUILayout.Space(30);
         if (entries.Count == 0) GUILayout.Label("No maps in this build. Run Start-Demo.cmd again to rebuild.", body);
         for (int i = 0; i < entries.Count; i++)

@@ -17,7 +17,16 @@ set "LOG=%ROOT%build-latest.log"
 set "MODE=%~1"
 
 rem 1. Update the source when this folder is a git checkout (a GitHub ZIP download is not).
+rem    The pull runs inside one parenthesised block, which cmd reads in full before it
+rem    runs it, and the script then restarts, so a pull that changes this file never
+rem    leaves cmd reading the new file at an old position.
 set "COMMIT=unknown"
+if exist "%ROOT%.git" if not defined JEWELRY_UPDATED (
+  set "JEWELRY_UPDATED=1"
+  where git >nul 2>nul && (echo Checking GitHub for updates...& git -C "%ROOT%." pull --ff-only)
+  call "%~f0" %*
+  exit /b
+)
 if exist "%ROOT%.git" call :update
 
 rem 2. Decide whether to build.
@@ -38,7 +47,7 @@ goto run
 call :findunity || goto fail
 if exist "%PROJECT%\Assets" goto sync
 if not exist "%SNAPSHOT%" (
-  echo Missing %SNAPSHOT%
+  echo Missing "%SNAPSHOT%"
   goto fail
 )
 echo First run: unpacking the Unity project, one time only...
@@ -49,8 +58,9 @@ if not exist "%PROJECT%\Assets" goto fail
 
 :sync
 echo Copying the latest scripts and assets into the project...
+rem /MIR also removes scripts deleted from Prototype; .meta files are left to Unity.
 for %%f in (Scripts Editor Shaders ThirdParty) do (
-  robocopy "%ROOT%Prototype\%%f" "%PROJECT%\Assets\CrimeSceneDemo\%%f" /E /NFL /NDL /NJH /NJS /NP >nul
+  robocopy "%ROOT%Prototype\%%f" "%PROJECT%\Assets\CrimeSceneDemo\%%f" /MIR /XF *.meta /NFL /NDL /NJH /NJS /NP >nul
   if errorlevel 8 goto fail
 )
 set "BAKEFLAG="
@@ -74,8 +84,6 @@ exit /b 0
 
 :update
 where git >nul 2>nul || exit /b 0
-echo Checking GitHub for updates...
-git -C "%ROOT%." pull --ff-only
 for /f %%c in ('git -C "%ROOT%." rev-parse --short HEAD') do set "COMMIT=%%c"
 exit /b 0
 
@@ -97,7 +105,7 @@ echo The demo could not be built or started.
 if exist "%LOG%" (
   echo Errors from the build log:
   powershell -NoProfile -Command "Select-String -Path '%LOG%' -Pattern 'error CS','JEWELRY_BUILD','Exception' | Select-Object -Last 15 | ForEach-Object { $_.Line }"
-  echo Full log: %LOG%
+  echo Full log: "%LOG%"
 )
 pause
 exit /b 1
