@@ -1,3 +1,9 @@
+## October 12 — Tripo models
+
+- [x] Tripo Studio guide, prompts and 33 input images (Docs/TRIPO_GUIDE.md, Docs/TripoInputs).
+- [ ] Generate batches 1–5 on a paid plan; register each model.
+- [ ] Override hooks for cases, safes, doors, jewellery props and tools; PBR repack importer.
+
 ## October 12 — one-click build (Claude, unverified)
 
 - [x] Start-Demo.cmd: update, sync, build and start; DemoBuild.BuildLatest; in-game start menu (DemoLauncher, F10 back).
