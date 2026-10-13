@@ -45,6 +45,15 @@ public sealed class DeployedTool : MonoBehaviour
         }
     }
 
+    // Capitalised name for prompts and messages: "Marker 3", "Tape post".
+    public static string Title(DemoToolKind kind)
+    {
+        string name = KindName(kind);
+        return char.ToUpperInvariant(name[0]) + name.Substring(1);
+    }
+
+    public string DisplayName => Kind == DemoToolKind.Marker && MarkerNumber > 0 ? "Marker " + MarkerNumber : Title(Kind);
+
     // One request per holder that points at, is nearest to, or holds this tool, so one
     // hand letting go of the highlight does not clear it for the other.
     private int highlightRequests;

@@ -133,7 +133,11 @@ public sealed class DemoLighting : MonoBehaviour
         if (uv.On) UpdateUV(Time.deltaTime);
     }
 
-    public void ToggleNight() { SetNight(!Night); }
+    public void ToggleNight()
+    {
+        SetNight(!Night);
+        DemoFeedback.Post(Night ? (BakedNight ? "Baked night lighting" : "Night lighting") : (BakedNight ? "Diagnostic daylight" : "Day lighting"));
+    }
 
     public void SetNight(bool night)
     {
@@ -241,7 +245,12 @@ public sealed class DemoLighting : MonoBehaviour
 
     // Instructor and visitor toggles click (recorded switch from a DemoSoundBank, silent
     // without one); Flashlight/UVTorch themselves stay silent for resets and scripts.
-    public void ToggleFlashlight() { Flashlight(!FlashlightOn); SwitchSound(white); }
+    public void ToggleFlashlight()
+    {
+        Flashlight(!FlashlightOn);
+        SwitchSound(white);
+        DemoFeedback.Post(FlashlightOn ? "Flashlight on" : "Flashlight off");
+    }
 
     // Warm spot light at the lens of a visible torch model, created on first use and
     // re-attached whenever it is switched on, since the holder depends on the mode at
@@ -255,7 +264,12 @@ public sealed class DemoLighting : MonoBehaviour
         if (Session != null && Session.Station != null) Session.Station.UpdateLampShadows();
     }
 
-    public void ToggleUVTorch() { UVTorch(!UVTorchOn); SwitchSound(uv); }
+    public void ToggleUVTorch()
+    {
+        UVTorch(!UVTorchOn);
+        SwitchSound(uv);
+        DemoFeedback.Post(UVTorchOn ? "UV torch on" : "UV torch off");
+    }
 
     private void SwitchSound(Torch torch)
     {
@@ -277,7 +291,11 @@ public sealed class DemoLighting : MonoBehaviour
         }
     }
 
-    public void ToggleUVExamples() { SetUVExamples(!UVExamplesVisible); }
+    public void ToggleUVExamples()
+    {
+        SetUVExamples(!UVExamplesVisible);
+        DemoFeedback.Post("UV example traces " + (UVExamplesVisible ? "shown" : "hidden"));
+    }
 
     public void SetUVExamples(bool visible)
     {

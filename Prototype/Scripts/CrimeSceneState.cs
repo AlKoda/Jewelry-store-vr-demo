@@ -30,7 +30,11 @@ public sealed class CrimeSceneState : MonoBehaviour
         if (ReadDesktopInput && Input.GetKeyDown(KeyCode.I)) Toggle();
     }
 
-    public void Toggle() { SetIntact(!Intact); }
+    public void Toggle()
+    {
+        SetIntact(!Intact);
+        DemoFeedback.Post(Intact ? "Showing the store intact" : "Showing the store robbed");
+    }
     public void ShowRobbed() { SetIntact(false); }
 
     public void SetIntact(bool intact)

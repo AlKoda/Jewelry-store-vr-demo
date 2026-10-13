@@ -49,9 +49,23 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | L | White flashlight on the view (DemoLighting) |
 | U | UV torch (exclusive with the white flashlight; night store) |
 | B | Instructor beacon at the pointed spot (DemoBeacon; also click the panel's overview map) |
+| C | Crouch / stand (eye 0.95 m, half speed) — October 13, unverified |
+| Z (hold) | Zoom to 30°, slower look — October 13, unverified |
+| F1 / H | Controls overlay (mouse and keyboard page, Quest 2 page); pauses walking like the drawer |
+| F2 | Hide / show the HUD (chips, hotbar, prompts, toasts) |
+| Esc | Release the cursor; also closes the controls overlay or the drawer |
 | F10 | Back to the start menu (built program) |
-| Tab | Cycle the presenter panel: hidden → strip → full (DemoDesktopPanel) |
-| [ / ] | Presenter panel UI scale (persisted; also +/- buttons) |
+| Tab | Cycle the presenter panel: hidden → strip → drawer (DemoDesktopPanel) |
+| [ / ] | Interface size x1–x2 (persisted; also the Settings tab) |
+
+The number pad's 1–6 work like the main row. The hotbar at the bottom (tools 1–6, camera F, flashlight L, UV U) is clickable; the slot of the held tool or active light is outlined in brass and each tool slot shows how many are placed.
+
+### Desktop interface (October 13, unverified)
+
+- HUD (hidden layout): chips top left (mode, night, torches, crouch/zoom, tools placed and next marker, photos, pending tape step), the hotbar, a crosshair with the target's name while mouse look is on (brass when there is something to act on), a tooltip beside the cursor otherwise, key prompts for the current situation above the hotbar with a warning line when placement is impossible, toasts top right for every action (DemoFeedback), the camera's live view with thirds while it is held, a white flash on each photo and a banner while a reset is armed.
+- Strip: status chips and Photo / Robbed-Intact / Reset / Panel buttons with the last photo and live view.
+- Drawer (right, 420 wide): Tools (new-tool tiles, tape options, placed tools with Remove), Camera (status, photo/hold/folder, live view, last photo, instructor review), Map (overview, click to place the beacon, legend), Scene (robbed/intact, night/day, flashlight, UV torch, UV examples, beacon, reset), Settings (interface size, HUD, prompts, look sensitivity, field of view, invert Y, restore defaults, credits).
+- Settings persist in PlayerPrefs (DemoPanelScale, DemoHudVisible, DemoShowPrompts, DemoPanelTab, DemoLookSensitivity, DemoInvertY, DemoFieldOfView).
 
 Walls, the storefront barrier and InteriorBounds keep the player inside. InteriorBounds.Contains/Clamp are the shared definition of the interior; use them to filter XR teleport destinations.
 
@@ -71,11 +85,20 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Trigger | Photograph while holding the camera; switch a held scene lamp on/off (at most two lit, the oldest goes out); select a held tape post or measuring reel |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
 | B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape → scene lamp) |
-| Left thumbstick forward, release | Teleport along a ballistic arc (green when the landing is valid, red otherwise; refused outside the shop); a comfort fade blinks on arrival |
+| Left thumbstick forward, release | Teleport along a ballistic arc (blue with a ring marker when the landing is valid, red otherwise; refused outside the shop, with a strong vibration on an invalid release); a comfort fade blinks on arrival |
 | Right thumbstick left / right | Snap turn 45° (with comfort fade) |
 | Right thumbstick click | Flashlight on the right hand |
-| Left menu button | Show / hide the hand hint labels |
+| Left menu button | Show / hide the controller hints on both hands |
 | Left thumbstick click | UV torch in the left hand |
+
+### Headset interface (XRHandHud, October 13, unverified)
+
+- Each hand shows a Quest 2 style controller model; a button turns brass while pressed.
+- Hints sit beside the buttons with leader lines: shown for the first 20 seconds, afterwards when you look at the controller (within 30° and 0.8 m). The A/X hint names the tool that button spawns.
+- B/Y with an empty hand shows a carousel of the six tools above the controller for 2.5 seconds, the new one enlarged and named.
+- Look at the left wrist for the scene status: tools placed, next marker, photos, torches, the pending tape step.
+- Messages from every action float briefly below your view (the same ones the monitor shows).
+- Vibrations: grab, spawn, place, photo, teleport, select, and the strongest for a refusal (XRControllerInput.Pulse).
 
 If controller poses do not arrive under a future OpenXR version, the fallback is a TrackedPoseDriver (Input System package) on the camera and both hands and an input binder that calls the same HandInteractor/XRLocomotion methods; nothing else changes.
 

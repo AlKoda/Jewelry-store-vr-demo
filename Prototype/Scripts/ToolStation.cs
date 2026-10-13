@@ -93,7 +93,9 @@ public sealed class ToolStation : MonoBehaviour
 
     public void ToggleLamp(DeployedTool lamp)
     {
-        if (lamp != null && lamp.Lamp != null) SetLampLit(lamp, !lamp.LampLit);
+        if (lamp == null || lamp.Lamp == null) return;
+        SetLampLit(lamp, !lamp.LampLit);
+        DemoFeedback.Post("Scene lamp " + (lamp.LampLit ? "on" : "off"));
     }
 
     private void LightLamp(DeployedTool lamp, bool lit)
@@ -106,6 +108,7 @@ public sealed class ToolStation : MonoBehaviour
             {
                 litLamps[0].SetLampLit(false);
                 litLamps.RemoveAt(0);
+                DemoFeedback.Post("Two scene lamps at most: the first one went off");
             }
             litLamps.Add(lamp);
         }
@@ -152,6 +155,7 @@ public sealed class ToolStation : MonoBehaviour
         {
             pendingPost = post;
             ToolsChanged.Invoke();
+            DemoFeedback.Post(PendingPrompt);
             return;
         }
         if (pendingPost == post) return;
@@ -164,13 +168,15 @@ public sealed class ToolStation : MonoBehaviour
         foreach(SceneTape existing in DeploymentRoot.GetComponentsInChildren<SceneTape>())
             if ((existing.StartAnchor==pendingPost.TapeAnchor && existing.EndAnchor==post.TapeAnchor) ||
                 (existing.EndAnchor==pendingPost.TapeAnchor && existing.StartAnchor==post.TapeAnchor))
-            { pendingPost=null; ToolsChanged.Invoke(); return; }
+            { pendingPost=null; ToolsChanged.Invoke(); DemoFeedback.Post("Those two are already connected"); return; }
         SceneTape tape = Instantiate(prefab, DeploymentRoot);
         tape.StartAnchor = pendingPost.TapeAnchor;
         tape.EndAnchor = post.TapeAnchor;
         pendingPost = null;
         tape.Refresh();
         ToolsChanged.Invoke();
+        DemoFeedback.Post(post.Kind == DemoToolKind.Measure && tape.DistanceLabel != null
+            ? "Measured " + tape.DistanceLabel.text : "Tape connected", FeedbackTone.Success);
     }
 
     // Called only on deliberate placement, not spawn, reset or mode switching. A new

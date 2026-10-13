@@ -37,9 +37,15 @@ public abstract class ToolHolder : MonoBehaviour
     // A new tool straight into the hand; refused while the camera is held.
     public DeployedTool SpawnIntoHand(DemoToolKind kind)
     {
-        if (Station == null || HoldingCamera) return null;
+        if (Station == null) return null;
+        if (HoldingCamera)
+        {
+            DemoFeedback.Post("Put the camera back before taking a tool", FeedbackTone.Warning);
+            return null;
+        }
         DeployedTool tool = Station.Spawn(kind);
         Hold(tool);
+        if (tool != null && Held == tool) DemoFeedback.Post(tool.DisplayName + " in hand");
         return tool;
     }
 
@@ -57,7 +63,13 @@ public abstract class ToolHolder : MonoBehaviour
         DemoSounds.Play(DemoSound.Click, tool.transform.position, 0.4f);
     }
 
-    public virtual void Place() { DeployedTool placed=Held; Settle(true); if(Station!=null) Station.NotifyPlaced(placed); }
+    public virtual void Place()
+    {
+        DeployedTool placed = Held;
+        Settle(true);
+        if (placed != null) DemoFeedback.Post(placed.DisplayName + " placed", FeedbackTone.Success);
+        if (Station != null) Station.NotifyPlaced(placed);
+    }
 
     // Lets go of the held tool and sets it on the nearest upward surface beneath it,
     // inside the interior; casting from above the tool clears any case it is inside.
@@ -79,7 +91,9 @@ public abstract class ToolHolder : MonoBehaviour
         if (tool == null || Station == null) return;
         if (tool == Held) { Held = null; tool.Holder = null; }
         if (tool == highlighted) highlighted = null;
+        string name = tool.DisplayName;
         Station.RemoveTool(tool);
+        DemoFeedback.Post(name + " removed");
     }
 
     public void SelectTapePost(DeployedTool post)

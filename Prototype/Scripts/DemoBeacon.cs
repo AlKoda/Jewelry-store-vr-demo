@@ -40,6 +40,7 @@ public sealed class DemoBeacon : MonoBehaviour
         p.y = FloorY + (Bounds != null ? Bounds.FloorAt(p) : 0);
         marker.position = p;
         marker.gameObject.SetActive(true);
+        DemoFeedback.Post("Beacon placed", FeedbackTone.Success);
     }
 
     public void Clear()

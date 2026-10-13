@@ -36,17 +36,19 @@ public sealed class DesktopInteractor : ToolHolder
         bool overPanel = Panel != null && Panel.PointerOverPanel;
         if (Input.GetMouseButtonDown(0) && !overPanel)
         {
-            if (Held != null) Place();
+            if (Held != null)
+            {
+                if (HasPlacementTarget) Place();
+                else DemoFeedback.Post("Aim at the floor or a counter to place the " + DeployedTool.KindName(Held.Kind), FeedbackTone.Warning);
+            }
             else if (Hovered != null) Hold(Hovered);
             else if (HoveredSample != null) TakeSample(HoveredSample);
             else if (HoveringCamera) ToggleCamera();
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1)) SpawnIntoHand(DemoToolKind.Cone);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) SpawnIntoHand(DemoToolKind.Marker);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SpawnIntoHand(DemoToolKind.TapePost);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SpawnIntoHand(DemoToolKind.Scale);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SpawnIntoHand(DemoToolKind.Measure);
-        if (Input.GetKeyDown(KeyCode.Alpha6)) SpawnIntoHand(DemoToolKind.Lamp);
+        // 1-6 on the main row or the number pad, in the hotbar's order.
+        for (int i = 0; i < 6; i++)
+            if (Input.GetKeyDown(KeyCode.Alpha1 + i) || Input.GetKeyDown(KeyCode.Keypad1 + i))
+                SpawnIntoHand(DemoDesktopPanel.HotbarKind(i));
         if (Input.GetKeyDown(KeyCode.Q)) Rotate(-RotateStep);
         if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
         float wheel = Input.GetAxis("Mouse ScrollWheel");

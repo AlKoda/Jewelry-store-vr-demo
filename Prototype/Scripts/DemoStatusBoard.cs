@@ -2,21 +2,27 @@ using System.IO;
 using UnityEngine;
 
 // World-space status text beside the tool rack, readable in the headset and on
-// the monitor without any UI package. Updates only on events.
+// the monitor without any UI package: the interface font on a dark rounded panel
+// sized to the text, with a brass title. Updates only on events.
 [RequireComponent(typeof(TextMesh))]
 public sealed class DemoStatusBoard : MonoBehaviour
 {
     public ToolStation Station;
     public EvidenceCamera EvidenceCamera;
     public DemoSession Session;
+    public float LineHeight = 0.075f;
 
     private TextMesh text;
+    private MeshFilter panel;
     private string photoLine = "No photographs yet";
 
     private void Awake()
     {
         text = GetComponent<TextMesh>();
         DeployedTool.EnsureFont(text);
+        DemoUi.Configure(text, DemoUi.Medium, LineHeight, DemoUi.Ink, TextAnchor.MiddleCenter);
+        panel = DemoUi.WorldPanel("BoardPanel", transform, new Vector3(0, 0, 0.01f), 1f, 0.4f, 0.05f,
+            new Color(0.05f, 0.06f, 0.08f, 0.9f)).GetComponent<MeshFilter>();
     }
 
     private void OnEnable()
@@ -56,12 +62,26 @@ public sealed class DemoStatusBoard : MonoBehaviour
 
     public void Refresh()
     {
-        if (Station == null) { text.text = photoLine; return; }
-        int lamps = Station.LitLampCount;
-        text.text = "SCENE TOOLS\n"
-            + Station.DeployedCount + " deployed, next marker " + Station.NextMarkerNumber + "\n"
-            + (Station.PendingPrompt ?? "Tape: select two posts or two reels") + "\n"
-            + (lamps > 0 ? "Scene lamps lit: " + lamps + " of " + ToolStation.MaxLitLamps + "\n" : "")
-            + photoLine;
+        if (Station == null) text.text = photoLine;
+        else
+        {
+            int lamps = Station.LitLampCount;
+            string accent = DemoUi.Hex(DemoUi.Accent);
+            text.text = "<color=" + accent + ">SCENE TOOLS</color>\n"
+                + Station.DeployedCount + " deployed, next marker " + Station.NextMarkerNumber + "\n"
+                + (Station.PendingPrompt != null ? "<color=" + accent + ">" + Station.PendingPrompt + "</color>" : "Tape: select two posts or two reels") + "\n"
+                + (lamps > 0 ? "Scene lamps lit: " + lamps + " of " + ToolStation.MaxLitLamps + "\n" : "")
+                + photoLine;
+        }
+        FitPanel();
+    }
+
+    private void FitPanel()
+    {
+        if (panel == null) return;
+        int lines = text.text.Split('\n').Length;
+        float width = DemoUi.TextWidth(text.font, text.text, LineHeight) + 0.14f;
+        float height = lines * LineHeight * 1.12f + 0.09f;
+        panel.sharedMesh = DemoUi.RoundedQuad(Mathf.Round(width * 20) / 20, Mathf.Round(height * 20) / 20, 0.05f);
     }
 }

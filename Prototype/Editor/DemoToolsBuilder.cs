@@ -78,6 +78,7 @@ public static class DemoToolsBuilder
         root.transform.SetParent(store.transform,false);
         Undo.RegisterCreatedObjectUndo(root,"Create tool station");
         ToolStation station=root.AddComponent<ToolStation>();
+        AddTheme(root);
         station.DeploymentRoot=store.transform.Find("DeployedTools");
         if(station.DeploymentRoot==null)
         {
@@ -285,6 +286,24 @@ public static class DemoToolsBuilder
         mode.VROnly=new Behaviour[] {head,fade};
         mode.VRObjects=new [] {left.gameObject,right.gameObject};
         return walker;
+    }
+
+    // Interface fonts (ThirdParty/Fonts: Barlow, SIL OFL 1.1) and the controller shader
+    // for DemoUi; a missing font leaves DemoUi on the built-in one.
+    public const string FontFolder=DemoAssetLibrary.Root+"/Fonts";
+
+    public static DemoUiTheme AddTheme(GameObject host)
+    {
+        DemoUiTheme theme=host.GetComponent<DemoUiTheme>();
+        if(theme==null) theme=host.AddComponent<DemoUiTheme>();
+        theme.Regular=AssetDatabase.LoadAssetAtPath<Font>(FontFolder+"/Barlow-Regular.ttf");
+        theme.Medium=AssetDatabase.LoadAssetAtPath<Font>(FontFolder+"/Barlow-Medium.ttf");
+        theme.SemiBold=AssetDatabase.LoadAssetAtPath<Font>(FontFolder+"/Barlow-SemiBold.ttf");
+        theme.Shaded=Shader.Find("CrimeScene/UiShaded");
+        if(theme.Regular==null||theme.Medium==null||theme.SemiBold==null)
+            Debug.LogWarning("Interface fonts missing under "+FontFolder+"; the built-in font is used.");
+        if(theme.Shaded==null) Debug.LogWarning("CrimeScene/UiShaded missing; the controllers fall back to a lit shader.");
+        return theme;
     }
 
     private static XRControllerInput CreateHand(Transform rig,string name,UnityEngine.XR.XRNode node,float side,

@@ -1,3 +1,12 @@
+## October 13 — interface redesign (Claude, unverified)
+
+- [x] Shared DemoUi theme (Barlow, dark glass and brass, icons) for the monitor, start menu, status board and controllers.
+- [x] Desktop HUD: hotbar, crosshair, context prompts, toasts, live view; tabbed drawer; F1 controls overlay; F2 clean view; settings (size, HUD, prompts, sensitivity, invert Y, field of view).
+- [x] Crouch (C) and zoom (Z); number-pad tool keys.
+- [x] Quest 2 controller models, look-to-show tooltips, tool carousel, wrist status, VR toasts, haptics, ring teleport marker.
+- [ ] Compile and run RunGlass / RunNightQuick on the PC; screenshot the HUD, drawer tabs and help overlay.
+- [ ] Headset pass: tooltip placement on the real controllers, text size, fade angle, haptic strength.
+
 ## October 12 — Tripo models
 
 - [x] Tripo Studio guide, prompts and 33 input images (Docs/TRIPO_GUIDE.md, Docs/TripoInputs).

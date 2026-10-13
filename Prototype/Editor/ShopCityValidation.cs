@@ -101,6 +101,7 @@ public static class ShopCityValidation
                 LightingChecks();
                 PanelChecks();
                 HandChecks();
+                DemoValidation.InterfaceChecks();
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
                 if (SessionState.GetBool(InteriorKey, false)) { ShopInteriorFinish.CheckBudget(); ShopDisplayFinish.CheckBudget(); }

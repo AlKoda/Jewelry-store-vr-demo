@@ -463,6 +463,7 @@ public static class NightStoreValidation
                 InspectionChecks();
                 RealtimeLightChecks();
                 StagedSoundChecks();
+                DemoValidation.InterfaceChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
             }

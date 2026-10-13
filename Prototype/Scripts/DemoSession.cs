@@ -24,5 +24,6 @@ public sealed class DemoSession : MonoBehaviour
             if (item != null) item.RestoreInitialState();
         // Never delete photographs or reset the camera's photo sequence.
         SessionReset.Invoke();
+        DemoFeedback.Post("Scene reset: placed tools cleared, photos kept");
     }
 }

@@ -260,6 +260,7 @@ public sealed class EvidenceCamera : MonoBehaviour
         LastPhotoPath=path;
         Status="Saved photo "+sequence.ToString("D4");
         Debug.Log("Photo saved: "+path,this);
+        DemoFeedback.Post("Photo "+sequence.ToString("D4")+" saved",FeedbackTone.Success);
         PhotoSaved.Invoke(path);
     }
 
@@ -325,6 +326,7 @@ public sealed class EvidenceCamera : MonoBehaviour
     {
         Status="Capture failed: "+message;
         Debug.LogError(Status,this);
+        DemoFeedback.Post("Photo failed: "+message,FeedbackTone.Warning);
         CaptureFailed.Invoke(message);
     }
 

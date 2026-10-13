@@ -199,6 +199,85 @@ public static class DemoValidation
         return found;
     }
 
+    // The interface: theme assets, the shared toast feed, the hotbar order, the controls
+    // overlay pausing input, context prompts, crouch and zoom, and the VR controller
+    // interface. IMGUI never draws in batch mode, so the state behind each element is
+    // checked. Leaves desktop mode, no tools placed and the marker sequence untouched.
+    public static void InterfaceChecks()
+    {
+        DemoUiTheme theme = UnityEngine.Object.FindFirstObjectByType<DemoUiTheme>();
+        Check(theme != null && theme.Regular != null && theme.Medium != null && theme.SemiBold != null && theme.Shaded != null,
+            "Interface theme carries the Barlow fonts and the controller shader");
+
+        DemoFeedback.Clear();
+        for (int i = 1; i <= 5; i++) DemoFeedback.Post("message " + i);
+        DemoFeedback.Post("message 5");
+        bool kept = DemoFeedback.Recent.Count == DemoFeedback.Capacity && DemoFeedback.Recent[0].Text == "message 2"
+            && DemoFeedback.Recent[DemoFeedback.Capacity - 1].Text == "message 5";
+        DemoFeedback.Prune(DemoFeedback.Now + DemoFeedback.Lifetime + 1);
+        Check(kept && DemoFeedback.Recent.Count == 0, "Feedback feed keeps the newest four messages and expires them");
+
+        DemoToolKind[] order = { DemoToolKind.Cone, DemoToolKind.Marker, DemoToolKind.TapePost, DemoToolKind.Scale, DemoToolKind.Measure, DemoToolKind.Lamp };
+        bool ordered = true;
+        for (int i = 0; i < order.Length; i++) ordered &= DemoDesktopPanel.HotbarKind(i) == order[i];
+        Check(ordered, "Hotbar maps keys 1-6 to the tool kinds in order");
+
+        DemoDesktopPanel panel = Find<DemoDesktopPanel>();
+        DesktopInteractor desktop = Find<DesktopInteractor>();
+        desktop.ReadDesktopInput = false;
+        panel.Layout = PanelLayout.Hidden;
+        panel.HelpOpen = true;
+        bool paused = panel.CapturesInput && panel.Contains(new Vector2(1, 1));
+        panel.HelpOpen = false;
+        Check(paused && !panel.CapturesInput, "Help overlay pauses desktop input");
+
+        DeployedTool cone = desktop.SpawnIntoHand(DemoToolKind.Cone);
+        bool holding = cone != null && Array.IndexOf(panel.ContextPrompt(), "Rotate") >= 0 && panel.ContextMessage() != null;
+        desktop.Remove(cone);
+        bool idle = Array.IndexOf(panel.ContextPrompt(), "Walk") >= 0 && panel.ContextMessage() == null;
+        Check(holding && idle, "Context prompt follows what the desktop visitor holds");
+
+        ShopWalkController walker = Find<ShopWalkController>();
+        walker.SetCrouch(true, true);
+        float low = walker.View.localPosition.y;
+        walker.SetCrouch(false, true);
+        Check(!walker.Crouching && Mathf.Abs(low - walker.CrouchEyeHeight) < 0.001f && Mathf.Abs(walker.View.localPosition.y - walker.EyeHeight.y) < 0.001f,
+            "Crouch lowers the desktop eye height");
+        Camera view = walker.View.GetComponent<Camera>();
+        walker.SetZoom(true, true);
+        float zoomed = view.fieldOfView;
+        walker.SetZoom(false, true);
+        Check(walker.ZoomFieldOfView < walker.FieldOfView && Mathf.Abs(zoomed - walker.ZoomFieldOfView) < 0.01f
+            && Mathf.Abs(view.fieldOfView - walker.FieldOfView) < 0.01f, "Zoom narrows the view");
+
+        DemoModeSwitch mode = Find<DemoModeSwitch>();
+        mode.Apply(true);
+        XRControllerInput left = null, right = null;
+        foreach (XRControllerInput hand in UnityEngine.Object.FindObjectsByType<XRControllerInput>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            if (hand.Left) left = hand; else right = hand;
+        bool built = left != null && right != null && left.Hud != null && right.Hud != null
+            && left.Hud.Model != null && right.Hud.Model != null && right.Hud.TooltipCount >= 5 && left.Hud.TooltipCount >= 6
+            && left.Hud.StatusText != null && left.Hud.StatusText.text.Contains("Next marker") && right.Hud.StatusText == null;
+        Check(built, "Controller tooltips and status card build on both hands");
+        bool carousel = false;
+        if (right != null && right.Hud != null)
+        {
+            right.SetSpawnKind(DemoToolKind.Cone);
+            right.CycleKind();
+            carousel = right.SpawnKind == DemoToolKind.Marker && right.Hud.CarouselVisible
+                && right.Hud.CarouselLabel == DeployedTool.Title(DemoToolKind.Marker) && right.Label.text.Contains("new marker");
+            right.SetSpawnKind(DemoToolKind.Cone);
+        }
+        mode.Apply(false);
+        Check(carousel && right.SpawnKind == DemoToolKind.Cone, "Tool carousel shows the newly selected kind");
+
+        Vector2 refused = XRControllerInput.Pulse(XRControllerInput.HandEvent.Refused);
+        Vector2 placed = XRControllerInput.Pulse(XRControllerInput.HandEvent.Place);
+        Vector2 grabbed = XRControllerInput.Pulse(XRControllerInput.HandEvent.Grab);
+        Check(refused.x > placed.x && placed.x > grabbed.x && grabbed.x > 0 && refused.y >= placed.y,
+            "Haptic pulses rank refusal above placement above grab");
+    }
+
     // Spawning, numbering, placement, tape following and a photo capture start.
     public static void ToolStage()
     {

@@ -36,6 +36,8 @@ Tested Glass build (October 10):
 - Place tape posts to connect automatically; panel can start a separate run.
 - Panel: placed-tool Remove buttons, reset, photographs and instructor review.
 
+New interface, October 13 (unverified): a hotbar, crosshair, key prompts and toasts on the monitor; Tab opens a tabbed drawer; **F1 or H: controls overlay**; F2: hide the HUD; C: crouch; hold Z: zoom; settings for size, mouse sensitivity, invert Y and field of view. In the headset: Quest 2 controller models with hints that appear when you look at them, a tool carousel, a wrist status card, floating messages and vibrations.
+
 Added in the current source (unverified): 5/6: measuring tape or scene lamp; T also switches a held or pointed scene lamp (at most two lit); L: flashlight; U: UV torch; N: night/day; B: instructor beacon at the pointer; Tab cycles the presenter panel hidden/strip/full; [ / ]: panel scale; Shift: walk faster. Full table: [controls](Docs/CONTROLS_AND_INTEGRATION.md).
 
 ## Development

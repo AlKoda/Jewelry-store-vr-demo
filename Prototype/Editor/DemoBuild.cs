@@ -92,6 +92,7 @@ public static class DemoBuild
         camera.backgroundColor = new Color(0.06f, 0.07f, 0.09f);
         view.AddComponent<AudioListener>();
         new GameObject("Launcher").AddComponent<DemoLauncher>();
+        DemoToolsBuilder.AddTheme(new GameObject("UiTheme"));
         Directory.CreateDirectory(DemoValidation.ScenesFolder);
         EditorSceneManager.SaveScene(scene, LauncherScene);
     }
