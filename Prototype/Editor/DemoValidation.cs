@@ -225,6 +225,8 @@ public static class DemoValidation
         DemoDesktopPanel panel = Find<DemoDesktopPanel>();
         DesktopInteractor desktop = Find<DesktopInteractor>();
         desktop.ReadDesktopInput = false;
+        // Forget hover state from frames that still read the mouse.
+        desktop.ReleaseAll();
         panel.Layout = PanelLayout.Hidden;
         panel.HelpOpen = true;
         bool paused = panel.CapturesInput && panel.Contains(new Vector2(1, 1));
@@ -268,8 +270,23 @@ public static class DemoValidation
                 && right.Hud.CarouselLabel == DeployedTool.Title(DemoToolKind.Marker) && right.Label.text.Contains("new marker");
             right.SetSpawnKind(DemoToolKind.Cone);
         }
+        // One frame of the controller interface (fades, highlights, wrist card, toast),
+        // which otherwise only runs in the headset: it must not throw and must count a new tool.
+        bool updated = false;
+        if (built)
+        {
+            System.Reflection.MethodInfo hudFrame = typeof(XRHandHud).GetMethod("LateUpdate",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            ToolStation station = Find<ToolStation>();
+            DeployedTool probe = station.Spawn(DemoToolKind.Cone);
+            hudFrame.Invoke(left.Hud, null);
+            hudFrame.Invoke(right.Hud, null);
+            updated = probe != null && left.Hud.StatusText.text.Contains("1 tool");
+            station.RemoveTool(probe);
+        }
         mode.Apply(false);
         Check(carousel && right.SpawnKind == DemoToolKind.Cone, "Tool carousel shows the newly selected kind");
+        Check(updated, "Controller interface updates a frame and counts a new tool");
 
         Vector2 refused = XRControllerInput.Pulse(XRControllerInput.HandEvent.Refused);
         Vector2 placed = XRControllerInput.Pulse(XRControllerInput.HandEvent.Place);

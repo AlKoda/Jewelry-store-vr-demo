@@ -408,7 +408,7 @@ public static class DemoUi
         float width = 0;
         for (int i = 0; i + 1 < pairs.Length; i += 2)
         {
-            foreach (string key in pairs[i].Split('/')) width += s.Keycap.CalcSize(new GUIContent(key)).x + 4;
+            foreach (string key in pairs[i].Split('/')) width += Mathf.Max(s.Keycap.CalcSize(new GUIContent(key)).x, 24) + 4;
             width += s.HintText.CalcSize(new GUIContent(pairs[i + 1])).x + 18;
         }
         return Mathf.Max(0, width - 12);
@@ -466,7 +466,11 @@ public static class DemoUi
     // Flat rounded rectangle in the XY plane centred on the origin, facing -Z like a TextMesh.
     public static Mesh RoundedQuad(float width, float height, float radius, int cornerSegments = 5)
     {
-        string key = "q" + width + "x" + height + "r" + radius;
+        // Millimetre steps, so panels fitted to changing text share a bounded set of meshes.
+        width = Mathf.Max(0.001f, Mathf.Round(width * 1000) / 1000);
+        height = Mathf.Max(0.001f, Mathf.Round(height * 1000) / 1000);
+        radius = Mathf.Round(radius * 1000) / 1000;
+        string key = "q" + width + "x" + height + "r" + radius + "s" + cornerSegments;
         if (meshes.TryGetValue(key, out Mesh cached) && cached != null) return cached;
         radius = Mathf.Min(radius, Mathf.Min(width, height) / 2);
         List<Vector3> outline = new List<Vector3>();

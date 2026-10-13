@@ -76,8 +76,16 @@ public sealed class XRControllerInput : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (teleportMarker != null) Destroy(teleportMarker.gameObject);
-        if (arcLine != null) Destroy(arcLine.gameObject);
+        if (teleportMarker != null)
+        {
+            foreach (Renderer part in teleportMarker.GetComponentsInChildren<Renderer>(true)) Destroy(part.sharedMaterial);
+            Destroy(teleportMarker.gameObject);
+        }
+        if (arcLine != null)
+        {
+            Destroy(arcLine.sharedMaterial);
+            Destroy(arcLine.gameObject);
+        }
     }
 
     private void Update()

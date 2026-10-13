@@ -55,6 +55,8 @@ public sealed class XRHandHud : MonoBehaviour
     private readonly List<Tip> tips = new List<Tip>();
     private readonly Dictionary<Control, Renderer> buttons = new Dictionary<Control, Renderer>();
     private readonly Dictionary<Control, bool> lit = new Dictionary<Control, bool>();
+    // Every material made here (text materials are DemoUi's, shared per font), freed in OnDestroy.
+    private readonly List<Material> owned = new List<Material>();
 
     private Transform carousel, carouselRing;
     private TextMesh carouselName;
@@ -91,6 +93,9 @@ public sealed class XRHandHud : MonoBehaviour
         if (box != null && box.GetComponent<Renderer>() != null) box.GetComponent<Renderer>().enabled = false;
         BuildModel();
         BuildTips();
+        // Without a builder Label the A/X hint's own text takes its place.
+        if (owner.Label == null)
+            foreach (Tip tip in tips) if (tip.Control == Control.Primary) owner.Label = tip.Action;
         if (left) BuildStatusCard();
         else BuildToast();
         Refresh();
@@ -102,7 +107,7 @@ public sealed class XRHandHud : MonoBehaviour
     {
         model = new GameObject("ControllerModel").transform;
         model.SetParent(transform, false);
-        Material body = DemoUi.ShadedMaterial(BodyColor), face = DemoUi.ShadedMaterial(FaceColor);
+        Material body = Own(DemoUi.ShadedMaterial(BodyColor)), face = Own(DemoUi.ShadedMaterial(FaceColor));
         float inner = -side;
         // The handle runs down and back from the head; the face plate tilts towards the thumb.
         Part("Grip", PrimitiveType.Capsule, model, new Vector3(0, -0.045f, -0.026f), new Vector3(29, 0, 0), new Vector3(0.034f, 0.05f, 0.038f), body);
@@ -120,7 +125,7 @@ public sealed class XRHandHud : MonoBehaviour
         plate.SetParent(model, false);
         plate.localPosition = new Vector3(0, 0.009f, 0.002f);
         plate.localRotation = Quaternion.Euler(-12, 0, 0);
-        Part("StickBase", PrimitiveType.Cylinder, plate, new Vector3(inner * 0.012f, 0.001f, 0.006f), Vector3.zero, new Vector3(0.018f, 0.0015f, 0.018f), DemoUi.ShadedMaterial(DemoUi.Accent * 0.7f));
+        Part("StickBase", PrimitiveType.Cylinder, plate, new Vector3(inner * 0.012f, 0.001f, 0.006f), Vector3.zero, new Vector3(0.018f, 0.0015f, 0.018f), Own(DemoUi.ShadedMaterial(DemoUi.Accent * 0.7f)));
         Part("StickShaft", PrimitiveType.Cylinder, plate, new Vector3(inner * 0.012f, 0.005f, 0.006f), Vector3.zero, new Vector3(0.006f, 0.004f, 0.006f), face);
         buttons[Control.Stick] = Part("StickCap", PrimitiveType.Cylinder, plate, new Vector3(inner * 0.012f, 0.0095f, 0.006f), Vector3.zero, new Vector3(0.017f, 0.0022f, 0.017f), Button());
         buttons[Control.Primary] = Part(left ? "X" : "A", PrimitiveType.Cylinder, plate, new Vector3(side * 0.013f, 0.0015f, -0.007f), Vector3.zero, new Vector3(0.011f, 0.0018f, 0.011f), Button());
@@ -131,7 +136,19 @@ public sealed class XRHandHud : MonoBehaviour
         buttons[Control.Grip] = Part("GripButton", PrimitiveType.Cube, model, new Vector3(inner * 0.016f, -0.042f, -0.024f), new Vector3(29, 0, 0), new Vector3(0.006f, 0.032f, 0.018f), Button());
     }
 
-    private static Material Button() => DemoUi.ShadedMaterial(ButtonColor);
+    private Material Button() => Own(DemoUi.ShadedMaterial(ButtonColor));
+
+    private Material Own(Material material)
+    {
+        if (material != null) owned.Add(material);
+        return material;
+    }
+
+    private MeshRenderer Own(MeshRenderer renderer)
+    {
+        Own(renderer.sharedMaterial);
+        return renderer;
+    }
 
     private static Renderer Part(string name, PrimitiveType type, Transform parent, Vector3 position, Vector3 euler, Vector3 scale, Material material)
     {
@@ -208,8 +225,8 @@ public sealed class XRHandHud : MonoBehaviour
         tip.Root = new GameObject("Hint_" + control).transform;
         tip.Root.SetParent(transform, false);
         tip.Root.localPosition = localPosition;
-        tip.Panel = DemoUi.WorldPanel("Panel", tip.Root, Vector3.zero, 0.05f, PanelHeight, PanelHeight / 2, PanelColor);
-        tip.KeyPanel = DemoUi.WorldPanel("KeyPanel", tip.Root, Vector3.zero, KeyHeight, KeyHeight, 0.003f, DemoUi.Accent);
+        tip.Panel = Own(DemoUi.WorldPanel("Panel", tip.Root, Vector3.zero, 0.05f, PanelHeight, PanelHeight / 2, PanelColor));
+        tip.KeyPanel = Own(DemoUi.WorldPanel("KeyPanel", tip.Root, Vector3.zero, KeyHeight, KeyHeight, 0.003f, DemoUi.Accent));
         tip.KeyPanel.sharedMaterial.renderQueue = 3010;
         tip.Key = DemoUi.WorldText("Key", tip.Root, Vector3.zero, key, TextHeight * 0.85f, KeyInk, TextAnchor.MiddleCenter, DemoUi.SemiBold);
         if (existing != null)
@@ -220,7 +237,7 @@ public sealed class XRHandHud : MonoBehaviour
             DemoUi.Configure(existing, DemoUi.Medium, TextHeight, DemoUi.Ink, TextAnchor.MiddleLeft);
             tip.Action = existing;
         }
-        else tip.Action = DemoUi.WorldText("Action", tip.Root, Vector3.zero, action, TextHeight, DemoUi.Ink, TextAnchor.MiddleLeft);
+        else tip.Action = DemoUi.WorldText("Action", tip.Root, Vector3.zero, action ?? "", TextHeight, DemoUi.Ink, TextAnchor.MiddleLeft);
         GameObject leader = new GameObject("Leader");
         leader.transform.SetParent(tip.Root, false);
         tip.Line = leader.AddComponent<LineRenderer>();
@@ -229,7 +246,7 @@ public sealed class XRHandHud : MonoBehaviour
         tip.Line.startWidth = tip.Line.endWidth = 0.0012f;
         tip.Line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         tip.Line.receiveShadows = false;
-        tip.Line.sharedMaterial = DemoUi.UnlitMaterial(Color.white);
+        tip.Line.sharedMaterial = Own(DemoUi.UnlitMaterial(Color.white));
         tips.Add(tip);
         LayoutTip(tip);
     }
@@ -302,15 +319,15 @@ public sealed class XRHandHud : MonoBehaviour
         carousel = new GameObject("ToolCarousel").transform;
         carousel.SetParent(transform, false);
         carousel.localPosition = new Vector3(0, 0.125f, 0.02f);
-        DemoUi.WorldPanel("Panel", carousel, new Vector3(0, -0.007f, 0.0012f), 0.205f, 0.08f, 0.016f, PanelColor);
-        carouselRing = DemoUi.WorldPanel("Selection", carousel, Vector3.zero, 0.037f, 0.037f, 0.0185f, DemoUi.Accent).transform;
+        Own(DemoUi.WorldPanel("Panel", carousel, new Vector3(0, -0.007f, 0.0012f), 0.205f, 0.08f, 0.016f, PanelColor));
+        carouselRing = Own(DemoUi.WorldPanel("Selection", carousel, Vector3.zero, 0.037f, 0.037f, 0.0185f, DemoUi.Accent)).transform;
         carouselRing.GetComponent<MeshRenderer>().sharedMaterial.renderQueue = 3005;
         int kinds = System.Enum.GetValues(typeof(DemoToolKind)).Length;
         for (int i = 0; i < kinds; i++)
         {
             DemoToolKind kind = (DemoToolKind)i;
-            Transform tile = DemoUi.WorldPanel("Tile_" + kind, carousel, new Vector3((i - (kinds - 1) / 2f) * 0.032f, 0.012f, 0.0006f),
-                0.026f, 0.026f, 0.013f, DemoUi.Card).transform;
+            Transform tile = Own(DemoUi.WorldPanel("Tile_" + kind, carousel, new Vector3((i - (kinds - 1) / 2f) * 0.032f, 0.012f, 0.0006f),
+                0.026f, 0.026f, 0.013f, DemoUi.Card)).transform;
             tile.GetComponent<MeshRenderer>().sharedMaterial.renderQueue = 3010;
             GameObject icon = GameObject.CreatePrimitive(PrimitiveType.Quad);
             icon.name = "Icon";
@@ -320,7 +337,7 @@ public sealed class XRHandHud : MonoBehaviour
             icon.transform.localPosition = new Vector3(0, 0, -0.0003f);
             icon.transform.localScale = new Vector3(0.017f, 0.017f, 1);
             MeshRenderer iconRenderer = icon.GetComponent<MeshRenderer>();
-            iconRenderer.sharedMaterial = DemoUi.IconMaterial(DemoUi.IconFor(kind), DemoDesktopPanel.KindColor(kind));
+            iconRenderer.sharedMaterial = Own(DemoUi.IconMaterial(DemoUi.IconFor(kind), DemoDesktopPanel.KindColor(kind)));
             iconRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             iconRenderer.receiveShadows = false;
             carouselTiles.Add(tile);
@@ -350,7 +367,7 @@ public sealed class XRHandHud : MonoBehaviour
         statusRoot = new GameObject("WristStatus").transform;
         statusRoot.SetParent(transform, false);
         statusRoot.localPosition = new Vector3(0, 0.04f, -0.1f);
-        statusPanel = DemoUi.WorldPanel("Panel", statusRoot, new Vector3(0, 0, 0.001f), 0.12f, 0.06f, 0.01f, PanelColor);
+        statusPanel = Own(DemoUi.WorldPanel("Panel", statusRoot, new Vector3(0, 0, 0.001f), 0.12f, 0.06f, 0.01f, PanelColor));
         statusText = DemoUi.WorldText("Status", statusRoot, Vector3.zero, "", 0.0085f, DemoUi.Ink, TextAnchor.MiddleLeft);
         RefreshStatus();
     }
@@ -396,9 +413,12 @@ public sealed class XRHandHud : MonoBehaviour
 
     private void BuildToast()
     {
+        // On the rig, beside the hands: a teleport or snap turn carries it along instead of
+        // letting it sweep across the room to catch up.
         toastRoot = new GameObject("XRToast").transform;
-        toastPanel = DemoUi.WorldPanel("Panel", toastRoot, new Vector3(0, 0, 0.002f), 0.3f, 0.06f, 0.016f, PanelColor);
-        toastBar = DemoUi.WorldPanel("Tone", toastRoot, Vector3.zero, 0.006f, 0.034f, 0.003f, DemoUi.Accent);
+        toastRoot.SetParent(transform.parent, false);
+        toastPanel = Own(DemoUi.WorldPanel("Panel", toastRoot, new Vector3(0, 0, 0.002f), 0.3f, 0.06f, 0.016f, PanelColor));
+        toastBar = Own(DemoUi.WorldPanel("Tone", toastRoot, Vector3.zero, 0.006f, 0.034f, 0.003f, DemoUi.Accent));
         toastBar.sharedMaterial.renderQueue = 3010;
         toastText = DemoUi.WorldText("Text", toastRoot, Vector3.zero, "", 0.026f, DemoUi.Ink, TextAnchor.MiddleLeft);
         toastRoot.gameObject.SetActive(false);
@@ -502,5 +522,7 @@ public sealed class XRHandHud : MonoBehaviour
     private void OnDestroy()
     {
         if (toastRoot != null) Destroy(toastRoot.gameObject);
+        foreach (Material material in owned) if (material != null) Destroy(material);
+        owned.Clear();
     }
 }

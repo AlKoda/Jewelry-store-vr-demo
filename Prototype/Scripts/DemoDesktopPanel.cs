@@ -79,7 +79,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (HelpOpen) return true;
         Vector2 p = new Vector2(screenPoint.x, Screen.height - screenPoint.y) / scale;
         if (Layout != PanelLayout.Hidden && Area.Contains(p)) return true;
-        return HotbarShown && HotbarRect.Contains(p);
+        if (!HotbarShown) return false;
+        Rect bar = HotbarRect;
+        return new Rect(bar.x - 8, bar.y - 8, bar.width + 16, bar.height + 16).Contains(p);
     }
 
     public void CycleLayout() { Layout = (PanelLayout)(((int)Layout + 1) % 3); }
@@ -192,12 +194,15 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         bool vr = Interactor != null && !Interactor.isActiveAndEnabled;
         if (Station != null)
         {
+            // Under the controls overlay everything else is inert, so its buttons get the clicks.
+            GUI.enabled = !HelpOpen;
             if (hudVisible) DrawHud(s, vr);
             else if (Looking) DrawCrosshair(s);
             if (Layout == PanelLayout.Strip) DrawStrip(s, vr);
             else if (Layout == PanelLayout.Full) DrawDrawer(s, vr);
             if (hudVisible || Layout != PanelLayout.Hidden) DrawToasts(s, now);
             DrawResetBanner(s);
+            GUI.enabled = true;
             if (HelpOpen) DrawHelp(s);
             DrawFlash();
         }
@@ -217,7 +222,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         if (Layout == PanelLayout.Hidden) DrawChips(s, vr);
         bool open = Layout == PanelLayout.Full || HelpOpen;
-        if (!vr && !open)
+        if (DesktopActive && !open)
         {
             if (Looking) DrawCrosshair(s);
             else DrawPointerTip(s);
@@ -225,7 +230,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             DrawHotbar(s);
         }
         if (EvidenceCamera != null && EvidenceCamera.Viewfinder != null && !open)
-            DrawViewfinder(s, ViewfinderRect(), vr ? new[] { "Trigger", "Photograph" } : new[] { "P", "Photo", "Z", "Zoom", "F", "Return" });
+            DrawViewfinder(s, ViewfinderRect(), vr ? new[] { "Trigger", "Photograph" } : new[] { "P", "Photo", "F", "Return" });
     }
 
     // Mode, light and tool state top left, wrapping before the toast column.
@@ -239,7 +244,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         ShopWalkController walker = Walker;
         if (!vr && walker != null && walker.Crouching) Chip(s, ref x, ref y, limit, "CROUCHING", s.Chip);
         if (!vr && walker != null && walker.Zooming) Chip(s, ref x, ref y, limit, "ZOOM", s.Chip);
-        Chip(s, ref x, ref y, limit, deployed + (deployed == 1 ? " tool placed" : " tools placed") + "   ·   marker " + Station.NextMarkerNumber + " next", s.Chip);
+        Chip(s, ref x, ref y, limit, deployed + (deployed == 1 ? " tool" : " tools") + "   ·   marker " + Station.NextMarkerNumber + " next", s.Chip);
         if (EvidenceCamera != null && EvidenceCamera.PhotoCount > 0)
             Chip(s, ref x, ref y, limit, EvidenceCamera.PhotoCount + (EvidenceCamera.PhotoCount == 1 ? " photo" : " photos"), s.Chip);
         y += 36;
@@ -306,7 +311,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         pairs.Clear();
         if (!DesktopActive) return pairs.ToArray();
         DeployedTool held = Interactor.Held;
-        if (Interactor.HoldingCamera) Add("P", "Photograph", "Z", "Zoom", "F", "Return camera");
+        if (Interactor.HoldingCamera) Add("P", "Photograph", "F", "Return camera");
         else if (held != null)
         {
             if (Interactor.HasPlacementTarget) Add("LMB", "Place");
@@ -629,7 +634,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private string StatusLine()
     {
-        string text = deployed + (deployed == 1 ? " tool placed" : " tools placed") + "   ·   marker " + Station.NextMarkerNumber + " next";
+        string text = deployed + (deployed == 1 ? " tool" : " tools") + " in the scene   ·   marker " + Station.NextMarkerNumber + " next";
         if (EvidenceCamera != null) text += "   ·   " + EvidenceCamera.PhotoCount + (EvidenceCamera.PhotoCount == 1 ? " photo" : " photos");
         return text;
     }
@@ -750,7 +755,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             Defer(Interactor.ToggleCamera);
         GUILayout.EndHorizontal();
         if (GUILayout.Button("Open photo folder", s.ButtonGhost)) Defer(EvidenceCamera.OpenPhotoFolder);
-        float width = Area.width - 40;
+        // Panel padding, the scrollbar and its margin.
+        float width = Area.width - 52;
         if (EvidenceCamera.Viewfinder != null)
         {
             Heading(s, "LIVE VIEW");
@@ -779,7 +785,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         if (Map == null || Map.Texture == null) { GUILayout.Label("No overview map in this scene.", s.Dim); return; }
         Heading(s, "OVERVIEW");
-        float size = Area.width - 40;
+        float size = Area.width - 52;
         Rect frame = GUILayoutUtility.GetRect(size, size);
         DemoUi.Box(frame, 10, DemoUi.Card, DemoUi.Line);
         Rect mapRect = new Rect(frame.x + 4, frame.y + 4, frame.width - 8, frame.height - 8);
@@ -794,7 +800,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             // A click on the map sends the beacon there: the square texture fills the
             // square rectangle, so the inverse of Glyph gives the map coordinate.
             Event e = Event.current;
-            if (e.type == EventType.MouseDown && e.button == 0 && mapRect.Contains(e.mousePosition))
+            if (e.type == EventType.MouseDown && e.button == 0 && !HelpOpen && mapRect.Contains(e.mousePosition))
             {
                 Vector2 uv = new Vector2((e.mousePosition.x - mapRect.x) / mapRect.width, 1 - (e.mousePosition.y - mapRect.y) / mapRect.height);
                 Vector3 point = Map.FromMap(uv);
