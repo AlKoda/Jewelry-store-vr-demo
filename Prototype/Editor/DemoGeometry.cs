@@ -77,6 +77,39 @@ public static class DemoGeometry
         return material;
     }
 
+    // Standard-shader fade mode (straight alpha: diffuse and reflections both fade with the
+    // colour or texture alpha), for decals and glow cards; queue orders stacked layers.
+    public static Material Fade(Material material, int queue)
+    {
+        material.SetFloat("_Mode", 2);
+        material.SetInt("_SrcBlend", (int)BlendMode.SrcAlpha);
+        material.SetInt("_DstBlend", (int)BlendMode.OneMinusSrcAlpha);
+        material.SetInt("_ZWrite", 0);
+        material.EnableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.SetOverrideTag("RenderType", "Transparent");
+        material.renderQueue = queue;
+        return material;
+    }
+
+    // Standard-shader cutout mode: texels with alpha below cutoff are discarded, the rest
+    // draw opaque with depth (grilles, leaf cards, hair cards).
+    public static Material Cutout(Material material, float cutoff)
+    {
+        material.SetFloat("_Mode", 1);
+        material.SetInt("_SrcBlend", (int)BlendMode.One);
+        material.SetInt("_DstBlend", (int)BlendMode.Zero);
+        material.SetInt("_ZWrite", 1);
+        material.EnableKeyword("_ALPHATEST_ON");
+        material.DisableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.SetFloat("_Cutoff", cutoff);
+        material.SetOverrideTag("RenderType", "TransparentCutout");
+        material.renderQueue = 2450;
+        return material;
+    }
+
     // Standard-shader emission on a saved material, so light fixtures read as lit.
     public static Material Glowing(Material material, Color emission)
     {

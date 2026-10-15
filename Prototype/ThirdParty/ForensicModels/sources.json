@@ -1707,6 +1707,134 @@
    "changes": "Converted glTF -> OBJ/MTL with Tools/glb_to_obj.py (--ground: lowest point y = 0, centred in x/z; metres kept). Base colour -> <Name>_Color.jpg; nor_gl -> <Name>_Normal.jpg (OpenGL/Unity convention); ARM (R=AO, G=rough, B=metal) -> <Name>_MetallicSmoothness.png (R = metal, A = 1 - rough). OBJ numbers rounded to 0.1 mm. Glass sub-materials replaced by MTL constants."
   },
   {
+   "file": "Crowbar_LOD1.obj",
+   "bytes": 33817,
+   "sha256": "0030a5217871c3d56fcd7d77f43d8cc165ce1329c484792bdb599feb0a97514c",
+   "model": "Crowbar",
+   "lod": 1,
+   "origin": "Poly Haven",
+   "asset_id": "crowbar_01",
+   "asset_title": "Crowbar 01",
+   "source_url": "https://polyhaven.com/a/crowbar_01",
+   "author": {
+    "Alexander Otterbeck": "All"
+   },
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "publisher_license": "https://polyhaven.com/license",
+   "license_note": "CC0 derivative of Crowbar.obj; stays CC0 1.0",
+   "derived_from": [
+    {
+     "file": "Crowbar.obj",
+     "bytes": 119886,
+     "sha256": "97bd0cc5113b3f1d0d1109759f8392abfb2b9cb6a3c308c88db40a2570b37a96"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "Crowbar.mtl",
+   "target_tris": 600,
+   "tris": 600,
+   "source_tris": 2300,
+   "materials": [
+    "crowbar_01"
+   ],
+   "vn": false,
+   "size_m": [
+    0.0404,
+    0.5554,
+    0.1276
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from Crowbar.obj (2,300 to 600 triangles, target 600) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt line of Crowbar.obj (no vertex moved, no vn added), UV seams and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (upright, base on y = 0), no triangle over 1 cm2 folds inside out. Uses Crowbar.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.024,
+     "p99": 0.198,
+     "max": 0.535
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
+   "file": "Crowbar_LOD2.obj",
+   "bytes": 12046,
+   "sha256": "43af19638c1c62d35a326d973cc86f920a6d114d7b6d4964afea8c66bc37f938",
+   "model": "Crowbar",
+   "lod": 2,
+   "origin": "Poly Haven",
+   "asset_id": "crowbar_01",
+   "asset_title": "Crowbar 01",
+   "source_url": "https://polyhaven.com/a/crowbar_01",
+   "author": {
+    "Alexander Otterbeck": "All"
+   },
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "publisher_license": "https://polyhaven.com/license",
+   "license_note": "CC0 derivative of Crowbar.obj; stays CC0 1.0",
+   "derived_from": [
+    {
+     "file": "Crowbar.obj",
+     "bytes": 119886,
+     "sha256": "97bd0cc5113b3f1d0d1109759f8392abfb2b9cb6a3c308c88db40a2570b37a96"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "Crowbar.mtl",
+   "target_tris": 200,
+   "tris": 200,
+   "source_tris": 2300,
+   "materials": [
+    "crowbar_01"
+   ],
+   "vn": false,
+   "size_m": [
+    0.0404,
+    0.5554,
+    0.1276
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from Crowbar.obj (2,300 to 200 triangles, target 200) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt line of Crowbar.obj (no vertex moved, no vn added), UV seams and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (upright, base on y = 0), no triangle over 1 cm2 folds inside out. Uses Crowbar.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.291,
+     "p99": 1.655,
+     "max": 2.324
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
    "file": "Crowbar_MetallicSmoothness.png",
    "bytes": 268093,
    "sha256": "ed3d4359c913690252baa4df9e9b4ed47652d5a62ac75bb30a21b9adc04f737c",
@@ -2306,6 +2434,134 @@
    "changes": "Converted glTF -> OBJ/MTL with Tools/glb_to_obj.py (--ground: lowest point y = 0, centred in x/z; metres kept). Base colour -> <Name>_Color.jpg; nor_gl -> <Name>_Normal.jpg (OpenGL/Unity convention); ARM (R=AO, G=rough, B=metal) -> <Name>_MetallicSmoothness.png (R = metal, A = 1 - rough). OBJ numbers rounded to 0.1 mm. Glass sub-materials replaced by MTL constants."
   },
   {
+   "file": "FlatheadScrewdriver_LOD1.obj",
+   "bytes": 35577,
+   "sha256": "0bb51f6688f1c2cca49fe2e0a0e8412a68c7bc519a6c08cb6e10807695b598e7",
+   "model": "FlatheadScrewdriver",
+   "lod": 1,
+   "origin": "Poly Haven",
+   "asset_id": "flathead_screwdriver",
+   "asset_title": "Flathead Screwdriver",
+   "source_url": "https://polyhaven.com/a/flathead_screwdriver",
+   "author": {
+    "Dylan Detwiller": "All"
+   },
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "publisher_license": "https://polyhaven.com/license",
+   "license_note": "CC0 derivative of FlatheadScrewdriver.obj; stays CC0 1.0",
+   "derived_from": [
+    {
+     "file": "FlatheadScrewdriver.obj",
+     "bytes": 125203,
+     "sha256": "e67bbccb962f85a6f1580cbb7d3892d026cfa21dfd5032d110031b2ae32dda30"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "FlatheadScrewdriver.mtl",
+   "target_tris": 600,
+   "tris": 600,
+   "source_tris": 2300,
+   "materials": [
+    "flathead_screwdriver"
+   ],
+   "vn": false,
+   "size_m": [
+    0.03,
+    0.2613,
+    0.03
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from FlatheadScrewdriver.obj (2,300 to 600 triangles, target 600) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt line of FlatheadScrewdriver.obj (no vertex moved, no vn added), UV seams and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (upright, base on y = 0), no triangle over 1 cm2 folds inside out. Uses FlatheadScrewdriver.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     52,
+     16
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.171,
+     "p99": 0.734,
+     "max": 1.41
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
+   "file": "FlatheadScrewdriver_LOD2.obj",
+   "bytes": 13131,
+   "sha256": "57d652085c9f4446949d2f86641eb47556ef255497700ad86f6a1b4e86751046",
+   "model": "FlatheadScrewdriver",
+   "lod": 2,
+   "origin": "Poly Haven",
+   "asset_id": "flathead_screwdriver",
+   "asset_title": "Flathead Screwdriver",
+   "source_url": "https://polyhaven.com/a/flathead_screwdriver",
+   "author": {
+    "Dylan Detwiller": "All"
+   },
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "publisher_license": "https://polyhaven.com/license",
+   "license_note": "CC0 derivative of FlatheadScrewdriver.obj; stays CC0 1.0",
+   "derived_from": [
+    {
+     "file": "FlatheadScrewdriver.obj",
+     "bytes": 125203,
+     "sha256": "e67bbccb962f85a6f1580cbb7d3892d026cfa21dfd5032d110031b2ae32dda30"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "FlatheadScrewdriver.mtl",
+   "target_tris": 200,
+   "tris": 200,
+   "source_tris": 2300,
+   "materials": [
+    "flathead_screwdriver"
+   ],
+   "vn": false,
+   "size_m": [
+    0.03,
+    0.2613,
+    0.03
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from FlatheadScrewdriver.obj (2,300 to 200 triangles, target 200) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt line of FlatheadScrewdriver.obj (no vertex moved, no vn added), UV seams and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (upright, base on y = 0), no triangle over 1 cm2 folds inside out. Uses FlatheadScrewdriver.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     52,
+     12
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.823,
+     "p99": 2.774,
+     "max": 3.648
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
    "file": "FlatheadScrewdriver_MetallicSmoothness.png",
    "bytes": 67334,
    "sha256": "db971234f4fc327828dc93a84c4f9cf1222630e309ea888255fa1efabf46c389",
@@ -2437,6 +2693,122 @@
    "license": "Project-owned; no third-party material",
    "version": "October 14, 2026",
    "notes": "Procedural geometry and textures; printed text rasterised with DejaVu fonts (Bitstream Vera / DejaVu licence, glyph rendering only, no font file shipped); all names, case numbers and organisations are fictional."
+  },
+  {
+   "file": "ForensicCase_LOD1.obj",
+   "bytes": 84152,
+   "sha256": "eb3538247225fa9705d2be9fc2679a90738bec8028ffe6d0656bf499872aad4e",
+   "model": "ForensicCase",
+   "lod": 1,
+   "origin": "Project-owned original work",
+   "source_url": "https://github.com/AlKoda/Jewelry-store-vr-demo (generated for this repository; pack folder Prototype/ThirdParty/ForensicModels)",
+   "author": "Project (generated with Claude Code, October 2026)",
+   "license": "Project-owned; no third-party material",
+   "license_note": "Project-owned derivative of ForensicCase.obj (project-owned like its source)",
+   "derived_from": [
+    {
+     "file": "ForensicCase.obj",
+     "bytes": 355063,
+     "sha256": "e389947dc98ef6a53845f8de9aed718dc38cc1ee4d8653cfb1d4a7aa75e9444c"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "ForensicCase.mtl",
+   "target_tris": 1600,
+   "tris": 1600,
+   "source_tris": 6614,
+   "materials": [
+    "CaseAtlas"
+   ],
+   "vn": true,
+   "size_m": [
+    0.464,
+    0.154,
+    0.393
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from ForensicCase.obj (6,614 to 1,600 triangles, target 1,600) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt/vn line of ForensicCase.obj (no vertex moved), UV seams, hard normal edges and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (base on y = 0), no triangle over 1 cm2 folds inside out. Uses ForensicCase.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     4,
+     4
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.433,
+     "p99": 1.465,
+     "max": 1.929
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
+   "file": "ForensicCase_LOD2.obj",
+   "bytes": 26005,
+   "sha256": "2df85d010a3c9024305582ac74fb575d9ab07fac0ee925dd4eb72749e4f612dc",
+   "model": "ForensicCase",
+   "lod": 2,
+   "origin": "Project-owned original work",
+   "source_url": "https://github.com/AlKoda/Jewelry-store-vr-demo (generated for this repository; pack folder Prototype/ThirdParty/ForensicModels)",
+   "author": "Project (generated with Claude Code, October 2026)",
+   "license": "Project-owned; no third-party material",
+   "license_note": "Project-owned derivative of ForensicCase.obj (project-owned like its source)",
+   "derived_from": [
+    {
+     "file": "ForensicCase.obj",
+     "bytes": 355063,
+     "sha256": "e389947dc98ef6a53845f8de9aed718dc38cc1ee4d8653cfb1d4a7aa75e9444c"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "ForensicCase.mtl",
+   "target_tris": 500,
+   "tris": 500,
+   "source_tris": 6614,
+   "materials": [
+    "CaseAtlas"
+   ],
+   "vn": true,
+   "size_m": [
+    0.464,
+    0.154,
+    0.393
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from ForensicCase.obj (6,614 to 500 triangles, target 500) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt/vn line of ForensicCase.obj (no vertex moved), UV seams, hard normal edges and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (base on y = 0), no triangle over 1 cm2 folds inside out. Uses ForensicCase.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     4,
+     4
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 1.042,
+     "p99": 3.616,
+     "max": 5.619
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
   },
   {
    "file": "ForensicCase_MetallicSmoothness.png",
@@ -4510,6 +4882,134 @@
    "changes": "Converted glTF -> OBJ/MTL with Tools/glb_to_obj.py (--ground: lowest point y = 0, centred in x/z; metres kept). Base colour -> <Name>_Color.jpg; nor_gl -> <Name>_Normal.jpg (OpenGL/Unity convention); ARM (R=AO, G=rough, B=metal) -> <Name>_MetallicSmoothness.png (R = metal, A = 1 - rough). OBJ numbers rounded to 0.1 mm. Glass sub-materials replaced by MTL constants."
   },
   {
+   "file": "Sledgehammer_LOD1.obj",
+   "bytes": 37203,
+   "sha256": "ffded39e8cde817829c963c9bfee672f429b0809b0877d567609933c13d2ecb7",
+   "model": "Sledgehammer",
+   "lod": 1,
+   "origin": "Poly Haven",
+   "asset_id": "sledgehammer_01",
+   "asset_title": "Sledgehammer 01",
+   "source_url": "https://polyhaven.com/a/sledgehammer_01",
+   "author": {
+    "Dylan Guzman": "All"
+   },
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "publisher_license": "https://polyhaven.com/license",
+   "license_note": "CC0 derivative of Sledgehammer.obj; stays CC0 1.0",
+   "derived_from": [
+    {
+     "file": "Sledgehammer.obj",
+     "bytes": 135985,
+     "sha256": "f37dada485f7dfab9f3c346653714fc7831b5dbc3ea7a0888b8e69046c68aa1c"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "Sledgehammer.mtl",
+   "target_tris": 650,
+   "tris": 650,
+   "source_tris": 2596,
+   "materials": [
+    "sledgehammer_01"
+   ],
+   "vn": false,
+   "size_m": [
+    0.2084,
+    1.0056,
+    0.0904
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from Sledgehammer.obj (2,596 to 650 triangles, target 650) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt line of Sledgehammer.obj (no vertex moved, no vn added), UV seams and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (upright, base on y = 0), no triangle over 1 cm2 folds inside out. Uses Sledgehammer.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     16,
+     16
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.202,
+     "p99": 1.392,
+     "max": 2.418
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
+   "file": "Sledgehammer_LOD2.obj",
+   "bytes": 13526,
+   "sha256": "f7b3e9a88c8e84daa08784c830d4cbc1b04b5dc38e37bf22dacbaacb8372b5a7",
+   "model": "Sledgehammer",
+   "lod": 2,
+   "origin": "Poly Haven",
+   "asset_id": "sledgehammer_01",
+   "asset_title": "Sledgehammer 01",
+   "source_url": "https://polyhaven.com/a/sledgehammer_01",
+   "author": {
+    "Dylan Guzman": "All"
+   },
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "publisher_license": "https://polyhaven.com/license",
+   "license_note": "CC0 derivative of Sledgehammer.obj; stays CC0 1.0",
+   "derived_from": [
+    {
+     "file": "Sledgehammer.obj",
+     "bytes": 135985,
+     "sha256": "f37dada485f7dfab9f3c346653714fc7831b5dbc3ea7a0888b8e69046c68aa1c"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, seam-exact; a copy of the lods-street tool; python3 -I, standard library, trimesh and numpy for VERIFY only)",
+   "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "mtllib": "Sledgehammer.mtl",
+   "target_tris": 200,
+   "tris": 199,
+   "source_tris": 2596,
+   "materials": [
+    "sledgehammer_01"
+   ],
+   "vn": false,
+   "size_m": [
+    0.2084,
+    1.0056,
+    0.0904
+   ],
+   "min_y": 0.0,
+   "derivation": "Decimated from Sledgehammer.obj (2,596 to 199 triangles, target 200) by seam-aware half-edge collapse with quadric error, seam-exact: every vertex and corner is an original v/vt line of Sledgehammer.obj (no vertex moved, no vn added), UV seams and open borders shorten only along themselves (no cracks), the bounding box is kept exactly (upright, base on y = 0), no triangle over 1 cm2 folds inside out. Uses Sledgehammer.mtl and its maps (shared; no MTL or texture added or changed).",
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "zero_area": 0,
+    "open_edges": [
+     16,
+     7
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "deviation_mm": {
+     "mean": 0.965,
+     "p99": 4.603,
+     "max": 6.607
+    },
+    "centre_xz_m": [
+     0.0,
+     0.0
+    ],
+    "relaxed_collapses": 0
+   }
+  },
+  {
    "file": "Sledgehammer_MetallicSmoothness.png",
    "bytes": 311203,
    "sha256": "c6d488ebf693793794f651e3dce3061c9fe08bb8b5599046362a76373b9fc549",
@@ -5470,6 +5970,21 @@
    "notes": "Generator / conversion script (Unity ignores folders ending in ~)."
   },
   {
+   "file": "Source~/make_lods.py",
+   "bytes": 48586,
+   "sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+   "origin": "Project-owned original work",
+   "license": "Project-owned",
+   "notes": "LOD generator for ForensicCase, Crowbar, Sledgehammer and FlatheadScrewdriver (Unity ignores folders ending in ~). decimate_exact.py, which reproduces the shipped pack, is unchanged.",
+   "derived_from": [
+    {
+     "path": "Prototype/ThirdParty/StreetModels/Source~/make_lods.py",
+     "sha256": "3a85204f2f97b59c04a34fe1b0c74e64d825731fedba82f9adcb95993d15aaeb",
+     "note": "the lods-street tool as of 2026-10-15, which extends Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py"
+    }
+   ]
+  },
+  {
    "file": "Source~/meshkit.py",
    "bytes": 20937,
    "sha256": "639da9a027868b604f5b50a45363ae81feba39e734a9ba6dd546b085f145c318",
@@ -5525,5 +6040,110 @@
    "license": "Project-owned",
    "notes": "Generator / conversion script (Unity ignores folders ending in ~)."
   }
- ]
+ ],
+ "lod_variants": {
+  "added": "2026-10-15",
+  "status": "unverified in Unity (not imported, no LODGroup wired yet)",
+  "tool": "Source~/make_lods.py",
+  "tool_sha256": "a7ad71d5296ab64af1d2b917a420a8df30046b3a2bfe89c882fb5b9bef35867c",
+  "materials": "each LOD OBJ names the original <Model>.mtl; no MTL or texture was added or changed",
+  "rules": "see the make_lods.py docstring: seam-exact half-edge collapse, every vertex an original v/vt/vn, bounds kept exactly (tools upright, base on y = 0), no cracks, no inside-out folds over 1 cm2; VERIFY: triangles within 10 %, bounds within 5 mm, same usemtl set, valid indices, no zero-area triangle",
+  "unity_lodgroup_transition_note": "suggested LODGroup screen-relative heights (LOD Bias 1): LOD0 above the first, LOD1 down to the second, LOD2 down to the third, culled below",
+  "unity_lodgroup_transition": {
+   "Crowbar.obj": [
+    0.2,
+    0.06,
+    0.01
+   ],
+   "FlatheadScrewdriver.obj": [
+    0.2,
+    0.06,
+    0.01
+   ],
+   "ForensicCase.obj": [
+    0.2,
+    0.06,
+    0.01
+   ],
+   "Sledgehammer.obj": [
+    0.2,
+    0.06,
+    0.01
+   ]
+  },
+  "models": {
+   "Crowbar.obj": {
+    "LOD1": {
+     "file": "Crowbar_LOD1.obj",
+     "tris": 600,
+     "target": 600,
+     "bytes": 33817,
+     "shown_from_screen_height": 0.2,
+     "shown_down_to_screen_height": 0.06
+    },
+    "LOD2": {
+     "file": "Crowbar_LOD2.obj",
+     "tris": 200,
+     "target": 200,
+     "bytes": 12046,
+     "shown_from_screen_height": 0.06,
+     "shown_down_to_screen_height": 0.01
+    }
+   },
+   "FlatheadScrewdriver.obj": {
+    "LOD1": {
+     "file": "FlatheadScrewdriver_LOD1.obj",
+     "tris": 600,
+     "target": 600,
+     "bytes": 35577,
+     "shown_from_screen_height": 0.2,
+     "shown_down_to_screen_height": 0.06
+    },
+    "LOD2": {
+     "file": "FlatheadScrewdriver_LOD2.obj",
+     "tris": 200,
+     "target": 200,
+     "bytes": 13131,
+     "shown_from_screen_height": 0.06,
+     "shown_down_to_screen_height": 0.01
+    }
+   },
+   "ForensicCase.obj": {
+    "LOD1": {
+     "file": "ForensicCase_LOD1.obj",
+     "tris": 1600,
+     "target": 1600,
+     "bytes": 84152,
+     "shown_from_screen_height": 0.2,
+     "shown_down_to_screen_height": 0.06
+    },
+    "LOD2": {
+     "file": "ForensicCase_LOD2.obj",
+     "tris": 500,
+     "target": 500,
+     "bytes": 26005,
+     "shown_from_screen_height": 0.06,
+     "shown_down_to_screen_height": 0.01
+    }
+   },
+   "Sledgehammer.obj": {
+    "LOD1": {
+     "file": "Sledgehammer_LOD1.obj",
+     "tris": 650,
+     "target": 650,
+     "bytes": 37203,
+     "shown_from_screen_height": 0.2,
+     "shown_down_to_screen_height": 0.06
+    },
+    "LOD2": {
+     "file": "Sledgehammer_LOD2.obj",
+     "tris": 199,
+     "target": 200,
+     "bytes": 13526,
+     "shown_from_screen_height": 0.06,
+     "shown_down_to_screen_height": 0.01
+    }
+   }
+  }
+ }
 }

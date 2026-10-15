@@ -265,6 +265,154 @@
    "bytes": 710509
   },
   {
+   "file": "GemParcel_LOD1.obj",
+   "source": "derived from GemParcel.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "b1547379e60f970bed448a6e8f4ec163f7536fa91e5ffb6392aa226622d19d63",
+   "bytes": 380112,
+   "triangles": 1620,
+   "target": 1620,
+   "derived_from": "GemParcel.obj",
+   "derived_from_sha256": "a310db38e9db2b713be735c67da5dd66815beb6c2faf1f258bc952a95969de69",
+   "tool": "Source~/make_lods.py",
+   "derivation": "GemParcel 2,640 -> 1,620 triangles: GemPaper 1,320 -> 300 (paper under the stones kept, flat-shaded); Diamond unchanged",
+   "groups": [
+    {
+     "g": "GemPaper",
+     "mtl": "GemPaper",
+     "mode": "fixed",
+     "src": 1320,
+     "tris": 300,
+     "target": 300,
+     "parts": 2
+    },
+    {
+     "g": "Diamond",
+     "mtl": "Diamond",
+     "mode": "copy",
+     "src": 1320,
+     "tris": 1320
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "GemPaper": [
+      2,
+      2
+     ],
+     "Diamond": [
+      12,
+      12
+     ]
+    },
+    "part_tris": {
+     "GemPaper": [
+      120,
+      180
+     ],
+     "Diamond": [
+      110,
+      110
+     ]
+    },
+    "open_edges": [
+     148,
+     52
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "stone_sink_m": [
+     -1.98e-05,
+     -1.98e-05
+    ],
+    "hulled_parts": 0
+   }
+  },
+  {
+   "file": "GemParcel_LOD2.obj",
+   "source": "derived from GemParcel.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "67069dd662a34748d01cd12b496ffb4a993684896b4e535216e96f265ec28336",
+   "bytes": 29972,
+   "triangles": 340,
+   "target": 340,
+   "derived_from": "GemParcel.obj",
+   "derived_from_sha256": "a310db38e9db2b713be735c67da5dd66815beb6c2faf1f258bc952a95969de69",
+   "tool": "Source~/make_lods.py",
+   "derivation": "GemParcel 2,640 -> 340 triangles: GemPaper 1,320 -> 100 (paper under the stones kept, flat-shaded); Diamond 1,320 -> 240 (per part, 12 parts of 20 tris, flat-shaded)",
+   "groups": [
+    {
+     "g": "GemPaper",
+     "mtl": "GemPaper",
+     "mode": "fixed",
+     "src": 1320,
+     "tris": 100,
+     "target": 100,
+     "parts": 2
+    },
+    {
+     "g": "Diamond",
+     "mtl": "Diamond",
+     "mode": "fixed",
+     "src": 1320,
+     "tris": 240,
+     "target": 240,
+     "parts": 12,
+     "part_tris": [
+      20,
+      20
+     ]
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "GemPaper": [
+      2,
+      2
+     ],
+     "Diamond": [
+      12,
+      12
+     ]
+    },
+    "part_tris": {
+     "GemPaper": [
+      14,
+      86
+     ],
+     "Diamond": [
+      20,
+      20
+     ]
+    },
+    "open_edges": [
+     148,
+     16
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "stone_sink_m": [
+     -1.98e-05,
+     -1.98e-05
+    ],
+    "hulled_parts": 0
+   }
+  },
+  {
    "file": "GemPearDiamond.mtl",
    "source": "original (Source~/build.py, Source~/textures.py)",
    "commit": "n/a (generated October 14, 2026)",
@@ -463,6 +611,132 @@
    "bytes": 206663
   },
   {
+   "file": "GoldCoin_LOD1.obj",
+   "source": "derived from GoldCoin.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "fd0ef323387789bf538fa5b4114ad90b919306a1bbc241081840ef1a639fe1a0",
+   "bytes": 49884,
+   "triangles": 448,
+   "target": 430,
+   "derived_from": "GoldCoin.obj",
+   "derived_from_sha256": "cc4cdab09cce281e3bb7b16260b50cc6480048ac96aeb149baf5c8ea30b1f953",
+   "tool": "Source~/make_lods.py",
+   "derivation": "GoldCoin 1,728 -> 448 triangles: GoldCoin 1,728 -> 448 (revolve grid 32 of 96 columns x 7 of 8 rows + 2 poles)",
+   "groups": [
+    {
+     "g": "GoldCoin",
+     "mtl": "GoldCoin",
+     "mode": "share",
+     "src": 1728,
+     "tris": 448,
+     "share": 448,
+     "parts": 1,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 32,
+       "of_cols": 96,
+       "rows": 7,
+       "of_rows": 8,
+       "poles": 2,
+       "tris": 448
+      }
+     ]
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "GoldCoin": [
+      1,
+      1
+     ]
+    },
+    "part_tris": {
+     "GoldCoin": [
+      448,
+      448
+     ]
+    },
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
+  },
+  {
+   "file": "GoldCoin_LOD2.obj",
+   "source": "derived from GoldCoin.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "03399cf8e9115fc572df77f49f93206a58b1bf0c6a76869679ec20ee37e2a50c",
+   "bytes": 12265,
+   "triangles": 120,
+   "target": 110,
+   "derived_from": "GoldCoin.obj",
+   "derived_from_sha256": "cc4cdab09cce281e3bb7b16260b50cc6480048ac96aeb149baf5c8ea30b1f953",
+   "tool": "Source~/make_lods.py",
+   "derivation": "GoldCoin 1,728 -> 120 triangles: GoldCoin 1,728 -> 120 (revolve grid 12 of 96 columns x 5 of 8 rows + 2 poles)",
+   "groups": [
+    {
+     "g": "GoldCoin",
+     "mtl": "GoldCoin",
+     "mode": "share",
+     "src": 1728,
+     "tris": 120,
+     "share": 120,
+     "parts": 1,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 12,
+       "of_cols": 96,
+       "rows": 5,
+       "of_rows": 8,
+       "poles": 2,
+       "tris": 120
+      }
+     ]
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "GoldCoin": [
+      1,
+      1
+     ]
+    },
+    "part_tris": {
+     "GoldCoin": [
+      120,
+      120
+     ]
+    },
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
+  },
+  {
    "file": "GoldCoin_Normal.png",
    "source": "original (Source~/build.py, Source~/textures.py)",
    "commit": "n/a (generated October 14, 2026)",
@@ -488,6 +762,269 @@
    "author": "Jewelry-store-vr-demo project (generated with Claude)",
    "sha256": "b71b3d3f92e2c59c0992bbe70364c1e3aa5c2967608afe89eb5758f8c22b5615",
    "bytes": 214659
+  },
+  {
+   "file": "JewelersLoupe_LOD1.obj",
+   "source": "derived from JewelersLoupe.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "33d7f8f077195546334b1e071a2ab664ec22bcc64a79f2e01d38990bdcbe157c",
+   "bytes": 33256,
+   "triangles": 440,
+   "target": 430,
+   "derived_from": "JewelersLoupe.obj",
+   "derived_from_sha256": "b71b3d3f92e2c59c0992bbe70364c1e3aa5c2967608afe89eb5758f8c22b5615",
+   "tool": "Source~/make_lods.py",
+   "derivation": "JewelersLoupe 1,648 -> 440 triangles: BlackMetal 320 -> 96 (revolve grid 12 of 40 columns x 4 of 4 rows); Glass 640 -> 168 (2 x revolve grid 12 of 40 columns x 4 of 4 rows + 1 pole); Chrome 688 -> 176 (2 x prism grid 10 of 40 columns x 4 of 4 rows, revolve grid 4 of 12 columns x 2 of 2 rows + 2 poles, flat-shaded)",
+   "groups": [
+    {
+     "g": "BlackMetal",
+     "mtl": "BlackMetal",
+     "mode": "fixed",
+     "src": 320,
+     "tris": 96,
+     "target": 100,
+     "parts": 1,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 12,
+       "of_cols": 40,
+       "rows": 4,
+       "of_rows": 4,
+       "poles": 0,
+       "tris": 96
+      }
+     ]
+    },
+    {
+     "g": "Glass",
+     "mtl": "Glass",
+     "mode": "fixed",
+     "src": 640,
+     "tris": 168,
+     "target": 160,
+     "parts": 2,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 12,
+       "of_cols": 40,
+       "rows": 4,
+       "of_rows": 4,
+       "poles": 1,
+       "tris": 84
+      },
+      {
+       "kind": "revolve",
+       "cols": 12,
+       "of_cols": 40,
+       "rows": 4,
+       "of_rows": 4,
+       "poles": 1,
+       "tris": 84
+      }
+     ]
+    },
+    {
+     "g": "Chrome",
+     "mtl": "Chrome",
+     "mode": "fixed",
+     "src": 688,
+     "tris": 176,
+     "target": 170,
+     "parts": 3,
+     "grid": [
+      {
+       "kind": "prism",
+       "cols": 10,
+       "of_cols": 40,
+       "rows": 4,
+       "of_rows": 4,
+       "poles": 0,
+       "tris": 80
+      },
+      {
+       "kind": "prism",
+       "cols": 10,
+       "of_cols": 40,
+       "rows": 4,
+       "of_rows": 4,
+       "poles": 0,
+       "tris": 80
+      },
+      {
+       "kind": "revolve",
+       "cols": 4,
+       "of_cols": 12,
+       "rows": 2,
+       "of_rows": 2,
+       "poles": 2,
+       "tris": 16
+      }
+     ]
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "BlackMetal": [
+      1,
+      1
+     ],
+     "Glass": [
+      2,
+      2
+     ],
+     "Chrome": [
+      3,
+      3
+     ]
+    },
+    "part_tris": {
+     "BlackMetal": [
+      96,
+      96
+     ],
+     "Glass": [
+      84,
+      84
+     ],
+     "Chrome": [
+      16,
+      80
+     ]
+    },
+    "open_edges": [
+     80,
+     24
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
+  },
+  {
+   "file": "JewelersLoupe_LOD2.obj",
+   "source": "derived from JewelersLoupe.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "26697f968bc140598d5bf954e19774e64f3d567ab5e64de384c5209b62d26f60",
+   "bytes": 13248,
+   "triangles": 148,
+   "target": 140,
+   "derived_from": "JewelersLoupe.obj",
+   "derived_from_sha256": "b71b3d3f92e2c59c0992bbe70364c1e3aa5c2967608afe89eb5758f8c22b5615",
+   "tool": "Source~/make_lods.py",
+   "derivation": "JewelersLoupe 1,648 -> 148 triangles: BlackMetal 320 -> 48 (revolve grid 8 of 40 columns x 3 of 4 rows); Glass 640 -> 48 (2 x revolve grid 8 of 40 columns x 2 of 4 rows + 1 pole); Chrome 688 -> 52 (edge collapse, flat-shaded)",
+   "groups": [
+    {
+     "g": "BlackMetal",
+     "mtl": "BlackMetal",
+     "mode": "fixed",
+     "src": 320,
+     "tris": 48,
+     "target": 48,
+     "parts": 1,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 8,
+       "of_cols": 40,
+       "rows": 3,
+       "of_rows": 4,
+       "poles": 0,
+       "tris": 48
+      }
+     ]
+    },
+    {
+     "g": "Glass",
+     "mtl": "Glass",
+     "mode": "fixed",
+     "src": 640,
+     "tris": 48,
+     "target": 48,
+     "parts": 2,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 8,
+       "of_cols": 40,
+       "rows": 2,
+       "of_rows": 4,
+       "poles": 1,
+       "tris": 24
+      },
+      {
+       "kind": "revolve",
+       "cols": 8,
+       "of_cols": 40,
+       "rows": 2,
+       "of_rows": 4,
+       "poles": 1,
+       "tris": 24
+      }
+     ]
+    },
+    {
+     "g": "Chrome",
+     "mtl": "Chrome",
+     "mode": "fixed",
+     "src": 688,
+     "tris": 52,
+     "target": 52,
+     "parts": 3
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "BlackMetal": [
+      1,
+      1
+     ],
+     "Glass": [
+      2,
+      2
+     ],
+     "Chrome": [
+      3,
+      3
+     ]
+    },
+    "part_tris": {
+     "BlackMetal": [
+      48,
+      48
+     ],
+     "Glass": [
+      24,
+      24
+     ],
+     "Chrome": [
+      4,
+      26
+     ]
+    },
+    "open_edges": [
+     80,
+     16
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
   },
   {
    "file": "NecklaceBust.mtl",
@@ -542,6 +1079,184 @@
    "author": "Jewelry-store-vr-demo project (generated with Claude)",
    "sha256": "be2b350499681f9d86e264d27dbf815a8cba7a1abe321498ca9dcdf941aaa64f",
    "bytes": 728422
+  },
+  {
+   "file": "NecklacePearlDropped_LOD1.obj",
+   "source": "derived from NecklacePearlDropped.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "37202ed06e5c773c4b18ef448360258208ef202e4f4b50219c1b3e5ebc2f9432",
+   "bytes": 177147,
+   "triangles": 2098,
+   "target": 2100,
+   "derived_from": "NecklacePearlDropped.obj",
+   "derived_from_sha256": "be2b350499681f9d86e264d27dbf815a8cba7a1abe321498ca9dcdf941aaa64f",
+   "tool": "Source~/make_lods.py",
+   "derivation": "NecklacePearlDropped 8,460 -> 2,098 triangles: Pearl 6,960 -> 1,740 (per part, 58 parts of 30 tris); Gold18k unchanged; Cord 1,392 -> 250 (knot ends capped, 58 knots of 4-6 tris)",
+   "groups": [
+    {
+     "g": "Pearl",
+     "mtl": "Pearl",
+     "mode": "fixed",
+     "src": 6960,
+     "tris": 1740,
+     "target": 1740,
+     "parts": 58,
+     "part_tris": [
+      30,
+      30
+     ]
+    },
+    {
+     "g": "Gold18k",
+     "mtl": "Gold18k",
+     "mode": "copy",
+     "src": 108,
+     "tris": 108
+    },
+    {
+     "g": "Cord",
+     "mtl": "Cord",
+     "mode": "fixed",
+     "src": 1392,
+     "tris": 250,
+     "target": 250,
+     "parts": 58
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "Pearl": [
+      58,
+      58
+     ],
+     "Gold18k": [
+      1,
+      1
+     ],
+     "Cord": [
+      58,
+      58
+     ]
+    },
+    "part_tris": {
+     "Pearl": [
+      30,
+      30
+     ],
+     "Gold18k": [
+      108,
+      108
+     ],
+     "Cord": [
+      4,
+      6
+     ]
+    },
+    "open_edges": [
+     696,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
+  },
+  {
+   "file": "NecklacePearlDropped_LOD2.obj",
+   "source": "derived from NecklacePearlDropped.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "9b9ef345f742d934ae1bdfd846b223d7be8298361514248309eff2c5ceda2eee",
+   "bytes": 49662,
+   "triangles": 530,
+   "target": 530,
+   "derived_from": "NecklacePearlDropped.obj",
+   "derived_from_sha256": "be2b350499681f9d86e264d27dbf815a8cba7a1abe321498ca9dcdf941aaa64f",
+   "tool": "Source~/make_lods.py",
+   "derivation": "NecklacePearlDropped 8,460 -> 530 triangles: Pearl 6,960 -> 464 (per part, 58 parts of 8 tris); Gold18k 108 -> 16 (edge collapse); Cord 1,392 -> 50 (knot ends capped, 12 knots of 4-6 tris, 12 of 58 knots kept)",
+   "groups": [
+    {
+     "g": "Pearl",
+     "mtl": "Pearl",
+     "mode": "fixed",
+     "src": 6960,
+     "tris": 464,
+     "target": 464,
+     "parts": 58,
+     "part_tris": [
+      8,
+      8
+     ]
+    },
+    {
+     "g": "Gold18k",
+     "mtl": "Gold18k",
+     "mode": "fixed",
+     "src": 108,
+     "tris": 16,
+     "target": 16,
+     "parts": 1
+    },
+    {
+     "g": "Cord",
+     "mtl": "Cord",
+     "mode": "fixed",
+     "src": 1392,
+     "tris": 50,
+     "target": 50,
+     "parts": 12
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "Pearl": [
+      58,
+      58
+     ],
+     "Gold18k": [
+      1,
+      1
+     ],
+     "Cord": [
+      58,
+      12
+     ]
+    },
+    "part_tris": {
+     "Pearl": [
+      8,
+      8
+     ],
+     "Gold18k": [
+      16,
+      16
+     ],
+     "Cord": [
+      4,
+      6
+     ]
+    },
+    "open_edges": [
+     696,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 2
+   }
   },
   {
    "file": "NecklacePendantDraped.mtl",
@@ -930,6 +1645,174 @@
    "bytes": 123357
   },
   {
+   "file": "RingBoxClosed_LOD1.obj",
+   "source": "derived from RingBoxClosed.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "faa5ec130476ee5fded73fff670aab3cc4e5681e22430629909c89813d72df34",
+   "bytes": 32839,
+   "triangles": 400,
+   "target": 400,
+   "derived_from": "RingBoxClosed.obj",
+   "derived_from_sha256": "296533bfbd999a14371f9a2dc6ef9a839b909589a1b343cde8dbf8f97ab1b8b7",
+   "tool": "Source~/make_lods.py",
+   "derivation": "RingBoxClosed 1,592 -> 400 triangles: VelvetNavy 864 -> 336 (144 enclosed coincident tris dropped); VelvetCream 696 -> 32 (edge collapse); Gold18k unchanged",
+   "groups": [
+    {
+     "g": "VelvetNavy",
+     "mtl": "VelvetNavy",
+     "mode": "fixed",
+     "src": 864,
+     "tris": 336,
+     "target": 336,
+     "parts": 1
+    },
+    {
+     "g": "VelvetCream",
+     "mtl": "VelvetCream",
+     "mode": "fixed",
+     "src": 696,
+     "tris": 32,
+     "target": 32,
+     "parts": 4
+    },
+    {
+     "g": "Gold18k",
+     "mtl": "Gold18k",
+     "mode": "copy",
+     "src": 32,
+     "tris": 32
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "VelvetNavy": [
+      1,
+      1
+     ],
+     "VelvetCream": [
+      4,
+      4
+     ],
+     "Gold18k": [
+      1,
+      1
+     ]
+    },
+    "part_tris": {
+     "VelvetNavy": [
+      336,
+      336
+     ],
+     "VelvetCream": [
+      4,
+      16
+     ],
+     "Gold18k": [
+      32,
+      32
+     ]
+    },
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
+  },
+  {
+   "file": "RingBoxClosed_LOD2.obj",
+   "source": "derived from RingBoxClosed.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "bcf2e890de33bb0b2eafecd031b007472ca79cf347595d26336057fa1831ac0d",
+   "bytes": 10958,
+   "triangles": 120,
+   "target": 120,
+   "derived_from": "RingBoxClosed.obj",
+   "derived_from_sha256": "296533bfbd999a14371f9a2dc6ef9a839b909589a1b343cde8dbf8f97ab1b8b7",
+   "tool": "Source~/make_lods.py",
+   "derivation": "RingBoxClosed 1,592 -> 120 triangles: VelvetNavy 864 -> 64 (144 enclosed coincident tris dropped); VelvetCream 696 -> 24 (edge collapse); Gold18k unchanged",
+   "groups": [
+    {
+     "g": "VelvetNavy",
+     "mtl": "VelvetNavy",
+     "mode": "fixed",
+     "src": 864,
+     "tris": 64,
+     "target": 64,
+     "parts": 1
+    },
+    {
+     "g": "VelvetCream",
+     "mtl": "VelvetCream",
+     "mode": "fixed",
+     "src": 696,
+     "tris": 24,
+     "target": 24,
+     "parts": 4
+    },
+    {
+     "g": "Gold18k",
+     "mtl": "Gold18k",
+     "mode": "copy",
+     "src": 32,
+     "tris": 32
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "VelvetNavy": [
+      1,
+      1
+     ],
+     "VelvetCream": [
+      4,
+      4
+     ],
+     "Gold18k": [
+      1,
+      1
+     ]
+    },
+    "part_tris": {
+     "VelvetNavy": [
+      64,
+      64
+     ],
+     "VelvetCream": [
+      4,
+      8
+     ],
+     "Gold18k": [
+      32,
+      32
+     ]
+    },
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hulled_parts": 0
+   }
+  },
+  {
    "file": "RingBoxOpen.mtl",
    "source": "original (Source~/build.py, Source~/textures.py)",
    "commit": "n/a (generated October 14, 2026)",
@@ -1000,6 +1883,170 @@
    "author": "Jewelry-store-vr-demo project (generated with Claude)",
    "sha256": "16002ccba0574fcefd6d82c6cab355e1ce50158b7c3dfca631ea18cb4c86cd90",
    "bytes": 271455
+  },
+  {
+   "file": "RingGoldBand_LOD1.obj",
+   "source": "derived from RingGoldBand.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "bc8a0e206532e0b5855644d836890c22cc7eff0284133606620824bcbc6a8ed1",
+   "bytes": 63638,
+   "triangles": 864,
+   "target": 860,
+   "derived_from": "RingGoldBand.obj",
+   "derived_from_sha256": "16002ccba0574fcefd6d82c6cab355e1ce50158b7c3dfca631ea18cb4c86cd90",
+   "tool": "Source~/make_lods.py",
+   "derivation": "RingGoldBand 3,456 -> 864 triangles: Gold18k 3,456 -> 864 (revolve grid 48 of 96 columns x 9 of 18 rows)",
+   "groups": [
+    {
+     "g": "Gold18k",
+     "mtl": "Gold18k",
+     "mode": "share",
+     "src": 3456,
+     "tris": 864,
+     "share": 864,
+     "parts": 1,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 48,
+       "of_cols": 96,
+       "rows": 9,
+       "of_rows": 18,
+       "poles": 0,
+       "tris": 864
+      }
+     ]
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "Gold18k": [
+      1,
+      1
+     ]
+    },
+    "part_tris": {
+     "Gold18k": [
+      864,
+      864
+     ]
+    },
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hole": {
+     "centre": [
+      0.010336,
+      0.0
+     ],
+     "source_centre": [
+      0.010336,
+      0.0
+     ],
+     "diff_m": 9.703600541144386e-09,
+     "radius_m": [
+      0.008581,
+      0.008581
+     ],
+     "points": [
+      384,
+      96
+     ]
+    },
+    "hulled_parts": 0
+   }
+  },
+  {
+   "file": "RingGoldBand_LOD2.obj",
+   "source": "derived from RingGoldBand.obj by Source~/make_lods.py",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "5560ae6e8d9671c2aececa53a9285aab079da3f0bb67e926c7e49a6cfed21da9",
+   "bytes": 15448,
+   "triangles": 224,
+   "target": 220,
+   "derived_from": "RingGoldBand.obj",
+   "derived_from_sha256": "16002ccba0574fcefd6d82c6cab355e1ce50158b7c3dfca631ea18cb4c86cd90",
+   "tool": "Source~/make_lods.py",
+   "derivation": "RingGoldBand 3,456 -> 224 triangles: Gold18k 3,456 -> 224 (revolve grid 16 of 96 columns x 7 of 18 rows)",
+   "groups": [
+    {
+     "g": "Gold18k",
+     "mtl": "Gold18k",
+     "mode": "share",
+     "src": 3456,
+     "tris": 224,
+     "share": 224,
+     "parts": 1,
+     "grid": [
+      {
+       "kind": "revolve",
+       "cols": 16,
+       "of_cols": 96,
+       "rows": 7,
+       "of_rows": 18,
+       "poles": 0,
+       "tris": 224
+      }
+     ]
+    }
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "min_y": 0.0,
+    "components": {
+     "Gold18k": [
+      1,
+      1
+     ]
+    },
+    "part_tris": {
+     "Gold18k": [
+      224,
+      224
+     ]
+    },
+    "open_edges": [
+     0,
+     0
+    ],
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "hole": {
+     "centre": [
+      0.010336,
+      0.0
+     ],
+     "source_centre": [
+      0.010336,
+      0.0
+     ],
+     "diff_m": 7.151315402527392e-08,
+     "radius_m": [
+      0.008581,
+      0.008581
+     ],
+     "points": [
+      384,
+      32
+     ]
+    },
+    "hulled_parts": 0
+   }
   },
   {
    "file": "RingRubyThreeStone.mtl",
@@ -1110,6 +2157,15 @@
    "bytes": 238739
   },
   {
+   "file": "Source~/Preview_LODs.jpg",
+   "source": "original (Source~/render_lods.py)",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned contact sheet (renders of project-owned models only)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "7cc3edd82ae76147d503be4f0986a82495a43df74553f920b308d398fd94c614",
+   "bytes": 305772
+  },
+  {
    "file": "Source~/build.py",
    "source": "original (Source~/build.py, Source~/textures.py)",
    "commit": "n/a (generated October 14, 2026)",
@@ -1153,6 +2209,25 @@
    "author": "Jewelry-store-vr-demo project (generated with Claude)",
    "sha256": "b5b601d6606e811143e2ae85740bc7a2e7fd9918b89de9e9a81d42aa27649e38",
    "bytes": 19102
+  },
+  {
+   "file": "Source~/make_lods.py",
+   "source": "original (Source~/make_lods.py; copied from Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py and Prototype/ThirdParty/StreetModels/Source~/make_lods.py)",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "9183dd3cb4ef8095609d19e955bf2aaffddb79497d08511d2f9bd3d6de04eab4",
+   "bytes": 101942,
+   "copied_from": [
+    {
+     "path": "Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py",
+     "sha256": "3abde4fc3daac0c57d328417ed500fb9b916a4a4f5e42fca5d6a4603f2dcb195"
+    },
+    {
+     "path": "Prototype/ThirdParty/StreetModels/Source~/make_lods.py",
+     "sha256": "3a85204f2f97b59c04a34fe1b0c74e64d825731fedba82f9adcb95993d15aaeb"
+    }
+   ]
   },
   {
    "file": "Source~/maps.py",
@@ -1227,6 +2302,15 @@
    "bytes": 7617
   },
   {
+   "file": "Source~/render_lods.py",
+   "source": "original (Source~/render_lods.py, uses Source~/render.py)",
+   "commit": "n/a (generated October 15, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d052a12ad3ff0430920bfc54311f6331bfa9301a64c1d7ca08ea0ff4bb277a94",
+   "bytes": 7449
+  },
+  {
    "file": "Source~/rings.py",
    "source": "original (Source~/build.py, Source~/textures.py)",
    "commit": "n/a (generated October 14, 2026)",
@@ -1244,5 +2328,47 @@
    "sha256": "5511ea94e990d9b7814d388728293dab993b86dec9cd4dd8d1078871e91a2d4a",
    "bytes": 19189
   }
- ]
+ ],
+ "lod_variants": {
+  "tool": "Source~/make_lods.py",
+  "preview": "Source~/Preview_LODs.jpg",
+  "generated": "October 15, 2026",
+  "copied_from": [
+   {
+    "path": "Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py",
+    "sha256": "3abde4fc3daac0c57d328417ed500fb9b916a4a4f5e42fca5d6a4603f2dcb195"
+   },
+   {
+    "path": "Prototype/ThirdParty/StreetModels/Source~/make_lods.py",
+    "sha256": "3a85204f2f97b59c04a34fe1b0c74e64d825731fedba82f9adcb95993d15aaeb"
+   }
+  ],
+  "models": {
+   "GoldCoin": [
+    "GoldCoin_LOD1.obj",
+    "GoldCoin_LOD2.obj"
+   ],
+   "RingGoldBand": [
+    "RingGoldBand_LOD1.obj",
+    "RingGoldBand_LOD2.obj"
+   ],
+   "RingBoxClosed": [
+    "RingBoxClosed_LOD1.obj",
+    "RingBoxClosed_LOD2.obj"
+   ],
+   "JewelersLoupe": [
+    "JewelersLoupe_LOD1.obj",
+    "JewelersLoupe_LOD2.obj"
+   ],
+   "GemParcel": [
+    "GemParcel_LOD1.obj",
+    "GemParcel_LOD2.obj"
+   ],
+   "NecklacePearlDropped": [
+    "NecklacePearlDropped_LOD1.obj",
+    "NecklacePearlDropped_LOD2.obj"
+   ]
+  },
+  "note": "LOD0 is the shipped model; in the night store LOD1 is the top level of GoldCoin, RingGoldBand, RingBoxClosed, JewelersLoupe. Unverified in Unity."
+ }
 }

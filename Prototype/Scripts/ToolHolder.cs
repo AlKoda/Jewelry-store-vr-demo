@@ -92,7 +92,8 @@ public abstract class ToolHolder : MonoBehaviour
         Vector3 landing = DemoPhysics.Nearest(new Ray(origin, Vector3.down), depth, out RaycastHit hit, tool.transform, null, true)
             ? hit.point : new Vector3(p.x, floor, p.z);
         tool.PlaceAt(landing, tool.transform.eulerAngles.y);
-        if (audible) DemoSounds.Play(DemoSound.Thud, landing, 0.5f);
+        // A cone or marker sounds as itself when the bank has its takes, any other tool thuds.
+        if (audible) DemoSounds.PlaySetDown(tool.Kind, landing, 0.5f);
     }
 
     public virtual void Remove(DeployedTool tool)

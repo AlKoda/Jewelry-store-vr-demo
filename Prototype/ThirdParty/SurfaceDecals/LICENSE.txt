@@ -85,3 +85,21 @@ mirror); Red Eclipse decals (CC BY-SA by default); Godot decals-demo puddles (25
 not stated per file); BabylonJS Assets flare/lens-dirt textures (repo-wide CC BY 4.0 but the
 individual textures' origins are not documented); three.js example lens-flare textures (licence
 of the image files not stated); NIST fingerprint databases (real people's biometrics).
+
+-------------------------------------------------------------------------------
+4. Atlases (Atlas/, wiring batch, October 15, 2026) - compilations of the files above
+-------------------------------------------------------------------------------
+   Files: Atlas/Ambient_Color.png, Atlas/Ambient_Normal.png, Atlas/Ambient_MetallicSmoothness.png,
+          Atlas/Ambient.json, Atlas/Evidence_Color.png, Atlas/Evidence_Normal.png,
+          Atlas/Evidence_MetallicSmoothness.png, Atlas/Evidence.json
+   Made by Source~/make_atlas.py (project-owned code) by resampling and packing existing files of
+   this pack; no new third-party input. Section 1's "All PNG files" means the pack root; the Atlas/
+   files are covered here. Each atlas region keeps the licence of the cell it was made from:
+   - Atlas/Ambient_*: all cells are project-owned original work (section 1) except the
+     LeafLitter_Wet cell (colour, normal and metallic-smoothness regions), which is derived from
+     ambientCG LeafSet024, CC0 1.0 (section 3; attribution not required, courtesy credit
+     "Leaves: ambientCG.com, CC0").
+   - Atlas/Evidence_*: all cells are project-owned original work (section 1).
+   - The Kenney SmokePuff sprites (section 2) are in neither atlas.
+   - The two JSON layout files are project-owned.
+   The atlases can therefore be used, modified and redistributed freely, like their cells.

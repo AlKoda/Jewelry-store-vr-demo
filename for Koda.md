@@ -1,18 +1,57 @@
 # For Koda
 
-Updated October 11, 2026. Demo deadline: **October 27, 2026**.
+Updated October 15, 2026. Demo deadline: **October 27, 2026**.
 
 ## Your decisions
 
 1. Country / police service: which service, language and livery should be represented?
    Prepared tape and signage are generic; the existing KayKit police car stays provisional.
+   Since October 15 every police choice in the night store comes from one setting,
+   `PoliceLook.Current` in Prototype/Editor/PoliceLook.cs (unverified, never compiled):
+   - **Provisional** (the default) keeps today's look: the KayKit police car with its red and
+     blue light bar, the CRIME SCENE - DO NOT CROSS tape, no sirens, no radio and no police
+     figure. Its one addition is a generic V8 engine idle at the car.
+   - **ProvisionalRealisticUS**, for your review only: a photoreal 1980s American police
+     sedan (CC BY 4.0, credited in the app), American wail and yelp sirens, radio traffic,
+     and an armed officer standing on the pavement right of the shop. To see it, change that
+     one line, then rebuild.
+   Neither value is a decision. Once you choose a service, it becomes one more value with its
+   own car, livery, tape text, siren and radio.
 2. Entry: did the offender enter through the door or the display window? This determines
-   the final fracture pattern, debris, route and placement of marks.
+   the final fracture pattern, debris, route and placement of marks (see 8).
 3. UV traces: what simulated material/observation is the instructor demonstrating?
    Keep placeholder UV traces hidden until agreed. Fluorescence does not identify a substance.
 4. One real measurement: frontage width, entrance width or another known dimension.
    The current 16 x 12 m footprint is still an estimate.
-5. Burglary tools: should any discarded tools form part of this story? None added in this batch.
+5. Burglary tools: should any discarded tools form part of this story? Since October 15 a
+   crowbar, a sledgehammer and a flathead screwdriver exist as placeholders inside the hidden
+   "Case evidence" set (see 8). Nothing shows at arrival.
+6. Alarm bell: is the alarm still ringing when the police arrive? The bell box is on the
+   fascia either way. The ringing is the "Alarm bell" switch in the presenter drawer's Scene
+   tab, off at arrival, and a session reset silences it again. Continuous ringing would also
+   tire a session.
+7. Everyday wear: should normal wear be visible in the shop? The "Ambient wear" switch shows
+   a water stain inside the entrance, heel scuffs, fine scratches and dust along the wall
+   base. It is hidden at arrival, because wear can read as evidence. For the same reason the
+   GlassSmudge overlay (fingerprint-like smudges on the case glass, PBRInterior pack) is not
+   applied anywhere. Should either be on, and where?
+8. Case evidence contents (goes with decisions 2 and 5): the "Case evidence" switch shows a
+   placeholder set, hidden at arrival:
+   - a mud shoe trail on the pavement up to the forced entrance doors, with tracked dirt just inside;
+   - 15 dust shoe prints along the walk route to the office opening;
+   - pry marks on the right door leaf at 1.05 m;
+   - four latent fingertips on the central case top and a handprint on a cracked island top;
+   - the three tools from decision 5.
+   Which of these belong to your story, and where should they go?
+9. Stock in the safes: under the closing procedure (stock into the safes by 17:45, under
+   dual control) the cases now hold display furniture only at night. The burglars smashed
+   empty cases, forced both safes and dropped a little stock: a gold bar, a gem parcel, ring
+   boxes and coins in the safes, a loupe on the desk, and a pearl strand, a coin and a ring on
+   the floor. The setting is `NightStoreDressing.StockInSafes` (true); false restores the
+   October 11 version, with stocked display decks. Which matches your scenario?
+10. Fire alarm call point: none is placed. The available model is an American pull station,
+    which would fix the country before decision 1 is made. Which style should it be? This
+    follows from decision 1.
 
 ## Prepared for you
 
@@ -34,11 +73,28 @@ Each folder has source/author/license documentation in LICENSE.txt. See
 [asset report and previews](Docs/ASSET_PREPARATION_2026-10-11.md).
 Downloads/JewelryStore_NightAssets_20261011.zip is an **asset-only package**, not a Unity project or build.
 
+October 15 (unverified, never compiled): the twelve realism packs are now wired into the night
+store, each with the old look as its fallback:
+- PBR floors, stone, wood, metals and facades;
+- Poly Haven street lanterns and an apartment block across the street;
+- interior props and framed wall graphics;
+- the left-behind jewellery;
+- puddles, litter and glass shards on the floors;
+- a street soundscape with footsteps, music in the start menu, and in-app credits.
+Docs/HANDOFF.md lists every change. The presenter drawer's Scene tab gains these switches:
+- "Light bar flashing", with a note for visitors sensitive to flashing light;
+- "Alarm bell", "Ambient wear" and "Case evidence" (decisions 6 to 8), all off at arrival;
+- "Underscore music", off at arrival.
+A session reset makes the light bar flash again and hides the alarm bell, the wear and the
+evidence. The underscore music keeps its setting through a reset.
+
 ## Remaining integration and manual review
 
 1. Use an isolated project with the latest Prototype Scripts, Editor, Shaders and ThirdParty.
    Preserve all existing .meta files. Unity must generate/import new assets and their .meta files.
-   The older extracted UnityProject_Glass is a historical baseline, not the latest night source.
+   The older extracted UnityProject_Glass is a historical baseline, not the latest night source,
+   unless it is opened with Open-Unity-Glass.cmd: since October 15 (unverified) that launcher
+   first mirrors the latest Scripts, Editor, Shaders and ThirdParty into it.
 2. Run StoreKitValidation.RunGallery and NightStoreValidation.RunNightQuick on current source
    before adopting these finishes. Then wire materials/sign PNGs/audio explicitly using each
    folder README. Copying the new folders alone does not wire them into StoreKit or DemoSounds.
@@ -50,7 +106,13 @@ Downloads/JewelryStore_NightAssets_20261011.zip is an **asset-only package**, no
    loop, switch timing and mute controls. Audio was decoded/analysed, not heard in Unity.
 6. Run NightStoreValidation.RunNight for the baked version; inspect daylight/night captures,
    headlight alignment, flashlight occlusion, reflection brightness, saved photos and reset.
-7. You own headset comfort, measured VR FPS/frame time, final scenario decisions and the
+7. October 15 wiring, in the headset and on speakers:
+   - whether the crossfading light bar and its coloured washes are comfortable to look at
+     (the "Light bar flashing" switch holds the bar steady);
+   - the sound levels of the street, the room tone, footsteps, passing cars and the dog;
+   - whether the reverb sounds natural;
+   - whether the glossier PBR floor and the darker velvet read well under the torch.
+8. You own headset comfort, measured VR FPS/frame time, final scenario decisions and the
    instructor walkthrough. No Unity execution, bake, headset test or standalone build was
    performed for this asset-preparation batch. File checks are not performance certification.
 

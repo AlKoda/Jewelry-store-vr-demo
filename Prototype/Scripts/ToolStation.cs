@@ -24,6 +24,9 @@ public sealed class ToolStation : MonoBehaviour
     // Each lit lamp is a realtime spot light; two keep the night scene within its
     // pixel-light budget beside the flashlight. Lit lamps in the order they were lit.
     public const int MaxLitLamps = 2;
+    // Spot cookie a lamp projects once lit (the night store's NightSky LED floodlight);
+    // null keeps the plain spot (the shop).
+    public Texture LampCookie;
     private readonly List<DeployedTool> litLamps = new List<DeployedTool>();
     public DeployedTool LastPlacedPost => lastPlacedPost;
     public DeployedTool LastPlacedReel => lastPlacedReel;
@@ -111,6 +114,7 @@ public sealed class ToolStation : MonoBehaviour
                 DemoFeedback.Post("Two scene lamps at most: the first one went off");
             }
             litLamps.Add(lamp);
+            if (LampCookie != null && lamp.Lamp != null) lamp.Lamp.cookie = LampCookie;
         }
         lamp.SetLampLit(lit);
         UpdateLampShadows();

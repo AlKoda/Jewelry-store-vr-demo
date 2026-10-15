@@ -4,7 +4,8 @@
  "finished": "2026-10-15",
  "unverified_in_unity": true,
  "revisions": [
-  "2026-10-15: ForensicExaminer_Body_Color.jpg and ForensicExaminer_Protection_Color.jpg rebuilt after review: the white coverall and cap were near-clipped (median 245, 35% of texels >= 250); now median 220 sRGB, maximum 240, fold shading kept. Source~/Preview.jpg re-rendered. pose_export.py now breaks bone-label ties deterministically (first corner), so ForensicExaminer_Body_Normal.jpg changed in two shoulder triangles."
+  "2026-10-15: ForensicExaminer_Body_Color.jpg and ForensicExaminer_Protection_Color.jpg rebuilt after review: the white coverall and cap were near-clipped (median 245, 35% of texels >= 250); now median 220 sRGB, maximum 240, fold shading kept. Source~/Preview.jpg re-rendered. pose_export.py now breaks bone-label ties deterministically (first corner), so ForensicExaminer_Body_Normal.jpg changed in two shoulder triangles.",
+  "2026-10-15: LOD variants added (PasserBy_Phone_LOD1/LOD2, PoliceOfficer_Standing_LOD1/LOD2) by Source~/make_lods.py; no existing file changed."
  ],
  "upstream": {
   "repository": "https://github.com/microsoft/Microsoft-Rocketbox",
@@ -20,7 +21,8 @@
  },
  "tools": {
   "posing": "Blender 5.2.2 LTS as the bpy Python module (pip), Source~/pose_export.py",
-  "textures": "Pillow 12, numpy, scipy (Source~/build_textures.py, edits.py)"
+  "textures": "Pillow 12, numpy, scipy (Source~/build_textures.py, edits.py)",
+  "lods": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, the lods-street tool; standard library)"
  },
  "units": "metres, Y up, front = +Z, feet on y = 0, centred in x/z (OBJ/MTL, Unity imports without packages)",
  "texture_convention": {
@@ -1039,6 +1041,160 @@
    ]
   },
   {
+   "file": "PasserBy_Phone_LOD1.obj",
+   "bytes": 143158,
+   "sha256": "9189a8147a6d0a9ca103f7593648900ba5f52e129aee9de06dc3dda3d549ccc1",
+   "kind": "model",
+   "lod": 1,
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "file": "PasserBy_Phone.obj",
+     "bytes": 561587,
+     "sha256": "9dd06822d86353d8fadd6efedbae984e4d6b3d5b91044eeb72d2c216a43cec85"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, the lods-street tool; standard library)",
+   "mtllib": "PasserBy_Phone.mtl",
+   "target_tris": 1800,
+   "tris": 1800,
+   "source_tris": 6808,
+   "relax": null,
+   "uv_max": null,
+   "relaxed_collapses": 0,
+   "groups": [
+    {
+     "g": "Body",
+     "mtl": "Body",
+     "mode": "share",
+     "src": 3694,
+     "tris": 942,
+     "share": 942
+    },
+    {
+     "g": "Head",
+     "mtl": "Head",
+     "mode": "share",
+     "src": 3028,
+     "tris": 772,
+     "share": 772
+    },
+    {
+     "g": "Props",
+     "mtl": "Props",
+     "mode": "copy",
+     "src": 84,
+     "tris": 84
+    },
+    {
+     "g": "PropScreen",
+     "mtl": "PropScreen",
+     "mode": "copy",
+     "src": 2,
+     "tris": 2
+    }
+   ],
+   "size_m": [
+    0.6406,
+    1.775,
+    0.5569
+   ],
+   "height_m": 1.77499,
+   "min_y": 0.0,
+   "materials": [
+    "Body",
+    "Head",
+    "Props",
+    "PropScreen"
+   ],
+   "winding_ok": 0.9967,
+   "open_edges": [
+    40,
+    16
+   ],
+   "changes": "Decimated from PasserBy_Phone.obj (6808 to 1800 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved), UV seams, hard edges and group joins shorten only along themselves (no cracks), group bounding boxes kept exact, no collapse may turn a triangle against its corner normals; Body 3694 to 942; Head 3028 to 772; Props copied unchanged; PropScreen copied unchanged. Uses the original MTL and maps (no texture change)."
+  },
+  {
+   "file": "PasserBy_Phone_LOD2.obj",
+   "bytes": 48925,
+   "sha256": "3b52693d3d931bd031520975102c7854733898640a643c0f8de211d4c5fe9ed1",
+   "kind": "model",
+   "lod": 2,
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "file": "PasserBy_Phone.obj",
+     "bytes": 561587,
+     "sha256": "9dd06822d86353d8fadd6efedbae984e4d6b3d5b91044eeb72d2c216a43cec85"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, the lods-street tool; standard library)",
+   "mtllib": "PasserBy_Phone.mtl",
+   "target_tris": 600,
+   "tris": 599,
+   "source_tris": 6808,
+   "relax": "early",
+   "uv_max": 0.02,
+   "relaxed_collapses": 15,
+   "groups": [
+    {
+     "g": "Body",
+     "mtl": "Body",
+     "mode": "share",
+     "src": 3694,
+     "tris": 281,
+     "share": 282
+    },
+    {
+     "g": "Head",
+     "mtl": "Head",
+     "mode": "share",
+     "src": 3028,
+     "tris": 232,
+     "share": 232
+    },
+    {
+     "g": "Props",
+     "mtl": "Props",
+     "mode": "copy",
+     "src": 84,
+     "tris": 84
+    },
+    {
+     "g": "PropScreen",
+     "mtl": "PropScreen",
+     "mode": "copy",
+     "src": 2,
+     "tris": 2
+    }
+   ],
+   "size_m": [
+    0.6406,
+    1.775,
+    0.5569
+   ],
+   "height_m": 1.77499,
+   "min_y": 0.0,
+   "materials": [
+    "Body",
+    "Head",
+    "Props",
+    "PropScreen"
+   ],
+   "winding_ok": 0.9933,
+   "open_edges": [
+    40,
+    11
+   ],
+   "changes": "Decimated from PasserBy_Phone.obj (6808 to 599 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved), UV seams, hard edges and group joins shorten only along themselves (no cracks), group bounding boxes kept exact, no collapse may turn a triangle against its corner normals; 15 relaxed collapses across a seam or where three or more corners meet (those corners take the nearest normal/UV of the same group, at most 0.02 apart in UV); Body 3694 to 281; Head 3028 to 232; Props copied unchanged; PropScreen copied unchanged. Uses the original MTL and maps (no texture change)."
+  },
+  {
    "file": "PeopleProps_Color.jpg",
    "bytes": 42396,
    "sha256": "a1a879307e360dce783993244c877c0de968adcb70f82c928ee6ee66a494985b",
@@ -1423,6 +1579,164 @@
    ]
   },
   {
+   "file": "PoliceOfficer_Standing_LOD1.obj",
+   "bytes": 274090,
+   "sha256": "145b5faa1aa687b1be79e7c4a3f41aa5e6c7b52fbdb51dfe2d10b90cb27d2db9",
+   "kind": "model",
+   "lod": 1,
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "file": "PoliceOfficer_Standing.obj",
+     "bytes": 1075847,
+     "sha256": "0778804c1dccb9b4905599751a9401858d73996587c9397690baf8224c774a3e"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, the lods-street tool; standard library)",
+   "mtllib": "PoliceOfficer_Standing.mtl",
+   "target_tris": 3000,
+   "tris": 2999,
+   "source_tris": 12445,
+   "relax": null,
+   "uv_max": null,
+   "relaxed_collapses": 0,
+   "groups": [
+    {
+     "g": "Body",
+     "mtl": "Body",
+     "mode": "share",
+     "src": 4662,
+     "tris": 1117,
+     "share": 1118
+    },
+    {
+     "g": "Head",
+     "mtl": "Head",
+     "mode": "share",
+     "src": 3590,
+     "tris": 861,
+     "share": 861
+    },
+    {
+     "g": "Equipment",
+     "mtl": "Equipment",
+     "mode": "share",
+     "src": 3646,
+     "tris": 874,
+     "share": 875
+    },
+    {
+     "g": "Pistol",
+     "mtl": "Pistol",
+     "mode": "share",
+     "src": 547,
+     "tris": 147,
+     "share": 132
+    }
+   ],
+   "size_m": [
+    0.6232,
+    1.8494,
+    0.4052
+   ],
+   "height_m": 1.84944,
+   "min_y": 0.0,
+   "materials": [
+    "Body",
+    "Head",
+    "Equipment",
+    "Pistol"
+   ],
+   "winding_ok": 0.9987,
+   "open_edges": [
+    55,
+    27
+   ],
+   "changes": "Decimated from PoliceOfficer_Standing.obj (12445 to 2999 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved), UV seams, hard edges and group joins shorten only along themselves (no cracks), group bounding boxes kept exact, no collapse may turn a triangle against its corner normals; Body 4662 to 1117; Head 3590 to 861; Equipment 3646 to 874; Pistol 547 to 147. Uses the original MTL and maps (no texture change). Used only by the provisional police look (PoliceLook.ProvisionalRealisticUS)."
+  },
+  {
+   "file": "PoliceOfficer_Standing_LOD2.obj",
+   "bytes": 85720,
+   "sha256": "b378afa74f0beaf985b86b54ba27ca2920e0c44f90557e32b5c2874751e1dd35",
+   "kind": "model",
+   "lod": 2,
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "file": "PoliceOfficer_Standing.obj",
+     "bytes": 1075847,
+     "sha256": "0778804c1dccb9b4905599751a9401858d73996587c9397690baf8224c774a3e"
+    }
+   ],
+   "tool": "Source~/make_lods.py (seam-aware half-edge collapse with quadric error, the lods-street tool; standard library)",
+   "mtllib": "PoliceOfficer_Standing.mtl",
+   "target_tris": 900,
+   "tris": 899,
+   "source_tris": 12445,
+   "relax": "early",
+   "uv_max": 0.1,
+   "relaxed_collapses": 366,
+   "groups": [
+    {
+     "g": "Body",
+     "mtl": "Body",
+     "mode": "share",
+     "src": 4662,
+     "tris": 275,
+     "share": 276
+    },
+    {
+     "g": "Head",
+     "mtl": "Head",
+     "mode": "share",
+     "src": 3590,
+     "tris": 213,
+     "share": 213
+    },
+    {
+     "g": "Equipment",
+     "mtl": "Equipment",
+     "mode": "share",
+     "src": 3646,
+     "tris": 366,
+     "share": 264
+    },
+    {
+     "g": "Pistol",
+     "mtl": "Pistol",
+     "mode": "share",
+     "src": 547,
+     "tris": 45,
+     "share": 40
+    }
+   ],
+   "size_m": [
+    0.6232,
+    1.8494,
+    0.4052
+   ],
+   "height_m": 1.84944,
+   "min_y": 0.0,
+   "materials": [
+    "Body",
+    "Head",
+    "Equipment",
+    "Pistol"
+   ],
+   "winding_ok": 0.9989,
+   "open_edges": [
+    55,
+    9
+   ],
+   "changes": "Decimated from PoliceOfficer_Standing.obj (12445 to 899 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved), UV seams, hard edges and group joins shorten only along themselves (no cracks), group bounding boxes kept exact, no collapse may turn a triangle against its corner normals; 366 relaxed collapses across a seam or where three or more corners meet (those corners take the nearest normal/UV of the same group, at most 0.1 apart in UV); Body 4662 to 275; Head 3590 to 213; Equipment 3646 to 366; Pistol 547 to 45. Uses the original MTL and maps (no texture change). Used only by the provisional police look (PoliceLook.ProvisionalRealisticUS)."
+  },
+  {
    "file": "PoliceOfficer_TakingNotes.mtl",
    "bytes": 700,
    "sha256": "7734868d833fbee0e674b305f98e05cc4746de77de7c7063aa8364151c17123c",
@@ -1526,6 +1840,22 @@
    "license": "Project-owned",
    "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
    "source_url": "project-made"
+  },
+  {
+   "file": "Source~/make_lods.py",
+   "kind": "build script",
+   "bytes": 45416,
+   "sha256": "c67816b9b39e40b357b83b97f569e3b52482b0f3ab5ea91df303b74901ba11e9",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made",
+   "derived_from": [
+    {
+     "path": "Prototype/ThirdParty/StreetModels/Source~/make_lods.py",
+     "sha256": "702c42780b14734711ee148ebb04d6abd37db0e4ef8f585f013978cfe9b2ad52",
+     "note": "the lods-street tool as of 2026-10-15, which extends Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py"
+    }
+   ]
   },
   {
    "file": "Source~/make_props_atlas.py",

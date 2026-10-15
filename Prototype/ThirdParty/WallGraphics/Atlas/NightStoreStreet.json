@@ -1,0 +1,9 @@
+{
+  "width": 2048,
+  "height": 1024,
+  "cells": [
+    {"name": "StreetPosters_Weathered", "x": 8, "y": 512, "w": 1008, "h": 504},
+    {"name": "Graffiti_Tags", "x": 1032, "y": 512, "w": 1008, "h": 504},
+    {"name": "Flyer_LostCat", "x": 8, "y": 8, "w": 366, "h": 488}
+  ]
+}

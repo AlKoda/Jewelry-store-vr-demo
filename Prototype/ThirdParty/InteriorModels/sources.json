@@ -1975,6 +1975,295 @@
    "bytes": 116555
   },
   {
+   "file": "FireExtinguisher_LOD1.obj",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "LOD1 variant made 2026-10-15 by Source~/make_lods.py from the shipped FireExtinguisher.obj",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "936f2b0274e0b6abb77503e93f531565339fd70a4e07d756367732f22cc4ef97",
+   "bytes": 154863,
+   "kind": "model LOD",
+   "lod": 1,
+   "tris": 2000,
+   "target_tris": 2000,
+   "source_tris": 8005,
+   "derived_from": [
+    {
+     "file": "FireExtinguisher.obj",
+     "bytes": 635038,
+     "sha256": "bdd46bc05772e0abab1b44a29e5b3cc0d2607023b8eb0ec50b1e10f3ba265b3e"
+    }
+   ],
+   "tool": "Source~/make_lods.py",
+   "mtllib": "FireExtinguisher.mtl (the full model's MTL and maps, unchanged)",
+   "settings": {
+    "target": 2000,
+    "keep": [
+     "GaugeGlass",
+     "Tag"
+    ],
+    "keep_parts": 64,
+    "keep_angles": {
+     "Body": {
+      "band": {
+       "axis": 1,
+       "center": [
+        0.0,
+        -0.0309
+       ],
+       "step": 11.25,
+       "r_min": 0.092
+      }
+     }
+    }
+   },
+   "groups": [
+    {
+     "g": "Body",
+     "mtl": "Body",
+     "mode": "share",
+     "src": 7715,
+     "tris": 1710,
+     "share": 1710,
+     "locked_parts": [
+      8,
+      192
+     ]
+    },
+    {
+     "g": "GaugeGlass",
+     "mtl": "GaugeGlass",
+     "mode": "copy",
+     "src": 258,
+     "tris": 258
+    },
+    {
+     "g": "Tag",
+     "mtl": "Tag",
+     "mode": "copy",
+     "src": 32,
+     "tris": 32
+    }
+   ],
+   "relaxed_collapses": 0,
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "pivot": "floor: min y = 0.000000",
+    "parts_kept": [
+     29,
+     29
+    ],
+    "parts_left_out": [],
+    "part_box_max_diff_m": 0.0,
+    "open_edges_welded": [
+     571,
+     298
+    ],
+    "open_edges_off_source_border": 0,
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "texel_bleed": [
+     0,
+     0
+    ],
+    "check_obj_disagree": [
+     {
+      "Body": 0,
+      "GaugeGlass": 0,
+      "Tag": 0
+     },
+     {
+      "Body": 0,
+      "GaugeGlass": 0,
+      "Tag": 0
+     }
+    ],
+    "cracks_open_edges": [
+     571,
+     298
+    ]
+   },
+   "changes": "Decimated from FireExtinguisher.obj (8,005 to 2,000 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved, UVs exact), UV seams, hard edges and group joins shorten only along themselves (no cracks), every kept part keeps its exact bounding box, no collapse may turn a triangle against its vertex normals or make it sample another part's texels; Body 7,715 to 1,710; GaugeGlass 258 (kept); Tag 32 (kept). Uses the original MTL and maps (no texture change)."
+  },
+  {
+   "file": "FireExtinguisher_LOD2.obj",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "LOD2 variant made 2026-10-15 by Source~/make_lods.py from the shipped FireExtinguisher.obj",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "3be7f895861d9921295877a76e7dc093aa98272479dcebc80965cdfe36535153",
+   "bytes": 50171,
+   "kind": "model LOD",
+   "lod": 2,
+   "tris": 646,
+   "target_tris": 600,
+   "source_tris": 8005,
+   "derived_from": [
+    {
+     "file": "FireExtinguisher.obj",
+     "bytes": 635038,
+     "sha256": "bdd46bc05772e0abab1b44a29e5b3cc0d2607023b8eb0ec50b1e10f3ba265b3e"
+    }
+   ],
+   "tool": "Source~/make_lods.py",
+   "mtllib": "FireExtinguisher.mtl (the full model's MTL and maps, unchanged)",
+   "settings": {
+    "target": 600,
+    "keep": [
+     "Tag"
+    ],
+    "fixed": {
+     "GaugeGlass": 64
+    },
+    "min_part": 0.025,
+    "drop_parts": {
+     "Body": [
+      "tag wire",
+      "pull pin",
+      "hose ferrule"
+     ]
+    },
+    "part_targets": {
+     "Body": {
+      "cylinder": 140,
+      "stand": 56,
+      "band": 80,
+      "hose": 28,
+      "carry handle": 30,
+      "squeeze lever": 24,
+      "valve body": 20,
+      "neck collar": 18,
+      "hose coupling": 16,
+      "nozzle": 20,
+      "gauge": 16
+     }
+    },
+    "keep_angles": {
+     "Body": {
+      "band": {
+       "axis": 1,
+       "center": [
+        0.0,
+        -0.0309
+       ],
+       "step": 22.5,
+       "r_min": 0.092
+      }
+     }
+    },
+    "relax": "late",
+    "uv_max": 0.2
+   },
+   "groups": [
+    {
+     "g": "Body",
+     "mtl": "Body",
+     "mode": "share",
+     "src": 7715,
+     "tris": 550,
+     "share": 504,
+     "dropped": [
+      "hose ferrule",
+      "pull pin",
+      "tag wire"
+     ],
+     "dropped_small": 10,
+     "locked_parts": [
+      0,
+      0
+     ]
+    },
+    {
+     "g": "GaugeGlass",
+     "mtl": "GaugeGlass",
+     "mode": "fixed",
+     "src": 258,
+     "tris": 64,
+     "share": 64,
+     "locked_parts": [
+      0,
+      0
+     ]
+    },
+    {
+     "g": "Tag",
+     "mtl": "Tag",
+     "mode": "copy",
+     "src": 32,
+     "tris": 32
+    }
+   ],
+   "relaxed_collapses": 66,
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "pivot": "floor: min y = 0.000000",
+    "parts_kept": [
+     16,
+     16
+    ],
+    "parts_left_out": [
+     "Body pivot pin a",
+     "Body tag wire",
+     "Body pull pin",
+     "Body rivet head a",
+     "Body rivet head b",
+     "Body hose ferrule",
+     "Body gauge stem",
+     "Body needle hub",
+     "Body gauge back",
+     "Body gauge nut",
+     "Body pivot pin b",
+     "Body gauge needle",
+     "Body label tab"
+    ],
+    "part_box_max_diff_m": 0.0,
+    "open_edges_welded": [
+     571,
+     98
+    ],
+    "open_edges_off_source_border": 0,
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "texel_bleed": [
+     0,
+     0
+    ],
+    "check_obj_disagree": [
+     {
+      "Body": 0,
+      "GaugeGlass": 0,
+      "Tag": 0
+     },
+     {
+      "Body": 0,
+      "GaugeGlass": 0,
+      "Tag": 0
+     }
+    ],
+    "cracks_open_edges": [
+     571,
+     98
+    ]
+   },
+   "changes": "Decimated from FireExtinguisher.obj (8,005 to 646 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved, UVs exact), UV seams, hard edges and group joins shorten only along themselves (no cracks), every kept part keeps its exact bounding box, no collapse may turn a triangle against its vertex normals or make it sample another part's texels; 66 collapses across a UV seam inside a part (those corners take the nearest UV of the same group, at most 0.2 apart); Body 7,715 to 550; GaugeGlass 258 to 64; Tag 32 (kept); left out: pivot pin a, tag wire, pull pin, rivet head a, rivet head b, hose ferrule, gauge stem, needle hub, gauge back, gauge nut, pivot pin b, gauge needle, label tab. Uses the original MTL and maps (no texture change)."
+  },
+  {
    "file": "FireExtinguisher_Tag_Color.jpg",
    "models": [
     "FireExtinguisher"
@@ -4042,6 +4331,371 @@
    "bytes": 122529
   },
   {
+   "file": "WallClock_LOD1.obj",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "LOD1 variant made 2026-10-15 by Source~/make_lods.py from the shipped WallClock.obj",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "072ccdc2763b4f8280330e5d9f09737d1e69b782ec117770ce29543862794006",
+   "bytes": 70887,
+   "kind": "model LOD",
+   "lod": 1,
+   "tris": 900,
+   "target_tris": 900,
+   "source_tris": 3658,
+   "derived_from": [
+    {
+     "file": "WallClock.obj",
+     "bytes": 289109,
+     "sha256": "e909bf2e32475e4ff5413b35ea3a21c065778947a9cf74ed4c655cacbc9773cc"
+    }
+   ],
+   "tool": "Source~/make_lods.py",
+   "mtllib": "WallClock.mtl (the full model's MTL and maps, unchanged)",
+   "settings": {
+    "target": 900,
+    "fixed": {
+     "Clock": 700,
+     "Glass": 200
+    },
+    "keep_parts": 64,
+    "drop_parts": {
+     "Clock": [
+      "rear knob",
+      "rear plate",
+      "inner rim"
+     ]
+    },
+    "lathe": {
+     "Clock": {
+      "case": {
+       "columns": 32,
+       "rings": [
+        [
+         140.0,
+         25.2
+        ],
+        [
+         139.5,
+         29.4
+        ],
+        [
+         142.6,
+         29.4
+        ],
+        [
+         142.6,
+         35.4
+        ],
+        [
+         155.8,
+         31.2
+        ],
+        [
+         158.5,
+         31.2
+        ],
+        [
+         160.2,
+         0.0
+        ],
+        [
+         153.7,
+         23.0
+        ],
+        [
+         154.9,
+         23.0
+        ]
+       ],
+       "hidden": [
+        [
+         153.7,
+         0.0
+        ]
+       ]
+      }
+     }
+    }
+   },
+   "groups": [
+    {
+     "g": "Clock",
+     "mtl": "Clock",
+     "mode": "fixed",
+     "src": 3130,
+     "tris": 700,
+     "share": 700,
+     "lathe case": {
+      "rings": 12,
+      "columns": 96,
+      "kept_rings": 9,
+      "kept_columns": 32,
+      "stretches_moved": 0,
+      "tris": 2112,
+      "new_tris": 512,
+      "hidden_band_tris": 64
+     },
+     "dropped": [
+      "inner rim",
+      "rear knob",
+      "rear plate"
+     ],
+     "dropped_small": 0,
+     "locked_parts": [
+      5,
+      122
+     ]
+    },
+    {
+     "g": "Glass",
+     "mtl": "Glass",
+     "mode": "fixed",
+     "src": 528,
+     "tris": 200,
+     "share": 200,
+     "locked_parts": [
+      0,
+      0
+     ]
+    }
+   ],
+   "relaxed_collapses": 0,
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "pivot": "wall: min z = 0.000000",
+    "parts_kept": [
+     8,
+     8
+    ],
+    "parts_left_out": [
+     "Clock rear knob",
+     "Clock rear plate",
+     "Clock inner rim"
+    ],
+    "part_box_max_diff_m": 0.0,
+    "open_edges_welded": [
+     494,
+     226
+    ],
+    "open_edges_off_source_border": 0,
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "texel_bleed": [
+     0,
+     4
+    ],
+    "check_obj_disagree": [
+     {
+      "Clock": 0,
+      "Glass": 0
+     },
+     {
+      "Clock": 0,
+      "Glass": 0
+     }
+    ],
+    "cracks_open_edges": [
+     494,
+     226
+    ]
+   },
+   "changes": "Decimated from WallClock.obj (3,658 to 900 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved, UVs exact), UV seams, hard edges and group joins shorten only along themselves (no cracks), every kept part keeps its exact bounding box, no collapse may turn a triangle against its vertex normals or make it sample another part's texels; Clock 3,130 to 700; Glass 528 to 200; left out: rear knob, rear plate, inner rim. Uses the original MTL and maps (no texture change)."
+  },
+  {
+   "file": "WallClock_LOD2.obj",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "LOD2 variant made 2026-10-15 by Source~/make_lods.py from the shipped WallClock.obj",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "fdf4c3da578b89a0a990952ddd675825c9ec9cc27cb4d437c4de692c60668d2e",
+   "bytes": 25285,
+   "kind": "model LOD",
+   "lod": 2,
+   "tris": 316,
+   "target_tris": 300,
+   "source_tris": 3658,
+   "derived_from": [
+    {
+     "file": "WallClock.obj",
+     "bytes": 289109,
+     "sha256": "e909bf2e32475e4ff5413b35ea3a21c065778947a9cf74ed4c655cacbc9773cc"
+    }
+   ],
+   "tool": "Source~/make_lods.py",
+   "mtllib": "WallClock.mtl (the full model's MTL and maps, unchanged)",
+   "settings": {
+    "target": 300,
+    "fixed": {
+     "Clock": 236,
+     "Glass": 64
+    },
+    "keep_parts": 24,
+    "min_part": 0.01,
+    "drop_parts": {
+     "Clock": [
+      "rear knob",
+      "rear plate",
+      "inner rim"
+     ]
+    },
+    "lathe": {
+     "Clock": {
+      "case": {
+       "columns": 12,
+       "rings": [
+        [
+         140.0,
+         25.2
+        ],
+        [
+         139.5,
+         29.4
+        ],
+        [
+         142.6,
+         29.4
+        ],
+        [
+         142.6,
+         35.4
+        ],
+        [
+         155.8,
+         31.2
+        ],
+        [
+         158.5,
+         31.2
+        ],
+        [
+         160.2,
+         0.0
+        ],
+        [
+         153.7,
+         23.0
+        ],
+        [
+         154.9,
+         23.0
+        ]
+       ],
+       "hidden": [
+        [
+         153.7,
+         0.0
+        ]
+       ]
+      }
+     }
+    },
+    "relax": "early",
+    "uv_max": 0.35
+   },
+   "groups": [
+    {
+     "g": "Clock",
+     "mtl": "Clock",
+     "mode": "fixed",
+     "src": 3130,
+     "tris": 252,
+     "share": 236,
+     "lathe case": {
+      "rings": 12,
+      "columns": 96,
+      "kept_rings": 9,
+      "kept_columns": 12,
+      "stretches_moved": 1,
+      "tris": 2112,
+      "new_tris": 192,
+      "hidden_band_tris": 24
+     },
+     "dropped": [
+      "inner rim",
+      "rear knob",
+      "rear plate"
+     ],
+     "dropped_small": 2,
+     "locked_parts": [
+      3,
+      42
+     ]
+    },
+    {
+     "g": "Glass",
+     "mtl": "Glass",
+     "mode": "fixed",
+     "src": 528,
+     "tris": 64,
+     "share": 64,
+     "locked_parts": [
+      0,
+      0
+     ]
+    }
+   ],
+   "relaxed_collapses": 3,
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "pivot": "wall: min z = 0.000000",
+    "parts_kept": [
+     6,
+     6
+    ],
+    "parts_left_out": [
+     "Clock rear knob",
+     "Clock rear plate",
+     "Clock inner rim",
+     "Clock arbor",
+     "Clock centre cap"
+    ],
+    "part_box_max_diff_m": 0.0,
+    "open_edges_welded": [
+     494,
+     92
+    ],
+    "open_edges_off_source_border": 0,
+    "facing_away": [
+     0,
+     0
+    ],
+    "zero_area": 0,
+    "texel_bleed": [
+     0,
+     1
+    ],
+    "check_obj_disagree": [
+     {
+      "Clock": 0,
+      "Glass": 0
+     },
+     {
+      "Clock": 0,
+      "Glass": 0
+     }
+    ],
+    "cracks_open_edges": [
+     494,
+     92
+    ]
+   },
+   "changes": "Decimated from WallClock.obj (3,658 to 316 triangles) by seam-aware half-edge collapse: every vertex and corner is an original v/vt/vn (no vertex moved, UVs exact), UV seams, hard edges and group joins shorten only along themselves (no cracks), every kept part keeps its exact bounding box, no collapse may turn a triangle against its vertex normals or make it sample another part's texels; 3 collapses across a UV seam inside a part (those corners take the nearest UV of the same group, at most 0.35 apart); Clock 3,130 to 252; Glass 528 to 64; left out: rear knob, rear plate, inner rim, arbor, centre cap. Uses the original MTL and maps (no texture change)."
+  },
+  {
    "file": "WallClock_MetallicSmoothness.png",
    "models": [
     "WallClock"
@@ -4144,6 +4798,20 @@
    "sha256": "9bf0aa364271d8ae55af16e580389193c73543b0accf64b88c6b90022a5dea18",
    "bytes": 261625,
    "note": null
+  },
+  {
+   "file": "Source~/LOD_Previews.jpg",
+   "models": [
+    "FireExtinguisher",
+    "WallClock"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "67d2394e1a389ae2f91b191c0525265a8bc38780bfb677c8986e07841eff571e",
+   "bytes": 118965,
+   "note": "software renders (Source~/render2.py, back faces culled) of the full models and their LODs, plus the clock hands close up; made by Source~/make_lods.py --previews"
   },
   {
    "file": "Source~/bake_gravel.py",
@@ -4276,6 +4944,36 @@
    "sha256": "083e640026c5f858622c6f960675f582b1b868e3d22306e5cf2ed14ec0cac65e",
    "bytes": 8090,
    "note": null
+  },
+  {
+   "file": "Source~/make_lods.py",
+   "models": [
+    "FireExtinguisher",
+    "WallClock"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "688eba5622f0ac42c825d324363b6d28c1641f86a106479003d0367137e551dd",
+   "bytes": 97961,
+   "note": "LOD builder: a copy of ForensicModels/Source~/decimate_exact.py with the lods-street extensions (StreetModels/Source~/make_lods.py), plus part guards, part targets, lathe rebuilds and a texel-bleed guard (project-owned)",
+   "derived_from": [
+    {
+     "path": "Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py",
+     "sha256": "3abde4fc3daac0c57d328417ed500fb9b916a4a4f5e42fca5d6a4603f2dcb195"
+    },
+    {
+     "path": "Prototype/ThirdParty/StreetModels/Source~/make_lods.py",
+     "sha256": "7f35da82d77dd3e87c4c5eda12477d3ceff6713f4b02cb58bd1e7e4b2873a22b",
+     "note": "the lods-street tool as of 2026-10-15 (copied)"
+    },
+    {
+     "path": "Prototype/ThirdParty/StreetModels/Source~/make_lods.py",
+     "sha256": "3a85204f2f97b59c04a34fe1b0c74e64d825731fedba82f9adcb95993d15aaeb",
+     "note": "its later revision of 2026-10-15: the fold guard only"
+    }
+   ]
   },
   {
    "file": "Source~/meshkit.py",

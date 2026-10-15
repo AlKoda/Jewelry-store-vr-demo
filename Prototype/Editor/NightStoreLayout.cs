@@ -46,21 +46,67 @@ public static class NightStoreLayout
     public const float StreetHalfX = 32;
     public static readonly float[] BollardX = { -5, -2.5f, 2.5f, 5 };
     public const float BollardZ = -1.6f;
-    // KayKit streetlight bases; their heads (light anchors for the night lighting) hang
-    // over the street. Near-side arms point to -z, far-side ones to +z.
+    // Streetlight bases on the pavements: the StreetModels lantern posts, or KayKit
+    // streetlights (whose heads hang over the street on an arm) without that pack.
+    // Near-side arms point to -z, far-side ones to +z; the lanterns stand at yaw 0.
     public static readonly Vector3[] Streetlights = { V(-9, 0, -2.6f), V(9, 0, -2.6f), V(-6, 0, -14.6f), V(7, 0, -14.6f) };
     public static float StreetlightYaw(int i) => Streetlights[i].z > FarKerbZ * 0.5f ? -90 : 90;
+
+    // A streetlight model and its light (NightLighting reads Lamp): the head anchor
+    // (HeadHeight up the post, at the arm's end when Arm), the light's height, its baked
+    // and realtime-preview intensities and spot angles, the post's half-width at 1.5 m
+    // (things fixed to the post), whether the lamp casts shadows (the bake and the
+    // street's contact shadows) and the size of the emissive lens box at the light.
+    public struct LampProfile
+    {
+        public string Pack, Model;
+        public float Scale, HeadHeight, LightHeight, BakedIntensity, RealtimeIntensity, SpotAngle, InnerSpotAngle, PostRadius;
+        public bool Arm, CastsShadows;
+        public Vector3 LensSize;
+    }
+
+    // Today's KayKit streetlight: head 0.96 units high, arm 0.24 units, at scale 4.5; the
+    // light 0.3 m under the head, clear of its housing. The square post's half-width at
+    // 1.5 m is 0.012 units (5.4 cm; the 0.03-unit base below 0.96 m is wider).
+    public static readonly LampProfile KayKitLamp = new LampProfile
+    {
+        Pack = ShopCityRefinement.KitPack, Model = "streetlight", Scale = ShopCityRefinement.KitScale,
+        HeadHeight = 4.2f, LightHeight = 3.9f, BakedIntensity = 5, RealtimeIntensity = 1.2f, SpotAngle = 120, InnerSpotAngle = 70,
+        PostRadius = 0.054f, Arm = true, CastsShadows = true, LensSize = V(0.4f, 0.03f, 0.2f)
+    };
+
+    // StreetModels StreetLamp (CC0), measured on its OBJ: LampGlass y 3.138-3.51 within
+    // +-0.174, LampBulb y 3.227-3.302, the lantern's base y 3.0-3.14, the round post tapering
+    // from r 0.050 at 0.96 m to 0.034 at 2.44 m (0.044 at 1.5 m; the collars below 0.96 m
+    // reach r 0.06-0.13). The light sits at the bulb inside the glass and the lantern casts no
+    // shadow, so nothing of the lamp occludes its own baked spot; the lens box fits inside
+    // the glass and encloses the bulb. 3.5 = 5 x (3.27 / 3.9)^2 keeps the pool on the ground.
+    public static readonly LampProfile Lantern = new LampProfile
+    {
+        Pack = "StreetModels", Model = "StreetLamp", Scale = 1,
+        HeadHeight = 3.32f, LightHeight = 3.27f, BakedIntensity = 3.5f, RealtimeIntensity = 1.0f, SpotAngle = 130, InnerSpotAngle = 80,
+        PostRadius = 0.044f, Arm = false, CastsShadows = false, LensSize = V(0.16f, 0.12f, 0.16f)
+    };
+
+    // The lantern when StreetModels has it, else the KayKit streetlight (or its stand-in).
+    public static bool UsesLantern => DemoAssetLibrary.Has(Lantern.Pack, Lantern.Model);
+    public static LampProfile Lamp => UsesLantern ? Lantern : KayKitLamp;
 
     // Police car on the street, nose aimed at the entrance. KayKit's car_police is
     // modelled nose towards +z (front wheels at +z, the hood is the longer lower end,
     // the cabin and light bar sit 0.06 units behind the centre), so yaw turns +z onto
     // the aim. Anchors in the car's space (nose +z): headlights at the front corners,
-    // light bar on the roof.
+    // light bar on the roof. These are the KayKit car's (PoliceLook.KayKitCar); the car
+    // a build places and its anchors come from PoliceLook.ActiveCar.
     public static readonly Vector3 CarPosition = V(4.0f, StreetY, -6.2f);
     public static readonly Vector3 CarAim = V(0, 0, 2);
     public static float CarYaw => Mathf.Atan2(CarAim.x - CarPosition.x, CarAim.z - CarPosition.z) * Mathf.Rad2Deg;
     public static readonly Vector3 HeadlightLeft = V(-0.8f, 0.7f, 2.05f), HeadlightRight = V(0.8f, 0.7f, 2.05f);
     public static readonly Vector3 LightBar = V(0, 1.86f, -0.27f);
+
+    // Alarm bell box on the fascia band right of the entrance: its back on the cladding's
+    // street face (z -0.2), clear of the fascia sign and below the coping.
+    public static readonly Vector3 BellBox = V(5.5f, 3.3f, -0.245f);
 
     // Spawn on the street beside the driver's door, facing the shop.
     public static readonly Vector3 PlayerSpawn = V(1.6f, StreetY, -5.4f);
@@ -235,7 +281,9 @@ public static class NightStoreLayout
         Ambience = V(0, 2.5f, -8f),
         MapCentre = MapCentre, MapHalfSize = MapHalfSize,
         // Own prefab folder (never the shop's GeneratedTools), styled at build time.
-        AssetFolder = NightStoreBuilder.Folder + "/Tools", Styled = true
+        AssetFolder = NightStoreBuilder.Folder + "/Tools", Styled = true,
+        // The barrier-tape wording is a police choice (PoliceLook).
+        TapeText = PoliceLook.Active.TapeText
     };
 
     // Open showroom floor for the shared tool, photo and reset stages.
@@ -261,12 +309,22 @@ public static class NightStoreLayout
         "StreetlightHead_0", "StreetlightHead_1", "StreetlightHead_2", "StreetlightHead_3"
     };
 
-    // KayKit streetlight head: 0.96 units high, arm 0.24 units, at scale 4.5.
+    // The lamp head: at the end of the KayKit arm (1 m out over the street), or on top of
+    // the lantern post; HeadHeight up from the base either way.
     public static Vector3 StreetlightHead(int i)
     {
+        LampProfile lamp = Lamp;
+        if (!lamp.Arm) return Streetlights[i] + V(0, lamp.HeadHeight, 0);
         float yaw = StreetlightYaw(i) * Mathf.Deg2Rad;
         Vector3 arm = new Vector3(-Mathf.Cos(yaw), 0, Mathf.Sin(yaw)) * 1.0f;
-        return Streetlights[i] + arm + V(0, 4.2f, 0);
+        return Streetlights[i] + arm + V(0, lamp.HeadHeight, 0);
+    }
+
+    // Where the streetlight's light (and its lens) sits: LightHeight up, under the head.
+    public static Vector3 StreetlightLight(int i)
+    {
+        LampProfile lamp = Lamp;
+        return StreetlightHead(i) + V(0, lamp.LightHeight - lamp.HeadHeight, 0);
     }
 
     // UV trace placeholders (UVTraceBuilder.NightExamples), derived from the layout so

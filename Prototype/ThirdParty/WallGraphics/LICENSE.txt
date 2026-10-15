@@ -1,7 +1,8 @@
 WallGraphics - licences and attribution (prepared October 14, 2026, revised October 15, 2026)
 =============================================================================================
 
-Three groups of content. Per-file SHA-256 hashes, source URLs and commits are in sources.json.
+Three groups of content, plus atlases built from them (section 4). Per-file SHA-256 hashes,
+source URLs and commits are in sources.json.
 
 ---------------------------------------------------------------------
 1. Artwork/Art_*.jpg - public-domain paintings (9 files)
@@ -94,3 +95,20 @@ Correction (October 15, 2026): the glazier's business card on Store/NoticeBoard_
 first read "Clearview Glazing". That is the name of real UK businesses (for example Clearview
 Glazing Ltd, Companies House 03401763), so it was wrongly listed here as invented. The card
 now reads "Quellbrook Glazing" and the image was rebuilt from Source~/store_b.py.
+
+---------------------------------------------------------------------
+4. Atlas/ - texture atlases built from the files above (October 15, 2026)
+---------------------------------------------------------------------
+Atlas/NightStoreInterior_Color.png and Atlas/NightStoreStreet_Color.png are resampled copies
+of other images in this pack, built by Source~/make_atlas.py. The cells are listed in the
+"derived_from" field of their sources.json entries and in Atlas/*.json. The atlases add no
+new licence terms: each atlas inherits the licences of its cells.
+  NightStoreInterior_Color.png: two public-domain paintings (Art_Heda_BreakfastWithLobster,
+    Art_Pissarro_BoulevardMontmartre; section 1) and nine project-owned graphics (section 3;
+    the calendar's picture is the public-domain Monet "Poppy Field").
+  NightStoreStreet_Color.png: three project-owned graphics (section 3). The street posters
+    hold crops of the public-domain Lorrain and Aivazovsky paintings (section 1), and the
+    flyer holds the CC0 "Chelsea" photograph (section 2).
+No attribution is required for any cell. The font glyphs in the cells are covered as in
+section 3. Atlas/NightStoreInterior.json and Atlas/NightStoreStreet.json are project-owned
+layout data.

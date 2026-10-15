@@ -1,6 +1,7 @@
 ForensicModels - burglary, forensic and police props for the night jewellery-store scene
 Prepared October 14, 2026; corrected October 15, 2026 (glove tag removed from the smoothness and normal maps,
-searchlight, binder and hammer authors recorded). Not yet imported or checked in Unity.
+searchlight, binder and hammer authors recorded); LOD variants of four models added October 15, 2026.
+Not yet imported or checked in Unity.
 
 Everything in this folder is either CC0 1.0 (Poly Haven) or project-owned original work.
 No attribution is required for any file; the credits below are a courtesy. Commercial use,
@@ -99,6 +100,11 @@ Changes made here (all files):
     normal maps with the tag area filled from the surrounding knit (Source~/delabel_glove_maps.py,
     October 15, 2026), so the tag is now gone from the colour, smoothness and normal maps.
   - OfficeNotepads: the ten pads of the showcase grid re-laid as a floor scatter (Source~/scatter_groups.py).
+  - LOD variants (October 15, 2026): Crowbar_LOD1.obj and Crowbar_LOD2.obj, Sledgehammer_LOD1.obj and
+    Sledgehammer_LOD2.obj, FlatheadScrewdriver_LOD1.obj and FlatheadScrewdriver_LOD2.obj were decimated from
+    Crowbar.obj, Sledgehammer.obj and FlatheadScrewdriver.obj by the project-owned Source~/make_lods.py (every
+    vertex and UV is an original one of the source; nothing new added). They use the original MTL files and maps.
+    These CC0 derivatives stay CC0 1.0 (same authors as their source models).
 
 Voluntary credit line: "3D models by Alexander Otterbeck, Dylan Guzman, Tics, Dylan Detwiller, Antanas Kep,
 Yann Kervran, Satyaki Mandal, Dario Barresi, Rico Cilliers, Benny Weimer, ProgrammerOnCoffee,
@@ -115,11 +121,14 @@ the project may use, change and redistribute them without restriction (treat the
       ForensicScaleL, PaperSheetForm, ScatteredPapers, ForensicPapers_Color.jpg
   Forensic kit: FingerprintBrush, FingerprintPowderJar, NitrileGloveBox, ForensicCase, TacticalFlashlight,
       UVTorch, PoliceRadio, CameraTripod, ShoePrintCast
+  LOD variants (October 15, 2026): ForensicCase_LOD1.obj, ForensicCase_LOD2.obj, decimated from ForensicCase.obj
+      by Source~/make_lods.py; project-owned like ForensicCase.
   Police: PoliceCap, PoliceBarrier
   Burglary: BrickHalf, DuffelBag, Balaclava
   Glass: GlassShardsLarge, GlassShardsScatter, TemperedGlassCrumbs, GlassCrackDecal_ColorAlpha.png,
       GlassCrackDecal_Normal.png
-  Source~/*.py: the generator and conversion scripts (Unity ignores folders ending in "~").
+  Source~/*.py: the generator and conversion scripts (Unity ignores folders ending in "~"). Source~/make_lods.py
+      is a copy of the project's own StreetModels LOD tool (Source~/make_lods.py there).
 
 Printed text on labels, forms and markers was rasterised with the DejaVu fonts installed on the build
 machine (Bitstream Vera / DejaVu licence; only glyph images are used, no font file is shipped). Every

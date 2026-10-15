@@ -88,6 +88,10 @@ Model-specific changes:
   - VaseCeramicBottle: decimated 10.3k -> 4.0k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, holes in the body; every face agrees with its vertex normals)
   - VaseCeramicTall: decimated 11.1k -> 5.4k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, holes at the base; every face agrees with its vertex normals)
   - WallClock: maker-style wordmark on the dial painted out (patch from the clean dial)
+  - FireExtinguisher and WallClock: LOD variants <Model>_LOD1.obj and <Model>_LOD2.obj (October 15), made from the
+    shipped OBJ by Source~/make_lods.py: every vertex is an original vertex of the full model, small or hidden parts
+    are left out (WallClock: the rear knob, rear plate and back cover, which face the wall); they use the full model's
+    MTL and maps and are CC0 like their source
 Texture edits are reproducible with Source~/edit_textures.py; the replacement label, tag and the
 PictureFrameBlack print are original project artwork (fictional text only, no real brand, maker,
 person or signature). The PictureFrameWhite picture is a public-domain painting (section 3).
@@ -114,6 +118,9 @@ use, change and redistribute them without restriction (treat them like CC0).
           SnakePlant_*, PictureFrameBlack_Artwork_Color (original seascape print)
   Source~/*.py: generator and conversion scripts (Unity ignores folders ending in "~").
   Source~/meshkit.py is adapted from Prototype/ThirdParty/ForensicModels/Source~/meshkit.py (project-owned).
+  Source~/make_lods.py is adapted from Prototype/ThirdParty/ForensicModels/Source~/decimate_exact.py and
+  Prototype/ThirdParty/StreetModels/Source~/make_lods.py (project-owned); Source~/LOD_Previews.jpg is a project-made
+  software render of the CC0 models.
 
 Printed text on screens, labels, keycaps, tags and signs was rasterised with DejaVu Sans / Sans Mono
 (Bitstream Vera licence) and GNU FreeSans Oblique (GPL with font exception); only glyph images are

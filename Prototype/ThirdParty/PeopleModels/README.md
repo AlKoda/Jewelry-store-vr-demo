@@ -6,7 +6,8 @@ Revised October 15, 2026 after review: the forensic examiner's white coverall an
 
 - There are **7 posed meshes** made from **5 Microsoft Rocketbox avatars**, licensed under MIT. These are photo-textured, fully rigged avatars with realistic skin, clothing and hair from a professional avatar library. Each one is posed with one frame of a Rocketbox motion-capture clip, then baked to a static mesh. You don't need a rig, an Animator or any packages.
 - The hand props (notebook, pen, phone and camera) and their atlas are **project-made**.
-- The total size is 15.9 MB (70 files, including the docs and `Source~`), well under the 20 MB budget. The largest file is 1.16 MB. Each figure has 6.8k to 12.7k triangles and 2 to 5 materials.
+- Two figures also have **LOD variants** (added October 15, 2026): `PasserBy_Phone_LOD1/LOD2` (1,800 and 599 triangles) and `PoliceOfficer_Standing_LOD1/LOD2` (2,999 and 899 triangles). They use the original MTLs and textures. See [LOD variants](#lod-variants).
+- The total size is 16.5 MB (75 files, including the docs, `Source~` and the four LOD files, which add 0.55 MB), under the 20 MB budget. The largest file is 1.16 MB. Each figure has 6.8k to 12.7k triangles and 2 to 5 materials.
 - `Source~/Preview.jpg` is a Blender Cycles render of all seven figures, front and three-quarter view. Unity ignores `Source~`, which also holds the build scripts.
 
 See LICENSE.txt for the MIT notice that has to stay with the files. sources.json has the upstream commit and the SHA-256 of every source and shipped file.
@@ -46,6 +47,49 @@ Triangle counts include the hand props. All seven figures together are about 65k
 | `PeopleProps_MetallicSmoothness.png` (256 px) | Metallic/smoothness for the props (metal pen tip and clip, glossy screen and lens glass). |
 | `<Figure>_<Material>_Normal.jpg` / `_MetallicSmoothness.png` | Per-material maps (see Conventions). The two poses of one figure share the same textures. |
 
+## LOD variants
+
+Added October 15, 2026. **Not imported or checked in Unity yet.** Two figures have lower-detail meshes for a Unity LODGroup (LOD0 is the original OBJ). They were decimated offline by `Source~/make_lods.py`; no existing file was changed.
+
+| File | Triangles (target) | Groups (source -> LOD) | Bytes | Height, lowest vertex | Winding (validate.py) |
+|---|---|---|---|---|---|
+| `PasserBy_Phone_LOD1.obj` | 1,800 (1,800) | Body 3,694 -> 942, Head 3,028 -> 772, Props 84 and PropScreen 2 unchanged | 143,158 | 1.775 m, y = 0 | 0.9967 (source 0.9985) |
+| `PasserBy_Phone_LOD2.obj` | 599 (600) | Body -> 281, Head -> 232, Props and PropScreen unchanged | 48,925 | 1.775 m, y = 0 | 0.9933 |
+| `PoliceOfficer_Standing_LOD1.obj` | 2,999 (3,000) | Body 4,662 -> 1,117, Head 3,590 -> 861, Equipment 3,646 -> 874, Pistol 547 -> 147 | 274,090 | 1.849 m, y = 0 | 0.9987 (source 0.9992) |
+| `PoliceOfficer_Standing_LOD2.obj` | 899 (900) | Body -> 275, Head -> 213, Equipment -> 366, Pistol -> 45 | 85,720 | 1.849 m, y = 0 | 0.9989 |
+
+`PoliceOfficer_Standing_LOD1/LOD2` are used only by the provisional police look (`PoliceLook.ProvisionalRealisticUS`). The country and police service are still an open decision, so these two files may be dropped or replaced together with that look.
+
+How to use them:
+
+- **Same materials, same maps.** Each LOD names the original MTL (`mtllib PasserBy_Phone.mtl`, `mtllib PoliceOfficer_Standing.mtl`); no new MTL or texture was added. Give the LOD1 and LOD2 renderers the LOD0 materials (the same instances, with the normal and metallic/smoothness maps set as in the wiring notes) rather than the copies the OBJ importer makes, so the LODGroup adds no materials.
+- **Same frame.** Metres, Y up, front = +Z, feet on y = 0, the same x/z centre and exactly the same bounds as the source (the decimation keeps every group's bounding box), so the LODs sit at the same local position as LOD0 and the CapsuleCollider stays as it is.
+- **Suggested LODGroup thresholds** (relative screen height, tune in Unity): LOD0 above 0.25, LOD1 from 0.25 to 0.08, LOD2 below 0.08, no culling. For a 1.85 m figure that switches to LOD1 at about 3.3 m on Quest 2 (about 6 m on a 60-degree desktop camera) and to LOD2 at about 10 m (20 m on desktop).
+- The Props group of the passer-by (phone) and PropScreen are copied unchanged, so the screen emission works the same at every LOD.
+
+How they were made (`Source~/make_lods.py`, a copy of the StreetModels lods-street tool as of October 15, 2026, which extends ForensicModels' `decimate_exact.py`):
+
+- Seam-aware half-edge collapse with quadric error. Corners are split per (v, vt, vn), positions are welded only to find neighbours, so on LOD1 the UV seams, hard normal edges and the joins between groups shorten only along themselves, on both sides at once. **No vertex moves:** every corner of a LOD is an original v/vt/vn of the source, written as its original text, so LOD1 maps its textures exactly as LOD0. The last vertex on each face of a group's bounding box is never removed, so the height and the floor contact are exact.
+- Groups under 64 triangles and the listed groups (Props, PropScreen) are copied unchanged; the other groups get a share of the target in proportion to their size (a group that cannot get down to its share keeps more and the others take less).
+- LOD2 is "relaxed": a vertex may also collapse across a seam or where three or more corners meet. The corners that move take the nearest normal/UV of the same group, never further than 0.02 in UV (0.1 for the officer), and that difference counts in the cost. The geometry stays closed. Passer-by: 15 such collapses; officer: 366. The officer's Equipment is cut into many small UV islands; with the 0.02 limit its seams used up the budget and the trouser legs thinned out (16.5 % of the silhouette lost instead of 8.9 %).
+- A winding guard, added for the figures: no collapse may turn a triangle against its own corner normals. Without it, the thin closed parts (belt pouches, collar, fingers) folded over and 2 to 7 % of the triangles faced against their normals.
+- Output is deterministic: a rerun gives the same bytes.
+
+Checks (run before anything is written; the script exits with 1 and writes nothing if one fails): triangles within 10 % of the target; bounds within 1 cm and height within 1 cm of the source; lowest vertex on y = 0; same usemtl set and group order; mtllib is the original MTL; every v/vt/vn index valid and every face a triangle; no zero-area triangle; every corner an original (v, vt, vn); copied groups identical; no new open edges (a crack would add some: 40 -> 16 and 11 for the passer-by, 55 -> 27 and 9 for the officer); and `Source~/validate.py` run on a staging copy of each LOD (winding at least 0.99, every triangle read by trimesh, the colour maps present).
+
+Offline quality measurements (scratch scripts, not shipped; front-face coverage from 32 orthographic views, 8 directions x 4 heights, 2 mm pixels, compared with the source):
+
+| | Silhouette area lost | Source silhouette not covered, more than 6 mm inside its edge |
+|---|---|---|
+| PasserBy LOD1 / LOD2 | 1.4 % / 6.9 % | 0.16 % / 3.4 % |
+| PoliceOfficer LOD1 / LOD2 | 1.8 % / 8.9 % | 0.29 % / 5.1 % |
+
+No view shows a back face through a LOD, so there are no holes: the LOD1 losses are fingers and thin edges, and the LOD2 losses are thin parts and limbs that become slimmer. The vertices stay on the original surface, so a limb with few vertices left becomes an inscribed polygon (the officer's calf section at 30 cm height is 132 cm2 instead of 160 cm2). For comparison, the plain `decimate_exact.py` approach (the split mesh decimated per group, without the seam rules) opened see-through cracks along the UV seams, through which the back faces showed: 2.4 % / 3.9 % at LOD1 and 9.4 % / 11.4 % at LOD2, the largest about 380 cm2 in one view.
+
+Known limitations of the LODs: on the officer's LOD2 the face, the jacket front and the collar show smeared texture where seams gave way, the radio on the belt is reduced to a thin dark shape and the hands are simplified to mitten shapes; the passer-by's LOD2 hands are simplified the same way. Use LOD2 only at small screen sizes as suggested above, and if it looks too slim or smeared in Unity, raise its target in `MODELS` and rerun. The preview row (`Source~/render_preview.py`) needs Blender's bpy module, which was not available when the LODs were made, so `Source~/Preview.jpg` still shows only the seven source figures.
+
+Rebuild: from this folder, `python3 -I Source~/make_lods.py .` (about 35 s; the decimation needs only the standard library, VERIFY uses trimesh and runs `validate.py` with numpy, trimesh and Pillow). It rewrites the four LODs, their entries and its own entry in sources.json, and leaves every other entry as it is.
+
 ## Import and wiring notes
 
 1. Put the folder under `Assets/CrimeSceneDemo/ThirdParty/PeopleModels` the same way as the other packs. Unity creates the .meta files.
@@ -64,7 +108,9 @@ Triangle counts include the hand props. All seven figures together are about 65k
 
 ## Source~ (build scripts, ignored by Unity)
 
-`python3 -P Source~/build_all.py <Rocketbox clone> <pack dir> <python with bpy 5.2.2>` rebuilds every OBJ, MTL and texture from a sparse clone of the Rocketbox repository at the commit in sources.json. Then run `write_sources.py` and `validate.py`. On October 15, 2026 a full rebuild reproduced all 56 shipped model and texture files byte for byte.
+`python3 -P Source~/build_all.py <Rocketbox clone> <pack dir> <python with bpy 5.2.2>` rebuilds every OBJ, MTL and texture from a sparse clone of the Rocketbox repository at the commit in sources.json. Then run `write_sources.py` and `validate.py`, and finally `python3 -I Source~/make_lods.py .` for the LOD variants. On October 15, 2026 a full rebuild reproduced all 56 model and texture files that existed then byte for byte.
+
+`validate.py` and `write_sources.py` predate the LODs and were left unchanged: `validate.py` looks for a `<name>.mtl` beside every OBJ and `write_sources.py` for a pose entry for every OBJ, so both stop on the `_LOD` files. Until they skip `_LOD` files, run them with the four LOD files moved out of the folder, then run `make_lods.py`, which checks its LODs with `validate.py` on a staging copy and puts its own entries back into sources.json.
 
 | File | Role |
 |---|---|
@@ -76,6 +122,7 @@ Triangle counts include the hand props. All seven figures together are about 65k
 | `edits.py` | Texture edits: the examiner recolour (`forensic_body`, `forensic_protection`, white levels `WHITE_*`) and the clone-out of the radio badge and pistol medallions (`paint_out`). |
 | `render_preview.py` | Renders `Preview.jpg` rows with Cycles (yaw 0 and 35 degrees). |
 | `scan_frames.py` | Helper used to pick the animation frames. Runs in bpy and prints the frame range of an animation FBX and the hand and head positions at about 25 sampled frames. |
+| `make_lods.py` | Writes the four `_LOD1`/`_LOD2` OBJs (see LOD variants) and their sources.json entries. A copy of `StreetModels/Source~/make_lods.py` (October 15, 2026, SHA-256 702c4278...) with the figure table, a winding guard, the figure checks and the sources.json update. Needs only the standard library; VERIFY uses trimesh and `validate.py`. |
 | `validate.py` | Checks that every OBJ loads in trimesh, that winding agrees with the normals, that the bounds and MTL maps are right and that every texture opens. |
 | `write_sources.py` | Writes `sources.json` (upstream commit, source paths, SHA-256 of every source and shipped file). |
 | `Preview.jpg` | A Blender Cycles render of the seven figures (front, then three-quarter view). It is not a Unity screenshot. |

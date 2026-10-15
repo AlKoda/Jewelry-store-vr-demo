@@ -34,7 +34,36 @@
   "color_maps": [],
   "extra_maps": [],
   "placement": "Ring trays, or dropped on the floor near a broken bay (evidence marker).",
-  "notes": "Finger axis X, hole centre at y = 0.0103 m; lying flat: rotate 90 deg about Z."
+  "notes": "Finger axis X, hole centre at y = 0.0103 m; lying flat: rotate 90 deg about Z.",
+  "lods": {
+   "levels": [
+    {
+     "level": "LOD0",
+     "file": "RingGoldBand.obj",
+     "triangles": 3456,
+     "screen_height_min": 0.1
+    },
+    {
+     "level": "LOD1",
+     "file": "RingGoldBand_LOD1.obj",
+     "triangles": 864,
+     "target": 860,
+     "bytes": 63638,
+     "screen_height_min": 0.015
+    },
+    {
+     "level": "LOD2",
+     "file": "RingGoldBand_LOD2.obj",
+     "triangles": 224,
+     "target": 220,
+     "bytes": 15448,
+     "screen_height_min": 0.002
+    }
+   ],
+   "night_store_top_level": "LOD1",
+   "lodgroup_size_m": 0.0207,
+   "note": "screen_height_min: suggested Unity LODGroup screenRelativeTransitionHeight (LOD Bias 1), culled below the last; unverified in Unity. Every level uses RingGoldBand.mtl with the same g/usemtl names; made by Source~/make_lods.py (README: LOD variants)."
+  }
  },
  "RingSapphireHalo": {
   "file": "RingSapphireHalo.obj",
@@ -272,7 +301,36 @@
   "color_maps": [],
   "extra_maps": [],
   "placement": "Floor below a smashed bay, next to an evidence marker.",
-  "notes": "Lies on y = 0."
+  "notes": "Lies on y = 0.",
+  "lods": {
+   "levels": [
+    {
+     "level": "LOD0",
+     "file": "NecklacePearlDropped.obj",
+     "triangles": 8460,
+     "screen_height_min": 0.1
+    },
+    {
+     "level": "LOD1",
+     "file": "NecklacePearlDropped_LOD1.obj",
+     "triangles": 2098,
+     "target": 2100,
+     "bytes": 177147,
+     "screen_height_min": 0.03
+    },
+    {
+     "level": "LOD2",
+     "file": "NecklacePearlDropped_LOD2.obj",
+     "triangles": 530,
+     "target": 530,
+     "bytes": 49662,
+     "screen_height_min": 0.004
+    }
+   ],
+   "night_store_top_level": "LOD0",
+   "lodgroup_size_m": 0.2192,
+   "note": "screen_height_min: suggested Unity LODGroup screenRelativeTransitionHeight (LOD Bias 1), culled below the last; unverified in Unity. Every level uses NecklacePearlDropped.mtl with the same g/usemtl names; made by Source~/make_lods.py (README: LOD variants)."
+  }
  },
  "NecklacePendantDropped": {
   "file": "NecklacePendantDropped.obj",
@@ -524,7 +582,36 @@
   ],
   "extra_maps": [],
   "placement": "Rear office desk, open safe, counter (abandoned by the burglars).",
-  "notes": "Lying flat."
+  "notes": "Lying flat.",
+  "lods": {
+   "levels": [
+    {
+     "level": "LOD0",
+     "file": "GemParcel.obj",
+     "triangles": 2640,
+     "screen_height_min": 0.1
+    },
+    {
+     "level": "LOD1",
+     "file": "GemParcel_LOD1.obj",
+     "triangles": 1620,
+     "target": 1620,
+     "bytes": 380112,
+     "screen_height_min": 0.03
+    },
+    {
+     "level": "LOD2",
+     "file": "GemParcel_LOD2.obj",
+     "triangles": 340,
+     "target": 340,
+     "bytes": 29972,
+     "screen_height_min": 0.004
+    }
+   ],
+   "night_store_top_level": "LOD0",
+   "lodgroup_size_m": 0.11,
+   "note": "screen_height_min: suggested Unity LODGroup screenRelativeTransitionHeight (LOD Bias 1), culled below the last; unverified in Unity. Every level uses GemParcel.mtl with the same g/usemtl names; made by Source~/make_lods.py (README: LOD variants)."
+  }
  },
  "RingCone": {
   "file": "RingCone.obj",
@@ -601,7 +688,36 @@
   "color_maps": [],
   "extra_maps": [],
   "placement": "Drawers, safe shelves, counter.",
-  "notes": ""
+  "notes": "",
+  "lods": {
+   "levels": [
+    {
+     "level": "LOD0",
+     "file": "RingBoxClosed.obj",
+     "triangles": 1592,
+     "screen_height_min": 0.1
+    },
+    {
+     "level": "LOD1",
+     "file": "RingBoxClosed_LOD1.obj",
+     "triangles": 400,
+     "target": 400,
+     "bytes": 32839,
+     "screen_height_min": 0.02
+    },
+    {
+     "level": "LOD2",
+     "file": "RingBoxClosed_LOD2.obj",
+     "triangles": 120,
+     "target": 120,
+     "bytes": 10958,
+     "screen_height_min": 0.003
+    }
+   ],
+   "night_store_top_level": "LOD1",
+   "lodgroup_size_m": 0.052,
+   "note": "screen_height_min: suggested Unity LODGroup screenRelativeTransitionHeight (LOD Bias 1), culled below the last; unverified in Unity. Every level uses RingBoxClosed.mtl with the same g/usemtl names; made by Source~/make_lods.py (README: LOD variants)."
+  }
  },
  "PriceTag01": {
   "file": "PriceTag01.obj",
@@ -876,7 +992,36 @@
    "GoldCoin_Normal.png"
   ],
   "placement": "Safe trays, coin tubes, scattered on the office floor.",
-  "notes": "Assign GoldCoin_Normal.png. Obverse up."
+  "notes": "Assign GoldCoin_Normal.png. Obverse up.",
+  "lods": {
+   "levels": [
+    {
+     "level": "LOD0",
+     "file": "GoldCoin.obj",
+     "triangles": 1728,
+     "screen_height_min": 0.1
+    },
+    {
+     "level": "LOD1",
+     "file": "GoldCoin_LOD1.obj",
+     "triangles": 448,
+     "target": 430,
+     "bytes": 49884,
+     "screen_height_min": 0.015
+    },
+    {
+     "level": "LOD2",
+     "file": "GoldCoin_LOD2.obj",
+     "triangles": 120,
+     "target": 110,
+     "bytes": 12265,
+     "screen_height_min": 0.002
+    }
+   ],
+   "night_store_top_level": "LOD1",
+   "lodgroup_size_m": 0.0327,
+   "note": "screen_height_min: suggested Unity LODGroup screenRelativeTransitionHeight (LOD Bias 1), culled below the last; unverified in Unity. Every level uses GoldCoin.mtl with the same g/usemtl names; made by Source~/make_lods.py (README: LOD variants)."
+  }
  },
  "JewelersLoupe": {
   "file": "JewelersLoupe.obj",
@@ -896,7 +1041,36 @@
   "color_maps": [],
   "extra_maps": [],
   "placement": "Counter mat, rear office desk.",
-  "notes": "Glass alpha 0.2."
+  "notes": "Glass alpha 0.2.",
+  "lods": {
+   "levels": [
+    {
+     "level": "LOD0",
+     "file": "JewelersLoupe.obj",
+     "triangles": 1648,
+     "screen_height_min": 0.1
+    },
+    {
+     "level": "LOD1",
+     "file": "JewelersLoupe_LOD1.obj",
+     "triangles": 440,
+     "target": 430,
+     "bytes": 33256,
+     "screen_height_min": 0.02
+    },
+    {
+     "level": "LOD2",
+     "file": "JewelersLoupe_LOD2.obj",
+     "triangles": 148,
+     "target": 140,
+     "bytes": 13248,
+     "screen_height_min": 0.003
+    }
+   ],
+   "night_store_top_level": "LOD1",
+   "lodgroup_size_m": 0.0707,
+   "note": "screen_height_min: suggested Unity LODGroup screenRelativeTransitionHeight (LOD Bias 1), culled below the last; unverified in Unity. Every level uses JewelersLoupe.mtl with the same g/usemtl names; made by Source~/make_lods.py (README: LOD variants)."
+  }
  },
  "PaymentTerminal": {
   "file": "PaymentTerminal.obj",

@@ -10,12 +10,16 @@ using L = NightStoreLayout;
 
 // Generates the expanded night store from NightStoreLayout: root "NightStore" with
 // Architecture (floor, walls, partitions, ceiling and its fittings), Facade (window
-// bays, forced entrance, cladding), Exterior (pavement, kerb, wet street, buildings,
-// bollards, streetlights, police car, equipment table and easel, play-area walls),
-// Showroom and Office (StoreKit fixtures), Dressing (NightStoreDressing) and Anchors,
-// the hidden UV trace examples (UVTraceBuilder), then the tool station with the night
-// ToolLayout. CreatePlayer puts the rig at the spawn beside the car with the layout's
-// movement regions.
+// bays, forced entrance, cladding, alarm bell box), Exterior (pavement, kerb, wet street,
+// buildings and the apartment block across the street, bollards, streetlights, police
+// car, equipment table and easel, street furniture and figures from NightStreet,
+// play-area walls), Showroom and Office (StoreKit fixtures, then NightInterior's props
+// and wall graphics), Dressing (NightStoreDressing, then NightDecals) and Anchors, the
+// hidden UV trace examples (UVTraceBuilder), then the tool station with the night
+// ToolLayout and the soundscape (NightAudioBuilder). CreatePlayer puts the rig at the
+// spawn beside the car with the layout's movement regions and its footsteps. Every
+// police-specific choice (car, light bar, tape text, sounds, figure) comes from
+// PoliceLook; the credits of whatever the build placed go to DemoCredits.txt.
 //
 // Surfaces are KitMesh parts built in world coordinates, so the metric UVs (and the
 // ReferenceTextures tiling) run continuously across walls and slabs, with lightmap
@@ -118,6 +122,8 @@ public static class NightStoreBuilder
         EnsureFolder("Assets/CrimeSceneDemo");
         EnsureFolder(Folder);
         StoreKit.Palette();
+        // The credits list only what this build places.
+        DemoAssetLibrary.ResetCredits();
         GameObject root = new GameObject(L.Root);
         Dictionary<string, Transform> zone = new Dictionary<string, Transform>();
         foreach (string name in L.Zones) zone[name] = Group(name, root.transform);
@@ -127,6 +133,8 @@ public static class NightStoreBuilder
         Exterior(zone["Exterior"], useImportedAssets);
         foreach (L.Fixture f in L.Fixtures) Place(f, zone[f.Zone]);
         InteriorSigns(zone["Showroom"], zone["Office"]);
+        // Interior props and wall graphics, before the static flags (they bake with their zones).
+        NightInterior.Apply(root.transform, useImportedAssets);
         NightStoreDressing.Apply(zone["Dressing"], zone["Showroom"], Folder);
         MergeCaseGlass(zone["Showroom"]);
         foreach (string name in L.AnchorNames)
@@ -156,15 +164,20 @@ public static class NightStoreBuilder
             if (fan != null) GameObjectUtility.SetStaticEditorFlags(fan.gameObject, 0);
         }
         NightStoreDressing.CombineLoose(zone["Dressing"], Folder);
+        // Decals and the hidden presenter sets set their own static flags, after MarkStatic
+        // (never occluders or reflection-probe static).
+        NightDecals.Apply(root.transform, Folder);
         // NightLighting.LightmapScales sets every zone's lightmap scale after Build (Apply
         // always follows Build); the KitMeshes' chart margins match it.
 
         // Placeholder UV traces, hidden; the presenter panel shows them through DemoLighting.
         GameObject examples = UVTraceBuilder.NightExamples(root.transform);
         DemoToolsBuilder.Create(useImportedAssets, L.Tools);
-        StagedSounds();
+        // Staged clips, the soundscape and the music, beside the tool station's ambience.
+        NightAudioBuilder.Apply(root.transform);
         DemoLighting lighting = UnityEngine.Object.FindFirstObjectByType<DemoLighting>();
         if (lighting != null) lighting.UVExamples = examples;
+        DemoAssetLibrary.WriteCredits(DemoUi.DefaultCredits + " Night store: Poly Haven, ambientCG and John Bartmann (CC0).");
         AssetDatabase.SaveAssets();
         return root;
     }
@@ -210,8 +223,13 @@ public static class NightStoreBuilder
         }
     }
 
+    // The rig at the spawn, with the soundscape's footsteps on it.
     public static ShopWalkController CreatePlayer(Camera camera)
-        => DemoToolsBuilder.CreatePlayer(camera, L.PlayerSpawn, L.PlayerYaw, L.Regions());
+    {
+        ShopWalkController walker = DemoToolsBuilder.CreatePlayer(camera, L.PlayerSpawn, L.PlayerYaw, L.Regions());
+        NightAudioBuilder.AttachPlayer(walker);
+        return walker;
+    }
 
     // ---------------------------------------------------------------- architecture
 
@@ -318,6 +336,14 @@ public static class NightStoreBuilder
         Slab(stone, null, StoreKit.Concrete, V(L.MinX - pier - 0.05f, L.ParapetY, front - 0.05f), V(L.MaxX + pier + 0.05f, L.ParapetY + 0.06f, back + 0.05f));
         stone.Emit("Cladding", parent, Vector3.zero, Quaternion.identity, Folder, "night_cladding");
 
+        // Alarm bell box on the fascia band (a plain project-made housing, no brand): its back
+        // on the cladding, a strobe lens across the top of its face. Whether the bell still
+        // rings is a presenter switch (NightAudioBuilder), off at arrival.
+        KitMesh bell = new KitMesh { LightmapScale = NightLighting.FixtureScale };
+        bell.Box(StoreKit.Lacquer, Vector3.zero, V(0.28f, 0.36f, 0.09f));
+        bell.Box(StoreKit.DeviceGrey, V(0, 0.13f, -0.055f), V(0.10f, 0.05f, 0.02f));
+        bell.Emit("BellBox", parent, L.BellBox, Quaternion.identity, Folder, "night_bell_box");
+
         // Shop name on the fascia band above the entrance, 5 mm proud of the cladding.
         Sign(FasciaSign, "ShopFascia", parent, V(0, (L.CeilingY + L.ParapetY) * 0.5f, front - 0.005f), new Vector2(2.2f, 0.55f));
         // Small Closed card inside the left door's glass, above the hole, read from the
@@ -378,23 +404,9 @@ public static class NightStoreBuilder
             }
     }
 
-    // Prototype/ThirdParty/NightAudio clips as assets on a DemoSoundBank beside the tool
-    // station, so they ship with the scene; without any file no bank is added and the
-    // generated sounds stay.
+    // Prototype/ThirdParty/NightAudio, the staged clips' fallback pack: NightAudioBuilder puts
+    // them (or their NightSoundscape replacements) on a DemoSoundBank beside the tool station.
     public const string AudioPack = "NightAudio";
-    private static void StagedSounds()
-    {
-        AmbientSound ambience = UnityEngine.Object.FindFirstObjectByType<AmbientSound>();
-        GameObject holder = new GameObject("StagedSounds");
-        if (ambience != null) holder.transform.SetParent(ambience.transform.parent, false);
-        DemoSoundBank bank = holder.AddComponent<DemoSoundBank>();
-        bank.CameraClick = DemoAssetLibrary.Audio(AudioPack, "CameraClick.wav");
-        bank.FlashlightSwitch = DemoAssetLibrary.Audio(AudioPack, "FlashlightSwitch.wav");
-        bank.ToolSetDown = DemoAssetLibrary.Audio(AudioPack, "ToolSetDown.wav");
-        bank.PanelSelect = DemoAssetLibrary.Audio(AudioPack, "PanelSelect.wav");
-        bank.Ambience = DemoAssetLibrary.Audio(AudioPack, "DistantAir_Loop.wav");
-        if (!bank.Any) UnityEngine.Object.DestroyImmediate(holder);
-    }
 
     // ---------------------------------------------------------------- exterior
 
@@ -409,8 +421,8 @@ public static class NightStoreBuilder
         Slab(kerbs, solid, StoreKit.Concrete, V(-hx, -0.3f, L.KerbZ), V(hx, 0, L.KerbZ + kerb), false);
         Slab(road, solid, StoreKit.Asphalt, V(-hx, L.StreetY - 0.3f, L.FarKerbZ), V(hx, L.StreetY, L.KerbZ), false);
         Slab(kerbs, solid, StoreKit.Concrete, V(-hx, -0.3f, L.FarKerbZ - kerb), V(hx, 0, L.FarKerbZ), false);
-        // The far pavement runs on under the buildings across the street, ending at their
-        // backs (the skyline towers stand on nothing anyone sees); it bakes coarsely.
+        // The far pavement runs on under the buildings across the street, ending behind their
+        // backs (the apartment block's back wall is at FarPavementZ - 9); it bakes coarsely.
         Slab(far, solid, StoreKit.Pavement, V(-hx, -0.3f, L.FarPavementZ - 10), V(hx, 0, L.FarKerbZ - kerb), false);
         // Dashed centre line, 2 mm proud of the asphalt.
         float lineZ = (L.KerbZ + L.FarKerbZ) * 0.5f, y = L.StreetY + 0.002f;
@@ -422,18 +434,26 @@ public static class NightStoreBuilder
         far.Emit("FarPavement", ground, Vector3.zero, Quaternion.identity, Folder, "night_far_pavement");
 
         Transform bollards = Group("Bollards", parent);
-        for (int i = 0; i < L.BollardX.Length; i++)
-            StoreKit.Instantiate("bollard", bollards, V(L.BollardX[i], 0, L.BollardZ), 0).name = "Bollard_" + i;
+        for (int i = 0; i < L.BollardX.Length; i++) NightStreet.Bollard(bollards, i, imported);
         Streetlights(Group("Streetlights", parent), imported);
         PoliceCar(parent, imported);
         Equipment(Group("Equipment", parent));
         Buildings(Group("Buildings", parent), imported);
-        // Kit props share the atlas with shadows off; the car, lamp posts and towers need
-        // their contact shadows on the wet street under the headlights and streetlights.
-        foreach (string name in new[] { "PoliceCar", "Streetlights", "Buildings" })
+        NightStreet.Apply(parent, imported);
+        // Kit props share the atlas with shadows off; the car and the buildings need their
+        // contact shadows on the wet street under the headlights and streetlights, and so do
+        // the KayKit lamp posts. The lantern casts none (its light sits inside it). Glass
+        // never casts (the Standard shader would dither it).
+        List<string> shadowed = new List<string> { "PoliceCar", "Buildings" };
+        if (L.Lamp.CastsShadows) shadowed.Add("Streetlights");
+        foreach (string name in shadowed)
             foreach (MeshRenderer r in parent.Find(name).GetComponentsInChildren<MeshRenderer>(true))
             {
-                if (r.sharedMaterial != null && r.sharedMaterial.renderQueue >= 3000) continue;
+                if (r.sharedMaterial != null && r.sharedMaterial.renderQueue >= 3000)
+                {
+                    r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                    continue;
+                }
                 r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
                 r.receiveShadows = true;
             }
@@ -447,24 +467,51 @@ public static class NightStoreBuilder
         }
     }
 
-    // KayKit streetlights (light sources are added by the lighting pass at the
-    // StreetlightHead anchors); a post, arm and head stand in without the pack.
+    // Streetlights of the layout's lamp profile (light sources and lenses are added by the
+    // lighting pass at the StreetlightLight anchors): the StreetModels lantern (LOD levels,
+    // no shadows, its bulb drawn as the palette's dark lens inside the lighting's emissive
+    // lens box), else the KayKit streetlight; a post with the profile's head stands in
+    // without either pack.
     private static void Streetlights(Transform parent, bool imported)
     {
+        L.LampProfile profile = L.Lamp;
+        bool lantern = profile.Model == L.Lantern.Model;
         for (int i = 0; i < L.Streetlights.Length; i++)
         {
             Transform lamp = Group("Streetlight_" + i, parent);
             lamp.localPosition = L.Streetlights[i];
             float yaw = L.StreetlightYaw(i);
-            GameObject model = imported ? DemoAssetLibrary.Place(ShopCityRefinement.KitPack, "streetlight", lamp, Vector3.zero, yaw, ShopCityRefinement.KitScale) : null;
+            GameObject model = null;
+            if (imported && lantern)
+                model = DemoAssetLibrary.PlacePack(profile.Pack, profile.Model, lamp, Vector3.zero, 0, new DemoAssetLibrary.PackOptions
+                {
+                    Scale = profile.Scale, Shadows = false, Lod = DemoAssetLibrary.LodClass.Post,
+                    Remap = material => material == "LampBulb" ? StoreKit.LightLens : null
+                });
+            else if (imported) model = DemoAssetLibrary.Place(profile.Pack, profile.Model, lamp, Vector3.zero, yaw, profile.Scale);
             if (model == null)
             {
                 KitMesh k = new KitMesh { LightmapScale = NightLighting.KitScale };
-                k.Box(StoreKit.FrameMetal, V(0, 2.15f, 0), V(0.12f, 4.3f, 0.12f));
-                Quaternion turn = Quaternion.Euler(0, yaw, 0);
-                k.Box(StoreKit.FrameMetal, turn * V(-0.5f, 4.3f, 0), V(1.0f, 0.08f, 0.08f), turn);
-                k.Box(StoreKit.Lacquer, turn * V(-1.0f, 4.22f, 0), V(0.45f, 0.1f, 0.22f), turn);
-                k.Emit("StreetlightStandIn", lamp, Vector3.zero, Quaternion.identity, Folder, "night_streetlight");
+                if (profile.Arm)
+                {
+                    k.Box(StoreKit.FrameMetal, V(0, 2.15f, 0), V(0.12f, 4.3f, 0.12f));
+                    Quaternion turn = Quaternion.Euler(0, yaw, 0);
+                    k.Box(StoreKit.FrameMetal, turn * V(-0.5f, 4.3f, 0), V(1.0f, 0.08f, 0.08f), turn);
+                    k.Box(StoreKit.Lacquer, turn * V(-1.0f, 4.22f, 0), V(0.45f, 0.1f, 0.22f), turn);
+                }
+                else
+                {
+                    // Post up to the lantern's base and its cap over the light; open between.
+                    float top = profile.HeadHeight - 0.2f;
+                    k.Box(StoreKit.FrameMetal, V(0, top * 0.5f, 0), V(0.1f, top, 0.1f));
+                    k.Box(StoreKit.FrameMetal, V(0, profile.HeadHeight + 0.21f, 0), V(0.36f, 0.06f, 0.36f));
+                }
+                GameObject standIn = k.Emit("StreetlightStandIn", lamp, Vector3.zero, Quaternion.identity, Folder, "night_streetlight");
+                if (!profile.CastsShadows)
+                {
+                    MeshRenderer r = standIn.GetComponent<MeshRenderer>();
+                    if (r != null) r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+                }
             }
             BoxCollider post = lamp.gameObject.AddComponent<BoxCollider>();
             post.center = V(0, 1.5f, 0);
@@ -472,20 +519,39 @@ public static class NightStoreBuilder
         }
     }
 
-    // KayKit police car (nose +z, see NightStoreLayout) or ShopCityRefinement's stand-in,
-    // whose nose is +x and so is turned -90 to match; one box collider round the body.
+    // The car a build placed and the anchors it used (PoliceLook.ActiveCar, or the KayKit
+    // entry when that one could not be placed); NightLighting sizes the headlamp lenses and
+    // the light-bar halves from it. Default (no Model) until a build in this editor session.
+    public static PoliceLook.Car PlacedCar { get; private set; }
+
+    // PoliceLook's active car: a StreetModels car through PlacePack (LOD levels, shadows,
+    // turned by its ModelEuler), else today's KayKit police car (nose +z, see
+    // NightStoreLayout) or ShopCityRefinement's stand-in, whose nose is +x and so is
+    // turned -90 to match; one box collider round the body, anchors from the car placed.
     private static void PoliceCar(Transform parent, bool imported)
     {
         Transform car = Group("PoliceCar", parent);
         car.localPosition = L.CarPosition;
         car.localRotation = Quaternion.Euler(0, L.CarYaw, 0);
-        bool kit = imported && DemoAssetLibrary.Has(ShopCityRefinement.KitPack, "car_police");
-        Transform model = ShopCityRefinement.Car(car, Vector3.zero, StoreKit.Lacquer, "car_police", 0, imported);
-        if (!kit) model.localRotation = Quaternion.Euler(0, -90, 0);
+        PoliceLook.Car c = PoliceLook.ActiveCar;
+        GameObject placed = imported && c.Pack == NightStreet.StreetPack
+            ? DemoAssetLibrary.PlacePack(c.Pack, c.Model, car, Vector3.zero, 0, new DemoAssetLibrary.PackOptions
+            {
+                Scale = c.Scale, ModelEuler = c.ModelEuler, Shadows = true, Lod = DemoAssetLibrary.LodClass.Large
+            })
+            : null;
+        if (placed == null)
+        {
+            c = PoliceLook.KayKitCar;
+            bool kit = imported && DemoAssetLibrary.Has(c.Pack, c.Model);
+            Transform model = ShopCityRefinement.Car(car, Vector3.zero, StoreKit.Lacquer, c.Model, 0, imported);
+            if (!kit) model.localRotation = Quaternion.Euler(0, -90, 0);
+        }
+        PlacedCar = c;
         DemoAssetLibrary.AddBoundsCollider(car.gameObject);
-        Group("HeadlightLeft", car).localPosition = L.HeadlightLeft;
-        Group("HeadlightRight", car).localPosition = L.HeadlightRight;
-        Group("LightBar", car).localPosition = L.LightBar;
+        Group("HeadlightLeft", car).localPosition = c.HeadlightLeft;
+        Group("HeadlightRight", car).localPosition = c.HeadlightRight;
+        Group("LightBar", car).localPosition = c.LightBar;
     }
 
     // Folding table (top at TableTop) the tool samples and the camera rest on, and the
@@ -524,11 +590,12 @@ public static class NightStoreBuilder
         board.size = V(bw, b1, 0.1f);
     }
 
-    // Terrace neighbours either side of the shop and a row across the street, simple
-    // render-and-glass blocks with a few lit rooms (baked emitters); KayKit towers
-    // behind them for the skyline when the pack is present. The terrace bakes at the
-    // street's density; the row across the street is lightmapped at the far density, so
-    // the far streetlights' pools reach its shopfronts. Two renderers, not one huge bounds.
+    // Terrace neighbours either side of the shop (brick left, render right) and a row across
+    // the street of render-and-glass blocks with a few lit rooms (baked emitters), with
+    // StreetModels' apartment block directly opposite when the pack is present
+    // (NightStreet.AcrossLayout keeps its slot free). The terrace bakes at the street's
+    // density; the row across the street is lightmapped at the far density, so the far
+    // streetlights' pools reach its shopfronts. Two renderers, not one huge bounds.
     private static void Buildings(Transform parent, bool imported)
     {
         System.Random rng = new System.Random(5);
@@ -537,25 +604,30 @@ public static class NightStoreBuilder
         foreach (float s in new[] { -1f, 1f })
         {
             float x0 = s < 0 ? -20 : L.MaxX + L.Pier, x1 = s < 0 ? L.MinX - L.Pier : 20;
-            Slab(near, solid, StoreKit.Render, V(x0, 0, L.MinZ), V(x1, 7.5f, 14), false);
+            Slab(near, solid, s < 0 ? StoreKit.Brick : StoreKit.Render, V(x0, 0, L.MinZ), V(x1, 7.5f, 14), false);
             Shopfront(near, x0, x1, L.MinZ, -1);
             Windows(near, rng, x0, x1, L.MinZ, -1, 7.5f, 0.25f);
         }
-        float[] edges = { -26, -15.2f, -14.8f, -4.2f, -3.8f, 7.2f, 7.6f, 18.2f, 18.6f, 28 };
-        float[] heights = { 9, 12, 10.5f, 13.5f, 9 };
-        for (int i = 0; i < heights.Length; i++)
+        bool apartment = NightStreet.HasApartment(imported);
+        NightStreet.Across a = NightStreet.AcrossLayout(apartment);
+        for (int i = 0; i < a.Heights.Length; i++)
         {
-            float x0 = edges[2 * i], x1 = edges[2 * i + 1];
-            across.Box(StoreKit.Render, V((x0 + x1) * 0.5f, heights[i] * 0.5f, L.FarPavementZ - 5), V(x1 - x0, heights[i], 10), false);
-            Shopfront(across, x0, x1, L.FarPavementZ, 1);
-            Windows(across, rng, x0, x1, L.FarPavementZ, 1, heights[i], 0.2f);
+            float x0 = a.Edges[2 * i], x1 = a.Edges[2 * i + 1];
+            across.Box(StoreKit.Render, V((x0 + x1) * 0.5f, a.Heights[i] * 0.5f, L.FarPavementZ - 5), V(x1 - x0, a.Heights[i], 10), false);
+            // The blank slot keeps a plain ground floor for the street posters.
+            if (i != a.Blank) Shopfront(across, x0, x1, L.FarPavementZ, 1);
+            Windows(across, rng, x0, x1, L.FarPavementZ, 1, a.Heights[i], 0.2f);
         }
         near.Emit("Neighbours", parent, Vector3.zero, Quaternion.identity, Folder, "night_neighbours");
         across.Emit("AcrossStreet", parent, Vector3.zero, Quaternion.identity, Folder, "night_across");
-        if (!imported) return;
-        string[] towers = { "building_H_withoutBase", "building_C_withoutBase", "building_D_withoutBase", "building_F_withoutBase" };
-        for (int i = 0; i < towers.Length; i++)
-            DemoAssetLibrary.Place(ShopCityRefinement.KitPack, towers[i], parent, V(-20 + i * 14, -0.7f, L.FarPavementZ - 16), 0, 7);
+        if (!apartment) return;
+        // ApartmentBlock (CC0): OBJ x -0.355..15.355 mirrors on import, so this root puts the
+        // block on x0..x0 + 15.71; its facade at file z 0 faces +z, the street, on the far
+        // pavement's front line. It has a second UV set (ThirdPartyModelImport pads its charts
+        // for the street density), so MarkStatic lightmaps it (NightLighting gives it
+        // StreetScale) and makes it an occluder like the boxes.
+        DemoAssetLibrary.PlacePack(NightStreet.StreetPack, NightStreet.Apartment, parent,
+            V(a.ApartmentX0 + NightStreet.ApartmentPivotX, 0, L.FarPavementZ), 0, new DemoAssetLibrary.PackOptions { Shadows = true });
     }
 
     // Ground-floor shop: dark glass band, a half-closed roller shutter and a fascia board.
@@ -566,7 +638,7 @@ public static class NightStoreBuilder
         Vector3 n = V(0, 0, facing);
         k.Face(StoreKit.WindowDark, n, V(x0 + 0.6f, 0.3f, f), V(x1 - 0.6f, 0.3f, f), V(x1 - 0.6f, 2.8f, f), V(x0 + 0.6f, 2.8f, f));
         f += facing * 0.005f;
-        k.Face(StoreKit.PaintedGrey, n, V(mid, 0.3f, f), V(x1 - 0.6f, 0.3f, f), V(x1 - 0.6f, 2.8f, f), V(mid, 2.8f, f));
+        k.Face(StoreKit.Shutter, n, V(mid, 0.3f, f), V(x1 - 0.6f, 0.3f, f), V(x1 - 0.6f, 2.8f, f), V(mid, 2.8f, f));
         k.Box(StoreKit.FrameMetal, V(mid, 3.2f, z + facing * 0.06f), V(x1 - x0 - 0.8f, 0.6f, 0.12f));
     }
 

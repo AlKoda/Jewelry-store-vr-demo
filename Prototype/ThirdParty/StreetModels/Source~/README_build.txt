@@ -20,4 +20,11 @@ Revision 2026-10-15 (run with python3 -P; Python needs numpy, scipy, Pillow, tri
   fix_stem_winding.py  PottedPlant.obj    -> re-winds the 30 stem slivers meshoptimizer folded inwards (run after strip_degenerate)
   check_pack.py        PACKDIR -> images open, OBJs load, MTL maps exist, sources.json hashes/coverage, sizes
   comps.py, gltfio.py  helpers (connected components; minimal glTF reader)
+
+LOD variants 2026-10-15 (copy the script out of the pack first; python3 -I, standard library + trimesh for VERIFY):
+  make_lods.py         PACKDIR [--report OUT.json] [Model ...] -> PoliceCar/StreetLamp/UtilityBox_LOD1.obj and _LOD2.obj
+                       (targets, keep lists and rules in the script; writes nothing and exits 1 if VERIFY fails)
+  preview_cull.py      Preview_LODs.jpg --size 300 --yaw 35,-145 --pitch 12 <LOD0, LOD1, LOD2 OBJs of the three models>
+  lod_sources.py       PACKDIR REPORT.json -> sources.json entries for the LOD files and the changed Source~ files
+  check_pack.py        reads each OBJ's own mtllib (LODs share <Model>.mtl) and a LOD's tris from its files entry
 Exact source URLs, commits and SHA-256 are in ../sources.json.

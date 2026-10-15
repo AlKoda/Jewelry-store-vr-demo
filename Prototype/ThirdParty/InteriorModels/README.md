@@ -4,7 +4,7 @@ Furniture, office equipment, lighting, safety and building fixtures, plants and 
 
 - **23 Poly Haven models** (CC0, photoreal PBR textures), converted to OBJ, decimated where needed (1-15k triangles each), with brand-like lettering removed from four of them.
 - **25 project-made models** (procedural geometry and procedural textures, project-owned) for items Poly Haven does not have: office chair, monitor, keyboard, phone, filing cabinets, appliances, CCTV dome, light fittings, exit sign, smoke detector, vents, door handles, rug, snake plant.
-- Total size **26.8 MB** (26844481 bytes, including Source~ and these documents); largest file 1.29 MB. Every model has 60 to 15000 triangles.
+- Total size **27.4 MB** (27385794 bytes, including Source~ and these documents); largest file 1.29 MB. Every model has 60 to 15000 triangles.
 - Credits in LICENSE.txt; per-file source, licence and SHA-256 in sources.json; per-material map wiring, bounds and pivots in models.json. `Source~/InteriorModels_Previews.jpg` shows every model (software preview, not a Unity render).
 
 Already covered elsewhere, so not duplicated here: SheenChair, GlamVelvetSofa, ChairDamaskPurplegold, GlassVaseFlowers, DiffuseTransmissionPlant (KhronosSamples); bullet SecurityCamera, LeatherBinder, OfficeNotepads, ScatteredPapers, Clipboard (ForensicModels); GiftBag shopping bag (JewelryModels).
@@ -156,6 +156,40 @@ Already covered elsewhere, so not duplicated here: SheenChair, GlamVelvetSofa, C
 - **PhotoFrameDesk** rotated -90 degrees about Y: the photo now faces +Z; size 0.20 x 0.25 x 0.10 m.
 - **PictureFrameSilver renamed PictureFrameWhite** (Poly Haven's asset is a distressed white wooden frame, metallic about 0). Its inherited artwork (a painterly-filtered photograph with a third-party signature) is replaced by a public-domain painting, Paul Cezanne's *The Banks of the Marne* (c. 1888). Update any reference to the old name.
 - **DeskLampArm, VaseCeramicTall, VaseCeramicBottle, PottedSucculent, CardboardBox, CCTVBulletHousing, FireExtinguisher** re-decimated from the sources: the earlier UV-exact decimation had opened cracks along the UV seams (holes in the desk-lamp shade and broken arm rods, holes at the vase bases, a slit down the succulent pot, a split box corner). Seams and open borders are now held fixed (the desk lamp, whose thin rods are seams everywhere, uses a seam-aware decimation re-split per UV island); after welding by position each model has the same open edges as its source (`Source~/cracks.py`; desk lamp: 24 sub-millimetre slivers). Triangle counts changed: DeskLampArm 15,000, VaseCeramicTall 5,388, VaseCeramicBottle 3,984, CCTVBulletHousing 8,507, FireExtinguisher 8,005, CardboardBox 3,000, PottedSucculent 4,999. Textures unchanged except the extinguisher fixes above.
+
+## LOD variants
+
+Lower-detail versions of FireExtinguisher and WallClock for a Unity LODGroup (October 15, 2026; **not imported or checked in Unity yet**). The full model is LOD0; `<Model>_LOD1.obj` and `<Model>_LOD2.obj` sit beside it and use its MTL and maps (`mtllib <Model>.mtl`, same materials, no texture change), with the same pivot and bounds. FireAlarmCallPoint has no LODs: it is a US-style pull station and is not placed in the night store.
+
+| File | Triangles (target) | Groups | Bytes |
+|---|---|---|---|
+| FireExtinguisher.obj (LOD0) | 8,005 | Body 7,715; GaugeGlass 258; Tag 32 | 635,038 |
+| FireExtinguisher_LOD1.obj | 2,000 (2,000) | Body 7,715 to 1,710; GaugeGlass 258 (kept); Tag 32 (kept) | 154,863 |
+| FireExtinguisher_LOD2.obj | 646 (600) | Body 7,715 to 550; GaugeGlass 258 to 64; Tag 32 (kept) | 50,171 |
+| WallClock.obj (LOD0) | 3,658 | Clock 3,130; Glass 528 | 289,109 |
+| WallClock_LOD1.obj | 900 (900) | Clock 3,130 to 700; Glass 528 to 200 | 70,887 |
+| WallClock_LOD2.obj | 316 (300) | Clock 3,130 to 252; Glass 528 to 64 | 25,285 |
+
+Made by `Source~/make_lods.py`, a copy of ForensicModels' `decimate_exact.py` with the lods-street extensions (StreetModels `Source~/make_lods.py`): a seam-aware half-edge collapse in which every vertex and corner is an original `v/vt/vn` of the full model (no vertex moves and the UVs stay exact, so the maps fit unchanged); UV seams, hard edges and group joins shorten only along themselves, so no cracks open, and no collapse may turn a triangle against its vertex normals. Added for these props:
+
+- **Parts** (connected pieces of a group, such as one clock hand) keep their exact bounding boxes, small parts can be locked unchanged, and the large parts can get their own triangle budgets. No collapse may make a triangle sample another part's texels (without this guard an orange patch showed on the black lever).
+- **FireExtinguisher**: LOD1 keeps GaugeGlass and Tag unchanged and all 32 outer columns of the yellow band, so the recessed cylinder wall never shows through it. LOD2 leaves out the parts under 25 mm (gauge internals, lever pins, rivet heads, label tab) and the thin pull pin, tag wire and hose ferrule, which are under a pixel at LOD2 distances; the large parts get budgets (hose 420 to 28, stand 596 to 56, band 258 to 86, cylinder 1,598 to 140) and the band keeps every second outer column; 66 collapses cross a UV seam inside a part (corners move at most 0.2 in UV).
+- **WallClock**: both LODs leave out the parts that face the wall (rear knob, rear plate and back cover, 718 triangles): they cannot be seen on a wall-mounted clock, so use the full model if the clock is ever shown from behind. Plain decimation turned the case ring into a jagged polygon whose triangles crossed the dial, so the case (a 96 x 12 lathe grid) is rebuilt on 32 (LOD1) or 12 (LOD2) of its columns from its own vertices, keeping every visible profile band with its UV island; the hour and minute hands and the dial are locked, and the second hand is decimated inside its exact box (178 to 66 / 178 to 18). LOD2 also leaves out the 6 mm centre cap and the arbor under it.
+
+Checked by the script before anything is written (exit code 1 on any failure; all passed):
+
+- triangles within 10 % of the target and of each fixed group share: FireExtinguisher_LOD2 is 7.7 % and WallClock_LOD2 5.3 % over, because the parts that remain stall at their box, seam and texel guards;
+- bounds within 5 mm of the full model (measured: 0.0 mm) and the pivot kept (extinguisher: floor y = 0; clock: wall z = 0); same materials (usemtl set) and group order; every corner an original v/vt/vn; groups kept unchanged are identical; no zero-area triangle;
+- every source part present with its box within 1 mm, apart from the parts left out on purpose (listed per file in sources.json); the clock hands are checked by name (hour and minute hand unchanged, second hand 178 to 66 at LOD1 / 178 to 18 at LOD2);
+- no open edge with an end off the source's open borders (a crack along a UV seam would add one); `Source~/cracks.py` open edges: FireExtinguisher 571 to 298 / 98, WallClock 494 to 226 / 92 (full model to LOD1 / LOD2: never more);
+- `Source~/check_obj.py`: 0 faces whose winding disagrees with their vertex normals (as in the full models), and trimesh reads every triangle;
+- no triangle samples another part's texels, apart from 4 / 1 triangles of the clock case's hidden back band (LOD1 / LOD2), which faces the wall.
+
+`Source~/LOD_Previews.jpg`: full model, LOD1 and LOD2 side by side (software renders with back faces culled, `Source~/render2.py`), plus a close-up of the clock dial: the hour, minute and second hands are intact at LOD1 (and at LOD2, where the centre cap is left out).
+
+Suggested LODGroup transitions (screen-relative height; a starting point, unverified in Unity, tune on the Quest 2 with QualitySettings.lodBias 1): FireExtinguisher LOD0 above 0.25, LOD1 above 0.08, LOD2 above 0.015; WallClock LOD0 above 0.15, LOD1 above 0.035, LOD2 above 0.008; culled below. With a vertical field of view of about 90 degrees that is LOD1 from about 1.3 m and LOD2 from about 4 m for the extinguisher, LOD1 from about 1.1 m and LOD2 from about 4.5 m for the clock (where its 12-sided case is under about a pixel off round).
+
+Rebuild from the repository root: `python3 -I Prototype/ThirdParty/InteriorModels/Source~/make_lods.py Prototype/ThirdParty/InteriorModels --previews` (deterministic: a rerun gives the same bytes). It rewrites the `lods` entries in models.json, the LOD entries in sources.json, this section and the total size above. `Source~/make_docs.py` rebuilds the pack without the LODs, so run make_lods.py after it.
 
 ## Not found / left out
 

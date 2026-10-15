@@ -10,7 +10,8 @@
   "DT_MaskedDetails_Color.jpg replaced by DT_MaskedDetails_Color.png (RGBA cut-out); BuildingBrickCorner.mtl points at it and its masked cards are double-sided",
   "MetalTrashCan and StreetBench colour maps re-exported at full brightness (empty AO channel was baked in, halving them)",
   "zero-area triangles (simplification slivers, collapsed cap/pole fans) removed from 14 OBJs; no visible change (Source~/strip_degenerate.py)",
-  "PottedPlant: 30 stem slivers folded inwards by the simplification re-wound to face outwards like their vertex normals (Source~/fix_stem_winding.py); tris unchanged"
+  "PottedPlant: 30 stem slivers folded inwards by the simplification re-wound to face outwards like their vertex normals (Source~/fix_stem_winding.py); tris unchanged",
+  "LOD variants (unverified in Unity): PoliceCar/StreetLamp/UtilityBox_LOD1 and _LOD2.obj from Source~/make_lods.py; they share the original MTLs; Source~/check_pack.py reads each OBJ's mtllib"
  ],
  "units": "metres, Y up, OBJ/MTL (Unity imports without packages)",
  "texture_convention": {
@@ -1578,7 +1579,24 @@
    "license": "CC0-1.0",
    "author": "Josh Dean",
    "source_url": "https://polyhaven.com/a/street_lamp_01",
-   "changes": "Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 30,610 -> 5,373 tris (revision 2026-10-15: 2 zero-area triangles removed)."
+   "changes": "Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 30,610 -> 5,373 tris (revision 2026-10-15: 2 zero-area triangles removed).",
+   "lods": [
+    {
+     "file": "StreetLamp_LOD1.obj",
+     "tris": 1398,
+     "target": 1400,
+     "unity_lodgroup_transition": 0.15,
+     "shown_below_screen_height": 0.6
+    },
+    {
+     "file": "StreetLamp_LOD2.obj",
+     "tris": 450,
+     "target": 450,
+     "unity_lodgroup_transition": 0.01,
+     "shown_below_screen_height": 0.15
+    }
+   ],
+   "lod0_unity_lodgroup_transition": 0.6
   },
   "FireHydrant.obj": {
    "category": "Street furniture",
@@ -1786,7 +1804,24 @@
    "license": "CC0-1.0",
    "author": "James Ray Cock",
    "source_url": "https://polyhaven.com/a/utility_box_01",
-   "changes": "Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 4,404 -> 3,082 tris."
+   "changes": "Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 4,404 -> 3,082 tris.",
+   "lods": [
+    {
+     "file": "UtilityBox_LOD1.obj",
+     "tris": 899,
+     "target": 900,
+     "unity_lodgroup_transition": 0.1,
+     "shown_below_screen_height": 0.25
+    },
+    {
+     "file": "UtilityBox_LOD2.obj",
+     "tris": 299,
+     "target": 300,
+     "unity_lodgroup_transition": 0.01,
+     "shown_below_screen_height": 0.1
+    }
+   ],
+   "lod0_unity_lodgroup_transition": 0.25
   },
   "AirconUnit.obj": {
    "category": "Building details",
@@ -2229,7 +2264,24 @@
    "license": "CC-BY-4.0",
    "author": "Daniel Zhabotinsky",
    "source_url": "https://sketchfab.com/3d-models/80-american-police-sedan-low-poly-model-945fd09f513f4d1ab19b6388a7ea7323",
-   "changes": "Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; trunk badges removed (parody marque atlas); number-plate texture replaced by a plain plate colour; a slogan painted out of the body livery (two places); 20,840 tris (revision 2026-10-15: 8 zero-area triangles removed)."
+   "changes": "Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; trunk badges removed (parody marque atlas); number-plate texture replaced by a plain plate colour; a slogan painted out of the body livery (two places); 20,840 tris (revision 2026-10-15: 8 zero-area triangles removed).",
+   "lods": [
+    {
+     "file": "PoliceCar_LOD1.obj",
+     "tris": 5994,
+     "target": 6000,
+     "unity_lodgroup_transition": 0.1,
+     "shown_below_screen_height": 0.3
+    },
+    {
+     "file": "PoliceCar_LOD2.obj",
+     "tris": 1928,
+     "target": 1800,
+     "unity_lodgroup_transition": 0.01,
+     "shown_below_screen_height": 0.1
+    }
+   ],
+   "lod0_unity_lodgroup_transition": 0.3
   },
   "Hatchback.obj": {
    "category": "Vehicles",
@@ -4082,6 +4134,103 @@
    ]
   },
   {
+   "file": "PoliceCar_LOD1.obj",
+   "bytes": 747267,
+   "sha256": "926b05e3f69868cdad037d56078d31ff79a6ffe5c464b309b540b96e0a663846",
+   "license": "CC-BY-4.0",
+   "source": "https://sketchfab.com/3d-models/80-american-police-sedan-low-poly-model-945fd09f513f4d1ab19b6388a7ea7323",
+   "used_by": [
+    "PoliceCar"
+   ],
+   "derived_from": "PoliceCar.obj",
+   "derived_from_sha256": "13ff74bf69cf1b9429ba5902af5f0a40136f2436a83ec72a4db396957ddcde5b",
+   "tool": "Source~/make_lods.py (python3 -I, deterministic)",
+   "target": 6000,
+   "tris": 5994,
+   "mtl": "PoliceCar.mtl (the original MTL, shared, not copied)",
+   "derivation": "seam-aware half-edge quadric decimation per group (proportional share of the target); every vertex is an original v/vt/vn of PoliceCar.obj; groups under 64 tris and keep-list groups copied unchanged; seam-exact",
+   "keep": [
+    "mtl:Lights",
+    "mtl:Plate",
+    "mtl:Glass"
+   ],
+   "fixed": {},
+   "kept_unchanged": [
+    "Negotiator80cop_Lightbar_glass_Riverside88_lights_glass_0",
+    "Negotiator80cop_Headlights_Riverside88_lights_glass_0",
+    "Negotiator80cop_Blinkers_Riverside88_lights_glass_0",
+    "Negotiator80cop_Stoplights_Riverside88_lights_glass_0",
+    "Negotiator80cop_Reverselights_Riverside88_lights_glass_0",
+    "Negotiator80cop_Numberplate_rear_Negotiator80_Misc_0",
+    "Negotiator80cop_Bodyglass_UCB_GLASS_CLEAN_0",
+    "Negotiator80cop_Numberplate_front_Negotiator80_Misc_0",
+    "Negotiator80cop_Windshield_UCB_GLASS_CLEAN_0",
+    "Negotiator80cop_Glass_back_UCB_GLASS_CLEAN_0"
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "group_box_max_diff_m": 0.0,
+    "open_edges_source_lod": [
+     2834,
+     983
+    ],
+    "facing_away_source_lod": [
+     3,
+     39
+    ],
+    "zero_area": 0,
+    "relaxed_collapses": 0,
+    "box_diff_m Negotiator80cop_Headlights_Riverside88_lights_glass_0": 0.0,
+    "box_diff_m Negotiator80cop_Lightbar_glass_Riverside88_lights_glass_0": 0.0,
+    "wheel_min_y": 0.0
+   }
+  },
+  {
+   "file": "PoliceCar_LOD2.obj",
+   "bytes": 238294,
+   "sha256": "f46b51f05f041843ddab9d3134c599235f5d475040858b994ba5a2eef9b12766",
+   "license": "CC-BY-4.0",
+   "source": "https://sketchfab.com/3d-models/80-american-police-sedan-low-poly-model-945fd09f513f4d1ab19b6388a7ea7323",
+   "used_by": [
+    "PoliceCar"
+   ],
+   "derived_from": "PoliceCar.obj",
+   "derived_from_sha256": "13ff74bf69cf1b9429ba5902af5f0a40136f2436a83ec72a4db396957ddcde5b",
+   "tool": "Source~/make_lods.py (python3 -I, deterministic)",
+   "target": 1800,
+   "tris": 1928,
+   "mtl": "PoliceCar.mtl (the original MTL, shared, not copied)",
+   "derivation": "seam-aware half-edge quadric decimation per group (proportional share of the target); every vertex is an original v/vt/vn of PoliceCar.obj; groups under 64 tris and keep-list groups copied unchanged; relaxed seams (early, UV jump <= 0.35)",
+   "keep": [
+    "mtl:Glass"
+   ],
+   "fixed": {},
+   "kept_unchanged": [
+    "Negotiator80cop_Blinkers_Riverside88_lights_glass_0",
+    "Negotiator80cop_Reverselights_Riverside88_lights_glass_0",
+    "Negotiator80cop_Numberplate_rear_Negotiator80_Misc_0",
+    "Negotiator80cop_Bodyglass_UCB_GLASS_CLEAN_0",
+    "Negotiator80cop_Numberplate_front_Negotiator80_Misc_0",
+    "Negotiator80cop_Windshield_UCB_GLASS_CLEAN_0",
+    "Negotiator80cop_Glass_back_UCB_GLASS_CLEAN_0"
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "group_box_max_diff_m": 0.0,
+    "open_edges_source_lod": [
+     2834,
+     530
+    ],
+    "facing_away_source_lod": [
+     3,
+     95
+    ],
+    "zero_area": 0,
+    "relaxed_collapses": 1565,
+    "wheel_min_y": 0.0
+   }
+  },
+  {
    "file": "PoliceCar_Lights_Color.jpg",
    "bytes": 41615,
    "sha256": "9718a99b3f4a93d8c3b163e1825f62b2c6c8f929ee3ce278313e6602f8783ac1",
@@ -4687,9 +4836,17 @@
    "used_by": []
   },
   {
+   "file": "Source~/Preview_LODs.jpg",
+   "license": "Project-owned",
+   "source": "build script / preview render",
+   "used_by": [],
+   "bytes": 96652,
+   "sha256": "676aafbc95ff070e6f231d926c221497c0051d282cccd80839b9357f80c3739e"
+  },
+  {
    "file": "Source~/README_build.txt",
-   "bytes": 2460,
-   "sha256": "ee14780b9d451ab684c2c5dba9b4da3191b4e3e1dd766b4bd781b1088765bf7a",
+   "bytes": 3160,
+   "sha256": "21aefcda0327a899d6607632d661ffa8a301cbbafb8bb773e3a28ba2b08b1907",
    "license": "Project-owned",
    "source": "build script / preview render",
    "used_by": []
@@ -4720,8 +4877,8 @@
   },
   {
    "file": "Source~/check_pack.py",
-   "bytes": 3947,
-   "sha256": "9d064dbfe75988c6eba41b60c176a7e1dbffae49032b82599d1100cd87610f89",
+   "bytes": 4222,
+   "sha256": "414cdf502badfc987e9a5ede6bb0c319d9e00b79f71e904dbdde5ecf70e006aa",
    "license": "Project-owned",
    "source": "build script / preview render",
    "used_by": []
@@ -4791,12 +4948,28 @@
    "used_by": []
   },
   {
+   "file": "Source~/lod_sources.py",
+   "license": "Project-owned",
+   "source": "build script / preview render",
+   "used_by": [],
+   "bytes": 5021,
+   "sha256": "ef63641be377d99aaadb79d93a962cc0e002ea0143d356d506cf8a0f8bfb585a"
+  },
+  {
    "file": "Source~/make_interior.py",
    "bytes": 13449,
    "sha256": "7201e3714a8106d9b7eadff21213eb0d05ae912a6f93cdb403da03a0a3a2b39c",
    "license": "Project-owned",
    "source": "build script / preview render",
    "used_by": []
+  },
+  {
+   "file": "Source~/make_lods.py",
+   "license": "Project-owned",
+   "source": "build script / preview render",
+   "used_by": [],
+   "bytes": 37574,
+   "sha256": "3a85204f2f97b59c04a34fe1b0c74e64d825731fedba82f9adcb95993d15aaeb"
   },
   {
    "file": "Source~/masked_details.py",
@@ -5069,6 +5242,88 @@
    ]
   },
   {
+   "file": "StreetLamp_LOD1.obj",
+   "bytes": 137625,
+   "sha256": "755c516b6d51e21883702ad6f186bc4d13fc4b2039d5946e253fd5ce78580267",
+   "license": "CC0-1.0",
+   "source": "https://polyhaven.com/a/street_lamp_01",
+   "used_by": [
+    "StreetLamp"
+   ],
+   "derived_from": "StreetLamp.obj",
+   "derived_from_sha256": "b1426b187e617b799dbcdb3607e148e8876ca54cdfdafe7c2f0599945ee2138f",
+   "tool": "Source~/make_lods.py (python3 -I, deterministic)",
+   "target": 1400,
+   "tris": 1398,
+   "mtl": "StreetLamp.mtl (the original MTL, shared, not copied)",
+   "derivation": "seam-aware half-edge quadric decimation per group (proportional share of the target); every vertex is an original v/vt/vn of StreetLamp.obj; groups under 64 tris and keep-list groups copied unchanged; seam-exact",
+   "keep": [
+    "mtl:LampGlass"
+   ],
+   "fixed": {
+    "mtl:LampBulb": 60
+   },
+   "kept_unchanged": [
+    "street_lamp_01_2c61c8"
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "group_box_max_diff_m": 0.0,
+    "open_edges_source_lod": [
+     175,
+     116
+    ],
+    "facing_away_source_lod": [
+     1,
+     16
+    ],
+    "zero_area": 0,
+    "relaxed_collapses": 0,
+    "height_m": 3.8699
+   }
+  },
+  {
+   "file": "StreetLamp_LOD2.obj",
+   "bytes": 53319,
+   "sha256": "9c69c3ae02697b5684cb8bade49c13a591d5df92bcad950919a60675e1348718",
+   "license": "CC0-1.0",
+   "source": "https://polyhaven.com/a/street_lamp_01",
+   "used_by": [
+    "StreetLamp"
+   ],
+   "derived_from": "StreetLamp.obj",
+   "derived_from_sha256": "b1426b187e617b799dbcdb3607e148e8876ca54cdfdafe7c2f0599945ee2138f",
+   "tool": "Source~/make_lods.py (python3 -I, deterministic)",
+   "target": 450,
+   "tris": 450,
+   "mtl": "StreetLamp.mtl (the original MTL, shared, not copied)",
+   "derivation": "seam-aware half-edge quadric decimation per group (proportional share of the target); every vertex is an original v/vt/vn of StreetLamp.obj; groups under 64 tris and keep-list groups copied unchanged; relaxed seams (early, UV jump <= 0.02)",
+   "keep": [
+    "mtl:LampGlass"
+   ],
+   "fixed": {
+    "mtl:LampBulb": 24
+   },
+   "kept_unchanged": [
+    "street_lamp_01_2c61c8"
+   ],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "group_box_max_diff_m": 0.0,
+    "open_edges_source_lod": [
+     175,
+     76
+    ],
+    "facing_away_source_lod": [
+     1,
+     18
+    ],
+    "zero_area": 0,
+    "relaxed_collapses": 13,
+    "height_m": 3.8699
+   }
+  },
+  {
    "file": "StreetLamp_LampMetal_Color.jpg",
    "bytes": 89730,
    "sha256": "5cc0910c4ed3e4dda93a12cb354eddc884ab1c0ce789dcc750ca0890d14296c5",
@@ -5159,6 +5414,74 @@
    ]
   },
   {
+   "file": "UtilityBox_LOD1.obj",
+   "bytes": 103097,
+   "sha256": "5bf0473889c69ff7cc165243617536e9eb8d43fea2bae2ae5c1ecf266056b33a",
+   "license": "CC0-1.0",
+   "source": "https://polyhaven.com/a/utility_box_01",
+   "used_by": [
+    "UtilityBox"
+   ],
+   "derived_from": "UtilityBox.obj",
+   "derived_from_sha256": "8d2b20f6952e9c9a113ce6567dd5bd5da2a3d3b63611f6ba039f3e867dad0e03",
+   "tool": "Source~/make_lods.py (python3 -I, deterministic)",
+   "target": 900,
+   "tris": 899,
+   "mtl": "UtilityBox.mtl (the original MTL, shared, not copied)",
+   "derivation": "seam-aware half-edge quadric decimation per group (proportional share of the target); every vertex is an original v/vt/vn of UtilityBox.obj; groups under 64 tris and keep-list groups copied unchanged; seam-exact",
+   "keep": [],
+   "fixed": {},
+   "kept_unchanged": [],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "group_box_max_diff_m": 0.0,
+    "open_edges_source_lod": [
+     550,
+     91
+    ],
+    "facing_away_source_lod": [
+     0,
+     1
+    ],
+    "zero_area": 0,
+    "relaxed_collapses": 0
+   }
+  },
+  {
+   "file": "UtilityBox_LOD2.obj",
+   "bytes": 41095,
+   "sha256": "cb7344c0c40c6d4ce81630201646ecfd6d34e14b5e1ccb379417e97b485fcfd2",
+   "license": "CC0-1.0",
+   "source": "https://polyhaven.com/a/utility_box_01",
+   "used_by": [
+    "UtilityBox"
+   ],
+   "derived_from": "UtilityBox.obj",
+   "derived_from_sha256": "8d2b20f6952e9c9a113ce6567dd5bd5da2a3d3b63611f6ba039f3e867dad0e03",
+   "tool": "Source~/make_lods.py (python3 -I, deterministic)",
+   "target": 300,
+   "tris": 299,
+   "mtl": "UtilityBox.mtl (the original MTL, shared, not copied)",
+   "derivation": "seam-aware half-edge quadric decimation per group (proportional share of the target); every vertex is an original v/vt/vn of UtilityBox.obj; groups under 64 tris and keep-list groups copied unchanged; relaxed seams (early, UV jump <= 0.02)",
+   "keep": [],
+   "fixed": {},
+   "kept_unchanged": [],
+   "verify": {
+    "bounds_max_diff_m": 0.0,
+    "group_box_max_diff_m": 0.0,
+    "open_edges_source_lod": [
+     550,
+     71
+    ],
+    "facing_away_source_lod": [
+     0,
+     3
+    ],
+    "zero_area": 0,
+    "relaxed_collapses": 24
+   }
+  },
+  {
    "file": "UtilityBox_PaintedSteel_Color.jpg",
    "bytes": 150138,
    "sha256": "8ff73310526b70f2182c96d0f3044fb036bbec2bb58004909af8742ae959971f",
@@ -5208,5 +5531,38 @@
     "WasteContainer1100L"
    ]
   }
- ]
+ ],
+ "lod_variants": {
+  "status": "wiring batch 2026-10-15, unverified in Unity (not imported, no LODGroup wired yet)",
+  "files": [
+   "PoliceCar_LOD1.obj",
+   "PoliceCar_LOD2.obj",
+   "StreetLamp_LOD1.obj",
+   "StreetLamp_LOD2.obj",
+   "UtilityBox_LOD1.obj",
+   "UtilityBox_LOD2.obj"
+  ],
+  "tool": "Source~/make_lods.py",
+  "preview": "Source~/Preview_LODs.jpg (software render, back faces culled)",
+  "materials": "each LOD OBJ names the original <Model>.mtl; no MTL or texture was copied or changed",
+  "not_made": "ApartmentBlock: seen at LOD0 from every eye position (14 m or more away); decimation would damage its flat facade planes",
+  "rules": "see the make_lods.py docstring: seam-aware half-edge collapse (UV seams, hard edges and group boundaries shorten only along themselves, on all sides at once), group boxes kept exactly, no cracks, no inside-out folds over 1 cm2; LOD2 relaxes seams with an attribute (normal/UV) cost",
+  "unity_lodgroup_transition": {
+   "PoliceCar": [
+    0.3,
+    0.1,
+    0.01
+   ],
+   "StreetLamp": [
+    0.6,
+    0.15,
+    0.01
+   ],
+   "UtilityBox": [
+    0.25,
+    0.1,
+    0.01
+   ]
+  }
+ }
 }

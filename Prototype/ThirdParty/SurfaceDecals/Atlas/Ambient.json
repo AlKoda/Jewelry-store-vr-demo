@@ -1,0 +1,90 @@
+{
+ "width": 2048,
+ "height": 2048,
+ "cells": [
+  {
+   "name": "Puddle_Kerbside",
+   "x": 16,
+   "y": 1544,
+   "w": 992,
+   "h": 496
+  },
+  {
+   "name": "Puddle_Round",
+   "x": 1032,
+   "y": 1544,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "Puddle_Cluster",
+   "x": 1544,
+   "y": 1544,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "OilStain",
+   "x": 8,
+   "y": 1032,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "LitterScatter",
+   "x": 520,
+   "y": 1032,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "LeafLitter_Wet",
+   "x": 1032,
+   "y": 1032,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "ChewingGum_Scatter",
+   "x": 1544,
+   "y": 1032,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "GrimeStreaks_Wall",
+   "x": 8,
+   "y": 16,
+   "w": 496,
+   "h": 992
+  },
+  {
+   "name": "WaterStain_FloorDried",
+   "x": 520,
+   "y": 520,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "FloorScuffs_Heel",
+   "x": 1032,
+   "y": 520,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "FloorScratches_Fine",
+   "x": 1544,
+   "y": 520,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "DirtEdge_WallBase",
+   "x": 528,
+   "y": 256,
+   "w": 992,
+   "h": 248
+  }
+ ]
+}

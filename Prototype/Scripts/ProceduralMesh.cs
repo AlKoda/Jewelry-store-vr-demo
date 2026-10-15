@@ -67,6 +67,27 @@ public class ProceduralMesh
         }
     }
 
+    // Flat quad with explicit UVs (an atlas cell, a decal, a sign): a, b, c and d take the
+    // rect's (xMin, yMin), (xMax, yMin), (xMax, yMax) and (xMin, yMax) corners. Wound to
+    // face `outward` like Face; a degenerate quad adds nothing.
+    public void Quad(Material material, Vector3 outward, Vector3 a, Vector3 b, Vector3 c, Vector3 d, Rect uv)
+    {
+        Vector3 area = Vector3.Cross(b - a, c - a) + Vector3.Cross(c - a, d - a);
+        if (area.sqrMagnitude < 1e-14f) return;
+        bool flip = Vector3.Dot(area, outward) < 0;
+        Vector3 n = flip ? -area.normalized : area.normalized;
+        int start = vertices.Count;
+        vertices.Add(a); vertices.Add(b); vertices.Add(c); vertices.Add(d);
+        for (int i = 0; i < 4; i++) normals.Add(n);
+        uvs.Add(new Vector2(uv.xMin, uv.yMin));
+        uvs.Add(new Vector2(uv.xMax, uv.yMin));
+        uvs.Add(new Vector2(uv.xMax, uv.yMax));
+        uvs.Add(new Vector2(uv.xMin, uv.yMax));
+        List<int> t = Sub(material);
+        Tri(t, start, start + 1, start + 2, flip);
+        Tri(t, start, start + 2, start + 3, flip);
+    }
+
     // Visible from both sides (glass shards, leaves, crack lines, bag handles).
     public void TwoSided(Material material, params Vector3[] points)
     {

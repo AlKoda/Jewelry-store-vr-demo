@@ -1154,7 +1154,19 @@
     "winding_flipped_at_write": {
      "Body": 6
     }
-   }
+   },
+   "lods": [
+    {
+     "level": 1,
+     "file": "FireExtinguisher_LOD1.obj",
+     "triangles": 2000
+    },
+    {
+     "level": 2,
+     "file": "FireExtinguisher_LOD2.obj",
+     "triangles": 646
+    }
+   ]
   },
   "Keyboard": {
    "category": "Office",
@@ -2947,6 +2959,18 @@
     "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
     "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
     "maker-style wordmark on the dial painted out (patch from the clean dial)"
+   ],
+   "lods": [
+    {
+     "level": 1,
+     "file": "WallClock_LOD1.obj",
+     "triangles": 900
+    },
+    {
+     "level": 2,
+     "file": "WallClock_LOD2.obj",
+     "triangles": 316
+    }
    ]
   },
   "WallVent": {

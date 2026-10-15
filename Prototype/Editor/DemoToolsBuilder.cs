@@ -36,6 +36,9 @@ public static class DemoToolsBuilder
         // rack samples are made. The shop leaves this off: its later passes
         // (ShopPresentationExpansion, ShopGlassRefinement) style the same prefabs.
         public bool Styled;
+        // Barrier-tape wording for a Styled layout (the night store's comes from PoliceLook);
+        // null keeps DefaultTapeText.
+        public string TapeText;
 
         // Half-size samples spaced 26 cm apart along the 1.4 m rack top (x -4.3 to -2.9);
         // the flat L-scale takes the middle slot because the handheld camera rests 15 cm
@@ -95,7 +98,7 @@ public static class DemoToolsBuilder
         station.TapePrefab=SaveTape(DemoToolGeometry.CreateTape(),"SceneTape");
         station.MeasureTapePrefab=SaveTape(DemoToolGeometry.CreateMeasureTape(),"MeasureTape");
         // Styled before the samples, so the rack samples are instantiated from styled prefabs.
-        Material labelMaterial=layout.Styled?StyleStation(station,Folder):null;
+        Material labelMaterial=layout.Styled?StyleStation(station,Folder,layout.TapeText):null;
         // Clicking or grabbing a rack sample spawns a new tool.
         Transform rack=root.transform;
         Sample(station.ConePrefab,rack,layout.Cone);
@@ -467,8 +470,9 @@ public static class DemoToolsBuilder
     // The presentation pass for the tool prefabs, shared by the shop's passes
     // (ShopPresentationExpansion.StyleTools, ShopGlassRefinement.StyleTape) and by Create
     // for layouts with Styled set (the night store). Materials live in the given
-    // folder under the shop's names; returns the depth-tested label material.
-    public static Material StyleStation(ToolStation station,string folder)
+    // folder under the shop's names; returns the depth-tested label material. tapeText
+    // (null: DefaultTapeText) is the barrier tape's wording.
+    public static Material StyleStation(ToolStation station,string folder,string tapeText=null)
     {
         EnsureFolderPath(folder);
         Material charcoal=DemoGeometry.Mat(folder,"Graphite",new Color(.10f,.12f,.13f),.18f);
@@ -478,7 +482,7 @@ public static class DemoToolsBuilder
         Material label=ShaderMaterial(folder,"ToolNumber","CrimeScene/WorldText");
         Material tape=ShaderMaterial(folder,"PoliceTape","CrimeScene/Tape");
         StylePrefabs(station,charcoal,ivory,yellow,orange,label);
-        StyleSceneTape(station,tape,FlexibleRibbon(folder+"/FlexibleRibbon.asset"),label);
+        StyleSceneTape(station,tape,FlexibleRibbon(folder+"/FlexibleRibbon.asset"),label,tapeText);
         AssetDatabase.SaveAssets();
         return label;
     }
@@ -530,9 +534,14 @@ public static class DemoToolsBuilder
         PrefabUtility.SaveAsPrefabAsset(measure,measurePath);PrefabUtility.UnloadPrefabContents(measure);
     }
 
+    // The shop's barrier-tape wording and the default of every layout without its own.
+    public const string DefaultTapeText="CRIME SCENE - DO NOT CROSS";
+
     // Barrier tape: flexible ribbon mesh, CrimeScene/Tape material and depth-tested
-    // CRIME SCENE warnings on both faces (added once; a re-run reuses them).
-    public static void StyleSceneTape(ToolStation station,Material tape,Mesh ribbonMesh,Material ink)
+    // warnings on both faces (added once; a re-run reuses them). A given text is set on
+    // both warnings, new or reused; null leaves reused ones as they are and writes
+    // DefaultTapeText on new ones (the shop's path, unchanged).
+    public static void StyleSceneTape(ToolStation station,Material tape,Mesh ribbonMesh,Material ink,string text=null)
     {
         string path=AssetDatabase.GetAssetPath(station.TapePrefab);
         GameObject contents=PrefabUtility.LoadPrefabContents(path);
@@ -541,14 +550,16 @@ public static class DemoToolsBuilder
         if(ribbon==null) ribbon=contents.GetComponentInChildren<MeshRenderer>();
         ribbon.GetComponent<MeshFilter>().sharedMesh=ribbonMesh;
         ribbon.sharedMaterial=tape;
+        string words=text??DefaultTapeText;
         TextMesh front=component.FrontWarning!=null?component.FrontWarning:
-            Text("FrontWarning",contents.transform,"CRIME SCENE - DO NOT CROSS",Vector3.zero,90,.012f,Color.black);
+            Text("FrontWarning",contents.transform,words,Vector3.zero,90,.012f,Color.black);
         TextMesh back=component.BackWarning!=null?component.BackWarning:
-            Text("BackWarning",contents.transform,"CRIME SCENE - DO NOT CROSS",Vector3.zero,-90,.012f,Color.black);
-        foreach(TextMesh text in new[]{front,back})
+            Text("BackWarning",contents.transform,words,Vector3.zero,-90,.012f,Color.black);
+        foreach(TextMesh warning in new[]{front,back})
         {
-            DepthTestedLabel label=text.GetComponent<DepthTestedLabel>();
-            if(label==null) label=text.gameObject.AddComponent<DepthTestedLabel>();
+            if(text!=null) warning.text=text;
+            DepthTestedLabel label=warning.GetComponent<DepthTestedLabel>();
+            if(label==null) label=warning.gameObject.AddComponent<DepthTestedLabel>();
             label.LabelMaterial=ink;label.Refresh();
         }
         component.FrontWarning=front;component.BackWarning=back;

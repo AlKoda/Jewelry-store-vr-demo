@@ -5,10 +5,11 @@ paintings and a gilt frame moulding, the Aurel & Finch poster and lightbox set, 
 and stickers, and street-level paper, signs and graffiti. Prepared October 14, 2026, revised
 October 15, 2026 (see Revisions at the end).
 **Not yet wired into any builder and never imported into Unity: unverified.**
-Licences are in LICENSE.txt, and hashes and sources in sources.json. Total size is about 18 MB.
+Licences are in LICENSE.txt, and hashes and sources in sources.json. Total size is about 24 MB: 18 MB of
+single images and 6.3 MB for the two atlases in Atlas/ (see Atlases (wiring batch)).
 
-All pixel sizes are multiples of 4, and no side is larger than 2048 px. Only nine images are a power
-of two on both sides (FrameMoulding_Gilt_Color and _Normal, Lightbox_AurelFinchWide,
+All pixel sizes are multiples of 4, and no side is larger than 2048 px. The two atlas pages are powers of
+two (2048 x 2048 and 2048 x 1024). Of the single images, only nine are a power of two on both sides (FrameMoulding_Gilt_Color and _Normal, Lightbox_AurelFinchWide,
 WindowVinyl_AurelFinch, Sign_PleaseRingBell, Sticker_AlarmMonitored, Sticker_InsurerApproved,
 Graffiti_Tags, StreetPosters_Weathered). The other 27 keep the proportions of the real object
 (paintings, 2:3 posters, A4/A3 sheets at 724 x 1024, 1024 x 1448 and 2048 x 1448, the 1536 x 1024
@@ -98,6 +99,82 @@ pane rather than editing the image.
 | Flyer_LostCat.png | 768 x 1024 RGBA | 0.23 x 0.30 | Taped to a streetlight pole at 1.5 m (on a curved quad or a flat quad 1 cm off the pole). Ten tear-off tabs read "Mabel 07700 900 482" (all 11 digits); three are torn off |
 | Notice_PoliceLine.png | 1024 x 724 RGBA | 0.30 x 0.21 (laminated A4) | Cable-tied to the cordon barrier or the forced door. Generic, no force crest |
 
+## Atlases (wiring batch)
+
+Two atlas pages, built October 15, 2026 by Source~/make_atlas.py from the single images above. With them the
+night store's wall graphics need one texture for the interior and one for the street instead of fourteen. The
+single images are kept unchanged, so a builder can still use one of them on its own where it needs more
+resolution. **Never imported into Unity: unverified.**
+
+- Atlas/NightStoreInterior_Color.png: 2048 x 2048 RGBA (sRGB chunk), 4,723,853 bytes, 11 cells, 80.6 % filled.
+- Atlas/NightStoreStreet_Color.png: 2048 x 1024 RGBA, 1,562,918 bytes, 3 cells, 57.0 % filled.
+- Atlas/NightStoreInterior.json (944 bytes) and Atlas/NightStoreStreet.json (275 bytes) hold the layouts for
+  Unity's JsonUtility: `{width, height, cells: [{name, x, y, w, h}]}`. Values are pixels, with y counted from
+  the BOTTOM edge (Unity's UV origin), so a cell's UV rect runs from (x / width, y / height) to
+  ((x + w) / width, (y + h) / height). `name` is the stem of the single image, for example `Sign_CCTV`.
+  Unity imports .json files as TextAssets.
+
+How they are built: each source is resampled to its cell with Lanczos in sRGB-encoded values (as the other
+generators here resize). RGBA sources are resampled with premultiplied alpha, and opaque sources (the JPGs) get
+alpha 255. Under alpha 0, the RGB inside an alpha cell is filled from the visible texels; no visible texel
+changes. Each cell's edge colour is bled 8 px into the gap at alpha 0. The rest of the unused page takes the
+nearby cells' colours, also at alpha 0, so no mip level pulls in black. Cells are 16 px apart and 8 px from the
+page edge. Checked from the layouts, with bilinear sampling at a cell's edge:
+- Mip levels 0 to 2 never mix two cells.
+- Mip 3 never mixes two cells on the street page. On the interior page it mixes them only along the stacked
+  plan, lightbox and Pissarro edges (y 732/748 and 1260/1276 from the top, which sit on a multiple of 4 px but
+  not of 8).
+- From mip 4 up (the 128 px level of a 2048 page), cells 16 px apart can share a texel along their edges.
+
+These levels are used only from far away. UVs need no half-texel inset. No cell is
+rotated or cropped. Each cell's aspect is within 0.33 % of its source (Heda 764 x 768 from 2044 x 2048,
+Pissarro 768 x 604 from 2048 x 1612; the others are exact).
+
+| Cell (`name`) | Px | JSON x, y (y from bottom) | UV u0, v0, u1, v1 | Physical size (m) | px/m | Material |
+|---|---|---|---|---|---|---|
+| **NightStoreInterior_Color.png** | | | | | | |
+| FireEvacuationPlan | 1024 x 724 | 8, 1316 | 0.00391, 0.64258, 0.50391, 0.99609 | 0.42 x 0.297 | 2438 | Opaque |
+| Art_Heda_BreakfastWithLobster | 764 x 768 | 1048, 1272 | 0.51172, 0.62109, 0.88477, 0.99609 | 0.80 x 0.80 | 955 | Opaque |
+| Lightbox_AurelFinchWide | 1024 x 512 | 8, 788 | 0.00391, 0.38477, 0.50391, 0.63477 | 2.00 x 1.00 | 512 | Opaque; Emission = atlas if lit |
+| NoticeBoard_StaffCork | 768 x 512 | 1048, 744 | 0.51172, 0.36328, 0.88672, 0.61328 | 0.90 x 0.60 | 853 | Opaque |
+| Art_Pissarro_BoulevardMontmartre | 768 x 604 | 8, 168 | 0.00391, 0.08203, 0.37891, 0.37695 | 0.89 x 0.70 | 863 | Opaque |
+| Certificate_GemmologyDiplomaFramed | 512 x 384 | 792, 344 | 0.38672, 0.16797, 0.63672, 0.35547 | 0.48 x 0.36 | 1067 | Opaque |
+| Calendar_October2026 | 384 x 543 | 1320, 185 | 0.64453, 0.09033, 0.83203, 0.35547 | 0.30 x 0.42 | 1280 | Cutout 0.5 (hanger hole) |
+| Sign_CCTV | 288 x 384 | 1720, 344 | 0.83984, 0.16797, 0.98047, 0.35547 | 0.30 x 0.40 | 960 | Cutout 0.5 |
+| Sticker_AlarmMonitored | 256 x 256 | 792, 72 | 0.38672, 0.03516, 0.51172, 0.16016 | 0.10 x 0.10 | 2560 | Cutout 0.5 |
+| Sticker_CardsAccepted | 288 x 192 | 1720, 136 | 0.83984, 0.06641, 0.98047, 0.16016 | 0.12 x 0.08 | 2400 | Cutout 0.5 |
+| Sticker_InsurerApproved | 256 x 128 | 8, 24 | 0.00391, 0.01172, 0.12891, 0.07422 | 0.12 x 0.06 | 2133 | Cutout 0.5 |
+| **NightStoreStreet_Color.png** | | | | | | |
+| StreetPosters_Weathered | 1008 x 504 | 8, 512 | 0.00391, 0.50000, 0.49609, 0.99219 | 3.00 x 1.50 | 336 | Opaque |
+| Graffiti_Tags | 1008 x 504 | 1032, 512 | 0.50391, 0.50000, 0.99609, 0.99219 | 3.00 x 1.50 | 336 | Cutout 0.3 or Fade |
+| Flyer_LostCat | 366 x 488 | 8, 8 | 0.00391, 0.00781, 0.18262, 0.48438 | 0.23 x 0.30 | 1591 | Fade (tape), else Cutout 0.5 |
+
+Physical sizes and placements are the ones in the tables above. Give each quad that size, not the pixel ratio
+(Heda is 0.80 x 0.80 m, the calendar 0.30 x 0.42 m).
+
+Import (Unity 6, Built-in; unverified): Default texture, sRGB on, Alpha Source Input Texture Alpha, Alpha Is
+Transparency on, mipmaps on, Wrap Clamp, Trilinear, Aniso 8, Max Size 2048. Keep the interior page at 2048.
+Max Size 1024 would halve every cell and take the plan's 6 px footer down to 3 px. Both pages are powers of
+two, so the Non-Power of 2 setting does not apply.
+- PC (BC7, High Quality): the interior page uses 4 MiB (5.33 MiB with mips) and the street page 2 MiB (2.67 MiB).
+  For comparison, the eleven interior single images at their own sizes are 18.0 M texels, which is 17.1 MiB
+  (22.8 MiB with mips), and the three street images are 4.75 MiB (6.33 MiB with mips).
+- Quest 2 (ASTC): use 4x4 for the interior page (5.33 MiB with mips) because of its small text. 5x5 (3.42 MiB)
+  is fine only if the plan's footer still reads in the headset. Use 6x6 for the street page (1.19 MiB with mips).
+- Materials: the quads on one page share at most three materials, and quads with the same material batch.
+  - Interior: Standard Opaque (paintings, plan, notice board, certificate), Standard Cutout (calendar, CCTV
+    sign, stickers) and, if the lightbox is lit, Standard with the atlas as Emission.
+  - Street: Standard Opaque (posters), Standard Cutout (graffiti) and Standard Fade (the flyer's tape).
+
+Legibility at the atlas size, checked October 15 with 100 % crops:
+- The fire evacuation plan reads completely, down to its 6 px footer line.
+- These also read: the calendar's dates and handwritten notes, the CCTV sign's small print, all three
+  stickers, the diploma text, the lightbox's bottom line and the phone numbers on the flyer's tabs.
+- On the notice board, the headings, memo, Fire Action text, post-its, holiday planner and glazier's card read.
+  **The body text of its A4 sheets does not**: the rota's shift times and the closing-procedure checklist are
+  3 to 4 px tall at 768 x 512. Where a guest should read them up close, use Store/NoticeBoard_StaffCork.jpg
+  (1536 x 1024, 1707 px/m) on its own, or the loose Store/Sheet_StaffRota.jpg and Sheet_ClosingProcedure.jpg.
+
 ## Regenerating
 
 Source~/ holds the generators; Unity ignores the folder. Run them from a folder that holds the
@@ -105,6 +182,12 @@ scripts, with fonts/gfonts (a sparse checkout of github.com/google/fonts) next t
 `render_jewels.py <out> 3`, then `posters.py <renders> Brand`, `store_a.py Store`,
 `store_b.py Store <PoppyField.jpg>`, `street.py Street Artwork <skimage data dir>`, `frame.py Artwork`,
 and `prep_paintings.py <hermitage files> Artwork`. The final hero renders take about 10 minutes on 4 cores.
+The atlases need only numpy and Pillow. From the repository root, run a copy of the script that lives outside
+the pack: `cp Prototype/ThirdParty/WallGraphics/Source~/make_atlas.py /tmp/ && python3 -I /tmp/make_atlas.py
+Prototype/ThirdParty/WallGraphics` (add `--crops <dir>` to get 100 % crops of every cell). The script checks the
+layouts and source hashes before writing anything and exits 1 naming the cell when a check fails. It then writes
+Atlas/ and replaces the Atlas/ entries in sources.json. It runs in about 15 s, and a rerun with the same
+numpy/Pillow reproduces the same bytes.
 
 ## Revisions
 
@@ -118,8 +201,16 @@ October 15, 2026, after an independent review:
 - Import notes: Non-Power of 2 must be None (see above), not the default ToNearest.
 - The rebuilt files come from the same seeded scripts in Source~; every other image is byte-identical
   to the October 14 build.
+- Atlases (wiring batch, later the same day): Atlas/ holds two atlas pages and their JsonUtility layouts, built
+  by the new Source~/make_atlas.py from fourteen of the images (see Atlases (wiring batch)). sources.json gained
+  four Atlas/ entries, each with derived_from (file, sha256, rect) and tool. LICENSE.txt gained section 4. No
+  existing image changed.
 - Still to do outside this folder, by whoever integrates the pack: add the WallGraphics rows to
   Docs/ASSET_REGISTER.md (public-domain paintings, CC0 scikit-image photos inside the flyer and
   newspaper, project-original graphics), remove /Prototype/ThirdParty/WallGraphics/ from
   .git/info/exclude once the pack is accepted, update HANDOFF.md and ROADMAP.md, and add .meta files
   when the pack goes into the snapshot zip.
+- Status of that list at the atlas batch (October 15): Docs/ASSET_REGISTER.md has the three WallGraphics
+  rows, and the pack is tracked in git and no longer in .git/info/exclude. Still open outside this folder:
+  name the Atlas/ files in those rows and in HANDOFF.md and ROADMAP.md, and add .meta files (the two PNGs
+  with the import settings above; the JSON files import as TextAssets).

@@ -1,8 +1,70 @@
+## Realism packs wired into the night store — October 15 (Claude, unverified, never compiled)
+
+The twelve packs are wired into the night store for Quest 2 over Link and for mouse and keyboard, each with a primitive or procedural fallback, and the validator pass has landed. HANDOFF has the details, the check names and the PASS counts.
+
+- [x] Import rules for the twelve packs (PackImport.cs) and pack-aware model import (no uv2 on props, chart margins on the buildings and the rug).
+- [x] DemoAssetLibrary.PlacePack with LOD classes; shared pack materials keyed by colour map, tint and role; glass from the MTL alpha; finishes from the pack data; atlas cells; credits for CC BY and MIT models.
+- [x] StoreKit palette: one set per texture name in a fixed priority (PBRInterior/PBRExterior, then ReferenceTextures or, for the ceiling, NightMaterials, then GeneratedTextures); new brick and shutter; AO on six surfaces.
+- [x] PoliceLook: one setting, `Provisional` (today's look, plus a generic V8 idle) by default; `ProvisionalRealisticUS` for review only.
+- [x] Street: lanterns, the ApartmentBlock across the street, brick, render and shutter facades, bollards, drains, a utility box, a bus shelter, bike racks, a forensic case, a glove box, a passer-by and an alarm bell box; the KayKit towers removed.
+- [x] Lighting: the lamp profile with the streetlight cookie, the car-driven lenses and light bar, additive halos and washes without lights, the overcast panorama sky, an across-street reflection probe and NightSky cookies on the torches and lamps.
+- [x] Interior: snake plants, a rug, a monitor and keyboard, an extinguisher, a clock, ceiling diffusers, and wall graphics from the WallGraphics atlases (showroom, office and street).
+- [x] Closing procedure: the cases hold display furniture only (`StockInSafes`), with left-behind jewellery in the open safes, on the desk and on the floor.
+- [x] Decals: always-on glass shards, puddles, litter and grime; "Ambient wear" and "Case evidence" as hidden presenter sets.
+- [x] Soundscape: zones that muffle the street inside, random street events, reverb, footsteps, recorded set-downs, the alarm bell as a presenter set, music in the menu, an underscore switch and the reset sting.
+- [x] Presenter switches in the Scene tab: light bar flashing, the scene-dressing sets and the underscore music.
+- [x] Credits from the placed assets in the Settings tab and on the start menu, and the packs' extra licence notices in the build.
+- [x] Tools/sync-project.cmd: Open-Unity-Glass.cmd and Start-Demo.cmd mirror Scripts, Editor, Shaders and ThirdParty.
+- [x] Prep inside the packs: LOD1/LOD2 for 17 models and four atlases (two WallGraphics pages, the SurfaceDecals Ambient and Evidence sets), all checked by script.
+- [x] Validator pass: 21 new NightStoreValidation checks (asset library, import, police, LOD budget), 3 StoreKit palette checks, 2 InterfaceChecks and 5 ShopCity checks; two checks renamed; budgets counted at the LOD level selected from the worst eye; MaterialBudget 136. Expected: +26 RunNightQuick and RunNight, +3 RunGallery, +7 RunGlass and RunTextured, +6 the other ShopCity runs.
+- [ ] Checks for the new behaviours that still have none (CLAUDE.md asks for one each): street, lighting, interior, closing procedure, decals, soundscape and music, presenter switches and their reset, credits and licence notices, and the launcher mirror ("all twelve packs present").
+- [x] Copy the 12 new .cs files (each with a fresh .meta) and the changed scripts into Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip (59.0 MB). The twelve realism packs stay out of the ZIP; Start-Demo.cmd and Open-Unity-Glass.cmd mirror them from the repository.
+- [ ] Run on the PC:
+  - the first RunNightQuick, recording the one-time reimport time and the Budget lines;
+  - set MaterialBudget from the log (materials + 8);
+  - RunNight, recording the bake seconds and the Lightmaps= line;
+  - RunGallery and RunGlass.
+- [ ] Bake checks: dark rectangles under the decals (fall back with `NightDecals.DecalsLightmapped = false`), the lantern pools, ApartmentBlock chart bleeding.
+- [ ] Headset checks (Quest 2 over Link, baked build): the light bar's photosensitivity and steady switch, halos in both eyes, decal z-fighting, KitGem shimmer, LOD pops, no footsteps from room-scale walking, teleports or snap turns, frame time.
+- [ ] Desktop checks: the Scene-tab switches and their reset, footsteps, the menu music fade, credits.
+- [ ] Speaker checks: audio levels, reverb, loop clicks after the Vorbis re-encode.
+- [ ] Open-Unity-Glass.cmd mirroring on the PC.
+- [ ] Koda's decisions (for Koda.md):
+  - decision 1, the country and police service, which now includes the ProvisionalRealisticUS option;
+  - the alarm bell (6);
+  - ambient wear and GlassSmudge (7);
+  - the case-evidence contents (2, 5 and 8);
+  - StockInSafes (9);
+  - the call-point style (10).
+- Deferred, each with its reason:
+  - GlamVelvetSofa: untextured (Kd 0.012 reads black), 2.19 m wide with 1 cm to the side table, and CC BY; the StoreKit sofa stays.
+  - FireAlarmCallPoint: a US pull station, which would mix countries in a store that prices in pounds; its style waits for the country decision.
+  - Gem shader: few gems show under the closing procedure, and a stereo shader needs a headset check; KitGem (opaque metallic) stands in.
+  - HDRI reflections: the photographic HDRIs are identifiable, have lamp pixels of 12,800–54,000 and would leave a seam at x 14; the generated sky and the across-street probe are used instead.
+  - Wet-street streak quads: wrong stereo depth, and they do not move with the head; the probes already reflect the lenses. Revisit with a view-dependent shader after a headset check.
+  - GlassSmudge: its fingerprint clusters read as evidence; listed for Koda with the ambient wear.
+  - Country presets: Koda's decision 1; a decided service becomes one more PoliceLook value.
+  - Laminated glass: waits on the entry decision (decision 2).
+  - Fixture-detail generator: a large procedural StoreKit pass that gets its own batch.
+  - Sheen, specular anti-aliasing, torch beams, people's hands: custom shaders, particles and rigs, each needing headset checks; the metals are clamped meanwhile.
+  - Pack torch models: the runtime torches work in both modes; pack meshes need prefab references and hand-pose checks.
+  - Security hardware, procedure props, trim and trees: separate batches (the bell box is added now).
+  - Other vehicles and buildings (Hatchback, SedanClassic, the Downtown buildings): CC BY, cost materials and sit behind the arrival view.
+  - Country-specific street furniture (signs, hydrant, name plates, LED light bar): depends on the country.
+  - ApartmentBlock LODs: it is at LOD0 from 14 m or more, and decimation would damage its flat facade.
+  - Dog barks 01–03: the CC BY 3.0 evidence conflicts; only the CC0 _04 is scheduled.
+  - Alarm bell by default: whether it still rings is a scenario choice, and continuous ringing tires a session; it is a presenter switch, off by default.
+  - Glass tinkle events: random settling sounds could startle trainees.
+  - Bloom and flares: they need post-processing, and the scene renders LDR without packages.
+  - Stock extras (price tags, stands, posters, vinyl, 100 g bars): they conflict with the closing procedure and cost materials.
+  - Pre-placed barriers and markers: placing them is the trainee's task.
+  - The Downloads ZIP: synced separately; the new .cs files need fresh .meta files there (open item above).
+
 ## Realism asset packs — October 15 (Claude, unverified)
 
 - [x] Twelve license-checked packs in Prototype/ThirdParty (PBR materials, night HDRIs and skies, jewellery, forensic, street, interior and people models, wall graphics, decals, a night soundscape, music), with 95 register rows.
-- [ ] Wire them into the night store with fallbacks, a texture import postprocessor, LODs or decimation within the triangle and material budgets, and validator checks (next batch).
-- [ ] Decide the country (police livery, tape text, siren) — see HANDOFF.
+- [x] Wire them into the night store with fallbacks, a texture import postprocessor, and LODs or decimation within the triangle and material budgets (the October 15 wiring batch above; unverified, never compiled). Its validator pass has landed; checks for most of the new behaviours are still open (see above).
+- [ ] Decide the country (police livery, tape text, siren) — see for Koda.md, decision 1; the choice now sits behind `PoliceLook.Current`.
 
 ## Performance and realism fixes from the audit — October 15 (Claude, unverified, never compiled)
 

@@ -35,6 +35,10 @@ public static class DemoBuild
 
     public const string LauncherScene = DemoValidation.ScenesFolder + "/DemoLauncher.unity";
     public const string BuildInfoAsset = "Assets/CrimeSceneDemo/Resources/DemoBuildInfo.txt";
+    // The start menu's music, in the Music pack (NightAudioBuilder.MusicPack).
+    public const string MenuTheme = "MenuTheme.ogg";
+    // The project's third-party packs on disk (DemoAssetLibrary.Root as a full path).
+    public static string ThirdPartyFolder => Path.Combine(Application.dataPath, "CrimeSceneDemo/ThirdParty");
 
     [MenuItem("Crime Scene Demo/Build Latest Demo (launcher + night store)")]
     public static void BuildLatestFromMenu()
@@ -50,7 +54,9 @@ public static class DemoBuild
     // for baked lighting, minutes longer; a failed bake builds with the realtime preview
     // and logs JEWELRY_BUILD_LIGHTING), make the start-menu scene, stamp the build,
     // register launcher + night store (+ the October 10 shop when its scene exists) and
-    // build the Windows player. Exits 0 on success, 1 on failure.
+    // build the Windows player. Exits 0 on success, 1 on failure. The credits the player
+    // shows (Resources/DemoCredits) are written by NightStoreBuilder.Build, so they list
+    // what this night store places.
     public static void BuildLatest()
     {
         bool success = false;
@@ -82,7 +88,9 @@ public static class DemoBuild
         return Build();
     }
 
-    // An empty scene with a dark camera and the DemoLauncher menu.
+    // An empty scene with a dark camera, the DemoLauncher menu and, when the Music pack is
+    // present, the menu theme: a DemoMusic bed faded in over 2.5 s at start and out before a
+    // map loads (DemoLauncher.Open). Without the pack the menu is silent.
     private static void CreateLauncherScene()
     {
         UnityEngine.SceneManagement.Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -93,10 +101,23 @@ public static class DemoBuild
         camera.backgroundColor = new Color(0.06f, 0.07f, 0.09f);
         view.AddComponent<AudioListener>();
         new GameObject("Launcher").AddComponent<DemoLauncher>();
+        AudioClip theme = MenuThemeClip();
+        if (theme != null)
+        {
+            DemoMusic music = new GameObject("MenuMusic").AddComponent<DemoMusic>();
+            music.Bed = theme;
+            music.PlayBedAtStart = true;
+            music.BedVolume = 0.25f;
+            music.FadeSeconds = 2.5f;
+        }
         DemoToolsBuilder.AddTheme(new GameObject("UiTheme"));
         Directory.CreateDirectory(DemoValidation.ScenesFolder);
         EditorSceneManager.SaveScene(scene, LauncherScene);
     }
+
+    // The menu theme as an asset (PackImport imports it as a streaming Vorbis bed), or null
+    // in a project without the Music pack.
+    public static AudioClip MenuThemeClip() => DemoAssetLibrary.Audio(NightAudioBuilder.MusicPack, MenuTheme);
 
     // Build date, source commit and lighting mode, shown at the bottom of the start menu.
     // The lighting is what the scene really ships: a bake that failed reads as preview.
@@ -142,15 +163,71 @@ public static class DemoBuild
             BuildTarget.StandaloneWindows64, BuildOptions.None);
     }
 
-    // CC BY attribution must travel with the distributed demo.
+    // CC BY attribution must travel with the distributed demo: every notice LicenseFiles
+    // lists goes to ThirdPartyLicenses beside the executable. Notices an earlier build left
+    // there that no longer match a pack are removed, so the folder lists only what ships.
     private static void CopyLicenses()
     {
-        string thirdParty = Path.Combine(Application.dataPath, "CrimeSceneDemo/ThirdParty");
+        string thirdParty = ThirdPartyFolder;
         if (!Directory.Exists(thirdParty)) return;
         string target = Path.Combine(OutputFolder, "ThirdPartyLicenses");
         Directory.CreateDirectory(target);
-        foreach (string license in Directory.GetFiles(thirdParty, "LICENSE.txt", SearchOption.AllDirectories))
-            File.Copy(license, Path.Combine(target, Path.GetFileName(Path.GetDirectoryName(license)) + ".txt"), true);
+        HashSet<string> copied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (KeyValuePair<string, string> notice in LicenseFiles(thirdParty))
+        {
+            File.Copy(notice.Key, Path.Combine(target, notice.Value), true);
+            copied.Add(notice.Value);
+        }
+        foreach (string stale in Directory.GetFiles(target, "*.txt"))
+            if (!copied.Contains(Path.GetFileName(stale))) File.Delete(stale);
     }
+
+    // The licence notices a build ships, as (source file, file name in ThirdPartyLicenses),
+    // sorted by that name. A pack is a folder directly under thirdParty:
+    // - its LICENSE.txt -> <pack>.txt;
+    // - every .txt in a Licenses folder of the pack (NightSoundscape/Licenses) -> <pack>_<file>;
+    // - a LICENSE.txt deeper in the pack (NightAudio/Originals/License.txt, the author's own
+    //   notice) -> <pack>_<folders>_<file>.
+    // File names match case-insensitively on every platform (the Windows file system does),
+    // and folders Unity ignores (a trailing ~, a leading dot) are skipped. Two notices that
+    // would share a name keep the first and log a warning.
+    public static List<KeyValuePair<string, string>> LicenseFiles(string thirdParty)
+    {
+        SortedDictionary<string, string> byName = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        if (string.IsNullOrEmpty(thirdParty) || !Directory.Exists(thirdParty)) return new List<KeyValuePair<string, string>>();
+        char[] separators = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
+        string[] packs = Directory.GetDirectories(thirdParty);
+        Array.Sort(packs, StringComparer.Ordinal);
+        foreach (string packFolder in packs)
+        {
+            string pack = Path.GetFileName(packFolder);
+            if (IgnoredFolder(pack)) continue;
+            string root = Path.GetFullPath(packFolder);
+            string[] files = Directory.GetFiles(root, "*.txt", SearchOption.AllDirectories);
+            Array.Sort(files, StringComparer.Ordinal);
+            foreach (string file in files)
+            {
+                // "*.txt" also matches longer extensions on Windows (".txt~").
+                if (!string.Equals(Path.GetExtension(file), ".txt", StringComparison.OrdinalIgnoreCase)) continue;
+                string[] parts = Path.GetFullPath(file).Substring(root.Length).Split(separators, StringSplitOptions.RemoveEmptyEntries);
+                if (parts.Length == 0 || parts.Take(parts.Length - 1).Any(IgnoredFolder)) continue;
+                string name = parts[parts.Length - 1], published = null;
+                if (parts.Length >= 2 && string.Equals(parts[parts.Length - 2], "Licenses", StringComparison.OrdinalIgnoreCase))
+                    published = pack + "_" + name;
+                else if (string.Equals(name, "LICENSE.txt", StringComparison.OrdinalIgnoreCase))
+                    published = parts.Length == 1 ? pack + ".txt" : pack + "_" + string.Join("_", parts);
+                if (published == null) continue;
+                if (byName.TryGetValue(published, out string first))
+                {
+                    Debug.LogWarning("Licence notice " + file + " would overwrite " + first + " as " + published + "; not copied.");
+                    continue;
+                }
+                byName[published] = file;
+            }
+        }
+        return byName.Select(entry => new KeyValuePair<string, string>(entry.Value, entry.Key)).ToList();
+    }
+
+    private static bool IgnoredFolder(string name) => name.EndsWith("~", StringComparison.Ordinal) || name.StartsWith(".", StringComparison.Ordinal);
 }
 #endif

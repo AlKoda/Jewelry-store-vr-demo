@@ -16,6 +16,9 @@ The instructor has unrestricted use. These are methods to connect through UI/XR 
 | Photograph | EvidenceCamera.CapturePhoto() |
 | Open photo folder on Windows | EvidenceCamera.OpenPhotoFolder() |
 | Reset session | DemoSession.ResetSession() |
+| Show / hide a presenter set (alarm bell, ambient wear, case evidence) | PresenterSet.Toggle() or SetShown(bool); PresenterSet.All lists the sets in the scene |
+| Light bar flashing / steady | DemoLighting.ToggleLightBarFlashing() (DemoLighting.LightBarFlashing reads it) |
+| Underscore music on / off | DemoMusic.Instance.ToggleBed() (only when DemoMusic.Instance.Bed is set) |
 
 UnityEvents: ToolsChanged, SessionReset, PhotoSaved(string path), CaptureFailed(string message) and Shutter. EvidenceCamera also exposes LastPhoto (texture of the last photograph), Viewfinder (live texture while the body is held) and PhotoCount.
 
@@ -64,8 +67,26 @@ The number pad's 1–6 work like the main row. The hotbar at the bottom (tools 1
 
 - HUD (hidden layout): chips top left (mode, night, torches, crouch/zoom, tools placed and next marker, photos, pending tape step), the hotbar, a crosshair with the target's name while mouse look is on (brass when there is something to act on), a tooltip beside the cursor otherwise, key prompts for the current situation above the hotbar with a warning line when placement is impossible, toasts top right for every action (DemoFeedback; the headset toast repeats them except presenter-only ones: interface size, HUD on, settings restored), the camera's live view with thirds while it is held, a white flash on each photo and a banner while a reset is armed.
 - Strip: status chips and Photo / Robbed-Intact / Reset / Panel buttons with the last photo and live view.
-- Drawer (right, 420 wide): Tools (new-tool tiles, tape options, placed tools with Remove), Camera (status, photo/hold/folder, live view, last photo, instructor review), Map (overview, click to place the beacon, legend), Scene (robbed/intact, night/day, flashlight, UV torch, UV examples, beacon, reset), Settings (interface size, HUD, prompts, look sensitivity, field of view, invert Y, restore defaults, credits).
+- Drawer (right, 420 wide): Tools (new-tool tiles, tape options, placed tools with Remove), Camera (status, photo/hold/folder, live view, last photo, instructor review), Map (overview, click to place the beacon, legend), Scene (robbed/intact, night/day, flashlight, UV torch, UV examples, light bar flashing, scene dressing sets, underscore music, beacon, reset; see below), Settings (interface size, HUD, prompts, look sensitivity, field of view, invert Y, restore defaults, credits).
 - Settings persist in PlayerPrefs (DemoPanelScale, DemoShowPrompts, DemoPanelTab, DemoLookSensitivity, DemoInvertY, DemoFieldOfView). F2 (hide the HUD) is not saved: every launch, and every map opened from the start menu, starts with the HUD on, and the DemoHudVisible value older builds saved is deleted (October 15, unverified).
+
+### Scene-tab switches (October 15, unverified, night store only)
+
+The drawer's Scene tab (Tab, Scene) gains presenter switches. They have no key and no headset control, and their toasts show on the monitor only. A session reset returns the light bar and the scene-dressing sets to their arrival state; the underscore music keeps its setting. The old shop has none of them, so its Scene tab is unchanged.
+
+| Switch | Section | At arrival | Effect |
+|---|---|---|---|
+| Light bar flashing | LIGHTING, when the police car has a light bar | On | Off holds both halves steady and dim and turns off the red and blue washes on the street and the shop floor, for visitors sensitive to flashing light |
+| Alarm bell | SCENE DRESSING | Off | The alarm bell rings from the bell box on the fascia, muffled inside the shop; whether it rings at arrival is Koda's decision (listed only when the NightSoundscape bell clip is present) |
+| Ambient wear | SCENE DRESSING | Off | Water stain, heel scuffs, fine scratches and wall-base dust (listed only when the SurfaceDecals pack is present) |
+| Case evidence | SCENE DRESSING | Off | Placeholder shoe trails, pry marks, latent prints, a handprint and three discarded tools (Koda's decisions 2 and 5) |
+| Underscore music | MUSIC, when the Music pack is present | Off | Fades the investigation bed in or out. A session reset plays a short sting either way and leaves the switch as it is (the bed ducks under the sting) |
+
+SCENE DRESSING lists one switch per PresenterSet in the scene, sorted by label, each with its note underneath.
+
+Also new (October 15, unverified):
+- Footsteps sound while the desktop visitor walks (one per 0.7 m, glass steps in the glass debris zones). In VR they stay silent: room-scale walking does not move the rig, and teleports and snap turns are skipped.
+- On the start menu, a second key press or click while a map loads is ignored. The menu music fades out over 0.6 s before the map loads. Esc quits even when no map is listed.
 
 Walls, the storefront barrier and InteriorBounds keep the player inside. InteriorBounds.Contains/Clamp are the shared definition of the interior; use them to filter XR teleport destinations.
 

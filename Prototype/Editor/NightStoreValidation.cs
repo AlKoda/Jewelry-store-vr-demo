@@ -23,12 +23,13 @@ public static class NightStoreValidation
     private const string RenderersKey = "NightStoreValidationRenderers";
 
     // VR budgets for a PC-tethered Quest (see Budgets). Each holds the measured scene
-    // with headroom for the instructor's tools (materials: 96, +6 over the old 90, October 11,
-    // unverified; it must cover both the five staged NightGraphics sign materials and up to five
-    // styled tool materials from DemoToolsBuilder.StyleStation, so set it from the logged
-    // "Budget: materials=" value after the first RunNightQuick); the transparency budget became
+    // with headroom for the instructor's tools (materials: 136, October 15, unverified: the
+    // realism wiring adds +52, counted from the newmtl and map_Kd lines of the placed models'
+    // MTLs after PackMaterial's sharing rules, on an estimated ~75 before it, about 127 in all,
+    // plus headroom for the 5 hidden presenter-set materials; set it to the logged
+    // "Budget: materials=" value + 8 after the first RunNightQuick); the transparency budget became
     // reachable once each case's panes were merged (NightStoreBuilder.MergeCaseGlass).
-    public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 96, TextureBudget = 2048;
+    public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 136, TextureBudget = 2048;
     public const int TransparentBudget = 70, FacadePaneBudget = 10;
     public const int LightmapBudget = 8, LightmapSizeBudget = 1024;
     // Realtime lights at once with a torch and two lit lamps; one of them may shadow.
@@ -49,15 +50,18 @@ public static class NightStoreValidation
             NightLighting.UseLinearColorSpace();
             int reimported = ThirdPartyModelImport.GenerateLightmapUVs();
             DemoValidation.Begin("VerificationNight");
-            if (reimported > 0) DemoValidation.Info("Third-party models reimported with lightmap UVs: " + reimported);
+            if (reimported > 0) DemoValidation.Info("Third-party assets reimported to the import rules (models, then pack textures and audio): " + reimported);
             // Fixture library first (it builds and removes its galleries at the origin).
             StoreKitValidation.Check();
+            AssetLibraryChecks();
             GameObject root = NightStoreBuilder.Build(true);
             StaticChecks(root.transform);
+            PackImportChecks();
             DressingChecks(root.transform);
             StagedAssetChecks(root.transform);
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             NightLighting.Apply(root.transform, camera);
+            PoliceLookChecks(root.transform);
             DemoValidation.SaveScene(L.SceneName);
             if (bake)
             {
@@ -172,6 +176,140 @@ public static class NightStoreValidation
         DemoValidation.Check(shell && small > 0 && wrong == 0 && doors && fans, "Night store static flags follow the bake policy");
     }
 
+    // Edit mode, after the build's import sync (ThirdPartyModelImport.GenerateLightmapUVs, which
+    // ends with PackImport.Apply): the realism packs import by their folder and suffix rules,
+    // the older packs keep their own settings, and pack props carry no lightmap UVs except the
+    // buildings and the rug. Each sample is reported, and checked only when its pack was synced.
+    private static void PackImportChecks()
+    {
+        string root = DemoAssetLibrary.Root + "/";
+        int sampled = 0;
+        bool textures = true;
+        foreach (string file in new[] { "PBRInterior/FloorTile_Normal.png", "PBRInterior/FloorTile_MetallicSmoothness.png",
+            "PBRExterior/AsphaltWet_AO.jpg", "WallGraphics/Store/Sheet_StaffRota.jpg", "NightSky/cookie_streetlight_512.png",
+            "StreetModels/DT_MaskedDetails_Color.png", "SurfaceDecals/GlassShards_Scatter.png", "NightSky/city_night_sky_overcast_1k.hdr" })
+        {
+            TextureImporter t = AssetImporter.GetAtPath(root + file) as TextureImporter;
+            if (t == null) { DemoValidation.Info("Pack import sample absent, not checked: " + file); continue; }
+            sampled++;
+            // The rule table, plus the planned values themselves, so a table that drifted fails too.
+            bool ok = PackImport.Expected(t, root + file, false);
+            switch (file)
+            {
+                case "PBRInterior/FloorTile_Normal.png": ok &= t.textureType == TextureImporterType.NormalMap && t.maxTextureSize == 2048; break;
+                case "PBRInterior/FloorTile_MetallicSmoothness.png":
+                case "PBRExterior/AsphaltWet_AO.jpg": ok &= t.textureType == TextureImporterType.Default && !t.sRGBTexture; break;
+                case "WallGraphics/Store/Sheet_StaffRota.jpg":
+                    ok &= t.npotScale == TextureImporterNPOTScale.None && t.wrapModeU == TextureWrapMode.Clamp && t.wrapModeV == TextureWrapMode.Clamp; break;
+                case "NightSky/cookie_streetlight_512.png":
+                    ok &= t.textureType == TextureImporterType.Cookie && t.wrapModeU == TextureWrapMode.Clamp && t.wrapModeV == TextureWrapMode.Clamp && t.borderMipmap; break;
+                case "StreetModels/DT_MaskedDetails_Color.png":
+                    ok &= t.alphaIsTransparency && t.mipMapsPreserveCoverage && Mathf.Abs(t.alphaTestReferenceValue - 0.5f) < 0.001f; break;
+                case "SurfaceDecals/GlassShards_Scatter.png":
+                    ok &= t.maxTextureSize == 1024 && t.wrapModeU == TextureWrapMode.Clamp && t.wrapModeV == TextureWrapMode.Clamp && t.alphaIsTransparency; break;
+                default: ok &= t.textureShape == TextureImporterShape.Texture2D && !t.mipmapEnabled; break;
+            }
+            DemoValidation.Info("Pack import " + file + ": " + t.textureType + ", sRGB " + t.sRGBTexture + ", wrap " + t.wrapModeU + "/" + t.wrapModeV
+                + ", max " + t.maxTextureSize + ", " + t.textureCompression + (ok ? "" : " (differs from the rule)"));
+            textures &= ok;
+        }
+        if (sampled > 0) DemoValidation.Check(textures, "Pack textures follow the folder and suffix import rules");
+
+        int again = PackImport.Apply();
+        if (again > 0) DemoValidation.Info("Pack textures and audio reimported again on the second run: " + again);
+        DemoValidation.Check(again == 0, "PackImport.Apply leaves nothing to reimport on a second run");
+
+        bool alone = PackImport.Governs(root + "PBRInterior/FloorTile_Color.jpg")
+            && PackImport.PackOf(root + "WallGraphics/Atlas/NightStoreInterior_Color.png") == "WallGraphics";
+        foreach (string pack in new[] { "ReferenceTextures", "NightMaterials", "NightAudio", "KayKitCity", "StoreKit" })
+            alone &= !PackImport.Governs(root + pack + "/Sample_Color.png");
+        alone &= !PackImport.Governs(root + "StreetModels/Source~/Preview_LODs.jpg") && !PackImport.Governs(root + "NightSky/Generators~/gen_sprites.py")
+            && !PackImport.Governs(root + "MusicArchive/MenuTheme.ogg") && !PackImport.Governs("Assets/Elsewhere/PBRInterior/FloorTile_Color.jpg");
+        DemoValidation.Check(alone, "Import rules leave the older packs alone");
+
+        sampled = 0;
+        bool models = true;
+        foreach (string file in new[] { "StreetModels/PoliceCar.obj", "StreetModels/StreetLamp.obj", "StreetModels/ApartmentBlock.obj",
+            "InteriorModels/Rug.obj", "KayKitCity/car_police.obj" })
+        {
+            ModelImporter m = AssetImporter.GetAtPath(root + file) as ModelImporter;
+            if (m == null) { DemoValidation.Info("Model import sample absent, not checked: " + file); continue; }
+            sampled++;
+            bool wanted = !file.StartsWith("StreetModels/PoliceCar", StringComparison.Ordinal) && !file.StartsWith("StreetModels/StreetLamp", StringComparison.Ordinal);
+            float planned = file.StartsWith("StreetModels/ApartmentBlock", StringComparison.Ordinal) ? 6 : file.StartsWith("InteriorModels/Rug", StringComparison.Ordinal) ? 16 : 0;
+            bool ok = ThirdPartyModelImport.Expected(m, root + file, false) && m.generateSecondaryUV == wanted && MeshesHaveUV2(root + file, wanted);
+            if (planned > 0)
+                ok &= m.secondaryUVMarginMethod == ModelImporterSecondaryUVMarginMethod.Calculate && Mathf.Abs(m.secondaryUVMinLightmapResolution - planned) < 0.01f;
+            DemoValidation.Info("Model import " + file + ": uv2 " + m.generateSecondaryUV + ", margin " + m.secondaryUVMarginMethod
+                + " at " + m.secondaryUVMinLightmapResolution + " texels per unit" + (ok ? "" : " (differs from the rule)"));
+            models &= ok;
+        }
+        if (sampled > 0) DemoValidation.Check(models, "Prop packs import without lightmap UVs; buildings, the rug and KayKit keep them with their planned chart margins");
+
+        sampled = 0;
+        bool audio = true;
+        foreach (string file in new[] { "NightSoundscape/NightCity_Loop.ogg", "NightSoundscape/FootstepHard_01.wav", "Music/MenuTheme.ogg" })
+        {
+            AudioImporter a = AssetImporter.GetAtPath(root + file) as AudioImporter;
+            if (a == null) { DemoValidation.Info("Pack import sample absent, not checked: " + file); continue; }
+            sampled++;
+            AudioImporterSampleSettings s = a.defaultSampleSettings;
+            bool ok = PackImport.Expected(a, root + file, false);
+            if (file.EndsWith("_Loop.ogg", StringComparison.Ordinal))
+                ok &= s.loadType == AudioClipLoadType.CompressedInMemory && s.compressionFormat == AudioCompressionFormat.Vorbis && a.loadInBackground;
+            else if (file.EndsWith(".wav", StringComparison.Ordinal))
+                ok &= s.loadType == AudioClipLoadType.DecompressOnLoad && s.compressionFormat == AudioCompressionFormat.PCM;
+            else ok &= s.loadType == AudioClipLoadType.Streaming && s.compressionFormat == AudioCompressionFormat.Vorbis && a.loadInBackground;
+            DemoValidation.Info("Pack import " + file + ": " + s.loadType + ", " + s.compressionFormat + " " + s.quality + ", background " + a.loadInBackground);
+            audio &= ok;
+        }
+        if (sampled > 0) DemoValidation.Check(audio, "Pack audio imports: loops compressed in memory, one-shots PCM, music streaming");
+    }
+
+    // Edit mode, after the lighting pass: Koda's decision 1 (country and police service, for
+    // Koda.md) stays open, so every police choice comes from PoliceLook and the build keeps
+    // today's provisional look: the KayKit car (or its stand-in) with its 0.38 x 0.07 x 0.16
+    // light-bar halves at x +-0.2 and 0.3 x 0.12 lenses, 1.5 Hz, the CRIME SCENE tape, no
+    // siren or radio events, no radio loop and no police figure. Fails on purpose while
+    // another PoliceLook.Service is selected for review.
+    private static void PoliceLookChecks(Transform root)
+    {
+        PoliceLook.Preset look = PoliceLook.Active;
+        Transform car = root.Find("Exterior/PoliceCar");
+        Transform red = car != null ? car.Find("LightBar/Red") : null, blue = car != null ? car.Find("LightBar/Blue") : null;
+        Transform lens = car != null ? car.Find("HeadlightLeft/Lens") : null;
+        LightBarBlink bar = car != null ? car.GetComponentInChildren<LightBarBlink>(true) : null;
+        AmbientEvents events = root.GetComponentInChildren<AmbientEvents>(true);
+        ToolStation station = UnityEngine.Object.FindFirstObjectByType<ToolStation>();
+        SceneTape tape = station != null ? station.TapePrefab : null;
+        bool provisional = PoliceLook.Current == PoliceLook.Service.Provisional && NightStoreBuilder.PlacedCar.Model == PoliceLook.KayKitCar.Model
+            && look.Sirens.Length == 0 && look.Radio.Length == 0 && string.IsNullOrEmpty(look.GuardFigure) && L.Tools.TapeText == DemoToolsBuilder.DefaultTapeText;
+        bool built = red != null && blue != null && lens != null && bar != null
+            && Vector3.Distance(red.localPosition, new Vector3(-0.2f, 0, 0)) < 0.001f && Vector3.Distance(blue.localPosition, new Vector3(0.2f, 0, 0)) < 0.001f
+            && Vector3.Distance(red.localScale, new Vector3(0.38f, 0.07f, 0.16f)) < 0.001f && Vector3.Distance(lens.localScale, new Vector3(0.3f, 0.12f, 1)) < 0.001f
+            && Mathf.Abs(bar.Hertz - 1.5f) < 0.001f
+            && (events == null || events.IndexOf(NightAudioBuilder.SirenGroup) < 0 && events.IndexOf(NightAudioBuilder.RadioGroup) < 0)
+            && root.Find(NightAudioBuilder.SoundscapeName + "/" + NightAudioBuilder.RadioLoopName) == null
+            && root.Find("Exterior/" + NightStreet.PeopleGroup + "/" + PoliceLook.RealisticUS.GuardFigure) == null
+            && tape != null && tape.FrontWarning != null && tape.FrontWarning.text == DemoToolsBuilder.DefaultTapeText;
+        DemoValidation.Info("Police look: " + look.Name + "; car placed " + NightStoreBuilder.PlacedCar.Model);
+        DemoValidation.Check(provisional && built, "Police choices come from the PoliceLook setting, Provisional by default");
+    }
+
+    // Every mesh of the model has (wanted) or lacks a second UV set; false without a mesh.
+    private static bool MeshesHaveUV2(string path, bool wanted)
+    {
+        bool any = false, ok = true;
+        foreach (UnityEngine.Object asset in AssetDatabase.LoadAllAssetRepresentationsAtPath(path))
+        {
+            Mesh mesh = asset as Mesh;
+            if (mesh == null || mesh.vertexCount == 0) continue;
+            any = true;
+            ok &= mesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.TexCoord1) == wanted;
+        }
+        return any && ok;
+    }
+
     // Every static zone batches; each case's deck stock and each loose floor cell is one
     // probe-lit renderer per material, out of GI like the small props it replaced.
     private static void DressingChecks(Transform root)
@@ -207,39 +345,62 @@ public static class NightStoreValidation
 
     // ---------------------------------------------------------------- staged night assets
 
-    // Edit mode: the NightMaterials packed maps and finishes and the NightGraphics signs,
-    // each checked only when its files were synced into the project (otherwise the
-    // builder keeps the previous scalar finishes and places no sign, and this reports it).
+    // Edit mode: the palette's texture sets (packed maps, ceiling and facade) and the
+    // NightGraphics signs, each checked only when its files were synced into the project
+    // (otherwise the builder keeps the scalar finishes and places no sign, and this reports it).
     private static void StagedAssetChecks(Transform root)
     {
-        const string pack = StoreKit.NightMaterialPack;
-        int packed = 0, expected = 0;
+        // Every palette material's packed map is the one its chosen set names (sRGB off,
+        // Metallic Alpha at multiplier 1), or none: the ReferenceTextures and generated sets
+        // and the untextured materials keep their scalar finish.
+        int packed = 0, sourced = 0;
         bool maps = true;
         foreach (KeyValuePair<Material, string> entry in StoreKit.PaletteTextures)
         {
-            if (!DemoAssetLibrary.HasTexture(pack, entry.Value + "_MetallicSmoothness.png")) continue;
-            expected++;
-            Texture map = entry.Key.GetTexture("_MetallicGlossMap");
-            bool ok = map != null && map.name == entry.Value + "_MetallicSmoothness" && entry.Key.IsKeywordEnabled("_METALLICGLOSSMAP")
-                && entry.Key.GetFloat("_SmoothnessTextureChannel") == 0 && Mathf.Approximately(entry.Key.GetFloat("_GlossMapScale"), 1);
+            Material material = entry.Key;
+            if (material == null) continue;
+            Texture map = material.GetTexture("_MetallicGlossMap");
+            bool chosen = StoreKit.PaletteSet(material, out StoreKit.SurfaceSet set);
+            if (chosen) sourced++;
+            if (!chosen || set.Ms == null || !DemoAssetLibrary.HasTexture(set.Pack, set.Ms))
+            {
+                maps &= map == null && !material.IsKeywordEnabled("_METALLICGLOSSMAP");
+                continue;
+            }
             TextureImporter importer = map != null ? AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(map)) as TextureImporter : null;
-            ok &= importer != null && !importer.sRGBTexture;
+            bool ok = map != null && AssetDatabase.GetAssetPath(map) == DemoAssetLibrary.Path(set.Pack, set.Ms) && material.IsKeywordEnabled("_METALLICGLOSSMAP")
+                && material.GetFloat("_SmoothnessTextureChannel") == 0 && Mathf.Approximately(material.GetFloat("_GlossMapScale"), 1)
+                && importer != null && !importer.sRGBTexture;
             if (ok) packed++;
             maps &= ok;
         }
-        DemoValidation.Info("Night materials with packed metallic-smoothness maps: " + packed + " of " + expected + " staged");
-        if (expected > 0) DemoValidation.Check(maps, "Night materials use packed metallic-smoothness maps");
+        DemoValidation.Info("Night palette materials with a texture set: " + sourced + "; with the set's packed metallic-smoothness map: " + packed);
+        DemoValidation.Check(maps, "Night palette maps all come from the selected set");
 
-        bool ceiling = DemoAssetLibrary.HasTexture(pack, "CeilingPaint_Color.png") && !DemoAssetLibrary.HasTexture(StoreKit.TexturePack, "CeilingPaint_Color.png");
-        bool facade = DemoAssetLibrary.HasTexture(pack, "FacadeStone_Color.png") && !DemoAssetLibrary.HasTexture(StoreKit.TexturePack, "FacadeStone_Color.png");
+        // The ceiling slab shows the colour map of the set KitCeiling took (PBRInterior's
+        // plasterboard when present, else the NightMaterials plaster); the facade cladding
+        // shows the NightMaterials dark marble.
+        bool ShowsSet(Transform t, StoreKit.SurfaceSet s)
+        {
+            MeshRenderer renderer = t != null ? t.GetComponent<MeshRenderer>() : null;
+            if (renderer == null) return false;
+            foreach (Material shown in renderer.sharedMaterials)
+                if (shown != null && shown.mainTexture != null && AssetDatabase.GetAssetPath(shown.mainTexture) == DemoAssetLibrary.Path(s.Pack, s.Color)) return true;
+            return false;
+        }
+        bool ceiling = StoreKit.PaletteSet(StoreKit.CeilingPaint, out StoreKit.SurfaceSet ceilingSet);
+        bool facade = StoreKit.PaletteSet(StoreKit.Cladding, out StoreKit.SurfaceSet facadeSet);
+        DemoValidation.Info("Ceiling set=" + (StoreKit.PaletteSource(StoreKit.CeilingPaint) ?? "none") + "; facade set=" + (StoreKit.PaletteSource(StoreKit.Cladding) ?? "none"));
         if (ceiling || facade)
         {
             bool ok = true;
-            if (ceiling) ok &= Textured(root.Find(L.CeilingPath + "/CeilingSlab"), "CeilingPaint_Color");
-            if (facade) ok &= Textured(root.Find("Facade/Cladding"), "FacadeStone_Color");
-            DemoValidation.Check(ok, "Night ceiling and facade use the staged plaster and marble");
+            if (ceiling) ok &= ShowsSet(root.Find(L.CeilingPath + "/CeilingSlab"), ceilingSet)
+                && (ceilingSet.Pack == StoreKit.PbrInteriorPack || !DemoAssetLibrary.HasTexture(StoreKit.PbrInteriorPack, "CeilingPaint_Color.jpg"));
+            if (facade) ok &= ShowsSet(root.Find("Facade/Cladding"), facadeSet)
+                && facadeSet.Pack == StoreKit.NightMaterialPack && facadeSet.Color == "FacadeStone_Color.png";
+            DemoValidation.Check(ok, "Ceiling and facade use the selected sets");
         }
-        else DemoValidation.Info("Staged ceiling/facade finishes not present (or overridden by ReferenceTextures): skipped");
+        else DemoValidation.Info("No ceiling or facade texture set present: skipped");
 
         const string graphics = NightStoreBuilder.GraphicsPack;
         if (DemoAssetLibrary.HasTexture(graphics, "ShopFascia.png"))
@@ -276,6 +437,200 @@ public static class NightStoreValidation
         DemoValidation.Check(!decals, "Staged floor decals stay unplaced");
     }
 
+    // Edit mode, before the build: DemoAssetLibrary's pack path (shared pack materials,
+    // roles and finishes, map wiring, LOD levels, atlases, the blend and quad helpers,
+    // credits). A check that needs a pack is skipped (Info) without it. The test objects
+    // and every credit recorded here are cleared again, so the build credits only what it places.
+    private static void AssetLibraryChecks()
+    {
+        const string street = "StreetModels", interior = "InteriorModels", people = "PeopleModels", jewelry = "JewelryModels";
+        Transform test = new GameObject("AssetLibraryTest").transform;
+        test.position = new Vector3(0, -50, 0);
+        try
+        {
+            if (DemoAssetLibrary.Has(street, "Bollard") && DemoAssetLibrary.Has(street, "StreetLamp"))
+            {
+                DemoAssetLibrary.PackOptions prop = new DemoAssetLibrary.PackOptions { Lod = DemoAssetLibrary.LodClass.Prop };
+                GameObject a = DemoAssetLibrary.PlacePack(street, "Bollard", test, Vector3.zero, 0, prop);
+                GameObject b = DemoAssetLibrary.PlacePack(street, "Bollard", test, new Vector3(1.4f, 0, 0), 90, prop);
+                GameObject lamp = DemoAssetLibrary.PlacePack(street, "StreetLamp", test, new Vector3(4, 0, 0), 0,
+                    new DemoAssetLibrary.PackOptions { Lod = DemoAssetLibrary.LodClass.Post });
+                List<Material> first = MaterialsUnder(a.transform), second = MaterialsUnder(b.transform);
+                bool shared = first.Count > 0 && first.Count == second.Count;
+                for (int i = 0; shared && i < first.Count; i++)
+                    shared = first[i] != null && first[i] == second[i]
+                        && AssetDatabase.GetAssetPath(first[i]).StartsWith(DemoAssetLibrary.PackMaterialFolder + "/", StringComparison.Ordinal);
+                bool lods = DemoAssetLibrary.Has(street, "StreetLamp_LOD1") && DemoAssetLibrary.Has(street, "StreetLamp_LOD2");
+                Transform lod0 = lamp.transform.Find("LOD0"), lod1 = lamp.transform.Find("LOD1");
+                if (lods) shared &= lod0 != null && lod1 != null && new HashSet<Material>(MaterialsUnder(lod0)).IsSupersetOf(MaterialsUnder(lod1));
+                DemoValidation.Check(shared, "Pack placement shares one material per pack, colour map, tint and role across instances and LOD levels");
+                if (lods)
+                {
+                    LODGroup group = lamp.GetComponent<LODGroup>();
+                    float[] post = DemoAssetLibrary.Transitions(DemoAssetLibrary.LodClass.Post, 3);
+                    bool grouped = group != null && group.lodCount == 3 && group.fadeMode == LODFadeMode.None && a.GetComponent<LODGroup>() == null;
+                    if (grouped)
+                    {
+                        LOD[] levels = group.GetLODs();
+                        for (int i = 0; i < 3; i++)
+                            grouped &= Mathf.Abs(levels[i].screenRelativeTransitionHeight - post[i]) < 1e-4f && levels[i].renderers.Length > 0;
+                    }
+                    DemoValidation.Check(grouped, "LOD groups use the prep variants with the class transitions");
+                }
+                else DemoValidation.Info("StreetLamp_LOD1/_LOD2 not present: LOD group check skipped");
+            }
+            else DemoValidation.Info("StreetModels not present: pack placement and LOD checks skipped");
+
+            Material yellow = PackMaterialOf(street, "TrafficLight", "PaintYellow"), black = PackMaterialOf(street, "TrafficLight", "PaintBlack");
+            Material housing = PackMaterialOf(interior, "ComputerMonitor", "Housing"), pot = PackMaterialOf(interior, "SnakePlant", "Pot");
+            Material carInterior = PackMaterialOf(street, "PoliceCar", "Interior"), rooms = PackMaterialOf(street, "ApartmentBlock", "Interior");
+            Material props = PackMaterialOf(people, "PasserBy_Phone", "Props"), screen = PackMaterialOf(people, "PasserBy_Phone", "PropScreen");
+            if (yellow != null && black != null && housing != null && pot != null && carInterior != null && rooms != null && props != null && screen != null)
+                DemoValidation.Check(yellow != black && housing != pot && props != screen && !carInterior.IsKeywordEnabled("_EMISSION")
+                    && rooms.IsKeywordEnabled("_EMISSION") && (rooms.globalIlluminationFlags & MaterialGlobalIlluminationFlags.BakedEmissive) != 0
+                    && !props.IsKeywordEnabled("_EMISSION") && screen.IsKeywordEnabled("_EMISSION"),
+                    "Shared colour maps with different tints or roles stay separate");
+            else DemoValidation.Info("StreetModels, InteriorModels or PeopleModels not present: shared-map separation check skipped");
+
+            Material frames = PackMaterialOf(street, "ApartmentBlock", "WindowFrames"), facadeGlass = PackMaterialOf(street, "ApartmentBlock", "Glass");
+            Material body = PackMaterialOf(street, "PoliceCar", "Body");
+            if (frames != null && facadeGlass != null && body != null)
+                DemoValidation.Check(frames.renderQueue < 2500 && facadeGlass.renderQueue == 3000 && facadeGlass.color.a < 0.99f
+                    && body.GetFloat("_Glossiness") >= 0.8f && !body.IsKeywordEnabled("_METALLICGLOSSMAP"),
+                    "Transparency comes from the MTL alpha, finishes from the pack data");
+            else DemoValidation.Info("StreetModels not present: transparency and finish check skipped");
+            // GemParcel's Diamond has no finish entry: only the imported MTL d can make it glass.
+            Material diamond = ImportedMaterial(jewelry, "GemParcel", "Diamond");
+            if (diamond != null)
+            {
+                DemoValidation.Info("Imported MTL alpha of GemParcel Diamond (d 0.35): " + diamond.color.a.ToString("0.00"));
+                DemoValidation.Check(PackMaterialOf(jewelry, "GemParcel", "Diamond").renderQueue == 3000,
+                    "The OBJ import carries the MTL d as colour alpha (a glass material without a finish entry)");
+            }
+            else DemoValidation.Info("JewelryModels not present: MTL alpha check skipped");
+
+            Material extinguisher = PackMaterialOf(interior, "FireExtinguisher", "Body");
+            if (extinguisher != null)
+            {
+                Texture bump = extinguisher.GetTexture("_BumpMap"), gloss = extinguisher.GetTexture("_MetallicGlossMap");
+                TextureImporter bumpImporter = bump != null ? AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(bump)) as TextureImporter : null;
+                TextureImporter glossImporter = gloss != null ? AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(gloss)) as TextureImporter : null;
+                DemoValidation.Check(bump != null && bump.name == "FireExtinguisher_Body_Normal" && gloss != null && gloss.name == "FireExtinguisher_Body_MetallicSmoothness"
+                    && extinguisher.IsKeywordEnabled("_NORMALMAP") && extinguisher.IsKeywordEnabled("_METALLICGLOSSMAP")
+                    && bumpImporter != null && bumpImporter.textureType == TextureImporterType.NormalMap && glossImporter != null && !glossImporter.sRGBTexture,
+                    "Pack material convention wires Normal and MetallicSmoothness by the colour map stem");
+            }
+            else DemoValidation.Info("InteriorModels not present: map convention check skipped");
+            Material grille = PackMaterialOf(street, "AirconUnit", "AirconGrille");
+            if (grille != null)
+                DemoValidation.Check(grille.mainTexture != null && grille.IsKeywordEnabled("_ALPHATEST_ON") && grille.renderQueue == 2450 && grille.GetFloat("_Cutoff") > 0
+                    && Mathf.Approximately(grille.GetFloat("_Cutoff"), PackImport.CutoffOf(AssetDatabase.GetAssetPath(grille.mainTexture))),
+                    "Cut-out colour maps alpha-test at the import rules' cutoff");
+            else DemoValidation.Info("StreetModels AirconUnit not present: cut-out check skipped");
+
+            bool threw = false;
+            GameObject missing = null;
+            try
+            {
+                missing = DemoAssetLibrary.PlacePack(street, "NoSuchModel", test, Vector3.zero, 0,
+                    new DemoAssetLibrary.PackOptions { Lod = DemoAssetLibrary.LodClass.Prop });
+            }
+            catch (Exception) { threw = true; }
+            DemoValidation.Check(!threw && missing == null && test.Find("NoSuchModel") == null, "Missing pack models return null");
+
+            foreach (string[] atlas in new[] { new[] { "SurfaceDecals", "Atlas/Ambient.json" }, new[] { "WallGraphics", "Atlas/NightStoreInterior.json" } })
+            {
+                if (AssetDatabase.LoadAssetAtPath<TextAsset>(DemoAssetLibrary.Path(atlas[0], atlas[1])) == null)
+                {
+                    DemoValidation.Info(atlas[0] + "/" + atlas[1] + " not present: atlas check skipped");
+                    continue;
+                }
+                Dictionary<string, Rect> cells = DemoAssetLibrary.Atlas(atlas[0], atlas[1]);
+                bool inside = cells != null && cells.Count > 0;
+                if (inside)
+                    foreach (Rect r in cells.Values)
+                        inside &= r.xMin >= 0 && r.yMin >= 0 && r.xMax <= 1 && r.yMax <= 1 && r.width > 0 && r.height > 0;
+                // A cell from the WallGraphics README table: y counts from the page's bottom edge.
+                if (inside && atlas[0] == "WallGraphics")
+                {
+                    inside = cells.TryGetValue("Lightbox_AurelFinchWide", out Rect box) && Mathf.Abs(box.xMin - 8 / 2048f) < 1e-5f
+                        && Mathf.Abs(box.yMin - 788 / 2048f) < 1e-5f && Mathf.Abs(box.width - 0.5f) < 1e-5f && Mathf.Abs(box.height - 0.25f) < 1e-5f;
+                }
+                DemoValidation.Check(inside, "Atlas cells load as UV rects inside [0,1] (" + atlas[0] + "/" + atlas[1] + ")");
+            }
+
+            Material fade = DemoGeometry.Fade(new Material(Shader.Find("Standard")), 3010);
+            Material cut = DemoGeometry.Cutout(new Material(Shader.Find("Standard")), 0.4f);
+            bool blend = fade.IsKeywordEnabled("_ALPHABLEND_ON") && !fade.IsKeywordEnabled("_ALPHATEST_ON") && !fade.IsKeywordEnabled("_ALPHAPREMULTIPLY_ON")
+                && fade.renderQueue == 3010 && fade.GetTag("RenderType", false) == "Transparent" && fade.GetFloat("_ZWrite") == 0 && fade.GetFloat("_Mode") == 2
+                && cut.IsKeywordEnabled("_ALPHATEST_ON") && !cut.IsKeywordEnabled("_ALPHABLEND_ON") && !cut.IsKeywordEnabled("_ALPHAPREMULTIPLY_ON")
+                && cut.renderQueue == 2450 && cut.GetTag("RenderType", false) == "TransparentCutout" && cut.GetFloat("_ZWrite") == 1
+                && cut.GetFloat("_Mode") == 1 && Mathf.Approximately(cut.GetFloat("_Cutoff"), 0.4f);
+            UnityEngine.Object.DestroyImmediate(fade);
+            UnityEngine.Object.DestroyImmediate(cut);
+            DemoValidation.Check(blend, "Fade and Cutout helpers set the Standard blend state");
+
+            ProceduralMesh quad = new ProceduralMesh();
+            quad.Quad(null, Vector3.back, Vector3.zero, Vector3.right, new Vector3(1, 1, 0), Vector3.up, new Rect(0.25f, 0.5f, 0.25f, 0.125f));
+            quad.Quad(null, Vector3.back, Vector3.zero, Vector3.right, Vector3.right * 2, Vector3.right * 3, new Rect(0, 0, 1, 1));
+            Mesh mesh = quad.ToMesh("QuadCheck");
+            int[] triangles = mesh.triangles;
+            Vector3[] corners = mesh.vertices;
+            Vector2[] uv = mesh.uv;
+            bool quadOk = mesh.vertexCount == 4 && triangles.Length == 6 && mesh.normals[0].z < -0.99f
+                && Vector3.Dot(Vector3.Cross(corners[triangles[1]] - corners[triangles[0]], corners[triangles[2]] - corners[triangles[0]]), Vector3.back) > 0
+                && (uv[0] - new Vector2(0.25f, 0.5f)).sqrMagnitude < 1e-10f && (uv[2] - new Vector2(0.5f, 0.625f)).sqrMagnitude < 1e-10f;
+            UnityEngine.Object.DestroyImmediate(mesh);
+            DemoValidation.Check(quadOk, "ProceduralMesh.Quad maps the UV rect to its corners, faces outward and skips degenerate quads");
+
+            GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            block.transform.SetParent(test, false);
+            block.transform.position = new Vector3(0, 7, 0);
+            DemoAssetLibrary.Seat(block, 0.5f);
+            DemoValidation.Check(Mathf.Abs(block.GetComponent<Renderer>().bounds.min.y - 0.5f) < 1e-4f, "Seat rests a prop's lowest renderer point on the surface");
+
+            DemoAssetLibrary.ResetCredits();
+            bool credited = DemoAssetLibrary.UsedCredits().Count == 0 && !DemoAssetLibrary.NeedsCredit(street, "StreetLamp")
+                && DemoAssetLibrary.CreditFor(people, "PasserBy_Phone_LOD1") != null
+                && DemoAssetLibrary.CreditFor(street, "PoliceCar_LOD2") == DemoAssetLibrary.CreditFor(street, "PoliceCar");
+            if (DemoAssetLibrary.Has("KhronosSamples", "TrafficCone"))
+            {
+                GameObject cone = DemoAssetLibrary.Place("KhronosSamples", "TrafficCone", test, Vector3.zero, 0, 1);
+                string line = DemoAssetLibrary.CreditFor("KhronosSamples", "TrafficCone");
+                DemoValidation.Check(credited && cone != null && line != null && DemoAssetLibrary.UsedCredits().Contains(line),
+                    "Placing an attributable model records its credit");
+            }
+            else DemoValidation.Info("KhronosSamples TrafficCone not present: credit check skipped");
+        }
+        finally
+        {
+            UnityEngine.Object.DestroyImmediate(test.gameObject);
+            DemoAssetLibrary.ResetCredits();
+        }
+    }
+
+    // An OBJ's imported (read-only) material by its MTL name; null when the model is absent.
+    private static Material ImportedMaterial(string pack, string model, string material)
+    {
+        GameObject asset = DemoAssetLibrary.Load(pack, model);
+        if (asset == null) return null;
+        foreach (Renderer r in asset.GetComponentsInChildren<Renderer>(true))
+            foreach (Material m in r.sharedMaterials)
+                if (m != null && m.name == material) return m;
+        return null;
+    }
+
+    // The pack material DemoAssetLibrary.PlacePack gives that imported material, without placing the model.
+    private static Material PackMaterialOf(string pack, string model, string material)
+        => DemoAssetLibrary.PackMaterial(pack, model, ImportedMaterial(pack, model, material));
+
+    private static List<Material> MaterialsUnder(Transform t)
+    {
+        List<Material> list = new List<Material>();
+        foreach (Renderer r in t.GetComponentsInChildren<Renderer>(true)) list.AddRange(r.sharedMaterials);
+        return list;
+    }
+
     private static bool Textured(Transform t, string texture)
     {
         MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
@@ -303,6 +658,10 @@ public static class NightStoreValidation
         string[] files = { "CameraClick.wav", "FlashlightSwitch.wav", "ToolSetDown.wav", "PanelSelect.wav", "DistantAir_Loop.wav" };
         bool any = false;
         foreach (string file in files) any |= AssetDatabase.LoadAssetAtPath<AudioClip>(DemoAssetLibrary.Path(NightStoreBuilder.AudioPack, file)) != null;
+        // NightAudioBuilder also stages NightSoundscape's takes (shutter, torch click, city bed,
+        // set-downs, footsteps), so a project with that pack has a bank without NightAudio too.
+        foreach (string file in new[] { "CameraShutterDSLR_01.wav", "FlashlightClick_01.wav", "NightCity_Loop.ogg", "ConePlace_01.wav", "EvidenceMarkerPlace_01.wav", "FootstepHard_01.wav", "FootstepGlass_01.wav" })
+            any |= AssetDatabase.LoadAssetAtPath<AudioClip>(DemoAssetLibrary.Path(NightAudioBuilder.SoundPack, file)) != null;
         bool generated = DemoSounds.Generated(DemoSound.Click) != null && DemoSounds.Generated(DemoSound.Thud) != null
             && DemoSounds.Generated(DemoSound.Ambience) != null && DemoSounds.Generated(DemoSound.Ambience).length > 3;
         if (!any)
@@ -426,20 +785,65 @@ public static class NightStoreValidation
         return r != null ? r.scaleInLightmap : -1;
     }
 
+    // Where the budgets are seen from: the spawn, every walk-route point and the office
+    // opening, at standing eye height, with the desktop view's field of view and the LOD bias
+    // NightQuality.Apply sets at runtime (VR's ~95 degrees selects the same or lower levels).
+    public const float BudgetEyeHeight = 1.6f, BudgetFieldOfView = 60, BudgetLodBias = 1;
+
+    private static List<Vector3> BudgetEyes(Transform root, out List<string> names)
+    {
+        List<Vector3> eyes = new List<Vector3> { L.PlayerSpawn };
+        names = new List<string> { "spawn" };
+        for (int i = 0; i < L.Route.Length; i++) { eyes.Add(L.Route[i]); names.Add("route " + i); }
+        eyes.Add(L.Anchor("OfficeOpening"));
+        names.Add("office opening");
+        for (int i = 0; i < eyes.Count; i++) eyes[i] = root.TransformPoint(eyes[i]) + Vector3.up * BudgetEyeHeight;
+        return eyes;
+    }
+
+    // The level a LODGroup draws for a perspective eye, by the LODGroup inspector's formula:
+    // half the group's world size over (distance x tan of half the field of view), times the
+    // LOD bias, against each level's transition height; lods.Length when it is culled.
+    public static int SelectedLod(LODGroup group, Vector3 eye, float fieldOfView, float lodBias)
+    {
+        LOD[] lods = group.GetLODs();
+        Vector3 scale = group.transform.lossyScale;
+        float size = group.size * Mathf.Max(Mathf.Abs(scale.x), Mathf.Max(Mathf.Abs(scale.y), Mathf.Abs(scale.z)));
+        float distance = Mathf.Max(Vector3.Distance(group.transform.TransformPoint(group.localReferencePoint), eye), 1e-4f);
+        float height = size * 0.5f / (distance * Mathf.Tan(fieldOfView * 0.5f * Mathf.Deg2Rad)) * lodBias;
+        for (int i = 0; i < lods.Length; i++)
+            if (height >= lods[i].screenRelativeTransitionHeight) return i;
+        return lods.Length;
+    }
+
     // The scene as the arrival view can draw it, in edit mode (static batching merges the
-    // meshes in Play mode): active, enabled renderers only, whatever their owner.
+    // meshes in Play mode): active, enabled renderers only, whatever their owner. Triangles,
+    // renderers and transparent renderers count only the level each LODGroup selects from the
+    // worst eye (BudgetEyes; each budget at its own worst eye); every level together and the
+    // hidden presenter sets are logged as Info. Materials and textures count every level.
     private static void Budgets(Transform root)
     {
-        int[] triangles = new int[4];
         string[] categories = { "store", "exterior", "dressing", "tools and player" };
-        int renderers = 0, transparent = 0, facadePanes = 0, largestTexture = 0;
+        int facadePanes = 0, largestTexture = 0, allRenderers = 0, allTransparent = 0, allTriangles = 0;
         HashSet<Material> materials = new HashSet<Material>();
         HashSet<Texture> textures = new HashSet<Texture>();
         Transform facade = root.Find("Facade");
+        // The levels of every active LODGroup that hold each renderer (a bit per level).
+        Dictionary<Renderer, KeyValuePair<LODGroup, int>> levels = new Dictionary<Renderer, KeyValuePair<LODGroup, int>>();
+        LODGroup[] groups = UnityEngine.Object.FindObjectsByType<LODGroup>(FindObjectsSortMode.None);
+        foreach (LODGroup group in groups)
+        {
+            LOD[] lods = group.GetLODs();
+            for (int i = 0; i < lods.Length; i++)
+                foreach (Renderer r in lods[i].renderers)
+                    if (r != null) levels[r] = new KeyValuePair<LODGroup, int>(group, (levels.TryGetValue(r, out KeyValuePair<LODGroup, int> held) ? held.Value : 0) | 1 << i);
+        }
+        List<Renderer> drawn = new List<Renderer>();
+        List<int> counts = new List<int>(), kinds = new List<int>();
+        List<bool> blends = new List<bool>();
         foreach (Renderer r in UnityEngine.Object.FindObjectsByType<Renderer>(FindObjectsSortMode.None))
         {
             if (!r.enabled || !r.gameObject.activeInHierarchy) continue;
-            renderers++;
             bool clear = false;
             foreach (Material m in r.sharedMaterials)
             {
@@ -450,12 +854,17 @@ public static class NightStoreValidation
             MeshFilter filter = r.GetComponent<MeshFilter>();
             Mesh mesh = filter != null ? filter.sharedMesh : null;
             // A facade pane fills much of the view from the pavement: one face of a square metre or more.
-            if (clear) transparent++;
             if (clear && mesh != null && r.transform.IsChildOf(facade) && DemoGeometry.SurfaceArea(mesh) * 0.5f >= 1) facadePanes++;
-            if (mesh == null) continue;
             int count = 0;
-            for (int i = 0; i < mesh.subMeshCount; i++) count += (int)mesh.GetIndexCount(i) / 3;
-            triangles[Category(r.transform, root)] += count;
+            if (mesh != null)
+                for (int i = 0; i < mesh.subMeshCount; i++) count += (int)mesh.GetIndexCount(i) / 3;
+            drawn.Add(r);
+            counts.Add(count);
+            kinds.Add(Category(r.transform, root));
+            blends.Add(clear);
+            allRenderers++;
+            allTriangles += count;
+            if (clear) allTransparent++;
         }
         foreach (Material m in materials)
             foreach (string property in m.GetTexturePropertyNames())
@@ -463,22 +872,67 @@ public static class NightStoreValidation
                 Texture texture = m.GetTexture(property);
                 if (texture != null && textures.Add(texture)) largestTexture = Mathf.Max(largestTexture, Mathf.Max(texture.width, texture.height));
             }
-        int total = 0;
-        string split = "";
-        for (int i = 0; i < triangles.Length; i++)
+
+        List<Vector3> eyes = BudgetEyes(root, out List<string> eyeNames);
+        int[] triangles = new int[categories.Length];
+        int total = -1, renderers = 0, transparent = 0;
+        string worst = "", worstRenderers = "", worstTransparent = "";
+        bool helper = true;
+        foreach (LODGroup group in groups)
         {
-            total += triangles[i];
-            split += (i > 0 ? ", " : "") + categories[i] + " " + triangles[i];
+            Vector3 at = group.transform.TransformPoint(group.localReferencePoint);
+            helper &= SelectedLod(group, at, BudgetFieldOfView, BudgetLodBias) == 0
+                && SelectedLod(group, at + Vector3.up * 10000, BudgetFieldOfView, BudgetLodBias) == group.lodCount;
         }
+        for (int e = 0; e < eyes.Count; e++)
+        {
+            Dictionary<LODGroup, int> selected = new Dictionary<LODGroup, int>();
+            foreach (LODGroup group in groups) selected[group] = SelectedLod(group, eyes[e], BudgetFieldOfView, BudgetLodBias);
+            int[] split = new int[categories.Length];
+            int sum = 0, shown = 0, clear = 0;
+            for (int i = 0; i < drawn.Count; i++)
+            {
+                if (levels.TryGetValue(drawn[i], out KeyValuePair<LODGroup, int> held) && (held.Value & 1 << selected[held.Key]) == 0) continue;
+                split[kinds[i]] += counts[i];
+                sum += counts[i];
+                shown++;
+                if (blends[i]) clear++;
+            }
+            if (sum > total) { total = sum; triangles = split; worst = eyeNames[e]; }
+            if (shown > renderers) { renderers = shown; worstRenderers = eyeNames[e]; }
+            if (clear > transparent) { transparent = clear; worstTransparent = eyeNames[e]; }
+        }
+        total = Mathf.Max(total, 0);
+        string splitText = "";
+        for (int i = 0; i < triangles.Length; i++) splitText += (i > 0 ? ", " : "") + categories[i] + " " + triangles[i];
+
+        // Hidden presenter sets (their content inactive at arrival), every level, for when they are shown.
+        int hiddenTriangles = 0, hiddenRenderers = 0;
+        foreach (PresenterSet set in UnityEngine.Object.FindObjectsByType<PresenterSet>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+        {
+            if (set.Content == null || set.Content.activeInHierarchy) continue;
+            foreach (MeshFilter filter in set.Content.GetComponentsInChildren<MeshFilter>(true))
+            {
+                if (filter.sharedMesh == null) continue;
+                hiddenRenderers++;
+                for (int i = 0; i < filter.sharedMesh.subMeshCount; i++) hiddenTriangles += (int)filter.sharedMesh.GetIndexCount(i) / 3;
+            }
+        }
+
         SessionState.SetInt(TrianglesKey, total);
         SessionState.SetInt(RenderersKey, renderers);
-        DemoValidation.Info("Budget: triangles=" + total + " (" + split + ") of " + TriangleBudget);
+        DemoValidation.Info("Budget: LOD groups=" + groups.Length + "; all levels drawn at once: triangles=" + allTriangles + ", renderers=" + allRenderers
+            + ", transparent=" + allTransparent + "; hidden presenter sets (all levels): triangles=" + hiddenTriangles + ", renderers=" + hiddenRenderers);
+        DemoValidation.Check(helper && total <= allTriangles && renderers <= allRenderers && transparent <= allTransparent,
+            "Budgets count the LOD level selected from the worst eye");
+        DemoValidation.Info("Budget: triangles=" + total + " (" + splitText + ") of " + TriangleBudget + ", worst eye " + worst);
         DemoValidation.Check(total <= TriangleBudget, "Night store triangle budget");
-        DemoValidation.Info("Budget: renderers before static batching=" + renderers + " of " + RendererBudget);
+        DemoValidation.Info("Budget: renderers before static batching=" + renderers + " of " + RendererBudget + ", worst eye " + worstRenderers);
         DemoValidation.Check(renderers <= RendererBudget, "Night store renderer budget");
         DemoValidation.Info("Budget: materials=" + materials.Count + " of " + MaterialBudget + "; textures=" + textures.Count + ", largest " + largestTexture + " px of " + TextureBudget);
         DemoValidation.Check(materials.Count <= MaterialBudget && largestTexture <= TextureBudget, "Night store material budget");
-        DemoValidation.Info("Budget: transparent renderers=" + transparent + " of " + TransparentBudget + "; facade panes of 1 m2 or more=" + facadePanes + " of " + FacadePaneBudget);
+        DemoValidation.Info("Budget: transparent renderers=" + transparent + " of " + TransparentBudget + ", worst eye " + worstTransparent
+            + "; facade panes of 1 m2 or more=" + facadePanes + " of " + FacadePaneBudget);
         DemoValidation.Check(transparent <= TransparentBudget && facadePanes <= FacadePaneBudget, "Night store transparency budget");
     }
 

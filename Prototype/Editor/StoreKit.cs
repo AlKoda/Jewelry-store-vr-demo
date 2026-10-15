@@ -18,8 +18,9 @@ using static DemoGeometry;
 //
 // Each rigid part is one KitMesh: one renderer with a submesh per material, metric
 // UVs and lightmap UVs, saved under Folder. Materials come from Palette() and pick
-// up tileable textures from the ReferenceTextures pack when present, else the
-// GeneratedTextures stand-ins (walnut, brushed brass, marble).
+// up one tileable set per texture name (Sets): the PBRInterior/PBRExterior sets when
+// present, else ReferenceTextures or NightMaterials, else the GeneratedTextures
+// stand-ins (walnut, brushed brass, marble), else their scalar finish.
 //
 // Instantiate(name, ...) first looks for a user-converted model at
 // Prototype/ThirdParty/StoreKit/<name>.obj or .fbx (synced to
@@ -128,10 +129,14 @@ public static partial class StoreKit
     public static Material WindowDark { get; private set; }
     // Neighbours' lit rooms: a baked emitter, so the street gets a little warm bounce for free.
     public static Material WindowLit { get; private set; }
+    // Facing brick and galvanised roller shutters for the street (PBRExterior sets; their
+    // scalar finish without the pack).
+    public static Material Brick { get; private set; }
+    public static Material Shutter { get; private set; }
 
     public static void Palette()
     {
-        if (Walnut != null && Glass != null && Gold != null) return;
+        if (Walnut != null && Glass != null && Gold != null && Brick != null) return;
         EnsureFolder("Assets/CrimeSceneDemo");
         EnsureFolder(Folder);
         Walnut = Surface("KitWalnut", new Color(0.30f, 0.20f, 0.14f), 0.35f, 0, "Walnut", 0.6f);
@@ -146,8 +151,9 @@ public static partial class StoreKit
         Lacquer = Surface("KitLacquer", new Color(0.84f, 0.81f, 0.74f), 0.4f, 0, null, 1);
         Fabric = Surface("KitFabric", new Color(0.16f, 0.16f, 0.17f), 0.1f, 0, null, 1);
         SafeLining = Surface("KitSafeLining", new Color(0.36f, 0.30f, 0.23f), 0.3f, 0.3f, null, 1);
-        PaintedGrey = Surface("KitPaintedGrey", new Color(0.33f, 0.34f, 0.35f), 0.35f, 0.3f, null, 1);
-        Stainless = Surface("KitStainless", new Color(0.62f, 0.62f, 0.60f), 0.55f, 0.8f, null, 1);
+        Color paintedGrey = new Color(0.33f, 0.34f, 0.35f);
+        PaintedGrey = Surface("KitPaintedGrey", paintedGrey, 0.35f, 0.3f, null, 1);
+        Stainless = Surface("KitStainless", new Color(0.62f, 0.62f, 0.60f), 0.55f, 0.8f, "BrushedSteel", 0.5f);
         DeviceBlack = Surface("KitDeviceBlack", new Color(0.10f, 0.10f, 0.11f), 0.4f, 0, null, 1);
         DeviceGrey = Surface("KitDeviceGrey", new Color(0.58f, 0.58f, 0.56f), 0.45f, 0.2f, null, 1);
         Foliage = Surface("KitFoliage", new Color(0.17f, 0.30f, 0.13f), 0.25f, 0, null, 1);
@@ -167,8 +173,11 @@ public static partial class StoreKit
         // Wet asphalt: dark and glossy; the streetlight lenses glow in the street's baked
         // probe (the headlamps reflect in the showroom's).
         Asphalt = Surface("KitAsphalt", new Color(0.09f, 0.09f, 0.10f), 0.7f, 0, "AsphaltWet", 3.0f);
-        Concrete = Surface("KitConcrete", new Color(0.56f, 0.55f, 0.52f), 0.2f, 0, null, 1);
-        Render = Surface("KitRender", new Color(0.44f, 0.41f, 0.37f), 0.1f, 0, null, 1);
+        Concrete = Surface("KitConcrete", new Color(0.56f, 0.55f, 0.52f), 0.2f, 0, "Concrete", 2.0f);
+        // Weathered plaster tinted cream (the PBRExterior README tints Render per building).
+        Render = Surface("KitRender", new Color(0.44f, 0.41f, 0.37f), 0.1f, 0, "Render", 2.0f, new Color(0.95f, 0.92f, 0.85f));
+        Brick = Surface("KitBrick", new Color(0.45f, 0.30f, 0.24f), 0.25f, 0, "BrickFacade", 3.0f);
+        Shutter = Surface("KitShutter", paintedGrey, 0.45f, 0.6f, "MetalShutter", 1.0f);
         RoadLine = Surface("KitRoadLine", new Color(0.72f, 0.72f, 0.68f), 0.4f, 0, null, 1);
         WindowDark = Surface("KitWindowDark", new Color(0.04f, 0.05f, 0.06f), 0.85f, 0, null, 1);
         WindowLit = Emissive(Surface("KitWindowLit", new Color(0.85f, 0.75f, 0.55f), 0.5f, 0, null, 1), new Color(1.0f, 0.72f, 0.42f) * 0.9f);
@@ -191,73 +200,162 @@ public static partial class StoreKit
     }
 
     public const string FallbackTexturePack = "GeneratedTextures";
-
-    // Generated tileable textures standing in for a palette texture until a reference one exists.
-    private static readonly Dictionary<string, string> GeneratedFallback = new Dictionary<string, string>
-    {
-        { "Walnut", "Walnut" }, { "BronzeBrushed", "BrushedBrass" }, { "StoneTop", "Marble" },
-        { "FloorTile", "StoneTiles" }, { "PlasterWarm", "Plaster" }, { "CeilingPaint", "Ceiling" },
-        { "PavementSlab", "Pavement" }, { "AsphaltWet", "Asphalt" }
-    };
-
-    // Staged night finishes (Prototype/ThirdParty/NightMaterials): Color/Normal for the
-    // ceiling and facade, packed <texture>_MetallicSmoothness maps for every textured
-    // palette surface. Normal strengths are the pack README's starting values.
+    // Staged night finishes (Prototype/ThirdParty/NightMaterials): the dark marble facade
+    // and the older plaster ceiling, each with its own normal and packed map.
     public const string NightMaterialPack = "NightMaterials";
-    private static readonly Dictionary<string, float> NightBump = new Dictionary<string, float>
+    public const string PbrInteriorPack = "PBRInterior", PbrExteriorPack = "PBRExterior";
+
+    // One tileable map set: file names inside Pack with their extension (Normal, Ms and Ao
+    // null when the set has none), the real-world tile in metres along u and v (TileV 0:
+    // square), the normal and AO strengths, and whether the colour map is calibrated (a
+    // physically valid albedo, used at white times the tint instead of a light tint of the
+    // saved colour).
+    public struct SurfaceSet
     {
-        { "CeilingPaint", 0.25f }, { "FacadeStone", 0.4f }
+        public string Pack, Color, Normal, Ms, Ao;
+        public float Tile, TileV, Bump, Occlusion;
+        public bool Calibrated;
+    }
+
+    // PBRInterior/PBRExterior <name>_Color.jpg with _Normal.png (unless noted), packed
+    // _MetallicSmoothness.png and, with an AO strength, _AO.jpg; calibrated.
+    private static SurfaceSet Pbr(string pack, string name, float tile, float tileV = 0, float bump = 1, float ao = 0, bool normal = true)
+        => new SurfaceSet
+        {
+            Pack = pack, Color = name + "_Color.jpg", Normal = normal ? name + "_Normal.png" : null, Ms = name + "_MetallicSmoothness.png",
+            Ao = ao > 0 ? name + "_AO.jpg" : null, Tile = tile, TileV = tileV, Bump = bump, Occlusion = ao, Calibrated = true
+        };
+
+    // ReferenceTextures <name>_Color.png and _Normal.png at the scalar finish.
+    private static SurfaceSet Reference(string name, float tile, float bump = 0.8f)
+        => new SurfaceSet { Pack = TexturePack, Color = name + "_Color.png", Normal = name + "_Normal.png", Tile = tile, Bump = bump };
+
+    // NightMaterials <name>_Color.png, _Normal.png and _MetallicSmoothness.png (the README's starting normal strengths).
+    private static SurfaceSet Night(string name, float tile, float bump)
+        => new SurfaceSet { Pack = NightMaterialPack, Color = name + "_Color.png", Normal = name + "_Normal.png", Ms = name + "_MetallicSmoothness.png", Tile = tile, Bump = bump };
+
+    // GeneratedTextures stand-in <name>.png and <name>_Normal.png at the scalar finish.
+    private static SurfaceSet Generated(string name, float tile)
+        => new SurfaceSet { Pack = FallbackTexturePack, Color = name + ".png", Normal = name + "_Normal.png", Tile = tile, Bump = 0.8f };
+
+    // One source per palette texture name, in priority order: the first set whose colour
+    // file exists supplies colour, normal, metallic-smoothness, AO and tiling, so maps never
+    // mix across packs. The one pairing inside a pack is PavementSlab: the wet colour and
+    // finish (PavementSlabWet) take the dry set's normal and AO, as the PBRExterior README
+    // says. ReferenceTextures and the generated stand-ins keep the scalar finish (the
+    // NightMaterials constant 16 px maps equal those scalars, and its README calls the
+    // scalar cheaper and equivalent). FacadeStone is the NightMaterials dark marble only,
+    // today's piers (PBRExterior's lighter travertine would change the look; both normal
+    // maps are within a few degrees of flat); CeilingPaint prefers PBRInterior's
+    // smooth modern plasterboard over the NightMaterials plaster. Tiles and strengths are
+    // the pack READMEs'; the ReferenceTextures and generated tiles are the earlier ones.
+    private static readonly Dictionary<string, SurfaceSet[]> Sets = new Dictionary<string, SurfaceSet[]>
+    {
+        ["FloorTile"] = new[] { Pbr(PbrInteriorPack, "FloorTile", 2.4f, ao: 0.7f), Reference("FloorTile", 1.2f), Generated("StoneTiles", 1.2f) },
+        ["StoneTop"] = new[] { Pbr(PbrInteriorPack, "StoneTop", 1.0f, normal: false), Reference("StoneTop", 0.8f), Generated("Marble", 0.8f) },
+        ["Walnut"] = new[] { Pbr(PbrInteriorPack, "Walnut", 1.0f), Reference("Walnut", 0.6f), Generated("Walnut", 0.6f) },
+        ["PlasterWarm"] = new[] { Pbr(PbrInteriorPack, "PlasterWarm", 2.0f, 1.0f), Reference("PlasterWarm", 2.0f), Generated("Plaster", 2.0f) },
+        ["CeilingPaint"] = new[] { Pbr(PbrInteriorPack, "CeilingPaint", 2.0f), Night("CeilingPaint", 2.0f, 0.25f), Generated("Ceiling", 2.0f) },
+        ["VelvetCharcoal"] = new[] { Pbr(PbrInteriorPack, "VelvetCharcoal", 0.5f), Reference("VelvetCharcoal", 0.25f) },
+        ["SuedeCream"] = new[] { Pbr(PbrInteriorPack, "SuedeCream", 0.5f), Reference("SuedeCream", 0.25f) },
+        ["BronzeBrushed"] = new[] { Pbr(PbrInteriorPack, "BronzeBrushed", 0.5f), Reference("BronzeBrushed", 0.3f), Generated("BrushedBrass", 0.3f) },
+        ["SafeSteel"] = new[] { Pbr(PbrInteriorPack, "SafeSteel", 0.5f), Reference("SafeSteel", 0.5f) },
+        ["FacadeStone"] = new[] { Night("FacadeStone", 2.0f, 0.4f) },
+        ["PavementSlab"] = new[]
+        {
+            new SurfaceSet
+            {
+                Pack = PbrExteriorPack, Color = "PavementSlabWet_Color.jpg", Normal = "PavementSlab_Normal.png", Ms = "PavementSlabWet_MetallicSmoothness.png",
+                Ao = "PavementSlab_AO.jpg", Tile = 2.0f, Bump = 1, Occlusion = 0.7f, Calibrated = true
+            },
+            Reference("PavementSlab", 1.2f), Generated("Pavement", 1.2f)
+        },
+        ["AsphaltWet"] = new[] { Pbr(PbrExteriorPack, "AsphaltWet", 3.0f, ao: 0.6f), Reference("AsphaltWet", 3.0f), Generated("Asphalt", 3.0f) },
+        ["Concrete"] = new[] { Pbr(PbrExteriorPack, "Concrete", 2.0f, 1.0f, 0.6f) },
+        ["Render"] = new[] { Pbr(PbrExteriorPack, "Render", 2.0f, ao: 0.6f) },
+        ["BrickFacade"] = new[] { Pbr(PbrExteriorPack, "BrickFacade", 3.0f, ao: 0.8f) },
+        ["MetalShutter"] = new[] { Pbr(PbrExteriorPack, "MetalShutter", 1.0f, ao: 0.6f) },
+        ["BrushedSteel"] = new[] { Pbr(PbrInteriorPack, "BrushedSteel", 0.5f) },
+        ["Leather"] = new[] { Pbr(PbrInteriorPack, "Leather", 0.2f) },
     };
 
-    // Palette materials with a texture name, for the validator's packed-map check.
+    // Palette materials with a texture name, and the set each one took (none when it kept
+    // its scalar finish), for the validators.
     private static readonly Dictionary<Material, string> paletteTextures = new Dictionary<Material, string>();
+    private static readonly Dictionary<Material, SurfaceSet> paletteSets = new Dictionary<Material, SurfaceSet>();
     public static IEnumerable<KeyValuePair<Material, string>> PaletteTextures => paletteTextures;
 
-    // Standard material; with ReferenceTextures/<texture>_Color.png present (else the
-    // NightMaterials set, else the GeneratedTextures stand-in) the texture carries the
-    // colour (light tint kept) and tiles once per `metres` on metric UVs. A packed
-    // NightMaterials/<texture>_MetallicSmoothness.png replaces the scalar metallic and
-    // smoothness (the constant ones match them); without it the scalars stay.
-    private static Material Surface(string name, Color color, float smoothness, float metallic, string texture, float metres)
+    // The sets a palette texture name tries, in priority order (a copy; empty for an unknown name).
+    public static SurfaceSet[] PaletteSets(string texture)
+        => texture != null && Sets.TryGetValue(texture, out SurfaceSet[] sets) ? (SurfaceSet[])sets.Clone() : new SurfaceSet[0];
+
+    // The set a palette material took; false when it is untextured.
+    public static bool PaletteSet(Material m, out SurfaceSet set)
+    {
+        set = default(SurfaceSet);
+        return m != null && paletteSets.TryGetValue(m, out set);
+    }
+
+    // "<pack>/<colour stem>" of the set a palette material took (PBRExterior/PavementSlabWet,
+    // GeneratedTextures/StoneTiles), or null when it is untextured.
+    public static string PaletteSource(Material m)
+    {
+        if (!PaletteSet(m, out SurfaceSet set)) return null;
+        string stem = System.IO.Path.GetFileNameWithoutExtension(set.Color);
+        return set.Pack + "/" + (stem.EndsWith("_Color", StringComparison.Ordinal) ? stem.Substring(0, stem.Length - 6) : stem);
+    }
+
+    // Standard material at its scalar finish, then the first set of `texture` (Sets) whose
+    // colour file exists: its colour map (calibrated: at white times `tint`, white when
+    // omitted; otherwise ApplyTextures' light tint of `color`), its normal map, packed
+    // metallic-smoothness map (replacing the scalars) and AO (_OcclusionMap at the set's
+    // strength), each only when the set lists it and the file exists, and tiling once per
+    // tile on metric UVs. Without a set the material stays untextured and tiles once per `metres`.
+    private static Material Surface(string name, Color color, float smoothness, float metallic, string texture, float metres, Color? tint = null)
     {
         Material m = Mat(Folder, name, color, smoothness);
         m.SetFloat("_Metallic", metallic);
         m.mainTexture = null;
         m.SetTexture("_BumpMap", null);
         m.DisableKeyword("_NORMALMAP");
+        m.SetTexture("_OcclusionMap", null);
+        m.SetFloat("_OcclusionStrength", 1);
         m.mainTextureScale = Vector2.one / metres;
         DemoAssetLibrary.ApplyMetallicSmoothness(m, null);
+        paletteSets.Remove(m);
         if (texture != null)
         {
             paletteTextures[m] = texture;
-            float bump = 0.8f;
-            Texture2D albedo = DemoAssetLibrary.Texture(TexturePack, texture + "_Color.png");
-            Texture2D normal = albedo != null ? DemoAssetLibrary.NormalMap(TexturePack, texture + "_Normal.png") : null;
-            if (albedo == null && NightBump.TryGetValue(texture, out float nightBump))
+            foreach (SurfaceSet set in PaletteSets(texture))
             {
-                albedo = DemoAssetLibrary.Texture(NightMaterialPack, texture + "_Color.png");
-                normal = albedo != null ? DemoAssetLibrary.NormalMap(NightMaterialPack, texture + "_Normal.png") : null;
-                bump = nightBump;
+                Texture2D albedo = DemoAssetLibrary.Texture(set.Pack, set.Color);
+                if (albedo == null) continue;
+                Texture2D normal = set.Normal != null ? DemoAssetLibrary.NormalMap(set.Pack, set.Normal) : null;
+                DemoAssetLibrary.ApplyTextures(m, albedo, normal, set.Bump);
+                if (set.Calibrated) m.color = tint ?? Color.white;
+                DemoAssetLibrary.ApplyMetallicSmoothness(m, set.Ms != null ? DemoAssetLibrary.DataMap(set.Pack, set.Ms) : null);
+                Texture2D occlusion = set.Ao != null ? DemoAssetLibrary.DataMap(set.Pack, set.Ao) : null;
+                if (occlusion != null)
+                {
+                    m.SetTexture("_OcclusionMap", occlusion);
+                    m.SetFloat("_OcclusionStrength", set.Occlusion);
+                }
+                m.mainTextureScale = new Vector2(1 / set.Tile, 1 / (set.TileV > 0 ? set.TileV : set.Tile));
+                paletteSets[m] = set;
+                break;
             }
-            if (albedo == null && GeneratedFallback.TryGetValue(texture, out string generated))
-            {
-                albedo = DemoAssetLibrary.Texture(FallbackTexturePack, generated + ".png");
-                normal = albedo != null ? DemoAssetLibrary.NormalMap(FallbackTexturePack, generated + "_Normal.png") : null;
-                bump = 0.8f;
-            }
-            if (albedo != null) DemoAssetLibrary.ApplyTextures(m, albedo, normal, bump);
-            DemoAssetLibrary.ApplyMetallicSmoothness(m, DemoAssetLibrary.DataMap(NightMaterialPack, texture + "_MetallicSmoothness.png"));
         }
         EditorUtility.SetDirty(m);
         return m;
     }
 
-    // Palette materials that ended up with an albedo texture (for validator reports).
+    // Palette materials that ended up with an albedo texture, with the set they took (for validator reports).
     public static List<string> TexturedPalette()
     {
         List<string> names = new List<string>();
-        foreach (Material m in new[] { Walnut, Suede, Velvet, Bronze, Stone, SafeSteel })
-            if (m != null && m.mainTexture != null) names.Add(m.name + "=" + m.mainTexture.name);
+        foreach (Material m in new[] { Walnut, Suede, Velvet, Bronze, Stone, SafeSteel, Stainless, Floor, Plaster, CeilingPaint, Cladding,
+            Pavement, Asphalt, Concrete, Render, Brick, Shutter, Leather })
+            if (m != null && m.mainTexture != null) names.Add(m.name + "=" + (PaletteSource(m) ?? m.mainTexture.name));
         return names;
     }
 

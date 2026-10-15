@@ -1,0 +1,62 @@
+{
+ "width": 2048,
+ "height": 2048,
+ "cells": [
+  {
+   "name": "ShoePrint_Sneaker_Mud_L",
+   "x": 8,
+   "y": 1048,
+   "w": 496,
+   "h": 992
+  },
+  {
+   "name": "ShoePrint_Sneaker_Mud_R",
+   "x": 520,
+   "y": 1048,
+   "w": 496,
+   "h": 992
+  },
+  {
+   "name": "ShoePrint_Sneaker_Dust_L",
+   "x": 1032,
+   "y": 1048,
+   "w": 496,
+   "h": 992
+  },
+  {
+   "name": "ShoePrint_Sneaker_Dust_R",
+   "x": 1544,
+   "y": 1048,
+   "w": 496,
+   "h": 992
+  },
+  {
+   "name": "Fingerprints_Atlas",
+   "x": 8,
+   "y": 520,
+   "w": 1024,
+   "h": 512
+  },
+  {
+   "name": "PryMarks_DoorFrame",
+   "x": 8,
+   "y": 8,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "GlassHandprint_Latent",
+   "x": 520,
+   "y": 8,
+   "w": 496,
+   "h": 496
+  },
+  {
+   "name": "DirtTracked_Entrance",
+   "x": 1048,
+   "y": 40,
+   "w": 992,
+   "h": 992
+  }
+ ]
+}

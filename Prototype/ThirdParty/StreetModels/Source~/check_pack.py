@@ -70,7 +70,8 @@ for f in files:
             nfr += 1
             if np.linalg.norm(np.cross(b - a, c - a)) / 2 < 1e-10:
                 deg += 1
-    mtl = os.path.join(PK, name + '.mtl')
+    # LOD variants (<Model>_LOD1/_LOD2.obj) point at the original <Model>.mtl: read the OBJ's own mtllib
+    mtl = os.path.join(PK, next((l.split(None, 1)[1].strip() for l in open(p) if l.startswith('mtllib')), name + '.mtl'))
     maps = [l.split()[1] for l in open(mtl) if l.startswith('map_Kd')]
     for m in maps:
         if not os.path.exists(os.path.join(PK, m)):
@@ -81,7 +82,7 @@ for f in files:
         errors.append('LICENSE does not mention ' + name)
     if name in ('PottedPlant',) and deg:
         errors.append('%s has %d zero-area triangles' % (name, deg))
-    m = S['models'].get(f)
+    m = S['models'].get(f) or (listed.get(f) if 'derived_from' in listed.get(f, {}) else None)   # LODs: files entry
     if m is None or m['tris'] != nfr:
         errors.append('tris mismatch %s: doc %s, file %d' % (f, m and m['tris'], nfr))
     tot_tris += nfr

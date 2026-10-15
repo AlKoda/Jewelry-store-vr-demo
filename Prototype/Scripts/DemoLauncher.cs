@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -7,7 +8,9 @@ using UnityEngine.SceneManagement;
 // newest first, with the build date and source commit (Resources/DemoBuildInfo, written
 // by DemoBuild.BuildLatest). Enter or 1 starts the newest map; F10 in any map returns
 // here. IMGUI on the monitor, so it needs no packages. Desktop only for now: the build
-// has no XR plug-in until XR Plug-in Management and OpenXR are installed.
+// has no XR plug-in until XR Plug-in Management and OpenXR are installed. The menu theme
+// (a DemoMusic bed, when DemoBuild found the Music pack) fades out before a map loads, and
+// the credits summary (DemoUi.Credits' first line) sits above the build stamp.
 public sealed class DemoLauncher : MonoBehaviour
 {
     public struct Entry
@@ -46,8 +49,13 @@ public sealed class DemoLauncher : MonoBehaviour
     private static readonly string[] Hints = { "Enter", "Newest map", "1-9", "Choose", "F10", "Back here from a map", "Esc", "Quit" };
     private static readonly string[] Numbers = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
 
+    // How long the menu theme fades before the map loads (unscaled seconds).
+    public const float MusicFadeSeconds = 0.6f;
+
     private List<Entry> entries;
-    private string buildInfo = "";
+    private string buildInfo = "", credits = "";
+    // Set by the first Open: a second key or click during the fade loads nothing more.
+    private bool opening;
     private GUIStyle title, cardTitle, card, cardLatest;
     private Font styledWith;
 
@@ -58,6 +66,7 @@ public sealed class DemoLauncher : MonoBehaviour
         entries = Entries(paths, SceneManager.GetActiveScene().buildIndex);
         TextAsset info = Resources.Load<TextAsset>("DemoBuildInfo");
         if (info != null) buildInfo = info.text.Trim();
+        credits = FirstLine(DemoUi.Credits);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         ReturnToLauncher.Ensure(SceneManager.GetActiveScene().buildIndex);
@@ -67,14 +76,42 @@ public sealed class DemoLauncher : MonoBehaviour
 
     private void Update()
     {
-        if (entries.Count == 0) return;
+        // Esc quits even from an empty menu or during the fade.
+        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+        if (entries.Count == 0 || opening) return;
         if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) Open(entries[0]);
         for (int i = 0; i < entries.Count && i < 9; i++)
             if (Input.GetKeyDown(KeyCode.Alpha1 + i) || Input.GetKeyDown(KeyCode.Keypad1 + i)) Open(entries[i]);
-        if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
-    private static void Open(Entry entry) { SceneManager.LoadScene(entry.BuildIndex); }
+    // Loads the map once: the menu theme (DemoMusic.Instance, when the launcher has one)
+    // fades out over MusicFadeSeconds first, on unscaled time.
+    private void Open(Entry entry)
+    {
+        if (opening) return;
+        opening = true;
+        StartCoroutine(OpenAfterFade(entry.BuildIndex));
+    }
+
+    private static IEnumerator OpenAfterFade(int buildIndex)
+    {
+        DemoMusic music = DemoMusic.Instance;
+        if (music != null)
+        {
+            music.FadeOut(MusicFadeSeconds);
+            yield return new WaitForSecondsRealtime(MusicFadeSeconds);
+        }
+        SceneManager.LoadScene(buildIndex);
+    }
+
+    // The summary line of a credits text; the attribution lines below it are in the map's
+    // Settings tab and the build's ThirdPartyLicenses folder.
+    private static string FirstLine(string text)
+    {
+        if (string.IsNullOrEmpty(text)) return "";
+        int end = text.IndexOf('\n');
+        return (end < 0 ? text : text.Substring(0, end)).Trim();
+    }
 
     // Laid out for 1280 x 720 and scaled to the window, so it reads on a projector; the
     // look is DemoUi's, the same as the in-map panel and the VR controller hints.
@@ -118,7 +155,9 @@ public sealed class DemoLauncher : MonoBehaviour
             y += h + 12;
         }
 
-        DemoUi.DrawHints(new Rect(x, height - 74, w, 28), Hints);
+        // Bottom up: build stamp, a two-line word-wrapped credits summary, the key hints.
+        DemoUi.DrawHints(new Rect(x, height - 114, w, 28), Hints);
+        if (credits.Length > 0) GUI.Label(new Rect(x, height - 78, w, 34), credits, s.Small);
         if (buildInfo.Length > 0) GUI.Label(new Rect(x, height - 40, w, 20), buildInfo, s.Small);
         GUI.matrix = Matrix4x4.identity;
     }

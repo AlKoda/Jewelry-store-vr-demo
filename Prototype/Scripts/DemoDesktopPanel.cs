@@ -113,9 +113,6 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private const float SlotSize = 58, SlotGap = 6, SlotGroupGap = 18;
     private const float FlashSeconds = 0.25f;
     private const string ScaleKey = "DemoPanelScale", HudKey = "DemoHudVisible", PromptsKey = "DemoShowPrompts", TabKey = "DemoPanelTab";
-    private const string Credits =
-        "Models: Kenney, KayKit (CC0); Khronos glTF samples (CC0 / CC BY 4.0); textures cgbookcase, HDRIs HDRI Haven (CC0); "
-        + "Barlow font (SIL OFL 1.1). See ThirdParty licenses.";
     private static readonly string[] SlotNames = { "Cone", "Marker", "Tape", "Scale", "Reel", "Lamp", "Camera", "Light", "UV" };
     private static readonly string[] SlotKeys = { "1", "2", "3", "4", "5", "6", "F", "L", "U" };
     private static readonly float[] ScalePresets = { 1f, 1.25f, 1.5f, 1.75f, 2f };
@@ -153,6 +150,10 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private string toolChip, toolsText, markerText, photoText, statusLine;
     // The strip's button actions, made once instead of on every event.
     private Action openDrawer, requestReset, toggleScene, photograph;
+    // The Scene tab's presenter sets sorted by label, rebuilt only when PresenterSet.All changes.
+    private readonly List<PresenterSet> dressing = new List<PresenterSet>(8);
+    private int dressingRevision = -1;
+    private static readonly Comparison<PresenterSet> ByLabel = (a, b) => string.CompareOrdinal(a.Label, b.Label);
 
     private PanelLayout layout = PanelLayout.Hidden;
     private bool helpOpen;
@@ -940,8 +941,16 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 if (examples != Lighting.UVExamplesVisible) Defer(Lighting.ToggleUVExamples);
                 GUILayout.Label("Placeholder traces: what they represent is the instructor's choice.", s.Small);
             }
+            if (Lighting.LightBar != null)
+            {
+                bool flashing = DemoUi.Switch("Light bar flashing", Lighting.LightBarFlashing);
+                if (flashing != Lighting.LightBarFlashing) Defer(Lighting.ToggleLightBarFlashing);
+                GUILayout.Label("Switch it off to hold the bar steady for visitors sensitive to flashing light. A reset makes it flash again.", s.Small);
+            }
             if (Station.LitLampCount > 0) GUILayout.Label("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
         }
+        DressingSection(s);
+        MusicSection(s);
         if (Beacon != null)
         {
             Heading(s, "BEACON");
@@ -958,6 +967,42 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (GUILayout.Button(ResetArmed ? "Click again to confirm the reset" : "Reset placed tools and scene", ResetArmed ? s.ButtonDanger : s.Button))
                 Defer(() => RequestReset());
         }
+    }
+
+    // One switch per presenter set (PresenterSet.All), sorted by label. The sorted copy is
+    // rebuilt only on a Layout event, so the event that follows it draws the same rows.
+    private void DressingSection(DemoUi.Skin s)
+    {
+        if (dressingRevision != PresenterSet.Revision && Event.current.type == EventType.Layout)
+        {
+            dressingRevision = PresenterSet.Revision;
+            dressing.Clear();
+            for (int i = 0; i < PresenterSet.All.Count; i++) dressing.Add(PresenterSet.All[i]);
+            dressing.Sort(ByLabel);
+        }
+        if (dressing.Count == 0) return;
+        Heading(s, "SCENE DRESSING");
+        for (int i = 0; i < dressing.Count; i++)
+        {
+            PresenterSet set = dressing[i];
+            // Rows change only on a Layout event; a destroyed set is skipped until then.
+            if (set == null) continue;
+            bool shown = set.Shown;
+            // The delegate is made only inside the click branch.
+            if (DemoUi.Switch(set.Label, shown) != shown) Defer(set.Toggle);
+            if (!string.IsNullOrEmpty(set.Note)) GUILayout.Label(set.Note, s.Small);
+        }
+    }
+
+    // The underscore bed (DemoMusic), off at arrival; nothing without a bed clip.
+    private void MusicSection(DemoUi.Skin s)
+    {
+        DemoMusic music = DemoMusic.Instance;
+        if (music == null || music.Bed == null) return;
+        Heading(s, "MUSIC");
+        bool on = DemoUi.Switch("Underscore music", music.BedOn);
+        if (on != music.BedOn) Defer(music.ToggleBed);
+        GUILayout.Label("Off at arrival. It sets a mood only and never answers what the visitor does.", s.Small);
     }
 
     private void SettingsTab(DemoUi.Skin s)
@@ -1000,7 +1045,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (GUILayout.Button("Restore defaults", s.ButtonGhost)) Defer(RestoreDefaults);
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
-        GUILayout.Label(Credits, s.Small);
+        // The one credits text, kept by DemoUi (no copy here to drift from the licences).
+        GUILayout.Label(DemoUi.Credits, s.Small);
     }
 
     private static float SliderRow(DemoUi.Skin s, string label, float value, float min, float max, string format)

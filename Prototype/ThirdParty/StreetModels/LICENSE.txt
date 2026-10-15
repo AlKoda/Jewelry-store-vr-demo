@@ -23,11 +23,11 @@ repositories that ship them (each repository's own licence covers its code only)
 byte-for-byte against SHA-256 values that other projects recorded for the dl.polyhaven.org originals (see integrity_check).
 Authors are from the Poly Haven API listing (copy in github.com/Akshay25798/VFX-Houdini-Asset_Browser downloads/json/models.json).
 
-StreetLamp.obj, StreetLamp.mtl, StreetLamp_LampMetal_Color.jpg, StreetLamp_LampMetal_MetallicSmoothness.png, StreetLamp_LampMetal_Normal.jpg
+StreetLamp.obj, StreetLamp.mtl, StreetLamp_LampMetal_Color.jpg, StreetLamp_LampMetal_MetallicSmoothness.png, StreetLamp_LampMetal_Normal.jpg, StreetLamp_LOD1.obj, StreetLamp_LOD2.obj
   "Street Lamp 01" by Josh Dean - https://polyhaven.com/a/street_lamp_01 - CC0 1.0
   Mirror: https://github.com/rawprogress/fable-cities @ aea8b1035030952555395de0c1de14ba693a1427, public/assets/shared/models/street_lamp_01
   Integrity: all 5 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files)
-  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 30,610 -> 5,373 tris (revision 2026-10-15: 2 zero-area triangles removed).
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 30,610 -> 5,373 tris (revision 2026-10-15: 2 zero-area triangles removed); decimated LOD variants StreetLamp_LOD1/_LOD2 (1,398 and 450 tris, Source~/make_lods.py, 2026-10-15).
 
 FireHydrant.obj, FireHydrant.mtl, FireHydrant_Hydrant_Color.jpg, FireHydrant_Hydrant_MetallicSmoothness.png, FireHydrant_Hydrant_Normal.jpg
   "Fire Hydrant" by Gonçalo Felício - https://polyhaven.com/a/fire_hydrant - CC0 1.0
@@ -53,11 +53,11 @@ ManholeCover.obj, ManholeCover.mtl, ManholeCover_CastIron_Color.jpg, ManholeCove
   Integrity: all 5 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files)
   Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 6,301 -> 1,891 tris (revision 2026-10-15: 1 zero-area triangles removed).
 
-UtilityBox.obj, UtilityBox.mtl, UtilityBox_PaintedSteel_Color.jpg, UtilityBox_PaintedSteel_MetallicSmoothness.png, UtilityBox_PaintedSteel_Normal.jpg
+UtilityBox.obj, UtilityBox.mtl, UtilityBox_PaintedSteel_Color.jpg, UtilityBox_PaintedSteel_MetallicSmoothness.png, UtilityBox_PaintedSteel_Normal.jpg, UtilityBox_LOD1.obj, UtilityBox_LOD2.obj
   "Utility Box 01" by James Ray Cock - https://polyhaven.com/a/utility_box_01 - CC0 1.0
   Mirror: https://github.com/codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/sources/utility_box_01
   Integrity: all 5 files byte-identical to the dl.polyhaven.org hashes in codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/assets.json (SHA-256 pinned per dl.polyhaven.org URL)
-  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 4,404 -> 3,082 tris.
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 4,404 -> 3,082 tris; decimated LOD variants UtilityBox_LOD1/_LOD2 (899 and 299 tris, Source~/make_lods.py, 2026-10-15).
 
 AirconUnit.obj, AirconUnit.mtl, AirconUnit_AirconBody_Color.jpg, AirconUnit_AirconBody_MetallicSmoothness.png, AirconUnit_AirconBody_Normal.jpg, AirconUnit_AirconGrille_Color.png, AirconUnit_AirconGrille_MetallicSmoothness.png, AirconUnit_AirconGrille_Normal.jpg
   "Exterior Aircon Unit" by Monsta3D - https://polyhaven.com/a/exterior_aircon_unit - CC0 1.0
@@ -108,6 +108,12 @@ ApartmentBlock_Interior_Color.jpg (revision 2026-10-15) is derived from three CC
   Changes: perspective crops (75 deg) re-lit for night, curtains/blinds/TV/dark-room overlays and soft focus by
   Source~/make_interior.py (project-made processing). The result stays CC0-compatible; no attribution required.
 
+CC0 derivatives, LOD variants (2026-10-15; decimated by the project-owned Source~/make_lods.py, no new content added):
+  StreetLamp_LOD1.obj, StreetLamp_LOD2.obj   from StreetLamp.obj ("Street Lamp 01" by Josh Dean, CC0 1.0)
+  UtilityBox_LOD1.obj, UtilityBox_LOD2.obj   from UtilityBox.obj ("Utility Box 01" by James Ray Cock, CC0 1.0)
+  They use the original StreetLamp.mtl / UtilityBox.mtl and textures and stay CC0 1.0; no attribution required.
+  (The PoliceCar LOD variants are CC BY 4.0 like PoliceCar itself; see section 2.)
+
 ===============================================================================
 2. Daniel Zhabotinsky (CC BY 4.0) - attribution required
 ===============================================================================
@@ -120,10 +126,10 @@ replaced by a plain plate colour, and a film-quote slogan was painted out of the
 Credit lines to copy (as requested by the author):
 
 * This work is based on "80 American Police Sedan - Low poly model" (https://sketchfab.com/3d-models/80-american-police-sedan-low-poly-model-945fd09f513f4d1ab19b6388a7ea7323) by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
-  Used for: PoliceCar
+  Used for: PoliceCar (and its LOD variants PoliceCar_LOD1, PoliceCar_LOD2)
   Mirror: https://github.com/CloudDCrow/space-drive @ 8a7e7f1e17844877219670817b6d032a76a26b53, public/models/popo
   Licence evidence: Sketchfab license.txt shipped beside the model (license type: CC-BY-4.0) and asset.extras.license in scene.gltf
-  Changes (PoliceCar): Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; trunk badges removed (parody marque atlas); number-plate texture replaced by a plain plate colour; a slogan painted out of the body livery (two places); 20,840 tris (revision 2026-10-15: 8 zero-area triangles removed).
+  Changes (PoliceCar): Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; trunk badges removed (parody marque atlas); number-plate texture replaced by a plain plate colour; a slogan painted out of the body livery (two places); 20,840 tris (revision 2026-10-15: 8 zero-area triangles removed); decimated LOD variants PoliceCar_LOD1/_LOD2 (5,994 and 1,928 tris, Source~/make_lods.py, 2026-10-15; they share PoliceCar.mtl and its textures).
 
 * This work is based on "Ace '11 - Low Poly model" (https://sketchfab.com/3d-models/ace-11-low-poly-model-055ff8a21b8d4d279debca089e2fafcd) by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
   Used for: Hatchback
@@ -157,6 +163,7 @@ Textures: Proc_PaintedMetal_*, Proc_Galvanised_*, Proc_CastIron_*, Proc_Signs_Co
 Generated with numpy/Pillow/trimesh by the scripts in Source~ (proc_models.py, geom.py, proc_tex.py).
 Sign lettering is rendered into Proc_Signs_Color.jpg and Proc_Lightbox_Color.jpg with Barlow SemiBold (SIL OFL 1.1, already in Prototype/ThirdParty/Fonts); the font itself is not included here. All names are fictional (Kestrel Street, Old Town - District 4, "City of Lights").
 The build and fix scripts in Source~ (conversion, PottedPlant rebuild, AirconGrille and DT_MaskedDetails maps,
-interior re-lighting) are project-made; they ship no third-party content.
+interior re-lighting, LOD variants: make_lods.py, lod_sources.py) are project-made; they ship no third-party content.
+Source~/Preview_LODs.jpg is a software render of the three models and their LOD variants.
 Road-sign symbols follow the generic Vienna-convention designs (no-stopping disc, one-way arrow); no logos, brands or
 real place names. Source~/Preview.jpg is a software render of the models in this folder.

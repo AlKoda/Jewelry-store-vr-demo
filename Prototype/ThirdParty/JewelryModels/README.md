@@ -3,7 +3,7 @@
 Realistic jewellery-shop merchandise, displays, packaging, bullion and counter equipment for the night jewellery store
 (47 OBJ models, 143,931 triangles in total). Most models are original, procedurally generated at true size from
 the scripts in `Source~/` (project-owned); four are third-party (one CC0, three CC BY 4.0, see `LICENSE.txt`).
-`Source~/Preview.jpg` shows every model. Nothing here has been imported into Unity yet: **unverified in Unity**.
+`Source~/Preview.jpg` shows every model. Six models also have LOD1/LOD2 variants (12 more OBJ files, see LOD variants). Nothing here has been imported into Unity yet: **unverified in Unity**.
 
 ## Conventions
 
@@ -157,9 +157,48 @@ the scripts in `Source~/` (project-owned); four are third-party (one CC0, three 
   sits 0.3 mm inside its acrylic holder and the pendant's bail rides 0.25 mm clear of the chain link through it. The
   hoops and the studs are pairs of separate earrings.
 
+## LOD variants
+
+LOD1 and LOD2 of six models, made October 15, 2026 by `Source~/make_lods.py` from the shipped OBJs (standard library only; from the repository root: `python3 -I Prototype/ThirdParty/JewelryModels/Source~/make_lods.py Prototype/ThirdParty/JewelryModels --previews`; deterministic, a rerun gives the same bytes). The full models stay LOD0; no existing OBJ, MTL or texture was changed. In the night store **LOD1 is the top level** of the four small items (GoldCoin, RingGoldBand, RingBoxClosed, JewelersLoupe), so their LOD1 was checked closely in `Source~/Preview_LODs.jpg` (LOD0 | LOD1 | LOD2 of each model, whole and close up; each OBJ read per corner as Unity imports it, back faces culled as in Unity; render.py's trimesh loader merged the LOD1 ring box's seam corners). GoldBar1kg (364 tris) gets none. **Not imported, wired or looked at in Unity yet: unverified.**
+
+| Model | Level | File | Triangles (target) | Bytes | How | Suggested LODGroup level: shown from (screen height; about Quest 2 / desktop distance) |
+|---|---|---|---|---|---|---|
+| GoldCoin | LOD0 | `GoldCoin.obj` | 1,728 | 199,146 | the shipped model | 10 % (0.16 m / 0.28 m); not used in the night store |
+| GoldCoin | LOD1 | **`GoldCoin_LOD1.obj`** | 448 (430) | 49,884 | GoldCoin 1,728 -> 448 (revolve grid 32 of 96 columns x 7 of 8 rows + 2 poles) | 1.5 % (1.03 m / 1.89 m) - **top level in the night store** |
+| GoldCoin | LOD2 | **`GoldCoin_LOD2.obj`** | 120 (110) | 12,265 | GoldCoin 1,728 -> 120 (revolve grid 12 of 96 columns x 5 of 8 rows + 2 poles) | 0.2 % (7.76 m / 14.16 m); culled below |
+| RingGoldBand | LOD0 | `RingGoldBand.obj` | 3,456 | 271,455 | the shipped model | 10 % (0.10 m / 0.18 m); not used in the night store |
+| RingGoldBand | LOD1 | **`RingGoldBand_LOD1.obj`** | 864 (860) | 63,638 | Gold18k 3,456 -> 864 (revolve grid 48 of 96 columns x 9 of 18 rows) | 1.5 % (0.65 m / 1.19 m) - **top level in the night store** |
+| RingGoldBand | LOD2 | **`RingGoldBand_LOD2.obj`** | 224 (220) | 15,448 | Gold18k 3,456 -> 224 (revolve grid 16 of 96 columns x 7 of 18 rows) | 0.2 % (4.90 m / 8.95 m); culled below |
+| RingBoxClosed | LOD0 | `RingBoxClosed.obj` | 1,592 | 123,357 | the shipped model | 10 % (0.25 m / 0.45 m); not used in the night store |
+| RingBoxClosed | LOD1 | **`RingBoxClosed_LOD1.obj`** | 400 (400) | 32,839 | VelvetNavy 864 -> 336 (144 enclosed coincident tris dropped); VelvetCream 696 -> 32 (edge collapse); Gold18k unchanged | 2 % (1.23 m / 2.25 m) - **top level in the night store** |
+| RingBoxClosed | LOD2 | **`RingBoxClosed_LOD2.obj`** | 120 (120) | 10,958 | VelvetNavy 864 -> 64 (144 enclosed coincident tris dropped); VelvetCream 696 -> 24 (edge collapse); Gold18k unchanged | 0.3 % (8.22 m / 15.01 m); culled below |
+| JewelersLoupe | LOD0 | `JewelersLoupe.obj` | 1,648 | 214,659 | the shipped model | 10 % (0.34 m / 0.61 m); not used in the night store |
+| JewelersLoupe | LOD1 | **`JewelersLoupe_LOD1.obj`** | 440 (430) | 33,256 | BlackMetal 320 -> 96 (revolve grid 12 of 40 columns x 4 of 4 rows); Glass 640 -> 168 (2 x revolve grid 12 of 40 columns x 4 of 4 rows + 1 pole); Chrome 688 -> 176 (2 x prism grid 10 of 40 columns x 4 of 4 rows, revolve grid 4 of 12 columns x 2 of 2 rows + 2 poles, flat-shaded) | 2 % (1.68 m / 3.06 m) - **top level in the night store** |
+| JewelersLoupe | LOD2 | **`JewelersLoupe_LOD2.obj`** | 148 (140) | 13,248 | BlackMetal 320 -> 48 (revolve grid 8 of 40 columns x 3 of 4 rows); Glass 640 -> 48 (2 x revolve grid 8 of 40 columns x 2 of 4 rows + 1 pole); Chrome 688 -> 52 (edge collapse, flat-shaded) | 0.3 % (11.18 m / 20.41 m); culled below |
+| GemParcel | LOD0 | `GemParcel.obj` | 2,640 | 710,509 | the shipped model | 10 % (0.52 m / 0.95 m) |
+| GemParcel | LOD1 | **`GemParcel_LOD1.obj`** | 1,620 (1,620) | 380,112 | GemPaper 1,320 -> 300 (paper under the stones kept, flat-shaded); Diamond unchanged | 3 % (1.74 m / 3.18 m) |
+| GemParcel | LOD2 | **`GemParcel_LOD2.obj`** | 340 (340) | 29,972 | GemPaper 1,320 -> 100 (paper under the stones kept, flat-shaded); Diamond 1,320 -> 240 (per part, 12 parts of 20 tris, flat-shaded) | 0.4 % (13.05 m / 23.82 m); culled below |
+| NecklacePearlDropped | LOD0 | `NecklacePearlDropped.obj` | 8,460 | 728,422 | the shipped model | 10 % (1.04 m / 1.90 m) |
+| NecklacePearlDropped | LOD1 | **`NecklacePearlDropped_LOD1.obj`** | 2,098 (2,100) | 177,147 | Pearl 6,960 -> 1,740 (per part, 58 parts of 30 tris); Gold18k unchanged; Cord 1,392 -> 250 (knot ends capped, 58 knots of 4-6 tris) | 3 % (3.47 m / 6.33 m) |
+| NecklacePearlDropped | LOD2 | **`NecklacePearlDropped_LOD2.obj`** | 530 (530) | 49,662 | Pearl 6,960 -> 464 (per part, 58 parts of 8 tris); Gold18k 108 -> 16 (edge collapse); Cord 1,392 -> 50 (knot ends capped, 12 knots of 4-6 tris, 12 of 58 knots kept) | 0.4 % (26.00 m / 47.45 m); culled below |
+
+Distances: d = size / (2 h tan(fov / 2)) with LOD Bias 1, a 93-degree vertical field of view on Quest 2 and 60 degrees on the desktop camera, size = the largest bounds axis. The 12 LOD files add 868,429 bytes; no texture was added.
+
+- **Shared materials.** Each LOD says `mtllib <Model>.mtl` (the original file, not copied) and keeps the `g`/`usemtl` names and order of LOD0, so the LOD renderers take LOD0's materials and maps (GoldCoin_Color/_Normal, GemPaper_Color) unchanged.
+- **Original vertices, per-corner normals.** Every vertex is an original v/vt of LOD0, written as its original text. Smooth parts keep their original per-corner vn (gold, pearls, velvet stay smooth; the coin's rim chamfers and the loupe barrel's inner lip stay hard edges). Faceted parts (the 12 stones, the gem paper, the loupe's chrome case plates) get one new vn per triangle, its facet normal, so they stay flat-shaded. Import with *Normals = Import*, as LOD0.
+- **Regular grids where LOD0 is one** (band, coin, loupe barrel, lenses, case plates, pivot pin): kept every k-th column (or the columns nearest an even spacing) and the profile rows that matter most, then re-triangulated. Plain edge collapse left the LOD1 band visibly lumpy (it picks among equal costs on a regular grid). The loupe's barrel and lenses use the same 12 (LOD2: 8) angles, so each lens rim lies on the barrel wall.
+- **Stones and pearls are decimated one by one** (rule g): each gets its share (GemParcel LOD2: 20 per stone, necklace: 30 per pearl at LOD1, 8 at LOD2) and keeps its exact bounding box and a closed surface; at 8 triangles a pearl is the octahedron of its six extreme points (two LOD2 pearls are built as that hull directly, because edge collapse cannot flip the last edge). GemParcel LOD1 keeps all 12 stones byte-for-byte.
+- **Silk knots.** The 58 knots of the strand are open tubes whose ends sit in the pearls' drill holes; each end is capped (with the loop's own vertices), so a knot can go below an open tube's 6 triangles: 4-6 each at LOD1. LOD2's 50 triangles cannot hold 58 knots: 12 knots, evenly spaced along the strand, are kept (under half a pixel at LOD2 distances).
+- **Ring box.** The 144 triangles where the closed box's base top and lid bottom coincide lie inside the box (0 of 20,736 test rays from them reach the outside) and are not carried over; the cream lining (wholly inside the closed box) gets a token 32 / 24 triangles so the visible navy shell takes the rest; the vertices along the lid seam and the row next to it are kept at LOD1, so the seam's shading strip is LOD0's; the hinge pin (Gold18k, 32 tris) is unchanged.
+- **Gem paper.** The paper triangles under the lowest 0.6 mm of every stone are kept, so every stone rests on the decimated paper exactly as on LOD0 (the lowest stone point is 0.0198/0.0198 mm above the paper at LOD1 / LOD2, 0.0198 mm on LOD0). The downward bottom sheet shows through the top sheet only in renderers that draw back faces.
+- **Verified offline** by make_lods.py (exit 1 and nothing written on failure): triangles within 10 % of every target and explicit group target; bounds within 0.2 mm of LOD0 (measured: identical, 0.0 mm, at every level); nothing below y = 0; RingGoldBand's hole centre within 0.1 mm of LOD0's (measured 0.01/0.07 um); connected parts per group unchanged (12 stones, 58 pearls; knots 58 at LOD1, 12 at LOD2 by design); every stone and pearl closed with its exact box; same g/usemtl order, usemtl set and mtllib; valid indices, triangles only, no zero-area triangle; every corner an original v/vt (smooth parts: v/vt/vn); every faceted vn its facet normal; unchanged groups identical; no new open edges (the loupe lens rims are open in LOD0 too); no triangle wound against its own normals (0 at every level, as LOD0); trimesh reads every triangle.
+- **Noticed in LOD0, not changed here:** RingBoxClosed.obj holds the 144 coincident, enclosed triangles named above, which may z-fight along the seam in Unity; the lathe parts of GoldCoin, RingBoxClosed and JewelersLoupe carry 368 zero-area triangles at their axis points (none in the LODs).
+- `sources.json` has an entry per LOD file (SHA-256, bytes, triangles, target, derived_from, derivation, groups, VERIFY measures) and `lod_variants`; `models.json` has a `lods` entry per model with the suggested transitions.
+
 ## Regenerating
 
 `python3 -P Source~/build.py OUT_DIR` (numpy, scipy, Pillow; PYTHONPATH = Source~) rebuilds every procedural model and
 texture; `Source~/postprocess.py` documents how the four third-party models were re-oriented, scaled and their maps
 converted after `Tools/glb_to_obj.py` (map conversions in `Source~/maps.py`). `Source~/render.py` is the small numpy rasteriser used for `Preview.jpg`.
 Hashes, sources and licences of every shipped file are in `sources.json`; sizes and triangle counts in `models.json`.
+`Source~/make_lods.py` rebuilds the 12 LOD variants from the shipped OBJs and `Source~/render_lods.py` their contact sheet `Source~/Preview_LODs.jpg`; run make_lods.py after `Source~/make_docs.py`, which writes the documents without the LOD entries.

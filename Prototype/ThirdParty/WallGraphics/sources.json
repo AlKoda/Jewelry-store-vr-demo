@@ -152,6 +152,202 @@
    "fonts": "Glyphs rendered from Google Fonts files at https://github.com/google/fonts commit e9678a5385322c63730122ba464765baad83cfd8 (SIL OFL 1.1 / Apache 2.0); no font files shipped"
   },
   {
+   "file": "Atlas/NightStoreInterior.json",
+   "bytes": 944,
+   "sha256": "deb14fc4988ac7c96f1b417f7efea006bd3764efa4552b6ca42481198db4184c",
+   "kind": "atlas layout for Unity JsonUtility: {width, height, cells: [{name, x, y, w, h}]}, px, y from the bottom edge",
+   "describes": "Atlas/NightStoreInterior_Color.png",
+   "author": "Project (Source~/make_atlas.py)",
+   "source": "Prototype/ThirdParty/WallGraphics/Source~/make_atlas.py",
+   "commit": "n/a (built October 15, 2026)",
+   "tool": "Source~/make_atlas.py (python3 3.13.16, numpy 2.5.3, Pillow 12.3.0): Lanczos per cell in sRGB-encoded values, premultiplied alpha for RGBA sources, RGB under alpha 0 filled by push-pull, 8 px clamped edge bleed at alpha 0, push-pull fill of unused texels at alpha 0, PNG compress level 9 with an sRGB chunk",
+   "license": "Project-owned data; no third-party content"
+  },
+  {
+   "file": "Atlas/NightStoreInterior_Color.png",
+   "bytes": 4723853,
+   "sha256": "520a37678566cfb84e16970c04d83732644ce43ce822f7f8ccaf8ede59cadfe1",
+   "kind": "derived texture atlas (built from images in this pack)",
+   "width": 2048,
+   "height": 2048,
+   "layout": "Atlas/NightStoreInterior.json",
+   "author": "Project (Source~/make_atlas.py)",
+   "source": "Prototype/ThirdParty/WallGraphics/Source~/make_atlas.py",
+   "commit": "n/a (built October 15, 2026)",
+   "tool": "Source~/make_atlas.py (python3 3.13.16, numpy 2.5.3, Pillow 12.3.0): Lanczos per cell in sRGB-encoded values, premultiplied alpha for RGBA sources, RGB under alpha 0 filled by push-pull, 8 px clamped edge bleed at alpha 0, push-pull fill of unused texels at alpha 0, PNG compress level 9 with an sRGB chunk",
+   "derived_from": [
+    {
+     "file": "Store/FireEvacuationPlan.jpg",
+     "sha256": "f511f48b0daf98ffffe5ae449412b9c198b10699ab312678df4793ec0aad194e",
+     "rect_top_left": [
+      8,
+      8,
+      1024,
+      724
+     ]
+    },
+    {
+     "file": "Artwork/Art_Heda_BreakfastWithLobster.jpg",
+     "sha256": "a7fc7177bfee2b14c218335108ea305b7548e175457675dd748eecf85f56c2d7",
+     "rect_top_left": [
+      1048,
+      8,
+      764,
+      768
+     ]
+    },
+    {
+     "file": "Brand/Lightbox_AurelFinchWide.jpg",
+     "sha256": "980fd40fcf839369280488e67ec9c4301bc010fc8b4061cc186deaf9079f806b",
+     "rect_top_left": [
+      8,
+      748,
+      1024,
+      512
+     ]
+    },
+    {
+     "file": "Store/NoticeBoard_StaffCork.jpg",
+     "sha256": "8e09923a471eedf3772510b80725e50591ee6a3f71cdb0c585c738125b09ab1b",
+     "rect_top_left": [
+      1048,
+      792,
+      768,
+      512
+     ]
+    },
+    {
+     "file": "Artwork/Art_Pissarro_BoulevardMontmartre.jpg",
+     "sha256": "10ebaa1b8157cd5e9e6b4b7f4457d187ca6d25ecf56d5be8b7ade019ea157065",
+     "rect_top_left": [
+      8,
+      1276,
+      768,
+      604
+     ]
+    },
+    {
+     "file": "Store/Certificate_GemmologyDiplomaFramed.jpg",
+     "sha256": "1b0a57a38f3585d2268a24750e110571d7bc23c8671aa56c07986c3aacef1742",
+     "rect_top_left": [
+      792,
+      1320,
+      512,
+      384
+     ]
+    },
+    {
+     "file": "Store/Calendar_October2026.png",
+     "sha256": "946dc3d9ee04d0471746cc87dbf299884a591a859232ac82f3ede2934e4c8bf0",
+     "rect_top_left": [
+      1320,
+      1320,
+      384,
+      543
+     ]
+    },
+    {
+     "file": "Store/Sign_CCTV.png",
+     "sha256": "5883377a44c7562c1357dc044082243b522d2b9f6375106df7a6c2113afff73c",
+     "rect_top_left": [
+      1720,
+      1320,
+      288,
+      384
+     ]
+    },
+    {
+     "file": "Store/Sticker_AlarmMonitored.png",
+     "sha256": "9457ab4d8af04b662d6a63d9984afb1afcd107bd8365893a85c857e8a341ae1f",
+     "rect_top_left": [
+      792,
+      1720,
+      256,
+      256
+     ]
+    },
+    {
+     "file": "Store/Sticker_CardsAccepted.png",
+     "sha256": "737b0734f531acb837a216aa52d02d34fd301fde41e73e1208cfc79ad37e23a5",
+     "rect_top_left": [
+      1720,
+      1720,
+      288,
+      192
+     ]
+    },
+    {
+     "file": "Store/Sticker_InsurerApproved.png",
+     "sha256": "4bb8376a067853ae110683d848de57c29bea8dd66b4626cecfc23eaf28cac2c1",
+     "rect_top_left": [
+      8,
+      1896,
+      256,
+      128
+     ]
+    }
+   ],
+   "license": "Inherits the licences of its cells (see derived_from and LICENSE.txt section 4); no new terms"
+  },
+  {
+   "file": "Atlas/NightStoreStreet.json",
+   "bytes": 275,
+   "sha256": "d9daeea9dfd2089a46993ef9d1dc719c96e37dbd907ce1904ce20bfa04a65bb4",
+   "kind": "atlas layout for Unity JsonUtility: {width, height, cells: [{name, x, y, w, h}]}, px, y from the bottom edge",
+   "describes": "Atlas/NightStoreStreet_Color.png",
+   "author": "Project (Source~/make_atlas.py)",
+   "source": "Prototype/ThirdParty/WallGraphics/Source~/make_atlas.py",
+   "commit": "n/a (built October 15, 2026)",
+   "tool": "Source~/make_atlas.py (python3 3.13.16, numpy 2.5.3, Pillow 12.3.0): Lanczos per cell in sRGB-encoded values, premultiplied alpha for RGBA sources, RGB under alpha 0 filled by push-pull, 8 px clamped edge bleed at alpha 0, push-pull fill of unused texels at alpha 0, PNG compress level 9 with an sRGB chunk",
+   "license": "Project-owned data; no third-party content"
+  },
+  {
+   "file": "Atlas/NightStoreStreet_Color.png",
+   "bytes": 1562918,
+   "sha256": "f014f322289704fda9f8480adde2aa1df57033f814281fec7f8f1ce33918925f",
+   "kind": "derived texture atlas (built from images in this pack)",
+   "width": 2048,
+   "height": 1024,
+   "layout": "Atlas/NightStoreStreet.json",
+   "author": "Project (Source~/make_atlas.py)",
+   "source": "Prototype/ThirdParty/WallGraphics/Source~/make_atlas.py",
+   "commit": "n/a (built October 15, 2026)",
+   "tool": "Source~/make_atlas.py (python3 3.13.16, numpy 2.5.3, Pillow 12.3.0): Lanczos per cell in sRGB-encoded values, premultiplied alpha for RGBA sources, RGB under alpha 0 filled by push-pull, 8 px clamped edge bleed at alpha 0, push-pull fill of unused texels at alpha 0, PNG compress level 9 with an sRGB chunk",
+   "derived_from": [
+    {
+     "file": "Street/StreetPosters_Weathered.jpg",
+     "sha256": "ca6a1ad1741fcbfc325bebc431f971b5114c3dd39e7ffabe526163e1fa3fce47",
+     "rect_top_left": [
+      8,
+      8,
+      1008,
+      504
+     ]
+    },
+    {
+     "file": "Street/Graffiti_Tags.png",
+     "sha256": "0a1ea99107933c7b02e8ab0547e71ef13bd567e314be7990e812e9c6c31c2262",
+     "rect_top_left": [
+      1032,
+      8,
+      1008,
+      504
+     ]
+    },
+    {
+     "file": "Street/Flyer_LostCat.png",
+     "sha256": "5f1d6a3425fc73121833bdaa40fe1a41cb26ce10772cd5f1797083d1079021ba",
+     "rect_top_left": [
+      8,
+      528,
+      366,
+      488
+     ]
+    }
+   ],
+   "license": "Inherits the licences of its cells (see derived_from and LICENSE.txt section 4); no new terms"
+  },
+  {
    "file": "Brand/Lightbox_AurelFinchWide.jpg",
    "bytes": 243828,
    "sha256": "980fd40fcf839369280488e67ec9c4301bc010fc8b4061cc186deaf9079f806b",

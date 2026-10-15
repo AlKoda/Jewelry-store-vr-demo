@@ -1,5 +1,6 @@
 PeopleModels - posed human figures for the night jewellery-store scene
-Prepared October 14-15, 2026; examiner white levels revised October 15, 2026.
+Prepared October 14-15, 2026; examiner white levels revised October 15, 2026; LOD variants of two
+figures added October 15, 2026.
 Not yet imported or checked in Unity.
 
 Seven static figures (OBJ/MTL plus textures) made from five avatars of the Microsoft Rocketbox
@@ -69,6 +70,12 @@ What was changed (all scripts are in Source~):
     slightly (two triangles at the right shoulder now count as sleeve).
     DetectiveFemale_Hair_Color.png keeps the RGBA hair/eyelash atlas (1024 x 512) with the
     colour bled into transparent texels.
+  - LOD variants (October 15, 2026): PasserBy_Phone_LOD1.obj and PasserBy_Phone_LOD2.obj were
+    decimated from PasserBy_Phone.obj, and PoliceOfficer_Standing_LOD1.obj and
+    PoliceOfficer_Standing_LOD2.obj from PoliceOfficer_Standing.obj, by Source~/make_lods.py
+    (seam-aware half-edge collapse: every vertex is an original vertex of the source and every
+    corner an original UV/normal pair of the same material). They use the original MTL files and
+    textures. The hand-prop groups of the passer-by (Props, PropScreen) are copied unchanged.
   - The modified files remain under the MIT License (same copyright notice).
 
 Upstream licence text (MIT), reproduced as required:
@@ -104,6 +111,10 @@ Files under this licence:
   DetectiveFemale_TakingNotes.obj/.mtl (avatar part), DetectiveFemale_Body_*,
   DetectiveFemale_Head_*, DetectiveFemale_Hair_Color.png,
   PasserBy_Phone.obj/.mtl (avatar part), PasserBy_Body_*, PasserBy_Head_*.
+  Derived LOD variants (decimated from the OBJs above):
+  PasserBy_Phone_LOD1.obj, PasserBy_Phone_LOD2.obj (avatar part; decimated from PasserBy_Phone.obj),
+  PoliceOfficer_Standing_LOD1.obj, PoliceOfficer_Standing_LOD2.obj (decimated from
+  PoliceOfficer_Standing.obj).
 
 Content notes: the avatars are generic characters made by the Rocketbox artists, not likenesses
 of named people. Uniform text is the generic word "POLICE"; the detective's small belt badge reads
@@ -120,7 +131,8 @@ Licence:  Project-owned; may be used, modified and redistributed with the projec
 Files:    PeopleProps_Color.jpg, PeopleProps_MetallicSmoothness.png (procedural atlas: notebook
           cover and handwritten-style page with illegible scribble lines, pen, phone body and a
           blurred generic camera-app screen with a recording timer, camera body, lens, flash), the hand-prop geometry inside the
-          OBJ files (groups Props and PropScreen: pocket notebook and ballpoint pen, smartphone,
-          DSLR with zoom lens and speedlight), and everything in Source~ (build scripts and
+          OBJ files, including the LOD variants (groups Props and PropScreen: pocket notebook and
+          ballpoint pen, smartphone, DSLR with zoom lens and speedlight), and everything in Source~
+          (build scripts, among them make_lods.py, copied from the project's StreetModels pack, and
           Preview.jpg, a Blender Cycles render of the seven figures, not a Unity screenshot).
           No real product shapes, names or logos.

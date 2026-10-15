@@ -219,6 +219,18 @@ public static class DemoValidation
         typeof(DemoUi).GetField("themeSearchFrame", uiStatics).SetValue(null, Time.frameCount);
         UnityEngine.Object.DestroyImmediate(staleTheme);
         Check(theme != null && DemoUi.Medium == theme.Medium, "UI fonts re-resolve at once after the theme object is replaced");
+        // The drawer's Settings tab draws DemoUi.Credits; the panel keeps no copy of its own to drift from the licences.
+        Check(!string.IsNullOrEmpty(DemoUi.Credits) && typeof(DemoDesktopPanel).GetField("Credits",
+            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static) == null,
+            "Panel credits come from DemoUi.Credits");
+        // Credits: the cached text is Resources/DemoCredits when a build wrote it, else the built-in
+        // line; it is loaded once (the second read returns the same string).
+        typeof(DemoUi).GetField("credits", uiStatics).SetValue(null, null);
+        bool creditsFile = Resources.Load<TextAsset>("DemoCredits") != null;
+        string creditsText = DemoUi.Credits;
+        Check(DemoUi.DefaultCredits.Contains("Barlow") && !string.IsNullOrEmpty(creditsText)
+            && (creditsFile || creditsText == DemoUi.DefaultCredits) && ReferenceEquals(creditsText, DemoUi.Credits),
+            "Credits fall back to the built-in line without a credits file");
 
         DemoFeedback.Clear();
         for (int i = 1; i <= 5; i++) DemoFeedback.Post("message " + i);

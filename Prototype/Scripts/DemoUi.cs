@@ -28,6 +28,31 @@ public static class DemoUi
 
     public static string Hex(Color c) => "#" + ColorUtility.ToHtmlStringRGB(c);
 
+    // ---------------------------------------------------------------- credits
+    // The built-in credits line. NightStoreBuilder.Build writes Resources/DemoCredits from it:
+    // this line, the night store's CC0 sources, then one attribution per CC BY or MIT asset
+    // the build placed (DemoAssetLibrary.WriteCredits).
+    public const string DefaultCredits =
+        "Models: Kenney, KayKit (CC0); Khronos glTF samples (CC0 / CC BY 4.0); textures cgbookcase, HDRIs HDRI Haven (CC0); "
+        + "Barlow font (SIL OFL 1.1). See ThirdParty licenses.";
+
+    private static string credits;
+
+    // The one credits text (the instructor panel's Settings tab, the start menu): Resources/
+    // DemoCredits, loaded on first use and kept, or DefaultCredits when the project has no
+    // night store build yet (or the file is empty).
+    public static string Credits
+    {
+        get
+        {
+            if (credits != null) return credits;
+            TextAsset file = Resources.Load<TextAsset>("DemoCredits");
+            string text = file != null ? file.text.Trim() : "";
+            credits = text.Length > 0 ? text : DefaultCredits;
+            return credits;
+        }
+    }
+
     // ---------------------------------------------------------------- fonts
     private static DemoUiTheme theme;
     private static int themeSearchFrame = -1000;

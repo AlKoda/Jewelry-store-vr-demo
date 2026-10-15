@@ -69,7 +69,8 @@ public static partial class StoreKit
         // with ShopDisplayFinish's JewelryGold so the cases and the scattered pieces match.
         Gold = Surface("KitGold", new Color(0.98f, 0.84f, 0.55f), 0.8f, 1, null, 1);
         Silver = Surface("KitSilver", new Color(0.82f, 0.82f, 0.84f), 0.8f, 1, null, 1);
-        Leather = Surface("KitLeather", new Color(0.16f, 0.14f, 0.13f), 0.35f, 0, null, 1);
+        // Black pebble-grain leather (PBRInterior, 0.2 m tile, ~5 mm grain) on the boxes; charcoal scalar without it.
+        Leather = Surface("KitLeather", new Color(0.16f, 0.14f, 0.13f), 0.35f, 0, "Leather", 0.2f);
         Leatherette = Surface("KitLeatherette", new Color(0.07f, 0.07f, 0.075f), 0.3f, 0, null, 1);
         Felt = Surface("KitFelt", new Color(0.42f, 0.38f, 0.34f), 0.05f, 0, null, 1);
         Kraft = Surface("KitKraft", new Color(0.72f, 0.62f, 0.48f), 0.15f, 0, null, 1);
@@ -192,8 +193,9 @@ public static partial class StoreKit
 
     // ---------------------------------------------------------------- loose pieces
 
-    // Jewelry box in charcoal leather with a bronze trim line at the rim and a cream
-    // insert (two slotted rolls for a ring, holding tabs for a bracelet or necklace).
+    // Jewelry box in leather (black pebble grain; charcoal without PBRInterior) with a
+    // bronze trim line at the rim and a cream insert (two slotted rolls for a ring,
+    // holding tabs for a bracelet or necklace).
     // "Lid" is a child pivoted on the rear top edge of the base: local x is the hinge
     // axis, the lid extends towards -z, and openAngle (degrees, 0 closed) swings it up.
     public static GameObject JewelryBox(Transform parent, JewelryBoxKind kind = JewelryBoxKind.Ring, float openAngle = 100)

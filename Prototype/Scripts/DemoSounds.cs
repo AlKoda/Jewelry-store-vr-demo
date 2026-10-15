@@ -7,9 +7,10 @@ public enum DemoSound { Click, Thud, Ambience, Shutter, Switch, Select }
 // Small generated sounds, so the demo has audio feedback without audio assets:
 // a click when a tool is taken, a thud when it is set down, and a quiet
 // street-ambience loop. Clips are built once per session. A DemoSoundBank in the
-// scene (the night store's, filled from Prototype/ThirdParty/NightAudio by the
-// builder) replaces them with recorded clips at its own volumes; an empty slot
-// keeps the generated sound.
+// scene (the night store's, filled from Prototype/ThirdParty/NightAudio and
+// NightSoundscape by NightAudioBuilder) replaces them with recorded clips at its own
+// volumes; an empty slot keeps the generated sound. Its cone and marker variations
+// give those tools their own set-down (PlaySetDown); without them every tool thuds.
 public static class DemoSounds
 {
     private const int SampleRate = 22050;
@@ -48,6 +49,22 @@ public static class DemoSounds
     {
         AudioClip clip = Clip(sound);
         if (clip != null) AudioSource.PlayClipAtPoint(clip, position, Volume(sound, volume));
+    }
+
+    // The clip a tool of this kind is set down with: the bank's own cone or marker
+    // variation, else the Thud (the bank's ToolSetDown or the generated one).
+    public static AudioClip SetDownClip(DemoToolKind kind)
+    {
+        AudioClip staged = bank != null ? bank.SetDownClip(kind) : null;
+        return staged != null ? staged : Clip(DemoSound.Thud);
+    }
+
+    // volume applies to the Thud (as in Play); a cone or marker variation plays at the bank's level.
+    public static void PlaySetDown(DemoToolKind kind, Vector3 position, float volume)
+    {
+        AudioClip staged = bank != null ? bank.SetDownClip(kind) : null;
+        if (staged != null) AudioSource.PlayClipAtPoint(staged, position, bank.SetDownVolume(kind));
+        else Play(DemoSound.Thud, position, volume);
     }
 
     // Non-spatial feedback (presenter panel buttons) through the bank's 2D source;

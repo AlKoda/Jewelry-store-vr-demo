@@ -8,7 +8,7 @@ Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, t
 
 ## Night store source — October 11 (unverified)
 
-The expanded night store is now in source: run NightStoreValidation.RunNightQuick (no bake) or RunNight (bake) after syncing Scripts, Editor, Shaders and ThirdParty. See the top of [HANDOFF](Docs/HANDOFF.md).
+The expanded night store is now in source: run NightStoreValidation.RunNightQuick (no bake) or RunNight (bake) after syncing Scripts, Editor, Shaders and ThirdParty (Open-Unity-Glass.cmd and Start-Demo.cmd do this). The October 15 wiring batch (unverified) brings the realism packs into it. See the top of [HANDOFF](Docs/HANDOFF.md).
 
 ## Current plan — October 11
 
@@ -18,7 +18,7 @@ The next scene is an **expanded store with a nighttime police arrival**, reusing
 
 [Download the Glass and Tools Unity project](Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip) and [view the screenshots/report](Docs/GLASS_AND_TOOLS.md).
 
-Extract into **UnityProject_Glass** beside this README, run **Open-Unity-Glass.cmd**, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreGlass.unity**. Unity 6000.6.2f1, Built-in pipeline; launcher uses the current -noUpm workaround.
+Extract into **UnityProject_Glass** beside this README, run **Open-Unity-Glass.cmd**, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreGlass.unity**. Unity 6000.6.2f1, Built-in pipeline; launcher uses the current -noUpm workaround. Since October 15 (unverified), Open-Unity-Glass.cmd first runs Tools\sync-project.cmd. It mirrors the latest Prototype Scripts, Editor, Shaders and ThirdParty into Assets/CrimeSceneDemo (robocopy /MIR, .meta files left alone), so the project also gets the realism packs the zip leaves out. The first run copies about 262 MB, and Unity then imports them for several minutes. The mirror overwrites changes made directly in those four project folders, so edit Prototype instead. Because the launcher always brings in the newest, never-compiled sources, a compile error in them now also stops JewelryStoreGlass; to open the zip's own snapshot unchanged, start Unity 6000.6.2f1 on UnityProject_Glass with -noUpm without this launcher. The historical Blockout, Forms, Interior and Robbery launchers do not sync.
 
 October 10: all source and the world-text shader compiled; **137 automated Editor Play mode assertions passed**. That result applies to the October 10 snapshot (`git show d5e9cc8:Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip`). The current zip (October 11) also carries the later textured-finish, panel, measuring-tape, lighting, lamp, UV, StoreKit and NightStore sources; the newest of these have **not been compiled**; a compile error in them would stop JewelryStoreGlass from entering Play mode. Its Shaders folder also lacks UVFluorescence.shader.meta (Unity generates one on import). Glass fragments now rest on surfaces, marker numbers no longer show through, and tape posts connect automatically when placed. Robbed stock includes empty pads, overturned stands and dropped jewelry. The menu starts closed; Tab opens it. First finishes for walls, stone flooring, lights, doors, glass and display cases use simple geometry and flat materials. Four shadowless lights; one static room reflection cubemap. Quest performance/tracking and standalone build remain pending.
 

@@ -46,6 +46,9 @@ public static class StoreKitValidation
         try
         {
             FixtureChecks(gallery);
+            PaletteSetChecks();
+            PaletteTilingChecks();
+            PaletteFallbackChecks();
             HingeChecks(gallery);
             PaneChecks(gallery);
             ColliderChecks(gallery);
@@ -193,6 +196,93 @@ public static class StoreKitValidation
         }
         DemoValidation.Info("Store kit gallery triangles=" + total + "; renderers=" + renderers);
         DemoValidation.Check(budgets, "Store kit fixtures stay within their triangle budgets");
+    }
+
+    // Palette sets come from one pack each: every map a textured palette material carries is
+    // the file its chosen set names (PavementSlab's wet colour and finish with the dry normal
+    // and AO, all PBRExterior, is the only pairing), no higher-priority set's colour file
+    // exists, and the ReferenceTextures and generated sets carry no packed map.
+    private static void PaletteSetChecks()
+    {
+        bool ok = true;
+        int sourced = 0, named = 0;
+        string[] slots = { "_MainTex", "_BumpMap", "_MetallicGlossMap", "_OcclusionMap" };
+        foreach (KeyValuePair<Material, string> entry in StoreKit.PaletteTextures)
+        {
+            Material m = entry.Key;
+            if (m == null) continue;
+            named++;
+            if (!StoreKit.PaletteSet(m, out StoreKit.SurfaceSet set))
+            {
+                foreach (string slot in slots) ok &= m.GetTexture(slot) == null;
+                foreach (StoreKit.SurfaceSet unused in StoreKit.PaletteSets(entry.Value)) ok &= !DemoAssetLibrary.HasTexture(unused.Pack, unused.Color);
+                continue;
+            }
+            sourced++;
+            string[] files = { set.Color, set.Normal, set.Ms, set.Ao };
+            for (int i = 0; i < slots.Length; i++)
+            {
+                Texture t = m.GetTexture(slots[i]);
+                bool present = files[i] != null && DemoAssetLibrary.HasTexture(set.Pack, files[i]);
+                ok &= t == null ? !present : present && AssetDatabase.GetAssetPath(t) == DemoAssetLibrary.Path(set.Pack, files[i]);
+            }
+            ok &= m.mainTexture != null;
+            foreach (StoreKit.SurfaceSet earlier in StoreKit.PaletteSets(entry.Value))
+            {
+                if (earlier.Pack == set.Pack && earlier.Color == set.Color) break;
+                ok &= !DemoAssetLibrary.HasTexture(earlier.Pack, earlier.Color);
+            }
+            if (set.Pack == StoreKit.TexturePack || set.Pack == StoreKit.FallbackTexturePack)
+                ok &= set.Ms == null && m.GetTexture("_MetallicGlossMap") == null && !m.IsKeywordEnabled("_METALLICGLOSSMAP");
+        }
+        DemoValidation.Info("Palette materials with a texture set: " + sourced + " of " + named);
+        DemoValidation.Check(ok && named > 0, "Palette sets come from one pack each, in the documented priority");
+    }
+
+    // Palette tiling follows each chosen set's real-world tile (metric UVs: scale = 1 / tile),
+    // with the documented sizes spot-checked when the PBR sets are present.
+    private static void PaletteTilingChecks()
+    {
+        bool ok = true;
+        foreach (KeyValuePair<Material, string> entry in StoreKit.PaletteTextures)
+            if (StoreKit.PaletteSet(entry.Key, out StoreKit.SurfaceSet set))
+                ok &= TileScale(entry.Key, 1 / set.Tile, 1 / (set.TileV > 0 ? set.TileV : set.Tile));
+        const string interior = StoreKit.PbrInteriorPack, exterior = StoreKit.PbrExteriorPack;
+        int spot = 0;
+        if (DemoAssetLibrary.HasTexture(interior, "FloorTile_Color.jpg")) { ok &= TileScale(StoreKit.Floor, 1 / 2.4f, 1 / 2.4f); spot++; }
+        if (DemoAssetLibrary.HasTexture(interior, "PlasterWarm_Color.jpg")) { ok &= TileScale(StoreKit.Plaster, 0.5f, 1); spot++; }
+        if (DemoAssetLibrary.HasTexture(exterior, "AsphaltWet_Color.jpg")) { ok &= TileScale(StoreKit.Asphalt, 1 / 3f, 1 / 3f); spot++; }
+        if (DemoAssetLibrary.HasTexture(exterior, "BrickFacade_Color.jpg")) { ok &= TileScale(StoreKit.Brick, 1 / 3f, 1 / 3f); spot++; }
+        if (DemoAssetLibrary.HasTexture(exterior, "MetalShutter_Color.jpg")) { ok &= TileScale(StoreKit.Shutter, 1, 1); spot++; }
+        DemoValidation.Info("Palette tile sizes spot-checked: " + spot + " of 5 (the rest need PBRInterior/PBRExterior)");
+        DemoValidation.Check(ok, "Palette tiling follows each set's real-world tile size");
+    }
+
+    private static bool TileScale(Material m, float u, float v)
+        => m != null && Mathf.Abs(m.mainTextureScale.x - u) < 1e-4f && Mathf.Abs(m.mainTextureScale.y - v) < 1e-4f;
+
+    // Brick, shutter and stainless have one PBR set each: they take it when its colour file
+    // exists and otherwise stay untextured at their scalar finish (no map of any kind).
+    private static void PaletteFallbackChecks()
+    {
+        bool ok = true;
+        Dictionary<Material, string> names = new Dictionary<Material, string>();
+        foreach (KeyValuePair<Material, string> entry in StoreKit.PaletteTextures) names[entry.Key] = entry.Value;
+        foreach (Material m in new[] { StoreKit.Brick, StoreKit.Shutter, StoreKit.Stainless })
+        {
+            string texture = null;
+            StoreKit.SurfaceSet[] sets = m != null && names.TryGetValue(m, out texture) ? StoreKit.PaletteSets(texture) : new StoreKit.SurfaceSet[0];
+            bool pbr = sets.Length == 1 && (sets[0].Pack == StoreKit.PbrInteriorPack || sets[0].Pack == StoreKit.PbrExteriorPack);
+            bool present = pbr && DemoAssetLibrary.HasTexture(sets[0].Pack, sets[0].Color);
+            bool textured = StoreKit.PaletteSet(m, out StoreKit.SurfaceSet set);
+            ok &= pbr && textured == present;
+            if (textured) ok &= sets.Length > 0 && set.Pack == sets[0].Pack && m.mainTexture != null;
+            else ok &= m != null && m.mainTexture == null && m.GetTexture("_BumpMap") == null && m.GetTexture("_MetallicGlossMap") == null
+                && m.GetTexture("_OcclusionMap") == null && !m.IsKeywordEnabled("_NORMALMAP") && !m.IsKeywordEnabled("_METALLICGLOSSMAP");
+        }
+        DemoValidation.Info("Brick/shutter/stainless sets: " + (StoreKit.PaletteSource(StoreKit.Brick) ?? "scalar") + ", "
+            + (StoreKit.PaletteSource(StoreKit.Shutter) ?? "scalar") + ", " + (StoreKit.PaletteSource(StoreKit.Stainless) ?? "scalar"));
+        DemoValidation.Check(ok, "Brick, shutter and stainless use their PBR sets and keep a scalar fallback");
     }
 
     // A 2 x 1 x 0.5 box: its UVs span 2 by 1 units, the largest face's world edges.

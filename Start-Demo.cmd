@@ -62,11 +62,9 @@ powershell -NoProfile -Command "$d='%PROJECT%\ProjectSettings\'; foreach($f in '
 
 :sync
 echo Copying the latest scripts and assets into the project...
-rem /MIR also removes scripts deleted from Prototype; .meta files are left to Unity.
-for %%f in (Scripts Editor Shaders ThirdParty) do (
-  robocopy "%ROOT%Prototype\%%f" "%PROJECT%\Assets\CrimeSceneDemo\%%f" /MIR /XF *.meta /NFL /NDL /NJH /NJS /NP >nul
-  if errorlevel 8 goto fail
-)
+rem Tools\sync-project.cmd mirrors Prototype Scripts, Editor, Shaders and ThirdParty with robocopy /MIR,
+rem so scripts deleted from Prototype also leave the project; .meta files are left to Unity.
+call "%ROOT%Tools\sync-project.cmd" "%PROJECT%" || goto fail
 set "BAKEFLAG="
 set "REMEMBERED="
 if exist "%LIGHTING%" set /p REMEMBERED=<"%LIGHTING%"

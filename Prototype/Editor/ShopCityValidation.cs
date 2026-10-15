@@ -95,6 +95,14 @@ public static class ShopCityValidation
             {
                 if (SessionState.GetBool(RobberyKey, false)) ShopRobberyDressing.Check();
                 if(SessionState.GetBool(GlassKey,false)) GlassToolValidation.Check();
+                if (SessionState.GetBool(GlassKey, false))
+                {
+                    // The shop's StyleSceneTape path passes no text: both warnings keep the default wording.
+                    SceneTape shopTape = DemoValidation.Find<ToolStation>().TapePrefab;
+                    DemoValidation.Check(shopTape != null && shopTape.FrontWarning != null && shopTape.BackWarning != null
+                        && shopTape.FrontWarning.text == DemoToolsBuilder.DefaultTapeText && shopTape.BackWarning.text == DemoToolsBuilder.DefaultTapeText,
+                        "Shop tape keeps the CRIME SCENE text");
+                }
                 WalkingChecks();
                 LocomotionChecks();
                 InteractionChecks();
@@ -451,7 +459,13 @@ public static class ShopCityValidation
         DemoValidation.Check(lighting.UVTorchLight.transform.parent == left.transform && left.GetComponent<XRControllerInput>().UVLighting == lighting
             && left.GetComponent<XRControllerInput>().Lighting == null && !lighting.FlashlightOn,
             "UV torch rides on the left hand in VR mode");
+        // The shop's UV torch keeps the flashlight's generated cookie (UVTorchCookie and the
+        // light bar are the night store's).
+        bool uvCookie = lighting.UVTorchCookie == null && lighting.LightBar == null && lighting.FlashlightCookie != null
+            && lighting.UVTorchLight.cookie == lighting.FlashlightCookie;
         lighting.UVTorch(false);
+        DemoValidation.Check(uvCookie, "Shop torches keep the generated cookie");
+        DemoValidation.Check(DemoValidation.Find<ToolStation>().LampCookie == null, "Shop lamps have no cookie");
 
         // The lamp hangs straight below a pitched hand and never sinks below the floor;
         // the trigger switches it rather than selecting a tape endpoint.
@@ -616,6 +630,9 @@ public static class ShopCityValidation
         // isPlaying is unreliable without an audio device in batch mode; check the setup instead.
         AudioSource ambience = DemoValidation.Find<AmbientSound>().GetComponent<AudioSource>();
         DemoValidation.Check(ambience.clip != null && ambience.loop, "Street ambience source is configured");
+        DemoValidation.Check(DemoSounds.Bank == null && DemoSounds.SetDownClip(DemoToolKind.Cone) == DemoSounds.Generated(DemoSound.Thud)
+            && DemoSounds.SetDownClip(DemoToolKind.Marker) == DemoSounds.Generated(DemoSound.Thud), "Without a sound bank, set-downs keep the generated thud");
+        DemoValidation.Check(Mathf.Approximately(ambience.spatialBlend, 0.6f), "Shop ambience keeps spatial blend 0.6");
     }
 
     private static void ExpansionChecks()

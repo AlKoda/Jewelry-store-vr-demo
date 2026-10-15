@@ -16,6 +16,10 @@ Files: every model, material and texture NOT listed in sections 2 and 3, i.e.
   PriceTags_Color.png, GoldBar1kg_{Color,Normal}.png, GoldBar100g_{Color,Normal}.png, GoldCoin_{Color,Normal}.png,
   GiftBag_Color.png, PaymentTerminal_Color.png, PosTablet_Screen.png, GemPaper_Color.png, and everything in Source~/
   (Source~/Preview.jpg also shows renders of the four third-party models below; their licences apply to those tiles).
+  LOD variants (October 15, 2026): GoldCoin_LOD1/_LOD2.obj, RingGoldBand_LOD1/_LOD2.obj,
+  RingBoxClosed_LOD1/_LOD2.obj, JewelersLoupe_LOD1/_LOD2.obj, GemParcel_LOD1/_LOD2.obj,
+  NecklacePearlDropped_LOD1/_LOD2.obj, made from the project-owned models above by Source~/make_lods.py (they use
+  the same MTLs), and Source~/Preview_LODs.jpg, which shows project-owned models only, are project-owned too.
 Author: Jewelry-store-vr-demo project (generated with Claude, an AI assistant, from the Python scripts in Source~/).
 Licence: project-owned original work; no third-party restrictions. No third-party geometry, photographs or
   scans were used. All brand text is the project's fictional shop "Aurel & Finch" (see NightGraphics); the coin,

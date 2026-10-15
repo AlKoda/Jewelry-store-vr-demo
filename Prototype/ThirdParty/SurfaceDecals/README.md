@@ -222,3 +222,107 @@ different directions and multiplied give the usual animated look.
   rust/water run-off stain; GrimeStreaks_Wall is soot/dirt run-off under ledges.
 - NightGraphics ShoeTrace/Scuff/DustSmear are illustrative flat graphics; the decals here are the
   realistic replacements.
+
+## Atlases (wiring batch)
+
+`Atlas/` packs the decals the night store uses into two texture sets, so each set needs one material
+(Fade; plus a Cutout copy if the leaves or litter sort badly) and its quads can batch, instead of one
+material and up to three textures per decal. Built October 15, 2026 by `Source~/make_atlas.py` from
+the decal files above, which are unchanged. **Not yet imported or checked in Unity (unverified).**
+
+| File | Pixels | Content | Bytes |
+|---|---|---|---|
+| `Atlas/Ambient_Color.png` | 2048x2048 RGBA | Always-on street decals plus the hidden ambient-wear cells (12 cells, 82.1 % of the page) | 1091840 |
+| `Atlas/Ambient_Normal.png` | 2048x2048 RGB | Same layout | 392345 |
+| `Atlas/Ambient_MetallicSmoothness.png` | 1024x1024 RGBA | Same layout at half size | 66379 |
+| `Atlas/Ambient.json` | - | Cell rects for JsonUtility | 1142 |
+| `Atlas/Evidence_Color.png` | 2048x2048 RGBA | Hidden case-evidence decals (8 cells, 94.6 % of the page) | 2022914 |
+| `Atlas/Evidence_Normal.png` | 2048x2048 RGB | Same layout | 987785 |
+| `Atlas/Evidence_MetallicSmoothness.png` | 1024x1024 RGBA | Same layout at half size | 13112 |
+| `Atlas/Evidence.json` | - | Cell rects for JsonUtility | 819 |
+
+Conventions (as for the single decals unless stated):
+
+- **`<Set>_Color.png`**: sRGB, straight alpha. Fully transparent pixels inside a cell keep that decal's
+  constant fill colour (the value in its source file); the gaps carry the colour of the nearest cell
+  pixel (bleed), also at alpha 0.
+- **`<Set>_Normal.png`**: OpenGL +Y. Cells whose decal ships a `_Normal` use it (resampled as vectors and
+  renormalised); the other cells and the gaps are flat (128, 128, 255).
+- **`<Set>_MetallicSmoothness.png`**: R = metallic, A = smoothness, the colour layout at half size
+  (halve every rect). Cells whose decal ships a `_MetallicSmoothness` use it; the others hold the
+  constant in the Smoothness column (R = 0, A = value); all channels are 0 in the gaps.
+- **`<Set>.json`**: `{width, height, cells: [{name, x, y, w, h}]}` in colour-atlas pixels with **y counted
+  from the bottom edge**, so `uvRect = (x / width, y / height, w / width, h / height)` addresses the
+  cell in all three maps. Names are the source decal names. Classes for `JsonUtility.FromJson`:
+  `[Serializable] class Cell { public string name; public int x, y, w, h; }` and
+  `[Serializable] class Layout { public int width, height; public Cell[] cells; }`.
+- **Layout**: cells sit 8 px from the page edge and at least 16 px apart on an 8 px grid; nothing is
+  rotated or flipped (image top = +V; shoe prints keep toe = +V, and mirroring U inside the cell still
+  gives an extra R print). Each cell keeps its source aspect (within 1 %), so the real sizes are
+  unchanged; only the texel density drops (px/m column; the source density was 1024 px across the
+  real size for the 1 m decals).
+- **Resampling**: colour premultiplied in linear light, Lanczos; normals Lanczos per component, then
+  renormalised; metallic-smoothness box filter. `Fingerprints_Atlas` is copied 1:1.
+- **Mipmaps**: with Unity's Box mip filter, mip levels 0-3 never mix two cells. From mip 4 (a 496 px
+  cell drawn about 31 px wide) bilinear filtering can pick up a faint fringe from a neighbour whose
+  border is opaque (GrimeStreaks_Wall top, DirtEdge_WallBase top and bottom, PryMarks_DoorFrame right,
+  DirtTracked_Entrance bottom); inset the UVs by half a texel if it shows.
+
+Import: Color as the single decals (sRGB on, Alpha Is Transparency on, Wrap Clamp, mipmaps on,
+Aniso 4-8) with Max Size 2048; Normal: Texture Type Normal map, Wrap Clamp, Max Size 2048;
+MetallicSmoothness: sRGB off, Wrap Clamp, Max Size 1024, material Smoothness Source = Metallic Alpha.
+
+GPU memory per set with full mip chains: DXT5 colour 5,592,432 + BC5 normal 5,592,432 + DXT5
+metallic 1,398,128 = 12,582,992 bytes (12.6 MB). With ASTC 6x6 / 5x5 / 6x6 on Quest 2:
+6,713,680 bytes (6.7 MB). The same decals as separate native-size textures (DXT5/BC5): Ambient
+23 textures, 28.3 MB; Evidence 14 textures, 10.1 MB (the Evidence atlas costs 2.4 MB more, for three
+textures and one material instead of 14 textures and 8 materials).
+
+### Ambient set
+
+| Cell | Rect x, y, w, h (y from top) | JSON y (from bottom) | Source -> cell px | Real size (unchanged) | px/m | Normal | Smoothness |
+|---|---|---|---|---|---|---|---|
+| `Puddle_Kerbside` | 16, 8, 992, 496 | 1544 | 1024x512 -> 992x496 | 2.0 x 1.0 m (top edge = kerb face) | 496 | own | own map (water 0.97, damp ~0.6; A 0-247) |
+| `Puddle_Round` | 1032, 8, 496, 496 | 1544 | 1024x1024 -> 496x496 | 1.2 x 1.2 m | 413 | own | own map (A 0-247) |
+| `Puddle_Cluster` | 1544, 8, 496, 496 | 1544 | 1024x1024 -> 496x496 | 1.5 x 1.5 m | 331 | own | own map (A 0-247) |
+| `OilStain` | 8, 520, 496, 496 | 1032 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | flat | own map (A 64-230) |
+| `LitterScatter` | 520, 520, 496, 496 | 1032 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | own | 0.40 (A = 102; README: litter) |
+| `LeafLitter_Wet` | 1032, 520, 496, 496 | 1032 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | own | own map (A 0-203) |
+| `ChewingGum_Scatter` | 1544, 520, 496, 496 | 1032 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | own | 0.30 (A = 77; README: gum) |
+| `GrimeStreaks_Wall` | 8, 1040, 496, 992 | 16 | 512x1024 -> 496x992 | 0.6 x 1.2 m (top = ledge) | 827 | flat | 0.15 (A = 38; README: grime) |
+| `WaterStain_FloorDried` | 520, 1032, 496, 496 | 520 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | flat | 0.20 (A = 51; README: water stains) |
+| `FloorScuffs_Heel` | 1032, 1032, 496, 496 | 520 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | flat | 0.35 (A = 89; README: scuffs) |
+| `FloorScratches_Fine` | 1544, 1032, 496, 496 | 520 | 1024x1024 -> 496x496 | 1.0 x 1.0 m | 496 | flat | 0.40 (A = 102; not in the README list: rough, so the scratches break the 0.88 marble reflection) |
+| `DirtEdge_WallBase` | 528, 1544, 992, 248 | 256 | 1024x256 -> 992x248 | 2.0 x 0.25 m (top edge = wall) | 496 x 992 (anisotropic, as the source) | flat | 0.15 (A = 38; README: grime / dust) |
+
+### Evidence set
+
+| Cell | Rect x, y, w, h (y from top) | JSON y (from bottom) | Source -> cell px | Real size (unchanged) | px/m | Normal | Smoothness |
+|---|---|---|---|---|---|---|---|
+| `ShoePrint_Sneaker_Mud_L` | 8, 8, 496, 992 | 1048 | 512x1024 -> 496x992 | 0.20 x 0.40 m (toe = +V) | 2480 | own | 0.45 (A = 115; README: mud) |
+| `ShoePrint_Sneaker_Mud_R` | 520, 8, 496, 992 | 1048 | 512x1024 -> 496x992 | 0.20 x 0.40 m (toe = +V) | 2480 | own | 0.45 (A = 115; README: mud) |
+| `ShoePrint_Sneaker_Dust_L` | 1032, 8, 496, 992 | 1048 | 512x1024 -> 496x992 | 0.20 x 0.40 m (toe = +V) | 2480 | own | 0.15 (A = 38; README: dust) |
+| `ShoePrint_Sneaker_Dust_R` | 1544, 8, 496, 992 | 1048 | 512x1024 -> 496x992 | 0.20 x 0.40 m (toe = +V) | 2480 | own | 0.15 (A = 38; README: dust) |
+| `Fingerprints_Atlas` | 8, 1016, 1024, 512 | 520 | 1024x512 -> 1024x512 (1:1) | 4 x 2 prints of 25 x 25 mm (256 px each) | 10240 | flat | 0.50 (A = 128; README: fingerprints on glass) |
+| `PryMarks_DoorFrame` | 8, 1544, 496, 496 | 8 | 512x512 -> 496x496 | 0.12 x 0.12 m (right edge = frame edge) | 4133 | own | own map (A 76-153, metallic up to 0.95) |
+| `GlassHandprint_Latent` | 520, 1544, 496, 496 | 8 | 1024x1024 -> 496x496 | 0.19 x 0.19 m | 2611 | flat | 0.50 (A = 128; README: fingerprints, latent print on glass) |
+| `DirtTracked_Entrance` | 1048, 1016, 992, 992 | 40 | 1024x1024 -> 992x992 | 1.5 x 1.5 m (bottom edge = door threshold) | 661 | flat | 0.30 (A = 77; not in the README list: between dust 0.15 and mud 0.45) |
+
+`Fingerprints_Atlas` keeps its 4 x 2 inner layout and is one JSON cell. Print column c (0-3) inside the
+Evidence atlas: UV rect x = (8 + 256 c) / 2048, w = h = 0.125; y = 776 / 2048 for the latent (top) row
+and 520 / 2048 for the developed (bottom) row, so dusting still changes only the V offset.
+
+### Rebuilding and checking
+
+`python3 -I make_atlas.py <SurfaceDecals dir> <out dir>` from a copy of the script outside the pack
+(numpy and Pillow only). It refuses a layout that overlaps, leaves less than 16 px between cells or
+8 px at the page edge, or changes a cell's aspect by more than 1 % (it never rotates or rescales a cell
+to fit), and refuses a cell that ignores a shipped `_Normal` / `_MetallicSmoothness`. After writing it
+reads the files back and checks: alpha 0 / flat normal / zero metallic-smoothness in the gaps, the
+bled colour next to every cell, the fill colour under alpha 0, every normal decoding to a unit vector
+(|n| = 1 +- 0.01, z > 0), metallic alpha equal to the constant in the constant cells, each cell
+matching its source in place (alpha correlation 0.991-1.000, normal 0.984-0.999), toe = +V for the
+shoe prints (forefoot widest row in the upper half, flipped or rotated copies correlate 0.12-0.46),
+the fingerprint block equal to its source byte for byte, and the JSON round-tripping to the layout.
+Any failure exits with status 1 and names the cell. Add `--verify` to check existing files only. A
+rebuild reproduces the files byte for byte.
