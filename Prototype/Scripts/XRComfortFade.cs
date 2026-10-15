@@ -1,10 +1,10 @@
 using UnityEngine;
 
-// Brief blink in front of the eyes that masks teleports and snap turns. Lives on
-// the XR head camera; DemoModeSwitch enables it only in VR, so the desktop view
-// never shows the quad. Fade() is called in the same frame as the move, before it
-// renders, and starts at full black, so the jump itself is never seen; the view
-// then fades back in over Duration (unscaled). The quad is created lazily and
+// Brief blink in front of the eyes that masks teleports, snap turns and the start-up
+// recentre. Lives on the XR head camera; DemoModeSwitch enables it only in VR, so the
+// desktop view never shows the quad. Fade() is called in the same frame as the move,
+// before it renders, and starts at full black, so the jump itself is never seen; the
+// view then fades back in over Duration (unscaled). The quad is created lazily and
 // disabled whenever the alpha is back at zero.
 public sealed class XRComfortFade : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public sealed class XRComfortFade : MonoBehaviour
     public bool Fading { get; private set; }
 
     private float elapsed;
+    private int fadeFrame = -1;
     private Renderer quad;
     private Material material;
 
@@ -21,6 +22,7 @@ public sealed class XRComfortFade : MonoBehaviour
     {
         if (!Enabled || !isActiveAndEnabled) return;
         elapsed = 0;
+        fadeFrame = Time.frameCount;
         Fading = true;
         SetAlpha(1);
     }
@@ -28,6 +30,7 @@ public sealed class XRComfortFade : MonoBehaviour
     private void Update()
     {
         if (!Fading) return;
+        if (Time.frameCount == fadeFrame) return; // the frame of the jump renders fully black
         elapsed += Time.unscaledDeltaTime;
         if (elapsed >= Duration) { Fading = false; SetAlpha(0); return; }
         SetAlpha(1f - elapsed / Duration);
@@ -56,6 +59,7 @@ public sealed class XRComfortFade : MonoBehaviour
         blocker.enabled = false; // Destroy only lands at frame end; never block rays meanwhile.
         Destroy(blocker);
         cover.transform.SetParent(transform, false);
+        cover.layer = DemoUi.HeadsetUiLayer; // a photo taken from the head pose never catches the blink
         Camera head = GetComponent<Camera>();
         float z = (head != null ? head.nearClipPlane : 0.01f) + 0.01f;
         cover.transform.localPosition = new Vector3(0, 0, z);

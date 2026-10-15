@@ -4,10 +4,20 @@ using UnityEngine.XR;
 // Moves the camera with the headset through Unity's built-in XR input API.
 // No package is needed in the project; the OpenXR runtime supplies the poses
 // once XR Plug-in Management is installed and enabled. Tracking is floor
-// relative, so the camera's parent (the rig root) stands on the floor.
+// relative, so the camera's parent (the rig root) stands on the floor. The pose
+// is read in Update and again just before rendering.
+// Runs first, so XRLocomotion's teleport and snap-turn pivot (driven from
+// XRControllerInput, order -100) read this frame's head pose.
+[DefaultExecutionOrder(-110)]
 public sealed class XRHeadTracking : MonoBehaviour
 {
-    private void Update()
+    private void OnEnable() { Application.onBeforeRender += LatePose; }
+    private void OnDisable() { Application.onBeforeRender -= LatePose; }
+    private void Update() { ApplyPose(); }
+    // The XR input subsystem refreshes the pose just before rendering with a shorter prediction;
+    // reading it again there keeps the view on the pose the frame is displayed with.
+    private void LatePose() { ApplyPose(); }
+    private void ApplyPose()
     {
         InputDevice head = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
         if (!head.isValid) return;

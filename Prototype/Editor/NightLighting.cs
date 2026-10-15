@@ -60,7 +60,8 @@ public static class NightLighting
         ProbeBox(V(-L.PavementHalfX, -0.5f, L.StagingBay.MinZ - 3), V(L.PavementHalfX + L.CarPosition.x, 5.5f, L.MinZ + 1)),
     };
     private static Bounds ProbeBox(Vector3 min, Vector3 max) { Bounds b = new Bounds(); b.SetMinMax(min, max); return b; }
-    public const int ReflectionResolution = 128;
+    public const int ReflectionResolution = 256; // the 0.95-smooth glass samples about mip 0.5, so the probe size sets its sharpness
+    public const int SkyReflectionResolution = 128; // the near-black night sky needs no more
 
     // Project-wide: the night bake and its intensities assume linear lighting and
     // linear light intensities (Built-in defaults to intensities applied in gamma,
@@ -75,7 +76,7 @@ public static class NightLighting
 
     // Lightmap texel scale (scaleInLightmap) by zone; the builder's KitMeshes size their
     // chart margins from the same values (KitMesh.LightmapScale).
-    public const float ShellScale = 1, FixtureScale = 0.8f, KitScale = 0.5f, StreetScale = 0.6f, FarScale = 0.2f;
+    public const float ShellScale = 1, FixtureScale = 0.8f, GroundScale = 0.75f, KitScale = 0.5f, StreetScale = 0.3f, FarScale = 0.1f;
 
     // Builds NightStore/Lighting and sets the environment and bake settings. Removes
     // the validator's preview sun (its grey ambient is replaced here).
@@ -131,7 +132,7 @@ public static class NightLighting
             {
                 GameObject lens = Box("Lens", post, post.InverseTransformPoint(head + V(0, -0.1f, 0)), V(0.4f, 0.03f, 0.2f), Emitter("NightStreetLens", StreetColour * 0.4f, StreetColour * 3f));
                 lens.transform.localRotation = Quaternion.Euler(0, L.StreetlightYaw(i), 0);
-                Unlit(lens);
+                ProbeLens(lens);
             }
         }
 
@@ -150,7 +151,7 @@ public static class NightLighting
             // Lens quad on the car's nose (a quad faces -z; the nose is the anchor's +z).
             GameObject lens = Primitive("Lens", PrimitiveType.Quad, anchor, V(0, 0, 0.01f), V(0.3f, 0.12f, 1), Emitter("NightHeadlampLens", HeadlightColour, HeadlightColour * 3f));
             lens.transform.localRotation = Quaternion.Euler(0, 180, 0);
-            Unlit(lens);
+            ProbeLens(lens);
         }
 
         // Instructor's diagnostic daylight (DemoLighting.SetNight(false)): realtime, no shadows, off.
@@ -189,7 +190,8 @@ public static class NightLighting
         blink.Apply(0); // Edit-mode captures show the red half lit (property blocks are not saved).
     }
 
-    // Emissive Standard material for the non-static emitters (the lights do the lighting).
+    // Emissive Standard material for the emitters (the lights do the lighting; lenses are
+    // probe-static only, the light bar dynamic).
     private static Material Emitter(string name, Color albedo, Color emission)
     {
         Material m = Mat(MaterialFolder, name, albedo, 0.8f);
@@ -205,6 +207,16 @@ public static class NightLighting
         Renderer r = g.GetComponent<Renderer>();
         r.shadowCastingMode = ShadowCastingMode.Off;
         r.receiveShadows = false;
+    }
+
+    // Emissive lenses the baked reflection probes capture (no ContributeGI, so lightmaps
+    // and the GI policy are unchanged): headlamp glints in the showroom probe (case glass,
+    // jewellery, floor), streetlight glows in the exterior probe. The light bar blinks by
+    // property block and stays dynamic.
+    private static void ProbeLens(GameObject lens)
+    {
+        Unlit(lens);
+        GameObjectUtility.SetStaticEditorFlags(lens, StaticEditorFlags.ReflectionProbeStatic | StaticEditorFlags.BatchingStatic);
     }
 
     // ---------------------------------------------------------------- emission and environment
@@ -236,7 +248,7 @@ public static class NightLighting
         RenderSettings.sun = moon;
         RenderSettings.skybox = NightSky();
         RenderSettings.defaultReflectionMode = DefaultReflectionMode.Skybox;
-        RenderSettings.defaultReflectionResolution = ReflectionResolution;
+        RenderSettings.defaultReflectionResolution = SkyReflectionResolution;
         RenderSettings.reflectionIntensity = 1;
         RenderSettings.reflectionBounces = 1;
         RenderSettings.fog = true;
@@ -338,9 +350,12 @@ public static class NightLighting
 
     // ---------------------------------------------------------------- lightmaps
 
-    // Texel density by zone: the interior shell and the near pavement and kerbs (where
-    // the player walks, under the bollard and car shadows) full, fixtures 0.8, the street
-    // 0.6, kit models 0.5 and what is mostly out of view (far pavement, buildings) 0.2.
+    // Texel density by zone at DemoGeometry.LightmapTexelsPerMetre (20 per metre), first
+    // match wins: the interior shell 20 (5 cm, where the headlights' case shadows fall);
+    // fixtures and facade 16; the near pavement and kerbs 15 (where the player walks, under
+    // the bollard and car shadows; a 64 m strip needs 960 px, inside lightmapMaxSize 1024);
+    // the car, streetlights, table, easel and bollards 10; the street and the neighbour
+    // terrace 6; the far pavement, the row across the street and the skyline 2.
     private static void LightmapScales(Transform root)
     {
         foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
@@ -349,9 +364,10 @@ public static class NightLighting
             string path = PathUnder(r.transform, root);
             float scale = FixtureScale;
             if (path.StartsWith("Architecture/")) scale = ShellScale;
+            else if (path.StartsWith("Exterior/Buildings/Neighbours")) scale = StreetScale;
             else if (path.StartsWith("Exterior/Ground/FarPavement") || path.StartsWith("Exterior/Buildings/")) scale = FarScale;
             else if (path.StartsWith("Exterior/Ground/Street")) scale = StreetScale;
-            else if (path.StartsWith("Exterior/Ground/")) scale = ShellScale;
+            else if (path.StartsWith("Exterior/Ground/")) scale = GroundScale;
             else if (path.StartsWith("Exterior/")) scale = KitScale;
             r.scaleInLightmap = scale;
         }
@@ -365,7 +381,9 @@ public static class NightLighting
     }
 
     // Saved LightingSettings asset, assigned to the scene. All lights are Baked, so the
-    // mixed-lighting mode is irrelevant; non-directional lightmaps halve the memory.
+    // mixed-lighting mode is irrelevant; combined-directional lightmaps let normal maps
+    // respond to the baked light (one extra lightmap sample per pixel, about 1.3 MB per
+    // 1024 map).
     private static void Settings()
     {
         LightingSettings s = AssetDatabase.LoadAssetAtPath<LightingSettings>(SettingsPath);
@@ -391,7 +409,7 @@ public static class NightLighting
         s.aoMaxDistance = 0.6f;
         // BC6H/BC7-class blocks at the same size: NormalQuality bands the dark gradients.
         s.lightmapCompression = LightmapCompression.HighQuality;
-        s.directionalityMode = LightmapsMode.NonDirectional;
+        s.directionalityMode = LightmapsMode.CombinedDirectional;
         EditorUtility.SetDirty(s);
         AssetDatabase.SaveAssets();
         Lightmapping.lightingSettings = s;
@@ -420,10 +438,12 @@ public static class NightLighting
         return baked;
     }
 
-    // RunNightQuick: no bake, so baked lights would not render at all. They become
-    // realtime and shadowless at legacy-falloff intensities; the headlights take pixel
-    // lights, the far streetlights are vertex-lit, and the flat ambient is lifted to
-    // stand in for the missing bounce. A preview only, never the shipped look.
+    // RunNightQuick, or a build whose bake was skipped or failed (NightStoreBuilder.
+    // BuildScene): no lightmaps, so baked lights would not render at all. They become
+    // realtime and shadowless at legacy-falloff intensities; the headlights and near
+    // streetlights are Auto, so the flashlight, UV torch and lamps (ForcePixel) keep their
+    // per-pixel slots, the far streetlights are vertex-lit, and the flat ambient is lifted
+    // to stand in for the missing bounce. A preview only, never the shipped look.
     public static void UseRealtimeFallback(Transform root)
     {
         Transform group = root.Find(GroupName);
@@ -435,7 +455,7 @@ public static class NightLighting
             if (light.name.StartsWith("Headlight_"))
             {
                 light.intensity = HeadlightRealtime;
-                light.renderMode = LightRenderMode.ForcePixel;
+                light.renderMode = LightRenderMode.Auto;
             }
             else if (light.name.StartsWith("Streetlight_"))
             {
@@ -445,7 +465,7 @@ public static class NightLighting
             }
         }
         RenderSettings.ambientLight = FallbackAmbient.gamma;
-        Debug.LogWarning("NightLighting: not baked (RunNightQuick). Baked lights switched to realtime without shadows and the ambient lifted; run RunNight for the real look.");
+        Debug.LogWarning("NightLighting: not baked (RunNightQuick or a preview build). Baked lights switched to realtime without shadows and the ambient lifted; run RunNight or Start-Demo.cmd bake for the real look.");
     }
 
     // The inverse of UseRealtimeFallback, before a bake of a quick build: every scene

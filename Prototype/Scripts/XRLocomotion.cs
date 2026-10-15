@@ -110,6 +110,7 @@ public sealed class XRLocomotion : MonoBehaviour
         transform.rotation = Quaternion.AngleAxis(Mathf.DeltaAngle(current, yaw), Vector3.up) * transform.rotation;
         Vector3 at = head.position;
         Relocate(transform, transform.position + new Vector3(floorPoint.x - at.x, floorPoint.y - transform.position.y, floorPoint.z - at.z));
+        if (ComfortFade != null) ComfortFade.Fade(); // the start-up turn and jump blink like a teleport
     }
 
     // Sets a position directly. A CharacterController on the object must be off

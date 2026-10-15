@@ -52,7 +52,7 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | C | Crouch / stand (eye 0.95 m, half speed) — October 13, unverified |
 | Z (hold) | Zoom to 30°, slower look — October 13, unverified |
 | F1 / H | Controls overlay (mouse and keyboard page, Quest 2 page); pauses walking like the drawer |
-| F2 | Hide / show the HUD (chips, hotbar, prompts, toasts) |
+| F2 | Hide / show the HUD (chips, hotbar, prompts, toasts) while this map is open; reopening it (F10) or a new launch starts with it on |
 | Esc | Release the cursor; also closes the controls overlay or the drawer |
 | F10 | Back to the start menu (built program) |
 | Tab | Cycle the presenter panel: hidden → strip → drawer (DemoDesktopPanel) |
@@ -62,10 +62,10 @@ The number pad's 1–6 work like the main row. The hotbar at the bottom (tools 1
 
 ### Desktop interface (October 13, unverified)
 
-- HUD (hidden layout): chips top left (mode, night, torches, crouch/zoom, tools placed and next marker, photos, pending tape step), the hotbar, a crosshair with the target's name while mouse look is on (brass when there is something to act on), a tooltip beside the cursor otherwise, key prompts for the current situation above the hotbar with a warning line when placement is impossible, toasts top right for every action (DemoFeedback), the camera's live view with thirds while it is held, a white flash on each photo and a banner while a reset is armed.
+- HUD (hidden layout): chips top left (mode, night, torches, crouch/zoom, tools placed and next marker, photos, pending tape step), the hotbar, a crosshair with the target's name while mouse look is on (brass when there is something to act on), a tooltip beside the cursor otherwise, key prompts for the current situation above the hotbar with a warning line when placement is impossible, toasts top right for every action (DemoFeedback; the headset toast repeats them except presenter-only ones: interface size, HUD on, settings restored), the camera's live view with thirds while it is held, a white flash on each photo and a banner while a reset is armed.
 - Strip: status chips and Photo / Robbed-Intact / Reset / Panel buttons with the last photo and live view.
 - Drawer (right, 420 wide): Tools (new-tool tiles, tape options, placed tools with Remove), Camera (status, photo/hold/folder, live view, last photo, instructor review), Map (overview, click to place the beacon, legend), Scene (robbed/intact, night/day, flashlight, UV torch, UV examples, beacon, reset), Settings (interface size, HUD, prompts, look sensitivity, field of view, invert Y, restore defaults, credits).
-- Settings persist in PlayerPrefs (DemoPanelScale, DemoHudVisible, DemoShowPrompts, DemoPanelTab, DemoLookSensitivity, DemoInvertY, DemoFieldOfView).
+- Settings persist in PlayerPrefs (DemoPanelScale, DemoShowPrompts, DemoPanelTab, DemoLookSensitivity, DemoInvertY, DemoFieldOfView). F2 (hide the HUD) is not saved: every launch, and every map opened from the start menu, starts with the HUD on, and the DemoHudVisible value older builds saved is deleted (October 15, unverified).
 
 Walls, the storefront barrier and InteriorBounds keep the player inside. InteriorBounds.Contains/Clamp are the shared definition of the interior; use them to filter XR teleport destinations.
 

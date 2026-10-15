@@ -363,6 +363,12 @@ public static class ShopCityValidation
     private static void PanelChecks()
     {
         DemoDesktopPanel panel = DemoValidation.Find<DemoDesktopPanel>();
+        // F2 lasts for one run: the HUD starts visible, and hiding it writes nothing to PlayerPrefs.
+        bool startsVisible = panel.HudVisible;
+        panel.HudVisible = false;
+        bool unsaved = !PlayerPrefs.HasKey("DemoHudVisible");
+        panel.HudVisible = true;
+        DemoValidation.Check(startsVisible && unsaved && panel.HudVisible, "Desktop HUD starts visible each run and F2 is not remembered");
         EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
         panel.Layout = PanelLayout.Hidden;
         panel.CycleLayout();
@@ -388,7 +394,15 @@ public static class ShopCityValidation
 
         Camera photo = evidence.transform.Find("PhotoCamera").GetComponent<Camera>();
         bool racked = evidence.Viewfinder == null;
+        // The flashlight owns the scene's one realtime shadow; the viewfinder render skips that shadow map
+        // while it is on. StartViewfinder renders the first frame synchronously, so the probe sees it.
+        DemoLighting torches = DemoValidation.Find<DemoLighting>();
+        ShadowQuality shadowsBefore = QualitySettings.shadows, duringPreview = shadowsBefore;
+        Camera.CameraCallback probe = c => { if (c == photo) duringPreview = QualitySettings.shadows; };
+        torches.Flashlight(true);
+        Camera.onPreCull += probe;
         evidence.HoldBy(Camera.main.transform, new Vector3(0.22f, -0.12f, 0.35f));
+        Camera.onPreCull -= probe;
         bool live = evidence.Viewfinder != null && evidence.Viewfinder.width == 480 && evidence.Holder == Camera.main.transform
             && photo.targetTexture == null && !photo.enabled;
         // The rear screen is refreshed directly (LateUpdate has not run between these calls).
@@ -403,6 +417,9 @@ public static class ShopCityValidation
             screenLive = evidence.Viewfinder != null && screenBlock.GetTexture("_MainTex") == evidence.Viewfinder;
         }
         evidence.ReturnToRack();
+        torches.Flashlight(false);
+        DemoValidation.Check(duringPreview == ShadowQuality.Disable && QualitySettings.shadows == shadowsBefore && !photo.allowHDR,
+            "Viewfinder skips the flashlight shadow map and restores the quality settings");
         DemoValidation.Check(racked && live && evidence.Viewfinder == null && evidence.Holder == null,
             "Viewfinder renders only while the camera is held");
         bool screenDark = false;
@@ -453,6 +470,13 @@ public static class ShopCityValidation
         DemoValidation.Check(lit && !lamp.LampLit && desktop.Station.PendingPost == null, "Trigger switches a held scene lamp");
         hand.RemoveHeld();
         hand.transform.rotation = handRotation;
+        // An overhead release drops to the floor instead of landing on the ceiling slab's top (ToolHolder.DropCeilingClearance).
+        hand.transform.position = new Vector3(-3, 2.4f, 5);
+        DeployedTool overhead = hand.SpawnIntoHand(DemoToolKind.Cone);
+        hand.Release();
+        bool dropped = overhead != null && hand.Held == null && Mathf.Abs(overhead.transform.position.y) < 0.02f;
+        if (overhead != null) hand.Remove(overhead); // through the hand, so its highlight of the cone clears too
+        DemoValidation.Check(dropped, "Tool released overhead drops to the floor, not onto the roof");
 
         hand.transform.position = new Vector3(-3, 1, 5);
         DeployedTool marker = hand.SpawnIntoHand(DemoToolKind.Marker);
@@ -502,6 +526,25 @@ public static class ShopCityValidation
         DemoValidation.Check(hand.Grab() && hand.Held != null && hand.Held.Kind == DemoToolKind.Measure,
             "Grabbing the reel sample spawns a measuring reel");
         hand.RemoveHeld();
+        // Twelve markers (Foot, Front and Back colliders each) beside a cone fill more than the first
+        // 32-entry overlap buffer: the scan grows and still finds the cone the hand is on.
+        Vector3 pile = new Vector3(-3, 0, 5);
+        List<DeployedTool> stacked = new List<DeployedTool>();
+        for (int i = 0; i < 12; i++)
+        {
+            DeployedTool m = desktop.Station.Spawn(DemoToolKind.Marker);
+            m.PlaceAt(pile, 0);
+            stacked.Add(m);
+        }
+        DeployedTool nearCone = desktop.Station.Spawn(DemoToolKind.Cone);
+        nearCone.PlaceAt(pile + new Vector3(0.15f, 0, 0), 0);
+        hand.transform.position = nearCone.transform.position + Vector3.up * 0.05f;
+        Physics.SyncTransforms(); // Test moves colliders repeatedly without a physics tick.
+        bool nearest = hand.Grab() && hand.Held == nearCone;
+        if (hand.Held != null) hand.RemoveHeld();
+        if (nearCone.gameObject.activeSelf) desktop.Station.RemoveTool(nearCone);
+        foreach (DeployedTool m in stacked) if (m.gameObject.activeSelf) desktop.Station.RemoveTool(m);
+        DemoValidation.Check(nearest, "Grab finds the nearest tool beside a pile of 36 colliders");
         // XRControllerInput.Awake wrote the label when VR mode activated the hand; A/X spawns a cone by default.
         DemoValidation.Check(hand.GetComponent<XRControllerInput>().Label.text.Contains("new cone"), "Hand label names the spawn kind");
         hand.transform.position = evidence.transform.position;
@@ -545,6 +588,7 @@ public static class ShopCityValidation
         map.Render();
         Vector2 uv = map.ToMap(DemoValidation.Find<ShopWalkController>().transform.position);
         DemoValidation.Check(map.Texture != null && uv.x > 0 && uv.x < 1 && uv.y > 0 && uv.y < 1, "Overview map renders with the player inside it");
+        DemoValidation.Check(map.MapShader != null && !ShaderUtil.ShaderHasError(map.MapShader), "Overview map draws albedo through its replacement shader");
         DemoValidation.Info("Third-party city models=" + (DemoAssetLibrary.Has("KenneyCityBuilder", "building-small-a") ? "present" : "absent"));
         GameObject city = GameObject.Find("CityBackdrop");
         DemoValidation.Check(city.GetComponentsInChildren<Collider>().Length == 0, "Backdrop has no physics colliders");

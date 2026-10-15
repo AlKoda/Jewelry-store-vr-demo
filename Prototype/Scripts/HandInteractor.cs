@@ -18,10 +18,13 @@ public sealed class HandInteractor : ToolHolder
 
     protected override Transform CameraAnchor => transform;
 
-    private readonly Collider[] overlaps = new Collider[32];
+    // Grows when a pile of tools fills it, so the nearest tool is never cut from the scan.
+    private Collider[] overlaps = new Collider[32];
     private ToolRackSample nearSample;
     private bool nearCamera;
 
+    // Runs after XRControllerInput (execution order -100), so FollowHand uses this frame's
+    // controller pose; ShopCityValidation invokes it by name.
     private void Update()
     {
         if (Held != null) FollowHand();
@@ -81,7 +84,9 @@ public sealed class HandInteractor : ToolHolder
         nearCamera = false;
         DeployedTool best = null;
         float bestDistance = float.MaxValue;
-        int count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius, overlaps);
+        int count;
+        while ((count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius, overlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) == overlaps.Length)
+            overlaps = new Collider[overlaps.Length * 2];
         for (int i = 0; i < count; i++)
         {
             Collider collider = overlaps[i];

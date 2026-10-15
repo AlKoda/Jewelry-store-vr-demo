@@ -12,7 +12,10 @@ using UnityEngine;
 //  - on the left hand, a wrist card with the scene status (tools, next marker, photos,
 //    lights, the pending tape selection), shown when looked at;
 //  - on the right hand, a toast that floats a little below the view and repeats the
-//    monitor's messages (DemoFeedback), so both screens say the same thing.
+//    monitor's messages (DemoFeedback) except presenter-only ones, so both screens say
+//    the same thing about the scene.
+// Every piece is on DemoUi.HeadsetUiLayer, so photos, the viewfinder and the overview
+// map never show it; hints that have faded out stop rendering.
 public sealed class XRHandHud : MonoBehaviour
 {
     public enum Control { Trigger, Grip, Primary, Secondary, Stick, Menu }
@@ -42,6 +45,7 @@ public sealed class XRHandHud : MonoBehaviour
         public Control Control;
         public Transform Root, Anchor;
         public TextMesh Key, Action;
+        public Renderer KeyRenderer, ActionRenderer;
         public MeshRenderer Panel, KeyPanel;
         public LineRenderer Line;
         public bool ExtendRight;
@@ -50,7 +54,7 @@ public sealed class XRHandHud : MonoBehaviour
     private XRControllerInput input;
     private bool left;
     private float side, startTime, tipAlpha = -1, appliedTipAlpha = -1, statusAlpha, appliedStatusAlpha = -1, carouselUntil, nextStatus;
-    private bool hintsShown = true;
+    private bool hintsShown = true, tipsRendering = true;
     private Transform model;
     private readonly List<Tip> tips = new List<Tip>();
     private readonly Dictionary<Control, Renderer> buttons = new Dictionary<Control, Renderer>();
@@ -99,6 +103,12 @@ public sealed class XRHandHud : MonoBehaviour
         if (left) BuildStatusCard();
         else BuildToast();
         Refresh();
+        // Headset only: photos, the viewfinder and the presenter's map never show the interface.
+        // Not the hand itself: it carries held tools, the camera body and the torches.
+        DemoUi.ToHeadsetUiLayer(model);
+        foreach (Tip tip in tips) DemoUi.ToHeadsetUiLayer(tip.Root);
+        DemoUi.ToHeadsetUiLayer(statusRoot);
+        DemoUi.ToHeadsetUiLayer(toastRoot);
     }
 
     // ---------------------------------------------------------------- controller model
@@ -238,10 +248,14 @@ public sealed class XRHandHud : MonoBehaviour
             tip.Action = existing;
         }
         else tip.Action = DemoUi.WorldText("Action", tip.Root, Vector3.zero, action ?? "", TextHeight, DemoUi.Ink, TextAnchor.MiddleLeft);
+        tip.KeyRenderer = tip.Key.GetComponent<Renderer>();
+        tip.ActionRenderer = tip.Action.GetComponent<Renderer>();
         GameObject leader = new GameObject("Leader");
         leader.transform.SetParent(tip.Root, false);
         tip.Line = leader.AddComponent<LineRenderer>();
-        tip.Line.useWorldSpace = true;
+        // In the tip's own space, so the line rides rigidly with the hand when the pose is
+        // refreshed just before rendering (XRControllerInput.LatePose).
+        tip.Line.useWorldSpace = false;
         tip.Line.positionCount = 2;
         tip.Line.startWidth = tip.Line.endWidth = 0.0012f;
         tip.Line.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -277,16 +291,29 @@ public sealed class XRHandHud : MonoBehaviour
     public void ShowHints(bool visible)
     {
         hintsShown = visible;
+        appliedTipAlpha = -1;        // the next LateUpdate re-applies alpha and visibility
+        tipsRendering = !visible;    // force the write
+        SetTipsRendering(visible);
+    }
+
+    // Faded-out hints stop rendering, as the wrist card does (55 transparent renderers otherwise).
+    private void SetTipsRendering(bool on)
+    {
+        if (on == tipsRendering) return;
+        tipsRendering = on;
         foreach (Tip tip in tips)
         {
-            tip.Panel.enabled = tip.KeyPanel.enabled = tip.Line.enabled = visible;
-            tip.Key.GetComponent<Renderer>().enabled = tip.Action.GetComponent<Renderer>().enabled = visible;
+            tip.Panel.enabled = tip.KeyPanel.enabled = tip.Line.enabled = on;
+            tip.KeyRenderer.enabled = tip.ActionRenderer.enabled = on;
         }
     }
 
     private void ApplyTipAlpha(float alpha)
     {
         appliedTipAlpha = alpha;
+        bool visible = hintsShown && alpha > 0.001f;
+        SetTipsRendering(visible);
+        if (!visible) return;
         foreach (Tip tip in tips)
         {
             bool pressed = Pressed(tip.Control);
@@ -345,6 +372,7 @@ public sealed class XRHandHud : MonoBehaviour
         carouselName = DemoUi.WorldText("Name", carousel, new Vector3(0, -0.017f, 0), "", 0.013f, DemoUi.Ink, TextAnchor.MiddleCenter, DemoUi.SemiBold);
         DemoUi.WorldText("Keys", carousel, new Vector3(0, -0.033f, 0), (left ? "X" : "A") + ": take one     " + (left ? "Y" : "B") + ": next",
             0.0085f, DemoUi.InkDim, TextAnchor.MiddleCenter);
+        DemoUi.ToHeadsetUiLayer(carousel); // built on the first B/Y press, after Build
     }
 
     public void ShowCarousel(DemoToolKind kind)
@@ -428,10 +456,8 @@ public sealed class XRHandHud : MonoBehaviour
     {
         if (toastRoot == null) return;
         DemoFeedback.Prune(now);
-        IReadOnlyList<DemoFeedback.Message> recent = DemoFeedback.Recent;
-        float alpha = recent.Count > 0 ? DemoFeedback.Opacity(recent[recent.Count - 1], now) : 0;
+        float alpha = DemoFeedback.TryNewestForHeadset(out DemoFeedback.Message message) ? DemoFeedback.Opacity(message, now) : 0;
         if (alpha <= 0 || head == null) { toastRoot.gameObject.SetActive(false); return; }
-        DemoFeedback.Message message = recent[recent.Count - 1];
         Vector3 flat = Vector3.ProjectOnPlane(head.forward, Vector3.up);
         if (flat.sqrMagnitude < 0.0001f) flat = Vector3.ProjectOnPlane(head.up, Vector3.up);
         Vector3 target = head.position + flat.normalized * 0.95f + Vector3.down * 0.3f;
@@ -479,7 +505,7 @@ public sealed class XRHandHud : MonoBehaviour
             if (lit.TryGetValue(button.Key, out bool was) && was == pressed) continue;
             lit[button.Key] = pressed;
             button.Value.sharedMaterial.color = pressed ? DemoUi.Accent : ButtonColor;
-            if (hintsShown) appliedTipAlpha = -1; // the key chips brighten with the button
+            if (hintsShown && tipAlpha > 0) appliedTipAlpha = -1; // the key chips brighten with the button
         }
 
         float tipTarget = hintsShown && (onboarding || LookedAt(transform.position, head)) ? 1 : 0;
@@ -490,8 +516,8 @@ public sealed class XRHandHud : MonoBehaviour
             foreach (Tip tip in tips)
             {
                 DemoUi.FaceViewer(tip.Root, head.position);
-                tip.Line.SetPosition(0, tip.Anchor.position);
-                tip.Line.SetPosition(1, tip.Root.position);
+                tip.Line.SetPosition(0, tip.Line.transform.InverseTransformPoint(tip.Anchor.position));
+                tip.Line.SetPosition(1, tip.Line.transform.InverseTransformPoint(tip.Root.position));
             }
 
         if (carousel != null && carousel.gameObject.activeSelf)

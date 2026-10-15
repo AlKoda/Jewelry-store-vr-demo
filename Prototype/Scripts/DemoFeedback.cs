@@ -6,7 +6,8 @@ public enum FeedbackTone { Info, Success, Warning }
 
 // One short message feed for everything the visitor does ("Marker 3 placed",
 // "Photo 4 saved", "Tape connected"). The desktop HUD and the VR toast panel both
-// read it, so the monitor and the headset always say the same thing. Static and
+// read it, so the monitor and the headset say the same thing about the scene; the
+// headset skips presenter-only messages (interface size, HUD, settings). Static and
 // tiny: posting costs a list insert, readers draw the newest few.
 public static class DemoFeedback
 {
@@ -16,6 +17,7 @@ public static class DemoFeedback
         public FeedbackTone Tone;
         public float Time;
         public int Serial;
+        public bool DesktopOnly; // presenter-only (interface size, HUD, settings): the headset toast skips it
     }
 
     public const int Capacity = 4;
@@ -28,15 +30,24 @@ public static class DemoFeedback
     public static IReadOnlyList<Message> Recent => recent;
     public static event Action<Message> Posted;
 
-    public static void Post(string text, FeedbackTone tone = FeedbackTone.Info)
+    public static void Post(string text, FeedbackTone tone = FeedbackTone.Info, bool desktopOnly = false)
     {
         if (string.IsNullOrEmpty(text)) return;
         // The same text twice in a row refreshes the existing toast instead of stacking.
         if (recent.Count > 0 && recent[recent.Count - 1].Text == text) recent.RemoveAt(recent.Count - 1);
-        Message message = new Message { Text = text, Tone = tone, Time = Now, Serial = ++serial };
+        Message message = new Message { Text = text, Tone = tone, Time = Now, Serial = ++serial, DesktopOnly = desktopOnly };
         recent.Add(message);
         while (recent.Count > Capacity) recent.RemoveAt(0);
         Posted?.Invoke(message);
+    }
+
+    // The newest message the visitor should see in the headset (presenter-only ones skipped).
+    public static bool TryNewestForHeadset(out Message message)
+    {
+        for (int i = recent.Count - 1; i >= 0; i--)
+            if (!recent[i].DesktopOnly) { message = recent[i]; return true; }
+        message = default;
+        return false;
     }
 
     // Drops messages older than Lifetime; readers call it before drawing.

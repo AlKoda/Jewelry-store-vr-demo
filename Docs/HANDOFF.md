@@ -1,3 +1,141 @@
+# Performance and realism fixes from the audit — October 15 (Claude, unverified, never compiled)
+
+A read-only audit of six areas (rendering, VR frame, CPU/GC, build/import, physics/logic, correctness) produced 57 findings. Two skeptics checked each one: 46 were confirmed and 11 rejected. This batch fixes the confirmed findings in the source, except the ones listed under "Deferred or dropped" (two deferred, four only partly done). It also adds 30 validator checks. Each change was reviewed by an adversarial reader and the whole diff was cross-reviewed; a C# parser found no syntax errors in the 30 changed or new .cs files. The aim is more realism at the same or lower cost, on Quest 2 and with mouse and keyboard, with both modes still working. **Nothing here has been compiled or run in Unity.**
+
+- **Rendering and lighting (night store):**
+  - Twice the lightmap density: DemoGeometry.LightmapTexelsPerMetre is now 20 (was 10), which gives 5 cm texels on the interior shell, where the headlights' case shadows fall. The per-zone scales in NightLighting are: shell 1; fixtures and facade 0.8; near pavement and kerbs 0.75 (new GroundScale; a 64 m strip needs 960 px, under the 1024 px maximum); KayKit car, streetlights, table, easel and bollards 0.5; street and the neighbouring terrace 0.3 (StreetScale, was 0.6); far pavement, the row across the street and the skyline 0.1 (FarScale, was 0.2). The Neighbours rule now runs before the Buildings rule. The pavement and kerb KitMeshes use GroundScale, so their chart margins match. NightStoreBuilder's own scaleInLightmap loop is gone, because NightLighting.LightmapScales sets every zone after Build.
+  - Directional lightmaps: lightmaps are CombinedDirectional (were NonDirectional), so the normal maps on the plaster, paving and facade stone now respond to the baked light. This costs one extra lightmap sample per pixel and about 1.3 MB per 1024 px map.
+  - Lightmapped street backdrop: the row of buildings across the street is now a lightmapped KitMesh at FarScale, with uv2. Before, it was one probe-lit renderer 54 m wide, lit evenly. The far streetlights' pools now reach its shopfronts. The KayKit skyline towers bake at 14 texels per model unit (FarScale 0.1 x 20 x scale 7), which is acceptable at that distance.
+  - Lenses in the reflections: the streetlight and headlamp lenses are now ReflectionProbeStatic (NightLighting.ProbeLens). They do not contribute GI, so the lightmaps and the GI policy are unchanged. The showroom probe now carries headlamp glints for the case glass, the jewellery and the floor. The street probe carries the streetlight glow on the wet asphalt. The blinking light bar stays dynamic.
+  - Sharper probes: reflection probes bake at 256 px (NightLighting.ReflectionResolution, was 128), because the 0.95-smooth glass samples about mip 0.5. The night sky's default reflection stays at 128 px (new SkyReflectionResolution).
+  - Lit police tape: Shaders/CrimeSceneTape.shader is now a Standard surface shader (`addshadow fullforwardshadows`, no lightmap, meta or deferred variants, DisableBatching so the object-space sag survives). The tape is dark until a torch or lamp reaches it, is shadowed by the ForwardAdd spot lights, and casts its sagging shadow. Unchanged: the shader name, properties, _Span, stripes and sag. It has Metallic 0, Smoothness 0.3 and no emission. PoliceTape.mat in the daytime shop is now shaded too.
+  - Readable overview map: the presenter's overview map renders in flat albedo, darker with height, through the new replacement shader Shaders/MapAlbedo.shader (Hidden/CrimeScene/MapAlbedo). Before, the night store came out almost black. DemoToolsBuilder assigns the shader to DemoOverviewMap.MapShader, which also keeps it in the build. Without the shader the map renders lit and a warning is logged.
+  - Better evidence photos: the photo camera renders LDR with MSAA. The capture target takes QualitySettings.antiAliasing samples and is resolved before ReadPixels. A half-size copy with GPU-built mipmaps (EvidenceCamera.LastPhotoDisplay) feeds the wall frame, the DSLR rear screen and the panel thumbnails, so they no longer shimmer. LastPhoto stays the full 1920-wide photo.
+- **VR frame:**
+  - Pixel lights in the preview: the unbaked preview is RunNightQuick, or a build whose bake was skipped or failed. In it, the headlights are now Auto instead of ForcePixel. The flashlight, the UV torch (DemoLighting.Create) and the deployed lamps (DemoToolGeometry.Lamp) are ForcePixel, so they always keep one of the four pixel-light slots.
+  - Viewfinder shadows: the 15 Hz viewfinder render skips the shadow map while the flashlight is on. QualitySettings.shadows is switched off for that render only and restored in a finally block. A lit lamp keeps its shadow, and saved photos keep every shadow.
+  - Overview map cost: the map renders only while the drawer's Map tab is open. Before, it rendered on every tab whenever the drawer was open. It now renders once a second (was four times), LDR and without MSAA, and renders at once when the tab is reopened.
+  - Faded controller hints stop rendering. That was about 55 transparent renderers every frame. ShowHints turns them back on at once, and their leader lines live in the tip's own space.
+  - Pose timing: XRHeadTracking (execution order -110) and XRControllerInput (-100) read the pose again in Application.onBeforeRender (LatePose), and a held tool follows that late hand pose. HandInteractor (default order) therefore always places the held tool and the grab highlight from this frame's pose.
+  - The start-up recentre now blinks through the comfort fade like a teleport, and the frame of any jump renders fully black.
+  - Headset interface on its own layer (DemoUi.HeadsetUiLayer = 5, Unity's unused "UI" layer): controller models, hints, wrist card, toast, carousel, teleport arc and ring, and the comfort fade. The head and desktop cameras draw it. The photo camera and the overview map cull it, so evidence photos, the viewfinder and the map no longer show it. The hands themselves stay on Default, because held tools, the camera body and the torches ride on them.
+- **CPU and GC (desktop HUD, photos):**
+  - DemoUi: the texture and style caches are keyed by value (tuples with Color, an icon array) instead of strings built on every IMGUI event. Box draws on Repaint only. DemoUi.Content keeps one GUIContent per distinct string (at most 512). Key hints are split once, and the slider track is made once.
+  - DemoDesktopPanel:
+    - Allocations: hint arrays and labels are static. Count text is rebuilt only when a count changes. The strip's button actions are made once, and closures are created only inside click branches. The prompt fills one reused list; the public ContextPrompt() still returns an array.
+    - Hierarchy walks: one GetComponentsInChildren per ToolsChanged now feeds the drawer rows, the map glyphs and the kind chips. Before, there was one walk per IMGUI event.
+    - Layout pass: useGUILayout is on only while the drawer or the controls overlay is open, because only they use GUILayout, so the HUD skips the extra Layout event.
+  - DemoLauncher has static hint arrays and useGUILayout off. DeployedTool caches Title per kind and a marker's DisplayName.
+  - Photo capture: the needless Apply (an 8 MB upload) is gone, and one pixel buffer is reused instead of a fresh 6 MB array per photo. The GPU readback itself is still synchronous (see Deferred).
+- **Build and import:**
+  - Failed bake: a failed bake no longer ships baked-only lights without lightmaps, which render black. NightStoreBuilder.BuildScene now returns whether it baked. On a failed bake it clears the lightmaps, falls back to the preview and logs the warning `JEWELRY_BUILD_LIGHTING bake failed`. build-latest.log always carries `JEWELRY_BUILD_LIGHTING baked` or `JEWELRY_BUILD_LIGHTING preview`. DemoBuild.WriteBuildInfo(bake, baked) writes the real lighting mode to the start-menu footer: "lighting baked", "preview (run Start-Demo.cmd bake for baked lighting)" or "preview (the bake failed, see build-latest.log)".
+  - Sticky bake choice: `Start-Demo.cmd bake` writes Builds\Windows\lighting.txt containing "bake". After that, a plain double-click that rebuilds after a pull prints "Baked lighting: ..." and bakes again. `Start-Demo.cmd rebuild` builds a preview and deletes the file. README line 5 now says this and adds: judge frame rate only on a baked build. Baking is still not the default (see Deferred).
+  - Linear before the first import: right after the first unpack, Start-Demo.cmd patches UnityProject_Demo's ProjectSettings.asset (`m_ActiveColorSpace: 1`) and GraphicsSettings.asset (`m_LightsUseLinearIntensity: 1`) with a PowerShell text replace, before Unity opens the project. The first build therefore imports every texture once instead of twice. UnityProject_Glass and Build-Windows.cmd keep the zip's Gamma.
+  - New Editor/ForwardOnlyShaderStripping.cs (IPreprocessShaders): player builds drop every shader's DEFERRED pass, since every camera renders Forward. It switches itself off if a Standalone graphics tier is ever set to Deferred. It saves build time and player size only; frame time does not change. Editor rendering and the bake's Meta pass are untouched.
+- **Physics and logic:**
+  - Overhead releases: ToolHolder.Settle drops a tool released overhead to the floor of the region under it (the street in the staging bay). Before, the tool floated or landed on the ceiling slab. The drop cast starts at most DropCeilingClearance (2.7 m) above that floor, which is below the 3.0 m ceilings and above the 2.1 m cases, and a miss lands on the floor.
+  - Grab scan: HandInteractor's grab scan ignores triggers and doubles its overlap buffer whenever 32 colliders fill it, so a pile of tools no longer hides the nearest one.
+- **Correctness:**
+  - DemoUi searches for the theme again at once when the cached one was destroyed (a scene load or F10), so world text is no longer built in the fallback font for up to a second.
+  - F2 (hide the HUD) lasts for one map load. It is no longer saved, and the DemoHudVisible key that older builds wrote is deleted. Docs/CONTROLS_AND_INTEGRATION.md is updated.
+  - The headset toast skips presenter-only messages: interface size, "HUD on" and settings restored. These use the new desktopOnly flag on DemoFeedback.Post and DemoFeedback.TryNewestForHeadset. The monitor still shows them.
+  - DontSave runtime objects are freed: the status board destroys its panel material, and the overview map destroys its render texture.
+- **New checks:**
+  - **NightStoreValidation, Edit mode** (LightmapChecks, after "Night store lightmap budget", in both RunNightQuick and RunNight):
+    - "Night lightmaps are directional (normal maps respond to baked light)"
+    - "Lightmap density by zone"
+    - "No lightmapped renderer outgrows one lightmap"
+    - "Kit models beside the spawn bake at their import margin density"
+    - "Light lenses are captured by the baked reflection probes"
+    - "Buildings across the street are lightmapped at the far density"
+    - "Glass reflection probes bake at 256 px, the night sky at 128 px"
+  - **NightStoreValidation, Play mode:**
+    - "Forward-only player builds strip the deferred shader pass"
+    - "Handheld lights keep a per-pixel slot"
+    - "VR recentre blinks through the comfort fade"
+    - "Police tape is lit by the torches and lamps and casts shadows"
+    - "Tool released overhead in the staging bay drops to the street"
+    - "Overview renders only on the drawer's Map tab"
+    - "Overview map draws albedo through its replacement shader"
+  - **DemoValidation.InterfaceChecks** (run by ShopCityValidation and NightStoreValidation):
+    - "UI fonts re-resolve at once after the theme object is replaced"
+    - "Headset toast skips presenter-only messages; the monitor still shows them"
+    - "Faded controller hints stop rendering"
+    - "Before-render pose refresh leaves the controllers alone without a headset"
+    - "Headset interface stays out of evidence photos, the viewfinder and the map"
+    - "Head and controller poses are applied before HandInteractor places the held tool"
+  - **DemoValidation.PhotoStage:**
+    - "Status board frees its panel material when destroyed". This one runs only after InterfaceChecks, so JewelrySceneValidation skips it.
+    - "Photo frame samples a mipmapped copy of the photograph"
+    - "Saved photograph matches the in-memory photo"
+    - "Photo camera renders LDR with anti-aliasing"
+  - **ShopCityValidation:**
+    - "Desktop HUD starts visible each run and F2 is not remembered"
+    - "Viewfinder skips the flashlight shadow map and restores the quality settings"
+    - "Tool released overhead drops to the floor, not onto the roof"
+    - "Grab finds the nearest tool beside a pile of 36 colliders"
+    - "Overview map draws albedo through its replacement shader"
+  - **ShopRobberyDressing.Check:**
+    - "Overview skips rendering on other drawer tabs". The existing "Overview rendering resumes when menu opens" now selects the Map tab first, so it keeps passing under the new Map-tab rule.
+- **Expected PASS-count changes:**
+
+  | Validator | Change | Made up of |
+  |---|---|---|
+  | NightStoreValidation.RunNightQuick | +24 | 14 night, 6 InterfaceChecks, 4 PhotoStage |
+  | NightStoreValidation.RunNight | +24 | same as RunNightQuick |
+  | ShopCityValidation.RunGlass | +16 | 5 shop, 1 robbery dressing, 6 InterfaceChecks, 4 PhotoStage |
+  | ShopCityValidation.RunRobbery, RunTextured | +16 | same as RunGlass |
+  | ShopCityValidation.Run, RunExpanded, RunForms, RunInterior | +15 | RunGlass without the robbery dressing |
+  | JewelrySceneValidation | +3 | PhotoStage without the status-board check |
+  | StoreKitValidation.RunGallery | none | no new checks |
+
+  Both "Overview map draws albedo..." checks need MapAlbedo.shader in the project. NightStoreValidation needs ForwardOnlyShaderStripping.cs to compile.
+- **Deferred or dropped:**
+  - **Baking by default (BI-01), deferred.** This is a product decision that needs a measurement on the PC first. If it were the default, a double-click would run a bake that has never run (no RunNight result exists). It would do so on every pull, including docs-only commits from either assistant, and add unmeasured minutes each time (GPU lightmapper; far longer on the CPU fallback). The safety half ships now: the preview fallback on a failed bake, the real lighting mode on the start menu, and a bake choice that persists across pulls.
+  - **Occlusion culling (R12, BI-10), deferred until a headset profile exists.** Two of the four skeptics found the gain close to zero where VR frame time is decided: the open-plan showroom, the glass frontage (not an occluder) and the 1.6 x 2.4 m office opening all see most of the scene, and the side-room doors are not occluders. Umbra also adds a query for every camera on every frame, including the 15 Hz viewfinder. There is an untested risk of single-pass-stereo popping at openings and of a head leaned into a 0.25 m wall.
+  - **Only partly done:**
+    - Photo readback (VR-01/CPU-GC-4): it is still a synchronous ReadPixels, one stall per photo. AsyncGPUReadback needs RGB24 packing, row order and render-texture lifetime checks that cannot be made without Unity.
+    - Preview lights (VR-07): the headlights' realtime range is not cut, the near streetlights are not ForceVertex, and nothing warns when VR starts on an unbaked preview. The rule to judge frame time only on a baked build stands in for the warning.
+    - Grab scan (PL-5): it still does GetComponentInParent per collider; only the truncation is fixed.
+    - KayKit lightmap-UV margins (BI-06): ThirdPartyModelImport is unchanged. The new density gives the car and the streetlights 45 texels per model unit, above the 40 their default margin assumes. "Kit models beside the spawn bake at their import margin density" checks this.
+  - The 11 rejected findings need nothing.
+- **Files changed** (`git diff --stat -- Prototype Start-Demo.cmd`, plus two new files). These must be copied into Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip under Assets/CrimeSceneDemo/<folder>/, keeping the existing .meta files. That sync is a separate step and **has not been done yet**.
+  - Scripts: CameraScreen, DemoDesktopPanel, DemoFeedback, DemoLauncher, DemoLighting, DemoOverviewMap, DemoStatusBoard, DemoToolGeometry, DemoUi, DeployedTool, EvidenceCamera, HandInteractor, PhotoFrame, ToolHolder, XRComfortFade, XRControllerInput, XRHandHud, XRHeadTracking, XRLocomotion.
+  - Editor: DemoBuild, DemoGeometry, DemoToolsBuilder, DemoValidation, NightLighting, NightStoreBuilder, NightStoreValidation, ShopCityValidation, ShopRobberyDressing, StoreKit, and the **new** ForwardOnlyShaderStripping.cs (needs a .meta with a fresh guid).
+  - Shaders: CrimeSceneTape.shader (keep its existing guid, so PoliceTape.mat keeps its reference) and the **new** MapAlbedo.shader (needs a .meta with a fresh guid).
+  - Outside the zip: Start-Demo.cmd, README.md (line 5) and Docs/CONTROLS_AND_INTEGRATION.md (F2, headset toast, PlayerPrefs).
+  - Until the zip is refreshed, a project unpacked from it needs Scripts, Editor and Shaders synced from Prototype. Start-Demo.cmd mirrors those folders, so its builds are not affected.
+- **To verify on the PC:**
+  1. **NightStoreValidation.RunNightQuick.** This is the first compile of these edits. Check that the Console has no errors, including no shader errors for CrimeScene/Tape and Hidden/CrimeScene/MapAlbedo. The APIs to watch are EditorGraphicsSettings.GetTierSettings, Shader.passCount / Shader.FindPassTagValue (a Material.FindPass fallback is in a comment beside the tape check), ShaderUtil.ShaderHasError and Texture2D.GetRawTextureData<byte>. Expect +24 PASS lines. Confirm that "Tool released overhead in the staging bay drops to the street" passes at its test spot (6.5, 2.3, -4.0).
+  2. **NightStoreValidation.RunNight.** This is the first bake ever, at 20 texels/m with combined-directional lightmaps. Write the bake seconds and the "Lightmaps=" line into this file: the estimate is 2-4 maps, the budget is 8, and the largest map must be 1024 px or less. No earlier figure exists to compare with. Expect +24 PASS lines.
+  3. **StoreKitValidation.RunGallery.** Same PASS count. The KitMesh chart margins halve with the new density and every saved mesh is re-unwrapped. The old night_across_* mesh asset becomes an orphan, which should be reported only as Info.
+  4. **ShopCityValidation.RunGlass.** Expect +16 PASS lines. GlassToolValidation "Shader compiles: CrimeScene/Tape" must still pass. Confirm that "Tool released overhead drops to the floor, not onto the roof" passes at (-3, 2.4, 5). The flashlight is now ForcePixel in the old shop too. Check that the shaded PoliceTape.mat reads well under the shop lighting and that the black CRIME SCENE text is still readable on it.
+  5. **Launcher.** Run `Start-Demo.cmd bake`: build-latest.log should show `JEWELRY_BUILD_LIGHTING baked` and the start-menu footer "lighting baked". After the next pull or commit change, double-click Start-Demo.cmd without arguments. It must print "Baked lighting: ..." and bake again. `Start-Demo.cmd rebuild` must build a preview and delete Builds\Windows\lighting.txt. No validator can trigger the bake-failure fallback. If a bake ever fails, the log should show the `JEWELRY_BUILD_LIGHTING bake failed` warning and the footer "preview (the bake failed, see build-latest.log)".
+  6. **Linear first unpack.** Delete UnityProject_Demo and run Start-Demo.cmd. ProjectSettings.asset must read `m_ActiveColorSpace: 1` and GraphicsSettings.asset `m_LightsUseLinearIntensity: 1`. Both files must still be valid YAML that Unity opens, with no BOM. build-latest.log should show a single texture import. UnityProject_Glass must stay Gamma.
+  7. **Visual check on a baked build:**
+     - Headlamp glints in the case glass and the jewellery.
+     - The streetlight glow on the wet asphalt.
+     - Normal-map relief on the plaster, paving and facade stone under the baked light.
+     - Light pools on the shopfronts across the street.
+     - No chart bleeding on the KayKit police car and streetlights.
+     - Skyline towers acceptable at 14 texels per unit.
+     - The overview map reads as a floor plan.
+     - The photo frame and the DSLR rear screen do not shimmer.
+  8. **Desktop, mouse and keyboard:**
+     - GUILayout: open and close the drawer and F1, and click the strip's Panel button, the drawer's x and Settings "Controls (F1)". The Console must show no GUILayout errors.
+     - Profiler: GC Alloc for DemoDesktopPanel.OnGUI should be near 0 B per frame on the idle HUD, in desktop and in VR mode.
+     - Frame Debugger: no overview-camera render while the drawer shows Tools, and about one a second on Map.
+     - HUD: hide it with F2, then press F10 and reopen the map. The HUD must be back on.
+     - Tape: deploy tape and sweep the flashlight and a lamp across it. The yellow should brighten under the beam and stay dark outside it, with the stripes and sag unchanged. Tape behind a post or case should be in its shadow, with no light leaking through.
+  9. **Quest 2 over Link** (when OpenXR is installed):
+     - Frame time: judge it only on a `Start-Demo.cmd bake` or RunNight build, never on the preview. In the preview, check that the flashlight, UV torch and lamps still light per pixel with the headlights on.
+     - Tape: it renders in both eyes (single-pass instanced) and casts a sagging shadow under the flashlight. Compare GPU frame time with the tape on and off.
+     - Held tool: it stays locked to the controller in fast swings.
+     - Hints: faded hints disappear, then return when the controller is looked at or the menu button shows them.
+     - Recentre: the recentre at start blinks.
+     - Photos: evidence photos, the viewfinder and the presenter's map show no controllers, hints or toast.
+     - Viewfinder: holding the camera with the flashlight on shows no periodic frame spike in the Profiler.
+
 # Interface redesign — October 13 (Claude, unverified, never compiled)
 
 The monitor and the headset now share one look (DemoUi: dark glass, brass accent, the Barlow font, anti-aliased rounded panels, keycap hints, SDF tool icons), drawn differently for each: IMGUI on the monitor, world-space panels on the Quest 2 controllers. **Nothing here has been compiled or run in Unity.**
@@ -17,7 +155,7 @@ The monitor and the headset now share one look (DemoUi: dark glass, brass accent
 
 # One-click build and start menu — October 12 (Claude, unverified)
 
-**Start-Demo.cmd** (repo root) is the new entry point: optional git pull, unpack Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip into UnityProject_Demo once, robocopy Prototype Scripts/Editor/Shaders/ThirdParty into it, run `Unity -batchmode -noUpm -executeMethod DemoBuild.BuildLatest` (add `-demoBake` via `Start-Demo.cmd bake`), then start Builds/Windows/JewelryStoreDemo.exe; it skips the build when Builds/Windows/built-from.txt already holds the current commit. DemoBuild.BuildLatest regenerates the night store (NightStoreBuilder.BuildScene, now public with askToSave), creates Scenes/DemoLauncher.unity, writes Resources/DemoBuildInfo.txt (date, commit from JEWELRY_COMMIT or .git, lighting mode), registers DemoLauncher + JewelryStoreNight (+ JewelryStoreGlass when its scene exists) and builds. Runtime: DemoLauncher (IMGUI start menu, newest first, Enter / 1–9, Esc quits) and ReturnToLauncher (F10 back to the menu, survives scene loads). Check: "Start menu lists the night store first and leaves itself out" (NightStoreValidation static checks). The bundled JewelryStoreGlass scene was generated by October 10 code and may log missing references for features added since (e.g. the measure/lamp prefabs); the night store is generated fresh every build.
+**Start-Demo.cmd** (repo root) is the new entry point: optional git pull, unpack Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip into UnityProject_Demo once, robocopy Prototype Scripts/Editor/Shaders/ThirdParty into it, run `Unity -batchmode -noUpm -executeMethod DemoBuild.BuildLatest` (add `-demoBake` via `Start-Demo.cmd bake`), then start Builds/Windows/JewelryStoreDemo.exe; it skips the build when Builds/Windows/built-from.txt already holds the current commit. (October 15, unverified: `Start-Demo.cmd bake` also writes Builds/Windows/lighting.txt, so later rebuilds bake again until `Start-Demo.cmd rebuild` builds a preview and deletes it; build-latest.log carries `JEWELRY_BUILD_LIGHTING baked` or `preview`; a failed bake ships the preview and the footer reads "preview (the bake failed, see build-latest.log)".) DemoBuild.BuildLatest regenerates the night store (NightStoreBuilder.BuildScene, now public with askToSave), creates Scenes/DemoLauncher.unity, writes Resources/DemoBuildInfo.txt (date, commit from JEWELRY_COMMIT or .git, lighting mode), registers DemoLauncher + JewelryStoreNight (+ JewelryStoreGlass when its scene exists) and builds. Runtime: DemoLauncher (IMGUI start menu, newest first, Enter / 1–9, Esc quits) and ReturnToLauncher (F10 back to the menu, survives scene loads). Check: "Start menu lists the night store first and leaves itself out" (NightStoreValidation static checks). The bundled JewelryStoreGlass scene was generated by October 10 code and may log missing references for features added since (e.g. the measure/lamp prefabs); the night store is generated fresh every build.
 
 Review fixes (Oct 12, unverified): Start-Demo.cmd pulls inside one parenthesised block and restarts itself (JEWELRY_UPDATED), so a pull that rewrites the launcher cannot desynchronise cmd; paths echoed inside blocks are quoted (a folder like "...-main (1)" no longer aborts the script before `pause`); the sync uses robocopy /MIR /XF *.meta so scripts deleted from Prototype leave the project. NightQuality now saves and restores QualitySettings in the player as well, so the daytime shop no longer inherits the night shadows/MSAA after F10. DemoBuild treats JEWELRY_COMMIT "unknown" as unset and reads .git. The start menu says desktop only (no XR plug-in in the build), and DemoModeSwitch ignores F9 in a player with no XR device.
 
@@ -40,7 +178,7 @@ Run on the PC, in an isolated project with Scripts, Editor, **Shaders** and Thir
 1. `StoreKitValidation.RunGallery` — Edit-mode check of the fixture/prop library, scene StoreKitGallery, captures in Docs/VerificationStoreKit.
 2. `NightStoreValidation.RunNightQuick` — builds JewelryStoreNight without baking (baked lights previewed as realtime, no shadows) and runs every Play-mode check.
 3. `NightStoreValidation.RunNight` — the same with the lightmap/probe bake (ProgressiveGPU, CPU fallback). Prints checks, bake seconds, lightmaps, triangles and renderers; captures night_*.png and day_*.png in Docs/VerificationNight.
-**RunNightQuick, RunNight and the Night Store build/bake menu items (Build (quick), Build And Bake, Bake Lighting Only) switch the whole project to Linear colour space and turn on linear light intensity** (PlayerSettings.colorSpace and GraphicsSettings.lightsUseLinearIntensity are project-wide; one-time texture reimport; older scenes and the old-shop validators stay valid but render in linear from then on, and lights with intensity other than 1 look different, so use an isolated project). ThirdPartyModelImport gives third-party models lightmap UVs (one-time reimport).
+**RunNightQuick, RunNight and the Night Store build/bake menu items (Build (quick), Build And Bake, Bake Lighting Only) switch the whole project to Linear colour space and turn on linear light intensity** (PlayerSettings.colorSpace and GraphicsSettings.lightsUseLinearIntensity are project-wide; one-time texture reimport; older scenes and the old-shop validators stay valid but render in linear from then on, and lights with intensity other than 1 look different, so use an isolated project). ThirdPartyModelImport gives third-party models lightmap UVs (one-time reimport). (October 15, unverified: Start-Demo.cmd now writes Linear and linear light intensity into UnityProject_Demo's ProjectSettings right after the first unpack, before Unity's first import; UnityProject_Glass and Build-Windows.cmd keep the zip's Gamma.)
 
 What exists now:
 - **StoreKit** (StoreKit.cs, StoreKitProps.cs, KitMesh.cs, ProceduralMesh.cs): low-poly procedural versions of everything on the asset sheets: 26 fixtures (display/wall cases with separate panes and broken variants, counter, drawer unit, desk, chair, shelving, locker, two safes with hinged doors, sofa, side table, planter, signs, storefront/office/service doors, window modules intact/cracked/broken, bollard, exit sign, camera, track/down lights, POS, keypad) and the jewellery props (bust, bracelet/earring stands, ring tray, risers, boxes with hinged lids, trays, bags, rings). Metric UVs + lightmap UVs; palette materials take ReferenceTextures automatically. **A converted model at Prototype/ThirdParty/StoreKit/<snake_case_name>.fbx or .obj replaces the procedural one with no code change, but only for pieces placed through StoreKit.Instantiate.** In the night store these are the layout fixtures on NightStoreBuilder.Place's default branch (counter, drawer_unit, office_desk, shelving_unit, locker_cabinet, waiting_sofa, side_table, planter, sign_frame, exit_sign, security_camera, pos_terminal, alarm_keypad) plus downlight, track_light and bollard. Display/wall cases, safes, office/service/storefront doors, window modules, the toppled office chair and all jewellery props are built directly with their state (Glass_* panes, hinged doors/lids) and always stay procedural until their builders get an override hook that keeps those children.

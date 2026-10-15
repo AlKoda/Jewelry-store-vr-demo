@@ -83,9 +83,11 @@ public static class NightStoreBuilder
     public static void GalleryMenu() { StoreKit.GalleryMenu(); }
 
     // askToSave is false for DemoBuild.BuildLatest, which runs in batch mode with no one to ask.
-    public static void BuildScene(bool bake, bool askToSave = true)
+    // Returns true when the scene ships baked lighting. A failed or skipped bake falls back to
+    // the realtime preview, so a build never ships baked-only lights without lightmaps (black).
+    public static bool BuildScene(bool bake, bool askToSave = true)
     {
-        if (EditorApplication.isPlaying || (askToSave && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())) return;
+        if (EditorApplication.isPlaying || (askToSave && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())) return false;
         NightLighting.UseLinearColorSpace();
         ThirdPartyModelImport.GenerateLightmapUVs();
         EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -93,16 +95,21 @@ public static class NightStoreBuilder
         GameObject root = Build(true);
         NightLighting.Apply(root.transform, camera);
         DemoValidation.SaveScene(L.SceneName, false);
+        bool baked = false;
         if (bake)
         {
-            NightLighting.Bake(out string report);
+            // The same success test as NightStoreValidation's "Night lighting bakes".
+            baked = NightLighting.Bake(out string report) && LightmapSettings.lightmaps.Length > 0;
             Debug.Log(report);
+            if (!baked) { Debug.LogWarning("JEWELRY_BUILD_LIGHTING bake failed; using the realtime preview."); Lightmapping.Clear(); }
         }
-        else NightLighting.UseRealtimeFallback(root.transform);
+        if (!baked) NightLighting.UseRealtimeFallback(root.transform);
         // The rig is created after the bake so it never enters it (as in the validator).
         CreatePlayer(camera);
         NightLighting.ConfigureCamera(camera);
         DemoValidation.SaveScene();
+        Debug.Log("JEWELRY_BUILD_LIGHTING " + (baked ? "baked" : "preview"));
+        return baked;
     }
 
     public static GameObject Build(bool useImportedAssets)
@@ -149,15 +156,8 @@ public static class NightStoreBuilder
             if (fan != null) GameObjectUtility.SetStaticEditorFlags(fan.gameObject, 0);
         }
         NightStoreDressing.CombineLoose(zone["Dressing"], Folder);
-        // Exterior surfaces mostly out of view (far pavement, neighbour roofs and backs)
-        // take a coarser lightmap; the near pavement keeps full density, the street 0.6
-        // (NightLighting.LightmapScales sets every zone; the meshes' chart margins match).
-        foreach (string path in new[] { "Ground/FarPavement", "Buildings/Neighbours" })
-        {
-            Transform t = zone["Exterior"].Find(path);
-            MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
-            if (r != null) r.scaleInLightmap = NightLighting.FarScale;
-        }
+        // NightLighting.LightmapScales sets every zone's lightmap scale after Build (Apply
+        // always follows Build); the KitMeshes' chart margins match it.
 
         // Placeholder UV traces, hidden; the presenter panel shows them through DemoLighting.
         GameObject examples = UVTraceBuilder.NightExamples(root.transform);
@@ -402,7 +402,7 @@ public static class NightStoreBuilder
     {
         Transform ground = Group("Ground", parent);
         GameObject solid = Group("Colliders", ground).gameObject;
-        KitMesh paving = new KitMesh(), kerbs = new KitMesh(), road = new KitMesh { LightmapScale = NightLighting.StreetScale }, far = new KitMesh { LightmapScale = NightLighting.FarScale };
+        KitMesh paving = new KitMesh { LightmapScale = NightLighting.GroundScale }, kerbs = new KitMesh { LightmapScale = NightLighting.GroundScale }, road = new KitMesh { LightmapScale = NightLighting.StreetScale }, far = new KitMesh { LightmapScale = NightLighting.FarScale };
         float hx = L.StreetHalfX, kerb = 0.18f;
         // Near pavement and kerb (the 0.12 m step down to the street), wet street, far side.
         Slab(paving, solid, StoreKit.Pavement, V(-hx, -0.3f, L.KerbZ + kerb), V(hx, 0, L.MinZ), false);
@@ -526,11 +526,13 @@ public static class NightStoreBuilder
 
     // Terrace neighbours either side of the shop and a row across the street, simple
     // render-and-glass blocks with a few lit rooms (baked emitters); KayKit towers
-    // behind them for the skyline when the pack is present.
+    // behind them for the skyline when the pack is present. The terrace bakes at the
+    // street's density; the row across the street is lightmapped at the far density, so
+    // the far streetlights' pools reach its shopfronts. Two renderers, not one huge bounds.
     private static void Buildings(Transform parent, bool imported)
     {
         System.Random rng = new System.Random(5);
-        KitMesh near = new KitMesh { LightmapScale = NightLighting.FarScale }, across = new KitMesh { Lightmapped = false };
+        KitMesh near = new KitMesh { LightmapScale = NightLighting.StreetScale }, across = new KitMesh { LightmapScale = NightLighting.FarScale };
         GameObject solid = Group("Colliders", parent).gameObject;
         foreach (float s in new[] { -1f, 1f })
         {

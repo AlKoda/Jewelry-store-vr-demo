@@ -69,7 +69,7 @@ public static class NightStoreValidation
                 DemoValidation.SaveScene();
             }
             else NightLighting.UseRealtimeFallback(root.transform);
-            LightmapChecks(bake);
+            LightmapChecks(bake, root.transform);
             Captures(camera, root.transform);
             NightStoreBuilder.CreatePlayer(camera);
             NightLighting.ConfigureCamera(camera);
@@ -332,7 +332,7 @@ public static class NightStoreValidation
     }
 
     // Edit mode, right after the bake (or without one): the lightmaps the scene ships.
-    private static void LightmapChecks(bool bake)
+    private static void LightmapChecks(bool bake, Transform root)
     {
         LightmapData[] maps = LightmapSettings.lightmaps;
         int largest = 0;
@@ -346,6 +346,84 @@ public static class NightStoreValidation
         DemoValidation.Info("Lightmaps=" + maps.Length + " (largest " + largest + " px; max size " + maxSize + ")");
         bool count = bake ? maps.Length >= 1 && maps.Length <= LightmapBudget : maps.Length == 0;
         DemoValidation.Check(count && present && largest <= LightmapSizeBudget && maxSize <= LightmapSizeBudget, "Night store lightmap budget");
+
+        // Combined-directional lightmaps (and, once baked, a direction map beside every colour map).
+        LightingSettings settings = Lightmapping.lightingSettings;
+        bool directional = settings.directionalityMode == LightmapsMode.CombinedDirectional;
+        if (bake)
+        {
+            directional &= LightmapSettings.lightmapsMode == LightmapsMode.CombinedDirectional;
+            foreach (LightmapData map in maps) directional &= map.lightmapDir != null;
+        }
+        DemoValidation.Check(directional, "Night lightmaps are directional (normal maps respond to baked light)");
+
+        // NightLighting.LightmapScales at DemoGeometry's density: shell, near pavement, neighbour terrace.
+        bool zones = Mathf.Abs(settings.lightmapResolution - DemoGeometry.LightmapTexelsPerMetre) < 0.01f
+            && Mathf.Abs(ScaleAt(root, "Architecture/Floor") - NightLighting.ShellScale) < 0.001f
+            && Mathf.Abs(ScaleAt(root, "Exterior/Ground/Pavement") - NightLighting.GroundScale) < 0.001f
+            && Mathf.Abs(ScaleAt(root, "Exterior/Buildings/Neighbours") - NightLighting.StreetScale) < 0.001f;
+        DemoValidation.Check(zones, "Lightmap density by zone");
+
+        // Every baked renderer fits one lightmap at its density (Unity would shrink it), and the
+        // imported KayKit car and streetlights beside the spawn get at least the 40 texels per
+        // model unit their importer's default Calculate chart margin assumes.
+        Transform car = root.Find("Exterior/PoliceCar"), posts = root.Find("Exterior/Streetlights");
+        int oversized = 0, kit = 0, thin = 0;
+        foreach (MeshRenderer r in root.GetComponentsInChildren<MeshRenderer>(true))
+        {
+            if (r.receiveGI != ReceiveGI.Lightmaps || (GameObjectUtility.GetStaticEditorFlags(r.gameObject) & StaticEditorFlags.ContributeGI) == 0) continue;
+            Vector3 size = r.bounds.size;
+            float density = settings.lightmapResolution * r.scaleInLightmap;
+            if (Mathf.Max(size.x, Mathf.Max(size.y, size.z)) * density > settings.lightmapMaxSize) oversized++;
+            bool beside = (car != null && r.transform.IsChildOf(car)) || (posts != null && r.transform.IsChildOf(posts));
+            MeshFilter filter = r.GetComponent<MeshFilter>();
+            string asset = filter != null && filter.sharedMesh != null ? AssetDatabase.GetAssetPath(filter.sharedMesh) : "";
+            if (!beside || !asset.StartsWith(DemoAssetLibrary.Root + "/")) continue;
+            kit++;
+            if (density * Mathf.Abs(r.transform.lossyScale.x) < 39.99f) thin++;
+        }
+        DemoValidation.Info("Lightmap density " + settings.lightmapResolution + " texels/m; imported kit renderers " + kit);
+        DemoValidation.Check(oversized == 0, "No lightmapped renderer outgrows one lightmap");
+        DemoValidation.Check(thin == 0, "Kit models beside the spawn bake at their import margin density");
+
+        // Streetlight and headlamp lenses are probe-static and out of GI; the blinking light bar stays dynamic.
+        bool lensesStatic = true;
+        int lensCount = 0;
+        foreach (string zone in new[] { "Exterior/Streetlights", "Exterior/PoliceCar" })
+        {
+            Transform t = root.Find(zone);
+            if (t == null) { lensesStatic = false; continue; }
+            foreach (MeshRenderer r in t.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                if (r.name != "Lens") continue;
+                lensCount++;
+                StaticEditorFlags flags = GameObjectUtility.GetStaticEditorFlags(r.gameObject);
+                lensesStatic &= (flags & StaticEditorFlags.ReflectionProbeStatic) != 0 && (flags & StaticEditorFlags.ContributeGI) == 0;
+            }
+        }
+        Transform bar = root.Find("Exterior/PoliceCar/LightBar");
+        if (bar == null) lensesStatic = false;
+        else foreach (MeshRenderer r in bar.GetComponentsInChildren<MeshRenderer>(true)) lensesStatic &= GameObjectUtility.GetStaticEditorFlags(r.gameObject) == 0;
+        DemoValidation.Check(lensesStatic && lensCount == L.Streetlights.Length + 2, "Light lenses are captured by the baked reflection probes");
+
+        // The row across the street takes lightmaps (uv2) at the far density, so the far streetlights' pools reach it.
+        Transform acrossStreet = root.Find("Exterior/Buildings/AcrossStreet");
+        MeshRenderer acrossRenderer = acrossStreet != null ? acrossStreet.GetComponent<MeshRenderer>() : null;
+        MeshFilter acrossFilter = acrossRenderer != null ? acrossRenderer.GetComponent<MeshFilter>() : null;
+        Mesh acrossMesh = acrossFilter != null ? acrossFilter.sharedMesh : null;
+        DemoValidation.Check(acrossRenderer != null && acrossRenderer.receiveGI == ReceiveGI.Lightmaps && acrossMesh != null && acrossMesh.uv2.Length == acrossMesh.vertexCount
+            && Mathf.Abs(acrossRenderer.scaleInLightmap - NightLighting.FarScale) < 0.001f, "Buildings across the street are lightmapped at the far density");
+
+        DemoValidation.Check(NightLighting.ReflectionResolution >= 256 && RenderSettings.defaultReflectionResolution == NightLighting.SkyReflectionResolution,
+            "Glass reflection probes bake at 256 px, the night sky at 128 px");
+    }
+
+    // scaleInLightmap of the renderer at root/path, or -1 when there is none.
+    private static float ScaleAt(Transform root, string path)
+    {
+        Transform t = root.Find(path);
+        MeshRenderer r = t != null ? t.GetComponent<MeshRenderer>() : null;
+        return r != null ? r.scaleInLightmap : -1;
     }
 
     // The scene as the arrival view can draw it, in edit mode (static batching merges the
@@ -558,6 +636,15 @@ public static class NightStoreValidation
         DemoValidation.Check(QualitySettings.pixelLightCount == 4 && QualitySettings.antiAliasing == 4 && !QualitySettings.realtimeReflectionProbes
             && QualitySettings.shadows == ShadowQuality.HardOnly && view != null && !view.allowHDR && view.allowMSAA
             && view.clearFlags == CameraClearFlags.Skybox && view.renderingPath == RenderingPath.Forward, "Night quality settings applied");
+        // Every camera renders Forward, so player builds drop the DEFERRED pass and keep every other one.
+        DemoValidation.Check(ForwardOnlyShaderStripping.ForwardOnly()
+            && ForwardOnlyShaderStripping.Strips(UnityEngine.Rendering.PassType.Deferred, true)
+            && !ForwardOnlyShaderStripping.Strips(UnityEngine.Rendering.PassType.ForwardBase, true)
+            && !ForwardOnlyShaderStripping.Strips(UnityEngine.Rendering.PassType.ForwardAdd, true)
+            && !ForwardOnlyShaderStripping.Strips(UnityEngine.Rendering.PassType.ShadowCaster, true)
+            && !ForwardOnlyShaderStripping.Strips(UnityEngine.Rendering.PassType.Meta, true)
+            && !ForwardOnlyShaderStripping.Strips(UnityEngine.Rendering.PassType.Deferred, false),
+            "Forward-only player builds strip the deferred shader pass");
 
         LightProbeGroup probeGroup = group.GetComponentInChildren<LightProbeGroup>();
         List<Vector3> probes = new List<Vector3>();
@@ -646,6 +733,11 @@ public static class NightStoreValidation
         bool torchOwns = lighting.FlashlightLight.shadows != LightShadows.None && second.Lamp.shadows == LightShadows.None
             && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f;
         lighting.UVTorch(true);
+        // Torches and lamps are ForcePixel; the preview's headlights are Auto, so they never take a torch's pixel slot.
+        bool pixel = lighting.FlashlightLight.renderMode == LightRenderMode.ForcePixel && lighting.UVTorchLight.renderMode == LightRenderMode.ForcePixel
+            && first.Lamp.renderMode == LightRenderMode.ForcePixel && second.Lamp.renderMode == LightRenderMode.ForcePixel;
+        bool headlights = true;
+        if (!baked) foreach (Light l in group.GetComponentsInChildren<Light>(true)) if (l.name.StartsWith("Headlight_")) headlights &= l.renderMode == LightRenderMode.Auto;
         RealtimeLights(group, out int withUV, out _, out int uvShadows);
         bool handedBack = second.Lamp.shadows != LightShadows.None && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         lighting.UVTorch(false);
@@ -659,6 +751,7 @@ public static class NightStoreValidation
             && lampShadows == ShadowLightBudget && torchShadows == ShadowLightBudget && uvShadows == ShadowLightBudget
             && torchOwns && handedBack && remaining && after == 0 && station.DeployedCount == before,
             "Night store realtime light budget");
+        DemoValidation.Check(pixel && headlights, "Handheld lights keep a per-pixel slot");
     }
 
     private static Light LightAt(Transform group, string name)
@@ -736,6 +829,8 @@ public static class NightStoreValidation
         head.localRotation = Quaternion.Euler(0, 60, 0);
         bool pending = mode.RecentrePending;
         mode.RecentreNow();
+        // Apply(true) enabled the fade (VROnly); the start-up turn and jump blink like a teleport.
+        bool blinked = locomotion.ComfortFade != null && locomotion.ComfortFade.Fading && locomotion.ComfortFade.Alpha >= 0.99f;
         Vector3 forward = head.forward;
         forward.y = 0;
         bool vr = pending && !mode.RecentrePending && Flat(head.position - spawn) < 0.01f && Mathf.Abs(locomotion.transform.position.y - spawn.y) < 0.001f
@@ -744,6 +839,7 @@ public static class NightStoreValidation
         walker.ResetPosition();
         DemoValidation.Info("Spawn " + spawn + "; car body " + gap.ToString("0.00") + " m away");
         DemoValidation.Check(desktop && beside && vr && !mode.VRActive, "Visitor starts beside the police car facing the shop");
+        DemoValidation.Check(blinked, "VR recentre blinks through the comfort fade");
     }
 
     private static void WalkChecks()
@@ -829,6 +925,21 @@ public static class NightStoreValidation
         bool tape = ribbon != null && ribbon.sharedMaterial != null && ribbon.sharedMaterial.shader.name == "CrimeScene/Tape"
             && station.TapePrefab.FrontWarning != null && station.TapePrefab.BackWarning != null;
         DemoValidation.Check(bands && label && tape, "Night tool prefabs are styled (scale bands, depth-tested numbers, police tape)");
+        // The tape is a surface shader: a ForwardAdd pass for the torches and lamps, and its own shadow caster.
+        bool litTape = false, castsTape = false;
+        if (ribbon != null && ribbon.sharedMaterial != null)
+        {
+            Shader shader = ribbon.sharedMaterial.shader;
+            var mode = new UnityEngine.Rendering.ShaderTagId("LightMode");
+            for (int i = 0; i < shader.passCount; i++)
+            {
+                string m = shader.FindPassTagValue(i, mode).name;
+                litTape |= m == "ForwardAdd"; castsTape |= m == "ShadowCaster";
+            }
+        }
+        DemoValidation.Check(litTape && castsTape, "Police tape is lit by the torches and lamps and casts shadows");
+        // Fallback if Shader.passCount / FindPassTagValue fail to compile on 6000.6: replace the loop with
+        // litTape = ribbon.sharedMaterial.FindPass("FORWARD_DELTA") >= 0; castsTape = ribbon.sharedMaterial.FindPass("ShadowCaster") >= 0;
         bool own = true;
         foreach (UnityEngine.Object prefab in new UnityEngine.Object[] { station.ConePrefab, station.MarkerPrefab, station.TapePostPrefab,
             station.ScalePrefab, station.MeasurePrefab, station.LampPrefab, station.TapePrefab, station.MeasureTapePrefab })
@@ -837,7 +948,10 @@ public static class NightStoreValidation
     }
 
     // A lamp carried low over the staging bay rests its feet on the street, not at the
-    // showroom floor height (HandInteractor clamps to Bounds.FloorAt).
+    // showroom floor height (HandInteractor clamps to Bounds.FloorAt). A tool released
+    // overhead there drops to the street too (the bay has no ceiling; ToolHolder.Settle
+    // casts from DropCeilingClearance above the region's floor at most). PlacementChecks
+    // removed its cone from the same spot, so nothing else stands there.
     private static void CarriedLampChecks()
     {
         DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
@@ -847,8 +961,16 @@ public static class NightStoreValidation
         DeployedTool lamp = hand.SpawnIntoHand(DemoToolKind.Lamp);
         float lampBase = lamp != null ? lamp.transform.position.y : 99;
         if (lamp != null) hand.RemoveHeld();
+        hand.transform.position = new Vector3(6.5f, 2.3f, -4.0f);
+        DeployedTool high = hand.SpawnIntoHand(DemoToolKind.Cone);
+        hand.Release();
+        float highBase = high != null ? high.transform.position.y : 99;
+        // Remove (not Station.RemoveTool) also clears the hand's highlight of the cone.
+        if (high != null) hand.Remove(high);
         hand.transform.position = position;
         DemoValidation.Check(lamp != null && Mathf.Abs(lampBase - L.StreetY) < 0.001f, "Carried lamp rests on the street in the staging bay");
+        DemoValidation.Check(high != null && Mathf.Abs(highBase - L.StreetY) < 0.02f,
+            "Tool released overhead in the staging bay drops to the street");
     }
 
     private static bool Place(DesktopInteractor interactor, Vector3 floor)
@@ -989,6 +1111,16 @@ public static class NightStoreValidation
         inside &= Vector2.Distance(map.Centre, L.MapCentre) < 0.001f && Mathf.Abs(map.HalfSize - L.MapHalfSize) < 0.001f;
         map.Render();
         DemoValidation.Check(inside && map.Texture != null, "Overview map frames the store and the staging bay");
+
+        // The hidden camera renders only while the full drawer shows the Map tab; layout and tab are put back.
+        DemoDesktopPanel panel = DemoValidation.Find<DemoDesktopPanel>();
+        PanelLayout layout = panel.Layout; PanelTab tab = panel.Tab;
+        panel.Layout = PanelLayout.Full; panel.Tab = PanelTab.Tools; bool other = !map.ShouldRender;
+        panel.Tab = PanelTab.Map; bool shown = map.ShouldRender;
+        panel.Layout = PanelLayout.Strip; bool strip = !map.ShouldRender;
+        panel.Layout = layout; panel.Tab = tab;
+        DemoValidation.Check(other && shown && strip, "Overview renders only on the drawer's Map tab");
+        DemoValidation.Check(map.MapShader != null && !ShaderUtil.ShaderHasError(map.MapShader), "Overview map draws albedo through its replacement shader");
 
         // The beacon shares the player's night regions: a click on the far street lands
         // on the staging bay's street surface, one beyond the right wall on the showroom

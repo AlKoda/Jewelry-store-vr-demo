@@ -164,7 +164,8 @@ public static partial class StoreKit
         // Facade piers, fascia band and parapet: the staged dark marble when present.
         Cladding = Surface("KitCladding", new Color(0.33f, 0.32f, 0.31f), 0.35f, 0, "FacadeStone", 2.0f);
         Pavement = Surface("KitPavement", new Color(0.46f, 0.45f, 0.43f), 0.35f, 0, "PavementSlab", 1.2f);
-        // Wet asphalt: dark and glossy, so headlights and streetlights streak in the baked probes.
+        // Wet asphalt: dark and glossy; the streetlight lenses glow in the street's baked
+        // probe (the headlamps reflect in the showroom's).
         Asphalt = Surface("KitAsphalt", new Color(0.09f, 0.09f, 0.10f), 0.7f, 0, "AsphaltWet", 3.0f);
         Concrete = Surface("KitConcrete", new Color(0.56f, 0.55f, 0.52f), 0.2f, 0, null, 1);
         Render = Surface("KitRender", new Color(0.44f, 0.41f, 0.37f), 0.1f, 0, null, 1);

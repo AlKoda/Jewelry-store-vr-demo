@@ -3,7 +3,8 @@ using UnityEngine;
 
 // Shows the most recent photograph on a quad (a frame on the wall by the rack),
 // so visitors and the instructor see each picture appear, in VR and on the
-// monitor alike. Shows the camera's last photo texture; the frame is replaced on every photo.
+// monitor alike. Shows the camera's mipmapped display copy of its last photo (Current stays the
+// full-size photo); the frame is replaced on every photo.
 [RequireComponent(typeof(MeshRenderer))]
 public sealed class PhotoFrame : MonoBehaviour
 {
@@ -42,7 +43,8 @@ public sealed class PhotoFrame : MonoBehaviour
         ReleaseOwned();
         Current = texture;
         owned = texture != EvidenceCamera?.LastPhoto;
-        material.mainTexture = texture;
+        // Not owned means the camera's own photo, so EvidenceCamera is set.
+        material.mainTexture = owned ? (Texture)texture : EvidenceCamera.LastPhotoDisplay;
         frame.enabled = true;
     }
 

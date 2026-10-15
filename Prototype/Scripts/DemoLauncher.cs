@@ -43,6 +43,9 @@ public sealed class DemoLauncher : MonoBehaviour
         return entries;
     }
 
+    private static readonly string[] Hints = { "Enter", "Newest map", "1-9", "Choose", "F10", "Back here from a map", "Esc", "Quit" };
+    private static readonly string[] Numbers = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
     private List<Entry> entries;
     private string buildInfo = "";
     private GUIStyle title, cardTitle, card, cardLatest;
@@ -58,6 +61,8 @@ public sealed class DemoLauncher : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         ReturnToLauncher.Ensure(SceneManager.GetActiveScene().buildIndex);
+        // OnGUI and BuildStyles use GUI.* only: no Layout event before each event.
+        useGUILayout = false;
     }
 
     private void Update()
@@ -101,19 +106,19 @@ public sealed class DemoLauncher : MonoBehaviour
             float h = latest ? 104 : 84;
             Rect r = new Rect(x, y, w, h);
             if (GUI.Button(r, GUIContent.none, latest ? cardLatest : card)) Open(e);
-            if (i < 9) GUI.Label(new Rect(r.x + 20, r.y + (h - 30) / 2, 30, 30), (i + 1).ToString(), s.Keycap);
+            if (i < 9) GUI.Label(new Rect(r.x + 20, r.y + (h - 30) / 2, 30, 30), DemoUi.Content(Numbers[i]), s.Keycap);
             GUI.Label(new Rect(r.x + 66, r.y + 14, w - 220, 30), e.Title, cardTitle);
             if (e.Description.Length > 0) GUI.Label(new Rect(r.x + 66, r.y + 44, w - 100, h - 52), e.Description, s.Dim);
             if (latest)
             {
-                Vector2 chip = s.ChipAccent.CalcSize(new GUIContent("LATEST"));
-                GUI.Label(new Rect(r.xMax - chip.x - 18, r.y + 16, chip.x, chip.y), "LATEST", s.ChipAccent);
+                GUIContent tag = DemoUi.Content("LATEST");
+                Vector2 chip = s.ChipAccent.CalcSize(tag);
+                GUI.Label(new Rect(r.xMax - chip.x - 18, r.y + 16, chip.x, chip.y), tag, s.ChipAccent);
             }
             y += h + 12;
         }
 
-        DemoUi.DrawHints(new Rect(x, height - 74, w, 28),
-            new[] { "Enter", "Newest map", "1-9", "Choose", "F10", "Back here from a map", "Esc", "Quit" });
+        DemoUi.DrawHints(new Rect(x, height - 74, w, 28), Hints);
         if (buildInfo.Length > 0) GUI.Label(new Rect(x, height - 40, w, 20), buildInfo, s.Small);
         GUI.matrix = Matrix4x4.identity;
     }

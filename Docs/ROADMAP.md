@@ -1,3 +1,39 @@
+## Performance and realism fixes from the audit — October 15 (Claude, unverified, never compiled)
+
+The audit's 46 confirmed findings are fixed in source, except for two that are deferred and four that are only partly done. HANDOFF lists those, along with the details, the check names and the PASS counts.
+
+- [x] Night lighting realism: 20 texels/m with per-zone scales (new GroundScale), combined-directional lightmaps, a lightmapped row across the street, lenses in the baked reflection probes, 256 px glass probes (sky 128 px).
+- [x] Lit police tape (torch and lamp light, shadows); flat-albedo overview map (MapAlbedo shader); LDR anti-aliased photos with a mipmapped display copy.
+- [x] VR frame:
+  - Torches and lamps keep their pixel lights (ForcePixel; preview headlights Auto).
+  - The viewfinder skips the flashlight shadow.
+  - The map renders only on its tab, once a second.
+  - Faded hints stop drawing.
+  - Head and controller poses are read again before rendering, with a fixed update order.
+  - The recentre blinks.
+  - The headset interface stays out of photos, the viewfinder and the map.
+- [x] Desktop HUD, launcher and photo capture without per-event or per-photo allocations.
+- [x] Build:
+  - A failed bake falls back to the preview, and the start menu shows the real lighting.
+  - `Start-Demo.cmd bake` is sticky.
+  - Linear before the first import.
+  - Player builds strip the deferred shader pass.
+- [x] Tools released overhead drop to the floor. The grab scan no longer truncates.
+- [x] Theme re-lookup after a scene load; F2 not saved; presenter-only toasts kept off the headset; runtime materials and textures freed.
+- [x] 30 new validator checks.
+- [ ] Copy the changed files and the two new ones (ForwardOnlyShaderStripping.cs, MapAlbedo.shader, each with a fresh .meta) into Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip.
+- [ ] Run the validators on the PC:
+  - RunNightQuick and RunNight: +24 each. Record the bake seconds and the Lightmaps= line.
+  - RunGallery: unchanged.
+  - RunGlass: +16.
+- [ ] Manual checks: launcher bake, rebuild and footer; Linear on the first unpack; OnGUI GC Alloc near 0; no map render on other tabs; tape under the flashlight; visual check of the bake.
+- [ ] Quest 2 checks:
+  - Frame time, on a baked build only.
+  - Tape in both eyes.
+  - Held tool locked to the controller.
+  - No headset interface in photos.
+- [ ] Decide with measurements: baking by default (BI-01, after a timed bake); occlusion culling (R12/BI-10, after a headset profile); async photo readback.
+
 ## October 13 — interface redesign (Claude, unverified)
 
 - [x] Shared DemoUi theme (Barlow, dark glass and brass, icons) for the monitor, start menu, status board and controllers.

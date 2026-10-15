@@ -13,8 +13,13 @@ using UnityEngine.XR;
 // wired (the right one) or the UV torch on the hand with UVLighting (the left
 // one). The trigger also switches a held scene lamp. The left controller's menu
 // button hides or shows the hints on both hands. Every action answers with a short
-// vibration (Pulse) and the controller interface lives in XRHandHud.
+// vibration (Pulse) and the controller interface lives in XRHandHud. The pose is
+// read in Update and again just before rendering (LatePose).
+// Runs after the head and before every default-order consumer: HandInteractor places the held tool
+// and the grab highlight from this frame's pose and from any rig move this Update made, and
+// DemoLighting.Update aims the UV beam from it.
 [RequireComponent(typeof(HandInteractor))]
+[DefaultExecutionOrder(-100)]
 public sealed class XRControllerInput : MonoBehaviour
 {
     public enum HandEvent { Select, Grab, Teleport, Spawn, Place, Photo, Refused }
@@ -64,7 +69,9 @@ public sealed class XRControllerInput : MonoBehaviour
         ApplyHints();
     }
 
-    private void OnDisable() { CancelAim(); }
+    private void OnEnable() { Application.onBeforeRender += LatePose; }
+
+    private void OnDisable() { Application.onBeforeRender -= LatePose; CancelAim(); }
 
     // Forget any destination shown so far, e.g. when tracking drops or the hand is disabled.
     private void CancelAim()
@@ -132,6 +139,17 @@ public sealed class XRControllerInput : MonoBehaviour
             Buzz(HandEvent.Select);
         }
         if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 stick)) Stick(stick);
+    }
+
+    // Just before rendering: the refreshed controller pose, and the held tool moved with it (FollowHand only
+    // places it). Re-fetches the device rather than trusting the one cached in Update.
+    private void LatePose()
+    {
+        InputDevice late = InputDevices.GetDeviceAtXRNode(Node);
+        if (!late.isValid) return;
+        if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
+        if (late.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
+        if (hand != null && hand.Held != null) hand.FollowHand();
     }
 
     // B/Y with an empty hand: the next kind for A/X, shown on the carousel above the controller.
@@ -252,6 +270,7 @@ public sealed class XRControllerInput : MonoBehaviour
         fill.sharedMaterial = DemoUi.UnlitMaterial(DemoUi.WithAlpha(DemoUi.Info, 0.18f));
         fill.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         fill.receiveShadows = false;
+        DemoUi.ToHeadsetUiLayer(marker.transform); // ring and disc
         teleportMarker = marker.transform;
         return teleportMarker;
     }
@@ -275,6 +294,7 @@ public sealed class XRControllerInput : MonoBehaviour
     {
         if (arcLine != null) return arcLine;
         GameObject arc = new GameObject("TeleportArc");
+        arc.layer = DemoUi.HeadsetUiLayer;
         arcLine = arc.AddComponent<LineRenderer>();
         arcLine.useWorldSpace = true;
         arcLine.startWidth = 0.006f;

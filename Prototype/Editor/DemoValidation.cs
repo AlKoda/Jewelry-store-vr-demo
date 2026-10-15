@@ -19,6 +19,9 @@ public static class DemoValidation
     private static float started;
     private static int frame;
     private static EvidenceCamera evidence;
+    // InterfaceChecks destroys a probe status board; PhotoStage, frames later, checks its DontSave panel material was freed.
+    private static Material boardProbe;
+    private static bool boardProbed;
     private static string failure;
 
     // Floor points the shared tool, photo and reset stages use. The defaults are the
@@ -208,6 +211,14 @@ public static class DemoValidation
         DemoUiTheme theme = UnityEngine.Object.FindFirstObjectByType<DemoUiTheme>();
         Check(theme != null && theme.Regular != null && theme.Medium != null && theme.SemiBold != null && theme.Shaded != null,
             "Interface theme carries the Barlow fonts and the controller shader");
+        // A destroyed cached theme (a scene load) is searched again at once, not after the one-second throttle.
+        GameObject staleTheme = new GameObject("StaleTheme");
+        DemoUiTheme stale = staleTheme.AddComponent<DemoUiTheme>();
+        System.Reflection.BindingFlags uiStatics = System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static;
+        typeof(DemoUi).GetField("theme", uiStatics).SetValue(null, stale);
+        typeof(DemoUi).GetField("themeSearchFrame", uiStatics).SetValue(null, Time.frameCount);
+        UnityEngine.Object.DestroyImmediate(staleTheme);
+        Check(theme != null && DemoUi.Medium == theme.Medium, "UI fonts re-resolve at once after the theme object is replaced");
 
         DemoFeedback.Clear();
         for (int i = 1; i <= 5; i++) DemoFeedback.Post("message " + i);
@@ -216,6 +227,12 @@ public static class DemoValidation
             && DemoFeedback.Recent[DemoFeedback.Capacity - 1].Text == "message 5";
         DemoFeedback.Prune(DemoFeedback.Now + DemoFeedback.Lifetime + 1);
         Check(kept && DemoFeedback.Recent.Count == 0, "Feedback feed keeps the newest four messages and expires them");
+        DemoFeedback.Post("visitor action");
+        DemoFeedback.Post("presenter only", FeedbackTone.Info, true);
+        bool skipped = DemoFeedback.TryNewestForHeadset(out DemoFeedback.Message shownToVisitor) && shownToVisitor.Text == "visitor action"
+            && DemoFeedback.Recent[DemoFeedback.Recent.Count - 1].Text == "presenter only";
+        DemoFeedback.Clear();
+        Check(skipped, "Headset toast skips presenter-only messages; the monitor still shows them");
 
         DemoToolKind[] order = { DemoToolKind.Cone, DemoToolKind.Marker, DemoToolKind.TapePost, DemoToolKind.Scale, DemoToolKind.Measure, DemoToolKind.Lamp };
         bool ordered = true;
@@ -252,6 +269,14 @@ public static class DemoValidation
         Check(walker.ZoomFieldOfView < walker.FieldOfView && Mathf.Abs(zoomed - walker.ZoomFieldOfView) < 0.01f
             && Mathf.Abs(view.fieldOfView - walker.FieldOfView) < 0.01f, "Zoom narrows the view");
 
+        // DestroyImmediate, so ToolStage's Find<DemoStatusBoard>() later in this tick cannot return the probe; the
+        // board's own Destroy of the material lands at the end of the frame.
+        GameObject probeBoard = new GameObject("ProbeStatusBoard");
+        probeBoard.AddComponent<DemoStatusBoard>();
+        boardProbe = probeBoard.transform.Find("BoardPanel").GetComponent<MeshRenderer>().sharedMaterial;
+        boardProbed = boardProbe != null;
+        UnityEngine.Object.DestroyImmediate(probeBoard);
+
         DemoModeSwitch mode = Find<DemoModeSwitch>();
         mode.Apply(true);
         XRControllerInput left = null, right = null;
@@ -272,7 +297,7 @@ public static class DemoValidation
         }
         // One frame of the controller interface (fades, highlights, wrist card, toast),
         // which otherwise only runs in the headset: it must not throw and must count a new tool.
-        bool updated = false;
+        bool updated = false, faded = false, lateNoop = false;
         if (built)
         {
             System.Reflection.MethodInfo hudFrame = typeof(XRHandHud).GetMethod("LateUpdate",
@@ -283,16 +308,70 @@ public static class DemoValidation
             hudFrame.Invoke(right.Hud, null);
             updated = probe != null && left.Hud.StatusText.text.Contains("1 tool");
             station.RemoveTool(probe);
+
+            // Faded hints stop rendering: past onboarding and not looked at, the tips' alpha is 0 (forced, so
+            // short batch-mode frames need no fade loop) and every hint renderer switches off.
+            System.Reflection.FieldInfo tipAlphaField = typeof(XRHandHud).GetField("tipAlpha",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            float onboard = right.Hud.OnboardingSeconds, look = right.Hud.LookDistance;
+            object tipWas = tipAlphaField.GetValue(right.Hud);
+            right.Hud.OnboardingSeconds = 0;
+            right.Hud.LookDistance = 0;
+            tipAlphaField.SetValue(right.Hud, 0f);
+            hudFrame.Invoke(right.Hud, null);
+            Renderer hint = right.Label.GetComponent<Renderer>();
+            faded = !hint.enabled;
+            right.Hud.OnboardingSeconds = onboard;
+            right.Hud.LookDistance = look;
+            tipAlphaField.SetValue(right.Hud, tipWas);
+            // ShowHints switches the renderers back at once, on both hands (the frame above may have faded the left).
+            right.Hud.ShowHints(XRControllerInput.HintsVisible);
+            left.Hud.ShowHints(XRControllerInput.HintsVisible);
+            faded &= hint.enabled == XRControllerInput.HintsVisible;
+
+            // Without a headset the before-render refresh finds no device and leaves the hand where Update put it.
+            System.Reflection.MethodInfo latePose = typeof(XRControllerInput).GetMethod("LatePose",
+                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            Vector3 handAt = right.transform.localPosition;
+            Quaternion handTurn = right.transform.localRotation;
+            lateNoop = latePose != null;
+            if (lateNoop)
+            {
+                latePose.Invoke(right, null);
+                lateNoop = right.transform.localPosition == handAt && right.transform.localRotation == handTurn;
+            }
         }
+        // The headset interface has its own layer: the head (= desktop) camera draws it, the photo lens and the
+        // map cull it. Not every renderer under the hands: a torch held in VR is deliberately on Default.
+        int uiBit = 1 << DemoUi.HeadsetUiLayer;
+        Camera lens = Find<EvidenceCamera>().transform.Find("PhotoCamera").GetComponent<Camera>();
+        Camera mapCamera = typeof(DemoOverviewMap).GetField("overview",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).GetValue(Find<DemoOverviewMap>()) as Camera;
+        Camera headCamera = right != null && right.Locomotion != null && right.Locomotion.Head != null ? right.Locomotion.Head.GetComponent<Camera>() : null;
+        Transform carouselRoot = right != null ? right.transform.Find("ToolCarousel") : null;
+        Transform toast = right != null && right.transform.parent != null ? right.transform.parent.Find("XRToast") : null;
+        bool headsetOnly = built && right.Hud.Model.gameObject.layer == DemoUi.HeadsetUiLayer
+            && right.Label.gameObject.layer == DemoUi.HeadsetUiLayer && left.Hud.StatusText.gameObject.layer == DemoUi.HeadsetUiLayer
+            && carouselRoot != null && carouselRoot.gameObject.layer == DemoUi.HeadsetUiLayer
+            && toast != null && toast.gameObject.layer == DemoUi.HeadsetUiLayer
+            && (lens.cullingMask & uiBit) == 0 && mapCamera != null && (mapCamera.cullingMask & uiBit) == 0
+            && (view.cullingMask & uiBit) != 0 && (headCamera == null || (headCamera.cullingMask & uiBit) != 0);
         mode.Apply(false);
         Check(carousel && right.SpawnKind == DemoToolKind.Cone, "Tool carousel shows the newly selected kind");
         Check(updated, "Controller interface updates a frame and counts a new tool");
+        Check(faded, "Faded controller hints stop rendering");
+        Check(lateNoop, "Before-render pose refresh leaves the controllers alone without a headset");
+        Check(headsetOnly, "Headset interface stays out of evidence photos, the viewfinder and the map");
 
         Vector2 refused = XRControllerInput.Pulse(XRControllerInput.HandEvent.Refused);
         Vector2 placed = XRControllerInput.Pulse(XRControllerInput.HandEvent.Place);
         Vector2 grabbed = XRControllerInput.Pulse(XRControllerInput.HandEvent.Grab);
         Check(refused.x > placed.x && placed.x > grabbed.x && grabbed.x > 0 && refused.y >= placed.y,
             "Haptic pulses rank refusal above placement above grab");
+        DefaultExecutionOrder headOrder = (DefaultExecutionOrder)Attribute.GetCustomAttribute(typeof(XRHeadTracking), typeof(DefaultExecutionOrder));
+        DefaultExecutionOrder handOrder = (DefaultExecutionOrder)Attribute.GetCustomAttribute(typeof(XRControllerInput), typeof(DefaultExecutionOrder));
+        Check(headOrder != null && handOrder != null && headOrder.order < handOrder.order && handOrder.order < 0,
+            "Head and controller poses are applied before HandInteractor places the held tool");
     }
 
     // Spawning, numbering, placement, tape following and a photo capture start.
@@ -375,14 +454,31 @@ public static class DemoValidation
         if (Time.realtimeSinceStartup - started > 30) throw new Exception("Photo capture timeout: " + evidence.Status);
         if (failure != null) throw new Exception(failure);
         if (Time.frameCount <= frame + 3 || evidence.IsCapturing || evidence.LastPhotoPath == null) return false;
+        if (boardProbed)
+        {
+            Check(boardProbe == null, "Status board frees its panel material when destroyed");
+            boardProbed = false;
+        }
         ToolStation station = Find<ToolStation>();
         Check(station.DeploymentRoot.GetComponentInChildren<SceneTape>() == null, "Tape removed after endpoint removal");
         Check(File.Exists(evidence.LastPhotoPath), "Runtime photograph saved");
         Check(evidence.PhotoCount == 1, "Photo count follows saved photographs");
         PhotoFrame photoFrame = UnityEngine.Object.FindFirstObjectByType<PhotoFrame>();
         Check(photoFrame != null && photoFrame.Current != null && photoFrame.Current.width == 1920, "Photo frame shows the saved photograph");
+        Check(photoFrame != null && evidence.LastPhotoDisplay is RenderTexture shownPhoto && shownPhoto.useMipMap
+            && shownPhoto.width == evidence.LastPhoto.width / 2 && photoFrame.GetComponent<MeshRenderer>().sharedMaterial.mainTexture == shownPhoto,
+            "Photo frame samples a mipmapped copy of the photograph");
+        // The PNG is encoded from the reused pixel buffer that LastPhoto is loaded from afterwards; a mismatch means it changed in between.
+        Texture2D saved = new Texture2D(2, 2);
+        bool decoded = saved.LoadImage(File.ReadAllBytes(evidence.LastPhotoPath));
+        Color onDisk = decoded ? saved.GetPixel(960, 540) : Color.clear, inMemory = evidence.LastPhoto.GetPixel(960, 540);
+        UnityEngine.Object.Destroy(saved);
+        Check(decoded && Mathf.Abs(onDisk.r - inMemory.r) < 0.01f && Mathf.Abs(onDisk.g - inMemory.g) < 0.01f && Mathf.Abs(onDisk.b - inMemory.b) < 0.01f,
+            "Saved photograph matches the in-memory photo");
         Check(Vector3.Distance(evidence.transform.Find("PhotoCamera").localPosition, new Vector3(0, 0, 0.1f)) < 0.001f,
             "View photograph restores dedicated camera pose");
+        Camera lens = evidence.transform.Find("PhotoCamera").GetComponent<Camera>();
+        Check(!lens.allowHDR && lens.allowMSAA, "Photo camera renders LDR with anti-aliasing");
         File.Copy(evidence.LastPhotoPath, Path.Combine(Output, "runtime-photo.png"), true);
 
         SessionReviewRecorder review = Find<SessionReviewRecorder>();

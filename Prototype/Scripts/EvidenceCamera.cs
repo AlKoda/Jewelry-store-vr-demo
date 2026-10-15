@@ -42,6 +42,7 @@ public sealed class EvidenceCamera : MonoBehaviour
     public Quaternion RackRotation => rackRotation;
     private RenderTexture viewfinder;
     private Coroutine viewfinderLoop;
+    private DemoLighting lighting;
 
     // Carry the camera body in front of a hand or view. Colliders are disabled so
     // it neither blocks walking nor the pointer. Passing it between holders keeps
@@ -106,16 +107,29 @@ public sealed class EvidenceCamera : MonoBehaviour
         }
     }
 
-    // One manual render into the viewfinder; the camera's target, enabled state
-    // and pose are exactly as before afterwards, and a capture in progress owns
-    // the camera, so ticks wait until it has finished.
+    // One manual render into the viewfinder; the camera's target, enabled state and pose are exactly
+    // as before afterwards, and a capture in progress owns the camera, so ticks wait until it has
+    // finished. While the flashlight is on it is the scene's only realtime shadow
+    // (ToolStation.UpdateLampShadows) and rides beside the lens, so the preview skips its shadow map;
+    // a lit lamp keeps its shadow so its beam still stops at walls. Saved photos keep every shadow.
     private void TickViewfinder()
     {
         if(IsCapturing || viewfinder==null || photoCamera==null || !photoCamera.gameObject.activeInHierarchy) return;
         RenderTexture previous=photoCamera.targetTexture;
-        photoCamera.targetTexture=viewfinder;
-        photoCamera.Render();
-        photoCamera.targetTexture=previous;
+        bool dropShadows=lighting!=null && lighting.FlashlightOn;
+        ShadowQuality shadows=QualitySettings.shadows;
+        try
+        {
+            if(dropShadows) QualitySettings.shadows=ShadowQuality.Disable;
+            photoCamera.targetTexture=viewfinder;
+            photoCamera.Render();
+        }
+        finally
+        {
+            // In the editor these are the project's quality settings: restored even if Render throws.
+            photoCamera.targetTexture=previous;
+            if(dropShadows) QualitySettings.shadows=shadows;
+        }
     }
 
     private void SetCollidersEnabled(bool enabled)
@@ -172,6 +186,18 @@ public sealed class EvidenceCamera : MonoBehaviour
         rack=transform.parent;
         rackPosition=transform.localPosition;
         rackRotation=transform.localRotation;
+        lighting=GetComponentInParent<DemoLighting>(); // the body rests on the ToolSystem root, which carries DemoLighting
+        if(lighting==null) lighting=FindFirstObjectByType<DemoLighting>();
+        if(photoCamera!=null)
+        {
+            photoCamera.cullingMask&=~(1<<DemoUi.HeadsetUiLayer); // photos and the viewfinder never show the headset interface
+            // LDR like the night head camera (NightQuality): with no post-processing the clamped image is
+            // the same, without the FP16 intermediate and its resolve. Anti-aliasing comes from the
+            // capture target's samples.
+            photoCamera.allowHDR=false;
+            photoCamera.allowMSAA=true;
+        }
+        // The camera setup stays above this return: a scene may already carry a shutter AudioSource.
         if(shutterAudio!=null) return;
         shutterAudio=gameObject.AddComponent<AudioSource>();
         shutterAudio.playOnAwake=false;
@@ -189,6 +215,7 @@ public sealed class EvidenceCamera : MonoBehaviour
     {
         if(generatedClick!=null) Destroy(generatedClick);
         if(LastPhoto!=null) Destroy(LastPhoto);
+        if(display!=null) { display.Release(); Destroy(display); }
         if(scratch!=null) Destroy(scratch);
     }
 
@@ -207,7 +234,8 @@ public sealed class EvidenceCamera : MonoBehaviour
         bool prepared=false;
         try
         {
-            target=RenderTexture.GetTemporary(width,height,24);
+            // Anti-aliased like the head view; ReadPixels resolves it before reading.
+            target=RenderTexture.GetTemporary(width,height,24,RenderTextureFormat.Default,RenderTextureReadWrite.Default,Mathf.Max(1,QualitySettings.antiAliasing));
             photoCamera.stereoTargetEye=StereoTargetEyeMask.None;
             photoCamera.targetTexture=target;
             photoCamera.enabled=true;
@@ -256,6 +284,17 @@ public sealed class EvidenceCamera : MonoBehaviour
         }
         LastPhoto.LoadRawTextureData(pixels);
         LastPhoto.Apply(false);
+        int dw=Mathf.Max(1,w/2), dh=Mathf.Max(1,h/2);
+        if(display==null || display.width!=dw || display.height!=dh)
+        {
+            if(display!=null) { display.Release(); Destroy(display); }
+            // useMipMap and autoGenerateMips are set before the texture is created; clamped so the small
+            // mips never blend the photo's opposite edge into the frame's border.
+            display=new RenderTexture(dw,dh,0) { name="LastEvidencePhotoDisplay", useMipMap=true, autoGenerateMips=true, filterMode=FilterMode.Trilinear, wrapMode=TextureWrapMode.Clamp };
+        }
+        RenderTexture previousActive=RenderTexture.active;
+        Graphics.Blit(LastPhoto,display); // an exact 2x2 box at half size; the mips are built on the GPU
+        RenderTexture.active=previousActive;
         sequence=number;
         LastPhotoPath=path;
         Status="Saved photo "+sequence.ToString("D4");
@@ -268,27 +307,51 @@ public sealed class EvidenceCamera : MonoBehaviour
     // panel preview so neither has to read the PNG back from disk.
     public Texture2D LastPhoto { get; private set; }
 
+    // Half-size copy of LastPhoto with GPU-built mips, so the wall frame, the rear screen and the panel
+    // thumbnails do not shimmer (the 1920-wide photo is minified 2-20x there). LastPhoto stays the full photo.
+    public Texture LastPhotoDisplay => display!=null ? (Texture)display : LastPhoto;
+    private RenderTexture display;
+
     // Scratch texture the rendered frame is read into; LastPhoto is only
     // updated after the PNG has been written.
     private Texture2D scratch;
 
-    // Copies the rendered frame into the scratch texture and returns a copy of its raw RGB bytes.
+    // Reused between photos; IsCapturing guards it until LastPhoto.LoadRawTextureData has run.
+    private byte[] pixelBuffer;
+
+    // Copies the rendered frame into the scratch texture's CPU copy and returns its raw RGB bytes in a
+    // reused buffer. An anti-aliased target is resolved into a plain temporary first (Blit resolves it).
+    // No Apply: nothing samples the scratch texture on the GPU.
     private byte[] ReadPixels()
     {
         RenderTexture previousActive=RenderTexture.active;
+        RenderTexture resolved=null;
         try
         {
-            RenderTexture.active=target;
+            RenderTexture source=target;
+            if(target.antiAliasing>1)
+            {
+                resolved=RenderTexture.GetTemporary(width,height,0,RenderTextureFormat.Default,RenderTextureReadWrite.Default,1);
+                Graphics.Blit(target,resolved);
+                source=resolved;
+            }
+            RenderTexture.active=source;
             if(scratch==null || scratch.width!=width || scratch.height!=height)
             {
                 if(scratch!=null) Destroy(scratch);
                 scratch=new Texture2D(width,height,TextureFormat.RGB24,false) { name="EvidencePhotoScratch" };
             }
             scratch.ReadPixels(new Rect(0,0,width,height),0,0);
-            scratch.Apply(false);
-            return scratch.GetRawTextureData();
+            var raw=scratch.GetRawTextureData<byte>(); // NativeArray view of the CPU copy, no allocation
+            if(pixelBuffer==null || pixelBuffer.Length!=raw.Length) pixelBuffer=new byte[raw.Length];
+            raw.CopyTo(pixelBuffer);
+            return pixelBuffer;
         }
-        finally { RenderTexture.active=previousActive; }
+        finally
+        {
+            RenderTexture.active=previousActive;
+            if(resolved!=null) RenderTexture.ReleaseTemporary(resolved);
+        }
     }
 
     private void OnCameraRendered(Camera camera)
@@ -341,6 +404,7 @@ public sealed class EvidenceCamera : MonoBehaviour
         viewfinderLoop=null;
         StopViewfinder();
         Restore();
+        pixelBuffer=null; // a save task still running keeps its own array
     }
 
     public void OpenPhotoFolder()

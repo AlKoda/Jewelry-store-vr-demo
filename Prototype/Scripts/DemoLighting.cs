@@ -340,6 +340,7 @@ public sealed class DemoLighting : MonoBehaviour
         GameObject holder = new GameObject(torch.Ultraviolet ? "UVTorch" : "Flashlight");
         Light light = holder.AddComponent<Light>();
         light.type = LightType.Spot;
+        light.renderMode = LightRenderMode.ForcePixel; // a handheld light always keeps a pixel slot (pixelLightCount 4)
         if (torch.Ultraviolet)
         {
             light.range = UVRange;

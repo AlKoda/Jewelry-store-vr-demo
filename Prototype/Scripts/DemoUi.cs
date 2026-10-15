@@ -37,8 +37,9 @@ public static class DemoUi
     {
         get
         {
-            // Re-searched at most once a second while missing (a scene load replaces it).
-            if (theme == null && Time.frameCount - themeSearchFrame > 60)
+            // Re-searched at once when the cached theme was destroyed (a scene load), and at most
+            // once a second while no theme exists.
+            if (theme == null && ((object)theme != null || Time.frameCount - themeSearchFrame > 60))
             {
                 themeSearchFrame = Time.frameCount;
                 theme = Object.FindFirstObjectByType<DemoUiTheme>();
@@ -61,13 +62,17 @@ public static class DemoUi
     public static Font SemiBold => Theme != null && Theme.SemiBold != null ? Theme.SemiBold : Medium;
 
     // ---------------------------------------------------------------- textures
-    private static readonly Dictionary<string, Texture2D> textures = new Dictionary<string, Texture2D>();
+    // Keyed by value: Color is IEquatable<Color>, so lookups neither box nor allocate
+    // (string keys formatted every colour on every IMGUI event).
+    private static readonly Dictionary<(int, Color, Color, int), Texture2D> rounded = new Dictionary<(int, Color, Color, int), Texture2D>();
+    private static readonly Dictionary<(int, int, Color), Texture2D> rings = new Dictionary<(int, int, Color), Texture2D>();
+    private static readonly Texture2D[] icons = new Texture2D[System.Enum.GetValues(typeof(UiIcon)).Length];
 
     // Anti-aliased rounded rectangle, 9-sliced by GUIStyle.border = radius.
     public static Texture2D Rounded(int radius, Color fill, Color border, int borderWidth = 1)
     {
-        string key = "r" + radius + fill + border + borderWidth;
-        if (textures.TryGetValue(key, out Texture2D cached) && cached != null) return cached;
+        var key = (radius, fill, border, borderWidth);
+        if (rounded.TryGetValue(key, out Texture2D cached) && cached != null) return cached;
         int size = radius * 2 + 2;
         Texture2D texture = NewTexture(size, size);
         Color[] pixels = new Color[size * size];
@@ -83,7 +88,7 @@ public static class DemoUi
         }
         texture.SetPixels(pixels);
         texture.Apply();
-        textures[key] = texture;
+        rounded[key] = texture;
         return texture;
     }
 
@@ -92,8 +97,8 @@ public static class DemoUi
 
     public static Texture2D Ring(int radius, int thickness, Color color)
     {
-        string key = "ring" + radius + thickness + color;
-        if (textures.TryGetValue(key, out Texture2D cached) && cached != null) return cached;
+        var key = (radius, thickness, color);
+        if (rings.TryGetValue(key, out Texture2D cached) && cached != null) return cached;
         int size = radius * 2 + 2;
         Texture2D texture = NewTexture(size, size);
         Color[] pixels = new Color[size * size];
@@ -109,7 +114,7 @@ public static class DemoUi
         }
         texture.SetPixels(pixels);
         texture.Apply();
-        textures[key] = texture;
+        rings[key] = texture;
         return texture;
     }
 
@@ -119,8 +124,9 @@ public static class DemoUi
     // from distance functions, so they stay crisp at any size up to 64 px.
     public static Texture2D Icon(UiIcon icon)
     {
-        string key = "icon" + icon;
-        if (textures.TryGetValue(key, out Texture2D cached) && cached != null) return cached;
+        int slot = (int)icon;
+        bool cacheable = slot >= 0 && slot < icons.Length;
+        if (cacheable && icons[slot] != null) return icons[slot];
         const int size = 64;
         Texture2D texture = NewTexture(size, size);
         Color[] pixels = new Color[size * size];
@@ -132,7 +138,7 @@ public static class DemoUi
         }
         texture.SetPixels(pixels);
         texture.Apply();
-        textures[key] = texture;
+        if (cacheable) icons[slot] = texture;
         return texture;
     }
 
@@ -246,14 +252,15 @@ public static class DemoUi
 
     public static void Box(Rect rect, int radius, Color fill, Color border)
     {
-        GUIStyle style = BoxStyle(radius, fill, border);
-        if (Event.current.type == EventType.Repaint) style.Draw(rect, false, false, false, false);
+        // Drawn on Repaint only, so Layout and input events skip the style lookup.
+        if (Event.current.type != EventType.Repaint) return;
+        BoxStyle(radius, fill, border).Draw(rect, false, false, false, false);
     }
 
-    private static readonly Dictionary<string, GUIStyle> boxes = new Dictionary<string, GUIStyle>();
+    private static readonly Dictionary<(int, Color, Color), GUIStyle> boxes = new Dictionary<(int, Color, Color), GUIStyle>();
     private static GUIStyle BoxStyle(int radius, Color fill, Color border)
     {
-        string key = radius + "|" + fill + "|" + border;
+        var key = (radius, fill, border);
         if (boxes.TryGetValue(key, out GUIStyle style) && style.normal.background != null) return style;
         style = new GUIStyle { border = new RectOffset(radius, radius, radius, radius) };
         style.normal.background = Rounded(radius, fill, border);
@@ -383,8 +390,11 @@ public static class DemoUi
     }
 
     // A 6 px bar centred in a 16 px tall texture, so the slider thumb sits on its middle.
+    // Made once: the skin is rebuilt whenever the theme font changes.
+    private static Texture2D sliderTrack;
     private static Texture2D SliderTrack()
     {
+        if (sliderTrack != null) return sliderTrack;
         Texture2D texture = NewTexture(14, 16);
         Color[] pixels = new Color[14 * 16];
         for (int y = 0; y < 16; y++)
@@ -397,39 +407,63 @@ public static class DemoUi
         }
         texture.SetPixels(pixels);
         texture.Apply();
+        sliderTrack = texture;
         return texture;
+    }
+
+    // ---------------------------------------------------------------- cached text
+    // One immutable GUIContent per distinct string: stable labels measure and draw without allocating.
+    private static readonly Dictionary<string, GUIContent> contents = new Dictionary<string, GUIContent>(256);
+    public static GUIContent Content(string text)
+    {
+        if (text == null) text = string.Empty;
+        if (contents.TryGetValue(text, out GUIContent content)) return content;
+        if (contents.Count >= 512) contents.Clear(); // toasts and counters stay few; bounded anyway
+        contents[text] = content = new GUIContent(text);
+        return content;
+    }
+
+    private static readonly Dictionary<string, string[]> keyParts = new Dictionary<string, string[]>();
+    private static string[] KeyParts(string keys)
+    {
+        if (!keyParts.TryGetValue(keys, out string[] parts)) keyParts[keys] = parts = keys.Split('/');
+        return parts;
     }
 
     // ---------------------------------------------------------------- key hints
     // Pairs of key and action, e.g. ("LMB", "Place", "Q/E", "Rotate"); "Q/E" draws two caps.
-    public static float HintWidth(string[] pairs)
+    public static float HintWidth(IReadOnlyList<string> pairs)
     {
         Skin s = Styles;
         float width = 0;
-        for (int i = 0; i + 1 < pairs.Length; i += 2)
+        for (int i = 0; i + 1 < pairs.Count; i += 2)
         {
-            foreach (string key in pairs[i].Split('/')) width += Mathf.Max(s.Keycap.CalcSize(new GUIContent(key)).x, 24) + 4;
-            width += s.HintText.CalcSize(new GUIContent(pairs[i + 1])).x + 18;
+            string[] keys = KeyParts(pairs[i]);
+            for (int k = 0; k < keys.Length; k++) width += Mathf.Max(s.Keycap.CalcSize(Content(keys[k])).x, 24) + 4;
+            width += s.HintText.CalcSize(Content(pairs[i + 1])).x + 18;
         }
         return Mathf.Max(0, width - 12);
     }
 
     // Draws the hints left to right from rect.x, vertically centred in rect.
-    public static void DrawHints(Rect rect, string[] pairs)
+    public static void DrawHints(Rect rect, IReadOnlyList<string> pairs)
     {
         Skin s = Styles;
         float x = rect.x;
-        for (int i = 0; i + 1 < pairs.Length; i += 2)
+        for (int i = 0; i + 1 < pairs.Count; i += 2)
         {
-            foreach (string key in pairs[i].Split('/'))
+            string[] keys = KeyParts(pairs[i]);
+            for (int k = 0; k < keys.Length; k++)
             {
-                Vector2 size = s.Keycap.CalcSize(new GUIContent(key));
+                GUIContent key = Content(keys[k]);
+                Vector2 size = s.Keycap.CalcSize(key);
                 size.x = Mathf.Max(size.x, 24);
                 GUI.Label(new Rect(x, rect.y + (rect.height - size.y) / 2, size.x, size.y), key, s.Keycap);
                 x += size.x + 4;
             }
-            Vector2 label = s.HintText.CalcSize(new GUIContent(pairs[i + 1]));
-            GUI.Label(new Rect(x + 2, rect.y, label.x, rect.height), pairs[i + 1], s.HintText);
+            GUIContent action = Content(pairs[i + 1]);
+            Vector2 label = s.HintText.CalcSize(action);
+            GUI.Label(new Rect(x + 2, rect.y, label.x, rect.height), action, s.HintText);
             x += label.x + 18;
         }
     }
@@ -440,10 +474,10 @@ public static class DemoUi
         Skin s = Styles;
         GUILayout.BeginHorizontal();
         GUILayout.BeginHorizontal(GUILayout.Width(keyColumn));
-        foreach (string key in keys.Split('/')) GUILayout.Label(key, s.Keycap, GUILayout.MinWidth(24));
+        foreach (string key in KeyParts(keys)) GUILayout.Label(Content(key), s.Keycap, GUILayout.MinWidth(24));
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
-        GUILayout.Label(action, s.Body);
+        GUILayout.Label(Content(action), s.Body);
         GUILayout.EndHorizontal();
     }
 
@@ -525,6 +559,16 @@ public static class DemoUi
         mesh.RecalculateBounds();
         meshes[key] = mesh;
         return mesh;
+    }
+
+    // Layer 5 (Unity's built-in "UI" layer, unused here: no uGUI) carries the headset interface: controller
+    // models, hints, wrist card, toast, carousel, teleport arc and ring, comfort fade. The head and desktop
+    // cameras draw it; the photo camera (photos and viewfinder) and the overview map cull it.
+    public const int HeadsetUiLayer = 5;
+    public static void ToHeadsetUiLayer(Transform root)
+    {
+        if (root == null) return;
+        foreach (Transform t in root.GetComponentsInChildren<Transform>(true)) t.gameObject.layer = HeadsetUiLayer;
     }
 
     // Unlit, alpha-blended, double-sided material for world panels, lines and markers.

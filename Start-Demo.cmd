@@ -2,9 +2,9 @@
 setlocal EnableExtensions
 title Jewelry Store Demo
 rem One double-click: update the source, build the latest demo if it changed, start it.
-rem   Start-Demo.cmd          build when the source changed, then start
-rem   Start-Demo.cmd bake     rebuild with baked lighting (several minutes longer)
-rem   Start-Demo.cmd rebuild  rebuild now with preview lighting
+rem   Start-Demo.cmd          build when the source changed, with the lighting last chosen, then start
+rem   Start-Demo.cmd bake     rebuild with baked lighting (several minutes longer) and keep baking on later updates
+rem   Start-Demo.cmd rebuild  rebuild now with preview lighting and stop baking
 rem   Start-Demo.cmd run      start the existing build without checking
 rem Needs Unity 6000.6.2f1 (Unity Hub default path, or set JEWELRY_UNITY to Unity.exe).
 cd /d "%~dp0"
@@ -14,6 +14,7 @@ set "SNAPSHOT=%ROOT%Downloads\JewelryStore_Glass_Unity6000.6.2f1.zip"
 set "EXE=%ROOT%Builds\Windows\JewelryStoreDemo.exe"
 set "STAMP=%ROOT%Builds\Windows\built-from.txt"
 set "LOG=%ROOT%build-latest.log"
+set "LIGHTING=%ROOT%Builds\Windows\lighting.txt"
 set "MODE=%~1"
 
 rem 1. Update the source when this folder is a git checkout (a GitHub ZIP download is not).
@@ -35,7 +36,7 @@ if /i "%MODE%"=="rebuild" goto build
 if /i "%MODE%"=="bake" goto build
 if not exist "%EXE%" goto build
 if "%COMMIT%"=="unknown" (
-  echo Starting the existing build. Run "Start-Demo.cmd rebuild" after downloading a newer version.
+  echo Starting the existing build. Run "Start-Demo.cmd rebuild", or "Start-Demo.cmd bake" for baked lighting, after downloading a newer version.
   goto run
 )
 set "BUILT="
@@ -55,6 +56,9 @@ mkdir "%PROJECT%" 2>nul
 tar -xf "%SNAPSHOT%" -C "%PROJECT%"
 if errorlevel 1 powershell -NoProfile -Command "Expand-Archive -Force -LiteralPath '%SNAPSHOT%' -DestinationPath '%PROJECT%'"
 if not exist "%PROJECT%\Assets" goto fail
+rem The night build switches this project to linear colour space anyway; doing it before Unity's
+rem first import saves a second import of every texture. UnityProject_Glass keeps the zip's gamma.
+powershell -NoProfile -Command "$d='%PROJECT%\ProjectSettings\'; foreach($f in 'ProjectSettings.asset','GraphicsSettings.asset'){ $p=$d+$f; if(Test-Path -LiteralPath $p){ $t=[IO.File]::ReadAllText($p); $t=$t -replace 'm_ActiveColorSpace: 0','m_ActiveColorSpace: 1' -replace 'm_LightsUseLinearIntensity: 0','m_LightsUseLinearIntensity: 1'; [IO.File]::WriteAllText($p,$t) } }"
 
 :sync
 echo Copying the latest scripts and assets into the project...
@@ -64,13 +68,20 @@ for %%f in (Scripts Editor Shaders ThirdParty) do (
   if errorlevel 8 goto fail
 )
 set "BAKEFLAG="
+set "REMEMBERED="
+if exist "%LIGHTING%" set /p REMEMBERED=<"%LIGHTING%"
+if /i "%REMEMBERED%"=="bake" set "BAKEFLAG=-demoBake"
 if /i "%MODE%"=="bake" set "BAKEFLAG=-demoBake"
+if /i "%MODE%"=="rebuild" set "BAKEFLAG="
+if defined BAKEFLAG echo Baked lighting: the bake adds several minutes, much longer without a supported GPU.
 set "JEWELRY_COMMIT=%COMMIT%"
 echo Building the demo with Unity. The first build takes 5 to 15 minutes; please wait...
 "%UNITY%" -batchmode -noUpm -projectPath "%PROJECT%" -executeMethod DemoBuild.BuildLatest %BAKEFLAG% -logFile "%LOG%"
 if errorlevel 1 goto fail
 if not exist "%EXE%" goto fail
 >"%STAMP%" echo %COMMIT%
+if /i "%MODE%"=="bake" (>"%LIGHTING%" echo bake)
+if /i "%MODE%"=="rebuild" if exist "%LIGHTING%" del "%LIGHTING%"
 echo Build complete.
 
 :run

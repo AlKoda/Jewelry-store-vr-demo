@@ -96,9 +96,12 @@ public static class ShopRobberyDressing
         var panel=DemoValidation.Find<DemoDesktopPanel>();
         var map=DemoValidation.Find<DemoOverviewMap>();
         DemoValidation.Check(!map.ShouldRender,"Hidden overview skips automatic rendering");
-        panel.Visible=true;
+        var tab=panel.Tab;
+        panel.Visible=true; panel.Tab=PanelTab.Tools;
+        DemoValidation.Check(!map.ShouldRender,"Overview skips rendering on other drawer tabs");
+        panel.Tab=PanelTab.Map;
         DemoValidation.Check(map.ShouldRender,"Overview rendering resumes when menu opens");
-        panel.Visible=false;
+        panel.Visible=false; panel.Tab=tab;
         DemoValidation.Info("Robbery dressing triangles="+triangles+"; jewelry remaining=3; dropped=2");
     }
 }

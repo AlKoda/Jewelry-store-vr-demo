@@ -49,7 +49,8 @@ public sealed class CameraScreen : MonoBehaviour
         Texture wanted = null;
         if (Evidence != null)
         {
-            if (Evidence.LastPhoto != null && Time.unscaledTime < photoUntil) wanted = Evidence.LastPhoto;
+            // The mipmapped display copy: the few-centimetre screen minifies the photo 15-20x.
+            if (Evidence.LastPhoto != null && Time.unscaledTime < photoUntil) wanted = Evidence.LastPhotoDisplay;
             else if (Evidence.Holder != null) wanted = Evidence.Viewfinder;
         }
         if (wanted == null) wanted = Texture2D.blackTexture;

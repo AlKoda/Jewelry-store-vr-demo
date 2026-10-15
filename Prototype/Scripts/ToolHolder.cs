@@ -13,6 +13,9 @@ public abstract class ToolHolder : MonoBehaviour
     public InteriorBounds Bounds;
     public Vector3 CameraHoldOffset = new Vector3(0.22f, -0.12f, 0.35f);
     public float DropSearchDepth = 2f;
+    // Drop casts start no higher than this above the region's floor: below every collidable ceiling
+    // slab (3.0 m in both stores), above every case (2.1 m at most).
+    public float DropCeilingClearance = 2.7f;
 
     public DeployedTool Held { get; private set; }
     public bool HoldingCamera =>
@@ -72,16 +75,22 @@ public abstract class ToolHolder : MonoBehaviour
     }
 
     // Lets go of the held tool and sets it on the nearest upward surface beneath it,
-    // inside the interior; casting from above the tool clears any case it is inside.
+    // inside the interior. The cast always reaches the floor of the region under the
+    // tool, so a tool released overhead drops rather than floating or landing on the roof.
     private void Settle(bool audible)
     {
         DeployedTool tool = Held;
         Held = null;
         if (tool == null) return;
         tool.Holder = null;
-        Vector3 origin = Confine(tool.transform.position) + Vector3.up;
-        Vector3 landing = DemoPhysics.Nearest(new Ray(origin, Vector3.down), DropSearchDepth + 1, out RaycastHit hit, tool.transform, null, true)
-            ? hit.point : new Vector3(origin.x, Mathf.Max(0, origin.y - 1), origin.z);
+        Vector3 p = Confine(tool.transform.position);
+        float floor = Bounds != null ? Bounds.FloorAt(p) : 0;
+        // Cast from 1 m above the tool, which clears any case it is inside, but never from inside or above the
+        // ceiling slab; a miss lands on the region's floor (the street in the staging bay), not at the hand.
+        Vector3 origin = new Vector3(p.x, Mathf.Min(p.y + 1, floor + DropCeilingClearance), p.z);
+        float depth = Mathf.Max(DropSearchDepth + 1, origin.y - floor + 0.25f);
+        Vector3 landing = DemoPhysics.Nearest(new Ray(origin, Vector3.down), depth, out RaycastHit hit, tool.transform, null, true)
+            ? hit.point : new Vector3(p.x, floor, p.z);
         tool.PlaceAt(landing, tool.transform.eulerAngles.y);
         if (audible) DemoSounds.Play(DemoSound.Thud, landing, 0.5f);
     }

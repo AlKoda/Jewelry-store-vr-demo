@@ -23,6 +23,7 @@ public sealed class DeployedTool : MonoBehaviour
     public void SetMarkerNumber(int number)
     {
         MarkerNumber = number;
+        markerName = null;
         // Prefabs generated before the font fix have no font and render no digits.
         EnsureFont(NumberLabel);
         EnsureFont(BackNumberLabel);
@@ -45,14 +46,25 @@ public sealed class DeployedTool : MonoBehaviour
         }
     }
 
-    // Capitalised name for prompts and messages: "Marker 3", "Tape post".
+    // Capitalised name for prompts and messages: "Marker 3", "Tape post". Built once per kind,
+    // so the panel and the carousel can show it every frame without allocating.
+    private static readonly string[] titles = MakeTitles();
+    private static string[] MakeTitles()
+    {
+        string[] result = new string[System.Enum.GetValues(typeof(DemoToolKind)).Length];
+        for (int i = 0; i < result.Length; i++) { string name = KindName((DemoToolKind)i); result[i] = char.ToUpperInvariant(name[0]) + name.Substring(1); }
+        return result;
+    }
     public static string Title(DemoToolKind kind)
     {
+        int i = (int)kind;
+        if (i >= 0 && i < titles.Length) return titles[i];
         string name = KindName(kind);
         return char.ToUpperInvariant(name[0]) + name.Substring(1);
     }
 
-    public string DisplayName => Kind == DemoToolKind.Marker && MarkerNumber > 0 ? "Marker " + MarkerNumber : Title(Kind);
+    private string markerName; // not serialized, so Instantiate never copies it
+    public string DisplayName => Kind == DemoToolKind.Marker && MarkerNumber > 0 ? (markerName ?? (markerName = "Marker " + MarkerNumber)) : Title(Kind);
 
     // One request per holder that points at, is nearest to, or holds this tool, so one
     // hand letting go of the highlight does not clear it for the other.

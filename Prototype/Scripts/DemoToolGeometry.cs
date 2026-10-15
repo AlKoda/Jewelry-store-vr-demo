@@ -176,6 +176,7 @@ public static class DemoToolGeometry
         lightObject.transform.localPosition = new Vector3(0, 0, 0.02f);
         Light spot = lightObject.AddComponent<Light>();
         spot.type = LightType.Spot;
+        spot.renderMode = LightRenderMode.ForcePixel; // like the torches, a deployed lamp always keeps a pixel slot (pixelLightCount 4)
         spot.color = new Color(1f, 0.97f, 0.92f);
         spot.intensity = 1.6f;
         spot.range = LampRange;

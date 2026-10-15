@@ -14,6 +14,7 @@ public sealed class DemoStatusBoard : MonoBehaviour
 
     private TextMesh text;
     private MeshFilter panel;
+    private Material panelMaterial;
     private string photoLine = "No photographs yet";
 
     private void Awake()
@@ -21,8 +22,16 @@ public sealed class DemoStatusBoard : MonoBehaviour
         text = GetComponent<TextMesh>();
         DeployedTool.EnsureFont(text);
         DemoUi.Configure(text, DemoUi.Medium, LineHeight, DemoUi.Ink, TextAnchor.MiddleCenter);
-        panel = DemoUi.WorldPanel("BoardPanel", transform, new Vector3(0, 0, 0.01f), 1f, 0.4f, 0.05f,
-            new Color(0.05f, 0.06f, 0.08f, 0.9f)).GetComponent<MeshFilter>();
+        MeshRenderer panelRenderer = DemoUi.WorldPanel("BoardPanel", transform, new Vector3(0, 0, 0.01f), 1f, 0.4f, 0.05f,
+            new Color(0.05f, 0.06f, 0.08f, 0.9f));
+        panel = panelRenderer.GetComponent<MeshFilter>();
+        // DemoUi materials are DontSave, so no scene load frees them: the board owns this one.
+        panelMaterial = panelRenderer.sharedMaterial;
+    }
+
+    private void OnDestroy()
+    {
+        if (panelMaterial != null) Destroy(panelMaterial);
     }
 
     private void OnEnable()

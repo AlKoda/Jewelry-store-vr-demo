@@ -130,9 +130,10 @@ public static class DemoGeometry
         mesh.RecalculateTangents();
     }
 
-    // Texel density of the night bake (NightLighting's lightmapResolution); sets the
-    // lightmap chart margin, so the two stay in step.
-    public const float LightmapTexelsPerMetre = 10;
+    // Texel density of the night bake (NightLighting's lightmapResolution, scaled per zone
+    // by NightLighting.LightmapScales): 20 per metre, 5 cm on the interior shell where the
+    // headlights' case shadows fall. Sets the lightmap chart margin, so the two stay in step.
+    public const float LightmapTexelsPerMetre = 20;
 
     // Non-overlapping second UV set so the mesh can receive baked lightmaps. The pack
     // margin is about two lightmap texels at the planned density, i.e. the bake's

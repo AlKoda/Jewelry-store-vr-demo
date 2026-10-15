@@ -3,21 +3,35 @@ Shader "CrimeScene/Tape"
  Properties { _Color ("Yellow", Color) = (1,0.78,0.03,1) _Span ("Metres", Float) = 1 }
  SubShader
  {
-  Tags { "RenderType"="Opaque" }
-  Pass
+  // The sag reads object-space z, which batching would turn into world space.
+  Tags { "RenderType"="Opaque" "DisableBatching"="True" }
+  CGPROGRAM
+  // Lit vinyl: base pass, ForwardAdd (flashlight, lamps), light probes, fog and single-pass
+  // instanced stereo come from the surface shader. fullforwardshadows lets the ForwardAdd
+  // spot and point lights shadow the tape like the Standard materials around it; addshadow
+  // puts the sag into the shadow caster. A runtime-only forward object, so no lightmap,
+  // meta or deferred variants.
+  #pragma surface surf Standard vertex:vert addshadow fullforwardshadows nolightmap nodynlightmap nodirlightmap nometa exclude_path:deferred
+  #pragma target 3.0
+  fixed4 _Color; float _Span;
+  struct Input { float2 stripe; };
+  void vert(inout appdata_full v, out Input o)
   {
-   CGPROGRAM
-   #pragma vertex vert
-   #pragma fragment frag
-   #pragma multi_compile_fog
-   #pragma multi_compile_instancing
-   #include "UnityCG.cginc"
-   struct appdata { float4 vertex:POSITION; UNITY_VERTEX_INPUT_INSTANCE_ID };
-   struct v2f { float4 pos:SV_POSITION; float2 stripe:TEXCOORD0; UNITY_FOG_COORDS(1) UNITY_VERTEX_OUTPUT_STEREO };
-   fixed4 _Color; float _Span;
-   v2f vert(appdata v) { v2f o; UNITY_SETUP_INSTANCE_ID(v); UNITY_INITIALIZE_OUTPUT(v2f,o); UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o); float height=v.vertex.y; v.vertex.y-=(1-4*v.vertex.z*v.vertex.z)*min(.035,_Span*.012)/.08; o.pos=UnityObjectToClipPos(v.vertex); o.stripe=float2(v.vertex.z*_Span,height); UNITY_TRANSFER_FOG(o,o.pos);return o; }
-   fixed4 frag(v2f i):SV_Target { UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i); float band=abs(i.stripe.y)<.28?1:step(.28,frac(i.stripe.x*4+i.stripe.y*.25)); fixed4 c=lerp(fixed4(.025,.025,.018,1),_Color,band); UNITY_APPLY_FOG(i.fogCoord,c);return c; }
-   ENDCG
+   UNITY_INITIALIZE_OUTPUT(Input, o);
+   float height = v.vertex.y;
+   // Sag: up to 3.5 cm at mid-span (object y is scaled by the 8 cm ribbon height).
+   v.vertex.y -= (1 - 4 * v.vertex.z * v.vertex.z) * min(.035, _Span * .012) / .08;
+   o.stripe = float2(v.vertex.z * _Span, height);
   }
+  void surf(Input i, inout SurfaceOutputStandard o)
+  {
+   float band = abs(i.stripe.y) < .28 ? 1 : step(.28, frac(i.stripe.x * 4 + i.stripe.y * .25));
+   o.Albedo = lerp(fixed3(.025, .025, .018), _Color.rgb, band);
+   o.Metallic = 0;
+   o.Smoothness = 0.3;
+   // Optional, if the instructor wants the tape faintly readable in the dark: o.Emission = o.Albedo * 0.02;
+  }
+  ENDCG
  }
+ FallBack "Diffuse"
 }

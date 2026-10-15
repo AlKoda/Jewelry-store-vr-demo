@@ -169,10 +169,12 @@ public static class DemoToolsBuilder
         ambience.AddComponent<AudioSource>().playOnAwake=false;
         ambience.AddComponent<AmbientSound>();
 
-        // Top-down map for the presenter panel; ceilings are hidden only for its render.
+        // Top-down map for the presenter panel, in flat albedo; ceilings are hidden only for its render.
         DemoOverviewMap map=root.AddComponent<DemoOverviewMap>();
         map.Centre=layout.MapCentre;
         map.HalfSize=layout.MapHalfSize;
+        map.MapShader=Shader.Find("Hidden/CrimeScene/MapAlbedo");
+        if(map.MapShader==null) Debug.LogWarning("Hidden/CrimeScene/MapAlbedo missing; the overview map renders lit.");
         foreach(Transform t in store.transform.Find(layout.CeilingPath).GetComponentsInChildren<Transform>(true))
             t.gameObject.layer=map.HiddenLayer;
         panel.Map=map;

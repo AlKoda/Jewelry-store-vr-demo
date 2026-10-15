@@ -47,7 +47,8 @@ public static class DemoBuild
     }
 
     // Start-Demo.cmd: regenerate the night store from the current source (add -demoBake
-    // for baked lighting, minutes longer), make the start-menu scene, stamp the build,
+    // for baked lighting, minutes longer; a failed bake builds with the realtime preview
+    // and logs JEWELRY_BUILD_LIGHTING), make the start-menu scene, stamp the build,
     // register launcher + night store (+ the October 10 shop when its scene exists) and
     // build the Windows player. Exits 0 on success, 1 on failure.
     public static void BuildLatest()
@@ -65,11 +66,11 @@ public static class DemoBuild
 
     private static BuildReport BuildLatestReport(bool bake)
     {
-        NightStoreBuilder.BuildScene(bake, false);
+        bool baked = NightStoreBuilder.BuildScene(bake, false);
         string night = DemoValidation.ScenesFolder + "/" + NightStoreLayout.SceneName + ".unity";
         if (!File.Exists(night)) { Debug.LogError("Night store scene was not generated: " + night); return null; }
         CreateLauncherScene();
-        WriteBuildInfo(bake);
+        WriteBuildInfo(bake, baked);
         List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>
         {
             new EditorBuildSettingsScene(LauncherScene, true),
@@ -98,13 +99,14 @@ public static class DemoBuild
     }
 
     // Build date, source commit and lighting mode, shown at the bottom of the start menu.
-    private static void WriteBuildInfo(bool bake)
+    // The lighting is what the scene really ships: a bake that failed reads as preview.
+    private static void WriteBuildInfo(bool bake, bool baked)
     {
         Directory.CreateDirectory(Path.GetDirectoryName(BuildInfoAsset));
         string commit = Environment.GetEnvironmentVariable("JEWELRY_COMMIT");
         if (string.IsNullOrEmpty(commit) || commit == "unknown") commit = GitCommit();
-        File.WriteAllText(BuildInfoAsset, "Built " + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "   ·   source " + commit
-            + "   ·   lighting " + (bake ? "baked" : "preview (run Start-Demo.cmd bake for baked lighting)"));
+        string lighting = baked ? "baked" : bake ? "preview (the bake failed, see build-latest.log)" : "preview (run Start-Demo.cmd bake for baked lighting)";
+        File.WriteAllText(BuildInfoAsset, "Built " + DateTime.Now.ToString("yyyy-MM-dd HH:mm") + "   ·   source " + commit + "   ·   lighting " + lighting);
         AssetDatabase.ImportAsset(BuildInfoAsset);
     }
 
