@@ -1,0 +1,141 @@
+InteriorModels - interior props for the night jewellery-store scene
+Prepared October 14, 2026, revised October 15, 2026. Not yet imported or checked in Unity.
+
+Every file in this folder is CC0 1.0 (Poly Haven), public domain (one painting reproduction,
+section 3) or project-owned original work.
+No attribution is required for any file; the credits below are a courtesy. Commercial use,
+modification and redistribution are allowed. Per-file SHA-256, mirror paths and commits are in
+sources.json.
+
+CC0 1.0 Universal (public domain dedication): https://creativecommons.org/publicdomain/zero/1.0/
+
+===============================================================================
+1. Poly Haven 3D models (CC0 1.0)
+===============================================================================
+Publisher licence: https://polyhaven.com/license, read from the site source
+github.com/Poly-Haven/polyhaven.com @ b1a6aa13afc03ae00860f6ac5fe6d5daf8e95356,
+public/locales/en/license.json:
+  "All assets (HDRIs, textures and 3D models) on this site are the original work of Poly Haven
+   staff, or artists who willingly and directly donate/sell their work to Poly Haven."
+  "Our assets are all licensed as CC0 ..."
+  "You can use our assets for any purpose, including commercial work."
+  "You do not need to give credit or attribution when using them (although it is appreciated)."
+  "You can redistribute them, share them around, include them when sharing your own work, or even
+   in a product you sell."
+
+polyhaven.com cannot be reached from the build container. The unmodified 2K glTF files (gltf, bin,
+2K JPG maps) were taken from the public mirror
+  https://github.com/Geadas11/Claude_steam_game @ 8b6aa56f951450b7a05434615bcdda2bd2d1e8fa, assets/3d/models/<id>/ (<id>.gltf, <id>.bin, textures/<id>_*_2k.jpg)
+whose tools/fetch_polyhaven.py downloads them unmodified from api.polyhaven.com / dl.polyhaven.org and
+whose assets/3d/CREDITS.md lists them as Poly Haven CC0. The repository licence covers its code only.
+Verification: 17 models byte-identical (SHA-256) to the dl.polyhaven.org hashes recorded in
+  github.com/blue45f/toonstudio @ 526e7bc10963e2cfaaa7278dbb6a86b8ef09acd3 (per-asset SOURCE.json);
+metal_office_desk and desk_lamp_arm_01 match the Poly Haven API MD5s recorded in
+  github.com/acltabontabon/sev-1 @ cc500f9aeeb6d5e8fbc911ec1c0839b855d6002a;
+mid_century_lounge_chair is also byte-identical to github.com/Calinou/godot-benchmark-tool @ bbc93c93.
+modern_coffee_table_01, stationery_supplies, hanging_picture_frame_01, standing_picture_frame_01 and
+steel_frame_shelves_03 rely on the mirror download script only (no second copy found).
+
+Shipped files            Poly Haven asset             Title                          Author(s) per Poly Haven metadata
+------------------------ ---------------------------- ------------------------------ ------------------------------
+ArmChairModern.*         modern_arm_chair_01          Modern Arm Chair 01            Vibrant Nordic
+CCTVBulletHousing.*      security_camera_02           Security Camera 02             Garrison Gager, Yann Kervran
+CardboardBox.*           cardboard_box_01             Cardboard Box 01               Rahul Chaudhary
+CoffeeTableConcrete.*    modern_coffee_table_01       Modern Coffee Table 01         Amin
+DeskLampArm.*            desk_lamp_arm_01             Desk Lamp Arm 01               Kuutti Siitonen, Yann Kervran
+FireAlarmCallPoint.*     fire_alarm                   Fire Alarm                     Slinc
+FireExtinguisher.*       korean_fire_extinguisher_01  Korean Fire Extinguisher 01    UM JOORIN
+LoungeChairMidCentury.*  mid_century_lounge_chair     Mid Century Lounge Chair       Kuutti Siitonen
+OfficeDeskMetal.*        metal_office_desk            Metal Office Desk              Ulan Cabanilla
+OttomanLeather.*         Ottoman_01                   Ottoman 01                     Caspian Fortune
+PendantLampGlobe.*       modern_ceiling_lamp_01       Modern Ceiling Lamp 01         James Ray Cock
+PhotoFrameDesk.*         standing_picture_frame_01    Standing Picture Frame 01      James Ray Cock
+PictureFrameBlack.*      hanging_picture_frame_01     Hanging Picture Frame 01       James Ray Cock
+PictureFrameGilt.*       fancy_picture_frame_01       Fancy Picture Frame 01         Rico Cilliers, Rob Tuytel
+PictureFrameWhite.*      hanging_picture_frame_02     Hanging Picture Frame 02       James Ray Cock
+PottedPlantArrowhead.*   potted_plant_02              Potted Plant 02                Rico Cilliers
+PottedPlantTall.*        potted_plant_01              Potted Plant 01                Rico Cilliers
+PottedSucculent.*        potted_plant_04              Potted Plant 04                James Ray Cock
+ShelvingSteelWide.*      steel_frame_shelves_03       Steel Frame Shelves 03         Ulan Cabanilla
+StationerySet.*          stationery_supplies          Stationery Supplies            Mateusz Sadek
+VaseCeramicBottle.*      ceramic_vase_01              Ceramic Vase 01                James Ray Cock
+VaseCeramicTall.*        ceramic_vase_03              Ceramic Vase 03                James Ray Cock
+WallClock.*              wall_clock                   Wall Clock                     PierreB3D
+
+Source page of each: https://polyhaven.com/a/<Poly Haven asset>
+
+Changes made here (all Poly Haven models):
+  - converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn
+  - base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512
+  - pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)
+Model-specific changes:
+  - CCTVBulletHousing: fictional spec/regulatory sticker text blanked; decimated 12.5k -> 8.5k triangles; rig not kept (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams; every face agrees with its vertex normals)
+  - CardboardBox: decimated 17k -> 3k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, a split corner; every face agrees with its vertex normals)
+  - DeskLampArm: decimated 24.1k -> 15k triangles by seam-aware decimation (welded mesh, re-split per UV island, Source~/convert_ph.py decimate_seam_aware; rebuilt October 15: the earlier version had holes in the shade and broken arm rods); every face agrees with its vertex normals
+  - FireAlarmCallPoint: raised maker-style wordmark letters removed from the lower name plate (85 small letter meshes) and the matching texture lettering painted out
+  - FireExtinguisher: Korean stencil and small text on the base plaque removed from the colour map and (October 15) its embossed relief flattened in the normal map; "UMS" print on the hose removed from the colour and normal maps (October 15); product label (with a maker name) replaced by an original English label; Korean inspection tag with handwritten names replaced by an original English inspection record; decimated 9.9k -> 8k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams; every face agrees with its vertex normals)
+  - PendantLampGlobe: clear glass shade written as an MTL constant
+  - PhotoFrameDesk: rotated -90 degrees about Y so the photo faces +Z like every other model (October 15)
+  - PhotoFrameDesk: photo cropped to its visible area, UVs normalised to 0..1
+  - PictureFrameBlack: artwork replaced by an original project print (minimal seascape, PictureFrameBlack_Artwork_Color.jpg); artwork UVs normalised to 0..1
+  - PictureFrameGilt: canvas painting cropped to its visible area, UVs normalised to 0..1
+  - PictureFrameWhite: renamed from PictureFrameSilver (October 15): Poly Haven describes a distressed white wooden frame
+  - PictureFrameWhite: inherited artwork (a painterly-filtered photograph carrying a third-party signature) replaced by a public-domain painting: Paul Cezanne, The Banks of the Marne (c. 1888), cropped to the picture area (PictureFrameWhite_Artwork_Color.jpg, Source~/prep_print.py); artwork UVs normalised to 0..1
+  - PottedPlantArrowhead: rebuilt October 15 (70k -> 14,912 triangles): pot shell kept at source detail (5,184 -> 3,792; only the 1,392 faces sealed below the gravel dropped); the 53.9k-triangle dirt layer baked onto a 520-triangle heightfield disc (Gravel material, Source~/bake_gravel.py); leaves decimated 10,692 -> 5,300 with borders preserved and given back faces (10,600 triangles); every face agrees with its vertex normals
+  - PottedPlantTall: rebuilt October 15 (176k -> 14,965 triangles): pot shell kept at source detail (5,440 -> 5,184; only 256 faces sealed below the gravel dropped); the 56.9k-triangle pebble layer baked top-down onto a 520-triangle heightfield disc with its own Color/Normal/MetallicSmoothness maps (Gravel material, Source~/bake_gravel.py); leaf blades replaced by alpha-cut cards that keep the original blade vertices and outline (293 leaves, 3,062 triangles incl. back faces; Leaves_Color.png carries the cut-out alpha, Source~/leaf_cards.py); leaf stalks rebuilt as 5-sided tubes (4,550 triangles); trunk decimated with welded seams (7,008 -> 1,649); every face agrees with its vertex normals
+  - PottedSucculent: decimated 8.9k -> 5k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, e.g. a slit down the pot; every face agrees with its vertex normals)
+  - StationerySet: pencil print "Haven Penworks" is Poly Haven's own fictional brand and was kept
+  - VaseCeramicBottle: decimated 10.3k -> 4.0k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, holes in the body; every face agrees with its vertex normals)
+  - VaseCeramicTall: decimated 11.1k -> 5.4k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, holes at the base; every face agrees with its vertex normals)
+  - WallClock: maker-style wordmark on the dial painted out (patch from the clean dial)
+Texture edits are reproducible with Source~/edit_textures.py; the replacement label, tag and the
+PictureFrameBlack print are original project artwork (fictional text only, no real brand, maker,
+person or signature). The PictureFrameWhite picture is a public-domain painting (section 3).
+Gravel maps (PottedPlant*_Gravel_*) and the alpha mask in PottedPlantTall_Leaves_Color.png are baked
+from the CC0 source meshes and maps (Source~/bake_gravel.py, Source~/leaf_cards.py) and stay CC0.
+
+Voluntary credit line: "3D models by Kuutti Siitonen, Yann Kervran, Vibrant Nordic, Caspian Fortune,
+Amin, Rico Cilliers, Rob Tuytel, James Ray Cock, PierreB3D, Mateusz Sadek, UM JOORIN, Slinc,
+Ulan Cabanilla, Garrison Gager and Rahul Chaudhary (polyhaven.com, CC0)."
+
+===============================================================================
+2. Project-owned original work
+===============================================================================
+Made for this repository on October 14, 2026 with Python (numpy, Pillow, trimesh): procedural geometry
+and procedural textures only, no third-party models, photos or textures. Project-owned; the project may
+use, change and redistribute them without restriction (treat them like CC0).
+
+  Models: CCTVDome, CeilingDiffuser, CoffeeMachine, ComputerMonitor, DVRRecorder, DeskPhone, DoorLeverHandle, DoorPullHandle, ExitSign,
+          FilingCabinet, FilingCabinetOpen, Keyboard, LEDPanel, LeverArchFiles, MiniFridge, Mouse, OfficeChair, RecessedDownlight,
+          Rug, SecurityMonitor, SmokeDetector, SnakePlant, TrackLight, WallVent, WaterCooler
+  Textures: Shared_* (tiling plastic, fabric, mesh weave, brushed steel, powder coat), Monitor_Screen_*,
+          Keyboard_Color, Mouse_Color, DeskPhone_Face_*, FilingCabinet_Labels, LeverArchFiles_Color,
+          DVRRecorder_Front_Color, WaterCooler_Vent_Color, CoffeeMachine_Panel_*, ExitSign_Face, Rug_*,
+          SnakePlant_*, PictureFrameBlack_Artwork_Color (original seascape print)
+  Source~/*.py: generator and conversion scripts (Unity ignores folders ending in "~").
+  Source~/meshkit.py is adapted from Prototype/ThirdParty/ForensicModels/Source~/meshkit.py (project-owned).
+
+Printed text on screens, labels, keycaps, tags and signs was rasterised with DejaVu Sans / Sans Mono
+(Bitstream Vera licence) and GNU FreeSans Oblique (GPL with font exception); only glyph images are
+used, no font file is shipped. All names, times, extensions and labels are fictional; the exit-sign
+pictogram is an original drawing in the conventional green running-figure style. No real brand, logo,
+trademark or identifiable person is depicted.
+
+===============================================================================
+3. Public-domain painting: PictureFrameWhite_Artwork_Color.jpg
+===============================================================================
+Painting : Paul Cezanne (1839-1906), "The Banks of the Marne (Villa on the Bank of a River)",
+           c. 1888, oil on canvas, State Hermitage Museum, St Petersburg.
+Scan     : https://github.com/pmilovanov/hermitage-art @ b8ead49c010eac0c8366bafc4ffaaf1f1a447805
+           (2021-01-28), file "Cezanne,_Paul_-_The_Banks_of_the_Marne_(Villa_on_the_Bank_of_a_River).jpg",
+           SHA-256 d0b9bc6f99f7c9c9dbc908546e7aa74bf8f6b4cba5c494c1b9ed59715e6d444d, 8,216,755 bytes.
+Status   : public domain. The painter died in 1906, so the work is out of copyright everywhere
+           (life + 100 years at most); a faithful photographic reproduction of a two-dimensional
+           work carries no new copyright (US: Bridgeman v. Corel, 1999; EU: Directive 2019/790,
+           article 14). The repository is additionally dedicated to CC0 1.0 (its LICENSE file).
+           Public Domain Mark: https://creativecommons.org/publicdomain/mark/1.0/
+Changes  : cropped to the frame's 1.706:1 picture area (40 px trimmed left and right, rows
+           300-2795 of 3440 kept), resized to 1280 x 750, light unsharp mask (Source~/prep_print.py).
+No signature, person, brand or text is visible in the crop. Attribution not required; courtesy
+credit: "Paul Cezanne, The Banks of the Marne, c. 1888 (public domain, State Hermitage Museum)".
+The same repository supplies the WallGraphics paintings; this painting is not used there.

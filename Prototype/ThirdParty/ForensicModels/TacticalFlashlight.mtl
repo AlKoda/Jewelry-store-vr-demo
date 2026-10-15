@@ -1,0 +1,22 @@
+newmtl TorchBody
+Kd 1.000 1.000 1.000
+Ks 0.300 0.300 0.300
+d 1.000
+map_Kd TacticalFlashlight_Color.jpg
+
+newmtl TorchReflector
+Kd 0.850 0.850 0.860
+Ks 0.900 0.900 0.900
+d 1.000
+Ns 800
+
+newmtl TorchEmitter
+Kd 1.000 0.970 0.880
+Ks 0.050 0.050 0.050
+d 1.000
+
+newmtl TorchLens
+Kd 0.900 0.930 0.950
+Ks 0.900 0.900 0.900
+d 0.250
+Ns 900

@@ -1,0 +1,92 @@
+JewelryModels pack - licences and attribution
+Fetched and generated October 14, 2026; revised October 15, 2026 (RingSapphireHalo and WatchDressSteel rebuilt,
+RingAntiqueTigerEye rescaled, metallic-smoothness maps regenerated; EarringsDiamondStuds, NecklaceBust, both pearl
+strands, GemParcel, both ring boxes and JewelersLoupe rebuilt so that no part floats; see README.md). Machine-readable
+list with SHA-256 per file: sources.json.
+
+======================================================================
+1. ORIGINAL PROJECT-OWNED ASSETS (most of the pack)
+======================================================================
+Files: every model, material and texture NOT listed in sections 2 and 3, i.e.
+  Ring{SolitaireDiamond,GoldBand,SapphireHalo,DiamondEternity,RubyThreeStone}, Earrings{DiamondStuds,GoldHoops},
+  Necklace{Bust,PearlDraped,PearlDropped,PendantDraped,PendantDropped}, BraceletTennisDiamond, BangleGold,
+  WatchDressSteel, WatchPillow, Gem{RoundBrilliant,PrincessCut,EmeraldCut,OvalSapphire,CushionRuby,PearDiamond,Parcel},
+  RingCone, EarringStand, RingBox{Open,Closed}, PriceTag01-04, PriceStand01-04, GiftBag, GiftBox, GoldBar1kg,
+  GoldBar100g, GoldCoin, JewelersLoupe, PaymentTerminal, PosTablet (.obj/.mtl), the textures WatchDial_Color.png,
+  PriceTags_Color.png, GoldBar1kg_{Color,Normal}.png, GoldBar100g_{Color,Normal}.png, GoldCoin_{Color,Normal}.png,
+  GiftBag_Color.png, PaymentTerminal_Color.png, PosTablet_Screen.png, GemPaper_Color.png, and everything in Source~/
+  (Source~/Preview.jpg also shows renders of the four third-party models below; their licences apply to those tiles).
+Author: Jewelry-store-vr-demo project (generated with Claude, an AI assistant, from the Python scripts in Source~/).
+Licence: project-owned original work; no third-party restrictions. No third-party geometry, photographs or
+  scans were used. All brand text is the project's fictional shop "Aurel & Finch" (see NightGraphics); the coin,
+  bar stamps, dial, tags, bag, terminal and till screens are original designs and do not reproduce any real
+  currency, refiner, watch maker, payment network or retailer.
+Fonts used only to rasterise text into the textures (the fonts themselves are not shipped):
+  Caladea (c) 2012 The Caladea Project Authors - SIL Open Font License 1.1
+  Barlow (c) The Barlow Project Authors - SIL Open Font License 1.1 (already in Prototype/ThirdParty/Fonts)
+  The OFL does not restrict images made with the fonts.
+
+======================================================================
+2. CC0 / PUBLIC DOMAIN
+======================================================================
+PocketWatchVintage.obj/.mtl, PocketWatchVintage_Color.jpg, PocketWatchVintage_Normal.png,
+PocketWatchVintage_MetallicSmoothness.png
+  Title:   Vintage Pocket Watch (asset id vintage_pocket_watch)
+  Author:  Tal Swicegood, published by Poly Haven
+  Source:  https://polyhaven.com/a/vintage_pocket_watch
+  Licence: CC0 1.0 Universal (public domain dedication) - https://creativecommons.org/publicdomain/zero/1.0/
+           Poly Haven publishes all of its assets under CC0 (https://polyhaven.com/license).
+  Obtained from: an unmodified copy of the Poly Haven 2k glTF in a GitHub repository (polyhaven.com is not reachable
+           from the build machine): https://github.com/QueenOfSquiggles/squiggle-pt
+           commit deabff55b5df0b8989e58400bdf05de1c8e1eae1,
+           Game/Assets/Models/Decoration/vintage_pocket_watch_2k.gltf + vintage_pocket_watch.bin +
+           textures/vintage_pocket_watch_{diff,nor_gl,arm}_2k.jpg (Poly Haven file naming, Blender glTF I/O 1.6.16
+           export as on Poly Haven). Author/title also cross-checked against the Poly Haven model catalogue.
+  Changes: decimated from 16,098 to about 8,000 triangles (Tools/glb_to_obj.py), laid face up, metres; diffuse
+           resized to 1024 JPG, normal map resized to 1024 PNG, ARM map converted to a Unity metallic-smoothness
+           map (R = metallic, A = 1 - roughness, 512 px; regenerated October 15 with the per-channel converter in
+           Source~/maps.py from the same file, re-fetched from the same commit); glass and hands given plain materials.
+  Attribution: not required ("Vintage Pocket Watch by Tal Swicegood, Poly Haven, CC0" given as a courtesy).
+
+======================================================================
+3. CC BY 4.0 - ATTRIBUTION REQUIRED (keep these lines with the demo, e.g. in its credits)
+======================================================================
+Licence text: Creative Commons Attribution 4.0 International - https://creativecommons.org/licenses/by/4.0/
+Each source repository contained the Sketchfab download notice (license.txt) and the same licence in the glTF
+asset metadata (asset.extras.license = "CC-BY-4.0"). Sketchfab itself is not reachable from the build machine,
+so the licence was taken from those Sketchfab-generated notices. The attribution is also written as a comment at
+the top of each OBJ file.
+
+RingAntiqueTigerEye.obj/.mtl, RingAntiqueTigerEye_Color.jpg, RingAntiqueTigerEye_Normal.png,
+RingAntiqueTigerEye_MetallicSmoothness.png
+  Attribution: "An Old Ring" (https://sketchfab.com/3d-models/an-old-ring-ea5e0c11f2e046c993239ea1a3efcad7)
+               by Qifan Zhang (https://sketchfab.com/qifanzhang), licensed under CC BY 4.0. Modified.
+  Obtained from: https://github.com/mhh-hazrati8068/nafis-jewellary commit 0d857d9d8bdb61e5130d5683344db44a71db4e9b,
+               public/models/an_old_ring/ (scene.gltf, scene.bin, textures/, license.txt)
+  Changes: decimated 19,092 -> 7,000 triangles; re-oriented (finger axis X, stone up); scaled to metres
+           (26.3 mm across, 17.1 mm inner diameter like the procedural rings; rescaled October 15 from the first
+           21.5 mm conversion); textures resized (colour 1024 JPG; normal and metallic-smoothness 512 PNG, the
+           metallic-smoothness map converted per channel with Source~/maps.py).
+
+EarringPearlDrop.obj/.mtl, EarringPearlDrop_Color.jpg, EarringPearlDrop_Normal.png,
+EarringPearlDrop_MetallicSmoothness.png
+  Attribution: "Earring Jade" (https://sketchfab.com/3d-models/earring-jade-c91e552728fb4b149d52193fd3e03ac5)
+               by Softmind Game Factory (https://sketchfab.com/softmind), licensed under CC BY 4.0. Modified.
+  Obtained from: https://github.com/hiukim/mind-ar-js commit fb5db87b1e5076ba86fde82101955da70b629a1c,
+               examples/face-tracking/assets/earring/ (scene.gltf, scene.bin, textures/, license.txt); the same
+               scene.bin (sha256 2a952441...0a80c) is also in mykolalehkyi/FittingAccessoriesAndHeadwear.
+  Changes: decimated 11,832 -> 7,000 triangles; scaled to 40 mm (metres); colour and normal maps resized; the
+           metallic-smoothness map is a new map derived from the colour map (gold metallic 1, pearls 0, smoothness
+           0.71 = 1 - the glTF roughnessFactor 0.292), because the upstream metallicRoughness map is a constant
+           white image (which made the pearls metallic too).
+
+EarringGoldLeaf.obj/.mtl
+  Attribution: "Gold leaf Earring" (https://sketchfab.com/3d-models/gold-leaf-earring-64c4c78a861d45a28aa1b78873b02d14)
+               by DineshThennarasan (https://sketchfab.com/dineshthennarasan), licensed under CC BY 4.0. Modified.
+  Obtained from: https://github.com/kongsanggun/AR_Randering commit 2add0e0ae54f2679783ec7a352724457b6fd8611,
+               public/model/earring/gold_leaf_earring/ (scene.gltf, scene.bin, license.txt)
+  Changes: decimated 18,760 -> 6,998 triangles; scaled to 50 mm (metres); both materials replaced by Gold18k.
+
+Short credit line for the demo's credits screen:
+  "An Old Ring" by Qifan Zhang, "Earring Jade" by Softmind Game Factory and "Gold leaf Earring" by
+  DineshThennarasan (Sketchfab), CC BY 4.0, modified. Vintage Pocket Watch by Tal Swicegood (Poly Haven), CC0.

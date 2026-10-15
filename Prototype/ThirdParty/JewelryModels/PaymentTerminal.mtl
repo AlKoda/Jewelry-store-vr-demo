@@ -1,0 +1,28 @@
+newmtl PlasticGrey
+Kd 0.5785 0.5872 0.6041
+Ks 0.2000 0.2000 0.2000
+Ns 210.5
+d 1.000
+illum 2
+
+newmtl PlasticBlack
+Kd 0.2179 0.2179 0.2262
+Ks 0.2000 0.2000 0.2000
+Ns 309.5
+d 1.000
+illum 2
+
+newmtl TerminalTop
+Kd 1.0000 1.0000 1.0000
+Ks 0.3000 0.3000 0.3000
+Ns 495.1
+d 1.000
+illum 2
+map_Kd PaymentTerminal_Color.png
+
+newmtl PaperWhite
+Kd 0.9628 0.9580 0.9435
+Ks 0.2000 0.2000 0.2000
+Ns 49.6
+d 1.000
+illum 2

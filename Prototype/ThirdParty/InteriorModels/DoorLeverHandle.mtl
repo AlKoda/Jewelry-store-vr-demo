@@ -1,0 +1,12 @@
+newmtl Steel
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_BrushedSteel_Color.jpg
+# Normal Shared_BrushedSteel_Normal.jpg
+# MetallicSmoothness Shared_BrushedSteel_MetallicSmoothness.png
+
+newmtl Keyhole
+Kd 0.020 0.020 0.020
+Ks 0.050 0.050 0.050
+d 1.0

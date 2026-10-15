@@ -1,0 +1,5 @@
+newmtl Cap
+Kd 1.000 1.000 1.000
+Ks 0.150 0.150 0.150
+d 1.000
+map_Kd PoliceCap_Color.jpg

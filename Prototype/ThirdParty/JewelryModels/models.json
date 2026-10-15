@@ -1,0 +1,946 @@
+{
+ "RingSolitaireDiamond": {
+  "file": "RingSolitaireDiamond.obj",
+  "category": "Ring",
+  "origin": "procedural",
+  "triangles": 5454,
+  "size_m": [
+   0.0065,
+   0.0249,
+   0.0206
+  ],
+  "materials": [
+   "Platinum",
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Central case on RingCone or in RingBoxOpen; one in the robbed bay as an overlooked piece.",
+  "notes": "Finger axis = X, stone up. Hole centre at y = 0.0103 m. In RingBoxOpen rotate 90 deg about Y and place the hole centre at about (0, 0.034, 0); on RingCone rotate 90 deg about Z, hole centre at y = 0.0665 m."
+ },
+ "RingGoldBand": {
+  "file": "RingGoldBand.obj",
+  "category": "Ring",
+  "origin": "procedural",
+  "triangles": 3456,
+  "size_m": [
+   0.004,
+   0.0207,
+   0.0207
+  ],
+  "materials": [
+   "Gold18k"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Ring trays, or dropped on the floor near a broken bay (evidence marker).",
+  "notes": "Finger axis X, hole centre at y = 0.0103 m; lying flat: rotate 90 deg about Z."
+ },
+ "RingSapphireHalo": {
+  "file": "RingSapphireHalo.obj",
+  "category": "Ring",
+  "origin": "procedural",
+  "triangles": 7442,
+  "size_m": [
+   0.0113,
+   0.024,
+   0.0205
+  ],
+  "materials": [
+   "Platinum",
+   "Sapphire",
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Central case, coloured-stone tray.",
+  "notes": "Finger axis X. Hole centre at y = 0.0102 m."
+ },
+ "RingDiamondEternity": {
+  "file": "RingDiamondEternity.obj",
+  "category": "Ring",
+  "origin": "procedural",
+  "triangles": 6116,
+  "size_m": [
+   0.003,
+   0.0221,
+   0.0219
+  ],
+  "materials": [
+   "Platinum",
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Bridal tray, wall case.",
+  "notes": "Finger axis X. Hole centre at y = 0.0111 m."
+ },
+ "RingRubyThreeStone": {
+  "file": "RingRubyThreeStone.obj",
+  "category": "Ring",
+  "origin": "procedural",
+  "triangles": 7402,
+  "size_m": [
+   0.006,
+   0.0247,
+   0.0207
+  ],
+  "materials": [
+   "Gold18k",
+   "Ruby",
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Central case or side island.",
+  "notes": "Finger axis X. Hole centre at y = 0.0104 m."
+ },
+ "RingAntiqueTigerEye": {
+  "file": "RingAntiqueTigerEye.obj",
+  "category": "Ring",
+  "origin": "third-party",
+  "triangles": 7000,
+  "size_m": [
+   0.024,
+   0.0297,
+   0.0263
+  ],
+  "materials": [
+   "RingAntiqueTigerEye"
+  ],
+  "color_maps": [
+   "RingAntiqueTigerEye_Color.jpg"
+  ],
+  "extra_maps": [
+   "RingAntiqueTigerEye_MetallicSmoothness.png",
+   "RingAntiqueTigerEye_Normal.png"
+  ],
+  "placement": "Estate/antique tray, rear office repair tray.",
+  "notes": "Finger axis X, stone up. Hole centre at (0, 0.0121, 0.0014) m in model space (the other rings: (0, about 0.0103, 0)); use this offset on RingCone / in RingBoxOpen. Uses Color/Normal/MetallicSmoothness maps."
+ },
+ "EarringsDiamondStuds": {
+  "file": "EarringsDiamondStuds.obj",
+  "category": "Earrings",
+  "origin": "procedural",
+  "triangles": 5044,
+  "size_m": [
+   0.022,
+   0.0051,
+   0.0147
+  ],
+  "materials": [
+   "Diamond",
+   "Platinum"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Earring box, EarringStand card, central case.",
+  "notes": "Stones face +Z, posts point back (-Z); 16 mm apart."
+ },
+ "EarringsGoldHoops": {
+  "file": "EarringsGoldHoops.obj",
+  "category": "Earrings",
+  "origin": "procedural",
+  "triangles": 3616,
+  "size_m": [
+   0.0564,
+   0.0259,
+   0.0024
+  ],
+  "materials": [
+   "Gold18k"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Hang on EarringStand bar (bar at y = 0.124 m).",
+  "notes": "Hoop plane XY (facing +Z)."
+ },
+ "EarringPearlDrop": {
+  "file": "EarringPearlDrop.obj",
+  "category": "Earrings",
+  "origin": "third-party",
+  "triangles": 7000,
+  "size_m": [
+   0.0149,
+   0.04,
+   0.0075
+  ],
+  "materials": [
+   "EarringPearlDrop"
+  ],
+  "color_maps": [
+   "EarringPearlDrop_Color.jpg"
+  ],
+  "extra_maps": [
+   "EarringPearlDrop_MetallicSmoothness.png",
+   "EarringPearlDrop_Normal.png"
+  ],
+  "placement": "EarringStand, necklace bust display, wall case.",
+  "notes": "Hanging (top at y = 0.040 m). Duplicate and mirror (scale X = -1) for a pair. Metallic-smoothness map: gold metallic 1, pearls 0, smoothness 0.71."
+ },
+ "EarringGoldLeaf": {
+  "file": "EarringGoldLeaf.obj",
+  "category": "Earrings",
+  "origin": "third-party",
+  "triangles": 6998,
+  "size_m": [
+   0.0194,
+   0.05,
+   0.0154
+  ],
+  "materials": [
+   "Gold18k"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "EarringStand, wall case.",
+  "notes": "Hanging, front +Z. Mirror for a pair."
+ },
+ "NecklaceBust": {
+  "file": "NecklaceBust.obj",
+  "category": "Display",
+  "origin": "procedural",
+  "triangles": 2712,
+  "size_m": [
+   0.25,
+   0.326,
+   0.13
+  ],
+  "materials": [
+   "VelvetBlack",
+   "Walnut"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Wall cases and window bays; one knocked over in a broken bay.",
+  "notes": "Front +Z. The *Draped necklaces use exactly the same transform."
+ },
+ "NecklacePearlDraped": {
+  "file": "NecklacePearlDraped.obj",
+  "category": "Necklace",
+  "origin": "procedural",
+  "triangles": 8484,
+  "size_m": [
+   0.1673,
+   0.0865,
+   0.1067
+  ],
+  "materials": [
+   "Pearl",
+   "Gold18k",
+   "Cord"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "On NecklaceBust (same position and rotation).",
+  "notes": "Not grounded: authored in the NecklaceBust frame."
+ },
+ "NecklacePendantDraped": {
+  "file": "NecklacePendantDraped.obj",
+  "category": "Necklace",
+  "origin": "procedural",
+  "triangles": 8846,
+  "size_m": [
+   0.1644,
+   0.0911,
+   0.1067
+  ],
+  "materials": [
+   "Gold18k",
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "On NecklaceBust (same transform).",
+  "notes": "Not grounded: authored in the NecklaceBust frame."
+ },
+ "NecklacePearlDropped": {
+  "file": "NecklacePearlDropped.obj",
+  "category": "Necklace",
+  "origin": "procedural",
+  "triangles": 8460,
+  "size_m": [
+   0.2192,
+   0.007,
+   0.0968
+  ],
+  "materials": [
+   "Pearl",
+   "Gold18k",
+   "Cord"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Floor below a smashed bay, next to an evidence marker.",
+  "notes": "Lies on y = 0."
+ },
+ "NecklacePendantDropped": {
+  "file": "NecklacePendantDropped.obj",
+  "category": "Necklace",
+  "origin": "procedural",
+  "triangles": 8846,
+  "size_m": [
+   0.2319,
+   0.0053,
+   0.0809
+  ],
+  "materials": [
+   "Gold18k",
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Floor or counter top near the forced door / broken case.",
+  "notes": "Lies on y = 0."
+ },
+ "BraceletTennisDiamond": {
+  "file": "BraceletTennisDiamond.obj",
+  "category": "Bracelet",
+  "origin": "procedural",
+  "triangles": 5832,
+  "size_m": [
+   0.0756,
+   0.0026,
+   0.0592
+  ],
+  "materials": [
+   "Diamond",
+   "Platinum"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Bracelet tray in the central case.",
+  "notes": "Lying flat."
+ },
+ "BangleGold": {
+  "file": "BangleGold.obj",
+  "category": "Bracelet",
+  "origin": "procedural",
+  "triangles": 3072,
+  "size_m": [
+   0.0672,
+   0.005,
+   0.0672
+  ],
+  "materials": [
+   "Gold18k"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Tray, or rolled under a case.",
+  "notes": "Lying flat (axis vertical)."
+ },
+ "WatchDressSteel": {
+  "file": "WatchDressSteel.obj",
+  "category": "Watch",
+  "origin": "procedural",
+  "triangles": 7352,
+  "size_m": [
+   0.0417,
+   0.0559,
+   0.0683
+  ],
+  "materials": [
+   "SteelPolished",
+   "WatchDial",
+   "Glass",
+   "Gold18k",
+   "LeatherBrown"
+  ],
+  "color_maps": [
+   "WatchDial_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Watch case on WatchPillow.",
+  "notes": "Same transform as WatchPillow: the case back rests 0.5 mm into the crown of the cushion, the strap follows the cushion 0.2 mm off its surface and its tails end flat on the shelf under the cushion edge; nothing goes below y = 0. The strap is shaped for the pillow, so use the watch with WatchPillow only. Glass material is transparent (alpha 0.2)."
+ },
+ "WatchPillow": {
+  "file": "WatchPillow.obj",
+  "category": "Display",
+  "origin": "procedural",
+  "triangles": 2112,
+  "size_m": [
+   0.079,
+   0.0475,
+   0.062
+  ],
+  "materials": [
+   "LeatherBlack"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Watch wall case / counter.",
+  "notes": "Place WatchDressSteel at the same transform (the pair stands flat on y = 0)."
+ },
+ "PocketWatchVintage": {
+  "file": "PocketWatchVintage.obj",
+  "category": "Watch",
+  "origin": "third-party",
+  "triangles": 8033,
+  "size_m": [
+   0.0613,
+   0.0136,
+   0.0799
+  ],
+  "materials": [
+   "PocketWatchVintage",
+   "Glass",
+   "BlackMetal"
+  ],
+  "color_maps": [
+   "PocketWatchVintage_Color.jpg"
+  ],
+  "extra_maps": [
+   "PocketWatchVintage_MetallicSmoothness.png",
+   "PocketWatchVintage_Normal.png"
+  ],
+  "placement": "Antique case, rear office repair tray, open safe.",
+  "notes": "Uses Color/Normal/MetallicSmoothness maps; Glass alpha 0.2."
+ },
+ "GemRoundBrilliant": {
+  "file": "GemRoundBrilliant.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 110,
+  "size_m": [
+   0.0065,
+   0.0039,
+   0.0065
+  ],
+  "materials": [
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Gem tray, tweezers, GemParcel; scattered on the floor as evidence.",
+  "notes": "Table up, culet at y = 0."
+ },
+ "GemPrincessCut": {
+  "file": "GemPrincessCut.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 102,
+  "size_m": [
+   0.0055,
+   0.0039,
+   0.0055
+  ],
+  "materials": [
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Gem tray.",
+  "notes": "Table up."
+ },
+ "GemEmeraldCut": {
+  "file": "GemEmeraldCut.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 96,
+  "size_m": [
+   0.007,
+   0.0043,
+   0.009
+  ],
+  "materials": [
+   "Emerald"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Coloured-stone tray.",
+  "notes": "Table up."
+ },
+ "GemOvalSapphire": {
+  "file": "GemOvalSapphire.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 110,
+  "size_m": [
+   0.006,
+   0.0036,
+   0.008
+  ],
+  "materials": [
+   "Sapphire"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Coloured-stone tray.",
+  "notes": "Table up."
+ },
+ "GemCushionRuby": {
+  "file": "GemCushionRuby.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 110,
+  "size_m": [
+   0.0058,
+   0.0039,
+   0.0058
+  ],
+  "materials": [
+   "Ruby"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Coloured-stone tray.",
+  "notes": "Table up."
+ },
+ "GemPearDiamond": {
+  "file": "GemPearDiamond.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 110,
+  "size_m": [
+   0.006,
+   0.0036,
+   0.0082
+  ],
+  "materials": [
+   "Diamond"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Gem tray.",
+  "notes": "Table up."
+ },
+ "GemParcel": {
+  "file": "GemParcel.obj",
+  "category": "Loose gem",
+  "origin": "procedural",
+  "triangles": 2640,
+  "size_m": [
+   0.11,
+   0.0071,
+   0.072
+  ],
+  "materials": [
+   "GemPaper",
+   "Diamond"
+  ],
+  "color_maps": [
+   "GemPaper_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Rear office desk, open safe, counter (abandoned by the burglars).",
+  "notes": "Lying flat."
+ },
+ "RingCone": {
+  "file": "RingCone.obj",
+  "category": "Display",
+  "origin": "procedural",
+  "triangles": 1200,
+  "size_m": [
+   0.05,
+   0.0904,
+   0.05
+  ],
+  "materials": [
+   "VelvetBlack",
+   "Walnut"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Central cases; rings slide on with axis vertical.",
+  "notes": "Ring hole centre for a 17.1 mm ring at y = 0.0665 m."
+ },
+ "EarringStand": {
+  "file": "EarringStand.obj",
+  "category": "Display",
+  "origin": "procedural",
+  "triangles": 1304,
+  "size_m": [
+   0.1396,
+   0.1282,
+   0.066
+  ],
+  "materials": [
+   "Brass"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Central case, side islands.",
+  "notes": "Bar axis X at y = 0.124 m."
+ },
+ "RingBoxOpen": {
+  "file": "RingBoxOpen.obj",
+  "category": "Packaging",
+  "origin": "procedural",
+  "triangles": 1592,
+  "size_m": [
+   0.052,
+   0.0724,
+   0.0738
+  ],
+  "materials": [
+   "VelvetNavy",
+   "VelvetCream",
+   "Gold18k"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Counter; an empty open box next to a broken bay is good evidence dressing.",
+  "notes": "Ring hole centre about (0, 0.034, 0) with the ring axis along Z (shank in the slot between the rolls)."
+ },
+ "RingBoxClosed": {
+  "file": "RingBoxClosed.obj",
+  "category": "Packaging",
+  "origin": "procedural",
+  "triangles": 1592,
+  "size_m": [
+   0.052,
+   0.042,
+   0.0485
+  ],
+  "materials": [
+   "VelvetNavy",
+   "VelvetCream",
+   "Gold18k"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Drawers, safe shelves, counter.",
+  "notes": ""
+ },
+ "PriceTag01": {
+  "file": "PriceTag01.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 592,
+  "size_m": [
+   0.0713,
+   0.0011,
+   0.013
+  ],
+  "materials": [
+   "PriceTag",
+   "Cord"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Tied to rings/necklaces in trays.",
+  "notes": "Shares PriceTags_Color.png (atlas cell 0)."
+ },
+ "PriceTag02": {
+  "file": "PriceTag02.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 592,
+  "size_m": [
+   0.0713,
+   0.0011,
+   0.013
+  ],
+  "materials": [
+   "PriceTag",
+   "Cord"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Bridal tray.",
+  "notes": "Atlas cell 1."
+ },
+ "PriceTag03": {
+  "file": "PriceTag03.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 592,
+  "size_m": [
+   0.0713,
+   0.0011,
+   0.013
+  ],
+  "materials": [
+   "PriceTag",
+   "Cord"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Coloured-stone tray.",
+  "notes": "Atlas cell 6."
+ },
+ "PriceTag04": {
+  "file": "PriceTag04.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 592,
+  "size_m": [
+   0.0713,
+   0.0011,
+   0.013
+  ],
+  "materials": [
+   "PriceTag",
+   "Cord"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Earrings.",
+  "notes": "Atlas cell 3."
+ },
+ "PriceStand01": {
+  "file": "PriceStand01.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 108,
+  "size_m": [
+   0.06,
+   0.0294,
+   0.0305
+  ],
+  "materials": [
+   "Acrylic",
+   "PriceTag"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Next to NecklaceBust.",
+  "notes": "Atlas cell 2."
+ },
+ "PriceStand02": {
+  "file": "PriceStand02.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 108,
+  "size_m": [
+   0.06,
+   0.0294,
+   0.0305
+  ],
+  "materials": [
+   "Acrylic",
+   "PriceTag"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Bracelet tray.",
+  "notes": "Atlas cell 4."
+ },
+ "PriceStand03": {
+  "file": "PriceStand03.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 108,
+  "size_m": [
+   0.06,
+   0.0294,
+   0.0305
+  ],
+  "materials": [
+   "Acrylic",
+   "PriceTag"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Watch case.",
+  "notes": "Atlas cell 5."
+ },
+ "PriceStand04": {
+  "file": "PriceStand04.obj",
+  "category": "Price",
+  "origin": "procedural",
+  "triangles": 108,
+  "size_m": [
+   0.06,
+   0.0294,
+   0.0305
+  ],
+  "materials": [
+   "Acrylic",
+   "PriceTag"
+  ],
+  "color_maps": [
+   "PriceTags_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Bullion shelf / office.",
+  "notes": "Atlas cell 7."
+ },
+ "GiftBag": {
+  "file": "GiftBag.obj",
+  "category": "Packaging",
+  "origin": "procedural",
+  "triangles": 1664,
+  "size_m": [
+   0.17,
+   0.242,
+   0.0954
+  ],
+  "materials": [
+   "GiftBag",
+   "PaperWhite",
+   "Cord"
+  ],
+  "color_maps": [
+   "GiftBag_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Behind the counter; tipped over on the floor.",
+  "notes": ""
+ },
+ "GiftBox": {
+  "file": "GiftBox.obj",
+  "category": "Packaging",
+  "origin": "procedural",
+  "triangles": 1456,
+  "size_m": [
+   0.1006,
+   0.0659,
+   0.1006
+  ],
+  "materials": [
+   "PaperBlack",
+   "SatinRibbon"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Counter, wrapping station.",
+  "notes": ""
+ },
+ "GoldBar1kg": {
+  "file": "GoldBar1kg.obj",
+  "category": "Bullion",
+  "origin": "procedural",
+  "triangles": 364,
+  "size_m": [
+   0.116,
+   0.0095,
+   0.052
+  ],
+  "materials": [
+   "GoldBar1kg"
+  ],
+  "color_maps": [
+   "GoldBar1kg_Color.png"
+  ],
+  "extra_maps": [
+   "GoldBar1kg_Normal.png"
+  ],
+  "placement": "Open safes in the rear office (some left behind).",
+  "notes": "Assign GoldBar1kg_Normal.png as the normal map."
+ },
+ "GoldBar100g": {
+  "file": "GoldBar100g.obj",
+  "category": "Bullion",
+  "origin": "procedural",
+  "triangles": 108,
+  "size_m": [
+   0.031,
+   0.0031,
+   0.055
+  ],
+  "materials": [
+   "GoldBar100g"
+  ],
+  "color_maps": [
+   "GoldBar100g_Color.png"
+  ],
+  "extra_maps": [
+   "GoldBar100g_Normal.png"
+  ],
+  "placement": "Safe shelves, display tray.",
+  "notes": "Assign GoldBar100g_Normal.png."
+ },
+ "GoldCoin": {
+  "file": "GoldCoin.obj",
+  "category": "Bullion",
+  "origin": "procedural",
+  "triangles": 1728,
+  "size_m": [
+   0.0327,
+   0.0029,
+   0.0327
+  ],
+  "materials": [
+   "GoldCoin"
+  ],
+  "color_maps": [
+   "GoldCoin_Color.png"
+  ],
+  "extra_maps": [
+   "GoldCoin_Normal.png"
+  ],
+  "placement": "Safe trays, coin tubes, scattered on the office floor.",
+  "notes": "Assign GoldCoin_Normal.png. Obverse up."
+ },
+ "JewelersLoupe": {
+  "file": "JewelersLoupe.obj",
+  "category": "Tool",
+  "origin": "procedural",
+  "triangles": 1648,
+  "size_m": [
+   0.0707,
+   0.0118,
+   0.0363
+  ],
+  "materials": [
+   "BlackMetal",
+   "Glass",
+   "Chrome"
+  ],
+  "color_maps": [],
+  "extra_maps": [],
+  "placement": "Counter mat, rear office desk.",
+  "notes": "Glass alpha 0.2."
+ },
+ "PaymentTerminal": {
+  "file": "PaymentTerminal.obj",
+  "category": "Counter",
+  "origin": "procedural",
+  "triangles": 1032,
+  "size_m": [
+   0.078,
+   0.0763,
+   0.17
+  ],
+  "materials": [
+   "PlasticGrey",
+   "PlasticBlack",
+   "TerminalTop",
+   "PaperWhite"
+  ],
+  "color_maps": [
+   "PaymentTerminal_Color.png"
+  ],
+  "extra_maps": [],
+  "placement": "Main counter by the till.",
+  "notes": "TerminalTop texture can also be the emission map (dim screen glow at night)."
+ },
+ "PosTablet": {
+  "file": "PosTablet.obj",
+  "category": "Counter",
+  "origin": "procedural",
+  "triangles": 888,
+  "size_m": [
+   0.25,
+   0.2354,
+   0.125
+  ],
+  "materials": [
+   "SteelBrushed",
+   "PlasticBlack",
+   "PosScreen"
+  ],
+  "color_maps": [
+   "PosTablet_Screen.png"
+  ],
+  "extra_maps": [],
+  "placement": "Main counter (screen toward the staff side).",
+  "notes": "PosTablet_Screen.png as emission for a lit screen."
+ }
+}

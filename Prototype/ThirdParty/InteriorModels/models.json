@@ -1,0 +1,3094 @@
+{
+ "pack": "InteriorModels",
+ "prepared": "2026-10-14",
+ "revised": "2026-10-15",
+ "unverified_in_unity": true,
+ "conventions": {
+  "units": "metres, Y up, front faces +Z",
+  "pivot": {
+   "floor": "lowest point at y = 0, centred in x/z",
+   "wall": "back face at z = 0, centred in x and y, faces +Z",
+   "ceiling": "top at y = 0, hangs down (-Y)",
+   "none": "authored origin, see what/placement"
+  },
+  "maps": {
+   "Color": "sRGB base colour (map_Kd in the MTL)",
+   "Normal": "tangent space, OpenGL +Y (Unity convention); import as Normal map",
+   "MetallicSmoothness": "RGBA PNG, R = G = B = metallic, A = smoothness; import with sRGB off; Standard Metallic slot, Source = Metallic Alpha"
+  },
+  "constants": "materials without maps carry Kd (and metallic/smoothness here); glass materials have d < 1 in the MTL",
+  "tiling": "Shared_* textures are seamless; models using them have world-scale UVs (see the tiling note per material)"
+ },
+ "models": {
+  "ArmChairModern": {
+   "category": "Seating",
+   "what": "Modern armchair: black cushions in an oiled-oak frame.",
+   "placement": "Seating corner, or the visitor chair in the rear office.",
+   "tris": 8916,
+   "size_m": [
+    0.82,
+    1.023,
+    0.987
+   ],
+   "bounds_min": [
+    -0.41,
+    0.0,
+    -0.493
+   ],
+   "bounds_max": [
+    0.41,
+    1.023,
+    0.493
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Frame": {
+     "Color": "ArmChairModern_Frame_Color.jpg",
+     "Normal": "ArmChairModern_Frame_Normal.jpg",
+     "MetallicSmoothness": "ArmChairModern_Frame_MetallicSmoothness.png",
+     "metallic_mean": 0.004,
+     "smoothness_mean": 0.343
+    },
+    "Cushions": {
+     "Color": "ArmChairModern_Cushions_Color.jpg",
+     "Normal": "ArmChairModern_Cushions_Normal.jpg",
+     "MetallicSmoothness": "ArmChairModern_Cushions_MetallicSmoothness.png",
+     "metallic_mean": 0.002,
+     "smoothness_mean": 0.579
+    }
+   },
+   "files": [
+    "ArmChairModern.obj",
+    "ArmChairModern.mtl",
+    "ArmChairModern_Frame_Color.jpg",
+    "ArmChairModern_Frame_Normal.jpg",
+    "ArmChairModern_Frame_MetallicSmoothness.png",
+    "ArmChairModern_Cushions_Color.jpg",
+    "ArmChairModern_Cushions_Normal.jpg",
+    "ArmChairModern_Cushions_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "modern_arm_chair_01",
+   "source_title": "Modern Arm Chair 01",
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "author": "Vibrant Nordic",
+   "license": "CC0-1.0",
+   "source_tris": 8916,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)"
+   ]
+  },
+  "CCTVBulletHousing": {
+   "category": "Security",
+   "what": "Outdoor bullet camera in a weather housing on a wall bracket (39 cm); lens window faces +Z, bracket foot at the bottom/back.",
+   "placement": "Outside above the storefront or in the side corridor; complements the ForensicModels SecurityCamera.",
+   "tris": 8507,
+   "size_m": [
+    0.141,
+    0.209,
+    0.394
+   ],
+   "bounds_min": [
+    -0.07,
+    0.0,
+    -0.197
+   ],
+   "bounds_max": [
+    0.07,
+    0.209,
+    0.197
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Camera": {
+     "Color": "CCTVBulletHousing_Color.jpg",
+     "Normal": "CCTVBulletHousing_Normal.jpg",
+     "MetallicSmoothness": "CCTVBulletHousing_MetallicSmoothness.png",
+     "metallic_mean": 0.019,
+     "smoothness_mean": 0.346
+    },
+    "Window": {
+     "glass": true,
+     "Kd": [
+      0.05,
+      0.05,
+      0.06
+     ],
+     "d": 0.55
+    }
+   },
+   "files": [
+    "CCTVBulletHousing.obj",
+    "CCTVBulletHousing.mtl",
+    "CCTVBulletHousing_Color.jpg",
+    "CCTVBulletHousing_Normal.jpg",
+    "CCTVBulletHousing_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "security_camera_02",
+   "source_title": "Security Camera 02",
+   "source_url": "https://polyhaven.com/a/security_camera_02",
+   "author": "Garrison Gager, Yann Kervran",
+   "license": "CC0-1.0",
+   "source_tris": 12477,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "fictional spec/regulatory sticker text blanked; decimated 12.5k -> 8.5k triangles; rig not kept (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams; every face agrees with its vertex normals)"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Camera": 43
+    },
+    "winding_flipped_at_write": {
+     "Camera": 9
+    }
+   }
+  },
+  "CCTVDome": {
+   "category": "Security",
+   "what": "Ceiling dome camera (14 cm) with smoked dome and tilted lens. y = 0 is the ceiling surface.",
+   "placement": "Sales-floor ceiling (2-3 units covering the cases) and the office.",
+   "tris": 1440,
+   "size_m": [
+    0.144,
+    0.082,
+    0.144
+   ],
+   "bounds_min": [
+    -0.072,
+    -0.082,
+    -0.072
+   ],
+   "bounds_max": [
+    0.072,
+    0.0,
+    0.072
+   ],
+   "pivot": "none",
+   "materials": {
+    "Housing": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Dome": {
+     "metallic": 0.0,
+     "smoothness": 0.95,
+     "note": "smoked acrylic dome: Standard Transparent, alpha 0.55",
+     "glass": true,
+     "Kd": [
+      0.05,
+      0.05,
+      0.06
+     ],
+     "d": 0.55
+    },
+    "Inner": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Lens": {
+     "metallic": 0.3,
+     "smoothness": 0.95,
+     "Kd": [
+      0.02,
+      0.03,
+      0.05
+     ]
+    },
+    "IR": {
+     "metallic": 0.0,
+     "smoothness": 0.8,
+     "emission": "faint deep red (IR LEDs glow dimly at night)",
+     "Kd": [
+      0.25,
+      0.05,
+      0.05
+     ]
+    }
+   },
+   "files": [
+    "CCTVDome.obj",
+    "CCTVDome.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "CardboardBox": {
+   "category": "Storage",
+   "what": "Worn taped cardboard box (39 x 34 x 52 cm).",
+   "placement": "Side rooms, under the counter, stacked as stock.",
+   "tris": 3000,
+   "size_m": [
+    0.387,
+    0.34,
+    0.516
+   ],
+   "bounds_min": [
+    -0.193,
+    0.0,
+    -0.258
+   ],
+   "bounds_max": [
+    0.193,
+    0.34,
+    0.258
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Cardboard": {
+     "Color": "CardboardBox_Color.jpg",
+     "Normal": "CardboardBox_Normal.jpg",
+     "MetallicSmoothness": "CardboardBox_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.416
+    }
+   },
+   "files": [
+    "CardboardBox.obj",
+    "CardboardBox.mtl",
+    "CardboardBox_Color.jpg",
+    "CardboardBox_Normal.jpg",
+    "CardboardBox_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "cardboard_box_01",
+   "source_title": "Cardboard Box 01",
+   "source_url": "https://polyhaven.com/a/cardboard_box_01",
+   "author": "Rahul Chaudhary",
+   "license": "CC0-1.0",
+   "source_tris": 16952,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "decimated 17k -> 3k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, a split corner; every face agrees with its vertex normals)"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Cardboard": 35
+    },
+    "winding_flipped_at_write": {
+     "Cardboard": 3
+    }
+   }
+  },
+  "CeilingDiffuser": {
+   "category": "Building",
+   "what": "Square 4-way ceiling air diffuser 60 x 60 cm.",
+   "placement": "Sales-floor and office ceilings between the downlights.",
+   "tris": 104,
+   "size_m": [
+    0.6,
+    0.067,
+    0.6
+   ],
+   "bounds_min": [
+    -0.3,
+    -0.067,
+    -0.3
+   ],
+   "bounds_max": [
+    0.3,
+    0.0,
+    0.3
+   ],
+   "pivot": "ceiling",
+   "materials": {
+    "Diffuser": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Duct": {
+     "metallic": 0.0,
+     "smoothness": 0.1,
+     "Kd": [
+      0.03,
+      0.03,
+      0.03
+     ]
+    }
+   },
+   "files": [
+    "CeilingDiffuser.obj",
+    "CeilingDiffuser.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "CoffeeMachine": {
+   "category": "Appliances",
+   "what": "Bean-to-cup coffee machine with brushed fascia, display, drip tray and two cups.",
+   "placement": "Staff counter in the rear office, or a hospitality cabinet in the seating corner.",
+   "tris": 1666,
+   "size_m": [
+    0.326,
+    0.388,
+    0.505
+   ],
+   "bounds_min": [
+    -0.163,
+    0.0,
+    -0.252
+   ],
+   "bounds_max": [
+    0.163,
+    0.388,
+    0.252
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.6,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Panel": {
+     "Color": "CoffeeMachine_Panel_Color.jpg",
+     "Normal": "CoffeeMachine_Panel_Normal.jpg",
+     "MetallicSmoothness": "CoffeeMachine_Panel_MetallicSmoothness.png",
+     "note": "brushed steel fascia; display can glow"
+    },
+    "Recess": {
+     "metallic": 0.0,
+     "smoothness": 0.3,
+     "Kd": [
+      0.02,
+      0.02,
+      0.02
+     ]
+    },
+    "Steel": {
+     "metallic": 1.0,
+     "smoothness": 0.92,
+     "Kd": [
+      0.8,
+      0.8,
+      0.82
+     ]
+    },
+    "GlossBlack": {
+     "metallic": 0.0,
+     "smoothness": 0.88,
+     "Kd": [
+      0.02,
+      0.02,
+      0.022
+     ]
+    },
+    "Cup": {
+     "metallic": 0.0,
+     "smoothness": 0.85,
+     "Kd": [
+      0.93,
+      0.93,
+      0.91
+     ]
+    }
+   },
+   "files": [
+    "CoffeeMachine.obj",
+    "CoffeeMachine.mtl",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "CoffeeMachine_Panel_Color.jpg",
+    "CoffeeMachine_Panel_Normal.jpg",
+    "CoffeeMachine_Panel_MetallicSmoothness.png"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "CoffeeTableConcrete": {
+   "category": "Tables",
+   "what": "Low coffee table: concrete top on folded oak legs.",
+   "placement": "Centre of the seating corner on the Rug; a vase or the succulent on top.",
+   "tris": 4504,
+   "size_m": [
+    0.6,
+    0.39,
+    1.202
+   ],
+   "bounds_min": [
+    -0.3,
+    0.0,
+    -0.601
+   ],
+   "bounds_max": [
+    0.3,
+    0.39,
+    0.601
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Table": {
+     "Color": "CoffeeTableConcrete_Color.jpg",
+     "Normal": "CoffeeTableConcrete_Normal.jpg",
+     "MetallicSmoothness": "CoffeeTableConcrete_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.515
+    }
+   },
+   "files": [
+    "CoffeeTableConcrete.obj",
+    "CoffeeTableConcrete.mtl",
+    "CoffeeTableConcrete_Color.jpg",
+    "CoffeeTableConcrete_Normal.jpg",
+    "CoffeeTableConcrete_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "modern_coffee_table_01",
+   "source_title": "Modern Coffee Table 01",
+   "source_url": "https://polyhaven.com/a/modern_coffee_table_01",
+   "author": "Amin",
+   "license": "CC0-1.0",
+   "source_tris": 4504,
+   "verified": "mirror only (download script)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)"
+   ]
+  },
+  "ComputerMonitor": {
+   "category": "Office",
+   "what": "24-inch flat-panel monitor; screen sub-material shows a generic lock screen (02:47).",
+   "placement": "Office desk. Screen can glow at night (Color map as emission).",
+   "tris": 1538,
+   "size_m": [
+    0.541,
+    0.438,
+    0.19
+   ],
+   "bounds_min": [
+    -0.27,
+    0.0,
+    -0.095
+   ],
+   "bounds_max": [
+    0.27,
+    0.438,
+    0.095
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Housing": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Screen": {
+     "Color": "Monitor_Screen_Desktop.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.9,
+     "emission": "use the Color map as emission (intensity ~0.6) when the screen is on; plain black when off"
+    }
+   },
+   "files": [
+    "ComputerMonitor.obj",
+    "ComputerMonitor.mtl",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "Monitor_Screen_Desktop.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "DVRRecorder": {
+   "category": "Security",
+   "what": "8-channel CCTV recorder box (38 x 29 cm) with status LEDs.",
+   "placement": "Office shelf under the SecurityMonitor; or leave its spot empty (stolen recorder) with loose cables.",
+   "tris": 206,
+   "size_m": [
+    0.38,
+    0.051,
+    0.29
+   ],
+   "bounds_min": [
+    -0.19,
+    0.0,
+    -0.145
+   ],
+   "bounds_max": [
+    0.19,
+    0.051,
+    0.145
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Case": {
+     "Color": "Shared_PowderCoatGrey_Color.jpg",
+     "Normal": "Shared_PowderCoatGrey_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.4,
+     "note": "tint the powder-coat map dark (Kd 0.25) for a black steel case",
+     "tiling": "world-scale UVs, 0.30 m per tile"
+    },
+    "Front": {
+     "Color": "DVRRecorder_Front_Color.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.5,
+     "emission": "LED dots only; optional"
+    },
+    "Rubber": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    }
+   },
+   "files": [
+    "DVRRecorder.obj",
+    "DVRRecorder.mtl",
+    "Shared_PowderCoatGrey_Color.jpg",
+    "Shared_PowderCoatGrey_Normal.jpg",
+    "DVRRecorder_Front_Color.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "DeskLampArm": {
+   "category": "Office",
+   "what": "Orange architect desk lamp with spring arm and edge clamp (0.89 m extended).",
+   "placement": "Clamped to the rear office desk edge: the clamp jaw (lowest point) wraps under the desk top.",
+   "tris": 15000,
+   "size_m": [
+    0.202,
+    0.893,
+    0.614
+   ],
+   "bounds_min": [
+    -0.101,
+    0.0,
+    -0.307
+   ],
+   "bounds_max": [
+    0.101,
+    0.893,
+    0.307
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Lamp": {
+     "Color": "DeskLampArm_Lamp_Color.jpg",
+     "Normal": "DeskLampArm_Lamp_Normal.jpg",
+     "MetallicSmoothness": "DeskLampArm_Lamp_MetallicSmoothness.png",
+     "metallic_mean": 0.363,
+     "smoothness_mean": 0.658
+    },
+    "Bulb": {
+     "Color": "DeskLampArm_Lamp_Color.jpg",
+     "Normal": "DeskLampArm_Lamp_Normal.jpg",
+     "MetallicSmoothness": "DeskLampArm_Lamp_MetallicSmoothness.png",
+     "shared": true,
+     "emission_color": [
+      1,
+      0.984,
+      0.649
+     ]
+    }
+   },
+   "files": [
+    "DeskLampArm.obj",
+    "DeskLampArm.mtl",
+    "DeskLampArm_Lamp_Color.jpg",
+    "DeskLampArm_Lamp_Normal.jpg",
+    "DeskLampArm_Lamp_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "desk_lamp_arm_01",
+   "source_title": "Desk Lamp Arm 01",
+   "source_url": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "license": "CC0-1.0",
+   "source_tris": 24102,
+   "verified": "sha256 (toonstudio) + MD5 (sev-1)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "decimated 24.1k -> 15k triangles by seam-aware decimation (welded mesh, re-split per UV island, Source~/convert_ph.py decimate_seam_aware; rebuilt October 15: the earlier version had holes in the shade and broken arm rods); every face agrees with its vertex normals"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Lamp": 137
+    },
+    "winding_flipped_at_write": {
+     "Lamp": 42
+    }
+   }
+  },
+  "DeskPhone": {
+   "category": "Office",
+   "what": "IP desk phone with corded handset, LCD (02:47, Ext 201) and keypad.",
+   "placement": "Office desk or behind the counter (alarm call cue).",
+   "tris": 2304,
+   "size_m": [
+    0.244,
+    0.128,
+    0.191
+   ],
+   "bounds_min": [
+    -0.122,
+    0.0,
+    -0.095
+   ],
+   "bounds_max": [
+    0.122,
+    0.128,
+    0.095
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Face": {
+     "Color": "DeskPhone_Face_Color.jpg",
+     "Normal": "DeskPhone_Face_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.4
+    },
+    "Rubber": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    }
+   },
+   "files": [
+    "DeskPhone.obj",
+    "DeskPhone.mtl",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "DeskPhone_Face_Color.jpg",
+    "DeskPhone_Face_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "DoorLeverHandle": {
+   "category": "Building",
+   "what": "Brushed stainless lever on a round rose with an escutcheon; origin at the door face (z = 0), lever along +X.",
+   "placement": "Rear office and side-room doors at 1.0-1.05 m; mirror X for the other hand / other side.",
+   "tris": 700,
+   "size_m": [
+    0.156,
+    0.087,
+    0.132
+   ],
+   "bounds_min": [
+    -0.026,
+    -0.061,
+    -0.055
+   ],
+   "bounds_max": [
+    0.13,
+    0.026,
+    0.077
+   ],
+   "pivot": "none",
+   "materials": {
+    "Steel": {
+     "Color": "Shared_BrushedSteel_Color.jpg",
+     "Normal": "Shared_BrushedSteel_Normal.jpg",
+     "MetallicSmoothness": "Shared_BrushedSteel_MetallicSmoothness.png",
+     "tiling": "world-scale UVs, 0.25 m per tile"
+    },
+    "Keyhole": {
+     "metallic": 0.0,
+     "smoothness": 0.2,
+     "Kd": [
+      0.02,
+      0.02,
+      0.02
+     ]
+    }
+   },
+   "files": [
+    "DoorLeverHandle.obj",
+    "DoorLeverHandle.mtl",
+    "Shared_BrushedSteel_Color.jpg",
+    "Shared_BrushedSteel_Normal.jpg",
+    "Shared_BrushedSteel_MetallicSmoothness.png"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "DoorPullHandle": {
+   "category": "Building",
+   "what": "Stainless pull bar, 60 cm long, 40 cm fixing centres; origin at the glass face.",
+   "placement": "The forced storefront glass doors, vertical, centred about 1.0 m high (both faces).",
+   "tris": 384,
+   "size_m": [
+    0.04,
+    0.6,
+    0.078
+   ],
+   "bounds_min": [
+    -0.02,
+    -0.3,
+    -0.0
+   ],
+   "bounds_max": [
+    0.02,
+    0.3,
+    0.078
+   ],
+   "pivot": "none",
+   "materials": {
+    "Steel": {
+     "Color": "Shared_BrushedSteel_Color.jpg",
+     "Normal": "Shared_BrushedSteel_Normal.jpg",
+     "MetallicSmoothness": "Shared_BrushedSteel_MetallicSmoothness.png",
+     "tiling": "world-scale UVs, 0.25 m per tile"
+    }
+   },
+   "files": [
+    "DoorPullHandle.obj",
+    "DoorPullHandle.mtl",
+    "Shared_BrushedSteel_Color.jpg",
+    "Shared_BrushedSteel_Normal.jpg",
+    "Shared_BrushedSteel_MetallicSmoothness.png"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "ExitSign": {
+   "category": "Safety",
+   "what": "Illuminated exit sign 36 x 13.5 cm with an original running-figure pictogram, arrow and EXIT.",
+   "placement": "Above the rear exit and inside above the front door, about 2.2 m; always lit at night.",
+   "tris": 110,
+   "size_m": [
+    0.36,
+    0.135,
+    0.028
+   ],
+   "bounds_min": [
+    -0.18,
+    -0.067,
+    0.0
+   ],
+   "bounds_max": [
+    0.18,
+    0.067,
+    0.028
+   ],
+   "pivot": "wall",
+   "materials": {
+    "Housing": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Face": {
+     "Color": "ExitSign_Face.png",
+     "metallic": 0.0,
+     "smoothness": 0.7,
+     "emission": "use the Color map as emission, intensity 1.2-2 (maintained exit sign, always lit)"
+    }
+   },
+   "files": [
+    "ExitSign.obj",
+    "ExitSign.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg",
+    "ExitSign_Face.png"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "FilingCabinet": {
+   "category": "Storage",
+   "what": "4-drawer light-grey steel filing cabinet, 0.47 x 1.32 x 0.62 m, labelled drawers.",
+   "placement": "Rear office against a wall.",
+   "tris": 2976,
+   "size_m": [
+    0.47,
+    1.32,
+    0.662
+   ],
+   "bounds_min": [
+    -0.235,
+    0.0,
+    -0.331
+   ],
+   "bounds_max": [
+    0.235,
+    1.32,
+    0.331
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PowderCoatGrey_Color.jpg",
+     "Normal": "Shared_PowderCoatGrey_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.4,
+     "tiling": "world-scale UVs, 0.30 m per tile"
+    },
+    "Plinth": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Handle": {
+     "metallic": 1.0,
+     "smoothness": 0.7,
+     "Kd": [
+      0.76,
+      0.77,
+      0.78
+     ]
+    },
+    "Recess": {
+     "metallic": 0.0,
+     "smoothness": 0.3,
+     "Kd": [
+      0.05,
+      0.05,
+      0.05
+     ]
+    },
+    "Label": {
+     "Color": "FilingCabinet_Labels.png",
+     "metallic": 0.0,
+     "smoothness": 0.2
+    }
+   },
+   "files": [
+    "FilingCabinet.obj",
+    "FilingCabinet.mtl",
+    "Shared_PowderCoatGrey_Color.jpg",
+    "Shared_PowderCoatGrey_Normal.jpg",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "FilingCabinet_Labels.png"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "FilingCabinetOpen": {
+   "category": "Storage",
+   "what": "Same cabinet with the top drawer pulled out 36 cm, hanging files rummaged and sheets lifted.",
+   "placement": "Rear office: a searched-cabinet evidence spot (place markers and scale here).",
+   "tris": 3588,
+   "size_m": [
+    0.47,
+    1.363,
+    1.022
+   ],
+   "bounds_min": [
+    -0.235,
+    0.0,
+    -0.511
+   ],
+   "bounds_max": [
+    0.235,
+    1.363,
+    0.511
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PowderCoatGrey_Color.jpg",
+     "Normal": "Shared_PowderCoatGrey_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.4,
+     "tiling": "world-scale UVs, 0.30 m per tile"
+    },
+    "Plinth": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Handle": {
+     "metallic": 1.0,
+     "smoothness": 0.7,
+     "Kd": [
+      0.76,
+      0.77,
+      0.78
+     ]
+    },
+    "Recess": {
+     "metallic": 0.0,
+     "smoothness": 0.3,
+     "Kd": [
+      0.05,
+      0.05,
+      0.05
+     ]
+    },
+    "Label": {
+     "Color": "FilingCabinet_Labels.png",
+     "metallic": 0.0,
+     "smoothness": 0.2
+    },
+    "Rail": {
+     "metallic": 1.0,
+     "smoothness": 0.7,
+     "Kd": [
+      0.76,
+      0.77,
+      0.78
+     ]
+    },
+    "FolderKraft": {
+     "metallic": 0.0,
+     "smoothness": 0.15,
+     "Kd": [
+      0.62,
+      0.5,
+      0.34
+     ]
+    },
+    "Folder": {
+     "metallic": 0.0,
+     "smoothness": 0.15,
+     "Kd": [
+      0.18,
+      0.36,
+      0.22
+     ]
+    },
+    "Paper": {
+     "metallic": 0.0,
+     "smoothness": 0.1,
+     "Kd": [
+      0.92,
+      0.92,
+      0.9
+     ]
+    }
+   },
+   "files": [
+    "FilingCabinetOpen.obj",
+    "FilingCabinetOpen.mtl",
+    "Shared_PowderCoatGrey_Color.jpg",
+    "Shared_PowderCoatGrey_Normal.jpg",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "FilingCabinet_Labels.png"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "FireAlarmCallPoint": {
+   "category": "Safety",
+   "what": "Red manual fire alarm pull station (10 x 14 cm).",
+   "placement": "Walls beside the rear exit and inside the front door, about 1.4 m high.",
+   "tris": 2059,
+   "size_m": [
+    0.099,
+    0.144,
+    0.026
+   ],
+   "bounds_min": [
+    -0.05,
+    -0.072,
+    0.0
+   ],
+   "bounds_max": [
+    0.05,
+    0.072,
+    0.026
+   ],
+   "pivot": "wall",
+   "materials": {
+    "CallPoint": {
+     "Color": "FireAlarmCallPoint_Color.jpg",
+     "Normal": "FireAlarmCallPoint_Normal.jpg",
+     "MetallicSmoothness": "FireAlarmCallPoint_MetallicSmoothness.png",
+     "metallic_mean": 0.092,
+     "smoothness_mean": 0.703
+    }
+   },
+   "files": [
+    "FireAlarmCallPoint.obj",
+    "FireAlarmCallPoint.mtl",
+    "FireAlarmCallPoint_Color.jpg",
+    "FireAlarmCallPoint_Normal.jpg",
+    "FireAlarmCallPoint_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "fire_alarm",
+   "source_title": "Fire Alarm",
+   "source_url": "https://polyhaven.com/a/fire_alarm",
+   "author": "Slinc",
+   "license": "CC0-1.0",
+   "source_tris": 2705,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "raised maker-style wordmark letters removed from the lower name plate (85 small letter meshes) and the matching texture lettering painted out"
+   ]
+  },
+  "FireExtinguisher": {
+   "category": "Safety",
+   "what": "3 kg red ABC powder extinguisher (0.66 m on its floor stand), original English label and inspection tag.",
+   "placement": "Beside the rear exit or the office door, under the ExitSign.",
+   "tris": 8005,
+   "size_m": [
+    0.28,
+    0.659,
+    0.367
+   ],
+   "bounds_min": [
+    -0.14,
+    0.0,
+    -0.184
+   ],
+   "bounds_max": [
+    0.14,
+    0.659,
+    0.184
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "FireExtinguisher_Body_Color.jpg",
+     "Normal": "FireExtinguisher_Body_Normal.jpg",
+     "MetallicSmoothness": "FireExtinguisher_Body_MetallicSmoothness.png",
+     "metallic_mean": 0.142,
+     "smoothness_mean": 0.707
+    },
+    "GaugeGlass": {
+     "glass": true,
+     "Kd": [
+      0.92,
+      0.94,
+      0.95
+     ],
+     "d": 0.25
+    },
+    "Tag": {
+     "Color": "FireExtinguisher_Tag_Color.jpg",
+     "Normal": "FireExtinguisher_Tag_Normal.jpg",
+     "MetallicSmoothness": "FireExtinguisher_Tag_MetallicSmoothness.png",
+     "metallic_mean": 0.01,
+     "smoothness_mean": 0.566
+    }
+   },
+   "files": [
+    "FireExtinguisher.obj",
+    "FireExtinguisher.mtl",
+    "FireExtinguisher_Body_Color.jpg",
+    "FireExtinguisher_Body_Normal.jpg",
+    "FireExtinguisher_Body_MetallicSmoothness.png",
+    "FireExtinguisher_Tag_Color.jpg",
+    "FireExtinguisher_Tag_Normal.jpg",
+    "FireExtinguisher_Tag_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "korean_fire_extinguisher_01",
+   "source_title": "Korean Fire Extinguisher 01",
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "author": "UM JOORIN",
+   "license": "CC0-1.0",
+   "source_tris": 9913,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "Korean stencil and small text on the base plaque removed from the colour map and (October 15) its embossed relief flattened in the normal map; \"UMS\" print on the hose removed from the colour and normal maps (October 15); product label (with a maker name) replaced by an original English label; Korean inspection tag with handwritten names replaced by an original English inspection record; decimated 9.9k -> 8k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams; every face agrees with its vertex normals)"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Body": 19
+    },
+    "winding_flipped_at_write": {
+     "Body": 6
+    }
+   }
+  },
+  "Keyboard": {
+   "category": "Office",
+   "what": "Full-size 104-key keyboard with printed legends (no logo), 45 x 25 cm incl. cable.",
+   "placement": "Office desk in front of the monitor.",
+   "tris": 1376,
+   "size_m": [
+    0.449,
+    0.034,
+    0.251
+   ],
+   "bounds_min": [
+    -0.224,
+    0.0,
+    -0.126
+   ],
+   "bounds_max": [
+    0.224,
+    0.034,
+    0.126
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Keyboard": {
+     "Color": "Keyboard_Color.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.35
+    },
+    "Rubber": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    }
+   },
+   "files": [
+    "Keyboard.obj",
+    "Keyboard.mtl",
+    "Keyboard_Color.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "LEDPanel": {
+   "category": "Lighting",
+   "what": "600 x 600 mm LED ceiling panel.",
+   "placement": "Rear office and side rooms (cool white).",
+   "tris": 110,
+   "size_m": [
+    0.595,
+    0.012,
+    0.595
+   ],
+   "bounds_min": [
+    -0.297,
+    -0.012,
+    -0.297
+   ],
+   "bounds_max": [
+    0.297,
+    0.0,
+    0.297
+   ],
+   "pivot": "ceiling",
+   "materials": {
+    "Frame": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Diffuser": {
+     "metallic": 0.0,
+     "smoothness": 0.2,
+     "emission": "cool white 4000 K, intensity 1.5-3 when lit (back office / side rooms)",
+     "Kd": [
+      0.96,
+      0.96,
+      0.97
+     ]
+    }
+   },
+   "files": [
+    "LEDPanel.obj",
+    "LEDPanel.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "LeverArchFiles": {
+   "category": "Office",
+   "what": "Row of five lever-arch files with labelled spines (invoices, stock register, insurance, safe log, suppliers).",
+   "placement": "Shelves in the rear office; one can lie on the floor.",
+   "tris": 60,
+   "size_m": [
+    0.416,
+    0.324,
+    0.285
+   ],
+   "bounds_min": [
+    -0.208,
+    0.0,
+    -0.142
+   ],
+   "bounds_max": [
+    0.208,
+    0.324,
+    0.142
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Binders": {
+     "Color": "LeverArchFiles_Color.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.3
+    }
+   },
+   "files": [
+    "LeverArchFiles.obj",
+    "LeverArchFiles.mtl",
+    "LeverArchFiles_Color.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "LoungeChairMidCentury": {
+   "category": "Seating",
+   "what": "Mid-century swivel lounge chair: cognac leather shell on a 4-star aluminium base.",
+   "placement": "Customer seating corner, angled towards the coffee table and rug (pairs with the existing SheenChair / GlamVelvetSofa).",
+   "tris": 6148,
+   "size_m": [
+    1.009,
+    1.169,
+    1.19
+   ],
+   "bounds_min": [
+    -0.504,
+    0.0,
+    -0.595
+   ],
+   "bounds_max": [
+    0.504,
+    1.169,
+    0.595
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Chair": {
+     "Color": "LoungeChairMidCentury_Color.jpg",
+     "Normal": "LoungeChairMidCentury_Normal.jpg",
+     "MetallicSmoothness": "LoungeChairMidCentury_MetallicSmoothness.png",
+     "metallic_mean": 0.129,
+     "smoothness_mean": 0.57
+    }
+   },
+   "files": [
+    "LoungeChairMidCentury.obj",
+    "LoungeChairMidCentury.mtl",
+    "LoungeChairMidCentury_Color.jpg",
+    "LoungeChairMidCentury_Normal.jpg",
+    "LoungeChairMidCentury_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "mid_century_lounge_chair",
+   "source_title": "Mid Century Lounge Chair",
+   "source_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "author": "Kuutti Siitonen",
+   "license": "CC0-1.0",
+   "source_tris": 6148,
+   "verified": "sha256 (toonstudio) + byte-identical copy (Calinou)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)"
+   ]
+  },
+  "MiniFridge": {
+   "category": "Appliances",
+   "what": "Under-counter mini fridge, 48 x 84 x 50 cm, white.",
+   "placement": "Rear office under a counter or in a side room.",
+   "tris": 1152,
+   "size_m": [
+    0.48,
+    0.84,
+    0.529
+   ],
+   "bounds_min": [
+    -0.24,
+    0.0,
+    -0.264
+   ],
+   "bounds_max": [
+    0.24,
+    0.84,
+    0.264
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Door": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Gasket": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    },
+    "Handle": {
+     "metallic": 1.0,
+     "smoothness": 0.7,
+     "Kd": [
+      0.76,
+      0.77,
+      0.78
+     ]
+    },
+    "Rubber": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    },
+    "Coil": {
+     "metallic": 0.6,
+     "smoothness": 0.3,
+     "Kd": [
+      0.1,
+      0.1,
+      0.1
+     ]
+    }
+   },
+   "files": [
+    "MiniFridge.obj",
+    "MiniFridge.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "Mouse": {
+   "category": "Office",
+   "what": "Corded mouse on a 25 x 21 cm fabric mouse mat.",
+   "placement": "Office desk to the right of the keyboard.",
+   "tris": 1124,
+   "size_m": [
+    0.25,
+    0.048,
+    0.21
+   ],
+   "bounds_min": [
+    -0.125,
+    0.0,
+    -0.105
+   ],
+   "bounds_max": [
+    0.125,
+    0.048,
+    0.105
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Mouse": {
+     "Color": "Mouse_Color.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.45
+    },
+    "Rubber": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    },
+    "Pad": {
+     "Color": "Shared_FabricCharcoal_Color.jpg",
+     "Normal": "Shared_FabricCharcoal_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.06,
+     "tiling": "world-scale UVs, 0.08 m per tile"
+    }
+   },
+   "files": [
+    "Mouse.obj",
+    "Mouse.mtl",
+    "Mouse_Color.jpg",
+    "Shared_FabricCharcoal_Color.jpg",
+    "Shared_FabricCharcoal_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "OfficeChair": {
+   "category": "Office",
+   "what": "Swivel task chair: mesh back, charcoal fabric seat, polished 5-star base, twin-wheel casters.",
+   "placement": "At the office desk; rolled away or tipped over after the burglary.",
+   "tris": 7344,
+   "size_m": [
+    0.643,
+    1.074,
+    0.694
+   ],
+   "bounds_min": [
+    -0.322,
+    0.0,
+    -0.347
+   ],
+   "bounds_max": [
+    0.322,
+    1.074,
+    0.347
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Base": {
+     "metallic": 1.0,
+     "smoothness": 0.7,
+     "Kd": [
+      0.76,
+      0.77,
+      0.78
+     ]
+    },
+    "Rubber": {
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "Kd": [
+      0.035,
+      0.035,
+      0.035
+     ]
+    },
+    "PlasticBlack": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Chrome": {
+     "metallic": 1.0,
+     "smoothness": 0.92,
+     "Kd": [
+      0.8,
+      0.8,
+      0.82
+     ]
+    },
+    "Fabric": {
+     "Color": "Shared_FabricCharcoal_Color.jpg",
+     "Normal": "Shared_FabricCharcoal_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.06,
+     "tiling": "world-scale UVs, 0.08 m per tile"
+    },
+    "Mesh": {
+     "Color": "Shared_MeshWeave_Color.jpg",
+     "Normal": "Shared_MeshWeave_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "note": "double-sided panel (two opposite faces), opaque",
+     "tiling": "world-scale UVs, 0.05 m per tile"
+    },
+    "ArmPad": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.3,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    }
+   },
+   "files": [
+    "OfficeChair.obj",
+    "OfficeChair.mtl",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "Shared_FabricCharcoal_Color.jpg",
+    "Shared_FabricCharcoal_Normal.jpg",
+    "Shared_MeshWeave_Color.jpg",
+    "Shared_MeshWeave_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "OfficeDeskMetal": {
+   "category": "Office",
+   "what": "Steel twin-pedestal office desk, 2.0 x 0.95 m with drawers.",
+   "placement": "Rear office, back against a wall; monitor, keyboard, phone, lamp on top.",
+   "tris": 6898,
+   "size_m": [
+    2.0,
+    0.788,
+    0.947
+   ],
+   "bounds_min": [
+    -1.0,
+    0.0,
+    -0.474
+   ],
+   "bounds_max": [
+    1.0,
+    0.788,
+    0.474
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Desk": {
+     "Color": "OfficeDeskMetal_Color.jpg",
+     "Normal": "OfficeDeskMetal_Normal.jpg",
+     "MetallicSmoothness": "OfficeDeskMetal_MetallicSmoothness.png",
+     "metallic_mean": 0.099,
+     "smoothness_mean": 0.733
+    }
+   },
+   "files": [
+    "OfficeDeskMetal.obj",
+    "OfficeDeskMetal.mtl",
+    "OfficeDeskMetal_Color.jpg",
+    "OfficeDeskMetal_Normal.jpg",
+    "OfficeDeskMetal_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "metal_office_desk",
+   "source_title": "Metal Office Desk",
+   "source_url": "https://polyhaven.com/a/metal_office_desk",
+   "author": "Ulan Cabanilla",
+   "license": "CC0-1.0",
+   "source_tris": 6898,
+   "verified": "MD5 (sev-1)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)"
+   ]
+  },
+  "OttomanLeather": {
+   "category": "Seating",
+   "what": "Tufted dark-brown leather ottoman / footstool.",
+   "placement": "Seating corner, in front of the sofa or beside the lounge chair.",
+   "tris": 4240,
+   "size_m": [
+    0.885,
+    0.624,
+    0.621
+   ],
+   "bounds_min": [
+    -0.442,
+    0.0,
+    -0.311
+   ],
+   "bounds_max": [
+    0.442,
+    0.624,
+    0.311
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Leather": {
+     "Color": "OttomanLeather_Color.jpg",
+     "Normal": "OttomanLeather_Normal.jpg",
+     "MetallicSmoothness": "OttomanLeather_MetallicSmoothness.png",
+     "metallic_mean": 0.005,
+     "smoothness_mean": 0.487
+    }
+   },
+   "files": [
+    "OttomanLeather.obj",
+    "OttomanLeather.mtl",
+    "OttomanLeather_Color.jpg",
+    "OttomanLeather_Normal.jpg",
+    "OttomanLeather_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "Ottoman_01",
+   "source_title": "Ottoman 01",
+   "source_url": "https://polyhaven.com/a/Ottoman_01",
+   "author": "Caspian Fortune",
+   "license": "CC0-1.0",
+   "source_tris": 4240,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)"
+   ]
+  },
+  "PendantLampGlobe": {
+   "category": "Lighting",
+   "what": "Pendant with a clear glass globe shade and visible bulb, 0.95 m drop including cable.",
+   "placement": "Above the seating corner or over the counter; raise it to shorten the drop.",
+   "tris": 5602,
+   "size_m": [
+    0.432,
+    0.952,
+    0.432
+   ],
+   "bounds_min": [
+    -0.216,
+    -0.952,
+    -0.216
+   ],
+   "bounds_max": [
+    0.216,
+    0.0,
+    0.216
+   ],
+   "pivot": "ceiling",
+   "materials": {
+    "GlassShade": {
+     "glass": true,
+     "Kd": [
+      0.92,
+      0.94,
+      0.95
+     ],
+     "d": 0.25
+    },
+    "Fitting": {
+     "Color": "PendantLampGlobe_Fitting_Color.jpg",
+     "Normal": "PendantLampGlobe_Fitting_Normal.jpg",
+     "MetallicSmoothness": "PendantLampGlobe_Fitting_MetallicSmoothness.png",
+     "metallic_mean": 0.311,
+     "smoothness_mean": 0.676
+    },
+    "Bulb": {
+     "Color": "PendantLampGlobe_Fitting_Color.jpg",
+     "Normal": "PendantLampGlobe_Fitting_Normal.jpg",
+     "MetallicSmoothness": "PendantLampGlobe_Fitting_MetallicSmoothness.png",
+     "shared": true,
+     "emission_color": [
+      0.623,
+      0.542,
+      0.475
+     ]
+    }
+   },
+   "files": [
+    "PendantLampGlobe.obj",
+    "PendantLampGlobe.mtl",
+    "PendantLampGlobe_Fitting_Color.jpg",
+    "PendantLampGlobe_Fitting_Normal.jpg",
+    "PendantLampGlobe_Fitting_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "modern_ceiling_lamp_01",
+   "source_title": "Modern Ceiling Lamp 01",
+   "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 5602,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "clear glass shade written as an MTL constant"
+   ]
+  },
+  "PhotoFrameDesk": {
+   "category": "Office",
+   "what": "Standing desk photo frame (20 x 25 cm, leaning back on its stand) with a black-and-white canal photograph facing +Z.",
+   "placement": "Office desk or behind the counter.",
+   "tris": 1634,
+   "size_m": [
+    0.201,
+    0.25,
+    0.1
+   ],
+   "bounds_min": [
+    -0.1,
+    0.0,
+    -0.05
+   ],
+   "bounds_max": [
+    0.1,
+    0.25,
+    0.05
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Glass": {
+     "glass": true,
+     "Kd": [
+      0.92,
+      0.94,
+      0.95
+     ],
+     "d": 0.12
+    },
+    "Artwork": {
+     "Color": "PhotoFrameDesk_Artwork_Color.jpg",
+     "metallic": 0,
+     "smoothness": 0.2
+    },
+    "Frame": {
+     "Color": "PhotoFrameDesk_Frame_Color.jpg",
+     "Normal": "PhotoFrameDesk_Frame_Normal.jpg",
+     "MetallicSmoothness": "PhotoFrameDesk_Frame_MetallicSmoothness.png",
+     "metallic_mean": 0.036,
+     "smoothness_mean": 0.531
+    }
+   },
+   "files": [
+    "PhotoFrameDesk.obj",
+    "PhotoFrameDesk.mtl",
+    "PhotoFrameDesk_Artwork_Color.jpg",
+    "PhotoFrameDesk_Frame_Color.jpg",
+    "PhotoFrameDesk_Frame_Normal.jpg",
+    "PhotoFrameDesk_Frame_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "standing_picture_frame_01",
+   "source_title": "Standing Picture Frame 01",
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 1634,
+   "verified": "mirror only (download script)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "rotated -90 degrees about Y so the photo faces +Z like every other model (October 15)",
+    "photo cropped to its visible area, UVs normalised to 0..1"
+   ]
+  },
+  "PictureFrameBlack": {
+   "category": "Wall",
+   "what": "Black poster frame (59 x 84 cm) with mount, glass and an original seascape print (swap the Artwork texture freely).",
+   "placement": "Seating corner or office wall at eye level (centre about 1.55 m).",
+   "tris": 2586,
+   "size_m": [
+    0.594,
+    0.841,
+    0.016
+   ],
+   "bounds_min": [
+    -0.297,
+    -0.42,
+    0.0
+   ],
+   "bounds_max": [
+    0.297,
+    0.42,
+    0.016
+   ],
+   "pivot": "wall",
+   "materials": {
+    "Glass": {
+     "glass": true,
+     "Kd": [
+      0.92,
+      0.94,
+      0.95
+     ],
+     "d": 0.12
+    },
+    "Artwork": {
+     "Color": "PictureFrameBlack_Artwork_Color.jpg",
+     "metallic": 0,
+     "smoothness": 0.2
+    },
+    "Frame": {
+     "Color": "PictureFrameBlack_Frame_Color.jpg",
+     "Normal": "PictureFrameBlack_Frame_Normal.jpg",
+     "MetallicSmoothness": "PictureFrameBlack_Frame_MetallicSmoothness.png",
+     "metallic_mean": 0.056,
+     "smoothness_mean": 0.542
+    }
+   },
+   "files": [
+    "PictureFrameBlack.obj",
+    "PictureFrameBlack.mtl",
+    "PictureFrameBlack_Artwork_Color.jpg",
+    "PictureFrameBlack_Frame_Color.jpg",
+    "PictureFrameBlack_Frame_Normal.jpg",
+    "PictureFrameBlack_Frame_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "hanging_picture_frame_01",
+   "source_title": "Hanging Picture Frame 01",
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 2586,
+   "verified": "mirror only (download script)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "artwork replaced by an original project print (minimal seascape, PictureFrameBlack_Artwork_Color.jpg); artwork UVs normalised to 0..1"
+   ],
+   "artwork": {
+    "PictureFrameBlack_Artwork_Color.jpg": {
+     "license": "Project-owned (original print)",
+     "author": "Project",
+     "source_url": null,
+     "version": "generated 2026-10-14 (Source~/gen_art.py)"
+    }
+   }
+  },
+  "PictureFrameGilt": {
+   "category": "Wall",
+   "what": "Ornate gilt frame (60 x 46 cm) with a classical landscape painting.",
+   "placement": "Office or a side-room wall; suits a heritage jeweller look.",
+   "tris": 938,
+   "size_m": [
+    0.603,
+    0.464,
+    0.02
+   ],
+   "bounds_min": [
+    -0.302,
+    -0.232,
+    0.0
+   ],
+   "bounds_max": [
+    0.302,
+    0.232,
+    0.02
+   ],
+   "pivot": "wall",
+   "materials": {
+    "Artwork": {
+     "Color": "PictureFrameGilt_Artwork_Color.jpg",
+     "metallic": 0,
+     "smoothness": 0.2
+    },
+    "Frame": {
+     "Color": "PictureFrameGilt_Frame_Color.jpg",
+     "Normal": "PictureFrameGilt_Frame_Normal.jpg",
+     "MetallicSmoothness": "PictureFrameGilt_Frame_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.456
+    }
+   },
+   "files": [
+    "PictureFrameGilt.obj",
+    "PictureFrameGilt.mtl",
+    "PictureFrameGilt_Artwork_Color.jpg",
+    "PictureFrameGilt_Frame_Color.jpg",
+    "PictureFrameGilt_Frame_Normal.jpg",
+    "PictureFrameGilt_Frame_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "fancy_picture_frame_01",
+   "source_title": "Fancy Picture Frame 01",
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "license": "CC0-1.0",
+   "source_tris": 938,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "canvas painting cropped to its visible area, UVs normalised to 0..1"
+   ]
+  },
+  "PictureFrameWhite": {
+   "category": "Wall",
+   "what": "Distressed white-painted wooden frame (75 x 50 cm) with glass, holding a print of Cezanne's The Banks of the Marne (c. 1888, public domain); swap the Artwork texture freely.",
+   "placement": "Seating corner wall or behind the counter, centre about 1.55 m.",
+   "tris": 3678,
+   "size_m": [
+    0.752,
+    0.5,
+    0.033
+   ],
+   "bounds_min": [
+    -0.376,
+    -0.25,
+    0.0
+   ],
+   "bounds_max": [
+    0.376,
+    0.25,
+    0.033
+   ],
+   "pivot": "wall",
+   "materials": {
+    "Artwork": {
+     "Color": "PictureFrameWhite_Artwork_Color.jpg",
+     "metallic": 0,
+     "smoothness": 0.2
+    },
+    "Frame": {
+     "Color": "PictureFrameWhite_Frame_Color.jpg",
+     "Normal": "PictureFrameWhite_Frame_Normal.jpg",
+     "MetallicSmoothness": "PictureFrameWhite_Frame_MetallicSmoothness.png",
+     "metallic_mean": 0.032,
+     "smoothness_mean": 0.303
+    },
+    "Glass": {
+     "glass": true,
+     "Kd": [
+      0.92,
+      0.94,
+      0.95
+     ],
+     "d": 0.12
+    }
+   },
+   "files": [
+    "PictureFrameWhite.obj",
+    "PictureFrameWhite.mtl",
+    "PictureFrameWhite_Artwork_Color.jpg",
+    "PictureFrameWhite_Frame_Color.jpg",
+    "PictureFrameWhite_Frame_Normal.jpg",
+    "PictureFrameWhite_Frame_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "hanging_picture_frame_02",
+   "source_title": "Hanging Picture Frame 02",
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 3678,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "renamed from PictureFrameSilver (October 15): Poly Haven describes a distressed white wooden frame",
+    "inherited artwork (a painterly-filtered photograph carrying a third-party signature) replaced by a public-domain painting: Paul Cezanne, The Banks of the Marne (c. 1888), cropped to the picture area (PictureFrameWhite_Artwork_Color.jpg, Source~/prep_print.py); artwork UVs normalised to 0..1"
+   ],
+   "previous_name": "PictureFrameSilver",
+   "artwork": {
+    "PictureFrameWhite_Artwork_Color.jpg": {
+     "license": "Public domain (painting; reproduction carries no new copyright); repository dedicated CC0-1.0",
+     "author": "Paul Cezanne (1839-1906); scan published by github.com/pmilovanov/hermitage-art",
+     "source_url": "https://github.com/pmilovanov/hermitage-art/blob/b8ead49c010eac0c8366bafc4ffaaf1f1a447805/Cezanne,_Paul_-_The_Banks_of_the_Marne_(Villa_on_the_Bank_of_a_River).jpg",
+     "version": "hermitage-art commit b8ead49c010eac0c8366bafc4ffaaf1f1a447805 (2021-01-28), fetched 2026-10-15",
+     "source_sha256": "d0b9bc6f99f7c9c9dbc908546e7aa74bf8f6b4cba5c494c1b9ed59715e6d444d",
+     "source_bytes": 8216755,
+     "painting": "Paul Cezanne, The Banks of the Marne (Villa on the Bank of a River), c. 1888, oil on canvas, State Hermitage Museum",
+     "changes": "cropped (40 px trimmed left and right, rows 300-2795 of 3440 kept) to the 1.706:1 picture area, resized to 1280 x 750, light unsharp mask"
+    }
+   }
+  },
+  "PottedPlantArrowhead": {
+   "category": "Plants",
+   "what": "Arrowhead plant (Syngonium) in a wide terracotta pot on gravel, 0.84 m; leaves have back faces.",
+   "placement": "Floor beside the counter end or in the rear office corner.",
+   "tris": 14912,
+   "size_m": [
+    0.701,
+    0.841,
+    0.657
+   ],
+   "bounds_min": [
+    -0.351,
+    0.0,
+    -0.329
+   ],
+   "bounds_max": [
+    0.351,
+    0.841,
+    0.329
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Gravel": {
+     "Color": "PottedPlantArrowhead_Gravel_Color.jpg",
+     "Normal": "PottedPlantArrowhead_Gravel_Normal.jpg",
+     "MetallicSmoothness": "PottedPlantArrowhead_Gravel_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.099,
+     "baked": "top-down bake of the source pebble mesh (53930 tris) onto a 520-triangle heightfield disc"
+    },
+    "Leaves": {
+     "Color": "PottedPlantArrowhead_Leaves_Color.jpg",
+     "Normal": "PottedPlantArrowhead_Leaves_Normal.jpg",
+     "MetallicSmoothness": "PottedPlantArrowhead_Leaves_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.606
+    },
+    "Pot": {
+     "Color": "PottedPlantArrowhead_Pot_Color.jpg",
+     "Normal": "PottedPlantArrowhead_Pot_Normal.jpg",
+     "MetallicSmoothness": "PottedPlantArrowhead_Pot_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.456
+    }
+   },
+   "files": [
+    "PottedPlantArrowhead.obj",
+    "PottedPlantArrowhead.mtl",
+    "PottedPlantArrowhead_Gravel_Color.jpg",
+    "PottedPlantArrowhead_Gravel_Normal.jpg",
+    "PottedPlantArrowhead_Gravel_MetallicSmoothness.png",
+    "PottedPlantArrowhead_Leaves_Color.jpg",
+    "PottedPlantArrowhead_Leaves_Normal.jpg",
+    "PottedPlantArrowhead_Leaves_MetallicSmoothness.png",
+    "PottedPlantArrowhead_Pot_Color.jpg",
+    "PottedPlantArrowhead_Pot_Normal.jpg",
+    "PottedPlantArrowhead_Pot_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "potted_plant_02",
+   "source_title": "Potted Plant 02",
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "author": "Rico Cilliers",
+   "license": "CC0-1.0",
+   "source_tris": 69806,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "rebuilt October 15 (70k -> 14,912 triangles): pot shell kept at source detail (5,184 -> 3,792; only the 1,392 faces sealed below the gravel dropped); the 53.9k-triangle dirt layer baked onto a 520-triangle heightfield disc (Gravel material, Source~/bake_gravel.py); leaves decimated 10,692 -> 5,300 with borders preserved and given back faces (10,600 triangles); every face agrees with its vertex normals"
+   ],
+   "build_report": {
+    "nodes": {
+     "potted_plant_02_dirt": {
+      "pebble_tris": 53930,
+      "disc_tris": 520,
+      "coverage": 0.7,
+      "bake_half_size_m": 0.2169,
+      "disc_y_range": [
+       0.3156,
+       0.3315
+      ],
+      "edge_radius_m": [
+       0.1971,
+       0.2007
+      ],
+      "inner_wall_radius_at_edge_m": [
+       0.1956,
+       0.2004
+      ],
+      "shell_faces_dropped": 1392,
+      "smoothness_mean": 0.099,
+      "replaced_by": "Gravel"
+     },
+     "potted_plant_02_pot": {
+      "source_tris": 5184,
+      "tris": 3792,
+      "hidden_dropped": 1392
+     }
+    },
+    "backfaces": [
+     "Leaves"
+    ],
+    "winding_flipped": {
+     "Leaves": 94
+    },
+    "winding_flipped_at_write": {
+     "Leaves": 6
+    }
+   }
+  },
+  "PottedPlantTall": {
+   "category": "Plants",
+   "what": "Small-leaved indoor tree (ficus-like) in a smooth terracotta urn on gravel, 1.34 m; leaf blades are alpha-cut cards (Leaves material: Cutout, cutoff 0.5).",
+   "placement": "Storefront corner beside the forced doors, or the end of the seating corner.",
+   "tris": 14965,
+   "size_m": [
+    0.58,
+    1.337,
+    0.634
+   ],
+   "bounds_min": [
+    -0.29,
+    0.0,
+    -0.317
+   ],
+   "bounds_max": [
+    0.29,
+    1.337,
+    0.317
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Gravel": {
+     "Color": "PottedPlantTall_Gravel_Color.jpg",
+     "Normal": "PottedPlantTall_Gravel_Normal.jpg",
+     "MetallicSmoothness": "PottedPlantTall_Gravel_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.135,
+     "baked": "top-down bake of the source pebble mesh (56878 tris) onto a 520-triangle heightfield disc"
+    },
+    "Leaves": {
+     "Color": "PottedPlantTall_Leaves_Color.png",
+     "Normal": "PottedPlantTall_Leaves_Normal.jpg",
+     "MetallicSmoothness": "PottedPlantTall_Leaves_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.446,
+     "alpha_cutoff": 0.5,
+     "leaf_cards": {
+      "leaf_cards": 293,
+      "card_tris": 1531,
+      "kept_components": 0,
+      "rest_tris_before": 50844,
+      "card_area_vs_hull_median": 1.039,
+      "card_area_vs_hull_max": 1.116,
+      "polygon_corners_hist": {
+       "4": 139,
+       "6": 63,
+       "7": 91
+      },
+      "stalks": {
+       "tubes": 91,
+       "kept": 0,
+       "tris": 4550
+      },
+      "rest_tris": 4550,
+      "card_tris_with_backfaces": 3062
+     }
+    },
+    "Pot": {
+     "Color": "PottedPlantTall_Pot_Color.jpg",
+     "Normal": "PottedPlantTall_Pot_Normal.jpg",
+     "MetallicSmoothness": "PottedPlantTall_Pot_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.428
+    }
+   },
+   "files": [
+    "PottedPlantTall.obj",
+    "PottedPlantTall.mtl",
+    "PottedPlantTall_Gravel_Color.jpg",
+    "PottedPlantTall_Gravel_Normal.jpg",
+    "PottedPlantTall_Gravel_MetallicSmoothness.png",
+    "PottedPlantTall_Leaves_Color.png",
+    "PottedPlantTall_Leaves_Normal.jpg",
+    "PottedPlantTall_Leaves_MetallicSmoothness.png",
+    "PottedPlantTall_Pot_Color.jpg",
+    "PottedPlantTall_Pot_Normal.jpg",
+    "PottedPlantTall_Pot_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "potted_plant_01",
+   "source_title": "Potted Plant 01",
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "author": "Rico Cilliers",
+   "license": "CC0-1.0",
+   "source_tris": 176226,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "rebuilt October 15 (176k -> 14,965 triangles): pot shell kept at source detail (5,440 -> 5,184; only 256 faces sealed below the gravel dropped); the 56.9k-triangle pebble layer baked top-down onto a 520-triangle heightfield disc with its own Color/Normal/MetallicSmoothness maps (Gravel material, Source~/bake_gravel.py); leaf blades replaced by alpha-cut cards that keep the original blade vertices and outline (293 leaves, 3,062 triangles incl. back faces; Leaves_Color.png carries the cut-out alpha, Source~/leaf_cards.py); leaf stalks rebuilt as 5-sided tubes (4,550 triangles); trunk decimated with welded seams (7,008 -> 1,649); every face agrees with its vertex normals"
+   ],
+   "build_report": {
+    "nodes": {
+     "potted_plant_01_pebbles": {
+      "pebble_tris": 56878,
+      "disc_tris": 520,
+      "coverage": 0.728,
+      "bake_half_size_m": 0.2228,
+      "disc_y_range": [
+       0.4973,
+       0.5206
+      ],
+      "edge_radius_m": [
+       0.2073,
+       0.2102
+      ],
+      "inner_wall_radius_at_edge_m": [
+       0.2057,
+       0.2097
+      ],
+      "shell_faces_dropped": 256,
+      "smoothness_mean": 0.135,
+      "replaced_by": "Gravel"
+     },
+     "potted_plant_01_pot": {
+      "source_tris": 5440,
+      "tris": 5184,
+      "hidden_dropped": 256
+     },
+     "potted_plant_01_stem": {
+      "source_tris": 7008,
+      "tris": 1649,
+      "hidden_dropped": 0
+     }
+    },
+    "winding_flipped": {
+     "Pot": 54
+    },
+    "winding_flipped_at_write": {
+     "Pot": 3
+    }
+   }
+  },
+  "PottedSucculent": {
+   "category": "Plants",
+   "what": "Haworthia-type succulent in a white glazed pot on gravel, 27 cm.",
+   "placement": "Counter, office desk or coffee table.",
+   "tris": 4999,
+   "size_m": [
+    0.167,
+    0.267,
+    0.184
+   ],
+   "bounds_min": [
+    -0.084,
+    0.0,
+    -0.092
+   ],
+   "bounds_max": [
+    0.084,
+    0.267,
+    0.092
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Plant": {
+     "Color": "PottedSucculent_Color.jpg",
+     "Normal": "PottedSucculent_Normal.jpg",
+     "MetallicSmoothness": "PottedSucculent_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.494
+    }
+   },
+   "files": [
+    "PottedSucculent.obj",
+    "PottedSucculent.mtl",
+    "PottedSucculent_Color.jpg",
+    "PottedSucculent_Normal.jpg",
+    "PottedSucculent_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "potted_plant_04",
+   "source_title": "Potted Plant 04",
+   "source_url": "https://polyhaven.com/a/potted_plant_04",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 8929,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "decimated 8.9k -> 5k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, e.g. a slit down the pot; every face agrees with its vertex normals)"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Plant": 62
+    },
+    "winding_flipped_at_write": {
+     "Plant": 1
+    }
+   }
+  },
+  "RecessedDownlight": {
+   "category": "Lighting",
+   "what": "Recessed LED downlight (12 cm trim); y = 0 is the ceiling surface, reflector rises into the ceiling.",
+   "placement": "Grid across the sales-floor ceiling (about 1.5-2 m spacing).",
+   "tris": 512,
+   "size_m": [
+    0.12,
+    0.06,
+    0.12
+   ],
+   "bounds_min": [
+    -0.06,
+    -0.005,
+    -0.06
+   ],
+   "bounds_max": [
+    0.06,
+    0.055,
+    0.06
+   ],
+   "pivot": "none",
+   "materials": {
+    "Trim": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Reflector": {
+     "metallic": 1.0,
+     "smoothness": 0.6,
+     "Kd": [
+      0.76,
+      0.77,
+      0.78
+     ]
+    },
+    "Lens": {
+     "metallic": 0.0,
+     "smoothness": 0.8,
+     "emission": "warm white, intensity 4-8 when lit",
+     "Kd": [
+      1.0,
+      0.97,
+      0.9
+     ]
+    }
+   },
+   "files": [
+    "RecessedDownlight.obj",
+    "RecessedDownlight.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "Rug": {
+   "category": "Soft furnishing",
+   "what": "Wool area rug 2.0 x 1.4 m, warm grey field with charcoal and brass border.",
+   "placement": "Under the seating corner group.",
+   "tris": 108,
+   "size_m": [
+    2.0,
+    0.012,
+    1.4
+   ],
+   "bounds_min": [
+    -1.0,
+    0.0,
+    -0.7
+   ],
+   "bounds_max": [
+    1.0,
+    0.012,
+    0.7
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Rug": {
+     "Color": "Rug_Color.jpg",
+     "Normal": "Rug_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.05
+    }
+   },
+   "files": [
+    "Rug.obj",
+    "Rug.mtl",
+    "Rug_Color.jpg",
+    "Rug_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "SecurityMonitor": {
+   "category": "Security",
+   "what": "Same monitor showing a four-camera CCTV grid; CAM 03 (office) reads VIDEO LOSS.",
+   "placement": "Rear office beside the DVR: the lost office feed is an investigation cue.",
+   "tris": 1538,
+   "size_m": [
+    0.541,
+    0.438,
+    0.19
+   ],
+   "bounds_min": [
+    -0.27,
+    0.0,
+    -0.095
+   ],
+   "bounds_max": [
+    0.27,
+    0.438,
+    0.095
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Housing": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.42,
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Screen": {
+     "Color": "Monitor_Screen_CCTV.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.9,
+     "emission": "use the Color map as emission (intensity ~0.6) when the screen is on; plain black when off"
+    }
+   },
+   "files": [
+    "SecurityMonitor.obj",
+    "SecurityMonitor.mtl",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "Monitor_Screen_CCTV.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "ShelvingSteelWide": {
+   "category": "Storage",
+   "what": "Wide steel-frame shelving with wooden boards and a two-drawer unit, 2.35 x 2.31 m.",
+   "placement": "Rear office or a side room; load it with LeverArchFiles and CardboardBox.",
+   "tris": 8396,
+   "size_m": [
+    2.351,
+    2.312,
+    0.721
+   ],
+   "bounds_min": [
+    -1.176,
+    0.0,
+    -0.361
+   ],
+   "bounds_max": [
+    1.176,
+    2.312,
+    0.361
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Drawers": {
+     "Color": "ShelvingSteelWide_Drawers_Color.jpg",
+     "Normal": "ShelvingSteelWide_Drawers_Normal.jpg",
+     "MetallicSmoothness": "ShelvingSteelWide_Drawers_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.283
+    },
+    "Frame": {
+     "Color": "ShelvingSteelWide_Frame_Color.jpg",
+     "Normal": "ShelvingSteelWide_Frame_Normal.jpg",
+     "MetallicSmoothness": "ShelvingSteelWide_Frame_MetallicSmoothness.png",
+     "metallic_mean": 0.024,
+     "smoothness_mean": 0.459
+    }
+   },
+   "files": [
+    "ShelvingSteelWide.obj",
+    "ShelvingSteelWide.mtl",
+    "ShelvingSteelWide_Drawers_Color.jpg",
+    "ShelvingSteelWide_Drawers_Normal.jpg",
+    "ShelvingSteelWide_Drawers_MetallicSmoothness.png",
+    "ShelvingSteelWide_Frame_Color.jpg",
+    "ShelvingSteelWide_Frame_Normal.jpg",
+    "ShelvingSteelWide_Frame_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "steel_frame_shelves_03",
+   "source_title": "Steel Frame Shelves 03",
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "author": "Ulan Cabanilla",
+   "license": "CC0-1.0",
+   "source_tris": 8396,
+   "verified": "mirror only (download script)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)"
+   ]
+  },
+  "SmokeDetector": {
+   "category": "Safety",
+   "what": "Ceiling optical smoke detector (11.6 cm) with status LED.",
+   "placement": "One per room on the ceiling.",
+   "tris": 556,
+   "size_m": [
+    0.116,
+    0.045,
+    0.116
+   ],
+   "bounds_min": [
+    -0.058,
+    -0.045,
+    -0.058
+   ],
+   "bounds_max": [
+    0.058,
+    0.0,
+    0.058
+   ],
+   "pivot": "ceiling",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Slot": {
+     "metallic": 0.0,
+     "smoothness": 0.2,
+     "Kd": [
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    "LED": {
+     "metallic": 0.0,
+     "smoothness": 0.8,
+     "emission": "blink red every ~40 s",
+     "Kd": [
+      0.8,
+      0.05,
+      0.05
+     ]
+    }
+   },
+   "files": [
+    "SmokeDetector.obj",
+    "SmokeDetector.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "SnakePlant": {
+   "category": "Plants",
+   "what": "Snake plant (Sansevieria laurentii, yellow-edged banded leaves) in a charcoal ceramic pot, 1.08 m.",
+   "placement": "Flanking the rear office door or by the entrance; reads well against plain walls.",
+   "tris": 2112,
+   "size_m": [
+    0.26,
+    1.079,
+    0.26
+   ],
+   "bounds_min": [
+    -0.13,
+    0.0,
+    -0.13
+   ],
+   "bounds_max": [
+    0.13,
+    1.079,
+    0.13
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Pot": {
+     "Color": "Shared_PlasticBlack_Color.jpg",
+     "Normal": "Shared_PlasticBlack_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.25,
+     "note": "matt charcoal ceramic: tint the plastic map grey",
+     "tiling": "world-scale UVs, 0.12 m per tile"
+    },
+    "Soil": {
+     "Color": "SnakePlant_Soil_Color.jpg",
+     "Normal": "SnakePlant_Soil_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.05
+    },
+    "Leaf": {
+     "Color": "SnakePlant_Leaf_Color.jpg",
+     "Normal": "SnakePlant_Leaf_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.45,
+     "note": "two-sided leaves (duplicated faces)"
+    }
+   },
+   "files": [
+    "SnakePlant.obj",
+    "SnakePlant.mtl",
+    "Shared_PlasticBlack_Color.jpg",
+    "Shared_PlasticBlack_Normal.jpg",
+    "SnakePlant_Soil_Color.jpg",
+    "SnakePlant_Soil_Normal.jpg",
+    "SnakePlant_Leaf_Color.jpg",
+    "SnakePlant_Leaf_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "StationerySet": {
+   "category": "Office",
+   "what": "Pens, pencils, eraser and a frosted pen cup laid out on a 30 cm footprint.",
+   "placement": "Office desk beside the keyboard; scatter the pens if the desk was searched.",
+   "tris": 4412,
+   "size_m": [
+    0.302,
+    0.164,
+    0.084
+   ],
+   "bounds_min": [
+    -0.151,
+    0.0,
+    -0.042
+   ],
+   "bounds_max": [
+    0.151,
+    0.164,
+    0.042
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Stationery": {
+     "Color": "StationerySet_Color.jpg",
+     "Normal": "StationerySet_Normal.jpg",
+     "MetallicSmoothness": "StationerySet_MetallicSmoothness.png",
+     "metallic_mean": 0.622,
+     "smoothness_mean": 0.62
+    }
+   },
+   "files": [
+    "StationerySet.obj",
+    "StationerySet.mtl",
+    "StationerySet_Color.jpg",
+    "StationerySet_Normal.jpg",
+    "StationerySet_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "stationery_supplies",
+   "source_title": "Stationery Supplies",
+   "source_url": "https://polyhaven.com/a/stationery_supplies",
+   "author": "Mateusz Sadek",
+   "license": "CC0-1.0",
+   "source_tris": 4412,
+   "verified": "mirror only (download script)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "pencil print \"Haven Penworks\" is Poly Haven's own fictional brand and was kept"
+   ]
+  },
+  "TrackLight": {
+   "category": "Lighting",
+   "what": "Black 1.2 m ceiling track with three adjustable LED spot heads.",
+   "placement": "Over the wall cases, heads aimed at the displays; add one Unity spot light per head.",
+   "tris": 4488,
+   "size_m": [
+    1.2,
+    0.174,
+    0.146
+   ],
+   "bounds_min": [
+    -0.6,
+    -0.174,
+    -0.073
+   ],
+   "bounds_max": [
+    0.6,
+    0.0,
+    0.073
+   ],
+   "pivot": "ceiling",
+   "materials": {
+    "Housing": {
+     "metallic": 0.2,
+     "smoothness": 0.45,
+     "Kd": [
+      0.03,
+      0.03,
+      0.03
+     ]
+    },
+    "Reflector": {
+     "metallic": 1.0,
+     "smoothness": 0.92,
+     "Kd": [
+      0.8,
+      0.8,
+      0.82
+     ]
+    },
+    "Lens": {
+     "metallic": 0.0,
+     "smoothness": 0.9,
+     "emission": "warm white 3000 K, intensity 3-6 when lit; spot light per head along its axis",
+     "Kd": [
+      1.0,
+      0.95,
+      0.85
+     ]
+    }
+   },
+   "files": [
+    "TrackLight.obj",
+    "TrackLight.mtl"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "VaseCeramicBottle": {
+   "category": "Decor",
+   "what": "White ceramic bottle vase with a wavy lip, 40 cm.",
+   "placement": "Same as the tall vase; pair them on a plinth.",
+   "tris": 3984,
+   "size_m": [
+    0.204,
+    0.4,
+    0.204
+   ],
+   "bounds_min": [
+    -0.102,
+    0.0,
+    -0.102
+   ],
+   "bounds_max": [
+    0.102,
+    0.4,
+    0.102
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Ceramic": {
+     "Color": "VaseCeramicBottle_Color.jpg",
+     "Normal": "VaseCeramicBottle_Normal.jpg",
+     "MetallicSmoothness": "VaseCeramicBottle_MetallicSmoothness.png",
+     "metallic_mean": 0.002,
+     "smoothness_mean": 0.853
+    }
+   },
+   "files": [
+    "VaseCeramicBottle.obj",
+    "VaseCeramicBottle.mtl",
+    "VaseCeramicBottle_Color.jpg",
+    "VaseCeramicBottle_Normal.jpg",
+    "VaseCeramicBottle_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "ceramic_vase_01",
+   "source_title": "Ceramic Vase 01",
+   "source_url": "https://polyhaven.com/a/ceramic_vase_01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 10296,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "decimated 10.3k -> 4.0k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, holes in the body; every face agrees with its vertex normals)"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Ceramic": 9
+    },
+    "winding_flipped_at_write": {
+     "Ceramic": 5
+    }
+   }
+  },
+  "VaseCeramicTall": {
+   "category": "Decor",
+   "what": "Tall square white ceramic vase, 41 cm.",
+   "placement": "Wall-case plinths, counter end or coffee table.",
+   "tris": 5388,
+   "size_m": [
+    0.112,
+    0.414,
+    0.112
+   ],
+   "bounds_min": [
+    -0.056,
+    0.0,
+    -0.056
+   ],
+   "bounds_max": [
+    0.056,
+    0.414,
+    0.056
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Ceramic": {
+     "Color": "VaseCeramicTall_Color.jpg",
+     "Normal": "VaseCeramicTall_Normal.jpg",
+     "MetallicSmoothness": "VaseCeramicTall_MetallicSmoothness.png",
+     "metallic_mean": 0.0,
+     "smoothness_mean": 0.288
+    }
+   },
+   "files": [
+    "VaseCeramicTall.obj",
+    "VaseCeramicTall.mtl",
+    "VaseCeramicTall_Color.jpg",
+    "VaseCeramicTall_Normal.jpg",
+    "VaseCeramicTall_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "ceramic_vase_03",
+   "source_title": "Ceramic Vase 03",
+   "source_url": "https://polyhaven.com/a/ceramic_vase_03",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "source_tris": 11136,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "decimated 11.1k -> 5.4k triangles (rebuilt October 15 with UV seams and open borders held fixed: the earlier decimation had opened cracks along the seams, holes at the base; every face agrees with its vertex normals)"
+   ],
+   "build_report": {
+    "winding_flipped": {
+     "Ceramic": 9
+    },
+    "winding_flipped_at_write": {
+     "Ceramic": 3
+    }
+   }
+  },
+  "WallClock": {
+   "category": "Wall",
+   "what": "Office wall clock (32 cm) with metal bezel and glass; hands are separate parts (hour, minute, second) in one mesh.",
+   "placement": "Rear office above the door, about 2.1 m to the centre; or behind the counter.",
+   "tris": 3658,
+   "size_m": [
+    0.32,
+    0.32,
+    0.047
+   ],
+   "bounds_min": [
+    -0.16,
+    -0.16,
+    0.0
+   ],
+   "bounds_max": [
+    0.16,
+    0.16,
+    0.047
+   ],
+   "pivot": "wall",
+   "materials": {
+    "Clock": {
+     "Color": "WallClock_Color.jpg",
+     "Normal": "WallClock_Normal.jpg",
+     "MetallicSmoothness": "WallClock_MetallicSmoothness.png",
+     "metallic_mean": 0.439,
+     "smoothness_mean": 0.629
+    },
+    "Glass": {
+     "glass": true,
+     "Kd": [
+      0.92,
+      0.94,
+      0.95
+     ],
+     "d": 0.18
+    }
+   },
+   "files": [
+    "WallClock.obj",
+    "WallClock.mtl",
+    "WallClock_Color.jpg",
+    "WallClock_Normal.jpg",
+    "WallClock_MetallicSmoothness.png"
+   ],
+   "source": "Poly Haven",
+   "source_id": "wall_clock",
+   "source_title": "Wall Clock",
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "author": "PierreB3D",
+   "license": "CC0-1.0",
+   "source_tris": 3658,
+   "verified": "sha256 (toonstudio)",
+   "changes": [
+    "converted glTF -> OBJ/MTL (Source~/convert_ph.py): node transforms applied, metres, Y up, welded v/vt/vn",
+    "base colour -> _Color.jpg, nor_gl -> _Normal.jpg, ARM/roughness (G rough, B metal) -> _MetallicSmoothness.png (R=G=B metal, A = 1 - rough); 2K sources downsized to 1K/512",
+    "pivot moved (floor: lowest point y = 0, centred in x/z; wall: back at z = 0, centred in x/y; ceiling: top at y = 0)",
+    "maker-style wordmark on the dial painted out (patch from the clean dial)"
+   ]
+  },
+  "WallVent": {
+   "category": "Building",
+   "what": "Wall return-air grille 42 x 22 cm with angled louvres.",
+   "placement": "Low on the office wall or high on the side walls.",
+   "tris": 168,
+   "size_m": [
+    0.42,
+    0.22,
+    0.024
+   ],
+   "bounds_min": [
+    -0.21,
+    -0.11,
+    0.0
+   ],
+   "bounds_max": [
+    0.21,
+    0.11,
+    0.024
+   ],
+   "pivot": "wall",
+   "materials": {
+    "Grille": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Duct": {
+     "metallic": 0.0,
+     "smoothness": 0.1,
+     "Kd": [
+      0.03,
+      0.03,
+      0.03
+     ]
+    }
+   },
+   "files": [
+    "WallVent.obj",
+    "WallVent.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  },
+  "WaterCooler": {
+   "category": "Appliances",
+   "what": "Floor-standing water cooler with hot/cold taps and a 19-litre blue bottle, 1.5 m.",
+   "placement": "Staff corner of the rear office or a side room.",
+   "tris": 2748,
+   "size_m": [
+    0.31,
+    1.505,
+    0.38
+   ],
+   "bounds_min": [
+    -0.155,
+    0.0,
+    -0.19
+   ],
+   "bounds_max": [
+    0.155,
+    1.505,
+    0.19
+   ],
+   "pivot": "floor",
+   "materials": {
+    "Body": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "Recess": {
+     "metallic": 0.0,
+     "smoothness": 0.3,
+     "Kd": [
+      0.12,
+      0.12,
+      0.13
+     ]
+    },
+    "Tray": {
+     "Color": "Shared_PlasticWhite_Color.jpg",
+     "Normal": "Shared_PlasticWhite_Normal.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.58,
+     "tiling": "world-scale UVs, 0.20 m per tile"
+    },
+    "TapRed": {
+     "metallic": 0.0,
+     "smoothness": 0.6,
+     "Kd": [
+      0.7,
+      0.06,
+      0.05
+     ]
+    },
+    "TapBlue": {
+     "metallic": 0.0,
+     "smoothness": 0.6,
+     "Kd": [
+      0.05,
+      0.22,
+      0.65
+     ]
+    },
+    "Bottle": {
+     "metallic": 0.0,
+     "smoothness": 0.92,
+     "note": "polycarbonate bottle: Standard Transparent/Fade, alpha 0.35",
+     "glass": true,
+     "Kd": [
+      0.55,
+      0.75,
+      0.95
+     ],
+     "d": 0.35
+    },
+    "Vent": {
+     "Color": "WaterCooler_Vent_Color.jpg",
+     "metallic": 0.0,
+     "smoothness": 0.3
+    }
+   },
+   "files": [
+    "WaterCooler.obj",
+    "WaterCooler.mtl",
+    "Shared_PlasticWhite_Color.jpg",
+    "Shared_PlasticWhite_Normal.jpg",
+    "WaterCooler_Vent_Color.jpg"
+   ],
+   "source": "project-made (procedural, Source~/proc_office.py or proc_fixtures.py)",
+   "author": "Project (generated October 14, 2026)",
+   "license": "Project-owned (treat as CC0)"
+  }
+ }
+}

@@ -1,0 +1,23 @@
+newmtl DT_BrickFacade
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_BrickFacade_Color.jpg
+
+newmtl DT_Storefronts
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_Storefronts_Color.jpg
+
+newmtl DT_MaskedDetails
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_MaskedDetails_Color.png
+
+newmtl DT_BrownstoneFacade
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_BrownstoneFacade_Color.jpg

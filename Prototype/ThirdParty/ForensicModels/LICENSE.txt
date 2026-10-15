@@ -1,0 +1,128 @@
+ForensicModels - burglary, forensic and police props for the night jewellery-store scene
+Prepared October 14, 2026; corrected October 15, 2026 (glove tag removed from the smoothness and normal maps,
+searchlight, binder and hammer authors recorded). Not yet imported or checked in Unity.
+
+Everything in this folder is either CC0 1.0 (Poly Haven) or project-owned original work.
+No attribution is required for any file; the credits below are a courtesy. Commercial use,
+modification and redistribution are allowed. Exact mirror paths, commits and SHA-256 hashes
+of every source file and every shipped file are in sources.json.
+
+CC0 1.0 Universal (public domain dedication):
+https://creativecommons.org/publicdomain/zero/1.0/
+
+===============================================================================
+1. Poly Haven 3D models (CC0 1.0)
+===============================================================================
+Publisher licence: https://polyhaven.com/license, read from the site source
+github.com/Poly-Haven/polyhaven.com @ b1a6aa13afc03ae00860f6ac5fe6d5daf8e95356,
+public/locales/en/license.json:
+  "All assets (HDRIs, textures and 3D models) on this site are the original work of Poly
+   Haven staff, or artists who willingly and directly donate/sell their work to Poly Haven."
+  "Our assets are all licensed as CC0 ..."
+  "You can use our assets for any purpose, including commercial work."
+  "You do not need to give credit or attribution when using them (although it is appreciated)."
+  "You can redistribute them, share them around, include them when sharing your own work,
+   or even in a product you sell."
+
+polyhaven.com itself cannot be reached from the build container, so the unmodified 1K/2K glTF
+files were taken from public GitHub repositories that ship them under their Poly Haven names
+(each repository's own licence covers its code only; the asset files are the CC0 originals).
+Each repository credits Poly Haven/CC0 in the file named below, and where possible the files
+were checked byte-for-byte against a second, independent mirror.
+
+Shipped files              Poly Haven asset (https://polyhaven.com/a/<id>)   Author(s) per Poly Haven metadata
+-------------------------  -----------------------------------------------  ------------------------------------------
+Crowbar.*                  crowbar_01            "Crowbar 01"               Alexander Otterbeck
+Sledgehammer.*             sledgehammer_01       "Sledgehammer 01"          Dylan Guzman
+CrossPeinHammer.*          cross_pein_hammer     "Cross Pein Hammer"        Tics (see the note below the mirror list)
+FlatheadScrewdriver.*      flathead_screwdriver  "Flathead Screwdriver"     Dylan Detwiller
+BoltCutters.*              bolt_cutters_01       "Bolt Cutters 01"          Antanas Kep (modelling, texturing), Yann Kervran (rigging)
+WorkGloves.*               garden_gloves_01      "Garden Gloves 01"         Satyaki Mandal
+Stone.*                    stone_01              "Stone 01" (photoscan)     Dario Barresi, Rico Cilliers
+Trashbag.*                 trashbag              "Trashbag"                 Benny Weimer
+Clipboard.*                clipboard             "Clipboard"                ProgrammerOnCoffee
+MeasuringTape.*            measuring_tape_01     "Measuring Tape 01"        Kuutti Siitonen
+MagnifyingGlass.*          magnifying_glass_01   "Magnifying Glass 01"      Nazar Borodavka
+PortableSearchlight.*      portable_searchlight  "Portable Searchlight"     Elijah Cragg
+SecurityCamera.*           security_camera_01    "Security Camera 01"       Alexander Otterbeck (modelling, texturing), Yann Kervran (rigging)
+LeatherBinder.*            binder_notebook       "Binder Notebook"          DaDrood
+OfficeNotepads.*           office_notepads       "Office Notepads"          Ulan Cabanilla
+
+Mirrors used (repository @ commit, folder; credit file):
+  crowbar_01, sledgehammer_01, magnifying_glass_01:
+      github.com/tuniveza/Generative-Games @ 831f115caeea2201fdac5315bac4fcb707eeaf85,
+      The-Ruins-of-Bezan/assets/models/<id>/ ; The-Ruins-of-Bezan/CREDITS.md
+  bolt_cutters_01:   github.com/Tiddybub/3d-assets @ 11ff7082e566a6278553bf7623980cb93dd41e27, sci-fi/bolt_cutters_01/ ; README.md
+  flathead_screwdriver: github.com/fi-77-70/Game-Jam @ 9f83e5aa5b9b7d80d4d3397309d96a32ab9d8b63, assets/Tools/screwdiver/
+  cross_pein_hammer: github.com/mydkonline/laughgg @ 3a35f37d59700fb6be0ce9197c8c18902502c505, assets/ph/cross_pein_hammer/ ; CREDITS.md
+  garden_gloves_01, binder_notebook:
+      github.com/Geadas11/Claude_steam_game @ 8b6aa56f951450b7a05434615bcdda2bd2d1e8fa, assets/3d/models/<id>/ ; assets/3d/CREDITS.md
+  stone_01:          github.com/awplanets/awplanet @ 40c01a6984e35b24bad0c1222c6c5970b64f18d2, public/models/nature/polyhaven/stone_01/ ;
+                     public/models/nature/polyhaven/LICENSE.md
+  trashbag, clipboard, security_camera_01, office_notepads:
+      github.com/TheMarco/liminal @ e0950c5982e79878c4e04f1cca89b70190df8dd1, models/cc0/<id>/ ; THIRD_PARTY_ASSETS.md, models/cc0/SOURCES.md
+  measuring_tape_01: github.com/sulemanali5760/brick-by-brick @ 4424aafaf92880ce051945b1ba2aa636b4a50fb3,
+                     assets/source/polyhaven/measuring_tape_01/ ; docs/ASSETS.md
+  portable_searchlight: github.com/Xavier-ky/oilsoul @ 3cf8f19cca7d4d8ac21d3774c72fac7a10796f35,
+                     frontend/public/models/field-props/polyhaven/portable_searchlight/ ;
+                     frontend/public/models/field-props/CREDITS.md ("Poly Haven - Portable Searchlight,
+                     https://polyhaven.com/a/portable_searchlight, author Elijah Cragg, CC0 1.0, official 1K glTF,
+                     18,802 triangles")
+  Independent byte-identical checks: github.com/ConcordDev/concord-cognitive-engine @ a9e29c84
+  (Poly Haven library, manifest source "Poly Haven (CC0)") holds the same diffuse maps for
+  portable_searchlight, cross_pein_hammer and trashbag; github.com/HHSOLL/DeskteriorOnline @ 6102359d
+  holds the same texture maps for crowbar_01, bolt_cutters_01 and flathead_screwdriver;
+  Geadas11/Claude_steam_game holds the same .bin for clipboard, magnifying_glass_01 and measuring_tape_01.
+  Author of binder_notebook: the Poly Haven API record mirrored in github.com/mylife-as-miles/Palindrome-Three-Bedroom
+  @ 20f15f3e, assets/material-authoring/polyhaven-furniture/selection/office-leisure/binder_notebook-info.json
+  ("authors": {"DaDrood": "All"}, polycount 18,077 = the source glTF); github.com/PianoNic/BackroomsBaden @ 794e9165,
+  client/public/models/LICENSES.md gives the same credit.
+  Author of cross_pein_hammer: attribution = "Tics; Poly Haven" in github.com/ryan-ressmeyer/VisionStimulusEngine
+  @ 2bf1c339, assets/3d/manifest.toml. That manifest pins the SHA-256 of the official dl.polyhaven.org downloads of
+  this model, and all five equal the hashes of the mirror files used here, so the hammer is the unmodified Poly Haven
+  release. Only this one record names the author, and polyhaven.com cannot be reached from the build machine, so the
+  name is not confirmed against the asset page itself (CC0 needs no attribution either way).
+
+Changes made here (all files):
+  - Converted glTF -> OBJ/MTL with Tools/glb_to_obj.py (--ground: lowest point at y = 0, centred in x/z),
+    metres and authored orientation kept; OBJ numbers rounded to 0.1 mm.
+  - Base colour -> <Name>_Color.jpg; nor_gl -> <Name>_Normal.jpg; ARM (R = AO, G = roughness, B = metal)
+    -> <Name>_MetallicSmoothness.png (R = metallic, A = 1 - roughness). Some maps reduced to 512 px or 1K.
+  - Glass sub-materials (magnifier lens, camera window, searchlight lens) written as MTL constants.
+  - Security camera, searchlight, stone and binder decimated to 9,001 / 8,999 / 4,999 / 8,000 triangles
+    (UV-exact decimation, Source~/decimate_exact.py).
+  - Product-style lettering painted out of four colour maps so no brand-like text remains:
+    "Q-TECH" (measuring tape label), "FocusSpy" (camera badge), "YOKI'S" (glove tag), "SENTINEL IQ-4"
+    (searchlight plate) - Source~/delabel.py.
+  - The woven "YOKI'S" glove tag also showed in the roughness channel (WorkGloves_MetallicSmoothness.png alpha)
+    and as a raised outline in WorkGloves_Normal.jpg. Both maps were rebuilt from the unmodified 2K ARM and
+    normal maps with the tag area filled from the surrounding knit (Source~/delabel_glove_maps.py,
+    October 15, 2026), so the tag is now gone from the colour, smoothness and normal maps.
+  - OfficeNotepads: the ten pads of the showcase grid re-laid as a floor scatter (Source~/scatter_groups.py).
+
+Voluntary credit line: "3D models by Alexander Otterbeck, Dylan Guzman, Tics, Dylan Detwiller, Antanas Kep,
+Yann Kervran, Satyaki Mandal, Dario Barresi, Rico Cilliers, Benny Weimer, ProgrammerOnCoffee,
+Kuutti Siitonen, Nazar Borodavka, Elijah Cragg, DaDrood and Ulan Cabanilla (polyhaven.com, CC0)."
+
+===============================================================================
+2. Project-owned original work
+===============================================================================
+Made for this repository on October 14, 2026 with Python (numpy, Pillow, trimesh); procedural
+geometry and procedural textures only, no third-party models, photos or textures. Project-owned;
+the project may use, change and redistribute them without restriction (treat them like CC0).
+
+  Evidence and documents: EvidenceBagPaper, EvidenceBagPlastic, EvidenceMarkerTent, EvidenceMarkerCone,
+      ForensicScaleL, PaperSheetForm, ScatteredPapers, ForensicPapers_Color.jpg
+  Forensic kit: FingerprintBrush, FingerprintPowderJar, NitrileGloveBox, ForensicCase, TacticalFlashlight,
+      UVTorch, PoliceRadio, CameraTripod, ShoePrintCast
+  Police: PoliceCap, PoliceBarrier
+  Burglary: BrickHalf, DuffelBag, Balaclava
+  Glass: GlassShardsLarge, GlassShardsScatter, TemperedGlassCrumbs, GlassCrackDecal_ColorAlpha.png,
+      GlassCrackDecal_Normal.png
+  Source~/*.py: the generator and conversion scripts (Unity ignores folders ending in "~").
+
+Printed text on labels, forms and markers was rasterised with the DejaVu fonts installed on the build
+machine (Bitstream Vera / DejaVu licence; only glyph images are used, no font file is shipped). Every
+name, case number, shop name ("Aurel & Finch", the project's fictional shop), police force ("City
+Police") and product description is fictional. No real brand, logo, badge or person is depicted; the
+police cap badge is a generic eight-point star without lettering.

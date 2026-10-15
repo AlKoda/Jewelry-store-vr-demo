@@ -1,0 +1,18 @@
+Excerpt (verbatim lines 1-11, 29, 58 and 74) of sounds/CREDITS.md in https://github.com/Jxstrr0/350Chev
+commit b80c73b490962d4de5d47cf49e99e68a21c968dc, read October 15, 2026. Kept as licence evidence for
+PoliceCarIdle_Loop.wav (source file sounds/v8x54_idle.mp3, sha256 e2fe4ed9baaef8752b19f0963041825a46b71eb3f5e2a5704db7b57108101610).
+----------------------------------------------------------------------------------------------------------
+# Engine sound credits
+
+Real engine recordings used by the **Real recordings** and **Blend** engine voices (Settings › Engine voice).
+Every file below is openly licensed (CC0 / public domain / CC BY / CC BY-SA). Modifications for every clip:
+trimmed to the listed window, high-passed at 28 Hz, time-warped so the engine holds one steady measured rpm,
+cut to a whole number of engine cycles and looped with an equal-power crossfade, loudness-normalised, mixed to mono
+and encoded as 96 kbps MP3. In the game the loops are pitch-shifted live to the build's rpm and mixed with the synth.
+Freesound clips were taken from the site's public HQ preview MP3 of a CC0 sound; Commons clips from Wikimedia's own MP3 transcode of the original file.
+
+**License of the derived files in this folder:** each `.mp3` keeps the license of its source — CC0 / public-domain sources stay CC0 / public domain;
+files derived from CC BY sources are CC BY (same version) with the attribution below; files derived from CC BY-SA sources are released under the same CC BY-SA version.
+| `v8x54_idle.mp3` | Ford F350 5.4 V8 startup and idle | Therancher01 | [CC0 1.0](http://creativecommons.org/publicdomain/zero/1.0/) | [Freesound (HQ preview MP3)](https://freesound.org/people/Therancher01/sounds/610772/) | v8x54_idle: 999 rpm (8 cyl), 5.0–28.0 s |
+## Raw license fields as read on 2026-10-10
+- `fs_610772` — https://freesound.org/people/Therancher01/sounds/610772/ — Freesound page license link: "Creative Commons 0" → http://creativecommons.org/publicdomain/zero/1.0/

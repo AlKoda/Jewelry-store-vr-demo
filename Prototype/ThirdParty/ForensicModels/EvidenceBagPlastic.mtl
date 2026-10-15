@@ -1,0 +1,6 @@
+newmtl BagPolythene
+Kd 1.000 1.000 1.000
+Ks 0.500 0.500 0.500
+d 1.000
+Ns 300
+map_Kd EvidenceBagPlastic_Color.png

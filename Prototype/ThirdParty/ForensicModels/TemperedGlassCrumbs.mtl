@@ -1,0 +1,11 @@
+newmtl GlassEdge
+Kd 0.420 0.620 0.550
+Ks 0.600 0.600 0.600
+d 0.750
+Ns 600
+
+newmtl GlassFace
+Kd 0.860 0.900 0.890
+Ks 0.900 0.900 0.900
+d 0.220
+Ns 900

@@ -1,0 +1,7 @@
+newmtl Leather
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd OttomanLeather_Color.jpg
+# Normal OttomanLeather_Normal.jpg
+# MetallicSmoothness OttomanLeather_MetallicSmoothness.png

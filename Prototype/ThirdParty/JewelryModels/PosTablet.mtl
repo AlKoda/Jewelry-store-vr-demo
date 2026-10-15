@@ -1,0 +1,21 @@
+newmtl SteelBrushed
+Kd 0.8613 0.8613 0.8613
+Ks 0.5000 0.5000 0.5000
+Ns 309.5
+d 1.000
+illum 2
+
+newmtl PlasticBlack
+Kd 0.2179 0.2179 0.2262
+Ks 0.2000 0.2000 0.2000
+Ns 309.5
+d 1.000
+illum 2
+
+newmtl PosScreen
+Kd 1.0000 1.0000 1.0000
+Ks 0.3000 0.3000 0.3000
+Ns 811.9
+d 1.000
+illum 2
+map_Kd PosTablet_Screen.png

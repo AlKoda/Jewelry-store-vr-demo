@@ -1,0 +1,23 @@
+newmtl Gravel
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PottedPlantArrowhead_Gravel_Color.jpg
+# Normal PottedPlantArrowhead_Gravel_Normal.jpg
+# MetallicSmoothness PottedPlantArrowhead_Gravel_MetallicSmoothness.png
+
+newmtl Leaves
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PottedPlantArrowhead_Leaves_Color.jpg
+# Normal PottedPlantArrowhead_Leaves_Normal.jpg
+# MetallicSmoothness PottedPlantArrowhead_Leaves_MetallicSmoothness.png
+
+newmtl Pot
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PottedPlantArrowhead_Pot_Color.jpg
+# Normal PottedPlantArrowhead_Pot_Normal.jpg
+# MetallicSmoothness PottedPlantArrowhead_Pot_MetallicSmoothness.png

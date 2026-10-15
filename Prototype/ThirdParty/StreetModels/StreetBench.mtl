@@ -1,0 +1,17 @@
+newmtl Timber
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd StreetBench_Timber_Color.jpg
+
+newmtl Steel
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd StreetBench_Steel_Color.jpg
+
+newmtl CastIron
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd StreetBench_CastIron_Color.jpg

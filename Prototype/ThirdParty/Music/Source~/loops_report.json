@@ -1,0 +1,74 @@
+{
+ "MenuTheme": {
+  "loop_start_s": 67.5,
+  "source_lag_s": 119.999083,
+  "loop_len_samples_48k": 5760000,
+  "loop_len_s": 120.0,
+  "match_corr": 0.9436,
+  "crossfade_s": 6.0,
+  "crossfade_shape": "raised-cosine equal-gain",
+  "file_starts_at_source_s": 119.9,
+  "gain_db": -5.4,
+  "lufs": -18.0,
+  "lra": 4.6,
+  "true_peak_dbtp": -5.5,
+  "seam": {
+   "wrap_jump": 0.00012846707178915118,
+   "median_step": 0.001879801379239765,
+   "p99_step": 0.008997615971652714,
+   "wrap_flux": 0.8027916423409012,
+   "median_flux": 0.6194594705607952,
+   "p95_flux": 1.4015625881551304
+  },
+  "samples_44k1": 5292000,
+  "seconds": 120.0
+ },
+ "InvestigationLoop": {
+  "loop_start_s": 30.0,
+  "source_lag_s": 104.0,
+  "loop_len_samples_48k": 4992000,
+  "loop_len_s": 104.0,
+  "match_corr": 1.0,
+  "crossfade_s": 0.0,
+  "crossfade_shape": "none (sample-exact repeat)",
+  "file_starts_at_source_s": 30.0,
+  "gain_db": -7.9,
+  "lufs": -20.0,
+  "lra": 11.2,
+  "true_peak_dbtp": -8.2,
+  "seam": {
+   "wrap_jump": 0.00804626433645185,
+   "median_step": 0.0023371517365853023,
+   "p99_step": 0.012132877174557865,
+   "wrap_flux": 0.7416350463623423,
+   "median_flux": 0.676851162066832,
+   "p95_flux": 0.8905283205481896
+  },
+  "samples_44k1": 4586400,
+  "seconds": 104.0
+ },
+ "InvestigationLoop_Calm": {
+  "loop_start_s": 80.0,
+  "source_lag_s": 128.000021,
+  "loop_len_samples_48k": 6144000,
+  "loop_len_s": 128.0,
+  "match_corr": 1.0,
+  "crossfade_s": 0.0,
+  "crossfade_shape": "none (sample-exact repeat)",
+  "file_starts_at_source_s": 80.0,
+  "gain_db": 1.5,
+  "lufs": -20.0,
+  "lra": 7.2,
+  "true_peak_dbtp": -2.4,
+  "seam": {
+   "wrap_jump": 0.0027378465651134234,
+   "median_step": 0.0018817097017177226,
+   "p99_step": 0.011614621429954628,
+   "wrap_flux": 0.8806849451743592,
+   "median_flux": 0.8708993589906138,
+   "p95_flux": 1.2329397382385354
+  },
+  "samples_44k1": 5644800,
+  "seconds": 128.0
+ }
+}

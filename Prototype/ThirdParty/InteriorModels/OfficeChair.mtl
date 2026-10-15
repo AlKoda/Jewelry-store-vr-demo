@@ -1,0 +1,42 @@
+newmtl Base
+Kd 0.760 0.770 0.780
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Rubber
+Kd 0.035 0.035 0.035
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl PlasticBlack
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticBlack_Color.jpg
+# Normal Shared_PlasticBlack_Normal.jpg
+
+newmtl Chrome
+Kd 0.800 0.800 0.820
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Fabric
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_FabricCharcoal_Color.jpg
+# Normal Shared_FabricCharcoal_Normal.jpg
+
+newmtl Mesh
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_MeshWeave_Color.jpg
+# Normal Shared_MeshWeave_Normal.jpg
+
+newmtl ArmPad
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticBlack_Color.jpg
+# Normal Shared_PlasticBlack_Normal.jpg

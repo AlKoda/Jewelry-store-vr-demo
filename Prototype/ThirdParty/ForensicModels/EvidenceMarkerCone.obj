@@ -1,0 +1,34 @@
+# EvidenceMarkerCone - ForensicModels pack. Units: metres, Y up. Project-owned original work, generated for this repository.
+mtllib EvidenceMarkerCone.mtl
+v 0 0 -0.0476
+v -0.055 0 0.0476
+v -0.011 0.12 0.0222
+v 0 0.12 0.0032
+v 0.055 0 0.0476
+v 0.011 0.12 0.0222
+v 0 0.12 0.0159
+v 0 0 0.0159
+vt 0.005 0.75
+vt 0.245 0.75
+vt 0.148 1
+vt 0.102 1
+vt 0.125 0.76
+vn -0.847 0.207 -0.489
+vn 0 0.207 0.978
+vn 0.847 0.207 -0.489
+vn 0 1 0
+vn 0 -1 0
+g MarkerPlastic
+usemtl MarkerPlastic
+f 1/1/1 2/2/1 3/3/1
+f 1/1/1 3/3/1 4/4/1
+f 2/1/2 5/2/2 6/3/2
+f 2/1/2 6/3/2 3/4/2
+f 5/1/3 1/2/3 4/3/3
+f 5/1/3 4/3/3 6/4/3
+f 7/5/4 4/5/4 3/5/4
+f 7/5/4 3/5/4 6/5/4
+f 7/5/4 6/5/4 4/5/4
+f 8/5/5 2/5/5 1/5/5
+f 8/5/5 5/5/5 2/5/5
+f 8/5/5 1/5/5 5/5/5

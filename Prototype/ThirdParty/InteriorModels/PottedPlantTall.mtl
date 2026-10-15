@@ -1,0 +1,23 @@
+newmtl Gravel
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PottedPlantTall_Gravel_Color.jpg
+# Normal PottedPlantTall_Gravel_Normal.jpg
+# MetallicSmoothness PottedPlantTall_Gravel_MetallicSmoothness.png
+
+newmtl Leaves
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PottedPlantTall_Leaves_Color.png
+# Normal PottedPlantTall_Leaves_Normal.jpg
+# MetallicSmoothness PottedPlantTall_Leaves_MetallicSmoothness.png
+
+newmtl Pot
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PottedPlantTall_Pot_Color.jpg
+# Normal PottedPlantTall_Pot_Normal.jpg
+# MetallicSmoothness PottedPlantTall_Pot_MetallicSmoothness.png

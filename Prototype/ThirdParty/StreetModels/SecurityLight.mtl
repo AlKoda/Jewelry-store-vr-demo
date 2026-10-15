@@ -1,0 +1,15 @@
+newmtl Glass
+Kd 0.8500 0.8500 0.8200
+Ks 0.04 0.04 0.04
+d 0.550
+
+newmtl Housing
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd SecurityLight_Housing_Color.jpg
+
+newmtl Bulb
+Kd 1.0000 0.8500 0.6000
+Ks 0.04 0.04 0.04
+d 1.000

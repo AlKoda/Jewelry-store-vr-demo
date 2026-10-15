@@ -1,0 +1,11 @@
+newmtl Pot
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PottedPlant_Pot_Color.jpg
+
+newmtl Leaves
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PottedPlant_Leaves_Color.jpg

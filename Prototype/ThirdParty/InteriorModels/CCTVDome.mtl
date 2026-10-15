@@ -1,0 +1,29 @@
+newmtl Housing
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticWhite_Color.jpg
+# Normal Shared_PlasticWhite_Normal.jpg
+
+newmtl Dome
+Kd 0.050 0.050 0.060
+Ks 0.500 0.500 0.500
+d 0.55
+Ns 220
+
+newmtl Inner
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticBlack_Color.jpg
+# Normal Shared_PlasticBlack_Normal.jpg
+
+newmtl Lens
+Kd 0.020 0.030 0.050
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl IR
+Kd 0.250 0.050 0.050
+Ks 0.050 0.050 0.050
+d 1.0

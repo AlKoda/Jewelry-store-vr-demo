@@ -1,0 +1,87 @@
+SurfaceDecals - decal, effect and light-cookie textures for the night jewellery-store scene
+Prepared October 14, 2026. Not yet imported or checked in Unity.
+
+Three groups. Per-file SHA-256 hashes, pixel sizes and sources are in sources.json.
+
+-------------------------------------------------------------------------------
+1. Original project work (project-owned)
+-------------------------------------------------------------------------------
+All PNG files except SmokePuff_Kenney*.png and LeafLitter_Wet*.png:
+
+   ShoePrint_*  Fingerprints_Atlas  GlassHandprint_Latent  GlassShards_Scatter*
+   GlassCrumbs_Tempered*  ConcreteCrack_*  AsphaltCrackSeal*  Puddle_*  GrimeStreaks_Wall
+   DirtTracked_Entrance  DirtEdge_WallBase  WaterStain_*  OilStain*  ChewingGum_Scatter*
+   LitterScatter*  FloorScuffs_Heel  FloorScratches_Fine  DragMarks_Floor*  DustFilm_MissingItems
+   PryMarks_DoorFrame*
+   TyreSkid  TyreTread_Mud*  DustMotes_Atlas  LightShaft_Gradient  FogPuff_Atlas  LensGlow
+   LensFlare_Streak  LensFlare_Ghosts  LensStarburst  Caustics_Tile  Cookie_*
+
+   Author: this project (generated with Claude Code on October 14, 2026; Fingerprints_Atlas.png
+   regenerated October 15, 2026 so that its developed row is the same print as its latent row).
+   Made procedurally with Python (numpy, scipy, Pillow) by the scripts in Source~/
+   (dutil.py, footprints.py, fingerprints.py, glass.py, cracks.py, puddles.py, surface.py,
+   roadlitter.py, effects.py). No third-party image, photograph, font or scan was used as input.
+   License: project-owned; no third-party rights or attribution requirements. The project may
+   use, modify and redistribute them freely.
+   Notes: the fingerprints are synthetic (generated ridge orientation fields and Gabor ridge
+   growth) and do not reproduce any real person's prints. The shoe soles and the tyre tread are
+   generic designs and do not copy any manufacturer's pattern or logo. No text, brand or logo
+   appears in any image.
+
+-------------------------------------------------------------------------------
+2. Kenney Particle Pack 1.1 (CC0 1.0)
+-------------------------------------------------------------------------------
+   Files: SmokePuff_Kenney01.png, SmokePuff_Kenney04.png, SmokePuff_Kenney07.png,
+          SmokePuff_Kenney08.png
+   Title: Particle Pack (1.1), files smoke_01.png, smoke_04.png, smoke_07.png, smoke_08.png
+          from the "PNG (Transparent)" folder
+   Author: Kenney Vleugels (Kenney.nl)
+   Source: https://kenney.nl/assets/particle-pack
+   Downloaded from the GitHub copy https://github.com/Mrcocacola21/FATE
+          @ 3a07cfc8be6f5141de67f360f4ff9aef7fecb0fd,
+          packages/web/assets/vfx/vendor/kenney-particle-pack/ (the full pack with its
+          License.txt; that repository's own licence covers its code, not these CC0 files)
+   License: Creative Commons Zero, CC0 1.0 Universal
+          https://creativecommons.org/publicdomain/zero/1.0/
+   Attribution: not required. Courtesy credit: "Smoke sprites: Kenney (www.kenney.nl), CC0".
+   Changes: palette PNG converted to RGBA; colour of fully transparent pixels set to white; renamed.
+
+   License.txt shipped with the pack (verbatim):
+	Particle Pack (1.1)
+	by Kenney Vleugels (Kenney.nl)
+	Additional credit for creating filter templates:
+	Indigo Ray, Craig Nisbet, Zoltan Erdokovy, Heliagon, ThreeDee, Killst4r and Tim2501
+	License (Creative Commons Zero, CC0)
+	http://creativecommons.org/publicdomain/zero/1.0/
+	You may use these assets in personal and commercial projects.
+	Credit (Kenney or www.kenney.nl) would be nice but is not mandatory.
+
+-------------------------------------------------------------------------------
+3. ambientCG LeafSet024 (CC0 1.0) - derived work
+-------------------------------------------------------------------------------
+   Files: LeafLitter_Wet.png, LeafLitter_Wet_Normal.png, LeafLitter_Wet_MetallicSmoothness.png
+   Title: Leaf Set 024 (photoscanned beech leaves), 2K-JPG Color, NormalGL, Opacity, Roughness
+   Author: ambientCG (Lennart Demes)
+   Source: https://ambientcg.com/view?id=LeafSet024 (asset id confirmed in the ambientCG catalogue
+          listing src/data/materials.Popular.1.txt of github.com/repalash/cc0textures-threejs)
+   Downloaded from the GitHub copy https://github.com/achrefelouafi/ProceduralBuildingsThreeJS
+          @ 6c19f1b1f14408353989ad26cda27f1e1ede5e91, blender/textures/LeafSet024/
+          (Git LFS objects through media.githubusercontent.com; each file's SHA-256 equals its
+          LFS oid; the repository README states its ambientCG sets are CC0; its MIT licence
+          covers the code only)
+   License: CC0 1.0 Universal https://creativecommons.org/publicdomain/zero/1.0/
+          (ambientCG publishes all assets under CC0; see https://docs.ambientcg.com/license/,
+          as already recorded for NightMaterials and PBRExterior)
+   Attribution: not required. Courtesy credit: "Leaves: ambientCG.com, CC0".
+   Changes: the nine leaves were cut from the 3 x 3 atlas, recoloured from summer green to wet
+          autumn browns/ochres, scaled to 62-98 mm, rotated and flipped (normal vectors rotated
+          accordingly) and scattered 58 times over a 1 m decal; smoothness = 0.55 + 0.35 * (1 -
+          roughness). Script: Source~/leaves_photo.py.
+
+-------------------------------------------------------------------------------
+Rejected / not used (see the asset-batch notes): ambientCG Footsteps, Fingerprints, ChewingGum,
+TireTracks, Scratches, Smear, SurfaceImperfections, AsphaltDamage decals (CC0, but no reachable
+mirror); Red Eclipse decals (CC BY-SA by default); Godot decals-demo puddles (256 px, provenance
+not stated per file); BabylonJS Assets flare/lens-dirt textures (repo-wide CC BY 4.0 but the
+individual textures' origins are not documented); three.js example lens-flare textures (licence
+of the image files not stated); NIST fingerprint databases (real people's biometrics).

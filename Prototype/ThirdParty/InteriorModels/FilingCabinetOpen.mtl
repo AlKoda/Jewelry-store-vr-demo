@@ -1,0 +1,49 @@
+newmtl Body
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PowderCoatGrey_Color.jpg
+# Normal Shared_PowderCoatGrey_Normal.jpg
+
+newmtl Plinth
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticBlack_Color.jpg
+# Normal Shared_PlasticBlack_Normal.jpg
+
+newmtl Handle
+Kd 0.760 0.770 0.780
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Recess
+Kd 0.050 0.050 0.050
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Label
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd FilingCabinet_Labels.png
+
+newmtl Rail
+Kd 0.760 0.770 0.780
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl FolderKraft
+Kd 0.620 0.500 0.340
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Folder
+Kd 0.180 0.360 0.220
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Paper
+Kd 0.920 0.920 0.900
+Ks 0.050 0.050 0.050
+d 1.0

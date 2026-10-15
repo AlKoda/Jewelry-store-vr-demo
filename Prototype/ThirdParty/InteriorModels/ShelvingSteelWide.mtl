@@ -1,0 +1,15 @@
+newmtl Drawers
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd ShelvingSteelWide_Drawers_Color.jpg
+# Normal ShelvingSteelWide_Drawers_Normal.jpg
+# MetallicSmoothness ShelvingSteelWide_Drawers_MetallicSmoothness.png
+
+newmtl Frame
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd ShelvingSteelWide_Frame_Color.jpg
+# Normal ShelvingSteelWide_Frame_Normal.jpg
+# MetallicSmoothness ShelvingSteelWide_Frame_MetallicSmoothness.png

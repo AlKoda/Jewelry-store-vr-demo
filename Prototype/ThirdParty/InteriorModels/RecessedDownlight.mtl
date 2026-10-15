@@ -1,0 +1,16 @@
+newmtl Trim
+Kd 0.950 0.950 0.950
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticWhite_Color.jpg
+# Normal Shared_PlasticWhite_Normal.jpg
+
+newmtl Reflector
+Kd 0.760 0.770 0.780
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Lens
+Kd 1.000 0.970 0.900
+Ks 0.050 0.050 0.050
+d 1.0

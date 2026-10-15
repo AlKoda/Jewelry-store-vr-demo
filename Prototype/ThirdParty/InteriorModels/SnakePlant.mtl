@@ -1,0 +1,20 @@
+newmtl Pot
+Kd 0.350 0.340 0.330
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticBlack_Color.jpg
+# Normal Shared_PlasticBlack_Normal.jpg
+
+newmtl Soil
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd SnakePlant_Soil_Color.jpg
+# Normal SnakePlant_Soil_Normal.jpg
+
+newmtl Leaf
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd SnakePlant_Leaf_Color.jpg
+# Normal SnakePlant_Leaf_Normal.jpg

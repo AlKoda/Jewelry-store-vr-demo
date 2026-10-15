@@ -1,0 +1,162 @@
+StreetModels - street and exterior models for the night jewellery-store scene
+Prepared 2026-10-14. Not yet imported or checked in Unity.
+
+This folder mixes three licences. Per-file licence, source URL, mirror commit and SHA-256 are in sources.json.
+  1. Poly Haven models: CC0 1.0 (public domain dedication). No attribution required; credits below are a courtesy.
+  2. Daniel Zhabotinsky models: CC BY 4.0. ATTRIBUTION IS REQUIRED wherever the demo is shared (credits screen / docs).
+  3. Project-made procedural models and textures: owned by this project, no third-party content.
+
+CC0 1.0:   https://creativecommons.org/publicdomain/zero/1.0/
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
+===============================================================================
+1. Poly Haven (CC0 1.0)
+===============================================================================
+Publisher licence: https://polyhaven.com/license, read from the site source github.com/Poly-Haven/polyhaven.com
+@ b1a6aa13afc03ae00860f6ac5fe6d5daf8e95356, public/locales/en/license.json:
+  "Our assets are all licensed as CC0, which is effectively Public Domain ..."
+  "You can use our assets for any purpose, including commercial work."
+  "You do not need to give credit or attribution when using them (although it is appreciated)."
+  "You can redistribute them, share them around, include them when sharing your own work, or even in a product you sell."
+polyhaven.com is not reachable from the build container, so the unmodified 1K glTF files were taken from public GitHub
+repositories that ship them (each repository's own licence covers its code only). Where possible every file was checked
+byte-for-byte against SHA-256 values that other projects recorded for the dl.polyhaven.org originals (see integrity_check).
+Authors are from the Poly Haven API listing (copy in github.com/Akshay25798/VFX-Houdini-Asset_Browser downloads/json/models.json).
+
+StreetLamp.obj, StreetLamp.mtl, StreetLamp_LampMetal_Color.jpg, StreetLamp_LampMetal_MetallicSmoothness.png, StreetLamp_LampMetal_Normal.jpg
+  "Street Lamp 01" by Josh Dean - https://polyhaven.com/a/street_lamp_01 - CC0 1.0
+  Mirror: https://github.com/rawprogress/fable-cities @ aea8b1035030952555395de0c1de14ba693a1427, public/assets/shared/models/street_lamp_01
+  Integrity: all 5 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 30,610 -> 5,373 tris (revision 2026-10-15: 2 zero-area triangles removed).
+
+FireHydrant.obj, FireHydrant.mtl, FireHydrant_Hydrant_Color.jpg, FireHydrant_Hydrant_MetallicSmoothness.png, FireHydrant_Hydrant_Normal.jpg
+  "Fire Hydrant" by Gonçalo Felício - https://polyhaven.com/a/fire_hydrant - CC0 1.0
+  Mirror: https://github.com/rawprogress/fable-cities @ aea8b1035030952555395de0c1de14ba693a1427, public/assets/shared/models/fire_hydrant
+  Integrity: all 8 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files) and in codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/assets.json (SHA-256 pinned per dl.polyhaven.org URL)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; aged variant only; 43,158 -> 3,809 tris (revision 2026-10-15: 348 zero-area triangles removed).
+
+MetalTrashCan.obj, MetalTrashCan.mtl, MetalTrashCan_GalvanisedSteel_Color.jpg, MetalTrashCan_GalvanisedSteel_MetallicSmoothness.png, MetalTrashCan_GalvanisedSteel_Normal.jpg
+  "Metal Trash Can" by GurJas Studios - https://polyhaven.com/a/metal_trash_can - CC0 1.0
+  Mirror: https://github.com/rawprogress/fable-cities @ aea8b1035030952555395de0c1de14ba693a1427, public/assets/shared/models/metal_trash_can
+  Integrity: all 8 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour only: this asset's ARM map has an empty AO channel, so no AO is baked (revision 2026-10-15: the first conversion multiplied it in and shipped the colour map at half brightness), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; clean (non-rust) variant; 6,428 -> 2,345 tris (revision 2026-10-15: 11 zero-area triangles removed).
+
+StreetBench.obj, StreetBench.mtl, StreetBench_CastIron_Color.jpg, StreetBench_CastIron_MetallicSmoothness.png, StreetBench_CastIron_Normal.jpg, StreetBench_Steel_Color.jpg, StreetBench_Steel_MetallicSmoothness.png, StreetBench_Steel_Normal.jpg, StreetBench_Timber_Color.jpg, StreetBench_Timber_MetallicSmoothness.png, StreetBench_Timber_Normal.jpg
+  "Modular Street Seating" by Stuart Attenborrow - https://polyhaven.com/a/modular_street_seating - CC0 1.0
+  Mirror: https://github.com/rawprogress/fable-cities @ aea8b1035030952555395de0c1de14ba693a1427, public/assets/shared/models/modular_street_seating
+  Integrity: all 14 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour only: this asset's ARM map has an empty AO channel, so no AO is baked (revision 2026-10-15: the first conversion multiplied it in and shipped the colour map at half brightness), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; straight-bench nodes of the kit only; 25,156 (kit) -> 3,931 tris (revision 2026-10-15: 110 zero-area triangles removed).
+
+ManholeCover.obj, ManholeCover.mtl, ManholeCover_CastIron_Color.jpg, ManholeCover_CastIron_MetallicSmoothness.png, ManholeCover_CastIron_Normal.jpg
+  "Water Manhole Cover" by Raunox - https://polyhaven.com/a/water_manhole_cover - CC0 1.0
+  Mirror: https://github.com/EliteGamer007/6dof-drone-sim @ 3b97077101bedb1326cf6483e04dc51ccf130fa3, assets/polyhaven/models/water_manhole_cover
+  Integrity: all 5 files byte-identical to the dl.polyhaven.org hashes in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 6,301 -> 1,891 tris (revision 2026-10-15: 1 zero-area triangles removed).
+
+UtilityBox.obj, UtilityBox.mtl, UtilityBox_PaintedSteel_Color.jpg, UtilityBox_PaintedSteel_MetallicSmoothness.png, UtilityBox_PaintedSteel_Normal.jpg
+  "Utility Box 01" by James Ray Cock - https://polyhaven.com/a/utility_box_01 - CC0 1.0
+  Mirror: https://github.com/codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/sources/utility_box_01
+  Integrity: all 5 files byte-identical to the dl.polyhaven.org hashes in codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/assets.json (SHA-256 pinned per dl.polyhaven.org URL)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 4,404 -> 3,082 tris.
+
+AirconUnit.obj, AirconUnit.mtl, AirconUnit_AirconBody_Color.jpg, AirconUnit_AirconBody_MetallicSmoothness.png, AirconUnit_AirconBody_Normal.jpg, AirconUnit_AirconGrille_Color.png, AirconUnit_AirconGrille_MetallicSmoothness.png, AirconUnit_AirconGrille_Normal.jpg
+  "Exterior Aircon Unit" by Monsta3D - https://polyhaven.com/a/exterior_aircon_unit - CC0 1.0
+  Mirror: https://github.com/codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/sources/exterior_aircon_unit
+  Integrity: all 14 files byte-identical to the dl.polyhaven.org hashes in codejeet/NVMatrixEngine @ aa777402961cb78ee6861658ab46fc014ebf763a, engine/assets/neon-night/assets.json (SHA-256 pinned per dl.polyhaven.org URL)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 18,986 (two variants) -> 3,174 tris (revision 2026-10-15: 148 zero-area triangles removed). AirconGrille colour map (revision 2026-10-15): Poly Haven ships no colour map for this material (its glTF uses the opacity mask as base colour), so Source~/aircon_grille.py builds it: A = exterior_aircon_unit_01_opacity_1k.jpg at 512 px (cut-out coverage kept, 0.29 -> 0.30), RGB = aluminium for metallic texels (condenser fins), dark grey plastic for the fan blades, dark coated steel for the rear wire guard, times cavity shading from the authored normal map and grime from the roughness channel; the AO bake is skipped (empty AO channel).
+
+RollerShutterDoor.obj, RollerShutterDoor.mtl, RollerShutterDoor_Graffiti_Color.jpg, RollerShutterDoor_Shutter_Color.jpg, RollerShutterDoor_Shutter_MetallicSmoothness.png, RollerShutterDoor_Shutter_Normal.jpg
+  "Rollershutter Door" by MP - https://polyhaven.com/a/rollershutter_door - CC0 1.0
+  Mirror: https://github.com/EliteGamer007/6dof-drone-sim @ 3b97077101bedb1326cf6483e04dc51ccf130fa3, assets/polyhaven/models/rollershutter_door
+  Integrity: buffer and all 4 textures byte-identical to the copy in github.com/rsasaki0109/RobotNativeEngine @ f614389425a1e7d7005fbf188226a99dacb82f6b (assets/props/polyhaven_warehouse/rollershutter_door)
+  Changes: Converted 1K glTF -> OBJ/MTL (no simplification); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (resized), MetallicSmoothness = R metal, A = 1 - roughness; plain variant geometry, both colour maps kept; 552 tris.
+
+RollerShutterWindow.obj, RollerShutterWindow.mtl, RollerShutterWindow_Shutter_Color.jpg, RollerShutterWindow_Shutter_MetallicSmoothness.png, RollerShutterWindow_Shutter_Normal.jpg
+  "Rollershutter Window 01" by MP - https://polyhaven.com/a/rollershutter_window_01 - CC0 1.0
+  Mirror: https://github.com/EliteGamer007/6dof-drone-sim @ 3b97077101bedb1326cf6483e04dc51ccf130fa3, assets/polyhaven/models/rollershutter_window_01
+  Integrity: same mirror and naming as the verified rollershutter_door; no second copy compared
+  Changes: Converted 1K glTF -> OBJ/MTL (no simplification); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (resized), MetallicSmoothness = R metal, A = 1 - roughness; plain variant only; 552 tris.
+
+SecurityLight.obj, SecurityLight.mtl, SecurityLight_Housing_Color.jpg, SecurityLight_Housing_MetallicSmoothness.png, SecurityLight_Housing_Normal.jpg
+  "Security Light" by Maximilian Schuster - https://polyhaven.com/a/security_light - CC0 1.0
+  Mirror: https://github.com/ebdevStudent/hackPHS @ c64330bbe7d782aab42d40e503a1afdd8734adde, static/assets/models/security_light
+  Integrity: all 3 textures byte-identical to the copy in github.com/HHSOLL/DeskteriorOnline @ 6102359dba9fd95f599408be1873abaa86e20730 (that copy has a re-packed buffer; the 141 kB original buffer was used)
+  Changes: Converted 1K glTF -> OBJ/MTL; meshoptimizer simplification (UV seams kept); textures re-encoded: Color = base colour x (0.5 + 0.5 AO from the ARM map), Normal = OpenGL normal (unchanged content, resized), MetallicSmoothness = R metal, A = 1 - roughness; 4,668 -> 2,800 tris.
+
+PottedPlant.obj, PottedPlant.mtl, PottedPlant_Leaves_Color.jpg, PottedPlant_Leaves_MetallicSmoothness.png, PottedPlant_Leaves_Normal.jpg, PottedPlant_Pot_Color.jpg, PottedPlant_Pot_MetallicSmoothness.png, PottedPlant_Pot_Normal.jpg
+  "Potted Plant 01" by Rico Cilliers - https://polyhaven.com/a/potted_plant_01 - CC0 1.0
+  Mirror: https://github.com/rawprogress/fable-cities @ aea8b1035030952555395de0c1de14ba693a1427, public/assets/shared/models/potted_plant_01
+  Integrity: no second copy found; the mirror's info.json names Poly Haven, Rico Cilliers and CC0 (matches the Poly Haven API listing)
+  Changes: Revision 2026-10-15, rebuilt within the 6k small-prop budget (was 11,662 tris incl. 1,650 zero-area): leaf mesh split into its 182 parts; the 91 blades simplified one by one with meshoptimizer 0.22 (seam-aware, budget raised per blade until >= 90 % of its area is kept: 9-23 tris each) and made double-sided (2,362 tris); the 91 thin tubular stalks rebuilt as 3-sided, 2-segment tubes on their fitted centrelines with their measured radius (0.8-4.1 mm) and their own UV strip (1,092 tris); pot 5,440 -> 1,000 and stem 7,008 -> 425 with meshoptimizer; the 508-pebble layer (56,878 tris) replaced by a 72-tri domed disc mapped onto the photographic gravel patch that the Poly Haven pot atlas already contains; zero-area slivers (40) and duplicate triangles removed; the 30 stem slivers that the simplification had folded inwards (back-facing from outside, unlike the original stem) re-wound to match their vertex normals (Source~/fix_stem_winding.py). Total 4,951 tris. Source~/plant_split.py, simplify_adaptive.mjs, plant_build.py. Textures unchanged: Color/Normal/MetallicSmoothness from the 1K maps (roughness map, no AO).
+
+ApartmentBlock.obj, ApartmentBlock.mtl, ApartmentBlock_CrownDark_Color.jpg, ApartmentBlock_CrownDark_MetallicSmoothness.png, ApartmentBlock_CrownDark_Normal.jpg, ApartmentBlock_Interior_Color.jpg, ApartmentBlock_Plaster_Color.jpg, ApartmentBlock_Plaster_MetallicSmoothness.png, ApartmentBlock_Plaster_Normal.jpg, ApartmentBlock_TrimStone_Color.jpg, ApartmentBlock_TrimStone_MetallicSmoothness.png, ApartmentBlock_TrimStone_Normal.jpg, ApartmentBlock_WindowFrames_Color.jpg, ApartmentBlock_WindowFrames_MetallicSmoothness.png, ApartmentBlock_WindowFrames_Normal.jpg
+  "Modular Urban Apartments Facade" by James Ray Cock - https://polyhaven.com/a/modular_urban_apartments_facade - CC0 1.0
+  Mirror: https://github.com/vincentyenn/interactive-portfolio @ 410905e7ca904beed3c4caf2e709bb53e9183db2, public/models/loft-city
+  Integrity: geometry buffer (8,168,772 bytes) byte-identical to the dl.polyhaven.org hash in raisimTech/raisim2Lib @ 94cdaa6b66f31b61e45ee0dd1efcb2c46a9498b4, rsc/city/sources.json (SHA-256 of the dl.polyhaven.org files); the mirror's SOURCE.txt states the files are unmodified 1K Poly Haven files
+  Changes: Kit simplified with meshoptimizer (270,045 -> 48,128 tris), 64 module placements assembled in Python (5 bays x 3 m, storeys 3 m, ground level +0.15 m), shell and interior planes added, merged per material: 24,410 tris (revision 2026-10-15: 105 zero-area triangles removed). Texture conversion as above. ApartmentBlock_Interior_Color.jpg (revision 2026-10-15, replaces flat vector-drawn rooms): 20 cells (5 bays x 4 storeys, top row = ground floor), each a soft-focus 75-degree perspective view re-projected from a CC0 Poly Haven interior HDRI (Lebombo by Greg Zaal, St. Fagans Interior by Morgan Evans, Empty Warehouse 01 by Sergej Majboroda) and re-lit for night by Source~/make_interior.py: daylight windows replaced by night glass, lamp pools and the photographed wall sconces as light sources, 2700-4000 K per flat, bloom, ACES-fit tone mapping; overlays per cell: sheer curtains, backlit lined curtains, Venetian blinds (one half raised), TV glow, dark flats lit only by street-light spill, four dark shops with exit-light/standby LED glows and a lit stair hall. 7 of 15 upper windows lit, 2 with TV glow. Grain added; 1024 x 1024 JPG.
+
+ApartmentBlock_Interior_Color.jpg (revision 2026-10-15) is derived from three CC0 Poly Haven HDRIs (not shipped):
+  "Lebombo" by Greg Zaal - https://polyhaven.com/a/lebombo - CC0 1.0
+    Mirror: https://github.com/pmndrs/drei-assets @ 456060a26bbeb8fdf79326f224b6d99b8bcce736, hdri/lebombo_1k.hdr
+    Integrity: byte-identical copy in github.com/ChrisCrossCrash/ck-assets @ 39eeab5f79c7f60c0b07655c810da1638bdc1019 (assets/hdri); MD5 eb75d6df7d824e83940e2c7f2ef65c70 also recorded by an unrelated Godot project (github.com/eugenood/emobotics .import/lebombo_1k.hdr-*.md5)
+  "St. Fagans Interior" by Morgan Evans - https://polyhaven.com/a/st_fagans_interior - CC0 1.0
+    Mirror: https://github.com/pmndrs/drei-assets @ 456060a26bbeb8fdf79326f224b6d99b8bcce736, hdri/st_fagans_interior_1k.hdr
+    Integrity: byte-identical copy in github.com/ChrisCrossCrash/ck-assets @ 39eeab5f79c7f60c0b07655c810da1638bdc1019 (assets/hdri); no independent hash found
+  "Empty Warehouse 01" by Sergej Majboroda - https://polyhaven.com/a/empty_warehouse_01 - CC0 1.0
+    Mirror: https://github.com/pmndrs/drei-assets @ 456060a26bbeb8fdf79326f224b6d99b8bcce736, hdri/empty_warehouse_01_1k.hdr
+    Integrity: byte-identical copy in github.com/ChrisCrossCrash/ck-assets @ 39eeab5f79c7f60c0b07655c810da1638bdc1019 (assets/hdri); no independent hash found
+  Changes: perspective crops (75 deg) re-lit for night, curtains/blinds/TV/dark-room overlays and soft focus by
+  Source~/make_interior.py (project-made processing). The result stays CC0-compatible; no attribution required.
+
+===============================================================================
+2. Daniel Zhabotinsky (CC BY 4.0) - attribution required
+===============================================================================
+Licence evidence: the license.txt that Sketchfab ships with each download ("license type: CC-BY-4.0 ... Author must be
+credited. Commercial use is allowed.") and the licence field Sketchfab writes into each glTF (asset.extras.license).
+Sketchfab is not reachable from the build container; the files come from the GitHub repositories named below.
+All makes and marques are fictional; the parody badge atlases were not shipped (badge meshes removed), number plates were
+replaced by a plain plate colour, and a film-quote slogan was painted out of the police livery.
+
+Credit lines to copy (as requested by the author):
+
+* This work is based on "80 American Police Sedan - Low poly model" (https://sketchfab.com/3d-models/80-american-police-sedan-low-poly-model-945fd09f513f4d1ab19b6388a7ea7323) by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+  Used for: PoliceCar
+  Mirror: https://github.com/CloudDCrow/space-drive @ 8a7e7f1e17844877219670817b6d032a76a26b53, public/models/popo
+  Licence evidence: Sketchfab license.txt shipped beside the model (license type: CC-BY-4.0) and asset.extras.license in scene.gltf
+  Changes (PoliceCar): Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; trunk badges removed (parody marque atlas); number-plate texture replaced by a plain plate colour; a slogan painted out of the body livery (two places); 20,840 tris (revision 2026-10-15: 8 zero-area triangles removed).
+
+* This work is based on "Ace '11 - Low Poly model" (https://sketchfab.com/3d-models/ace-11-low-poly-model-055ff8a21b8d4d279debca089e2fafcd) by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+  Used for: Hatchback
+  Mirror: https://github.com/austencloud/flow-arts-composer @ bec387c891edf3b8d2fac0842e2e7c417470e033, static/models/flow-fest/cars/ace-hatchback.glb
+  Licence evidence: asset.extras.license in the GLB (CC-BY-4.0); the mirror's CREDITS.md (CC BY 4.0, web-optimised copy: WebP textures, meshopt compression, light simplification); independent second statement for the same Sketchfab model id 055ff8a21b8d4d279debca089e2fafcd: github.com/scenemax3d/scenemax3d-desktop resources-basic/resources/Models/modern_hatchback/license.txt (CC-BY-4.0)
+  Changes (Hatchback): Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; decoded from the mirror's web-optimised GLB (meshopt + WebP -> plain glTF + PNG); badges removed (the badge atlas holds parody marques); plates replaced by plain colour; body paint set to grey metallic; 15,588 tris.
+
+* This work is based on "88 American Sedan - Low poly model" (https://sketchfab.com/3d-models/88-american-sedan-low-poly-model-8509a7f82665442592627940b7a1cfab) by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+  Used for: SedanClassic
+  Mirror: https://github.com/josiahthr/FinalGame @ 9c3fb66495210c8b9dccc3b5f28ba7633d59af53, Objects/88_american_sedan_-_low_poly_model
+  Licence evidence: Sketchfab license.txt shipped beside the model (license type: CC-BY-4.0) and asset.extras.license in scene.gltf
+  Changes (SedanClassic): Converted glTF -> OBJ/MTL (node transforms baked, metres, Y up, forward = +X); textures resized to 1K/512 and re-encoded (Color/Normal/MetallicSmoothness); KHR_materials_specular ignored; source was in inches: scaled by 0.0254 and turned 180 deg so the front faces +X; trunk badges removed; plates replaced by plain colour; paint set to dark red; 22,549 tris (revision 2026-10-15: 37 zero-area triangles removed).
+
+* This work is based on "Downtown Buildings Set - Low Poly model" (https://sketchfab.com/3d-models/downtown-buildings-set-low-poly-model-7378e7fb9c914c39880d9913a6f4e1d6) by Daniel Zhabotinsky (https://sketchfab.com/DanielZhabotinsky) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+  Used for: BuildingBrickCorner, BuildingBrickArcade, BuildingNarrowOffice, BuildingBrickResidential
+  Mirror: https://github.com/Orchemi/threejs-lab @ 2bcbfee4539e745662980c48d4b721faeace1b31, public/models/test2
+  Licence evidence: Sketchfab license.txt shipped beside the model (license type: CC-BY-4.0) and asset.extras.license in scene.gltf
+  Changes (BuildingBrickCorner): Converted the selected building from the set (node transforms baked, metres, Y up); shared 2K atlases resized to 1K JPG and renamed DT_*; metallicRoughness maps (near-constant) folded into material constants; no vertex normals written (flat facades); 3,261 tris. Revision 2026-10-15: the Sketchfab export lost the opacity of the Maskedstuff atlas (opaque JPEG composited on black), so the fire-escape cards rendered as near-black slabs; Source~/masked_details.py rebuilds the alpha from brightness (max RGB ramp 8 -> 20, 3 -> 8 in the dim chain-link band; specks < 4 px removed), lifts thin wires darker than 40/255 towards 40 (gain <= 4), bleeds colour into transparent texels and saves DT_MaskedDetails_Color.png; the OBJ gets 228 back-face triangles (reversed winding, own vertices) for the masked cards: 3,489 tris.
+  Changes (BuildingBrickArcade): Converted the selected building from the set (node transforms baked, metres, Y up); shared 2K atlases resized to 1K JPG and renamed DT_*; metallicRoughness maps (near-constant) folded into material constants; no vertex normals written (flat facades); 1,437 tris.
+  Changes (BuildingNarrowOffice): Converted the selected building from the set (node transforms baked, metres, Y up); shared 2K atlases resized to 1K JPG and renamed DT_*; metallicRoughness maps (near-constant) folded into material constants; no vertex normals written (flat facades); 825 tris.
+  Changes (BuildingBrickResidential): Converted the selected building from the set (node transforms baked, metres, Y up); shared 2K atlases resized to 1K JPG and renamed DT_*; metallicRoughness maps (near-constant) folded into material constants; no vertex normals written (flat facades); 1,682 tris.
+
+Short form for a credits screen:
+  Police sedan, hatchback, 1988 sedan and downtown buildings by Daniel Zhabotinsky (sketchfab.com/DanielZhabotinsky), CC BY 4.0, modified.
+
+===============================================================================
+3. Project-made (owned by this project)
+===============================================================================
+Models: TrafficLight, Bollard, BikeRack, SignNoStopping, SignOneWayStreetName, StreetNamePlate, ParkingMeter, StormDrainGrate, WasteContainer1100L, BusShelter, PoliceLightBar.
+Textures: Proc_PaintedMetal_*, Proc_Galvanised_*, Proc_CastIron_*, Proc_Signs_Color.jpg, Proc_Lightbox_Color.jpg.
+Generated with numpy/Pillow/trimesh by the scripts in Source~ (proc_models.py, geom.py, proc_tex.py).
+Sign lettering is rendered into Proc_Signs_Color.jpg and Proc_Lightbox_Color.jpg with Barlow SemiBold (SIL OFL 1.1, already in Prototype/ThirdParty/Fonts); the font itself is not included here. All names are fictional (Kestrel Street, Old Town - District 4, "City of Lights").
+The build and fix scripts in Source~ (conversion, PottedPlant rebuild, AirconGrille and DT_MaskedDetails maps,
+interior re-lighting) are project-made; they ship no third-party content.
+Road-sign symbols follow the generic Vienna-convention designs (no-stopping disc, one-way arrow); no logos, brands or
+real place names. Source~/Preview.jpg is a software render of the models in this folder.

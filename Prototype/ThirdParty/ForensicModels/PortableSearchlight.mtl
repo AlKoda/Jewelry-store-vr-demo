@@ -1,0 +1,11 @@
+newmtl portable_searchlight
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.0
+map_Kd PortableSearchlight_Color.jpg
+
+newmtl portable_searchlight_glass
+Kd 0.920 0.940 0.950
+Ks 0.5 0.5 0.5
+Ns 200
+d 0.30

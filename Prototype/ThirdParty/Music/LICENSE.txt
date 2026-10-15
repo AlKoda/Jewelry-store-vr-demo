@@ -1,0 +1,85 @@
+Music — preparation batch, October 14, 2026
+Not yet imported, wired or auditioned in Unity (unverified).
+
+==============================================================================
+1) MenuTheme.ogg, InvestigationLoop.ogg, InvestigationLoop_Calm.ogg
+==============================================================================
+Composer / performer: John Bartmann (https://johnbartmann.com)
+Album: "100 Ambient Atmospheric Soundtracks: Straylight Drones Collection"
+       (published on the Free Music Archive, March 2, 2021)
+Album page: https://freemusicarchive.org/music/John_Bartmann/100-ambient-atmospheric-soundtracks-straylight-drones-collection
+
+  Shipped file                 Source track (title as published)
+  MenuTheme.ogg                "profound-mystery-master"
+  InvestigationLoop.ogg        "a-wall-of-glass-master"
+  InvestigationLoop_Calm.ogg   "background-scan-master"
+
+License: Creative Commons CC0 1.0 Universal (public domain dedication)
+https://creativecommons.org/publicdomain/zero/1.0/
+Redistribution, modification and commercial use permitted; attribution not required.
+
+How the license was checked (October 14, 2026):
+- The Free Music Archive album page states that the album's songs are licensed under
+  "CC0 1.0 Universal" (album released March 2, 2021; the page notes that individual
+  tracks carry their own license field).
+- FMA track pages of the same album that could be read (broken-suspense-master,
+  ominous-night-master, ice-crystal-harp-master, ethereal-moments-master,
+  dark-highway-master, back-to-bali-master, back-to-the-mountain-master,
+  bee-hive-pad-master) each state "CC0 1.0 Universal".
+- The composer's own store listing for the same collection
+  (https://johnbartmann.gumroad.com/l/tHThs) describes the soundtracks as Creative
+  Commons CC0 (public domain): usable without written permission, commercially or
+  non-commercially, in all territories and media.
+- The track pages of the three exact tracks were not individually readable from the
+  build environment (freemusicarchive.org is not reachable here; the pages were read
+  through a web search service). The files' embedded ID3 tags (artist and composer
+  "John Bartmann", album "100 Ambient Atmospheric Soundtracks", comment
+  "https://johnbartmann.com") match the album. If you want per-track certainty, open
+  the three track pages under the album URL above and confirm the CC0 field.
+- The composer made the album with the Native Instruments "Straylight" sound library.
+  That library's licence governs the composer's use of the instrument; the published
+  recordings are his work, dedicated to the public domain by him.
+
+Download channel: the CC0 music mirror https://github.com/SoundSafari/CC0-1.0-Music
+(repository licence CC0 1.0), commit 655388f987eacf6d08d73080fcc3e727f267bfde,
+folder "freemusicarchive.org/". Original MP3s (320 kbps, 48 kHz stereo) and their
+SHA-256 are listed in sources.json. The originals are not shipped (10 MB each).
+
+Changes made by the project (Source~/build_loops.py, reproducible):
+- Cut one musical period of each track as a seamless loop:
+  MenuTheme: 120.000 s from source 67.5 s; the second pass of the 8-chord, 120 s
+  progression is not a sample copy, so the seam uses a 6 s raised-cosine crossfade
+  (match correlation 0.94); the loop is rotated so the file begins on the chord change
+  at source 119.9 s.
+  InvestigationLoop: 104.000 s from source 30.0 s; the source repeats sample-exactly
+  every 104 s (correlation 1.000), so no crossfade was needed.
+  InvestigationLoop_Calm: 128.000 s from source 80.0 s; sample-exact repeat in the
+  source (correlation 1.000), no crossfade.
+- Resampled 48 kHz -> 44.1 kHz with the SoX resampler, applied over the loop
+  circularly so the seam stays clean.
+- Static gain only (no compression/limiting): MenuTheme -18 LUFS, both investigation
+  loops -20 LUFS integrated, true peak at or below -1.5 dBTP.
+- Encoded OGG Vorbis quality 6, stereo, 44.1 kHz; metadata and cover art stripped.
+
+Voluntary credit (suggested for the demo's credits/settings screen):
+  Music: "profound-mystery", "a-wall-of-glass" and "background-scan" by John Bartmann
+  (johnbartmann.com), from "100 Ambient Atmospheric Soundtracks: Straylight Drones
+  Collection", CC0 1.0. Loops edited for this demo.
+No endorsement by the composer is implied.
+
+==============================================================================
+2) ResetSting.ogg
+==============================================================================
+Original composition made for this project on October 14, 2026 (Claude, in this
+asset-preparation batch) with Source~/compose_sting.py: pure numpy synthesis (additive
+felt-piano chord, band-limited detuned pad, sine sub thud, inharmonic glass partials,
+filtered noise, synthetic convolution reverb), fixed random seed 14102026. No samples,
+recordings, presets or third-party material of any kind were used.
+Project-owned. No third-party attribution or redistribution restrictions.
+
+==============================================================================
+3) Source~/ (ignored by Unity)
+==============================================================================
+audio_util.py, build_loops.py, compose_sting.py and loops_report.json were written for
+this project (project-owned). Re-running them on the sources listed in sources.json
+reproduces the pre-encode PCM of all four files exactly (checked October 14, 2026).

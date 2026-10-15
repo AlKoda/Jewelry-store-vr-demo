@@ -1,0 +1,11 @@
+newmtl AirconBody
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd AirconUnit_AirconBody_Color.jpg
+
+newmtl AirconGrille
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd AirconUnit_AirconGrille_Color.png

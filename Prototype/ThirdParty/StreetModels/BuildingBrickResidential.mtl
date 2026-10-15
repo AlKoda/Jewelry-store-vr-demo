@@ -1,0 +1,11 @@
+newmtl DT_ModernGroundFloor
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_ModernGroundFloor_Color.jpg
+
+newmtl DT_BrickFacade
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_BrickFacade_Color.jpg

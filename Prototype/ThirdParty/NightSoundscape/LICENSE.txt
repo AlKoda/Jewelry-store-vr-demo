@@ -1,0 +1,167 @@
+NightSoundscape - licences and provenance
+Prepared October 14, 2026 for the Jewelry-store-vr-demo project; revised October 15, 2026 after review (see REVISION
+at the end). Status: fetched/generated, not yet wired; unverified in Unity and not auditioned.
+
+Every shipped audio file is either (A) original project content or (B/C) a processed copy of a CC0 recording, except
+DogBarkDistant_01..03.wav, which are treated as CC BY 3.0 with attribution (see B3).
+No file is NonCommercial, NoDerivatives, editorial-only or of unknown licence. No real voices, brands or logos are
+contained in the sound files. Per-file SHA256, cut points, levels and the full processing chain are in sources.json.
+
+Licence verification note: freesound.org could not be opened from the preparation environment (neither from the
+container nor from the web reader). The CC0 status of each Freesound recording below is therefore taken from the
+per-asset licence metadata of the GitHub mirror that supplied the file (named for each group), and from a second,
+independent repository where one is listed. Please open the original Freesound pages once before a public release.
+
+CC0 1.0 Universal (Public Domain Dedication): https://creativecommons.org/publicdomain/zero/1.0/
+Creative Commons Attribution 3.0 Unported (CC BY 3.0): https://creativecommons.org/licenses/by/3.0/
+CC0 requires no attribution; the CC0 credits below are given voluntarily. The Kinoton recording (B3) is used under
+CC BY 3.0 and its attribution is REQUIRED wherever the project credits its assets (in-app credits, ASSET_REGISTER).
+
+====================================================================================================================
+A. ORIGINAL PROJECT CONTENT (synthesized; project-owned)
+====================================================================================================================
+Created for the Jewelry-store-vr-demo project on October 14, 2026 by Claude (Anthropic) with numpy/scipy/ffmpeg.
+Licence: owned by the project, no third-party restrictions; may be used, modified and redistributed with the project.
+No sampled recordings are contained in these files (except the recorded footstep layer of FootstepGlass_0x, see B4).
+Scripts: Generator/make_alarm.py, make_room.py, make_radio.py (+ speech_babble.py), make_foley.py, make_sirens.py
+(fixed seeds).
+
+  AlarmBell_Close_Loop.wav, AlarmBell_Street_Loop.ogg, AlarmBell_Interior_Loop.wav
+      Physical modal model of a trembler gong bell. Only numbers (mode frequency ratios and relative levels) were
+      measured from "fire alarm bell" by msx2plus (https://freesound.org/s/678345/, CC0 per
+      https://github.com/Dhruv-Mishra/VoxelGame/blob/1d0730642b44cd24182980a8da32b93b40dfc8ff/assets/sfx/CREDITS.txt,
+      file assets/sfx/alarm_loop.mp3, sha256 2e3a37454e07172dc5acbb3ceb8eabf8c3918ab5150a23edcf5a9422295b5d86);
+      none of that recording's audio is in the pack.
+  HVACVent_Loop.wav, FluorescentBuzz_Loop.wav, FridgeCompressor_Loop.wav
+  PoliceCarRadio_Loop.ogg, RadioChatter_01..05.wav, RadioSquelch_01..03.wav, RadioBeep_01..03.wav
+      Speech-like babble from a source-filter (formant) synthesizer written for this pack (Generator/speech_babble.py):
+      random syllables, no words, no real person's voice, no dispatcher content. RadioChatter_01..05 and
+      PoliceCarRadio_Loop were rebuilt on October 15, 2026; RadioSquelch and RadioBeep are unchanged.
+      Beeps are generic sine tones, not any radio manufacturer's tone set.
+  GlassShardsTinkle_01..04.wav, GlassCrunch_01..04.wav
+  EvidenceMarkerPlace_01..03.wav, ConePlace_01..03.wav
+  TapeUnroll_01..02.wav, TapeStretchSnap_01..02.wav, BarrierTapeFlutter_Loop.wav
+  CameraShutterDSLR_01..02.wav, FlashlightClick_01..02.wav, FlashlightClickHalf_01.wav
+  KeysJingle_01..03.wav, ZipperOpen_01..02.wav, ZipperClose_01.wav
+  (glass layers of) FootstepGlass_01..05.wav
+
+====================================================================================================================
+B. CC0 FIELD RECORDINGS FROM FREESOUND, VIA GITHUB MIRRORS
+====================================================================================================================
+Changes made for this pack (all files in B): decoded from the mirror's lossy file (AAC/MP3/Opus/Vorbis), trimmed,
+high-pass filtered, edge fades, mono fold-down for 3D one-shots, seamless loop crossfades for loops, loudness/peak
+normalisation, re-encoded as 16-bit PCM WAV or Ogg Vorbis. Further changes are noted per item.
+
+B1. Mirror: timmywheels/atmospherics  https://github.com/timmywheels/atmospherics
+    commit 743012245d9d567d9397295758fb87f069370a0d (repository code MIT; the per-sound list design/sounds/SOURCES.md
+    states "Every recording is public domain or CC0" and lists each source with licence CC0).
+    - NightCity_Loop.ogg  <- Atmospherics/Sounds/cityNight.m4a
+        "Downtown LA, Little Tokyo, late night semi distant traffic.wav" by janbezouska
+        https://freesound.org/s/330427/  - CC0 1.0 (also listed CC0 by Aarymanv/hillbomb-sf ASSET_LICENSES.md)
+    - NightCityDistant_Loop.ogg  <- Atmospherics/Sounds/cityHum.m4a
+        "Distant city evening traffic, 5th floor balcony" by risto_alcinov
+        https://freesound.org/s/371250/  - CC0 1.0 (also listed CC0, "verified", by scenesua/Lullaby-scene)
+    - StreetWind_Loop.ogg  <- Atmospherics/Sounds/wind.m4a
+        wind recording by Fission9  https://freesound.org/s/521736/  - CC0 1.0
+    - WindWhistleGap_Loop.ogg  <- Atmospherics/Sounds/howl.m4a
+        wind howling at a window, by swiftoid  https://freesound.org/s/117610/  - CC0 1.0
+
+B2. Mirror: Aarymanv/hillbomb-sf  https://github.com/Aarymanv/hillbomb-sf
+    commit 937d362243a56fd7aed001e36dc5051e1959a04d (public/assets/ASSET_LICENSES.md: "All audio files are processed
+    derivatives ... of recordings released under CC0 1.0 / public domain ... Freesound.org (only sounds whose page
+    states Creative Commons 0)"; per-file licence "CC0 1.0" in dev/audio.pipeline/fragments/*.json).
+    - LightRainStreet_Loop.ogg  <- public/assets/audio/amb/rain_light.mp3
+        "Light rain on street.wav" by BonnyOrbit  https://freesound.org/s/380651/  - CC0 1.0
+        (also listed CC0 by openOMSI-org/openOMSI tools/ambience/CREDITS.md)
+    - SirenDistantCity_03.wav  <- public/assets/audio/amb/distant_siren.mp3
+        "siren police north american distant city echo changes behind buildings natural nice +bassy skyline lowcut to
+        taste.flac" by kyles  https://freesound.org/s/635741/  - CC0 1.0
+    - SirenWailPassDistant_01.wav, SirenWailYelpPass_02.wav  <- public/assets/audio/loops/siren_wail.mp3, siren_yelp.mp3
+        "Whelen Wail.wav" and "Whelen Yelp.wav" by Jefflix  https://freesound.org/s/157867/ , https://freesound.org/s/157866/
+        - CC0 1.0. (The original titles name the siren's maker; the sound is a generic electronic police siren and
+        the pack's file names carry no brand.) Additional change: re-spatialised by Generator/make_sirens.py
+        (moving source with Doppler delay, distance attenuation, air absorption, occlusion, synthetic street reverb).
+    - DogBarkDistant_04.wav  <- public/assets/audio/amb/dog_bark.mp3
+        "Dogs Barking in Distance_Rural.wav" by rvandemark  https://freesound.org/s/581478/  - CC0 1.0
+    - CarPassWet_01.wav  <- public/assets/audio/sfx/passby_wet_1.mp3
+        "Passing Car (Wet road)" by Breviceps  https://freesound.org/s/462862/  - CC0 1.0
+    - CarPass_03.wav  <- public/assets/audio/sfx/passby_2.mp3
+        "Car by slow Civic and Volvo DonFX.wav" by Donmann  https://freesound.org/s/237338/  - CC0 1.0
+    - FootstepHard_01..06.wav  <- public/assets/audio/sfx/foot_concrete_1..6.mp3
+        "Footsteps on concrete" by florianreichelt  https://freesound.org/s/459964/  - CC0 1.0
+    B4. FootstepGlass_01..05.wav = foot_concrete_1..5 above (CC0) mixed with original synthesized glass layers (A).
+        Remixed October 15, 2026 (glass layers 8 dB lower, spikes soft-limited, so the step body leads).
+
+B3. Mirror: scenesua/Lullaby-scene  https://github.com/scenesua/Lullaby-scene
+    commit 74fce68956b5d03a2582a4d76798dfc8b77ca7ed (app/src/main/assets/ambience/manifest/external_licenses.json:
+    per asset "license": "CC0-1.0", "license_status": "verified", source page, sha256 of the shipped file - the
+    hashes of the files used here match). The repository has no top-level licence; only the CC0 recordings are used.
+    - SirenDistantPass_04.wav  <- hood_journey/events/hood_siren_event_001.ogg
+        "Police Siren" by TitanKaempfer  https://freesound.org/s/746302/  - CC0 1.0
+    - DogBarkDistant_01..03.wav  <- hood_journey/events/hood_dog_event_001.ogg
+        Title: "Dog Barking in Neighborhood"   Author: Kinoton   Source: https://freesound.org/s/516904/
+        LICENCE USED HERE: CC BY 3.0  https://creativecommons.org/licenses/by/3.0/  (attribution required)
+        Why: the licence evidence conflicts and the Freesound page could not be opened. CC0 per this mirror's
+        external_licenses.json (license "CC0-1.0", license_status "verified") and per rustemd02/URMAN
+        game/assets/audio/act1/sound_mood/credits.json ("Creative Commons 0 (CC0 1.0)"); CC BY 3.0 per
+        NickJVaccaro/valleyofshadow-site src/assets/data/asset-credits.json ("license": "CC BY 3.0",
+        "attributionRequired": "y"; that list marks CC0 and CC BY items separately). Until the Freesound page is checked,
+        the clips are treated under the stricter licence, CC BY 3.0, which also satisfies CC0.
+        Changes: trimmed (cuts 0.50-1.45 s, 1.98-3.50 s, 0.45-9.20 s), filtered (40 Hz high-pass), normalised
+        (-3 dBFS peak), edge fades, mono 16-bit WAV.
+        REQUIRED ATTRIBUTION (in-app credits and Docs/ASSET_REGISTER.md):
+        "Dog Barking in Neighborhood" by Kinoton (https://freesound.org/s/516904/), licensed CC BY 3.0
+        (https://creativecommons.org/licenses/by/3.0/); trimmed, filtered and normalised.
+        If attribution cannot be shown, drop these three files and use DogBarkDistant_04.wav (rvandemark, CC0).
+    - CarDoorOpen_01.wav, CarDoorSlam_01.wav  <- hood_journey/events/hood_car_door_event_001.ogg
+        "Opening and Closing car door in parkade" by SduggySounds  https://freesound.org/s/721619/  - CC0 1.0
+    - CarPass_02.wav  <- hood_journey/events/hood_car_pass_event_001.ogg
+        "Car passing by" by colorsCrimsonTears  https://freesound.org/s/538687/  - CC0 1.0
+    - HVACRoomTone_Loop.ogg  <- submarine_journey/continuous/submarine_journey_arrival_001.ogg
+        "G45-22 Submarine Air Conditioner" by craigsmith  https://freesound.org/s/438724/  - CC0 1.0
+
+B5. Mirror: Jxstrr0/350Chev  https://github.com/Jxstrr0/350Chev
+    commit b80c73b490962d4de5d47cf49e99e68a21c968dc, file sounds/v8x54_idle.mp3
+    (sha256 e2fe4ed9baaef8752b19f0963041825a46b71eb3f5e2a5704db7b57108101610). Licence evidence: sounds/CREDITS.md lists
+    the file as "Ford F350 5.4 V8 startup and idle | Therancher01 | CC0 1.0 | Freesound 610772", records the raw
+    Freesound page licence field read on 2026-10-10 ("Creative Commons 0"), and states that each derived .mp3 keeps the
+    licence of its source ("CC0 / public-domain sources stay CC0"). Verbatim excerpt: Licenses/Jxstrr0_350Chev_sounds_CREDITS_excerpt.txt.
+    Upstream changes (350Chev): Freesound HQ preview, 5-28 s window time-warped to a steady 999 rpm, cut to whole engine
+    cycles, looped, 28 Hz high-pass, loudness-normalised, mono 96 kbps MP3.
+    - PoliceCarIdle_Loop.wav  <- "Ford F350 5.4 V8 startup and idle" by Therancher01  https://freesound.org/s/610772/
+        - CC0 1.0. Changes here: decoded, DC removed, 45 Hz 4th-order high-pass, the 3.60 s loop tiled 4x through a
+        periodic time warp (+-0.6 % idle-speed hunting) with a +-0.7 dB level drift, -20 LUFS, 16-bit WAV (14.4 s).
+        (Replaces the October 14 loop made from "car idle" by seth-m, freesound 269771, CC0, which was almost all
+        sub-bass; that recording is no longer shipped.)
+
+====================================================================================================================
+C. KENNEY RPG AUDIO 1.0 (CC0)
+====================================================================================================================
+Created/distributed by Kenney (www.kenney.nl), https://kenney.nl/assets/rpg-audio , creation date 17-03-2014.
+Licence: Creative Commons Zero, CC0 (author notice kept in Licenses/Kenney_RPG_Audio_License.txt).
+Fetched from the mirror https://github.com/series-ai/jam-ready-assets commit bdce326b2d7eee85524c08c751faf4804d453f3d
+(kenney-rpg-audio/audio/Audio/*.ogg, Git LFS objects from media.githubusercontent.com, sha256 checked against the
+LFS pointers). Changes: decoded, mono, 40 Hz high-pass, fades, -3 dBFS peak, 16-bit WAV.
+    DoorCreak_01..03.wav <- creak1.ogg, creak2.ogg, creak3.ogg
+    DoorOpen_01..02.wav  <- doorOpen_1.ogg, doorOpen_2.ogg
+    DoorClose_01..02.wav <- doorClose_1.ogg, doorClose_4.ogg
+
+====================================================================================================================
+VOLUNTARY CREDITS (for a credits screen)
+====================================================================================================================
+Required (CC BY 3.0):
+  "Dog Barking in Neighborhood" by Kinoton (https://freesound.org/s/516904/), licensed CC BY 3.0
+  (https://creativecommons.org/licenses/by/3.0/); trimmed, filtered and normalised.
+Voluntary (CC0, via freesound.org): janbezouska, risto_alcinov, Fission9, swiftoid, BonnyOrbit, kyles, Jefflix,
+rvandemark, Breviceps, Donmann, florianreichelt, TitanKaempfer, SduggySounds, colorsCrimsonTears, craigsmith,
+Therancher01; and Kenney (RPG Audio, CC0). Alarm bell, machine, radio and foley sounds: original project synthesis.
+
+====================================================================================================================
+REVISION October 15, 2026 (after an independent review)
+====================================================================================================================
+- PoliceCarIdle_Loop.wav: new source (B5, Therancher01, CC0) instead of seth-m "car idle" (82 % of its energy below
+  40 Hz, inaudible on Quest 2 speakers).
+- RadioChatter_01..05.wav, PoliceCarRadio_Loop.ogg: regenerated with Generator/speech_babble.py (original, A).
+- FootstepGlass_01..05.wav: remixed (B4 + A).
+- DogBarkDistant_01..03.wav: licence recorded as CC BY 3.0 with required attribution (B3).
+- All other files unchanged (same bytes as October 14).

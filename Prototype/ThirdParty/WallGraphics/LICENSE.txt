@@ -1,0 +1,96 @@
+WallGraphics - licences and attribution (prepared October 14, 2026, revised October 15, 2026)
+=============================================================================================
+
+Three groups of content. Per-file SHA-256 hashes, source URLs and commits are in sources.json.
+
+---------------------------------------------------------------------
+1. Artwork/Art_*.jpg - public-domain paintings (9 files)
+---------------------------------------------------------------------
+Source repository : https://github.com/pmilovanov/hermitage-art
+Commit            : b8ead49c010eac0c8366bafc4ffaaf1f1a447805 (2021-01-28)
+Repository licence: CC0 1.0 Universal (LICENSE file in the repository; repository
+                    description: "High-res images of paintings from the Hermitage museum
+                    (public domain)"). The file names match the Wikimedia Commons
+                    "Google Art Project" scans of these paintings.
+Status            : Public domain. Every painter died in or before 1926 (eight of the nine
+                    before 1910), so the paintings are out of copyright under life + 70
+                    terms (EU, UK, Russia, US for unpublished works) and under US
+                    publication rules. Monet (d. 1926) is the only one whose life + 100
+                    term, used in a few countries such as Mexico, runs to 1 January 2027. The images are faithful photographic
+                    reproductions of two-dimensional works, which carry no new copyright
+                    in the US (Bridgeman v. Corel, 1999) or the EU (Directive 2019/790,
+                    article 14). The repository owner additionally dedicates the files to
+                    CC0 1.0. No attribution is required; it is given here as courtesy.
+Licence URLs      : https://creativecommons.org/publicdomain/zero/1.0/
+                    https://creativecommons.org/publicdomain/mark/1.0/
+
+  File                                    Painting (artist, life)
+  Art_FantinLatour_RosesAndNasturtiums    Roses and Nasturtiums in a Vase, 1883 - Henri Fantin-Latour (1836-1904)
+  Art_Heda_BreakfastWithLobster           Breakfast with a Lobster, 1648 - Willem Claesz Heda (1594-1680)
+  Art_Pereda_StillLifeEbonyChest          Still Life with an Ebony Chest, 1652 - Antonio de Pereda (1611-1678)
+  Art_Pissarro_BoulevardMontmartre        Boulevard Montmartre in Paris, 1897 - Camille Pissarro (1830-1903)
+  Art_Monet_WaterlooBridgeFog             Waterloo Bridge, Effect of Fog, 1903 - Claude Monet (1840-1926)
+  Art_Lorrain_MorningInTheHarbour         Morning in the Harbour, c.1640s - Claude Lorrain (c.1600-1682)
+  Art_Aivazovsky_NinthWave                The Ninth Wave, 1850 - Ivan Aivazovsky (1817-1900)
+  Art_Bellotto_NeumarktDresden            The Neumarkt in Dresden, c.1747 - Bernardo Bellotto (1722-1780)
+  Art_Robert_LandscapeWithWaterfall       Landscape with a Waterfall, 1802 - Hubert Robert (1733-1808)
+
+Changes: scan border / colour bar cropped, CMYK files converted to sRGB through their
+embedded ICC profile, resized to 2048 px on the long side (sides multiples of 4), light
+unsharp mask, saved as JPEG quality 86. No other alteration.
+Also used (not shipped as a separate file): Claude Monet, "Poppy Field" (same repository and
+commit, public domain) as the picture of Store/Calendar_October2026.png.
+No identifiable living people: the subjects are still lifes, landscapes, sea and street
+scenes painted between 1640 and 1903.
+
+---------------------------------------------------------------------
+2. CC0 photographs used inside generated graphics (not shipped separately)
+---------------------------------------------------------------------
+Source  : https://github.com/scikit-image/scikit-image, commit b700edc8005e4ee9e74fc83259f09e8df3213f15
+  - src/_skimage2/data/chelsea.png - "Chelsea the cat", photographer Stefan van der Walt.
+    Docstring in src/_skimage2/data/_fetchers.py: "No copyright restrictions. CC0 by the
+    photographer (Stefan van der Walt)." -> used (photocopied look) in Street/Flyer_LostCat.png
+  - src/_skimage2/data/coffee.png - "Coffee cup", photographer Rachel Michetti.
+    Docstring: "No copyright restrictions. CC0 by the photographer (Rachel Michetti)."
+    -> used (halftone) in Street/Newspaper_FrontPage.jpg
+Licence : CC0 1.0 - https://creativecommons.org/publicdomain/zero/1.0/  (no attribution required)
+
+---------------------------------------------------------------------
+3. Everything else - project-owned original artwork
+---------------------------------------------------------------------
+Artwork/FrameMoulding_Gilt_Color.jpg, Artwork/FrameMoulding_Gilt_Normal.png, Brand/*,
+Store/*, Street/* were created for Jewelry-store-vr-demo on October 14, 2026 with Python
+(numpy, scipy, Pillow). Generator scripts: Source~/ (Unity ignores folders ending in "~").
+The jewellery in the posters is rendered by the project's own small ray tracer
+(Source~/jrt.py: procedural studio lighting, analytic brilliant-cut gems, signed-distance
+metal); no photographs, HDRIs or third-party 3D models are in those images.
+Licence: project-owned; may be used, changed and redistributed with the project without
+restriction. No third-party attribution is needed.
+
+Fonts: glyphs were rendered into the images from font files in https://github.com/google/fonts
+(commit e9678a5385322c63730122ba464765baad83cfd8). No font file is shipped in this pack.
+SIL Open Font License 1.1 (https://openfontlicense.org): Barlow, Cinzel, Cormorant Garamond, Tenor Sans, Libre Baskerville, Caveat, Great Vibes,
+Pinyon Script, Roboto Condensed, Anton, Bebas Neue, Oswald, Old Standard TT, PT Serif,
+UnifrakturMaguntia, Sedgwick Ave Display.
+Apache License 2.0 (https://www.apache.org/licenses/LICENSE-2.0): Homemade Apple, Permanent
+Marker, Rock Salt.
+Both licences allow text set in the fonts to be used in images without restriction.
+
+Fictional content: "Aurel & Finch" (shop), "Corvane Alarm Systems", "Ashcombe & Vey
+Underwriting", "Northbridge School of Gemmology", "Marrowby Bullion & Findings",
+"Quellbrook Glazing", "The Evening Lamplighter", every person's name (Eleanor M. Finch,
+Marcus, Priya, Tom, Grace, H. J. Calloway, R. M. Osei, Mabel the cat) and every event on the
+street posters are invented. Web searches on October 14, 2026 found no business trading
+under the shop, alarm or underwriter names. Web searches on October 15, 2026 found nothing
+named "Quellbrook Glazing" or "Quellbrook", "Northbridge School of Gemmology", or "Marrowby"
+in bullion or jewellery, and no newspaper called "The Evening Lamplighter" (the nearest is
+an unrelated weekly, the La Mirada Lamplighter in California). Telephone numbers use
+Ofcom's ranges reserved for drama (020 7946 0xxx, 07700 900xxx, 0161 496 0xxx). Payment cards
+on the sticker are generic shapes with no scheme logos; no real police force crest, insignia
+or reference number is shown; the "no parking" disc follows the generic Vienna Convention
+pattern.
+
+Correction (October 15, 2026): the glazier's business card on Store/NoticeBoard_StaffCork.jpg
+first read "Clearview Glazing". That is the name of real UK businesses (for example Clearview
+Glazing Ltd, Companies House 03401763), so it was wrongly listed here as invented. The card
+now reads "Quellbrook Glazing" and the image was rebuilt from Source~/store_b.py.

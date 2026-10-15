@@ -1,0 +1,11 @@
+newmtl Galvanised
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_Galvanised_Color.jpg
+
+newmtl Signs
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_Signs_Color.jpg

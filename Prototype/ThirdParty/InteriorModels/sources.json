@@ -1,0 +1,4391 @@
+{
+ "pack": "InteriorModels",
+ "prepared": "2026-10-14",
+ "revised": "2026-10-15",
+ "licence_poly_haven": {
+  "name": "CC0 1.0 Universal (Poly Haven licence)",
+  "url": "https://polyhaven.com/license",
+  "spdx": "CC0-1.0",
+  "read_from": "github.com/Poly-Haven/polyhaven.com @ b1a6aa13afc03ae00860f6ac5fe6d5daf8e95356, public/locales/en/license.json"
+ },
+ "licence_public_domain_painting": {
+  "file": "PictureFrameWhite_Artwork_Color.jpg",
+  "repo": "https://github.com/pmilovanov/hermitage-art",
+  "commit": "b8ead49c010eac0c8366bafc4ffaaf1f1a447805",
+  "repo_licence": "CC0 1.0 Universal (LICENSE file in the repository)",
+  "status": "public domain: Paul Cezanne died 1906; faithful photographic reproduction of a 2D work"
+ },
+ "mirror": {
+  "repo": "https://github.com/Geadas11/Claude_steam_game",
+  "commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+  "path": "assets/3d/models/<id>/ (<id>.gltf, <id>.bin, textures/<id>_*_2k.jpg)",
+  "note": "tools/fetch_polyhaven.py in that repository saves the files served by api.polyhaven.com (dl.polyhaven.org, 2K glTF) unmodified; its assets/3d/CREDITS.md lists every model as Poly Haven CC0."
+ },
+ "hash_checks": {
+  "toonstudio": {
+   "repo": "https://github.com/blue45f/toonstudio",
+   "commit": "526e7bc10963e2cfaaa7278dbb6a86b8ef09acd3",
+   "path": "apps/web/public/assets/studio/cc0-20260906/assets/polyhaven-<id>/SOURCE.json",
+   "what": "SHA-256 and Poly Haven API MD5 of each dl.polyhaven.org file, plus Poly Haven metadata (authors)"
+  },
+  "sev-1": {
+   "repo": "https://github.com/acltabontabon/sev-1",
+   "commit": "cc500f9aeeb6d5e8fbc911ec1c0839b855d6002a",
+   "path": "assets/environment/poly_haven_workstation/provenance.json",
+   "what": "Poly Haven API MD5 of each file"
+  },
+  "calinou": {
+   "repo": "https://github.com/Calinou/godot-benchmark-tool",
+   "commit": "bbc93c93d6a90947245b3d5777f403e92d0c5e7b",
+   "path": "benchmark_scene/polyhaven/mid_century_lounge_chair.gltf/",
+   "what": "independent byte-identical copy"
+  }
+ },
+ "fonts_rasterised": "DejaVu Sans / Sans Mono (Bitstream Vera licence), GNU FreeSans Oblique (GPL with font exception), only as rendered pixels in project textures; no font file shipped",
+ "upstream_models": {
+  "LoungeChairMidCentury": {
+   "poly_haven_id": "mid_century_lounge_chair",
+   "title": "Mid Century Lounge Chair",
+   "author": "Kuutti Siitonen",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio) + byte-identical copy (Calinou)",
+   "source_files": [
+    {
+     "path": "models/mid_century_lounge_chair/mid_century_lounge_chair.bin",
+     "sha256": "26346cdc548ad74b1b6db5734c8c231c3c740656b012de2cc3bbc2b3b975200c",
+     "bytes": 171384
+    },
+    {
+     "path": "models/mid_century_lounge_chair/mid_century_lounge_chair.gltf",
+     "sha256": "c626222ebe4bc2b98bc1f5ca0cb6ae6f649d995a8f2cee6a6c1d78f060859baa",
+     "bytes": 2884
+    },
+    {
+     "path": "models/mid_century_lounge_chair/textures/mid_century_lounge_chair_arm_2k.jpg",
+     "sha256": "74ffb5899e592f842bf39b8a62a01ae7f737de5980790598fc0f4d587d53bf4a",
+     "bytes": 2476056
+    },
+    {
+     "path": "models/mid_century_lounge_chair/textures/mid_century_lounge_chair_diff_2k.jpg",
+     "sha256": "8129cc8c7c7c8db652aad062545a9f776b7ff4c00c4d9ab8387f3ad98315a932",
+     "bytes": 2444450
+    },
+    {
+     "path": "models/mid_century_lounge_chair/textures/mid_century_lounge_chair_nor_gl_2k.jpg",
+     "sha256": "3228f6785de5f4f06149a03dab95cf68f6c85f42ecbba8e33f48e40d941d9b96",
+     "bytes": 2646290
+    }
+   ]
+  },
+  "ArmChairModern": {
+   "poly_haven_id": "modern_arm_chair_01",
+   "title": "Modern Arm Chair 01",
+   "author": "Vibrant Nordic",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/modern_arm_chair_01/modern_arm_chair_01.bin",
+     "sha256": "8755f2f498c0bb165660379d1b045465751c16bbeaf553c8dd76bb14c16d1ff6",
+     "bytes": 240728
+    },
+    {
+     "path": "models/modern_arm_chair_01/modern_arm_chair_01.gltf",
+     "sha256": "eb971ed98af1ce3d4cc93a058ceee5c31dbd185f99aa3d86938d366820943414",
+     "bytes": 5121
+    },
+    {
+     "path": "models/modern_arm_chair_01/textures/modern_arm_chair_01_legs_arm_2k.jpg",
+     "sha256": "38a2b11cdfb18aeed9804fee38de93d8fd856f53ad9448ee877833ba25643f15",
+     "bytes": 2144468
+    },
+    {
+     "path": "models/modern_arm_chair_01/textures/modern_arm_chair_01_legs_diff_2k.jpg",
+     "sha256": "a3a289f3265d77e120e81aebdd9107b612609b077190e842389b5cd32bbf9a3d",
+     "bytes": 1660925
+    },
+    {
+     "path": "models/modern_arm_chair_01/textures/modern_arm_chair_01_legs_nor_gl_2k.jpg",
+     "sha256": "5a57c6b8de10b79d7d2b5540bcb864f4c3c0b4f81c6ef2c5f61470e88620c4a7",
+     "bytes": 2076117
+    },
+    {
+     "path": "models/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_arm_2k.jpg",
+     "sha256": "3c98a68f8d4d9045082d1af97994ff564dc4f8378814bea717d9862edf5dae22",
+     "bytes": 1176399
+    },
+    {
+     "path": "models/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_diff_2k.jpg",
+     "sha256": "20a8b41bd14552643c1355587ec1198cb8c5f1f7dea50dc71dbb0f6a826adfc1",
+     "bytes": 843013
+    },
+    {
+     "path": "models/modern_arm_chair_01/textures/modern_arm_chair_01_pillow_nor_gl_2k.jpg",
+     "sha256": "dfd11d444ba0a6c1a16304f91c10ef2a2a525180f6a46ca57c2d55c196ff39de",
+     "bytes": 1074878
+    }
+   ]
+  },
+  "OttomanLeather": {
+   "poly_haven_id": "Ottoman_01",
+   "title": "Ottoman 01",
+   "author": "Caspian Fortune",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/Ottoman_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/Ottoman_01/Ottoman_01.bin",
+     "sha256": "ca62a1ee87a30c69142ff15f1bca216842448f57d5b3d64de1d627014b347117",
+     "bytes": 115200
+    },
+    {
+     "path": "models/Ottoman_01/Ottoman_01.gltf",
+     "sha256": "dd173fbbcb0d3e58a8f3a83d6d47755efa2d88ca32023382833ed6094c4af227",
+     "bytes": 2656
+    },
+    {
+     "path": "models/Ottoman_01/textures/Ottoman_01_arm_2k.jpg",
+     "sha256": "ed1aed3df4509ce1fc10e59b8fd9f059aed8d2e554744a0452410b30cd069b4d",
+     "bytes": 594754
+    },
+    {
+     "path": "models/Ottoman_01/textures/Ottoman_01_diff_2k.jpg",
+     "sha256": "bfdff10ce27236d9e41913c549417ae7cadc341df8cd9b5a8b72fea7be63fc74",
+     "bytes": 598798
+    },
+    {
+     "path": "models/Ottoman_01/textures/Ottoman_01_nor_gl_2k.jpg",
+     "sha256": "f1fca773b2d4e658ec9a8609e5602fb19d64bfc5658cdba0d9b8c49cd6717cf5",
+     "bytes": 1206308
+    }
+   ]
+  },
+  "CoffeeTableConcrete": {
+   "poly_haven_id": "modern_coffee_table_01",
+   "title": "Modern Coffee Table 01",
+   "author": "Amin",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/modern_coffee_table_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "mirror only (download script)",
+   "source_files": [
+    {
+     "path": "models/modern_coffee_table_01/modern_coffee_table_01.bin",
+     "sha256": "b8fe0d49041b879a5d5962685a39e3daf009679f7b6a88ced1347e6dc6c0851e",
+     "bytes": 154864
+    },
+    {
+     "path": "models/modern_coffee_table_01/modern_coffee_table_01.gltf",
+     "sha256": "0934d355e65fc5d1b2056fa913813384246572839af464d741f443462cc8e955",
+     "bytes": 2771
+    },
+    {
+     "path": "models/modern_coffee_table_01/textures/modern_coffee_table_01_diff_2k.jpg",
+     "sha256": "527c9cbe6162b5ba84c5427407148d45a051f38c8475b32b5cd3fc02534a7090",
+     "bytes": 1571631
+    },
+    {
+     "path": "models/modern_coffee_table_01/textures/modern_coffee_table_01_nor_gl_2k.jpg",
+     "sha256": "ce0fbc0e6e900480edafbeaab4e4593882c8f3f46dea43b897ccef07093b8caa",
+     "bytes": 1495294
+    },
+    {
+     "path": "models/modern_coffee_table_01/textures/modern_coffee_table_01_rough_2k.jpg",
+     "sha256": "48575f42cab1b40558a4f5957ccaf304651460d6caad2de23d86aec3a6bcd6ff",
+     "bytes": 1476681
+    }
+   ]
+  },
+  "PottedPlantTall": {
+   "poly_haven_id": "potted_plant_01",
+   "title": "Potted Plant 01",
+   "author": "Rico Cilliers",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/potted_plant_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/potted_plant_01/potted_plant_01.bin",
+     "sha256": "a8dd1f7ce75f50dc25bbedc20809da02ee4193815c155b883a329925fa5548f7",
+     "bytes": 5345188
+    },
+    {
+     "path": "models/potted_plant_01/potted_plant_01.gltf",
+     "sha256": "41357028b8a7861c596cadc51c8793448c18c42e8d84d834ebe7993b5b30c924",
+     "bytes": 7969
+    },
+    {
+     "path": "models/potted_plant_01/textures/potted_plant_01_leaves_diff_2k.jpg",
+     "sha256": "6ff5a44117b77a0ad570a333aea71f04ee735ed9cab9668936f8775da1614c6b",
+     "bytes": 400273
+    },
+    {
+     "path": "models/potted_plant_01/textures/potted_plant_01_leaves_nor_gl_2k.jpg",
+     "sha256": "8cde55f644e9092bcaa7976b005c6df1b452714f1e1c57ede8abb8b7c8bb4a1a",
+     "bytes": 764246
+    },
+    {
+     "path": "models/potted_plant_01/textures/potted_plant_01_leaves_rough_2k.jpg",
+     "sha256": "77c990375720dcdfd801592c9f0546bc5a2ec99a825879945225080ba291d694",
+     "bytes": 348164
+    },
+    {
+     "path": "models/potted_plant_01/textures/potted_plant_01_pot_diff_2k.jpg",
+     "sha256": "5c85fa6020e1b5a84ea1e6da84261e4fb6f0a94bf48cd6d56fa603de234336fa",
+     "bytes": 745276
+    },
+    {
+     "path": "models/potted_plant_01/textures/potted_plant_01_pot_nor_gl_2k.jpg",
+     "sha256": "22792283d310a057553e7428739be073720a492c2a288440ab690124462de1e3",
+     "bytes": 827724
+    },
+    {
+     "path": "models/potted_plant_01/textures/potted_plant_01_pot_rough_2k.jpg",
+     "sha256": "95154a5693f70802d36691cc284e378e173c56d416506c187725c08a96260503",
+     "bytes": 610864
+    }
+   ]
+  },
+  "PottedPlantArrowhead": {
+   "poly_haven_id": "potted_plant_02",
+   "title": "Potted Plant 02",
+   "author": "Rico Cilliers",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/potted_plant_02",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/potted_plant_02/potted_plant_02.bin",
+     "sha256": "9c9812482c78a59789ed32fa842b4cbd9365e09c900c31ebb998e5efe627fe97",
+     "bytes": 1852244
+    },
+    {
+     "path": "models/potted_plant_02/potted_plant_02.gltf",
+     "sha256": "80ab49cb61737244f50b805ddde3dd64e461b2a244817f8882e95a97c916d158",
+     "bytes": 6653
+    },
+    {
+     "path": "models/potted_plant_02/textures/potted_plant_02_leaves_diff_2k.jpg",
+     "sha256": "f70de9a4b735b740e79d4e7720a47eae5e2bb4a289880cdae5905d156223bd7d",
+     "bytes": 584084
+    },
+    {
+     "path": "models/potted_plant_02/textures/potted_plant_02_leaves_nor_gl_2k.jpg",
+     "sha256": "2ae648b12ea457fb720f9adc6f8dc9feb8d5409e43f3b9f2ce7f089b3eef12f6",
+     "bytes": 481780
+    },
+    {
+     "path": "models/potted_plant_02/textures/potted_plant_02_leaves_rough_2k.jpg",
+     "sha256": "399e61a82069b3e344cece76c128f84a664dd44719331450877b671906e01e27",
+     "bytes": 435284
+    },
+    {
+     "path": "models/potted_plant_02/textures/potted_plant_02_pot_diff_2k.jpg",
+     "sha256": "21672040b5de49e7dae07452431b4fe5cf401494f5ab5157b5f54a146cc68383",
+     "bytes": 596006
+    },
+    {
+     "path": "models/potted_plant_02/textures/potted_plant_02_pot_nor_gl_2k.jpg",
+     "sha256": "8e8c2e96de90e793712a9db8a6cea7a38f7fd5ec489b8134b586a42ebbbfcb11",
+     "bytes": 494387
+    },
+    {
+     "path": "models/potted_plant_02/textures/potted_plant_02_pot_rough_2k.jpg",
+     "sha256": "c1f341bfa5e610dab2fd31aad4068fa20cf957b098912da5949bca996d7649bf",
+     "bytes": 426559
+    }
+   ]
+  },
+  "PottedSucculent": {
+   "poly_haven_id": "potted_plant_04",
+   "title": "Potted Plant 04",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/potted_plant_04",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/potted_plant_04/potted_plant_04.bin",
+     "sha256": "158c1d27503d4845eb3573f00c01ae3f4f77f1d6ca8754c67bf1762745946f7f",
+     "bytes": 241800
+    },
+    {
+     "path": "models/potted_plant_04/potted_plant_04.gltf",
+     "sha256": "3f9502718be285a6614622774a6b19fd9014e2d5e05e6a08f822321dd157e6d5",
+     "bytes": 7081
+    },
+    {
+     "path": "models/potted_plant_04/textures/potted_plant_04_arm_2k.jpg",
+     "sha256": "95fed5f61ce04485b9233f81459fa4f2c7e51ed93a96f8e4470a0db75ce16288",
+     "bytes": 1480527
+    },
+    {
+     "path": "models/potted_plant_04/textures/potted_plant_04_diff_2k.jpg",
+     "sha256": "088004de42f405aaa5e14b22f9376e066d3b1ba58e957ad7a67a14697f086bcf",
+     "bytes": 1804144
+    },
+    {
+     "path": "models/potted_plant_04/textures/potted_plant_04_nor_gl_2k.jpg",
+     "sha256": "d4ba8dce3a46ab10bf95cf643838222f50778c718fe16acf0f95cba9b599b8a7",
+     "bytes": 2723926
+    }
+   ]
+  },
+  "WallClock": {
+   "poly_haven_id": "wall_clock",
+   "title": "Wall Clock",
+   "author": "PierreB3D",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/wall_clock",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/wall_clock/wall_clock.bin",
+     "sha256": "61d9fe03e871508230160de546ef505f3f4405b1e82c167536945a483a8bb639",
+     "bytes": 132412
+    },
+    {
+     "path": "models/wall_clock/wall_clock.gltf",
+     "sha256": "6c961d2d74dd3d5c175dca01a0b064e4c83bece262c459e730df9120b6ba85ee",
+     "bytes": 9008
+    },
+    {
+     "path": "models/wall_clock/textures/wall_clock_arm_2k.jpg",
+     "sha256": "64abb99936b15516db3c6792218fedcf03fea79a1d9d857a24ce4da6dcd8bcff",
+     "bytes": 1467693
+    },
+    {
+     "path": "models/wall_clock/textures/wall_clock_diff_2k.jpg",
+     "sha256": "21cbd3829b6ba34bf28b1f3c5aca8a0238cd33f3ce410db62d2c071ce34cc3ee",
+     "bytes": 1365701
+    },
+    {
+     "path": "models/wall_clock/textures/wall_clock_glass_arm_2k.jpg",
+     "sha256": "674521e856529e2f29bac20316648accb9bcf3e513a48ea2d133781df3f23533",
+     "bytes": 1063371
+    },
+    {
+     "path": "models/wall_clock/textures/wall_clock_nor_gl_2k.jpg",
+     "sha256": "f51a9339cdfdb2d7253a6355e6fcafb1a0cb318f4bdcb3f944e21597182ae31c",
+     "bytes": 866785
+    }
+   ]
+  },
+  "DeskLampArm": {
+   "poly_haven_id": "desk_lamp_arm_01",
+   "title": "Desk Lamp Arm 01",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio) + MD5 (sev-1)",
+   "source_files": [
+    {
+     "path": "models/desk_lamp_arm_01/desk_lamp_arm_01.bin",
+     "sha256": "07f34e32abecbaa63d28b9d12d6a0eb82b775a0f50c92327655909d72ff8489b",
+     "bytes": 736804
+    },
+    {
+     "path": "models/desk_lamp_arm_01/desk_lamp_arm_01.gltf",
+     "sha256": "b3f03ff2c7c186ec73682f7447b3594db2362cbfc0d72a89d2d8967111d2a2b6",
+     "bytes": 4453
+    },
+    {
+     "path": "models/desk_lamp_arm_01/textures/desk_lamp_arm_01_arm_2k.jpg",
+     "sha256": "d2d55bb3d929ab583d4068adc3dce4e45d29852fd37602ddbb992183a9471b79",
+     "bytes": 2801607
+    },
+    {
+     "path": "models/desk_lamp_arm_01/textures/desk_lamp_arm_01_diff_2k.jpg",
+     "sha256": "c5f8c5be367a40585f89ce0aeac0224e36146eef63c12864222af080a9784869",
+     "bytes": 2438937
+    },
+    {
+     "path": "models/desk_lamp_arm_01/textures/desk_lamp_arm_01_nor_gl_2k.jpg",
+     "sha256": "289e2b9a9d0dcbc02dd8d8dbe612380c13dc48fb7c4484fb39c303f6cf822379",
+     "bytes": 2491219
+    }
+   ]
+  },
+  "StationerySet": {
+   "poly_haven_id": "stationery_supplies",
+   "title": "Stationery Supplies",
+   "author": "Mateusz Sadek",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/stationery_supplies",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "mirror only (download script)",
+   "source_files": [
+    {
+     "path": "models/stationery_supplies/stationery_supplies.bin",
+     "sha256": "475d839c3569551710607cfc71416aa50a3715cd02d56da8c86271982feacb6e",
+     "bytes": 128940
+    },
+    {
+     "path": "models/stationery_supplies/stationery_supplies.gltf",
+     "sha256": "9a68722a3ea303d8a8740bd967151e60c3905d76c465083a19205b6c3ba86b55",
+     "bytes": 15220
+    },
+    {
+     "path": "models/stationery_supplies/textures/stationery_supplies_arm_2k.jpg",
+     "sha256": "317172b1ba55f656bcf60c1ec90cd432dd1beb1f48a6b677b21a3df27fc32184",
+     "bytes": 2773535
+    },
+    {
+     "path": "models/stationery_supplies/textures/stationery_supplies_diff_2k.jpg",
+     "sha256": "4d40fcf5ca2538a7b3224a016129fb1b14cf4677e67b0f186f91335ae47f5979",
+     "bytes": 2509290
+    },
+    {
+     "path": "models/stationery_supplies/textures/stationery_supplies_nor_gl_2k.jpg",
+     "sha256": "d9aae83a96d10cee7dcb4ded7690117f09cb48bf1d3e3bcc8f91b6d131a81a34",
+     "bytes": 1827238
+    }
+   ]
+  },
+  "PendantLampGlobe": {
+   "poly_haven_id": "modern_ceiling_lamp_01",
+   "title": "Modern Ceiling Lamp 01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/modern_ceiling_lamp_01/modern_ceiling_lamp_01.bin",
+     "sha256": "ae5140a64e12e639554158901a5e92340bb37c706096ff255804e3220fb96367",
+     "bytes": 146828
+    },
+    {
+     "path": "models/modern_ceiling_lamp_01/modern_ceiling_lamp_01.gltf",
+     "sha256": "d7417dd85e54626a51632d6eaf93712986ac2620ca3041dadc51a08b8ffa9bc9",
+     "bytes": 6177
+    },
+    {
+     "path": "models/modern_ceiling_lamp_01/textures/modern_ceiling_lamp_01_arm_2k.jpg",
+     "sha256": "53afe6f7b309782f937cd13893ad7cef92ae8d49669fc5b86ddd3bc82b30f14f",
+     "bytes": 412296
+    },
+    {
+     "path": "models/modern_ceiling_lamp_01/textures/modern_ceiling_lamp_01_diff_2k.jpg",
+     "sha256": "b0341690dc56eeddd3efa8a91c179a26e163f330907e5483b6903626b600347e",
+     "bytes": 240872
+    },
+    {
+     "path": "models/modern_ceiling_lamp_01/textures/modern_ceiling_lamp_01_nor_gl_2k.jpg",
+     "sha256": "80a790f97f096d05358231f9af1d5935a33deff6ce0cfe6ee9690f8130a5c4ef",
+     "bytes": 267241
+    }
+   ]
+  },
+  "FireExtinguisher": {
+   "poly_haven_id": "korean_fire_extinguisher_01",
+   "title": "Korean Fire Extinguisher 01",
+   "author": "UM JOORIN",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/korean_fire_extinguisher_01/korean_fire_extinguisher_01.bin",
+     "sha256": "a460dd65b63477bb641196d77393258af0c8a6e2a64728156cb45d92658c86bd",
+     "bytes": 279480
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/korean_fire_extinguisher_01.gltf",
+     "sha256": "d12176b2979cd8028f84d4068c8049b5e6a47e4d9379f3cb2908fa615c5c6900",
+     "bytes": 7450
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_arm_2k.jpg",
+     "sha256": "2f5387154f4985ae8103825f05acd1a9c43e3307642f3b74b26db8932346e34c",
+     "bytes": 720892
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_diff_2k.jpg",
+     "sha256": "7e06bcb002addaa30c8fea0e4432f3855d77a5348d7cc41791bd10b44cd511f4",
+     "bytes": 404041
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_body_nor_gl_2k.jpg",
+     "sha256": "6fdb28b9bfd83f530f1abaa0ac0e6401a98466d74f20bca0fabf47ba2d2b75f4",
+     "bytes": 317767
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_arm_2k.jpg",
+     "sha256": "d618f13b5c84957ae3e3b79f189465f52f9d409e17a0e110ded95adf39dcda62",
+     "bytes": 211879
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_diff_2k.jpg",
+     "sha256": "a9b4a14d19b38947eee3a868e2453053b09804b2addc82f5603b40ec11917ca7",
+     "bytes": 509469
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_glass_nor_gl_2k.jpg",
+     "sha256": "cfd8ebf3c668f0db5f37baa4b3abe8678f088b18c5eb493e8ccef2e4c78de45e",
+     "bytes": 113323
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_arm_2k.jpg",
+     "sha256": "b4ea1553ae5a841cc837f92cced525868f0f67d02d72914adba553d3154ce6c5",
+     "bytes": 864091
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_diff_2k.jpg",
+     "sha256": "7b257c41705c1188017712889e40d5ec4f1a60a065c7c16f54dea4c0b56d9936",
+     "bytes": 594598
+    },
+    {
+     "path": "models/korean_fire_extinguisher_01/textures/korean_fire_extinguisher_01_paper_nor_gl_2k.jpg",
+     "sha256": "2446b9fa2516a5b86ec31227630fb46d297a79c365f00d5f93d010d254bb3794",
+     "bytes": 1454217
+    }
+   ]
+  },
+  "FireAlarmCallPoint": {
+   "poly_haven_id": "fire_alarm",
+   "title": "Fire Alarm",
+   "author": "Slinc",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/fire_alarm",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/fire_alarm/fire_alarm.bin",
+     "sha256": "f65b6fe5ed53c248497fe833ac66d5b8c452e28db4b02b8d1b67109fcc2ce132",
+     "bytes": 112072
+    },
+    {
+     "path": "models/fire_alarm/fire_alarm.gltf",
+     "sha256": "2f640122bc8575aad67f0dcf161a2938ae9d001b4b31153141876961f7a462fc",
+     "bytes": 4264
+    },
+    {
+     "path": "models/fire_alarm/textures/fire_alarm_arm_2k.jpg",
+     "sha256": "63b2614033bca70b193b18a0ffc006dfd59bc3302d38fff99c5f1a7c773b8f25",
+     "bytes": 2222852
+    },
+    {
+     "path": "models/fire_alarm/textures/fire_alarm_diff_2k.jpg",
+     "sha256": "20dad1f8be81ed277417a49085768505eab2f6f7d9c59f526f37bbd4fd56609b",
+     "bytes": 1781248
+    },
+    {
+     "path": "models/fire_alarm/textures/fire_alarm_nor_gl_2k.jpg",
+     "sha256": "12e02dd197db7da8136d73d5ed69123f3e84f92da1b7b7c490996b3cf44ecad6",
+     "bytes": 2614635
+    }
+   ]
+  },
+  "PictureFrameBlack": {
+   "poly_haven_id": "hanging_picture_frame_01",
+   "title": "Hanging Picture Frame 01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "mirror only (download script)",
+   "source_files": [
+    {
+     "path": "models/hanging_picture_frame_01/hanging_picture_frame_01.bin",
+     "sha256": "27ec66baf3b227d004d2d325e18c77df6b7a1a7f74afd7d5dbd4f950bc2f5ca6",
+     "bytes": 86448
+    },
+    {
+     "path": "models/hanging_picture_frame_01/hanging_picture_frame_01.gltf",
+     "sha256": "6661770628e5527ceaa7d9457ea07c7b6eeae1a15ee63177e74765e181e38203",
+     "bytes": 6495
+    },
+    {
+     "path": "models/hanging_picture_frame_01/textures/hanging_picture_frame_01_arm_2k.jpg",
+     "sha256": "66a1406a80fe475d781ef02977061a7e1548ecb34ddf955e4879c36e13836bd0",
+     "bytes": 368238
+    },
+    {
+     "path": "models/hanging_picture_frame_01/textures/hanging_picture_frame_01_artwork_diff_2k.jpg",
+     "sha256": "7a51f2580d2ea2872e532f06d698a722696d7b3a1f6b52f1f731d0122c7faaf3",
+     "bytes": 140005
+    },
+    {
+     "path": "models/hanging_picture_frame_01/textures/hanging_picture_frame_01_artwork_nor_gl_2k.jpg",
+     "sha256": "c28b6cc82a8640dbde92f7e6dd9bf415aeaa22185adc77dbb4f795938d9e4634",
+     "bytes": 66928
+    },
+    {
+     "path": "models/hanging_picture_frame_01/textures/hanging_picture_frame_01_artwork_roughness_2k.jpg",
+     "sha256": "8415728143b9270913ae3d79351400fbd5295bb56e6571ea8c829b68792d9ae4",
+     "bytes": 49548
+    },
+    {
+     "path": "models/hanging_picture_frame_01/textures/hanging_picture_frame_01_diff_2k.jpg",
+     "sha256": "2b51f42b1112838d53ac44187535e4e75909c48230b922073cd214c9313ac870",
+     "bytes": 355335
+    },
+    {
+     "path": "models/hanging_picture_frame_01/textures/hanging_picture_frame_01_nor_gl_2k.jpg",
+     "sha256": "faffc5cb26d37933e30386c023e544ab28557ccb76fec75e51537e98ce523ac2",
+     "bytes": 166602
+    }
+   ]
+  },
+  "PictureFrameWhite": {
+   "poly_haven_id": "hanging_picture_frame_02",
+   "title": "Hanging Picture Frame 02",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/hanging_picture_frame_02/hanging_picture_frame_02.bin",
+     "sha256": "0ed5813c8b30f63807ffac962e47135d3248b3804e07cb93862c13e29bed83d8",
+     "bytes": 115080
+    },
+    {
+     "path": "models/hanging_picture_frame_02/hanging_picture_frame_02.gltf",
+     "sha256": "db73af9bc09a74c4ba873d8248422ed23bd1d0e054185fde3ff0a9559a5eb7f9",
+     "bytes": 6433
+    },
+    {
+     "path": "models/hanging_picture_frame_02/textures/hanging_picture_frame_02_arm_2k.jpg",
+     "sha256": "16c1e2d401e78595bde03b001eec97fef5a7ff6d1de160e6bb0dfd744c1dc6a6",
+     "bytes": 419233
+    },
+    {
+     "path": "models/hanging_picture_frame_02/textures/hanging_picture_frame_02_artwork_diff_2k.jpg",
+     "sha256": "92a822e480473a92a481327de111cd00bae94eebb28228567a4c88569e36c918",
+     "bytes": 432108
+    },
+    {
+     "path": "models/hanging_picture_frame_02/textures/hanging_picture_frame_02_artwork_nor_gl_2k.jpg",
+     "sha256": "d877cbc16df0f21b9f25027321ddf2d02d451824eafe2d5bf1d03f42d9bc90eb",
+     "bytes": 214002
+    },
+    {
+     "path": "models/hanging_picture_frame_02/textures/hanging_picture_frame_02_artwork_roughness_2k.jpg",
+     "sha256": "0551342319b57b44db8ca68408bd70555c065c2a4c29910bcad4e99c5233f5bb",
+     "bytes": 222104
+    },
+    {
+     "path": "models/hanging_picture_frame_02/textures/hanging_picture_frame_02_diff_2k.jpg",
+     "sha256": "3007b7b902b60df23a182e97f960abe3c577f4063e45c270688cc5cc7613ba2b",
+     "bytes": 582791
+    },
+    {
+     "path": "models/hanging_picture_frame_02/textures/hanging_picture_frame_02_nor_gl_2k.jpg",
+     "sha256": "07d7e14ee2cb81f78feb3a16a581795ffa352bf57bcef029e5edace01d039d0b",
+     "bytes": 245446
+    }
+   ]
+  },
+  "PictureFrameGilt": {
+   "poly_haven_id": "fancy_picture_frame_01",
+   "title": "Fancy Picture Frame 01",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/fancy_picture_frame_01/fancy_picture_frame_01.bin",
+     "sha256": "5d5a01ce8b89f1fbea87bac0ca9ab24771f0d2827ab0308f19878007e45f442f",
+     "bytes": 25948
+    },
+    {
+     "path": "models/fancy_picture_frame_01/fancy_picture_frame_01.gltf",
+     "sha256": "754637454a0990fc3616d927ba403d05c8dfcfdadf49f390e46141fe45e0060a",
+     "bytes": 5059
+    },
+    {
+     "path": "models/fancy_picture_frame_01/textures/fancy_picture_frame_01_canvas_diff_2k.jpg",
+     "sha256": "367a7f14b6a8f68313a657f31adf150b05a8211caa4768766f8f12ef20ee8521",
+     "bytes": 330266
+    },
+    {
+     "path": "models/fancy_picture_frame_01/textures/fancy_picture_frame_01_canvas_nor_gl_2k.jpg",
+     "sha256": "c6e4f76d1a4670d2a0fbf73d767fb9d0daa61d5ff4f882ec5f7a8439ccd920e8",
+     "bytes": 195305
+    },
+    {
+     "path": "models/fancy_picture_frame_01/textures/fancy_picture_frame_01_canvas_rough_2k.jpg",
+     "sha256": "31c324faca1055450789ac50dc5fdf1eecd59b84187e2dc8395604f21597ae88",
+     "bytes": 314020
+    },
+    {
+     "path": "models/fancy_picture_frame_01/textures/fancy_picture_frame_01_diff_2k.jpg",
+     "sha256": "ea3245d3f7add589ea68cf34f6346afba98aaf54acd8280c37c49b79b068cc01",
+     "bytes": 495698
+    },
+    {
+     "path": "models/fancy_picture_frame_01/textures/fancy_picture_frame_01_nor_gl_2k.jpg",
+     "sha256": "f05c1929e858771cb36df01adbd5698c673aaadf61283dff032aca0a5366ec8f",
+     "bytes": 939857
+    },
+    {
+     "path": "models/fancy_picture_frame_01/textures/fancy_picture_frame_01_rough_2k.jpg",
+     "sha256": "5d6bf8f0fcf2303c36744f61ab566e9364cfb8b7fff572566ec85cc37e7f7398",
+     "bytes": 392276
+    }
+   ]
+  },
+  "PhotoFrameDesk": {
+   "poly_haven_id": "standing_picture_frame_01",
+   "title": "Standing Picture Frame 01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "mirror only (download script)",
+   "source_files": [
+    {
+     "path": "models/standing_picture_frame_01/standing_picture_frame_01.bin",
+     "sha256": "bdaf666c5011671c55d5661171d2395cee7d80f1558e92760c663050cba39b49",
+     "bytes": 55424
+    },
+    {
+     "path": "models/standing_picture_frame_01/standing_picture_frame_01.gltf",
+     "sha256": "78b7f1319de7c425e389c0bfaacb2d66d3aa4109a33327857c194b28c86191f6",
+     "bytes": 6936
+    },
+    {
+     "path": "models/standing_picture_frame_01/textures/standing_picture_frame_01_arm_2k.jpg",
+     "sha256": "2db863d0734bbd104c6874042bde967942e8abb2e4a258cddc00a82bdf3bb0c0",
+     "bytes": 370774
+    },
+    {
+     "path": "models/standing_picture_frame_01/textures/standing_picture_frame_01_artwork_diff_2k.jpg",
+     "sha256": "3863f16fcab8e5a796f6fc6550293635e6df4dd934364568ad827f57184bbca8",
+     "bytes": 402040
+    },
+    {
+     "path": "models/standing_picture_frame_01/textures/standing_picture_frame_01_artwork_nor_gl_2k.jpg",
+     "sha256": "5e1bf0ca59c8f0d62501b1b3b426d43183660fc0ffe5beb1cf5017b34b5f4938",
+     "bytes": 66229
+    },
+    {
+     "path": "models/standing_picture_frame_01/textures/standing_picture_frame_01_artwork_rough_2k.jpg",
+     "sha256": "8415728143b9270913ae3d79351400fbd5295bb56e6571ea8c829b68792d9ae4",
+     "bytes": 49548
+    },
+    {
+     "path": "models/standing_picture_frame_01/textures/standing_picture_frame_01_diff_2k.jpg",
+     "sha256": "c8e91b45a2952dd8bcee5d348c57c878715e3f9cf3515856eebeb7661e5e61d4",
+     "bytes": 338279
+    },
+    {
+     "path": "models/standing_picture_frame_01/textures/standing_picture_frame_01_nor_gl_2k.jpg",
+     "sha256": "462f8a7906a6f516da430e388da264cc14f07e12db10a54a672bd00f7815af5d",
+     "bytes": 150213
+    }
+   ]
+  },
+  "VaseCeramicTall": {
+   "poly_haven_id": "ceramic_vase_03",
+   "title": "Ceramic Vase 03",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/ceramic_vase_03",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/ceramic_vase_03/ceramic_vase_03.bin",
+     "sha256": "19ced3c9a4231e0e0f0d2693661e40db15590ad99b3c84feecaa19067311fa6b",
+     "bytes": 299232
+    },
+    {
+     "path": "models/ceramic_vase_03/ceramic_vase_03.gltf",
+     "sha256": "f01b35d72b3edf565961dcd1b2d81da90e8c6b51ccddbc62d7c54d9b8ca988b9",
+     "bytes": 2690
+    },
+    {
+     "path": "models/ceramic_vase_03/textures/ceramic_vase_03_diff_2k.jpg",
+     "sha256": "3e9a7a350540769a4b78dafb975ce732c19dfdb011e9987141a8c00ba57ec3b2",
+     "bytes": 454987
+    },
+    {
+     "path": "models/ceramic_vase_03/textures/ceramic_vase_03_nor_gl_2k.jpg",
+     "sha256": "20defcdd0b4c3cc9d30f31b8a17af88b2b307afc725126154cb3da3c1e4970ee",
+     "bytes": 894865
+    },
+    {
+     "path": "models/ceramic_vase_03/textures/ceramic_vase_03_rough_2k.jpg",
+     "sha256": "6066733d04bb9d38cfb7286cfb8644e8993311c232c7713f4fe25be03eeed835",
+     "bytes": 548035
+    }
+   ]
+  },
+  "VaseCeramicBottle": {
+   "poly_haven_id": "ceramic_vase_01",
+   "title": "Ceramic Vase 01",
+   "author": "James Ray Cock",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/ceramic_vase_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/ceramic_vase_01/ceramic_vase_01.bin",
+     "sha256": "56ffadcafff3f56538d04b0b43c06c9704baeec2ac3ec286ef01c313c82906f0",
+     "bytes": 272656
+    },
+    {
+     "path": "models/ceramic_vase_01/ceramic_vase_01.gltf",
+     "sha256": "294f6c19f128ed5fa99225f02e00bdd5867cbc1f717fe98e8e09f3ae3191fb52",
+     "bytes": 2706
+    },
+    {
+     "path": "models/ceramic_vase_01/textures/ceramic_vase_01_arm_2k.jpg",
+     "sha256": "cc2d1700280bb2aa09f4961f18a75eb81ffc502247654be809b87d0822a5d7b7",
+     "bytes": 200281
+    },
+    {
+     "path": "models/ceramic_vase_01/textures/ceramic_vase_01_diff_2k.jpg",
+     "sha256": "fc1451c0cef35d5a47995f2d0c720bfcd8c3fcc987c1d965f41c1aae2d91099c",
+     "bytes": 110174
+    },
+    {
+     "path": "models/ceramic_vase_01/textures/ceramic_vase_01_nor_gl_2k.jpg",
+     "sha256": "eb55418810a3a385658c8dda3da2fec3daba1990be1477728cda9778868de70a",
+     "bytes": 121367
+    }
+   ]
+  },
+  "OfficeDeskMetal": {
+   "poly_haven_id": "metal_office_desk",
+   "title": "Metal Office Desk",
+   "author": "Ulan Cabanilla",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/metal_office_desk",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "MD5 (sev-1)",
+   "source_files": [
+    {
+     "path": "models/metal_office_desk/metal_office_desk.bin",
+     "sha256": "65b558f41a75ad4822e31cc2a97eb34ed359199279a6bfbd650deb27cef78767",
+     "bytes": 229700
+    },
+    {
+     "path": "models/metal_office_desk/metal_office_desk.gltf",
+     "sha256": "4323f2e6cae9abb82146449b45445ee9446068c5a9b2ca23e018503b3b0af035",
+     "bytes": 13510
+    },
+    {
+     "path": "models/metal_office_desk/textures/metal_office_desk_arm_2k.jpg",
+     "sha256": "23c94b99aec8c9b105ff4d843ac41f229b0effb97abe921f0f8b506ccfd76952",
+     "bytes": 2724325
+    },
+    {
+     "path": "models/metal_office_desk/textures/metal_office_desk_diff_2k.jpg",
+     "sha256": "3f5854edc8a7979ed4576b914c184bda64d7e6ee9969357738703be49118da30",
+     "bytes": 1787420
+    },
+    {
+     "path": "models/metal_office_desk/textures/metal_office_desk_nor_gl_2k.jpg",
+     "sha256": "25392e7682c43ca07abbbbe717388b9e6d40bbca663836916204f99ac0378d34",
+     "bytes": 490814
+    }
+   ]
+  },
+  "CCTVBulletHousing": {
+   "poly_haven_id": "security_camera_02",
+   "title": "Security Camera 02",
+   "author": "Garrison Gager, Yann Kervran",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/security_camera_02",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/security_camera_02/security_camera_02.bin",
+     "sha256": "15512a4c0add24cd6ec38386e7707b02587f6bb873d9a0620ca6bbc548f1dc7b",
+     "bytes": 407088
+    },
+    {
+     "path": "models/security_camera_02/security_camera_02.gltf",
+     "sha256": "0ca204d355fbc865045217b219a4efcfb7e0a0afbc557c5cc016a111ad2f554a",
+     "bytes": 6299
+    },
+    {
+     "path": "models/security_camera_02/textures/security_camera_02_arm_2k.jpg",
+     "sha256": "5123eea1d25d07e05c7dcda7ff3d561bf672ad71cb43d6341ecf71780e4f8bcc",
+     "bytes": 1738160
+    },
+    {
+     "path": "models/security_camera_02/textures/security_camera_02_diff_2k.jpg",
+     "sha256": "cee7add026ac8435e6229cc96e8898114859f4a77d139e9151864e123b958004",
+     "bytes": 1475390
+    },
+    {
+     "path": "models/security_camera_02/textures/security_camera_02_nor_gl_2k.jpg",
+     "sha256": "47e10d8cd1b49b16fec0dc5ff03f03df7630bf239ee535352056de5a014a9772",
+     "bytes": 1780652
+    }
+   ]
+  },
+  "ShelvingSteelWide": {
+   "poly_haven_id": "steel_frame_shelves_03",
+   "title": "Steel Frame Shelves 03",
+   "author": "Ulan Cabanilla",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "mirror only (download script)",
+   "source_files": [
+    {
+     "path": "models/steel_frame_shelves_03/steel_frame_shelves_03.bin",
+     "sha256": "6e299e00e277642eb1a1ac67776a8c43bd9c9dbad9a12b768bf3df274afde66f",
+     "bytes": 259368
+    },
+    {
+     "path": "models/steel_frame_shelves_03/steel_frame_shelves_03.gltf",
+     "sha256": "840ec12798f4091e582eb1a16adc090e46ad1e70c3b0906bd345952bd4bd5a03",
+     "bytes": 9767
+    },
+    {
+     "path": "models/steel_frame_shelves_03/textures/steel_frame_shelves_03_arm_2k.jpg",
+     "sha256": "252661d229c1b6150ae5281e2b57f5f14570356f4173f43ddb3b78c9d853b5ef",
+     "bytes": 2598495
+    },
+    {
+     "path": "models/steel_frame_shelves_03/textures/steel_frame_shelves_03_diff_2k.jpg",
+     "sha256": "63c18fb19103ddf41a9d1066af47ff75c938d147a2e6cf0d7b90d5d0b01dacbf",
+     "bytes": 1291464
+    },
+    {
+     "path": "models/steel_frame_shelves_03/textures/steel_frame_shelves_03_drawers_arm_2k.jpg",
+     "sha256": "b5febeb23a1dfc1a32e7d95864a47f326e61d77536a1b943215035ddd9d65378",
+     "bytes": 2003042
+    },
+    {
+     "path": "models/steel_frame_shelves_03/textures/steel_frame_shelves_03_drawers_diff_2k.jpg",
+     "sha256": "9c44610755cc508e981767798fde8e1a9dfc322aa5f2bf4570dedae32e2293bb",
+     "bytes": 2704509
+    },
+    {
+     "path": "models/steel_frame_shelves_03/textures/steel_frame_shelves_03_drawers_nor_gl_2k.jpg",
+     "sha256": "061ecd7e19316fdd619ea8adecf0abf91c26554a761250cc82d4e825949e03c5",
+     "bytes": 2188701
+    },
+    {
+     "path": "models/steel_frame_shelves_03/textures/steel_frame_shelves_03_nor_gl_2k.jpg",
+     "sha256": "0449e646c4c677a284d20c648d57b65f0924bc48b70d5dc3515c968f8b5211c7",
+     "bytes": 2138072
+    }
+   ]
+  },
+  "CardboardBox": {
+   "poly_haven_id": "cardboard_box_01",
+   "title": "Cardboard Box 01",
+   "author": "Rahul Chaudhary",
+   "license": "CC0-1.0",
+   "page": "https://polyhaven.com/a/cardboard_box_01",
+   "mirror_repo": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "verified_against_upstream": "sha256 (toonstudio)",
+   "source_files": [
+    {
+     "path": "models/cardboard_box_01/cardboard_box_01.bin",
+     "sha256": "7212d43b4cb56459e46d31ab34dc7c310fcfbe170f4a588416dea07ae5628a4b",
+     "bytes": 381936
+    },
+    {
+     "path": "models/cardboard_box_01/cardboard_box_01.gltf",
+     "sha256": "feb1b53fa2edaae3708dc7d4f9f014d13a63e811b8bba334c36d86e75f61a002",
+     "bytes": 2903
+    },
+    {
+     "path": "models/cardboard_box_01/textures/cardboard_box_01_arm_2k.jpg",
+     "sha256": "fefb333764dbf17a6679ecd0e04fbe45ae5eb312813796bdb373cb12eb1ffcdd",
+     "bytes": 1309578
+    },
+    {
+     "path": "models/cardboard_box_01/textures/cardboard_box_01_diff_2k.jpg",
+     "sha256": "5cdf1f747ba3f2fe656ed3258c2b74086f5ad727cbce58a821f34d0940c08053",
+     "bytes": 1987615
+    },
+    {
+     "path": "models/cardboard_box_01/textures/cardboard_box_01_nor_gl_2k.jpg",
+     "sha256": "b3d77c012e93be72547b9476ef83341b8f617e2c9b5ea9c82c9e8ea1132ea8a2",
+     "bytes": 3005768
+    }
+   ]
+  }
+ },
+ "files": [
+  {
+   "file": "ArmChairModern.mtl",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "47d2f399c1aaa1d303255c0d17621916bedeb268a8200ba53de9f244f1f65523",
+   "bytes": 423
+  },
+  {
+   "file": "ArmChairModern.obj",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "2b5c3d676ec8f7dea094dacf80748e6b76f905621d826373ee2f2617c1c863c6",
+   "bytes": 727687
+  },
+  {
+   "file": "ArmChairModern_Cushions_Color.jpg",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "196c52aa73eb10eaa3ba16eadb25acf58de1ccfc1eb5dcb5f3a9b4a59bbed6d6",
+   "bytes": 61718
+  },
+  {
+   "file": "ArmChairModern_Cushions_MetallicSmoothness.png",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "e6415337bb49de49e44ca1d4c2c9f38d4f0de4db062840590310b72de6b00001",
+   "bytes": 109940
+  },
+  {
+   "file": "ArmChairModern_Cushions_Normal.jpg",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "c99fbf74de64e352c886c62413c5f7f5b44dd3ef70dfbc66745f5e8531712f47",
+   "bytes": 98643
+  },
+  {
+   "file": "ArmChairModern_Frame_Color.jpg",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "ca2085964dca31700882433e5049639328d3a039979a85410c2e96c9fca8581b",
+   "bytes": 46146
+  },
+  {
+   "file": "ArmChairModern_Frame_MetallicSmoothness.png",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "47bdb860ca8cdd8ba074a965c35d579dbfbb780283dfc844b69d09e7fd8486f1",
+   "bytes": 49806
+  },
+  {
+   "file": "ArmChairModern_Frame_Normal.jpg",
+   "models": [
+    "ArmChairModern"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_arm_chair_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_arm_chair_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Vibrant Nordic",
+   "modified": true,
+   "sha256": "36da9f3f93a1c4f9f08eed7c1af296fc9db3032d55e07ca28f8df5a688a2daf8",
+   "bytes": 50127
+  },
+  {
+   "file": "CCTVBulletHousing.mtl",
+   "models": [
+    "CCTVBulletHousing"
+   ],
+   "source_url": "https://polyhaven.com/a/security_camera_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/security_camera_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Garrison Gager, Yann Kervran",
+   "modified": true,
+   "sha256": "4e27cb21efce054cd75c4691c27c78097b24497a897369e6f2f6a52d82fc93d7",
+   "bytes": 268
+  },
+  {
+   "file": "CCTVBulletHousing.obj",
+   "models": [
+    "CCTVBulletHousing"
+   ],
+   "source_url": "https://polyhaven.com/a/security_camera_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/security_camera_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Garrison Gager, Yann Kervran",
+   "modified": true,
+   "sha256": "123cc26ec1c0fffc107507b3e5e4a3f4eeb09c197bea7a0e037bdaf32f94f464",
+   "bytes": 723362
+  },
+  {
+   "file": "CCTVBulletHousing_Color.jpg",
+   "models": [
+    "CCTVBulletHousing"
+   ],
+   "source_url": "https://polyhaven.com/a/security_camera_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/security_camera_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Garrison Gager, Yann Kervran",
+   "modified": true,
+   "sha256": "249a4665d29edd0fce825147558256ee9c8c03fc3b3c1183949fc4aa81e68673",
+   "bytes": 114123
+  },
+  {
+   "file": "CCTVBulletHousing_MetallicSmoothness.png",
+   "models": [
+    "CCTVBulletHousing"
+   ],
+   "source_url": "https://polyhaven.com/a/security_camera_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/security_camera_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Garrison Gager, Yann Kervran",
+   "modified": true,
+   "sha256": "3d89a17af38bba14dc7ca1ca5ffe4b2b47c35abfcec8aef67f2a7bb7489e366a",
+   "bytes": 213095
+  },
+  {
+   "file": "CCTVBulletHousing_Normal.jpg",
+   "models": [
+    "CCTVBulletHousing"
+   ],
+   "source_url": "https://polyhaven.com/a/security_camera_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/security_camera_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Garrison Gager, Yann Kervran",
+   "modified": true,
+   "sha256": "9dc0fffcee356e5b89246601dc7bdfaf503a84ee76be44be75dc340d9326e5bd",
+   "bytes": 121897
+  },
+  {
+   "file": "CCTVDome.mtl",
+   "models": [
+    "CCTVDome"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "eb8e4b9ab96b7efc07393ca125259fbd3faf87f90d4d4c614b4476681a742bcc",
+   "bytes": 468
+  },
+  {
+   "file": "CCTVDome.obj",
+   "models": [
+    "CCTVDome"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "1a16ad9d188085e6b69ed79db404569797aa5594586166fa9c5d877e4890c0fa",
+   "bytes": 92102
+  },
+  {
+   "file": "CardboardBox.mtl",
+   "models": [
+    "CardboardBox"
+   ],
+   "source_url": "https://polyhaven.com/a/cardboard_box_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/cardboard_box_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rahul Chaudhary",
+   "modified": true,
+   "sha256": "572442bdf841f638d18766432e5151f64af969244b4933bae2ccf8ddef5a4c6a",
+   "bytes": 185
+  },
+  {
+   "file": "CardboardBox.obj",
+   "models": [
+    "CardboardBox"
+   ],
+   "source_url": "https://polyhaven.com/a/cardboard_box_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/cardboard_box_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rahul Chaudhary",
+   "modified": true,
+   "sha256": "7b0c9fbe2ca2360598f7e4f64445b1b06f13d23888005738544e005911f1d032",
+   "bytes": 226971
+  },
+  {
+   "file": "CardboardBox_Color.jpg",
+   "models": [
+    "CardboardBox"
+   ],
+   "source_url": "https://polyhaven.com/a/cardboard_box_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/cardboard_box_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rahul Chaudhary",
+   "modified": true,
+   "sha256": "43c7bb82730bb242e32fca2cc6165f83c4956b5a80e5472dd324d42628d2db4d",
+   "bytes": 50127
+  },
+  {
+   "file": "CardboardBox_MetallicSmoothness.png",
+   "models": [
+    "CardboardBox"
+   ],
+   "source_url": "https://polyhaven.com/a/cardboard_box_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/cardboard_box_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rahul Chaudhary",
+   "modified": true,
+   "sha256": "43e1e04c4ce510066b1cc3afd3a5c4863388afc57f4d0fdcbeb966a8ede6227e",
+   "bytes": 41167
+  },
+  {
+   "file": "CardboardBox_Normal.jpg",
+   "models": [
+    "CardboardBox"
+   ],
+   "source_url": "https://polyhaven.com/a/cardboard_box_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/cardboard_box_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rahul Chaudhary",
+   "modified": true,
+   "sha256": "20bb538dfc55661a21f2d0c0c968f7185314fabc901be00c061e23c58b8ffd33",
+   "bytes": 82651
+  },
+  {
+   "file": "CeilingDiffuser.mtl",
+   "models": [
+    "CeilingDiffuser"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "013d6289a4c56aa2137d0a801a62a08692fead63273d4de85c9ea94de3fca4d5",
+   "bytes": 202
+  },
+  {
+   "file": "CeilingDiffuser.obj",
+   "models": [
+    "CeilingDiffuser"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "6153e68a066f7582659a18812d1ba7f680a316f6d6492a79fcd23bc431b9a540",
+   "bytes": 4958
+  },
+  {
+   "file": "CoffeeMachine.mtl",
+   "models": [
+    "CoffeeMachine"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "03ad7acd8049029e06d7bcc3b755230c4e25e8a2a38a464f91eeb00e6ef06964",
+   "bytes": 592
+  },
+  {
+   "file": "CoffeeMachine.obj",
+   "models": [
+    "CoffeeMachine"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "72873a0febf7c70a3b9701b0069511ff587fc1f4dfbabc952a080363d19afc3d",
+   "bytes": 91182
+  },
+  {
+   "file": "CoffeeMachine_Panel_Color.jpg",
+   "models": [
+    "CoffeeMachine"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "72f04011c020392610167c0c79c2f9c1881aff9fd0172d766b6d2ab3cfe24d33",
+   "bytes": 19999
+  },
+  {
+   "file": "CoffeeMachine_Panel_MetallicSmoothness.png",
+   "models": [
+    "CoffeeMachine"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "7abe9f4206152e7fe0c1043d0f7ad302c3341350e26d6574037fba5ff8a71b2b",
+   "bytes": 5997
+  },
+  {
+   "file": "CoffeeMachine_Panel_Normal.jpg",
+   "models": [
+    "CoffeeMachine"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "a5d7e58d80c0426f360e6d9bf7bb1c11d4a7578f30616f649d92d6bb8e3de6c6",
+   "bytes": 14406
+  },
+  {
+   "file": "CoffeeTableConcrete.mtl",
+   "models": [
+    "CoffeeTableConcrete"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_coffee_table_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_coffee_table_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Amin",
+   "modified": true,
+   "sha256": "7817130085636ab26ccbd83f7e8106a6a7c2c90d83117f33782f7c20250538f1",
+   "bytes": 202
+  },
+  {
+   "file": "CoffeeTableConcrete.obj",
+   "models": [
+    "CoffeeTableConcrete"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_coffee_table_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_coffee_table_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Amin",
+   "modified": true,
+   "sha256": "43c35c07ba5893d6d17018e880b459ced68edda2983655a4db286487590ccf66",
+   "bytes": 377723
+  },
+  {
+   "file": "CoffeeTableConcrete_Color.jpg",
+   "models": [
+    "CoffeeTableConcrete"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_coffee_table_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_coffee_table_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Amin",
+   "modified": true,
+   "sha256": "73195dc6d098fc14689d97cdabe315364ac745bf03cc321ecae8625493d73a86",
+   "bytes": 120213
+  },
+  {
+   "file": "CoffeeTableConcrete_MetallicSmoothness.png",
+   "models": [
+    "CoffeeTableConcrete"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_coffee_table_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_coffee_table_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Amin",
+   "modified": true,
+   "sha256": "23f7b6aa81bb7ef07133a864609444a192a050d39a8f3fe6088e4fa35032b9a4",
+   "bytes": 145682
+  },
+  {
+   "file": "CoffeeTableConcrete_Normal.jpg",
+   "models": [
+    "CoffeeTableConcrete"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_coffee_table_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_coffee_table_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Amin",
+   "modified": true,
+   "sha256": "fabe58b17700e273c898852780388a75c349fdcd89a95e5b432792c4d29d6609",
+   "bytes": 88069
+  },
+  {
+   "file": "ComputerMonitor.mtl",
+   "models": [
+    "ComputerMonitor"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "26cc68500d2abfa07b0ca4ed3b307553752c48e4f54fb625d18b8dba7e4d0fa4",
+   "bytes": 237
+  },
+  {
+   "file": "ComputerMonitor.obj",
+   "models": [
+    "ComputerMonitor"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "ac0ee86cb91e0d2bb805ae71cb589fb49b7827389d3eb82a6bd653582b407b23",
+   "bytes": 95729
+  },
+  {
+   "file": "DVRRecorder.mtl",
+   "models": [
+    "DVRRecorder"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "9cb64780b7f7b034a86967d027149fa7cceeabbdcfdfd6bc0d0f14da28e59b2a",
+   "bytes": 301
+  },
+  {
+   "file": "DVRRecorder.obj",
+   "models": [
+    "DVRRecorder"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "0575f842359070dae5f28bebb8548987f4954ea1102e2f9e45cb73fbdfc57b23",
+   "bytes": 9265
+  },
+  {
+   "file": "DVRRecorder_Front_Color.jpg",
+   "models": [
+    "DVRRecorder"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "7efe83635ba354a095bb8c0d506401c0e8e2367a889a12f841582529f8e85851",
+   "bytes": 3583
+  },
+  {
+   "file": "DeskLampArm.mtl",
+   "models": [
+    "DeskLampArm"
+   ],
+   "source_url": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/desk_lamp_arm_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "modified": true,
+   "sha256": "b53b9ab01345693ac545a4f1c20b424511f2bf6889b9962f0730b3c0c0916cbd",
+   "bytes": 385
+  },
+  {
+   "file": "DeskLampArm.obj",
+   "models": [
+    "DeskLampArm"
+   ],
+   "source_url": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/desk_lamp_arm_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "modified": true,
+   "sha256": "717e7ba4e8978b732ebf03fe4e24467f5ae4920e38f416a0faa337e0cfbd6ca9",
+   "bytes": 1195212
+  },
+  {
+   "file": "DeskLampArm_Lamp_Color.jpg",
+   "models": [
+    "DeskLampArm"
+   ],
+   "source_url": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/desk_lamp_arm_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "modified": true,
+   "sha256": "ac0c3ec111ab2e6657a0ca84060f4aadb211a2c473f5121080e49260f81d55d5",
+   "bytes": 237731
+  },
+  {
+   "file": "DeskLampArm_Lamp_MetallicSmoothness.png",
+   "models": [
+    "DeskLampArm"
+   ],
+   "source_url": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/desk_lamp_arm_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "modified": true,
+   "sha256": "4c33dc6e7f3d81065243a73a2cc6d714448c85f77593940b8cdf65f872c1e8fc",
+   "bytes": 441706
+  },
+  {
+   "file": "DeskLampArm_Lamp_Normal.jpg",
+   "models": [
+    "DeskLampArm"
+   ],
+   "source_url": "https://polyhaven.com/a/desk_lamp_arm_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/desk_lamp_arm_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen, Yann Kervran",
+   "modified": true,
+   "sha256": "0c68b11433073c8fa9d4c65b1dab2ce10bdb2a0c5e1515a790a3b4c6df5462ff",
+   "bytes": 240743
+  },
+  {
+   "file": "DeskPhone.mtl",
+   "models": [
+    "DeskPhone"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "28bc26d7a5b7f96ac6e4164bc98e1ba778daf1d73efef965229d078be2fdc860",
+   "bytes": 328
+  },
+  {
+   "file": "DeskPhone.obj",
+   "models": [
+    "DeskPhone"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "69239d9b5f97a82f09ca80c10ed0c56cef5d1e3da7f232e3717b671af8d5f127",
+   "bytes": 152519
+  },
+  {
+   "file": "DeskPhone_Face_Color.jpg",
+   "models": [
+    "DeskPhone"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "96e73efc0dd3d025712bb46a1e5871f32b107f24b8497b186747f7b1968120d8",
+   "bytes": 14461
+  },
+  {
+   "file": "DeskPhone_Face_Normal.jpg",
+   "models": [
+    "DeskPhone"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "c1834f5737bfa7e5be8f469616466bafae6494101ae36b2ea1be7ed349e6c5ef",
+   "bytes": 10917
+  },
+  {
+   "file": "DoorLeverHandle.mtl",
+   "models": [
+    "DoorLeverHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "bcea4fa88bb8890648405f80d89d7e278b1f9f248aa933286df1e9f3b0021968",
+   "bytes": 266
+  },
+  {
+   "file": "DoorLeverHandle.obj",
+   "models": [
+    "DoorLeverHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "215fe3e1eece982bd65aacb77a7e7fa07ccc01c1d58b2048512948e016a1d027",
+   "bytes": 40702
+  },
+  {
+   "file": "DoorPullHandle.mtl",
+   "models": [
+    "DoorPullHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "cdbdfa48abfc39ca0f7a00145a2d1263e042682903f4b8b12815dc7cbd62e74c",
+   "bytes": 202
+  },
+  {
+   "file": "DoorPullHandle.obj",
+   "models": [
+    "DoorPullHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "4247c988ba3646590cab38c3de93799389a14b494743661e8c23f476ff5e387d",
+   "bytes": 21295
+  },
+  {
+   "file": "ExitSign.mtl",
+   "models": [
+    "ExitSign"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "2e5b59815c77065a28c929bbceb94450381cbcbd55796d87f3df32c826999bbd",
+   "bytes": 226
+  },
+  {
+   "file": "ExitSign.obj",
+   "models": [
+    "ExitSign"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "61c50f20422eae2e3c78df93e36144eb03fa4bbc1e9557d7a8909d21b1a2c68a",
+   "bytes": 5739
+  },
+  {
+   "file": "ExitSign_Face.png",
+   "models": [
+    "ExitSign"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "9a07e59b2e3c60b0d8bf0e7dbec4c4b5d57db4f010ee7c7eb982d6ef34a8c639",
+   "bytes": 7418
+  },
+  {
+   "file": "FilingCabinet.mtl",
+   "models": [
+    "FilingCabinet"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "d2a45b162c8a0fa83ceb61d99be594350e5c8099ea79c1c9e9e29ed25e230888",
+   "bytes": 501
+  },
+  {
+   "file": "FilingCabinet.obj",
+   "models": [
+    "FilingCabinet"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "5900c1da6e7f898e5113943eeefe01d7fb243d3225df26d302eb6edb5a3f105b",
+   "bytes": 149881
+  },
+  {
+   "file": "FilingCabinetOpen.mtl",
+   "models": [
+    "FilingCabinetOpen"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "4f3f899b695bb33fd2d1520d9a4273e3d43380d2e3a450af5668508005110449",
+   "bytes": 755
+  },
+  {
+   "file": "FilingCabinetOpen.obj",
+   "models": [
+    "FilingCabinetOpen"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "83a575b3699b2d4b8f602786c069c5e49703aa857a791f8fcf72b66f6b75d467",
+   "bytes": 184761
+  },
+  {
+   "file": "FilingCabinet_Labels.png",
+   "models": [
+    "FilingCabinet",
+    "FilingCabinetOpen"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "b37308a5a536ee5a776435062e52d021dacfdb627a7b7ea4dc7e92e36c48863c",
+   "bytes": 15924
+  },
+  {
+   "file": "FireAlarmCallPoint.mtl",
+   "models": [
+    "FireAlarmCallPoint"
+   ],
+   "source_url": "https://polyhaven.com/a/fire_alarm",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fire_alarm",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Slinc",
+   "modified": true,
+   "sha256": "7cf9cf96fc755062951f8ea588ab66f0932db43d6ab2bc0420afac5bd548e18e",
+   "bytes": 203
+  },
+  {
+   "file": "FireAlarmCallPoint.obj",
+   "models": [
+    "FireAlarmCallPoint"
+   ],
+   "source_url": "https://polyhaven.com/a/fire_alarm",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fire_alarm",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Slinc",
+   "modified": true,
+   "sha256": "1e01936d84e804d95a2306aaeddebcbd14716886fa9efeb1f232a693cc5cf08e",
+   "bytes": 155424
+  },
+  {
+   "file": "FireAlarmCallPoint_Color.jpg",
+   "models": [
+    "FireAlarmCallPoint"
+   ],
+   "source_url": "https://polyhaven.com/a/fire_alarm",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fire_alarm",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Slinc",
+   "modified": true,
+   "sha256": "4d645f0c21ef932387cca5e62d2c8d44f4d7916d7dc80378357cfb57fe2bf514",
+   "bytes": 179055
+  },
+  {
+   "file": "FireAlarmCallPoint_MetallicSmoothness.png",
+   "models": [
+    "FireAlarmCallPoint"
+   ],
+   "source_url": "https://polyhaven.com/a/fire_alarm",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fire_alarm",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Slinc",
+   "modified": true,
+   "sha256": "d7f23147c86c6aac6ab8782afda59a9bdd241b4c1139b2e5a36ceae910e660bd",
+   "bytes": 75419
+  },
+  {
+   "file": "FireAlarmCallPoint_Normal.jpg",
+   "models": [
+    "FireAlarmCallPoint"
+   ],
+   "source_url": "https://polyhaven.com/a/fire_alarm",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fire_alarm",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Slinc",
+   "modified": true,
+   "sha256": "ed8941b0da9b081e0a790d56eedc7a9f01ee35cb64ea322d42ad4801f7d83cf8",
+   "bytes": 56329
+  },
+  {
+   "file": "FireExtinguisher.mtl",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "32c482df72e6b534879127243b690a0562f7a23e554aa870eb72ef23d790dc0d",
+   "bytes": 486
+  },
+  {
+   "file": "FireExtinguisher.obj",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "bdd46bc05772e0abab1b44a29e5b3cc0d2607023b8eb0ec50b1e10f3ba265b3e",
+   "bytes": 635038
+  },
+  {
+   "file": "FireExtinguisher_Body_Color.jpg",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "6c824dd5f8fa51abcfa2c250a725f20ecfb4bba2aedc69badc15617464329655",
+   "bytes": 143120
+  },
+  {
+   "file": "FireExtinguisher_Body_MetallicSmoothness.png",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "0ac2ba5ece4f0bbf35262a9d017d8cd816b3a519b113b1b689d6f69c31a9ef7c",
+   "bytes": 389497
+  },
+  {
+   "file": "FireExtinguisher_Body_Normal.jpg",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "471e891e3e8a5ca76feb876473c13e790edcae7f2046262d003032797928163b",
+   "bytes": 116555
+  },
+  {
+   "file": "FireExtinguisher_Tag_Color.jpg",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "31768c5e049072bb2250e513b1de39b6c47ae90539b25fa16b53c21f3a993aed",
+   "bytes": 51716
+  },
+  {
+   "file": "FireExtinguisher_Tag_MetallicSmoothness.png",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "c3ba6820863b4f1c2cd3ac9d8966fb9168b8f06c2944b5cd098957d1ba550c57",
+   "bytes": 15719
+  },
+  {
+   "file": "FireExtinguisher_Tag_Normal.jpg",
+   "models": [
+    "FireExtinguisher"
+   ],
+   "source_url": "https://polyhaven.com/a/korean_fire_extinguisher_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/korean_fire_extinguisher_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "UM JOORIN",
+   "modified": true,
+   "sha256": "98c0480c613bf2bf4ad9f44a059f574750d1523ef5413262f84f54226bc3090b",
+   "bytes": 9788
+  },
+  {
+   "file": "Keyboard.mtl",
+   "models": [
+    "Keyboard"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "1d3a720a9f7322c8acfb705ffd78db277ba0666457bb7d323e428de56ef9936e",
+   "bytes": 153
+  },
+  {
+   "file": "Keyboard.obj",
+   "models": [
+    "Keyboard"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "12ffb515535c2d4c0dc341f34eec5a0df59d75799cc60dd8953433e931a1cb03",
+   "bytes": 87817
+  },
+  {
+   "file": "Keyboard_Color.jpg",
+   "models": [
+    "Keyboard"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "54c665ebb54d01fedd7269abc5708e57dce927329e11811e2e1a66a60728365e",
+   "bytes": 31757
+  },
+  {
+   "file": "LEDPanel.mtl",
+   "models": [
+    "LEDPanel"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "ebd6a5946c0f164cba4dfcc20ebce0aae40ce0491fb1dbd41c82d28261c7b080",
+   "bytes": 203
+  },
+  {
+   "file": "LEDPanel.obj",
+   "models": [
+    "LEDPanel"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "0f1a06988a997df4eaf8b1212914cbc692a178d9e660d5404f369acae066b000",
+   "bytes": 5573
+  },
+  {
+   "file": "LeverArchFiles.mtl",
+   "models": [
+    "LeverArchFiles"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "3820055f184655ef80f28c646ad977328a7aff10b2ec93c2ea505eb4f45b2732",
+   "bytes": 95
+  },
+  {
+   "file": "LeverArchFiles.obj",
+   "models": [
+    "LeverArchFiles"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "850062d67cf1d667594d1adc6e7b0fb419be5d7e8a68010fcd9425ae557638ca",
+   "bytes": 3163
+  },
+  {
+   "file": "LeverArchFiles_Color.jpg",
+   "models": [
+    "LeverArchFiles"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "d26be75225d34260a9865737637b137be5fc5d1330e7dd14bae5983a5fef38d4",
+   "bytes": 17046
+  },
+  {
+   "file": "LoungeChairMidCentury.mtl",
+   "models": [
+    "LoungeChairMidCentury"
+   ],
+   "source_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/mid_century_lounge_chair",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen",
+   "modified": true,
+   "sha256": "7afbf65598fb2733463fe97010cc8b0a7a343148e12bc1ec5a8dd684ca7d9ca6",
+   "bytes": 208
+  },
+  {
+   "file": "LoungeChairMidCentury.obj",
+   "models": [
+    "LoungeChairMidCentury"
+   ],
+   "source_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/mid_century_lounge_chair",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen",
+   "modified": true,
+   "sha256": "6dc5631deb3104fd92243c42229119e7f68df87d6361786a8ad50ab48ef5fc02",
+   "bytes": 492859
+  },
+  {
+   "file": "LoungeChairMidCentury_Color.jpg",
+   "models": [
+    "LoungeChairMidCentury"
+   ],
+   "source_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/mid_century_lounge_chair",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen",
+   "modified": true,
+   "sha256": "1d158ec8e7b4f741a41968d5d7d24cd99ba5e58e29c4fa07824a5d9a4a09371b",
+   "bytes": 192829
+  },
+  {
+   "file": "LoungeChairMidCentury_MetallicSmoothness.png",
+   "models": [
+    "LoungeChairMidCentury"
+   ],
+   "source_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/mid_century_lounge_chair",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen",
+   "modified": true,
+   "sha256": "5051633a63ee7b60ea2e4563a1b48dd366d14ecf9b2001d73672290fd8027dcb",
+   "bytes": 278350
+  },
+  {
+   "file": "LoungeChairMidCentury_Normal.jpg",
+   "models": [
+    "LoungeChairMidCentury"
+   ],
+   "source_url": "https://polyhaven.com/a/mid_century_lounge_chair",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/mid_century_lounge_chair",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Kuutti Siitonen",
+   "modified": true,
+   "sha256": "7d8b0e687ba2795e9d60139e0e5a78ea08e108ce4cd65e44591874b6ce9bc1b3",
+   "bytes": 207303
+  },
+  {
+   "file": "MiniFridge.mtl",
+   "models": [
+    "MiniFridge"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "e5ba63f6a4512bc4910744357fcb8b3d276b3ab572e51deab918a39d662c956b",
+   "bytes": 525
+  },
+  {
+   "file": "MiniFridge.obj",
+   "models": [
+    "MiniFridge"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "b6ee1b43f99e18297e07031d096020ceac6d4ffeadd1af2fc6d99a85410abf3e",
+   "bytes": 60466
+  },
+  {
+   "file": "Monitor_Screen_CCTV.jpg",
+   "models": [
+    "SecurityMonitor"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "62513ced838063356f2b2c66035499ae566f400c5e4fe04e597d0a96e5ff8496",
+   "bytes": 91248
+  },
+  {
+   "file": "Monitor_Screen_Desktop.jpg",
+   "models": [
+    "ComputerMonitor"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "2448c32bef9d50a163f65866f98fe5a3f21a9a09f164343e66b2c713a0786046",
+   "bytes": 33196
+  },
+  {
+   "file": "Mouse.mtl",
+   "models": [
+    "Mouse"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "8375baaf110a090b2fca161674363d095e71ea76f03157db3b42eaec29b872dc",
+   "bytes": 288
+  },
+  {
+   "file": "Mouse.obj",
+   "models": [
+    "Mouse"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "4c152d00122a5aebe08a1e2a78e4102fc11cd02a26f6fe0200837f808aba01a5",
+   "bytes": 74626
+  },
+  {
+   "file": "Mouse_Color.jpg",
+   "models": [
+    "Mouse"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "81a8cd0e96b673d2c9b2d691ae5431fe5ddf8e9f124caeb56adbc6b8aa195b71",
+   "bytes": 1554
+  },
+  {
+   "file": "OfficeChair.mtl",
+   "models": [
+    "OfficeChair"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "235a7d7b6a556d2d54f693c4bb7518a2860feceb304ab6b164511f0ebceb0278",
+   "bytes": 748
+  },
+  {
+   "file": "OfficeChair.obj",
+   "models": [
+    "OfficeChair"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "b665cb636228bb1e22d4f2a73693ae76b00ff49d6651526197c8df7be34523ae",
+   "bytes": 492193
+  },
+  {
+   "file": "OfficeDeskMetal.mtl",
+   "models": [
+    "OfficeDeskMetal"
+   ],
+   "source_url": "https://polyhaven.com/a/metal_office_desk",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/metal_office_desk",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "6e5646257655db998f69403ad658931c342347d5062f52a659a27b5ec75ddb1e",
+   "bytes": 189
+  },
+  {
+   "file": "OfficeDeskMetal.obj",
+   "models": [
+    "OfficeDeskMetal"
+   ],
+   "source_url": "https://polyhaven.com/a/metal_office_desk",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/metal_office_desk",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "a52863c644a381108bc52a6301546d399ae1fc22c0a6ef7c3983fbb86f81f0fb",
+   "bytes": 469782
+  },
+  {
+   "file": "OfficeDeskMetal_Color.jpg",
+   "models": [
+    "OfficeDeskMetal"
+   ],
+   "source_url": "https://polyhaven.com/a/metal_office_desk",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/metal_office_desk",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "faeb4e1099d7cc5cf771da8ecd7a215e5567e00fdbfb11b6af186e9ef488f68e",
+   "bytes": 135549
+  },
+  {
+   "file": "OfficeDeskMetal_MetallicSmoothness.png",
+   "models": [
+    "OfficeDeskMetal"
+   ],
+   "source_url": "https://polyhaven.com/a/metal_office_desk",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/metal_office_desk",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "6fed1e1e4ad02bf07076177c0faf7f1a204ed5dfc164ab56d69d5f7832927865",
+   "bytes": 302847
+  },
+  {
+   "file": "OfficeDeskMetal_Normal.jpg",
+   "models": [
+    "OfficeDeskMetal"
+   ],
+   "source_url": "https://polyhaven.com/a/metal_office_desk",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/metal_office_desk",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "097e76b6e6e265d71e0ffd993f6d6ab919442d63d881c6b3ee93496ad109a50d",
+   "bytes": 73113
+  },
+  {
+   "file": "OttomanLeather.mtl",
+   "models": [
+    "OttomanLeather"
+   ],
+   "source_url": "https://polyhaven.com/a/Ottoman_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/Ottoman_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Caspian Fortune",
+   "modified": true,
+   "sha256": "bd600e6222e1ab5a8d149b395d4fbbd44e2dfaed590872d3faf4751650d83492",
+   "bytes": 189
+  },
+  {
+   "file": "OttomanLeather.obj",
+   "models": [
+    "OttomanLeather"
+   ],
+   "source_url": "https://polyhaven.com/a/Ottoman_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/Ottoman_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Caspian Fortune",
+   "modified": true,
+   "sha256": "464aaa05c2dc4291d98a6b95f9d94f2c6e82ddf1aa1200269231c7f0cf444ed8",
+   "bytes": 338135
+  },
+  {
+   "file": "OttomanLeather_Color.jpg",
+   "models": [
+    "OttomanLeather"
+   ],
+   "source_url": "https://polyhaven.com/a/Ottoman_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/Ottoman_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Caspian Fortune",
+   "modified": true,
+   "sha256": "ec3cc9b3b1f135eaf5c3b3fd196a7b7fc3f1e6230efee7f20e38cd27a7e81259",
+   "bytes": 163920
+  },
+  {
+   "file": "OttomanLeather_MetallicSmoothness.png",
+   "models": [
+    "OttomanLeather"
+   ],
+   "source_url": "https://polyhaven.com/a/Ottoman_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/Ottoman_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Caspian Fortune",
+   "modified": true,
+   "sha256": "27ff8b62ca638774ec4fa89351091653bc059569d6d61712d3c649501a905cca",
+   "bytes": 268810
+  },
+  {
+   "file": "OttomanLeather_Normal.jpg",
+   "models": [
+    "OttomanLeather"
+   ],
+   "source_url": "https://polyhaven.com/a/Ottoman_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/Ottoman_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Caspian Fortune",
+   "modified": true,
+   "sha256": "9480d47b3020966a7278ed6fd9c241505f2dd4cf57bce0e97877c2dfc43e1bad",
+   "bytes": 286492
+  },
+  {
+   "file": "PendantLampGlobe.mtl",
+   "models": [
+    "PendantLampGlobe"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_ceiling_lamp_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "51a317bc874799f63e595b85bd3455cbbb6598975a540ccb563d6d6f0a014b6f",
+   "bytes": 511
+  },
+  {
+   "file": "PendantLampGlobe.obj",
+   "models": [
+    "PendantLampGlobe"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_ceiling_lamp_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "7d02f8aaae3871ffad2fc3a4aad55f2bb2377b656b286b2a21a7d180bf3c5d67",
+   "bytes": 430437
+  },
+  {
+   "file": "PendantLampGlobe_Fitting_Color.jpg",
+   "models": [
+    "PendantLampGlobe"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_ceiling_lamp_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "f607dc99497123fd58d09a4cfa4cccfcec0adc39d52492e16982c61b10de27d2",
+   "bytes": 28537
+  },
+  {
+   "file": "PendantLampGlobe_Fitting_MetallicSmoothness.png",
+   "models": [
+    "PendantLampGlobe"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_ceiling_lamp_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "7d2aa9579e11aa55b136a72568f9f91f4cccf5278b8fa04407fda3d35047392e",
+   "bytes": 67514
+  },
+  {
+   "file": "PendantLampGlobe_Fitting_Normal.jpg",
+   "models": [
+    "PendantLampGlobe"
+   ],
+   "source_url": "https://polyhaven.com/a/modern_ceiling_lamp_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/modern_ceiling_lamp_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "efffafc85e68f0c20fe1537afcfbd74bc9cae8747bfb49d05e4c94b174ee6d4e",
+   "bytes": 28535
+  },
+  {
+   "file": "PhotoFrameDesk.mtl",
+   "models": [
+    "PhotoFrameDesk"
+   ],
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/standing_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "c1d605297c64e5f4054ad6255e3e2d1fc65b79b5ce6f2e4e5395e321268d32a0",
+   "bytes": 379
+  },
+  {
+   "file": "PhotoFrameDesk.obj",
+   "models": [
+    "PhotoFrameDesk"
+   ],
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/standing_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "4ced8dcbe9b39636d5db1929a7777da659e9a56843308bb53e8039b4a0e273a8",
+   "bytes": 127974
+  },
+  {
+   "file": "PhotoFrameDesk_Artwork_Color.jpg",
+   "models": [
+    "PhotoFrameDesk"
+   ],
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/standing_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "97ca2f680818ff284bc80d5bac7b75244faec7eba83149731d181288ac83be38",
+   "bytes": 29530
+  },
+  {
+   "file": "PhotoFrameDesk_Frame_Color.jpg",
+   "models": [
+    "PhotoFrameDesk"
+   ],
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/standing_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "93f1c5fd54403c8aa807e01476f0c9556515cfdcaa143ef51723fede95e47593",
+   "bytes": 28614
+  },
+  {
+   "file": "PhotoFrameDesk_Frame_MetallicSmoothness.png",
+   "models": [
+    "PhotoFrameDesk"
+   ],
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/standing_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "bf371722baa01ff4f83ff8eccf0544806b4577e065c2a53346d8697afaeed551",
+   "bytes": 13486
+  },
+  {
+   "file": "PhotoFrameDesk_Frame_Normal.jpg",
+   "models": [
+    "PhotoFrameDesk"
+   ],
+   "source_url": "https://polyhaven.com/a/standing_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/standing_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "c2294a8f1e55b583708d1d5254055155f14d7917bc6d6151639986cc260c6bff",
+   "bytes": 3548
+  },
+  {
+   "file": "PictureFrameBlack.mtl",
+   "models": [
+    "PictureFrameBlack"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "5a5c2179c38b1689ab1dbe5bd3449daa82f8575b3f2c6fbb943516990323f5d0",
+   "bytes": 391
+  },
+  {
+   "file": "PictureFrameBlack.obj",
+   "models": [
+    "PictureFrameBlack"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "eb228b0e9a4ab6358be8a087c25a7265fdbd15dd28267deae11cf330ac1f6b84",
+   "bytes": 202367
+  },
+  {
+   "file": "PictureFrameBlack_Artwork_Color.jpg",
+   "models": [
+    "PictureFrameBlack"
+   ],
+   "license": "Project-owned (original print)",
+   "author": "Project",
+   "source_url": null,
+   "version": "generated 2026-10-14 (Source~/gen_art.py)",
+   "modified": true,
+   "sha256": "f91ef884076b752c7ae39270c52578f4a30f5ca50814e64b4b1c449427c5e0db",
+   "bytes": 65648
+  },
+  {
+   "file": "PictureFrameBlack_Frame_Color.jpg",
+   "models": [
+    "PictureFrameBlack"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "3cbad0f09d68bf33736f83d82b6ebbdc96db9780a7d4b5d107ea16f8c68b2a81",
+   "bytes": 29189
+  },
+  {
+   "file": "PictureFrameBlack_Frame_MetallicSmoothness.png",
+   "models": [
+    "PictureFrameBlack"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "b073eec8d625cf20354dcdf9b3d1c571b3a4dfbfc64aec9b7ce8de193ae72515",
+   "bytes": 45688
+  },
+  {
+   "file": "PictureFrameBlack_Frame_Normal.jpg",
+   "models": [
+    "PictureFrameBlack"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "0b70b0f9b9b4733c08f2cac1f49738a5b5ec97ae38a874b9c7dbca44f92969bb",
+   "bytes": 10647
+  },
+  {
+   "file": "PictureFrameGilt.mtl",
+   "models": [
+    "PictureFrameGilt"
+   ],
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fancy_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "modified": true,
+   "sha256": "4459455546cb2b3c703170338c80ef29146806d3f35344e9844656dd61cf3677",
+   "bytes": 317
+  },
+  {
+   "file": "PictureFrameGilt.obj",
+   "models": [
+    "PictureFrameGilt"
+   ],
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fancy_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "modified": true,
+   "sha256": "d3d7033e1ae4cf38d0968e7048e0f798df48208a2a45403956500160ab1b193e",
+   "bytes": 54978
+  },
+  {
+   "file": "PictureFrameGilt_Artwork_Color.jpg",
+   "models": [
+    "PictureFrameGilt"
+   ],
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fancy_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "modified": true,
+   "sha256": "54686b71a6976ca5aa4f6b31ce4d68a0a7317b853e60df2046ac09287d8bd300",
+   "bytes": 99277
+  },
+  {
+   "file": "PictureFrameGilt_Frame_Color.jpg",
+   "models": [
+    "PictureFrameGilt"
+   ],
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fancy_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "modified": true,
+   "sha256": "193943b0c3103aabf7fc42d9db8c3d0e6537460929d5d0eaffc7ba0ce51e6213",
+   "bytes": 169348
+  },
+  {
+   "file": "PictureFrameGilt_Frame_MetallicSmoothness.png",
+   "models": [
+    "PictureFrameGilt"
+   ],
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fancy_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "modified": true,
+   "sha256": "a2d50cac33f1ece5f1c7b96a3448b4ebe6a8b8b624bded9615921cc5fef3beb1",
+   "bytes": 31334
+  },
+  {
+   "file": "PictureFrameGilt_Frame_Normal.jpg",
+   "models": [
+    "PictureFrameGilt"
+   ],
+   "source_url": "https://polyhaven.com/a/fancy_picture_frame_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/fancy_picture_frame_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers, Rob Tuytel",
+   "modified": true,
+   "sha256": "992c15fbee6fe3dfc3efc5e328800df95a329b4ac0bab23c276b3f94755f9f1d",
+   "bytes": 67300
+  },
+  {
+   "file": "PictureFrameWhite.mtl",
+   "models": [
+    "PictureFrameWhite"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "e5d91ba32f56aa208b7710758eb2992fecf0ce6f6a12c0f82ba8b0f2aac35e6b",
+   "bytes": 391
+  },
+  {
+   "file": "PictureFrameWhite.obj",
+   "models": [
+    "PictureFrameWhite"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "2ac0d22b3f41512b4afe34c51e5dec01500d906619ef3efa7d7dc41fee0eae10",
+   "bytes": 284462
+  },
+  {
+   "file": "PictureFrameWhite_Artwork_Color.jpg",
+   "models": [
+    "PictureFrameWhite"
+   ],
+   "license": "Public domain (painting; reproduction carries no new copyright); repository dedicated CC0-1.0",
+   "author": "Paul Cezanne (1839-1906); scan published by github.com/pmilovanov/hermitage-art",
+   "source_url": "https://github.com/pmilovanov/hermitage-art/blob/b8ead49c010eac0c8366bafc4ffaaf1f1a447805/Cezanne,_Paul_-_The_Banks_of_the_Marne_(Villa_on_the_Bank_of_a_River).jpg",
+   "version": "hermitage-art commit b8ead49c010eac0c8366bafc4ffaaf1f1a447805 (2021-01-28), fetched 2026-10-15",
+   "source_sha256": "d0b9bc6f99f7c9c9dbc908546e7aa74bf8f6b4cba5c494c1b9ed59715e6d444d",
+   "source_bytes": 8216755,
+   "painting": "Paul Cezanne, The Banks of the Marne (Villa on the Bank of a River), c. 1888, oil on canvas, State Hermitage Museum",
+   "changes": "cropped (40 px trimmed left and right, rows 300-2795 of 3440 kept) to the 1.706:1 picture area, resized to 1280 x 750, light unsharp mask",
+   "modified": true,
+   "sha256": "ab418363a781a246e671a0efa941f06f1358584e2310fe122951baf644b0638b",
+   "bytes": 346375
+  },
+  {
+   "file": "PictureFrameWhite_Frame_Color.jpg",
+   "models": [
+    "PictureFrameWhite"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "5646b519fae986dee2517f89a9b4ba1adce75100ea684a78d4dd2947cc1e58a4",
+   "bytes": 46621
+  },
+  {
+   "file": "PictureFrameWhite_Frame_MetallicSmoothness.png",
+   "models": [
+    "PictureFrameWhite"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "8571f076f8d20ed89aea0b6cfca4379388184239dfd774c8a5a11e819ef80f91",
+   "bytes": 50207
+  },
+  {
+   "file": "PictureFrameWhite_Frame_Normal.jpg",
+   "models": [
+    "PictureFrameWhite"
+   ],
+   "source_url": "https://polyhaven.com/a/hanging_picture_frame_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/hanging_picture_frame_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "4fd93bc52093ed5967e2877b5227077b72f2a0a548008f9f1eaf43a488f83df9",
+   "bytes": 16812
+  },
+  {
+   "file": "PottedPlantArrowhead.mtl",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "9901586b2c239f19e7b06bbea607bed95c48a2b221d2798725188dd533b768b8",
+   "bytes": 671
+  },
+  {
+   "file": "PottedPlantArrowhead.obj",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "725de74931703dc6a0cd2e694c3189111ba0c1bdcd046dedfcd8a7e77d89f665",
+   "bytes": 1138741
+  },
+  {
+   "file": "PottedPlantArrowhead_Gravel_Color.jpg",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "4386c4965683574a29f3a7835d5ca290257a8eca0cf6a4b2524996fddb4ade69",
+   "bytes": 63411
+  },
+  {
+   "file": "PottedPlantArrowhead_Gravel_MetallicSmoothness.png",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "6d529fc177f462536713f62c241be280c2a713313b999bf3cf10893c10464090",
+   "bytes": 46127
+  },
+  {
+   "file": "PottedPlantArrowhead_Gravel_Normal.jpg",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "e37b2e6d235f1404c3999a3d6f1683181e2fc83fbc3b2bd2242e6011611dd977",
+   "bytes": 122407
+  },
+  {
+   "file": "PottedPlantArrowhead_Leaves_Color.jpg",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "21ed362b8c66b4cc7162c1014c54f8be8c9af9848481d724bd2fbe38589a59e0",
+   "bytes": 193919
+  },
+  {
+   "file": "PottedPlantArrowhead_Leaves_MetallicSmoothness.png",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "57a7509f80447e2336c4c676d2422a52916dad9fcafb0b118358e7602d898d57",
+   "bytes": 28371
+  },
+  {
+   "file": "PottedPlantArrowhead_Leaves_Normal.jpg",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "634b7c8ef46ab7b99d9a12365532915c736396b0d77bee8ef8cc0c4f2bafdf03",
+   "bytes": 163061
+  },
+  {
+   "file": "PottedPlantArrowhead_Pot_Color.jpg",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "1e5fb0616e6bf34c04fdc3ed282de93c24ab20d8d9c32554987e7ddaa465049e",
+   "bytes": 183086
+  },
+  {
+   "file": "PottedPlantArrowhead_Pot_MetallicSmoothness.png",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "4a16c0f10c166b4e760d9b3e6f6a3ce21268a31b35618594a3e4e23283180d7e",
+   "bytes": 39925
+  },
+  {
+   "file": "PottedPlantArrowhead_Pot_Normal.jpg",
+   "models": [
+    "PottedPlantArrowhead"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_02",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_02",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "0bd408b1119f6f5067e7f0d15b8718e9f2e11d33a9749c59b6788731b5bd0fe8",
+   "bytes": 139461
+  },
+  {
+   "file": "PottedPlantTall.mtl",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "fc09861b2dd48e434b6c114bd57af0f371539c4f2d6a064e249ea42f2251e2cf",
+   "bytes": 626
+  },
+  {
+   "file": "PottedPlantTall.obj",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "b9cbe22d536c8fdb7e267a8baead2ceefc8270e0dff2ee7caa5e05d5100eba44",
+   "bytes": 1175645
+  },
+  {
+   "file": "PottedPlantTall_Gravel_Color.jpg",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "8bdee97ce2813f3f0d6dcdca5c0cf6b1c9f86a424d413d1ab127d10cae355f03",
+   "bytes": 66931
+  },
+  {
+   "file": "PottedPlantTall_Gravel_MetallicSmoothness.png",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "8f2007caf56e11d095689566d997d3a46e6336c462aebf9e257a68600c93e127",
+   "bytes": 43201
+  },
+  {
+   "file": "PottedPlantTall_Gravel_Normal.jpg",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "6a2d18bbaaf970c7efe9aa39489fa5cab6f9130068726a363fc1d95ec8f3b805",
+   "bytes": 120570
+  },
+  {
+   "file": "PottedPlantTall_Leaves_Color.png",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "63628452bfe2029885ff081528ebef15cce97a05a9c81cefc26d2ecf54a20da3",
+   "bytes": 1288160
+  },
+  {
+   "file": "PottedPlantTall_Leaves_MetallicSmoothness.png",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "ebf871bc1b23dc8e01dc560571618f7c6a485754087ca730874de5d26350f396",
+   "bytes": 39967
+  },
+  {
+   "file": "PottedPlantTall_Leaves_Normal.jpg",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "87f7c724f67acc099fa8efe43c7db8862a3198318f4839881c965a7108f02d75",
+   "bytes": 220429
+  },
+  {
+   "file": "PottedPlantTall_Pot_Color.jpg",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "4e194ea23570725eb044b350eb76620a32554c607d30cce78a2ecd19c28678ce",
+   "bytes": 238525
+  },
+  {
+   "file": "PottedPlantTall_Pot_MetallicSmoothness.png",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "543c7c31924ed5d5977eee142cc1eaa0997763c3b5688fa6caf5f3cffe9d37e7",
+   "bytes": 55196
+  },
+  {
+   "file": "PottedPlantTall_Pot_Normal.jpg",
+   "models": [
+    "PottedPlantTall"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "Rico Cilliers",
+   "modified": true,
+   "sha256": "82108c951f9f26f524c393de900e677a6b561f46220c6556e957202619f173e0",
+   "bytes": 255926
+  },
+  {
+   "file": "PottedSucculent.mtl",
+   "models": [
+    "PottedSucculent"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_04",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_04",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "5194e8385a9f5a376d2a4bba16b61684efd08e2fff1ee8f130da3eee3e7801ac",
+   "bytes": 190
+  },
+  {
+   "file": "PottedSucculent.obj",
+   "models": [
+    "PottedSucculent"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_04",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_04",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "31a316e5543e75475f9b77324ffaa42975d53de1f7c61b68dba66dbbdc019d16",
+   "bytes": 431633
+  },
+  {
+   "file": "PottedSucculent_Color.jpg",
+   "models": [
+    "PottedSucculent"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_04",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_04",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "65b747856ad1ef165a66b6395e06a44b69f4ae88e8f6b0a8519548d333c989eb",
+   "bytes": 64054
+  },
+  {
+   "file": "PottedSucculent_MetallicSmoothness.png",
+   "models": [
+    "PottedSucculent"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_04",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_04",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "8a2d73086a21d3daad40ef93a6ac646bc4d00907a24d3bf2d161fc75d1f73474",
+   "bytes": 47948
+  },
+  {
+   "file": "PottedSucculent_Normal.jpg",
+   "models": [
+    "PottedSucculent"
+   ],
+   "source_url": "https://polyhaven.com/a/potted_plant_04",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/potted_plant_04",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "fe6b07d0dff4f537588b7b48b63dea5a1f314d5893a6e78e4c5b000ad25920cb",
+   "bytes": 95764
+  },
+  {
+   "file": "RecessedDownlight.mtl",
+   "models": [
+    "RecessedDownlight"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "54a7b68ea923b7ab8dfc8cacbb3e14a4b57600428f60e3bae97daf6252027be5",
+   "bytes": 264
+  },
+  {
+   "file": "RecessedDownlight.obj",
+   "models": [
+    "RecessedDownlight"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "773056251e3965e3faea18af64bf85eff4f8ae78dfa78f4715409537527e5322",
+   "bytes": 33999
+  },
+  {
+   "file": "Rug.mtl",
+   "models": [
+    "Rug"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "ce0a4821fbbe919d7262bae869adf8cccadac7b5f3b020a2ff36986644335cbb",
+   "bytes": 104
+  },
+  {
+   "file": "Rug.obj",
+   "models": [
+    "Rug"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "b320eb643765e881e0724a0c7d8dd0a3e33134ecf43820c33aadadc884ea972b",
+   "bytes": 5072
+  },
+  {
+   "file": "Rug_Color.jpg",
+   "models": [
+    "Rug"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "3d33fddbe7203eb4ffcc7e584c1cbc004e936d663807c96381952b1bc619b4c2",
+   "bytes": 96938
+  },
+  {
+   "file": "Rug_Normal.jpg",
+   "models": [
+    "Rug"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "9e8d05b5946de3e02322ceffd122745590f9897c3938cd012976503ce1e55c42",
+   "bytes": 94011
+  },
+  {
+   "file": "SecurityMonitor.mtl",
+   "models": [
+    "SecurityMonitor"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "adc942ec75a34ced4d55142bc19bedab1db34f580813bd8aa0e02961dd14b78c",
+   "bytes": 234
+  },
+  {
+   "file": "SecurityMonitor.obj",
+   "models": [
+    "SecurityMonitor"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "74972a2cb4590916ea1f633a79d7f58d6b81d60faf8a9667bd365922172848a6",
+   "bytes": 95729
+  },
+  {
+   "file": "Shared_BrushedSteel_Color.jpg",
+   "models": [
+    "DoorLeverHandle",
+    "DoorPullHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "7a8a6086ce056e69f0f49db324c0f5bbf8097d11c90046e3ed960556732fdf74",
+   "bytes": 18811
+  },
+  {
+   "file": "Shared_BrushedSteel_MetallicSmoothness.png",
+   "models": [
+    "DoorLeverHandle",
+    "DoorPullHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "03971ad79188735cec838fd3f3958d7950aec1b2fd47026616aa6a968628e0fb",
+   "bytes": 10465
+  },
+  {
+   "file": "Shared_BrushedSteel_Normal.jpg",
+   "models": [
+    "DoorLeverHandle",
+    "DoorPullHandle"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "6ebf5570ceffa3c4445b8c23bf54c54d129a313be98c47a0a9bddb9af63ac707",
+   "bytes": 37582
+  },
+  {
+   "file": "Shared_FabricCharcoal_Color.jpg",
+   "models": [
+    "Mouse",
+    "OfficeChair"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "64e2bb04c4df9085092456bcd634516486666279d297a53c7ede5393a6bbf31e",
+   "bytes": 13938
+  },
+  {
+   "file": "Shared_FabricCharcoal_Normal.jpg",
+   "models": [
+    "Mouse",
+    "OfficeChair"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "d3c3a27db97402450dc51e8b2945d423b7fa64c9627622af18b4e82b8d42e154",
+   "bytes": 136769
+  },
+  {
+   "file": "Shared_MeshWeave_Color.jpg",
+   "models": [
+    "OfficeChair"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "b04e144ef6e7ee5bdb6094043f1e6a5e3ece7ea31d2f5a339796888b082b5ba9",
+   "bytes": 24347
+  },
+  {
+   "file": "Shared_MeshWeave_Normal.jpg",
+   "models": [
+    "OfficeChair"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "eae20ecf8ba7d1daf1c04010a2e91b3d505e789062ed80a3b1feae00d34b2f91",
+   "bytes": 109266
+  },
+  {
+   "file": "Shared_PlasticBlack_Color.jpg",
+   "models": [
+    "CCTVDome",
+    "CoffeeMachine",
+    "ComputerMonitor",
+    "DeskPhone",
+    "FilingCabinet",
+    "FilingCabinetOpen",
+    "OfficeChair",
+    "SecurityMonitor",
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "abe59fc6c0110f61c5479ab4d71615be051d3b36fc798f67e7d9a79777b6ae06",
+   "bytes": 3472
+  },
+  {
+   "file": "Shared_PlasticBlack_Normal.jpg",
+   "models": [
+    "CCTVDome",
+    "CoffeeMachine",
+    "ComputerMonitor",
+    "DeskPhone",
+    "FilingCabinet",
+    "FilingCabinetOpen",
+    "OfficeChair",
+    "SecurityMonitor",
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "41bd983d7804ea72d5d5b36dc9d71255a0f77ca8718d1b7b99f625fbdbf4e5e8",
+   "bytes": 57724
+  },
+  {
+   "file": "Shared_PlasticWhite_Color.jpg",
+   "models": [
+    "CCTVDome",
+    "CeilingDiffuser",
+    "ExitSign",
+    "LEDPanel",
+    "MiniFridge",
+    "RecessedDownlight",
+    "SmokeDetector",
+    "WallVent",
+    "WaterCooler"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "bbdb1f6e88909d3a9e1b68e5a6bdc9dbc51fd6c3735b78cee933b329d16ff44e",
+   "bytes": 5859
+  },
+  {
+   "file": "Shared_PlasticWhite_Normal.jpg",
+   "models": [
+    "CCTVDome",
+    "CeilingDiffuser",
+    "ExitSign",
+    "LEDPanel",
+    "MiniFridge",
+    "RecessedDownlight",
+    "SmokeDetector",
+    "WallVent",
+    "WaterCooler"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "2fdc7781562e112cffbc98b21822dac59ba84c470dd417a3e01f322af4111a35",
+   "bytes": 40599
+  },
+  {
+   "file": "Shared_PowderCoatGrey_Color.jpg",
+   "models": [
+    "DVRRecorder",
+    "FilingCabinet",
+    "FilingCabinetOpen"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "7974944237a53e1a660545064e329b256b526ce707cb686ad30184d41b8af540",
+   "bytes": 2618
+  },
+  {
+   "file": "Shared_PowderCoatGrey_Normal.jpg",
+   "models": [
+    "DVRRecorder",
+    "FilingCabinet",
+    "FilingCabinetOpen"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "64870ac98ea23ea58592e44f716d68094ba2db8abe683a3fba0b141503341e76",
+   "bytes": 53016
+  },
+  {
+   "file": "ShelvingSteelWide.mtl",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "cec48ec1e7184e10c918f86c309d9dfe6fad3fc2015bf1e738ea1d64dacef0e0",
+   "bytes": 437
+  },
+  {
+   "file": "ShelvingSteelWide.obj",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "d348590b57c57657b51f89bd5efd63f341409bcc6946dd2d93e1616cca1fdc31",
+   "bytes": 623848
+  },
+  {
+   "file": "ShelvingSteelWide_Drawers_Color.jpg",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "8f803e7fca816d0135a919abfa4bb8aba8fc87bf261ec2a72c58ff51dce83310",
+   "bytes": 53506
+  },
+  {
+   "file": "ShelvingSteelWide_Drawers_MetallicSmoothness.png",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "431011703eb8667c4cc548f343db9e77cea73243a1c5eee82aed6101bed1766a",
+   "bytes": 42251
+  },
+  {
+   "file": "ShelvingSteelWide_Drawers_Normal.jpg",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "9d90e01df441f573e55b28268078d5c20559b9c1810acc82c140cf5f69828c75",
+   "bytes": 22684
+  },
+  {
+   "file": "ShelvingSteelWide_Frame_Color.jpg",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "ebdfa25fd2057b172d36ec60a54d32f624ac24ebd2ded13159f25b8a1b321144",
+   "bytes": 132326
+  },
+  {
+   "file": "ShelvingSteelWide_Frame_MetallicSmoothness.png",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "71d4fa4d898e24b6a68f8c1cf60e2f01676482b2c432e36552e55fd8e16f97c2",
+   "bytes": 311910
+  },
+  {
+   "file": "ShelvingSteelWide_Frame_Normal.jpg",
+   "models": [
+    "ShelvingSteelWide"
+   ],
+   "source_url": "https://polyhaven.com/a/steel_frame_shelves_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/steel_frame_shelves_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Ulan Cabanilla",
+   "modified": true,
+   "sha256": "4c2176fdb294ca576566901b2abf7d318469f6cab976ed75ceff44ea5a426045",
+   "bytes": 130527
+  },
+  {
+   "file": "SmokeDetector.mtl",
+   "models": [
+    "SmokeDetector"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "ae41e9a1801dd812b26b92e9fd8d3b96b0993cd214bfc29ee04c22a84126acfb",
+   "bytes": 258
+  },
+  {
+   "file": "SmokeDetector.obj",
+   "models": [
+    "SmokeDetector"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "66ee2b011c001de743d548677705929b75853ef8c6fce72ed14fe537cbd7587e",
+   "bytes": 30785
+  },
+  {
+   "file": "SnakePlant.mtl",
+   "models": [
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "e512e1c4f5054936c8d58779d434a9eea3fadf28cbe4ab9909161735f38692e4",
+   "bytes": 396
+  },
+  {
+   "file": "SnakePlant.obj",
+   "models": [
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "fc78fb95a865b84d0bc71d988975e6e41c5beef50e2ffced8cfc855d0bbd53e1",
+   "bytes": 137977
+  },
+  {
+   "file": "SnakePlant_Leaf_Color.jpg",
+   "models": [
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "b333f8b2ee3cc90b0f27cbd9566349fa117440088b776854d6db38a5262c4bf4",
+   "bytes": 10397
+  },
+  {
+   "file": "SnakePlant_Leaf_Normal.jpg",
+   "models": [
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "58cfc3484bf799ed6f3918e6231098f0d26923f7feb963704719b53d21f7e48f",
+   "bytes": 6557
+  },
+  {
+   "file": "SnakePlant_Soil_Color.jpg",
+   "models": [
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "d5e7af26dbc7447b26341d3bb66463d0ec131b29f5699eb1f1d2d92d911849b5",
+   "bytes": 2220
+  },
+  {
+   "file": "SnakePlant_Soil_Normal.jpg",
+   "models": [
+    "SnakePlant"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "2374037ea64f7d12dbf2ec9e209afd2a6c66d602ff6ad5e8b2243ecfeeeaee54",
+   "bytes": 38879
+  },
+  {
+   "file": "StationerySet.mtl",
+   "models": [
+    "StationerySet"
+   ],
+   "source_url": "https://polyhaven.com/a/stationery_supplies",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/stationery_supplies",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Mateusz Sadek",
+   "modified": true,
+   "sha256": "940f6b4182d8733f826e08ef3c65d2154c03355985d64a20d54030199feaf402",
+   "bytes": 189
+  },
+  {
+   "file": "StationerySet.obj",
+   "models": [
+    "StationerySet"
+   ],
+   "source_url": "https://polyhaven.com/a/stationery_supplies",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/stationery_supplies",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Mateusz Sadek",
+   "modified": true,
+   "sha256": "a6ea915b60748dcc7bae580812d446deaaab65f4828c8db1c0f054f91bafaa48",
+   "bytes": 333634
+  },
+  {
+   "file": "StationerySet_Color.jpg",
+   "models": [
+    "StationerySet"
+   ],
+   "source_url": "https://polyhaven.com/a/stationery_supplies",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/stationery_supplies",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Mateusz Sadek",
+   "modified": true,
+   "sha256": "365ad1537c2bfdc1bf4222ed983c8db7b38eac2fb2503495c79d68b2adc74671",
+   "bytes": 211900
+  },
+  {
+   "file": "StationerySet_MetallicSmoothness.png",
+   "models": [
+    "StationerySet"
+   ],
+   "source_url": "https://polyhaven.com/a/stationery_supplies",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/stationery_supplies",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Mateusz Sadek",
+   "modified": true,
+   "sha256": "df876a21d00c1110634be6987e2e035f3dcda39e11395c06b2e58df73f88db89",
+   "bytes": 80960
+  },
+  {
+   "file": "StationerySet_Normal.jpg",
+   "models": [
+    "StationerySet"
+   ],
+   "source_url": "https://polyhaven.com/a/stationery_supplies",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/stationery_supplies",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "Mateusz Sadek",
+   "modified": true,
+   "sha256": "4185a1eec5b7d912c3357398d522e7305bf8ea919ff7de1374869c120fdf0710",
+   "bytes": 37632
+  },
+  {
+   "file": "TrackLight.mtl",
+   "models": [
+    "TrackLight"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "aea0ce7d31dcfbe4398aa51ac4964b04a7b992938403091e9b2cfd38f68c6c2b",
+   "bytes": 190
+  },
+  {
+   "file": "TrackLight.obj",
+   "models": [
+    "TrackLight"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "fddf3149bc574bdd27b37f577f6a93b7e626179f7f0f7c43bf3062785c7821c8",
+   "bytes": 251841
+  },
+  {
+   "file": "VaseCeramicBottle.mtl",
+   "models": [
+    "VaseCeramicBottle"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "dfa91e00df92eaa461abad6b71d7f03e7565f64dbd614730b184c4a54aa6aeea",
+   "bytes": 198
+  },
+  {
+   "file": "VaseCeramicBottle.obj",
+   "models": [
+    "VaseCeramicBottle"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "98044e917ed61e659f0b80d2f0f8c51c6a78a8d89a1e3462865254a737f2896a",
+   "bytes": 332161
+  },
+  {
+   "file": "VaseCeramicBottle_Color.jpg",
+   "models": [
+    "VaseCeramicBottle"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "e2c5184066bfd614ecb299596a0471fb8acc3dfe53ec96604eff4257a747cabe",
+   "bytes": 7757
+  },
+  {
+   "file": "VaseCeramicBottle_MetallicSmoothness.png",
+   "models": [
+    "VaseCeramicBottle"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "d332dc2c56f62bc5eaf810a5e6632ed2599ad3b119c1f85e4622acb75b901745",
+   "bytes": 42092
+  },
+  {
+   "file": "VaseCeramicBottle_Normal.jpg",
+   "models": [
+    "VaseCeramicBottle"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_01",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_01",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "f1dfc0d0253329ed0048c6d2fa0ad86f55abca71055a1b9db8d3a2ae53aa321b",
+   "bytes": 12818
+  },
+  {
+   "file": "VaseCeramicTall.mtl",
+   "models": [
+    "VaseCeramicTall"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "8c36212fef66bac5571ce62077a2eb8f7fbd128a610f75ee71bc39c52f02203c",
+   "bytes": 192
+  },
+  {
+   "file": "VaseCeramicTall.obj",
+   "models": [
+    "VaseCeramicTall"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "6fc8c771a552417e1652eb1a1b93fffe142655edc14f9d467b2b4ff0ae2b9b52",
+   "bytes": 435122
+  },
+  {
+   "file": "VaseCeramicTall_Color.jpg",
+   "models": [
+    "VaseCeramicTall"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "e3e79b7db2ad02a8ae511212746fa55548050e705bb269f7d9eaf264225efa1e",
+   "bytes": 41411
+  },
+  {
+   "file": "VaseCeramicTall_MetallicSmoothness.png",
+   "models": [
+    "VaseCeramicTall"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "357ef6ee95b024826e889ad89d7092d3782bc4f8fc4519f6c5de158b61241afe",
+   "bytes": 49548
+  },
+  {
+   "file": "VaseCeramicTall_Normal.jpg",
+   "models": [
+    "VaseCeramicTall"
+   ],
+   "source_url": "https://polyhaven.com/a/ceramic_vase_03",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/ceramic_vase_03",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14, rebuilt 2026-10-15",
+   "license": "CC0-1.0",
+   "author": "James Ray Cock",
+   "modified": true,
+   "sha256": "2914a71f6e8c09fdef249c80b2ae1740d74957fa8d65147a4c8dd7d37bb1a27d",
+   "bytes": 46561
+  },
+  {
+   "file": "WallClock.mtl",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "bda9734b4283b0f57ef0f645cb956d89178c791d8df0934b8df28767151fa629",
+   "bytes": 242
+  },
+  {
+   "file": "WallClock.obj",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "e909bf2e32475e4ff5413b35ea3a21c065778947a9cf74ed4c655cacbc9773cc",
+   "bytes": 289109
+  },
+  {
+   "file": "WallClock_Color.jpg",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "8a9e3ba80790837d1c3b6bd80e24ef01421b9d173584c1a004a91414802a1c50",
+   "bytes": 122529
+  },
+  {
+   "file": "WallClock_MetallicSmoothness.png",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "77a34a1f363a13b5895b5ecae784315c62ca3f2b9ff6913d33bec6cb83392339",
+   "bytes": 171213
+  },
+  {
+   "file": "WallClock_Normal.jpg",
+   "models": [
+    "WallClock"
+   ],
+   "source_url": "https://polyhaven.com/a/wall_clock",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game/tree/8b6aa56f951450b7a05434615bcdda2bd2d1e8fa/assets/3d/models/wall_clock",
+   "version": "Poly Haven 2K glTF via mirror commit 8b6aa56f9514, fetched 2026-10-14",
+   "license": "CC0-1.0",
+   "author": "PierreB3D",
+   "modified": true,
+   "sha256": "9e594718c09edf0afcffcfedb084ffe2fc3f6cff233291216b2ab289c0c0801b",
+   "bytes": 29416
+  },
+  {
+   "file": "WallVent.mtl",
+   "models": [
+    "WallVent"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "85b5d9e8e5f0dc4f7aad97b3f29aec1a13a8d75362d23fd6cc53f6fe8732d2e7",
+   "bytes": 200
+  },
+  {
+   "file": "WallVent.obj",
+   "models": [
+    "WallVent"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "bf819809d27dcfdefb7314d9ac56045e0eadc8d4b03bf83b74146d94319f51b3",
+   "bytes": 9399
+  },
+  {
+   "file": "WaterCooler.mtl",
+   "models": [
+    "WaterCooler"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "9deb5d233856fa9a41c10ea1f361e38f6f16fe41fb6c055652879dbfdccf4939",
+   "bytes": 631
+  },
+  {
+   "file": "WaterCooler.obj",
+   "models": [
+    "WaterCooler"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "c1a164a1c177ed5d267f342b277c8eb819c3e894dd88d4a141e48c3f4d5a2fc8",
+   "bytes": 163651
+  },
+  {
+   "file": "WaterCooler_Vent_Color.jpg",
+   "models": [
+    "WaterCooler"
+   ],
+   "source_url": null,
+   "version": "generated 2026-10-14",
+   "license": "Project-owned (treat as CC0)",
+   "author": "Project",
+   "modified": false,
+   "sha256": "dd2e587348ea018124d1436a7b11c4028812faa841f10c46f21d947c02a01b58",
+   "bytes": 3912
+  },
+  {
+   "file": "Source~/InteriorModels_Previews.jpg",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "9bf0aa364271d8ae55af16e580389193c73543b0accf64b88c6b90022a5dea18",
+   "bytes": 261625,
+   "note": null
+  },
+  {
+   "file": "Source~/bake_gravel.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "c0878b9c69c34b4fedd5e505b00208d96a3c44bccae80a712336a89fa689db2b",
+   "bytes": 14323,
+   "note": null
+  },
+  {
+   "file": "Source~/build_ph.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "cbef000253fac041bd1fec48d52ef0c861b8c8e120036fd52d22fcadec3f7256",
+   "bytes": 8585,
+   "note": null
+  },
+  {
+   "file": "Source~/check_obj.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "396e7cb6cef4d57a650282d3becc6a4e508fd1d51d7d4989fe2b271e90e2a45d",
+   "bytes": 1456,
+   "note": null
+  },
+  {
+   "file": "Source~/convert_ph.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "712bb47f0a39fa203a7d65b3291497d6daf0c341a084a32ec7e96c5e46c586e5",
+   "bytes": 29811,
+   "note": null
+  },
+  {
+   "file": "Source~/cracks.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "616621379e11cf5b780bedb80c579e2bac9fa23f3e8c15739e0a7427d6b8ba76",
+   "bytes": 1369,
+   "note": null
+  },
+  {
+   "file": "Source~/disc_edge_check.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "3234b870fc6e1168037ed79197393494ec21e23c206814df40c9c26e4a7bbdfb",
+   "bytes": 2441,
+   "note": null
+  },
+  {
+   "file": "Source~/edit_textures.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "fd8028b0b4be1ce941ad02cbf692a68f22cd87508ce581bde3d8bcf7b3409231",
+   "bytes": 14234,
+   "note": null
+  },
+  {
+   "file": "Source~/gen_art.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "b0929023ef8d5b9e46a8a5f4c3f0582b8304e794b5954ab257056099abebc517",
+   "bytes": 3694,
+   "note": null
+  },
+  {
+   "file": "Source~/gen_text.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "782e8669de774898768b47dd80615ee3f86cff4e9ce8ed03ba681bab0a779e02",
+   "bytes": 20299,
+   "note": null
+  },
+  {
+   "file": "Source~/grid.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "01280cacc8ee1a4454bbe1b5eae22f9b98705b0e9540eb75e73e7df5a6fb71c5",
+   "bytes": 634,
+   "note": null
+  },
+  {
+   "file": "Source~/leaf_cards.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "898b35eb31ffa79e735441c4b43758471df8f58c98ae2757c34e690087606a49",
+   "bytes": 13995,
+   "note": null
+  },
+  {
+   "file": "Source~/make_docs.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "083e640026c5f858622c6f960675f582b1b868e3d22306e5cf2ed14ec0cac65e",
+   "bytes": 8090,
+   "note": null
+  },
+  {
+   "file": "Source~/meshkit.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "639da9a027868b604f5b50a45363ae81feba39e734a9ba6dd546b085f145c318",
+   "bytes": 20937,
+   "note": "meshkit.py adapted from Prototype/ThirdParty/ForensicModels/Source~/meshkit.py (project-owned)"
+  },
+  {
+   "file": "Source~/pack_meta.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "cbc79bf287886e469290129bc56dc2b116b3e7e4a479b1c6fb6a94e8c585af6b",
+   "bytes": 19140,
+   "note": null
+  },
+  {
+   "file": "Source~/prep_print.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "419c4d03f03b53f1d00d1a4ff00e7a58443ceaa468cbaa9fc6560149f9a0518d",
+   "bytes": 1172,
+   "note": null
+  },
+  {
+   "file": "Source~/proc_fixtures.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "22182a30fa54186c784fde65d86cdf7e7e1a8bb055272509f7d431f3b0bc4c60",
+   "bytes": 23966,
+   "note": null
+  },
+  {
+   "file": "Source~/proc_lib.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "c8f14b729cd320d308f54486b6bf859f38ae616fddbb9676d3d50b76383ad054",
+   "bytes": 9294,
+   "note": null
+  },
+  {
+   "file": "Source~/proc_materials.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "397adbde6cc1edf5d8042f29747b6ce8b3790fcc9feb7ecc54eca38187664118",
+   "bytes": 3981,
+   "note": null
+  },
+  {
+   "file": "Source~/proc_office.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "3f04dc4407a53c7f7b03d0cdd68d7ef3026b5001107766d9d6f21ccbcb5d4253",
+   "bytes": 30288,
+   "note": null
+  },
+  {
+   "file": "Source~/render.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "f46310457a7d95280c4c056dd18d6db24d44de2b375cb0c7960401cde3275b54",
+   "bytes": 6369,
+   "note": null
+  },
+  {
+   "file": "Source~/render2.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "450cd4eeaccb452770e3a06eda28cd058880f3e69430f08ad5b1ea863a178910",
+   "bytes": 7664,
+   "note": null
+  },
+  {
+   "file": "Source~/sheet.py",
+   "models": [],
+   "source_url": null,
+   "version": "generated 2026-10-14, revised 2026-10-15",
+   "license": "Project-owned",
+   "author": "Project",
+   "sha256": "ac7a0345440a8c37ff4e4b32e6886b440643ccab26c295ba9b599d2ac0394ef2",
+   "bytes": 506,
+   "note": null
+  }
+ ]
+}

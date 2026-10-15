@@ -1,0 +1,21 @@
+newmtl Body
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd FireExtinguisher_Body_Color.jpg
+# Normal FireExtinguisher_Body_Normal.jpg
+# MetallicSmoothness FireExtinguisher_Body_MetallicSmoothness.png
+
+newmtl GaugeGlass
+Kd 0.920 0.940 0.950
+Ks 0.500 0.500 0.500
+Ns 200
+d 0.25
+
+newmtl Tag
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd FireExtinguisher_Tag_Color.jpg
+# Normal FireExtinguisher_Tag_Normal.jpg
+# MetallicSmoothness FireExtinguisher_Tag_MetallicSmoothness.png

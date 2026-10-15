@@ -1,0 +1,359 @@
+{
+  "pack": "NightSky",
+  "fetched": "2026-10-14",
+  "notes": "Poly Haven, NASA and GitHub hosts other than raw.githubusercontent.com / media.githubusercontent.com / git were unreachable from the build container; files were taken from the pinned GitHub mirrors listed per item and verified as stated.",
+  "items": [
+    {
+      "file": "cobblestone_street_night_2k.hdr",
+      "kind": "hdri",
+      "title": "Cobblestone Street Night (2k)",
+      "author": "Greg Zaal, Jenelle van Heerden (Poly Haven)",
+      "original_url": "https://polyhaven.com/a/cobblestone_street_night",
+      "fetched_from": "https://github.com/auraoneai/aura3d/blob/897359c4a19ec1cf99a3c88c82e4d0b46da4b5fe/fixtures/environment-corpus/hdri/cobblestone_street_night_2k.hdr",
+      "fetched_via": "https://media.githubusercontent.com/media/auraoneai/aura3d/897359c4a19ec1cf99a3c88c82e4d0b46da4b5fe/fixtures/environment-corpus/hdri/cobblestone_street_night_2k.hdr (Git LFS)",
+      "version": "Poly Haven 2k Radiance HDR (dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/cobblestone_street_night_2k.hdr)",
+      "verification": "md5 739ade89e23a42a52e1ffb051eef8dcd and 7064424 bytes equal the Poly Haven API values recorded in github.com/blue45f/toonstudio apps/web/src/domains/creator/bg3d/studio-bg3d-hdri-environment-assets.ts; sha256 equals the aura3d manifest value",
+      "license": {
+        "name": "CC0 1.0 Universal (Public Domain Dedication)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "license_proof": "Poly Haven licence: 'our 3D assets themselves are published under the CC0 license' (ToS.md) and per-asset license fields 'CC0' / 'CC0 - Public Domain' in the official repository https://github.com/Poly-Haven/Public-API (commit 2fd1796dc3506dfa8269439aac8e6f5c65876bd1: constants/legacy/hdris.json, bl_repo/_v1/assets-00000.json)",
+      "changes": "none (byte-identical)",
+      "sha256": "e3c95d049ea26dc5d54b24a2904bfdd1929fac65d655e83328dfb958715e779a",
+      "bytes": 7064424
+    },
+    {
+      "file": "hansaplatz_1k.hdr",
+      "kind": "hdri",
+      "title": "Hansaplatz (1k, downsampled)",
+      "author": "Greg Zaal (Poly Haven)",
+      "original_url": "https://polyhaven.com/a/hansaplatz",
+      "fetched_from": "https://github.com/acltabontabon/sev-1/blob/cc500f9aeeb6d5e8fbc911ec1c0839b855d6002a/assets/environment/hdri/hansaplatz_2k.hdr",
+      "fetched_via": "https://media.githubusercontent.com/media/acltabontabon/sev-1/cc500f9aeeb6d5e8fbc911ec1c0839b855d6002a/assets/environment/hdri/hansaplatz_2k.hdr (Git LFS)",
+      "source_sha256": "d925897393361826cf2c2d72ea2b617512f36f3d730ef33227aba7edcc7a5d20",
+      "source_bytes": 6850384,
+      "version": "Poly Haven hansaplatz_2k.hdr",
+      "verification": "source size 6850384 bytes equals the official Poly Haven listing (Public-API constants/legacy/hdris.json); mirror README states 'unmodified'",
+      "license": {
+        "name": "CC0 1.0 Universal (Public Domain Dedication)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "license_proof": "Poly Haven licence: 'our 3D assets themselves are published under the CC0 license' (ToS.md) and per-asset license fields 'CC0' / 'CC0 - Public Domain' in the official repository https://github.com/Poly-Haven/Public-API (commit 2fd1796dc3506dfa8269439aac8e6f5c65876bd1: constants/legacy/hdris.json, bl_repo/_v1/assets-00000.json)",
+      "changes": "2x2 box-filtered in linear light to 1024x512 and re-encoded as RLE RGBE (Generators~/downsample_hdr.py); this matches Poly Haven's own 1k files (tested on cobblestone_street_night: median per-pixel difference 0, mean 0.4%)",
+      "sha256": "e734742780f2d0b56a35b6b3671435cc6a434196155b7737c36cff49240f8313",
+      "bytes": 1726888
+    },
+    {
+      "file": "zwinger_night_1k.hdr",
+      "kind": "hdri",
+      "title": "Zwinger Night (1k, downsampled) - overcast city night",
+      "author": "Greg Zaal (Poly Haven)",
+      "original_url": "https://polyhaven.com/a/zwinger_night",
+      "fetched_from": "https://github.com/theomniautomobil/theomniautomobil.github.io/blob/354557204f54a7da6098df7812798b2b60f692a3/data/textures/zwinger_night_2k.hdr",
+      "source_sha256": "c98d2974bfdb64252fe76f795c9561c1e9edec3df9ab1463836c67d3405f65ed",
+      "source_bytes": 6618647,
+      "version": "Poly Haven zwinger_night_2k.hdr",
+      "verification": "source size 6618647 bytes equals the official Poly Haven listing (Public-API constants/legacy/hdris.json)",
+      "license": {
+        "name": "CC0 1.0 Universal (Public Domain Dedication)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "license_proof": "Poly Haven licence: 'our 3D assets themselves are published under the CC0 license' (ToS.md) and per-asset license fields 'CC0' / 'CC0 - Public Domain' in the official repository https://github.com/Poly-Haven/Public-API (commit 2fd1796dc3506dfa8269439aac8e6f5c65876bd1: constants/legacy/hdris.json, bl_repo/_v1/assets-00000.json)",
+      "changes": "2x2 box downsample to 1024x512, RLE RGBE re-encode",
+      "sha256": "719b61b88df34049a5777d92815c21b154041da4e46dd204d15b733a17572caf",
+      "bytes": 1614860
+    },
+    {
+      "file": "rooftop_night_1k.hdr",
+      "kind": "hdri",
+      "title": "Rooftop Night (1k, downsampled) - twilight city sky with moon",
+      "author": "Greg Zaal (Poly Haven)",
+      "original_url": "https://polyhaven.com/a/rooftop_night",
+      "fetched_from": "https://github.com/LePro10/japanMap/blob/cfe7b071b76bc44e8e4706b60f7deaf4f5e7fd34/assets/hdri/rooftop_night_2k.hdr",
+      "source_sha256": "8ace3b81da7659381998ea4423fb4c7ffc1310ac27c4baa7a32088bd093de82e",
+      "source_bytes": 6509158,
+      "version": "Poly Haven rooftop_night_2k.hdr",
+      "verification": "source sha256 equals the value github.com/auraoneai/aura3d records for its dl.polyhaven.org download; size equals the official Poly Haven listing",
+      "license": {
+        "name": "CC0 1.0 Universal (Public Domain Dedication)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "license_proof": "Poly Haven licence: 'our 3D assets themselves are published under the CC0 license' (ToS.md) and per-asset license fields 'CC0' / 'CC0 - Public Domain' in the official repository https://github.com/Poly-Haven/Public-API (commit 2fd1796dc3506dfa8269439aac8e6f5c65876bd1: constants/legacy/hdris.json, bl_repo/_v1/assets-00000.json)",
+      "changes": "2x2 box downsample to 1024x512, RLE RGBE re-encode",
+      "sha256": "02ab307d4150b8168f3302462183642d1fa7dc97c9bb02e217289594d8513417",
+      "bytes": 1623081
+    },
+    {
+      "file": "moon.jpg",
+      "kind": "texture",
+      "title": "CGI Moon Kit colour map lroc_color_poles (equirectangular, 2048x1024), 2k JPEG re-encode by the NASA VIRGO team",
+      "author": "NASA's Scientific Visualization Studio (Ernie Wright, USRA); LRO LROC WAC data NASA/GSFC/Arizona State University; 2k JPEG made by the NASA VIRGO team (github.com/nasa/virgo)",
+      "original_url": "https://svs.gsfc.nasa.gov/4720",
+      "fetched_from": "https://github.com/nasa/virgo/blob/a9d88e68af30cbe2075e05b083cff49681014a0f/images/moon/lroc_color_poles_2k.jpg",
+      "fetched_via": "https://media.githubusercontent.com/media/nasa/virgo/a9d88e68af30cbe2075e05b083cff49681014a0f/images/moon/lroc_color_poles_2k.jpg (Git LFS, oid sha256 equals the shipped file)",
+      "version": "nasa/virgo images/moon/lroc_color_poles_2k.jpg at commit a9d88e68af30cbe2075e05b083cff49681014a0f",
+      "license": {
+        "name": "Public domain (U.S. Government work, NASA); credit requested",
+        "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+      },
+      "attribution": "NASA's Scientific Visualization Studio",
+      "changes": "renamed only (byte-identical to the nasa/virgo file)",
+      "sha256": "4dcf81e6965fcdbc9026aa24df50bfab1303bdd4550080b96260976fbe17cbeb",
+      "bytes": 1830047,
+      "provenance": "byte-identical copy of nasa/virgo images/moon/lroc_color_poles_2k.jpg, a 2k JPEG re-encode made by the NASA VIRGO team from SVS CGI Moon Kit lroc_color_poles_4k.tif (EXIF: GIMP 2.10.36). EXIF Software 'GIMP 2.10.36', DateTime 2026-02-10 12:38:40, DocumentName '/svs/frames/etwright/moon3dkit/lroc_color_poles_4k.tif'. Not downloaded from SVS and not byte-identical to any SVS file; nasa/virgo images/moon/README.md: 'Images in this dir came from https://svs.gsfc.nasa.gov/4720'.",
+      "verification": "sha256 of the shipped file equals the Git LFS oid of nasa/virgo images/moon/lroc_color_poles_2k.jpg"
+    },
+    {
+      "file": "moon_disc_512.png",
+      "kind": "sprite",
+      "title": "Full-moon disc (near side, RGBA)",
+      "author": "Project, derived from nasa/virgo images/moon/lroc_color_poles_4k.jpg (NASA SVS CGI Moon Kit imagery)",
+      "original_url": "https://svs.gsfc.nasa.gov/4720",
+      "fetched_from": "https://github.com/nasa/virgo/blob/a9d88e68af30cbe2075e05b083cff49681014a0f/images/moon/lroc_color_poles_4k.jpg",
+      "source_sha256": "cbefba7dbf045b0d0867604b354fdbf317692747263af131edf21b52bb2c2df4",
+      "license": {
+        "name": "Public domain (NASA imagery); project changes CC0",
+        "url": "https://www.nasa.gov/nasa-brand-center/images-and-media/"
+      },
+      "attribution": "NASA's Scientific Visualization Studio",
+      "changes": "orthographic projection of the near side (0N 0E) with 4x4 supersampling, 40 percent desaturation, 8 percent limb darkening, alpha disc (Generators~/make_moon_disc.py)",
+      "sha256": "2837d57376511f61a2d1df6dcee93385574e2b3013abd6600207e2a5fb044499",
+      "bytes": 347780,
+      "source_provenance": "nasa/virgo images/moon/lroc_color_poles_4k.jpg is a 4k JPEG re-encode made by the NASA VIRGO team from SVS CGI Moon Kit lroc_color_poles_4k.tif (EXIF: Software 'GIMP 2.10.36', DateTime 2025-09-02 12:57:20, DocumentName '/svs/frames/etwright/moon3dkit/lroc_color_poles_4k.tif'); fetched from media.githubusercontent.com (Git LFS)"
+    },
+    {
+      "file": "city_night_sky_clear_2k.hdr",
+      "kind": "hdri",
+      "title": "Clear light-polluted city night sky with real stars (generated)",
+      "author": "Project (procedural, Generators~/gen_skies.py)",
+      "original_url": null,
+      "data_used": "Star positions, V magnitudes and colour temperatures from the Yale Bright Star Catalogue 5th rev. (Hoffleit & Warren 1991, NSSDC/ADC), JSON conversion bsc5-short.json from https://github.com/brettonw/YaleBrightStarCatalog commit abffb3b7223ae37e879b0a3ff5b49ad06aed5576 (MIT License (c) 2016 Bretton Wade; file not redistributed)",
+      "data_sha256": "94b0581379ef9ea49f1ce664734a06d2fbbff2d7487f926acad3e9ef0960e0d8",
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "18187fde079458553a9140c2b693529a4e1eee9c4b03d4be9037d46b05046f5a",
+      "bytes": 2835528
+    },
+    {
+      "file": "city_night_sky_overcast_1k.hdr",
+      "kind": "hdri",
+      "title": "Overcast city night sky, cloud deck lit by the city (generated)",
+      "author": "Project (procedural, Generators~/gen_skies.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "b9db61dfa9321e2f8a3508f751d9f1e4fe1e365c078c49246abfabab05624ff6",
+      "bytes": 717904
+    },
+    {
+      "file": "cookie_flashlight_led_512.png",
+      "kind": "cookie",
+      "title": "LED torch beam cookie",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "7343fc49d5b440fb5b743c2d20bfb8cafef3a4a73421d7e5b0af4b4cb1471690",
+      "bytes": 40702
+    },
+    {
+      "file": "cookie_uv_torch_512.png",
+      "kind": "cookie",
+      "title": "UV torch beam cookie (projected LED die)",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "dc8b7569bc1848e4546fe37f19f570b280edbf62caa2819ae0920d056fa37c39",
+      "bytes": 39739
+    },
+    {
+      "file": "cookie_streetlight_512.png",
+      "kind": "cookie",
+      "title": "LED street-lamp distribution cookie",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "2391a702c9a845730fd34e762ab7d0ceafa3dbad0ee7619e159be84fe245de81",
+      "bytes": 24148
+    },
+    {
+      "file": "cookie_scene_floodlight_512.png",
+      "kind": "cookie",
+      "title": "Rectangular LED scene floodlight cookie",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "398ccefa2bb151e803467719ede0b738c1493f0a511147dadfd151e19ece1dd3",
+      "bytes": 31516
+    },
+    {
+      "file": "glow_soft_256.png",
+      "kind": "sprite",
+      "title": "Soft lamp glow sprite",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "c272a26c834bb45c2403462f6d6a326d4612ac141a4b4d6d3d8a726a644e2dd4",
+      "bytes": 5337
+    },
+    {
+      "file": "glow_starburst_512.png",
+      "kind": "sprite",
+      "title": "Starburst glow sprite (six-blade spikes)",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "4b10e0a1c1c7e34931b0e8dc349f1e6ec4ffe75854af957c1e86ed1a8614f3e1",
+      "bytes": 35211
+    },
+    {
+      "file": "flare_streak_512x128.png",
+      "kind": "sprite",
+      "title": "Anamorphic flare streak sprite",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "fa84a4a148d7c01625a6cfc4820645ac0112897f9b4a254f2631ece1c56644af",
+      "bytes": 1983
+    },
+    {
+      "file": "flare_halo_ring_256.png",
+      "kind": "sprite",
+      "title": "Halo ring sprite",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "8ef4a2e4d67fb3a2f461f664af6e7c7ae82ef4b752dea7e67a8944ce86755dbb",
+      "bytes": 9972
+    },
+    {
+      "file": "lens_dirt_1024.png",
+      "kind": "sprite",
+      "title": "Lens dirt texture",
+      "author": "Project (procedural, Generators~/gen_sprites.py)",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "8ffd46908199945da6e96f00d8af565ed5c5da3a0f4d0d9cdcbdd0b642765ca0",
+      "bytes": 415771
+    },
+    {
+      "file": "Generators~/downsample_hdr.py",
+      "kind": "script",
+      "title": "Generator script (Python 3, numpy, Pillow); Unity ignores the Generators~ folder",
+      "author": "Project",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "9852687c469477ea2741a009bdb404f1b735b3c437906ee37b9fd9848bf43c47",
+      "bytes": 472
+    },
+    {
+      "file": "Generators~/gen_skies.py",
+      "kind": "script",
+      "title": "Generator script (Python 3, numpy, Pillow); Unity ignores the Generators~ folder",
+      "author": "Project",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "fbbaff336ccdef83319ea001c41d699b12ada4c8c71da6fc397891d2cfce4cf1",
+      "bytes": 11700
+    },
+    {
+      "file": "Generators~/gen_sprites.py",
+      "kind": "script",
+      "title": "Generator script (Python 3, numpy, Pillow); Unity ignores the Generators~ folder",
+      "author": "Project",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "324ab0a877f8647262d3f7aa8ce20b797d7b597f889c2fbfcda8320644e32f4c",
+      "bytes": 11521
+    },
+    {
+      "file": "Generators~/hdrio.py",
+      "kind": "script",
+      "title": "Generator script (Python 3, numpy, Pillow); Unity ignores the Generators~ folder",
+      "author": "Project",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "323699810f59a42ad5cd2481ed7ae3fbe3d6d201ff38ed2c06e1eaaa5c87f955",
+      "bytes": 3185
+    },
+    {
+      "file": "Generators~/make_moon_disc.py",
+      "kind": "script",
+      "title": "Generator script (Python 3, numpy, Pillow); Unity ignores the Generators~ folder",
+      "author": "Project",
+      "original_url": null,
+      "license": {
+        "name": "Project-owned original work, dedicated CC0 1.0 by the project",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+      },
+      "changes": "n/a",
+      "sha256": "da536739a299377ea09f69f2d2cc612934740fa15491642b77f54f9164d12b2e",
+      "bytes": 2114
+    }
+  ],
+  "revised": "2026-10-15",
+  "removed": [
+    {
+      "file": "modern_evening_street_1k.hdr",
+      "removed": "2026-10-15",
+      "reason": "Poly Haven modern_evening_street (CC0, Grzegorz Wronkowski) is a near-daylight dusk sky (zenith luminance about 1.3, about 700x the night HDRIs); the project already has a dusk sky; its bytes could not be checked against Poly Haven."
+    }
+  ]
+}

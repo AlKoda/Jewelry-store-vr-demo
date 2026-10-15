@@ -1,0 +1,5 @@
+newmtl Cast
+Kd 1.000 1.000 1.000
+Ks 0.020 0.020 0.020
+d 1.000
+map_Kd ShoePrintCast_Color.jpg

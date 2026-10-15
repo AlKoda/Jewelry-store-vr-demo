@@ -1,0 +1,26 @@
+# ForensicExaminer_Photographing. Unity reads Kd, map_Kd and d only: assign <Map>_Normal (normal map) and
+# <Map>_MetallicSmoothness (Standard Metallic, source = metallic alpha) in code; see README.md.
+
+newmtl Body
+Kd 1.000 1.000 1.000
+Ks 0.040 0.040 0.040
+d 1.000
+map_Kd ForensicExaminer_Body_Color.jpg
+
+newmtl Head
+Kd 1.000 1.000 1.000
+Ks 0.040 0.040 0.040
+d 1.000
+map_Kd ForensicExaminer_Head_Color.jpg
+
+newmtl Protection
+Kd 1.000 1.000 1.000
+Ks 0.040 0.040 0.040
+d 1.000
+map_Kd ForensicExaminer_Protection_Color.jpg
+
+newmtl Props
+Kd 1.000 1.000 1.000
+Ks 0.040 0.040 0.040
+d 1.000
+map_Kd PeopleProps_Color.jpg

@@ -1,0 +1,38 @@
+newmtl Chassis
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd SedanClassic_Chassis_Color.jpg
+
+newmtl Plate
+Kd 0.8600 0.8600 0.8400
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl Lights
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 0.961
+map_Kd SedanClassic_Lights_Color.jpg
+
+newmtl Interior
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd SedanClassic_Interior_Color.jpg
+
+newmtl Paint
+Kd 0.2200 0.0500 0.0600
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl Glass
+Kd 0.1200 0.1300 0.1400
+Ks 0.04 0.04 0.04
+d 0.450
+
+newmtl Wheel
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd SedanClassic_Wheel_Color.jpg

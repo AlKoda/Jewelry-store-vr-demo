@@ -1,0 +1,28 @@
+newmtl Galvanised
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_Galvanised_Color.jpg
+
+newmtl PaintAnthracite
+Kd 0.1600 0.1700 0.1800
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_PaintedMetal_Color.jpg
+
+newmtl Void
+Kd 0.0100 0.0100 0.0100
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl Signs
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_Signs_Color.jpg
+
+newmtl PaintBlack
+Kd 0.0450 0.0450 0.0500
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_PaintedMetal_Color.jpg

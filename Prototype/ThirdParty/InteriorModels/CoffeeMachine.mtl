@@ -1,0 +1,34 @@
+newmtl Body
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticBlack_Color.jpg
+# Normal Shared_PlasticBlack_Normal.jpg
+
+newmtl Panel
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd CoffeeMachine_Panel_Color.jpg
+# Normal CoffeeMachine_Panel_Normal.jpg
+# MetallicSmoothness CoffeeMachine_Panel_MetallicSmoothness.png
+
+newmtl Recess
+Kd 0.020 0.020 0.020
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Steel
+Kd 0.800 0.800 0.820
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl GlossBlack
+Kd 0.020 0.020 0.022
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Cup
+Kd 0.930 0.930 0.910
+Ks 0.050 0.050 0.050
+d 1.0

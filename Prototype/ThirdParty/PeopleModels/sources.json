@@ -1,0 +1,1594 @@
+{
+ "pack": "PeopleModels",
+ "prepared": "2026-10-14",
+ "finished": "2026-10-15",
+ "unverified_in_unity": true,
+ "revisions": [
+  "2026-10-15: ForensicExaminer_Body_Color.jpg and ForensicExaminer_Protection_Color.jpg rebuilt after review: the white coverall and cap were near-clipped (median 245, 35% of texels >= 250); now median 220 sRGB, maximum 240, fold shading kept. Source~/Preview.jpg re-rendered. pose_export.py now breaks bone-label ties deterministically (first corner), so ForensicExaminer_Body_Normal.jpg changed in two shoulder triangles."
+ ],
+ "upstream": {
+  "repository": "https://github.com/microsoft/Microsoft-Rocketbox",
+  "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+  "commit_date": "2022-10-02T12:20:56-07:00",
+  "license": {
+   "name": "MIT License",
+   "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/LICENSE.md",
+   "copyright": "Copyright (c) 2020 Microsoft"
+  },
+  "license_statement": "README.md: \"12/2020: Updated license to MIT.\" and \"November 2020 License Update: The library of avatars is now released under MIT License.\"",
+  "fetched_with": "git clone --filter=blob:none --depth 1 --no-checkout + sparse checkout (no LFS objects involved)"
+ },
+ "tools": {
+  "posing": "Blender 5.2.2 LTS as the bpy Python module (pip), Source~/pose_export.py",
+  "textures": "Pillow 12, numpy, scipy (Source~/build_textures.py, edits.py)"
+ },
+ "units": "metres, Y up, front = +Z, feet on y = 0, centred in x/z (OBJ/MTL, Unity imports without packages)",
+ "texture_convention": {
+  "Color": "sRGB JPG (map_Kd); DetectiveFemale_Hair_Color.png is RGBA for alpha test",
+  "Normal": "tangent space, OpenGL +Y (Unity convention), JPG",
+  "MetallicSmoothness": "PNG RGBA, R = metallic, G = B = 0, A = smoothness (linear)"
+ },
+ "files": [
+  {
+   "file": "DetectiveFemale_Body_Color.jpg",
+   "bytes": 430205,
+   "sha256": "0949b2354c18dc23358e356f801ce6d684f27405524902ac5e39e9598afe8bca",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_body_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_body_color.tga",
+     "bytes": 12582956,
+     "sha256": "5bf0a4789c1bd3f73c63062c68dacc70c09144b0be48c08095e35ddbbb6f060a"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "DetectiveFemale_Body_MetallicSmoothness.png",
+   "bytes": 80280,
+   "sha256": "31c5573cb857c49609f5b22bf1efea7e4a617a319d33a83568a4b7b4c4195b3e",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_body_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_body_specular.tga",
+     "bytes": 12582956,
+     "sha256": "7662ec0ca9b89dc234c085b9f5152f7f26a87f42bfcfeadeead3e3e6aea4c18b"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "DetectiveFemale_Body_Normal.jpg",
+   "bytes": 120614,
+   "sha256": "a76ff21536aa740c0a1776ee3d7313140201506d794c71c045a6edb7c5c9755a",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_body_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_body_normal.tga",
+     "bytes": 12582956,
+     "sha256": "a4b3cf6c1098f5b639b5a31b4c4be46896cc9fa1239b51d063ef221c4dad136c"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "DetectiveFemale_Hair_Color.png",
+   "bytes": 602576,
+   "sha256": "4306a2d9ff2129dacc1bc22656a9b1d9f77a054d6bc00b799819794ccf092446",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_opacity_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_opacity_color.tga",
+     "bytes": 2097196,
+     "sha256": "d6bb4ddde05c1dcddd829db99e0f0ef4416d05cdb94e1e6770779724aa3f696f"
+    }
+   ],
+   "changes": "Converted from the 1024 x 512 TGA to 1024 x 512 PNG. RGBA kept at 1024 x 512, colour bled into transparent texels for alpha testing; the hair cards are duplicated back-to-back in the OBJ."
+  },
+  {
+   "file": "DetectiveFemale_Head_Color.jpg",
+   "bytes": 576159,
+   "sha256": "2a09224eedd64221914bbd6c851533c5c2a8f19aaceedb5ecb4ed00f30a157e5",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_head_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_head_color.tga",
+     "bytes": 12582956,
+     "sha256": "b2ea878de23e30d80ce5a1097b1a51b3736a4deee4c6b20dc8b3c996ac9a91a5"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "DetectiveFemale_Head_MetallicSmoothness.png",
+   "bytes": 163251,
+   "sha256": "003524bc6884626343adc45f5a6b5296b460d0fd73ee6c1d7d024195c0c0d9eb",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_head_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_head_specular.tga",
+     "bytes": 12582956,
+     "sha256": "c013ff875e1a8c7040c3cba71cc4a754e8e3d051fe34c5b7e4f7dcf45523643a"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "DetectiveFemale_Head_Normal.jpg",
+   "bytes": 137560,
+   "sha256": "e1d3edbc965e5be546e30f867088d3604ef127343208cc17b068fcc0b9cae855",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Textures/f020_head_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Textures/f020_head_normal.tga",
+     "bytes": 12582956,
+     "sha256": "2f703a3d84582605d61adc6d604a85bda6c91b0fd775614e9e98b4f823426960"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "DetectiveFemale_TakingNotes.mtl",
+   "bytes": 595,
+   "sha256": "7d3db812c509d47164255552d16b35ef624c4e6b2617a69a1c916507943794be",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Export/Business_Female_04.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Export/Business_Female_04.fbx",
+     "bytes": 588672,
+     "sha256": "68515701a9fd49a3e1f3632314da5def1169fe35896d34fbb10c5dcd78f2ca18"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/f_documents_note.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/f_documents_note.max.fbx",
+     "bytes": 2027248,
+     "sha256": "8f87fafb6ed3d3bba4c10405a108f42b6c933afcf0903cee8d881171459015b2"
+    }
+   ],
+   "pose": {
+    "animation": "f_documents_note",
+    "frame": 150
+   }
+  },
+  {
+   "file": "DetectiveFemale_TakingNotes.obj",
+   "bytes": 824134,
+   "sha256": "5e9f48809d1fd28eb0e77b13cf7fed32d3da81575e4f8978e8300d0d821efd23",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Business_Female_04/Export/Business_Female_04.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Export/Business_Female_04.fbx",
+     "bytes": 588672,
+     "sha256": "68515701a9fd49a3e1f3632314da5def1169fe35896d34fbb10c5dcd78f2ca18"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/f_documents_note.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/f_documents_note.max.fbx",
+     "bytes": 2027248,
+     "sha256": "8f87fafb6ed3d3bba4c10405a108f42b6c933afcf0903cee8d881171459015b2"
+    }
+   ],
+   "pose": {
+    "animation": "f_documents_note",
+    "frame": 150
+   },
+   "tris": 9038,
+   "size_m": [
+    0.5565,
+    1.73,
+    0.4852
+   ],
+   "materials": [
+    "Body",
+    "Head",
+    "Hair",
+    "Props"
+   ]
+  },
+  {
+   "file": "Detective_Body_Color.jpg",
+   "bytes": 460046,
+   "sha256": "f405c89e9ab5dd73eeeb7c8a479464d9c2a8565deaf665084fc98c305d2763b8",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Textures/m176_body_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures/m176_body_color.tga",
+     "bytes": 12582956,
+     "sha256": "0e9b705050e1e028abe8c102532d712f5a80c387cb5eebd07f2b02bf52f7a6f2"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "Detective_Body_MetallicSmoothness.png",
+   "bytes": 90192,
+   "sha256": "b43d8805b08c00651e5edaece55b92595f831b0503699b3065c46d1dfb132fa7",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Textures/m176_body_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures/m176_body_specular.tga",
+     "bytes": 12582956,
+     "sha256": "0514c49447b7d30d26929037b692f4513c709de9763d2831305e7f16266f2085"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "Detective_Body_Normal.jpg",
+   "bytes": 139647,
+   "sha256": "2dc92470e121b5e31b4761864ad9b647c4baa296c49fd1907881aba16836ea37",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Textures/m176_body_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures/m176_body_normal.tga",
+     "bytes": 12582956,
+     "sha256": "f690dc3e2ebed082dbff7e5f30835afebc1013c392f61582f698c19b14a42b17"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "Detective_Head_Color.jpg",
+   "bytes": 581622,
+   "sha256": "64c0883053a51a9fdf93358c32ef2e03562133b15f450b061e115c5e6571e602",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Textures/m176_head_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures/m176_head_color.tga",
+     "bytes": 12582956,
+     "sha256": "82ba173500c4f08be2283dee0cf72d8c92f4c82d93e02d5665ad2e7397b1352b"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "Detective_Head_MetallicSmoothness.png",
+   "bytes": 118202,
+   "sha256": "ae40596f6fcfb4656a219cf713c40166d8063e15c5d42b849ac3c656926cdcb5",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Textures/m176_head_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures/m176_head_specular.tga",
+     "bytes": 12582956,
+     "sha256": "bf4361f58bb1af6635dadfe1849512e3705a588f2bba41c4869be41748e8eef1"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "Detective_Head_Normal.jpg",
+   "bytes": 227678,
+   "sha256": "6fdbd13ee65c4ff44d51bdaa2aff62c042549663c4bea6b73cf9f7badd707a9a",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Textures/m176_head_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Textures/m176_head_normal.tga",
+     "bytes": 12582956,
+     "sha256": "a8e3859b41ef23d23641f9264a4d23ea846977d2fa043ea3f93a003de41dc3fd"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "Detective_LookingAround.mtl",
+   "bytes": 385,
+   "sha256": "2e41c1f155502db208064cf5fa8bc54410f6d245c1caefe72dd6d6ff2a4b59ad",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Export/Police_Male_07.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Export/Police_Male_07.fbx",
+     "bytes": 509024,
+     "sha256": "535ad539827a6f79b364fcbbbafc73783ec21c444e5adc89f44efa3d3add4169"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_idle_look_around_02.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_idle_look_around_02.max.fbx",
+     "bytes": 1624144,
+     "sha256": "b43fc0964bd1f9b3cbe75390257875278d926a6a0cc0146cfdfbfa00225fafd4"
+    }
+   ],
+   "pose": {
+    "animation": "m_idle_look_around_02",
+    "frame": 40
+   }
+  },
+  {
+   "file": "Detective_LookingAround.obj",
+   "bytes": 630946,
+   "sha256": "ffbe1d6b7b2afa54bfb8d59981ae85a913538492fe6be70b0ea7721ffd871024",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_07/Export/Police_Male_07.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_07/Export/Police_Male_07.fbx",
+     "bytes": 509024,
+     "sha256": "535ad539827a6f79b364fcbbbafc73783ec21c444e5adc89f44efa3d3add4169"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_idle_look_around_02.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_idle_look_around_02.max.fbx",
+     "bytes": 1624144,
+     "sha256": "b43fc0964bd1f9b3cbe75390257875278d926a6a0cc0146cfdfbfa00225fafd4"
+    }
+   ],
+   "pose": {
+    "animation": "m_idle_look_around_02",
+    "frame": 40
+   },
+   "tris": 7597,
+   "size_m": [
+    0.6649,
+    1.804,
+    0.4635
+   ],
+   "materials": [
+    "Body",
+    "Head"
+   ]
+  },
+  {
+   "file": "ForensicExaminer_Body_Color.jpg",
+   "bytes": 410285,
+   "sha256": "db80ae76a59fe4700497b67f90b471993900e95825f447fe966c5ff6fb9314ac",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_body_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_body_color.tga",
+     "bytes": 12582956,
+     "sha256": "e4c94f19f7f9ca05485f1786c92871e4eddb30633ab01c38b282194dd435572c"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. Green scrubs recoloured to a white disposable coverall with long sleeves and blue nitrile gloves (forensic_body); normal map flattened under sleeves and gloves; smoothness set to 0.24 fabric / 0.58 gloves. White levels (revised 2026-10-15): coverall median 220 sRGB with highlights rolled off below 238, glove highlights rolled off the same way (glove median unchanged), a two-texel blend at the cuffs, unused UV space edge-padded, saved as 4:4:4 JPG q88 with every decoded texel at most 240 (save_jpeg_capped)."
+  },
+  {
+   "file": "ForensicExaminer_Body_MetallicSmoothness.png",
+   "bytes": 5365,
+   "sha256": "804d07d8ebc94f7625c9d34338d13772ffd0366345ee6a1c8351ec8a2e7c9755",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_body_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_body_specular.tga",
+     "bytes": 12582956,
+     "sha256": "6b37530030e5b79e11a03f9e58e5c490a18b3fb7f046c54ba9eb84d63f99a245"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). Green scrubs recoloured to a white disposable coverall with long sleeves and blue nitrile gloves (forensic_body); normal map flattened under sleeves and gloves; smoothness set to 0.24 fabric / 0.58 gloves."
+  },
+  {
+   "file": "ForensicExaminer_Body_Normal.jpg",
+   "bytes": 125489,
+   "sha256": "0261adca6449ff14383e2a4bbd1cc85e73a03d074a740433d8d8e4732e19bf86",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_body_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_body_normal.tga",
+     "bytes": 12582956,
+     "sha256": "cf5890f9fc4cb7bb95bdb2c22e7312ca367bd8c17a18534e74a2257a2f6421c8"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. Green scrubs recoloured to a white disposable coverall with long sleeves and blue nitrile gloves (forensic_body); normal map flattened under sleeves and gloves; smoothness set to 0.24 fabric / 0.58 gloves. Rebuilt 2026-10-15 with the deterministic bone labels (two shoulder triangles changed class)."
+  },
+  {
+   "file": "ForensicExaminer_Crouching.mtl",
+   "bytes": 516,
+   "sha256": "1812b0b741416ba27651b73a2b8b6bc4abcd2dc27de27f0f6e4a40e95e8d72e5",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "bytes": 580928,
+     "sha256": "5f7cd19833e24039bdf313d3534579b366b5ad5e7288627ebf579edf953a0a85"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_crouch_idle.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_crouch_idle.max.fbx",
+     "bytes": 2106496,
+     "sha256": "d3704294853eda39d566cb31b0e6a6c50bd3cc3c1bda9102c1156c1537c12eeb"
+    }
+   ],
+   "pose": {
+    "animation": "m_crouch_idle",
+    "frame": 1
+   }
+  },
+  {
+   "file": "ForensicExaminer_Crouching.obj",
+   "bytes": 682308,
+   "sha256": "d1a6bc9250b3952921bb456296832e7b4bf1e6ad58c800904e94ea388418f2aa",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "bytes": 580928,
+     "sha256": "5f7cd19833e24039bdf313d3534579b366b5ad5e7288627ebf579edf953a0a85"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_crouch_idle.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_crouch_idle.max.fbx",
+     "bytes": 2106496,
+     "sha256": "d3704294853eda39d566cb31b0e6a6c50bd3cc3c1bda9102c1156c1537c12eeb"
+    }
+   ],
+   "pose": {
+    "animation": "m_crouch_idle",
+    "frame": 1
+   },
+   "tris": 8240,
+   "size_m": [
+    0.6692,
+    1.152,
+    0.6888
+   ],
+   "materials": [
+    "Body",
+    "Head",
+    "Protection"
+   ]
+  },
+  {
+   "file": "ForensicExaminer_Head_Color.jpg",
+   "bytes": 567468,
+   "sha256": "d3cf2ca0a7ea6b6ff7c0843fce41bbf7b2b98bbe3a6de9bcabe30a49c4792fc4",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_head_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_head_color.tga",
+     "bytes": 12582956,
+     "sha256": "35f616c20e0b809605c9d63457e60af25e60e901bc19f2326d21cbc74d04904a"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "ForensicExaminer_Head_MetallicSmoothness.png",
+   "bytes": 153049,
+   "sha256": "97cd3c087402e36412a674f7c6bbc0f9ba4ae62676bb3c039f954c25eba556c2",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_head_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_head_specular.tga",
+     "bytes": 12582956,
+     "sha256": "8b8070dac01aff20280e90d53a4bd64332aee1c850f98bbe47d73dbf3ac07cfb"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "ForensicExaminer_Head_Normal.jpg",
+   "bytes": 151328,
+   "sha256": "2256d4cb46b6c2a4a478651ad7c76cfa96e61438bf949cb0b7c796c6209460a1",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_head_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_head_normal.tga",
+     "bytes": 12582956,
+     "sha256": "e0f640971e4e54a571535996f5da16adf40fad4acc17254999298f9d6a0b8965"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "ForensicExaminer_Photographing.mtl",
+   "bytes": 613,
+   "sha256": "a31b5e50d563c1a10f506e9917eb65d49bfea732ecd5279e73d48b53439c0c3e",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "bytes": 580928,
+     "sha256": "5f7cd19833e24039bdf313d3534579b366b5ad5e7288627ebf579edf953a0a85"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_take_picture.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_take_picture.max.fbx",
+     "bytes": 1969648,
+     "sha256": "23cfa7dd190797a2a5a99e5658dbb2043a0b716e5049a0d7497d23b4f44dae4b"
+    }
+   ],
+   "pose": {
+    "animation": "m_take_picture",
+    "frame": 80
+   }
+  },
+  {
+   "file": "ForensicExaminer_Photographing.obj",
+   "bytes": 709858,
+   "sha256": "3cda78405fe259ee64fe2b8acb41cd15d09152da5f137c33f1b974abe0a2c404",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Export/Medical_Male_04.fbx",
+     "bytes": 580928,
+     "sha256": "5f7cd19833e24039bdf313d3534579b366b5ad5e7288627ebf579edf953a0a85"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_take_picture.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_take_picture.max.fbx",
+     "bytes": 1969648,
+     "sha256": "23cfa7dd190797a2a5a99e5658dbb2043a0b716e5049a0d7497d23b4f44dae4b"
+    }
+   ],
+   "pose": {
+    "animation": "m_take_picture",
+    "frame": 80
+   },
+   "tris": 8612,
+   "size_m": [
+    0.601,
+    1.7934,
+    0.5228
+   ],
+   "materials": [
+    "Body",
+    "Head",
+    "Protection",
+    "Props"
+   ]
+  },
+  {
+   "file": "ForensicExaminer_Protection_Color.jpg",
+   "bytes": 151704,
+   "sha256": "c05c06912e42ab123d0d75cf02fa7aa3aeeff7ee4cde42f0b4e3f29c32f637fd",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_protection_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_protection_color.tga",
+     "bytes": 12582956,
+     "sha256": "32590d1f0de6155e936b189fd3ade5daa8cb1cdec8f9e5bb0f2be10222d1e1ba"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. Surgical cap recoloured white (forensic_protection); mask unchanged; smoothness 0.22. White levels (revised 2026-10-15): cap median 220 sRGB with highlights rolled off below 238; the mask is unchanged apart from its brightest texels (241-243) capped at 240; unused UV space edge-padded; 4:4:4 JPG q88 with every decoded texel at most 240."
+  },
+  {
+   "file": "ForensicExaminer_Protection_MetallicSmoothness.png",
+   "bytes": 1812,
+   "sha256": "4d9093a7833b4b29931f76a8de1180ff01d12b0d08334a390a2c9123872df05c",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_protection_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_protection_specular.tga",
+     "bytes": 12582956,
+     "sha256": "dfa4bd9a0810f2599a411c4d5a1b5aa82baba4c66e68359e74ee93979a5c54e6"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). Surgical cap recoloured white (forensic_protection); mask unchanged; smoothness 0.22."
+  },
+  {
+   "file": "ForensicExaminer_Protection_Normal.jpg",
+   "bytes": 167943,
+   "sha256": "30f4e04bf184926a4abece99697ca8427a62f5076525f0753058fb734375aa89",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Medical_Male_04/Textures/m162_protection_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Medical_Male_04/Textures/m162_protection_normal.tga",
+     "bytes": 12582956,
+     "sha256": "9329cab99e3419181b38bd3ed0cb6ac5f9a5e99f568d80e8ad1dc99167c6cef0"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. Surgical cap recoloured white (forensic_protection); mask unchanged; smoothness 0.22."
+  },
+  {
+   "file": "PasserBy_Body_Color.jpg",
+   "bytes": 1161756,
+   "sha256": "b0f8c94704c63647b3b2649795bc705bdf85e6125506596b3cec95c8d3fff841",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Textures/m007_body_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures/m007_body_color.tga",
+     "bytes": 12582956,
+     "sha256": "9e5951e67e90ade61f33c51c9673aa1b974358dac12dc0a9abdd4b281cda6b61"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "PasserBy_Body_MetallicSmoothness.png",
+   "bytes": 118760,
+   "sha256": "6a254cce711af62dc141a5011ccda7cef3f347610970262b0609662eac9d40d8",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Textures/m007_body_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures/m007_body_specular.tga",
+     "bytes": 12582956,
+     "sha256": "2e9b4ada013a7fbc334cb69c44ad2a2cbc93c0e384c49961e2e10af36072f31f"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "PasserBy_Body_Normal.jpg",
+   "bytes": 230134,
+   "sha256": "090ece49b7d7097ea9dfbb75a2306c7346cb96732486b70e03e4f4051b22e951",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Textures/m007_body_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures/m007_body_normal.tga",
+     "bytes": 12582956,
+     "sha256": "284dbc5116370225af96d98bfc1c3dc77a6c695c53558f32445e8d5af4d6ae1d"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "PasserBy_Head_Color.jpg",
+   "bytes": 610309,
+   "sha256": "8877819eb7b720fe1cea612374e88b3db903479fec6ff1c46b6045a09df3d005",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Textures/m007_head_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures/m007_head_color.tga",
+     "bytes": 12582956,
+     "sha256": "164007a5ca94b3f84b04ab77a3a7bc49f65f12af4153781dcbf429589750f7c1"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "PasserBy_Head_MetallicSmoothness.png",
+   "bytes": 163401,
+   "sha256": "ba0f749ba7187aee6a6d26cfd187c5c297427b81d314b429176a991c717d96bc",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Textures/m007_head_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures/m007_head_specular.tga",
+     "bytes": 12582956,
+     "sha256": "4482dd31552e5b6030389b51e5f443ed7f458433eeb3aa77b71c57e618cccd48"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "PasserBy_Head_Normal.jpg",
+   "bytes": 120971,
+   "sha256": "928962a47c534578b81955188e3447b87d2927deb4490dbeff414b0ca64195ba",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Textures/m007_head_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Textures/m007_head_normal.tga",
+     "bytes": 12582956,
+     "sha256": "11fa11d7ae8476674b89486045cf05b49a5607d0899dc30672c2e9634d8569a4"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "PasserBy_Phone.mtl",
+   "bytes": 565,
+   "sha256": "2ceb5a4db972109610177312a84821e0e650113ff88d28432398ddde347b66bb",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Export/Male_Adult_12.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Export/Male_Adult_12.fbx",
+     "bytes": 487776,
+     "sha256": "b44fa6011b934abd69954fd6c5025c1e2011e05c7892acb6bbc2e9cf70a84014"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_cell_phone_textmessage.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_cell_phone_textmessage.max.fbx",
+     "bytes": 5693776,
+     "sha256": "fe358efe720533691589b3f16d43bfb7719f51be7ae23abaa66459477fb4250b"
+    }
+   ],
+   "pose": {
+    "animation": "m_cell_phone_textmessage",
+    "frame": 100
+   }
+  },
+  {
+   "file": "PasserBy_Phone.obj",
+   "bytes": 561587,
+   "sha256": "9dd06822d86353d8fadd6efedbae984e4d6b3d5b91044eeb72d2c216a43cec85",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Adults/Male_Adult_12/Export/Male_Adult_12.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Export/Male_Adult_12.fbx",
+     "bytes": 487776,
+     "sha256": "b44fa6011b934abd69954fd6c5025c1e2011e05c7892acb6bbc2e9cf70a84014"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_cell_phone_textmessage.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_cell_phone_textmessage.max.fbx",
+     "bytes": 5693776,
+     "sha256": "fe358efe720533691589b3f16d43bfb7719f51be7ae23abaa66459477fb4250b"
+    }
+   ],
+   "pose": {
+    "animation": "m_cell_phone_textmessage",
+    "frame": 100
+   },
+   "tris": 6808,
+   "size_m": [
+    0.6407,
+    1.775,
+    0.5569
+   ],
+   "materials": [
+    "Body",
+    "Head",
+    "Props",
+    "PropScreen"
+   ]
+  },
+  {
+   "file": "PeopleProps_Color.jpg",
+   "bytes": 42396,
+   "sha256": "a1a879307e360dce783993244c877c0de968adcb70f82c928ee6ee66a494985b",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "Source~/make_props_atlas.py (procedural, no third-party input)",
+   "what": "Shared atlas for the hand props (notebook, pen, phone, camera)"
+  },
+  {
+   "file": "PeopleProps_MetallicSmoothness.png",
+   "bytes": 14336,
+   "sha256": "797c1bc609f1f89186b7d7964c13a5619803ee660c5cbe1509e14a6fac7be697",
+   "kind": "texture",
+   "pixels": [
+    256,
+    256
+   ],
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "Source~/make_props_atlas.py (procedural, no third-party input)",
+   "what": "Shared atlas for the hand props (notebook, pen, phone, camera)"
+  },
+  {
+   "file": "PoliceOfficer_Body_Color.jpg",
+   "bytes": 413608,
+   "sha256": "2d052a9881a3ee6b1e9b33f734b71c9a9f293388122d5395c7eee009a9c4069a",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_body_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_body_color.tga",
+     "bytes": 12582956,
+     "sha256": "488be39829e8c185848879890cddd15c8cd300daca5d3bdd75a6b018e5791986"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "PoliceOfficer_Body_MetallicSmoothness.png",
+   "bytes": 126444,
+   "sha256": "f55bd2813911bdef2e9ea5cc36e84ee65c7f5623ea7d2d10d2d556ae1e9b1ca9",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_body_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_body_specular.tga",
+     "bytes": 12582956,
+     "sha256": "303777ceef94ce0dc185f79fd77268f5e1046f9ddd3984fb6b51db4f4242e57e"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "PoliceOfficer_Body_Normal.jpg",
+   "bytes": 173278,
+   "sha256": "165ebbdac9f58de9b3ca6b3b485a99460f7986b19990fb4d3b3f7505e85c252b",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_body_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_body_normal.tga",
+     "bytes": 12582956,
+     "sha256": "094c9cfaa891fc9103fad8b4f9373f312ce76cf5d7538f1c0c90e55c6a012044"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "PoliceOfficer_Equipment_Color.jpg",
+   "bytes": 135951,
+   "sha256": "c5ced8b0221d6a3d9ad6a04dd6625ec74893f49aa68e8dca0214120454f01e8a",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_equipment_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_equipment_color.tga",
+     "bytes": 12582956,
+     "sha256": "61f3e08608bf7ede62aacad96483dad966ba8a752099d454b190145c9fac4eb0"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. Small \"RBX\" badge on the radio cloned out in colour, normal and specular (paint_out)."
+  },
+  {
+   "file": "PoliceOfficer_Equipment_MetallicSmoothness.png",
+   "bytes": 34494,
+   "sha256": "0e2049472b1231fce02bb5871e4c06834fc159a7dfe383d2f5fa656eca2439b2",
+   "kind": "texture",
+   "pixels": [
+    256,
+    256
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_equipment_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_equipment_specular.tga",
+     "bytes": 12582956,
+     "sha256": "4a2e1d687c9ef2dbd268675baa4320ee14a2bcea1c36bd5a73278da6c146871d"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 256 x 256 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). Small \"RBX\" badge on the radio cloned out in colour, normal and specular (paint_out)."
+  },
+  {
+   "file": "PoliceOfficer_Equipment_Normal.jpg",
+   "bytes": 42201,
+   "sha256": "7b79fbb84fcfc013070b471f491eea2e4e3e38fdec3801a499685d323bc9193d",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_equipment_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_equipment_normal.tga",
+     "bytes": 12582956,
+     "sha256": "9936408119fa24bed09b8196344dc48804ad36c068783effa648dcc8a1730a98"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 JPG. Small \"RBX\" badge on the radio cloned out in colour, normal and specular (paint_out)."
+  },
+  {
+   "file": "PoliceOfficer_Head_Color.jpg",
+   "bytes": 714122,
+   "sha256": "f3b68cc66abd7b896a4578ee341756ab583c90d65e2d6afec60b4c4897a2fe04",
+   "kind": "texture",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_head_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_head_color.tga",
+     "bytes": 12582956,
+     "sha256": "5db4aa876d79a12e7dd95808c3d1f2a5b42aa4eed36cf7f293f5062a3f495ce0"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 2048 x 2048 JPG. No content change."
+  },
+  {
+   "file": "PoliceOfficer_Head_MetallicSmoothness.png",
+   "bytes": 198596,
+   "sha256": "0af32e528cd3dbbeb15265b7912809a1616569133db8890e13a9ec5178da131a",
+   "kind": "texture",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_head_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_head_specular.tga",
+     "bytes": 12582956,
+     "sha256": "8b73ae056c803e5eebb8e4e1aafba60510c5270b7c99daec14f6d7f4a5bedf7f"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 512 x 512 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). No content change."
+  },
+  {
+   "file": "PoliceOfficer_Head_Normal.jpg",
+   "bytes": 174797,
+   "sha256": "db215e3df762ad403e8756e1a483a863444efef3afa0245115465a282b727e7f",
+   "kind": "texture",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_head_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_head_normal.tga",
+     "bytes": 12582956,
+     "sha256": "db87c14f26dfa61983b4814bd18e23013a92db239223cbe1c4883718af841917"
+    }
+   ],
+   "changes": "Converted from the 2048 x 2048 TGA to 1024 x 1024 JPG. No content change."
+  },
+  {
+   "file": "PoliceOfficer_Pistol_Color.jpg",
+   "bytes": 10919,
+   "sha256": "5268e5cf8be5f257ec9023ccd668f7dc18f5c22fc3e4ffc7b9e81f697f89ba6e",
+   "kind": "texture",
+   "pixels": [
+    256,
+    256
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_pistol_color.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_pistol_color.tga",
+     "bytes": 3145772,
+     "sha256": "2e0b09d0c0fda8d43a7993de1f25ab42d4c4e028d69f47fa8f08e235d0386f3e"
+    }
+   ],
+   "changes": "Converted from the 1024 x 1024 TGA to 256 x 256 JPG. Two maker-style grip medallions (left and right grip panels) cloned out in colour, normal and specular (paint_out)."
+  },
+  {
+   "file": "PoliceOfficer_Pistol_MetallicSmoothness.png",
+   "bytes": 11843,
+   "sha256": "511ad5f071c7465892a837acd90b10c36cf3ecb89aa25b859ea660bb87e15699",
+   "kind": "texture",
+   "pixels": [
+    128,
+    128
+   ],
+   "mode": "RGBA",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_pistol_specular.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_pistol_specular.tga",
+     "bytes": 3145772,
+     "sha256": "f78c208811a6442e47407bf6770612f74134825217c4c0d55ecd586530e902a8"
+    }
+   ],
+   "changes": "Converted from the 1024 x 1024 TGA to 128 x 128 PNG. Packed from the Rocketbox specular map: A = clamp(0.16 + 2.4 * specular, 0.12, 0.72), R = metallic (0 except the metal parts of Equipment and Pistol). Two maker-style grip medallions (left and right grip panels) cloned out in colour, normal and specular (paint_out)."
+  },
+  {
+   "file": "PoliceOfficer_Pistol_Normal.jpg",
+   "bytes": 8974,
+   "sha256": "d56f669cfdd8aea6f680333d4f536a4db95a14e63ac080708b89e72127a805af",
+   "kind": "texture",
+   "pixels": [
+    256,
+    256
+   ],
+   "mode": "RGB",
+   "license": "MIT",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Textures/m172_pistol_normal.tga",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Textures/m172_pistol_normal.tga",
+     "bytes": 3145772,
+     "sha256": "c769ff99b4000dfcdac37be088d6c3f5d322ab001e89d3ff055dc1b53f6d88e0"
+    }
+   ],
+   "changes": "Converted from the 1024 x 1024 TGA to 256 x 256 JPG. Two maker-style grip medallions (left and right grip panels) cloned out in colour, normal and specular (paint_out)."
+  },
+  {
+   "file": "PoliceOfficer_Standing.mtl",
+   "bytes": 604,
+   "sha256": "5a9536430b0d803a398efcdac3f81e5a9775aaf50e1459182eee728890f668fa",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "bytes": 725744,
+     "sha256": "961a0b30cdf59e10677d0121f0c7d0f6b213a73dff85773a4af3d2140e6a3797"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_02.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_02.max.fbx",
+     "bytes": 2938656,
+     "sha256": "d6d13b12e1f8d677dfaffef342a5ffeacf5ee3b38036de83425ab68316cd4e5e"
+    }
+   ],
+   "pose": {
+    "animation": "m_idle_neutral_02",
+    "frame": 30
+   }
+  },
+  {
+   "file": "PoliceOfficer_Standing.obj",
+   "bytes": 1075847,
+   "sha256": "0778804c1dccb9b4905599751a9401858d73996587c9397690baf8224c774a3e",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "bytes": 725744,
+     "sha256": "961a0b30cdf59e10677d0121f0c7d0f6b213a73dff85773a4af3d2140e6a3797"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_02.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_02.max.fbx",
+     "bytes": 2938656,
+     "sha256": "d6d13b12e1f8d677dfaffef342a5ffeacf5ee3b38036de83425ab68316cd4e5e"
+    }
+   ],
+   "pose": {
+    "animation": "m_idle_neutral_02",
+    "frame": 30
+   },
+   "tris": 12445,
+   "size_m": [
+    0.6233,
+    1.8494,
+    0.4053
+   ],
+   "materials": [
+    "Body",
+    "Head",
+    "Equipment",
+    "Pistol"
+   ]
+  },
+  {
+   "file": "PoliceOfficer_TakingNotes.mtl",
+   "bytes": 700,
+   "sha256": "7734868d833fbee0e674b305f98e05cc4746de77de7c7063aa8364151c17123c",
+   "kind": "material",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "bytes": 725744,
+     "sha256": "961a0b30cdf59e10677d0121f0c7d0f6b213a73dff85773a4af3d2140e6a3797"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_documents_note.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_documents_note.max.fbx",
+     "bytes": 2221712,
+     "sha256": "6c94b98eb0eebacb61ddb7afca84430b056e06d7489451a56c25242df4eeb4ed"
+    }
+   ],
+   "pose": {
+    "animation": "m_documents_note",
+    "frame": 190
+   }
+  },
+  {
+   "file": "PoliceOfficer_TakingNotes.obj",
+   "bytes": 1092224,
+   "sha256": "c335b009c01b78d46f223377f9b2eb090d1665c64a71e31205337bf3b66fc7a0",
+   "kind": "model",
+   "license": "MIT (Rocketbox avatar); hand props project-owned",
+   "author": "Microsoft (copyright holder); avatars created by Rocketbox Studios GmbH (Markus Wojcik et al.)",
+   "source_url": "https://github.com/microsoft/Microsoft-Rocketbox/tree/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03",
+   "commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+   "derived_from": [
+    {
+     "path": "Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Police_Male_03/Export/Police_Male_03.fbx",
+     "bytes": 725744,
+     "sha256": "961a0b30cdf59e10677d0121f0c7d0f6b213a73dff85773a4af3d2140e6a3797"
+    },
+    {
+     "path": "Assets/Animations/all_animations_max_motextr_static/m_documents_note.max.fbx",
+     "url": "https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_documents_note.max.fbx",
+     "bytes": 2221712,
+     "sha256": "6c94b98eb0eebacb61ddb7afca84430b056e06d7489451a56c25242df4eeb4ed"
+    }
+   ],
+   "pose": {
+    "animation": "m_documents_note",
+    "frame": 190
+   },
+   "tris": 12661,
+   "size_m": [
+    0.6059,
+    1.797,
+    0.5656
+   ],
+   "materials": [
+    "Body",
+    "Head",
+    "Equipment",
+    "Pistol",
+    "Props"
+   ]
+  },
+  {
+   "file": "Source~/Preview.jpg",
+   "kind": "preview image",
+   "bytes": 162359,
+   "sha256": "92281c6e855e9c0bbe59d47fb5da8d2616cbd993c2e17012bdab502287405b53",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/build_all.py",
+   "kind": "build script",
+   "bytes": 7786,
+   "sha256": "2af5af5a72aa8c27ba6bb1c0e7d4a8ac2cef4694c5e64a84c751b92a18cdd966",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/build_textures.py",
+   "kind": "build script",
+   "bytes": 6169,
+   "sha256": "867e92da9e50ac0c1bdbd1a1e81a35a47a6176fc5f302cee31178d2555687205",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/edits.py",
+   "kind": "build script",
+   "bytes": 8538,
+   "sha256": "e05590e57de843f83c5a6f0ebf4b3592bbf2d22f7ff410bc1d540978ac11cc7e",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/make_props_atlas.py",
+   "kind": "build script",
+   "bytes": 7351,
+   "sha256": "d7735d30a723e109aaa580f5a46fea7c710d82f449bd62283a495d745d726a28",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/pose_export.py",
+   "kind": "build script",
+   "bytes": 10253,
+   "sha256": "efb47a2b2c0ddbc2d78f4df499c705251cc764d67e78c603515d02564a649be7",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/props.py",
+   "kind": "build script",
+   "bytes": 7489,
+   "sha256": "1fa4995c3668ebd7a7b5453e6cd5a95152efd9fb00e36dea2bb57996574a6872",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/render_preview.py",
+   "kind": "build script",
+   "bytes": 2618,
+   "sha256": "9e0d75668ec00ac3d3079413e0f57c7345bf8d9b2159e8ad4830650ca90b2f18",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/scan_frames.py",
+   "kind": "build script",
+   "bytes": 744,
+   "sha256": "365894069e9139a6dc7c066a373cf72105c7cb8cb62e8b00ab1ee2f6a4fca4f5",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/validate.py",
+   "kind": "build script",
+   "bytes": 2035,
+   "sha256": "83e1f8893ce60200d3442b81be4a0343e64c2ea7eb088302818f3ba500eed8d5",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  },
+  {
+   "file": "Source~/write_sources.py",
+   "kind": "build script",
+   "bytes": 8702,
+   "sha256": "f0c629a60779f5f77898aae9771c7e3b57101792a90bb3d81dd89e514054f049",
+   "license": "Project-owned",
+   "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
+   "source_url": "project-made"
+  }
+ ]
+}

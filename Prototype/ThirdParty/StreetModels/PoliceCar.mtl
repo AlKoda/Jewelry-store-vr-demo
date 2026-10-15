@@ -1,0 +1,39 @@
+newmtl Lights
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PoliceCar_Lights_Color.jpg
+
+newmtl Chassis
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PoliceCar_Chassis_Color.jpg
+
+newmtl Plate
+Kd 0.8600 0.8600 0.8400
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl Glass
+Kd 0.1800 0.2000 0.2100
+Ks 0.04 0.04 0.04
+d 0.350
+
+newmtl Wheel
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PoliceCar_Wheel_Color.jpg
+
+newmtl Body
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PoliceCar_Body_Color.jpg
+
+newmtl Interior
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd PoliceCar_Interior_Color.jpg

@@ -1,0 +1,14 @@
+newmtl PriceTag
+Kd 1.0000 1.0000 1.0000
+Ks 0.3000 0.3000 0.3000
+Ns 49.6
+d 1.000
+illum 2
+map_Kd PriceTags_Color.png
+
+newmtl Cord
+Kd 0.9288 0.9035 0.8503
+Ks 0.2000 0.2000 0.2000
+Ns 32.3
+d 1.000
+illum 2

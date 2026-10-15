@@ -1,0 +1,7 @@
+newmtl CallPoint
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd FireAlarmCallPoint_Color.jpg
+# Normal FireAlarmCallPoint_Normal.jpg
+# MetallicSmoothness FireAlarmCallPoint_MetallicSmoothness.png

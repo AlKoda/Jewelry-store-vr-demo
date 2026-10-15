@@ -1,3 +1,9 @@
+## Realism asset packs — October 15 (Claude, unverified)
+
+- [x] Twelve license-checked packs in Prototype/ThirdParty (PBR materials, night HDRIs and skies, jewellery, forensic, street, interior and people models, wall graphics, decals, a night soundscape, music), with 95 register rows.
+- [ ] Wire them into the night store with fallbacks, a texture import postprocessor, LODs or decimation within the triangle and material budgets, and validator checks (next batch).
+- [ ] Decide the country (police livery, tape text, siren) — see HANDOFF.
+
 ## Performance and realism fixes from the audit — October 15 (Claude, unverified, never compiled)
 
 The audit's 46 confirmed findings are fixed in source, except for two that are deferred and four that are only partly done. HANDOFF lists those, along with the details, the check names and the PASS counts.

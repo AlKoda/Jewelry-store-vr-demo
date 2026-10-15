@@ -1,0 +1,11 @@
+newmtl Diffuser
+Kd 0.940 0.940 0.940
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PlasticWhite_Color.jpg
+# Normal Shared_PlasticWhite_Normal.jpg
+
+newmtl Duct
+Kd 0.030 0.030 0.030
+Ks 0.050 0.050 0.050
+d 1.0

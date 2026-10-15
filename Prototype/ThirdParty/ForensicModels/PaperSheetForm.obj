@@ -1,0 +1,26 @@
+# PaperSheetForm - ForensicModels pack. Units: metres, Y up. Project-owned original work, generated for this repository.
+mtllib PaperSheetForm.mtl
+v -0.105 0.0002 -0.1485
+v -0.105 0.0002 0.1485
+v 0.105 0.0002 0.1485
+v 0.105 0.0002 -0.1485
+v 0.105 0 0.1485
+v -0.105 0 0.1485
+v -0.105 0 -0.1485
+v 0.105 0 -0.1485
+vt 0 0.5
+vt 0 0
+vt 0.3535 0
+vt 0.3535 0.5
+vt 0.498 0.6191
+vt 0.3564 0.6191
+vt 0.3564 0.4971
+vt 0.498 0.4971
+vn 0 1 0
+vn 0 -1 0
+g Paper
+usemtl Paper
+f 1/1/1 2/2/1 3/3/1
+f 1/1/1 3/3/1 4/4/1
+f 5/5/2 6/6/2 7/7/2
+f 8/8/2 5/5/2 7/7/2

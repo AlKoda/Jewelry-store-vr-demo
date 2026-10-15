@@ -1,0 +1,5 @@
+newmtl GalvanisedSteel
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd MetalTrashCan_GalvanisedSteel_Color.jpg

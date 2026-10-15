@@ -1,0 +1,13 @@
+newmtl VelvetBlack
+Kd 0.2179 0.2179 0.2315
+Ks 0.2000 0.2000 0.2000
+Ns 42.1
+d 1.000
+illum 2
+
+newmtl Walnut
+Kd 0.5421 0.4222 0.3173
+Ks 0.2000 0.2000 0.2000
+Ns 309.5
+d 1.000
+illum 2

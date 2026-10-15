@@ -1,0 +1,1248 @@
+{
+ "pack": "JewelryModels",
+ "generated": "October 14, 2026",
+ "files": [
+  {
+   "file": "BangleGold.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "708987c57835696cc615e29f39c9098585019ff37eaae361316b32a6635045f7",
+   "bytes": 88
+  },
+  {
+   "file": "BangleGold.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "9d60ac11fff4ddb926f7a6b0671b5a42c151c8f34f674fdb19f64d6dd6102e84",
+   "bytes": 239105
+  },
+  {
+   "file": "BraceletTennisDiamond.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "35ad774fa70f26d5ec4ef2514ca531fb0ce1b8b4f730da9ded9daa6486d8c430",
+   "bytes": 178
+  },
+  {
+   "file": "BraceletTennisDiamond.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "47641b83ea5f335f0d0ff9b5f9204ac8d003103fbc6b24835087ebbc249eebdb",
+   "bytes": 971656
+  },
+  {
+   "file": "EarringGoldLeaf.mtl",
+   "source": "https://sketchfab.com/3d-models/gold-leaf-earring-64c4c78a861d45a28aa1b78873b02d14",
+   "fetched_from": "https://github.com/kongsanggun/AR_Randering/tree/2add0e0ae54f2679783ec7a352724457b6fd8611/public/model/earring/gold_leaf_earring",
+   "commit": "2add0e0ae54f2679783ec7a352724457b6fd8611",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "DineshThennarasan (https://sketchfab.com/dineshthennarasan)",
+   "title": "Gold leaf Earring",
+   "modified": true,
+   "sha256": "af8cc05045986977d9d812c573b0272f4b7f5a430cb908b7d01084465c54388d",
+   "bytes": 88
+  },
+  {
+   "file": "EarringGoldLeaf.obj",
+   "source": "https://sketchfab.com/3d-models/gold-leaf-earring-64c4c78a861d45a28aa1b78873b02d14",
+   "fetched_from": "https://github.com/kongsanggun/AR_Randering/tree/2add0e0ae54f2679783ec7a352724457b6fd8611/public/model/earring/gold_leaf_earring",
+   "commit": "2add0e0ae54f2679783ec7a352724457b6fd8611",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "DineshThennarasan (https://sketchfab.com/dineshthennarasan)",
+   "title": "Gold leaf Earring",
+   "modified": true,
+   "sha256": "cf1cf4326920b174a960b3ddba96904d9df72c863d7418c6331ab45f056ffb3b",
+   "bytes": 633547
+  },
+  {
+   "file": "EarringPearlDrop.mtl",
+   "source": "https://sketchfab.com/3d-models/earring-jade-c91e552728fb4b149d52193fd3e03ac5",
+   "fetched_from": "https://github.com/hiukim/mind-ar-js/tree/fb5db87b1e5076ba86fde82101955da70b629a1c/examples/face-tracking/assets/earring",
+   "commit": "fb5db87b1e5076ba86fde82101955da70b629a1c",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Softmind Game Factory (https://sketchfab.com/softmind)",
+   "title": "Earring Jade",
+   "modified": true,
+   "sha256": "278b78dc7b801959edf9f7253d516210c30ddbeb48bbb07fffd69844138d2578",
+   "bytes": 131
+  },
+  {
+   "file": "EarringPearlDrop.obj",
+   "source": "https://sketchfab.com/3d-models/earring-jade-c91e552728fb4b149d52193fd3e03ac5",
+   "fetched_from": "https://github.com/hiukim/mind-ar-js/tree/fb5db87b1e5076ba86fde82101955da70b629a1c/examples/face-tracking/assets/earring",
+   "commit": "fb5db87b1e5076ba86fde82101955da70b629a1c",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Softmind Game Factory (https://sketchfab.com/softmind)",
+   "title": "Earring Jade",
+   "modified": true,
+   "sha256": "a3b2dd4008eded3937fa5474f2bddb42b10947711e022c61a154496c1bf4684f",
+   "bytes": 489570
+  },
+  {
+   "file": "EarringPearlDrop_Color.jpg",
+   "source": "https://sketchfab.com/3d-models/earring-jade-c91e552728fb4b149d52193fd3e03ac5",
+   "fetched_from": "https://github.com/hiukim/mind-ar-js/tree/fb5db87b1e5076ba86fde82101955da70b629a1c/examples/face-tracking/assets/earring",
+   "commit": "fb5db87b1e5076ba86fde82101955da70b629a1c",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Softmind Game Factory (https://sketchfab.com/softmind)",
+   "title": "Earring Jade",
+   "modified": true,
+   "sha256": "0da24c926d3ace13373099a4c3d4b20805aa09900ba73b2f5f31b6248b6e9846",
+   "bytes": 174446
+  },
+  {
+   "file": "EarringPearlDrop_MetallicSmoothness.png",
+   "source": "https://sketchfab.com/3d-models/earring-jade-c91e552728fb4b149d52193fd3e03ac5",
+   "fetched_from": "https://github.com/hiukim/mind-ar-js/tree/fb5db87b1e5076ba86fde82101955da70b629a1c/examples/face-tracking/assets/earring",
+   "commit": "fb5db87b1e5076ba86fde82101955da70b629a1c",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Softmind Game Factory (https://sketchfab.com/softmind)",
+   "title": "Earring Jade",
+   "modified": true,
+   "sha256": "4ea6f0db8d282f59f0b94ac7bc40acc12cee8eb93e22dcee972e9bc0275f1c3f",
+   "bytes": 20994
+  },
+  {
+   "file": "EarringPearlDrop_Normal.png",
+   "source": "https://sketchfab.com/3d-models/earring-jade-c91e552728fb4b149d52193fd3e03ac5",
+   "fetched_from": "https://github.com/hiukim/mind-ar-js/tree/fb5db87b1e5076ba86fde82101955da70b629a1c/examples/face-tracking/assets/earring",
+   "commit": "fb5db87b1e5076ba86fde82101955da70b629a1c",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Softmind Game Factory (https://sketchfab.com/softmind)",
+   "title": "Earring Jade",
+   "modified": true,
+   "sha256": "d8db2fba406d36806e099a70f81d1e95b35bd2d9e50f8566f4be030f99a71108",
+   "bytes": 90908
+  },
+  {
+   "file": "EarringStand.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0852f41d3addee037ffac63095406ecaa0669f33517c569e8351d7c9da6c2cbc",
+   "bytes": 86
+  },
+  {
+   "file": "EarringStand.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "1bf6db2235f024f86f7c5f7864e0a56a3fffde5ccddcb8063f60d0b13a42d014",
+   "bytes": 105965
+  },
+  {
+   "file": "EarringsDiamondStuds.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "35ad774fa70f26d5ec4ef2514ca531fb0ce1b8b4f730da9ded9daa6486d8c430",
+   "bytes": 178
+  },
+  {
+   "file": "EarringsDiamondStuds.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "96faa2d9ba4f841a779cb50b27955e4bbb5821e5b8d65ef0d4c0b66a958ced8a",
+   "bytes": 476920
+  },
+  {
+   "file": "EarringsGoldHoops.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "708987c57835696cc615e29f39c9098585019ff37eaae361316b32a6635045f7",
+   "bytes": 88
+  },
+  {
+   "file": "EarringsGoldHoops.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "e3f008f21b9bcdcc2cc226056f336970f488b6ae0bace6e7c299cfcaea033ea9",
+   "bytes": 292555
+  },
+  {
+   "file": "GemCushionRuby.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "bffb9e43da66e1ed160543465f4c1c9f180187f041456ec14011ee09a9ebbf3d",
+   "bytes": 85
+  },
+  {
+   "file": "GemCushionRuby.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "b1789a44a9845ba533650cdd7166e6a5714cfd9808e4901ea1dc27286d772b67",
+   "bytes": 28531
+  },
+  {
+   "file": "GemEmeraldCut.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "623ee2518e87d058d23e0c55b10b9c75b87af114a114aaa10d517c3d94f3ebd5",
+   "bytes": 88
+  },
+  {
+   "file": "GemEmeraldCut.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "916924b379ab76f3f1e18273474fc31f5d15a1d8cf70b6c1dbc21b687ceb6465",
+   "bytes": 24902
+  },
+  {
+   "file": "GemOvalSapphire.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "fa234e15f49378491faa5407c760611767fd9d4aeab6758ed305d8d3a28d2605",
+   "bytes": 89
+  },
+  {
+   "file": "GemOvalSapphire.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "19f7ad987f9ba0b9abbbbd5868bf5ddaaaa01729677ab226f8c2d3dc74267045",
+   "bytes": 28562
+  },
+  {
+   "file": "GemPaper_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "1cd1f3038f683aef4f86e186a1da0223dbaea786de6a00d257ebdd39366a3264",
+   "bytes": 152472
+  },
+  {
+   "file": "GemParcel.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "1548b7d677ca59d6ff113eea0e5993765f86e5962ce1edb3d295a68003afebbd",
+   "bytes": 203
+  },
+  {
+   "file": "GemParcel.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "a310db38e9db2b713be735c67da5dd66815beb6c2faf1f258bc952a95969de69",
+   "bytes": 710509
+  },
+  {
+   "file": "GemPearDiamond.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d3c4dea049ca258e0c952d630be2ba5f3b33266908fcaf6b5d9230150eae2ada",
+   "bytes": 88
+  },
+  {
+   "file": "GemPearDiamond.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "e9dc524196551aae2417d85729b4163ae61a4d6c2e8d45d1fd8561c39fc18435",
+   "bytes": 28585
+  },
+  {
+   "file": "GemPrincessCut.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d3c4dea049ca258e0c952d630be2ba5f3b33266908fcaf6b5d9230150eae2ada",
+   "bytes": 88
+  },
+  {
+   "file": "GemPrincessCut.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "a7fb3443fdd7038e0ed01f7b00cc2b92a8472f8fcab6056c9be09e64fded852e",
+   "bytes": 26488
+  },
+  {
+   "file": "GemRoundBrilliant.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d3c4dea049ca258e0c952d630be2ba5f3b33266908fcaf6b5d9230150eae2ada",
+   "bytes": 88
+  },
+  {
+   "file": "GemRoundBrilliant.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0f3241ceab2198af60e706cd8040d96856c1191ebecca17c20990486df854fa9",
+   "bytes": 28562
+  },
+  {
+   "file": "GiftBag.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "bd5de1fb4b50cc76b93aa5e064d50453c2a62822013fede7bb70d0484f465acc",
+   "bytes": 288
+  },
+  {
+   "file": "GiftBag.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3d42bbb9ec3c59c94e96d0f8eb75176994f267180f6695ded60ca09a30dba8b7",
+   "bytes": 304639
+  },
+  {
+   "file": "GiftBag_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "172501753e6f94f8fa816e6ce460acfff2b71b17647bb34fe9f7ad0a9a1101e0",
+   "bytes": 555626
+  },
+  {
+   "file": "GiftBox.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d556a93560dd1a870f6c6dab4ef47d9d25960d3da1c7569e2d3c916d2daa9e84",
+   "bytes": 183
+  },
+  {
+   "file": "GiftBox.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0ff2b8e0743d27f6d89000190d348ca311c15e73c9a1619bc64cddbf1aa1298b",
+   "bytes": 224002
+  },
+  {
+   "file": "GoldBar100g.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "760f59122cf1436fe5a922eb1b1311d0fc57355d5c52f7a52637b8b0de74b68c",
+   "bytes": 121
+  },
+  {
+   "file": "GoldBar100g.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "653bc4ed11e4906dacb6feec65b8b6ae80a21495d984b8de771ff1d2ed53c516",
+   "bytes": 7364
+  },
+  {
+   "file": "GoldBar100g_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0b64e299378a78ef4c7baf48817b94eae0463cad6c3aa9af507298f9b321562c",
+   "bytes": 122294
+  },
+  {
+   "file": "GoldBar100g_Normal.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "88704ee13a369ec781429b5a8d6093f9bed0c0298a80f8fd0e3465e3f7fa8ac8",
+   "bytes": 85781
+  },
+  {
+   "file": "GoldBar1kg.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "512629e80e1a8f05a7c4a812091686edb91b38a9751a92c0bed0296d2bdb794b",
+   "bytes": 119
+  },
+  {
+   "file": "GoldBar1kg.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "b8d2085f08a02b9ec41c56a4b6e39b9cd607ada3803263ef1c1df2596d66ec9e",
+   "bytes": 25813
+  },
+  {
+   "file": "GoldBar1kg_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0236ef854760b6b388ab8cfd47161cbdae72dbffb6fe94a557e4b8484bcda958",
+   "bytes": 565619
+  },
+  {
+   "file": "GoldBar1kg_Normal.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d874ceb27afcd97b1cf623fc410e5d06f872fac913eb533f303d1b227f16d1e6",
+   "bytes": 1032426
+  },
+  {
+   "file": "GoldCoin.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "2ed43a4a57e3c4d856257bf5976450b67ee3274f1257695e0a5c81321272adc6",
+   "bytes": 115
+  },
+  {
+   "file": "GoldCoin.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "cc4cdab09cce281e3bb7b16260b50cc6480048ac96aeb149baf5c8ea30b1f953",
+   "bytes": 199146
+  },
+  {
+   "file": "GoldCoin_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "f7584c0c9da93283deaba79484a5a41d046be402440091ef97d0788a92bc70d9",
+   "bytes": 206663
+  },
+  {
+   "file": "GoldCoin_Normal.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "25c073c24274c4ab0e1f541ed13576126c5c434fdd67889163021e98b1ef9771",
+   "bytes": 214415
+  },
+  {
+   "file": "JewelersLoupe.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "00c767114b4adce327e436a8294da45ad2a0e559d60959ec342d3d3df3f04b25",
+   "bytes": 266
+  },
+  {
+   "file": "JewelersLoupe.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "b71b3d3f92e2c59c0992bbe70364c1e3aa5c2967608afe89eb5758f8c22b5615",
+   "bytes": 214659
+  },
+  {
+   "file": "NecklaceBust.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "766d2625e84d5bff410df5e848dd533ea8825a32470376454aae8717a16b0f13",
+   "bytes": 179
+  },
+  {
+   "file": "NecklaceBust.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3be2e3668dc8801bf7fc4375d5191a7eeeb8e2d481636391eb3a5ccc55019532",
+   "bytes": 215889
+  },
+  {
+   "file": "NecklacePearlDraped.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "55d47749341c9afb46b70844099d15a0ad4b74e0bfbe60f8b0bf1b9814991c37",
+   "bytes": 260
+  },
+  {
+   "file": "NecklacePearlDraped.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "15245a0651af753f1e4f957ea5ff0b4b9c83912edf927f1b6f7b248a0f7161e6",
+   "bytes": 729987
+  },
+  {
+   "file": "NecklacePearlDropped.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "55d47749341c9afb46b70844099d15a0ad4b74e0bfbe60f8b0bf1b9814991c37",
+   "bytes": 260
+  },
+  {
+   "file": "NecklacePearlDropped.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "be2b350499681f9d86e264d27dbf815a8cba7a1abe321498ca9dcdf941aaa64f",
+   "bytes": 728422
+  },
+  {
+   "file": "NecklacePendantDraped.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "4d360d5bd581537367415ccb4dfeeb1631c6470eacde213e4fa32ffcd0f5cf00",
+   "bytes": 177
+  },
+  {
+   "file": "NecklacePendantDraped.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "dc01683c1a0cea4d63fa79156e154ddb838b61aaff61714716ecec5af726ff12",
+   "bytes": 750029
+  },
+  {
+   "file": "NecklacePendantDropped.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "4d360d5bd581537367415ccb4dfeeb1631c6470eacde213e4fa32ffcd0f5cf00",
+   "bytes": 177
+  },
+  {
+   "file": "NecklacePendantDropped.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "7e19184cac060dee8dcabdea78844211a35fee911b52ee4cd6da5aecf9c4a531",
+   "bytes": 751777
+  },
+  {
+   "file": "PaymentTerminal.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "fa75f184d3a97db11b04b3f9a9e17ae6bf41c4e12c3547ed0f4024495bc73501",
+   "bytes": 403
+  },
+  {
+   "file": "PaymentTerminal.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "19c9a3f4c371263bedb76e03f2f4d2117c749e762a393eb90f0960347fe0ed09",
+   "bytes": 78342
+  },
+  {
+   "file": "PaymentTerminal_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "e1ec653fbad2df1fc74fc02fbb5df72a24882e0e1c4e8186bb651feddd713135",
+   "bytes": 30260
+  },
+  {
+   "file": "PocketWatchVintage.mtl",
+   "source": "https://polyhaven.com/a/vintage_pocket_watch",
+   "fetched_from": "https://github.com/QueenOfSquiggles/squiggle-pt/tree/deabff55b5df0b8989e58400bdf05de1c8e1eae1/Game/Assets/Models/Decoration",
+   "commit": "deabff55b5df0b8989e58400bdf05de1c8e1eae1",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Tal Swicegood (Poly Haven)",
+   "modified": true,
+   "sha256": "f37b33db876779e87b1608da8dca4b4b0d36c50889786367ea85f550416fe3c1",
+   "bytes": 314
+  },
+  {
+   "file": "PocketWatchVintage.obj",
+   "source": "https://polyhaven.com/a/vintage_pocket_watch",
+   "fetched_from": "https://github.com/QueenOfSquiggles/squiggle-pt/tree/deabff55b5df0b8989e58400bdf05de1c8e1eae1/Game/Assets/Models/Decoration",
+   "commit": "deabff55b5df0b8989e58400bdf05de1c8e1eae1",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Tal Swicegood (Poly Haven)",
+   "modified": true,
+   "sha256": "0a2ef590d8f67a27920d98500bb85de588e5009ca1376ccb6352717551036b3d",
+   "bytes": 521877
+  },
+  {
+   "file": "PocketWatchVintage_Color.jpg",
+   "source": "https://polyhaven.com/a/vintage_pocket_watch",
+   "fetched_from": "https://github.com/QueenOfSquiggles/squiggle-pt/tree/deabff55b5df0b8989e58400bdf05de1c8e1eae1/Game/Assets/Models/Decoration",
+   "commit": "deabff55b5df0b8989e58400bdf05de1c8e1eae1",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Tal Swicegood (Poly Haven)",
+   "modified": true,
+   "sha256": "da50bf7834956b57b81ae7e19c38b01dad3c1e648a2405e628c3b52d772783da",
+   "bytes": 146504
+  },
+  {
+   "file": "PocketWatchVintage_MetallicSmoothness.png",
+   "source": "https://polyhaven.com/a/vintage_pocket_watch",
+   "fetched_from": "https://github.com/QueenOfSquiggles/squiggle-pt/tree/deabff55b5df0b8989e58400bdf05de1c8e1eae1/Game/Assets/Models/Decoration",
+   "commit": "deabff55b5df0b8989e58400bdf05de1c8e1eae1",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Tal Swicegood (Poly Haven)",
+   "modified": true,
+   "sha256": "c3664947e0c3a8ab4e544a3bfdaa734caa5e069e42c21c8a6adb6dd998541ed5",
+   "bytes": 277917
+  },
+  {
+   "file": "PocketWatchVintage_Normal.png",
+   "source": "https://polyhaven.com/a/vintage_pocket_watch",
+   "fetched_from": "https://github.com/QueenOfSquiggles/squiggle-pt/tree/deabff55b5df0b8989e58400bdf05de1c8e1eae1/Game/Assets/Models/Decoration",
+   "commit": "deabff55b5df0b8989e58400bdf05de1c8e1eae1",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Tal Swicegood (Poly Haven)",
+   "modified": true,
+   "sha256": "5056c900286fcd3598267db3b20c84f4b25391afda0ebb24ea8f6250f499b518",
+   "bytes": 1128869
+  },
+  {
+   "file": "PosTablet.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "25e1d5048366266cb85b4a00370460ec0b9d24ad88eb43209ebda817523ebbff",
+   "bytes": 306
+  },
+  {
+   "file": "PosTablet.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "6ba01c9aebb36cce2e2d65d393db0ec1c25b822b322db5be42e8b2065e54f66e",
+   "bytes": 73008
+  },
+  {
+   "file": "PosTablet_Screen.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "2e1cca8bc0f251fa69a67d06200846e103a6597e6018147bc27f958580e286c6",
+   "bytes": 114340
+  },
+  {
+   "file": "PriceStand01.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3222d157a9a43cac793f5265b216d2bed27e1d1fce289ef605f585f8aa537dfd",
+   "bytes": 204
+  },
+  {
+   "file": "PriceStand01.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0f6181742dc1b860b1bdc25b25e5178eaa03a70993c2b74848a028a59f53d04d",
+   "bytes": 7715
+  },
+  {
+   "file": "PriceStand02.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3222d157a9a43cac793f5265b216d2bed27e1d1fce289ef605f585f8aa537dfd",
+   "bytes": 204
+  },
+  {
+   "file": "PriceStand02.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "2546484180c7ab371fb0d6b42c818f5b51c453f49b7224c056dddb3192ba1cbc",
+   "bytes": 7715
+  },
+  {
+   "file": "PriceStand03.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3222d157a9a43cac793f5265b216d2bed27e1d1fce289ef605f585f8aa537dfd",
+   "bytes": 204
+  },
+  {
+   "file": "PriceStand03.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "fff94e12f79774aac3ea8606fde44af9672a8b9033ed10842d23391b96cfb5fb",
+   "bytes": 7715
+  },
+  {
+   "file": "PriceStand04.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3222d157a9a43cac793f5265b216d2bed27e1d1fce289ef605f585f8aa537dfd",
+   "bytes": 204
+  },
+  {
+   "file": "PriceStand04.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "0adbfd3feec56d035db1a0bcaeec5618a6b9022ca122b4502c5ed659e3e433ce",
+   "bytes": 7715
+  },
+  {
+   "file": "PriceTag01.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3c0700f39fb15cb9e99ffbe9e635cf50987a40c571ea9c2aea3e017fbd61f4ac",
+   "bytes": 200
+  },
+  {
+   "file": "PriceTag01.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d449301a4296852db938b1c432388a6c7d3831385f6cc8c5c3854a8acfeadc5e",
+   "bytes": 43028
+  },
+  {
+   "file": "PriceTag02.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3c0700f39fb15cb9e99ffbe9e635cf50987a40c571ea9c2aea3e017fbd61f4ac",
+   "bytes": 200
+  },
+  {
+   "file": "PriceTag02.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "73fcb36a5222f00a52ac5ed2ae77ddc8ce01fc6f890874b27455f6eacb9534f1",
+   "bytes": 43028
+  },
+  {
+   "file": "PriceTag03.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3c0700f39fb15cb9e99ffbe9e635cf50987a40c571ea9c2aea3e017fbd61f4ac",
+   "bytes": 200
+  },
+  {
+   "file": "PriceTag03.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "c9490482ccd2aa635f056d28a383a55a67d883fc92050e45abf9dc3ad60d7c32",
+   "bytes": 43028
+  },
+  {
+   "file": "PriceTag04.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3c0700f39fb15cb9e99ffbe9e635cf50987a40c571ea9c2aea3e017fbd61f4ac",
+   "bytes": 200
+  },
+  {
+   "file": "PriceTag04.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "487b427a0d64fb086af39742fdca8f079e58cbde0c2cb8b54cb7ca7ca2684bb7",
+   "bytes": 43028
+  },
+  {
+   "file": "PriceTags_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "c982713c88bb84b5cea4a00c7570bb863d0b1701d801828ebcbb7f8dda955118",
+   "bytes": 276417
+  },
+  {
+   "file": "RingAntiqueTigerEye.mtl",
+   "source": "https://sketchfab.com/3d-models/an-old-ring-ea5e0c11f2e046c993239ea1a3efcad7",
+   "fetched_from": "https://github.com/mhh-hazrati8068/nafis-jewellary/tree/0d857d9d8bdb61e5130d5683344db44a71db4e9b/public/models/an_old_ring",
+   "commit": "0d857d9d8bdb61e5130d5683344db44a71db4e9b",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Qifan Zhang (https://sketchfab.com/qifanzhang)",
+   "title": "An Old Ring",
+   "modified": true,
+   "sha256": "e10a7b42ea4a57e7e3f8565adef8e952a0e5c6859470f2da94664896c3ab3d4d",
+   "bytes": 137
+  },
+  {
+   "file": "RingAntiqueTigerEye.obj",
+   "source": "https://sketchfab.com/3d-models/an-old-ring-ea5e0c11f2e046c993239ea1a3efcad7",
+   "fetched_from": "https://github.com/mhh-hazrati8068/nafis-jewellary/tree/0d857d9d8bdb61e5130d5683344db44a71db4e9b/public/models/an_old_ring",
+   "commit": "0d857d9d8bdb61e5130d5683344db44a71db4e9b",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Qifan Zhang (https://sketchfab.com/qifanzhang)",
+   "title": "An Old Ring",
+   "modified": true,
+   "sha256": "888c67f38f58bf73b573979d116c64be0315066508e2a2219715a697e785ce13",
+   "bytes": 389136
+  },
+  {
+   "file": "RingAntiqueTigerEye_Color.jpg",
+   "source": "https://sketchfab.com/3d-models/an-old-ring-ea5e0c11f2e046c993239ea1a3efcad7",
+   "fetched_from": "https://github.com/mhh-hazrati8068/nafis-jewellary/tree/0d857d9d8bdb61e5130d5683344db44a71db4e9b/public/models/an_old_ring",
+   "commit": "0d857d9d8bdb61e5130d5683344db44a71db4e9b",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Qifan Zhang (https://sketchfab.com/qifanzhang)",
+   "title": "An Old Ring",
+   "modified": true,
+   "sha256": "1b9a6a826337965e576262758805692212663e7a70e9dbf53b3b3b8509ce2846",
+   "bytes": 125592
+  },
+  {
+   "file": "RingAntiqueTigerEye_MetallicSmoothness.png",
+   "source": "https://sketchfab.com/3d-models/an-old-ring-ea5e0c11f2e046c993239ea1a3efcad7",
+   "fetched_from": "https://github.com/mhh-hazrati8068/nafis-jewellary/tree/0d857d9d8bdb61e5130d5683344db44a71db4e9b/public/models/an_old_ring",
+   "commit": "0d857d9d8bdb61e5130d5683344db44a71db4e9b",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Qifan Zhang (https://sketchfab.com/qifanzhang)",
+   "title": "An Old Ring",
+   "modified": true,
+   "sha256": "529fd204c6e7baad8c1a295b9795ae02fe7286a7f54b7439e041aa246efee724",
+   "bytes": 44951
+  },
+  {
+   "file": "RingAntiqueTigerEye_Normal.png",
+   "source": "https://sketchfab.com/3d-models/an-old-ring-ea5e0c11f2e046c993239ea1a3efcad7",
+   "fetched_from": "https://github.com/mhh-hazrati8068/nafis-jewellary/tree/0d857d9d8bdb61e5130d5683344db44a71db4e9b/public/models/an_old_ring",
+   "commit": "0d857d9d8bdb61e5130d5683344db44a71db4e9b",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "author": "Qifan Zhang (https://sketchfab.com/qifanzhang)",
+   "title": "An Old Ring",
+   "modified": true,
+   "sha256": "79a0a00423793852da8fc93ba8a5cac95f6ace7652d848a6de7ed903b8de80fd",
+   "bytes": 63628
+  },
+  {
+   "file": "RingBoxClosed.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "9a2d3d310601cc0d7c539b512db05a9cfbed6d32836d5b6e8d0d42bca67e53ca",
+   "bytes": 271
+  },
+  {
+   "file": "RingBoxClosed.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "296533bfbd999a14371f9a2dc6ef9a839b909589a1b343cde8dbf8f97ab1b8b7",
+   "bytes": 123357
+  },
+  {
+   "file": "RingBoxOpen.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "9a2d3d310601cc0d7c539b512db05a9cfbed6d32836d5b6e8d0d42bca67e53ca",
+   "bytes": 271
+  },
+  {
+   "file": "RingBoxOpen.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "653462c41788d803a98c0b5a0910aeea8c7dd104d57dd37143a6cd2c7585b002",
+   "bytes": 123465
+  },
+  {
+   "file": "RingCone.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "766d2625e84d5bff410df5e848dd533ea8825a32470376454aae8717a16b0f13",
+   "bytes": 179
+  },
+  {
+   "file": "RingCone.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "1368d5e73e964fe3ce364f5916fd07f27ddfd827071a84c86efd20c96ff63a9d",
+   "bytes": 109101
+  },
+  {
+   "file": "RingDiamondEternity.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "57a8a79c8a0eaeae7699d92539a386ce651411f353ec1b28804f1d3d5144fb58",
+   "bytes": 178
+  },
+  {
+   "file": "RingDiamondEternity.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "ef5f11456de7587cbb3be105324bda73e6f585f2b14610e0db580394699f3556",
+   "bytes": 689717
+  },
+  {
+   "file": "RingGoldBand.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "708987c57835696cc615e29f39c9098585019ff37eaae361316b32a6635045f7",
+   "bytes": 88
+  },
+  {
+   "file": "RingGoldBand.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "16002ccba0574fcefd6d82c6cab355e1ce50158b7c3dfca631ea18cb4c86cd90",
+   "bytes": 271455
+  },
+  {
+   "file": "RingRubyThreeStone.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "788dc3394b38cf771d7bf86c0028d327fca385ab39ff5d24a5d01d094f80f9cc",
+   "bytes": 263
+  },
+  {
+   "file": "RingRubyThreeStone.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "81cbc81a2094a8d56ba8ce909dcf65adc413f685f64bb514cbf5cd0e44066012",
+   "bytes": 678926
+  },
+  {
+   "file": "RingSapphireHalo.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "3b62e9e7dd252fa2904e7d47173cde9fef9b5ed6b5a4395c029788e19bca0d4f",
+   "bytes": 268
+  },
+  {
+   "file": "RingSapphireHalo.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "22cb9f8a964f55289ae29fc076c077d727d3471379e27111247576944682daaa",
+   "bytes": 788109
+  },
+  {
+   "file": "RingSolitaireDiamond.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "57a8a79c8a0eaeae7699d92539a386ce651411f353ec1b28804f1d3d5144fb58",
+   "bytes": 178
+  },
+  {
+   "file": "RingSolitaireDiamond.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "43660f747ad5afee113ada77e3c41098c1bb6899d7869c6ec3a1f823d56d392a",
+   "bytes": 465498
+  },
+  {
+   "file": "WatchDial_Color.png",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "a389265cae2e2ea61d4e4dbb9c1d2e9fa6e0f12adcacde1075844a1418a1a317",
+   "bytes": 656513
+  },
+  {
+   "file": "WatchDressSteel.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "775d5337dfbc3468615514289bdef658f2d05476b8cd41228f0ffc0334dab1ce",
+   "bytes": 482
+  },
+  {
+   "file": "WatchDressSteel.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "ce815b81f43942664ece76bfabd7afd383a60b855e95d07ea1ca7adeeacec0fe",
+   "bytes": 620050
+  },
+  {
+   "file": "WatchPillow.mtl",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "1568ac76315e6d656b41b0f573effb5c058539f768204e95fd47b6e32cf2c4b6",
+   "bytes": 93
+  },
+  {
+   "file": "WatchPillow.obj",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "6cda24ea58e7c8e79182ade5db70bb7d29257f22657922c26fe61d61abb94023",
+   "bytes": 166191
+  },
+  {
+   "file": "Source~/Preview.jpg",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned contact sheet; it also shows renders of PocketWatchVintage (CC0) and RingAntiqueTigerEye, EarringPearlDrop, EarringGoldLeaf (CC BY 4.0, attribution in LICENSE.txt)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "75337ddebee19f7c451e7d97352447fb4ba4c64c2eadc77d2eb96fb8ffe407b3",
+   "bytes": 238739
+  },
+  {
+   "file": "Source~/build.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "00418df9ecce965cb69532e867a0ffa8cceb3ee5793fa9b71bf9e44f377c9784",
+   "bytes": 6972
+  },
+  {
+   "file": "Source~/gems.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "55b0211a393ed730d30ceeae4372dfb525cc81871740a2ef6304d316d28c7c64",
+   "bytes": 5070
+  },
+  {
+   "file": "Source~/grid.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "d025846f03aa7b0bdfa266f7eef439ea0b4f3c56e034f9adbb152fc494a32f19",
+   "bytes": 953
+  },
+  {
+   "file": "Source~/items.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "1afe18b9b8b2182704aba1393142de5086f89ccfc9f761789856a61b4796678a",
+   "bytes": 41559
+  },
+  {
+   "file": "Source~/make_docs.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "b5b601d6606e811143e2ae85740bc7a2e7fd9918b89de9e9a81d42aa27649e38",
+   "bytes": 19102
+  },
+  {
+   "file": "Source~/maps.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "8c591c86a82dd88e7646a3c2f8f331ec34ab2d38d8a63ecdc2624e972cc3e4be",
+   "bytes": 2193
+  },
+  {
+   "file": "Source~/materials.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "014e84c91af7acbb0dcc2dca2c5b4cafca5d642a1791d03824c17393000832bf",
+   "bytes": 4690
+  },
+  {
+   "file": "Source~/meshlib.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "96144e2a06cfea3f4fe74c30048ec23617a4997cb406456dd91ccbb88d26a855",
+   "bytes": 15032
+  },
+  {
+   "file": "Source~/necks.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "70e51e71ddbd2e370df0809a1d335225b00aa3e2e8a2682e1369c56ee4189a25",
+   "bytes": 1378
+  },
+  {
+   "file": "Source~/postprocess.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "6e71ff3d5bcc20d85c6cb400148644f1a45773a34a365c76a89a5812cbdb46c1",
+   "bytes": 8306
+  },
+  {
+   "file": "Source~/readme.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "a5d29462f767f814ad1e4bc573c54d6ddda1f35c627abfee87855323e1922060",
+   "bytes": 1963
+  },
+  {
+   "file": "Source~/readme_template.md",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "00f98c158541619688e680af73b6dc168345e4445911dda72854bf7396dbe3c1",
+   "bytes": 8383
+  },
+  {
+   "file": "Source~/render.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "86726f420cd4e7c725788f342706b581fe71d01ba2a03a94371d60ce1c32a0a8",
+   "bytes": 7617
+  },
+  {
+   "file": "Source~/rings.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "10dba184cf50dc1ac20e2f43a2fdd04f58dc084c8b364ef332fe0842cd7a2054",
+   "bytes": 11218
+  },
+  {
+   "file": "Source~/textures.py",
+   "source": "original (Source~/build.py, Source~/textures.py)",
+   "commit": "n/a (generated October 14, 2026)",
+   "license": "project-owned (original work)",
+   "author": "Jewelry-store-vr-demo project (generated with Claude)",
+   "sha256": "5511ea94e990d9b7814d388728293dab993b86dec9cd4dd8d1078871e91a2d4a",
+   "bytes": 19189
+  }
+ ]
+}

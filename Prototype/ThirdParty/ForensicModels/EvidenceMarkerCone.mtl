@@ -1,0 +1,5 @@
+newmtl MarkerPlastic
+Kd 1.000 1.000 1.000
+Ks 0.300 0.300 0.300
+d 1.000
+map_Kd EvidenceMarkerCone_Atlas.jpg

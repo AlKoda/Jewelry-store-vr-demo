@@ -1,0 +1,13 @@
+newmtl Artwork
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PictureFrameGilt_Artwork_Color.jpg
+
+newmtl Frame
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PictureFrameGilt_Frame_Color.jpg
+# Normal PictureFrameGilt_Frame_Normal.jpg
+# MetallicSmoothness PictureFrameGilt_Frame_MetallicSmoothness.png

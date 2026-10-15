@@ -1,0 +1,7 @@
+newmtl Ceramic
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd VaseCeramicBottle_Color.jpg
+# Normal VaseCeramicBottle_Normal.jpg
+# MetallicSmoothness VaseCeramicBottle_MetallicSmoothness.png

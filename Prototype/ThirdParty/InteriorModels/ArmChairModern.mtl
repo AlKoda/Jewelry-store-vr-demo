@@ -1,0 +1,15 @@
+newmtl Frame
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd ArmChairModern_Frame_Color.jpg
+# Normal ArmChairModern_Frame_Normal.jpg
+# MetallicSmoothness ArmChairModern_Frame_MetallicSmoothness.png
+
+newmtl Cushions
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd ArmChairModern_Cushions_Color.jpg
+# Normal ArmChairModern_Cushions_Normal.jpg
+# MetallicSmoothness ArmChairModern_Cushions_MetallicSmoothness.png

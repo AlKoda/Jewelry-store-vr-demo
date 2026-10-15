@@ -1,3 +1,27 @@
+# Realism asset packs — October 15 (Claude, unverified, not yet used in any scene)
+
+Twelve new packs under Prototype/ThirdParty/, about 262 MB in total. Each has a LICENSE.txt, a README.md, a per-file sources.json (source URL, author, license, sha256), and its build scripts in Source~ (Unity ignores that folder). The asset-sourcing workflow fetched or generated them; an independent reviewer then checked each pack's licences, files, format, budget and quality, and a repair agent fixed what it flagged. Docs/ASSET_REGISTER.md has 95 new rows under "Realism packs (October 14–15)".
+
+| Pack | Size | Contents |
+|---|---|---|
+| PBRInterior | 37 MB | ambientCG CC0 materials (polished marble floor, stone tops, walnut, terrazzo, leather, carpet, velvet, suede, brushed metals, chrome, brass, glass smudge, wallpaper) plus procedural sets; Color .jpg, Normal (OpenGL), MetallicSmoothness RGBA .png |
+| PBRExterior | 29 MB | Poly Haven/ambientCG asphalt (dry and wet), pavement, facade stone, brick, render, metal shutter and more |
+| NightSky | 18 MB | Poly Haven night HDRIs (cobblestone street, Zwinger, Hansaplatz) plus procedural city_night_sky skyboxes; light cookies and flare sprites |
+| JewelryModels | 20 MB | 47 OBJ models (rings, earrings, necklaces and bust, bracelets, watches and pillow, loose gems, ring cone, ring boxes, price tags, gift bag, gold bars, loupe, payment terminal), project-made |
+| ForensicModels | 19 MB | Poly Haven crowbar, bolt cutters, gloves, tripod and others, plus procedural evidence items |
+| StreetModels | 24 MB | Poly Haven street lamp, aircon unit and street furniture; CC BY cars, police car and van; procedural traffic light, signs, bike rack, bus shelter, drain, bollards, light bar |
+| InteriorModels | 27 MB | 48 Poly Haven furniture and decor models (chairs, tables, plants, vases, frames, clock, lamps, desk) |
+| WallGraphics | 18 MB | 9 public-domain paintings, project-made jewellery posters, store notices and street graphics (fictional names, checked against real businesses) |
+| SurfaceDecals | 15 MB | project-made shoe prints, fingerprints, glass handprint, shards, cracks, puddles, grime, light cookies |
+| NightSoundscape | 31 MB | 86 clips: night beds, alarm bell, interior machines, police car idle/radio/doors, sirens, cars, dogs, footsteps, glass, tool foley (CC0 recordings via GitHub mirrors plus synthesis; dog barks 01–03 are CC BY 3.0) |
+| Music | 4.6 MB | John Bartmann CC0 ambient beds (menu theme, two investigation loops) and an original reset sting |
+| PeopleModels | 16 MB | 5 Microsoft Rocketbox avatars (MIT), posed and baked to static OBJ: police officers, forensic examiner, detective, bystander |
+
+- **Not in the Downloads ZIP** (size): Start-Demo.cmd mirrors Prototype/ThirdParty into UnityProject_Demo, so the one-click build sees them. Projects unpacked by the Open-Unity-*.cmd launchers do not, until the wiring batch handles that. Unity creates the .meta files on import.
+- **Nothing uses them yet.** The next batch wires them into the night store with the existing primitive fallbacks. Known issues to handle there: PBRInterior and PBRExterior reuse names from NightMaterials and ReferenceTextures, and their colour maps are .jpg where StoreKit looks for _Color.png; the packs add about 651k triangles against the 220k scene budget, so props need LODs, decimation or selective use; WallGraphics has 27 non-power-of-two images; there is no texture import postprocessor yet.
+- **Decision for Koda:** the police details are mixed (US-style sedan livery and siren, UK-style store). The "country" choice in "for Koda.md" decides which livery, tape text and siren to use.
+- **To verify on the PC:** the first Start-Demo.cmd after pulling imports about 1,200 new files (several minutes longer); check the console for import errors.
+
 # Performance and realism fixes from the audit — October 15 (Claude, unverified, never compiled)
 
 A read-only audit of six areas (rendering, VR frame, CPU/GC, build/import, physics/logic, correctness) produced 57 findings. Two skeptics checked each one: 46 were confirmed and 11 rejected. This batch fixes the confirmed findings in the source, except the ones listed under "Deferred or dropped" (two deferred, four only partly done). It also adds 30 validator checks. Each change was reviewed by an adversarial reader and the whole diff was cross-reviewed; a C# parser found no syntax errors in the 30 changed or new .cs files. The aim is more realism at the same or lower cost, on Quest 2 and with mouse and keyboard, with both modes still working. **Nothing here has been compiled or run in Unity.**

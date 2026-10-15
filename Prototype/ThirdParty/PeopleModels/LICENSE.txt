@@ -1,0 +1,126 @@
+PeopleModels - posed human figures for the night jewellery-store scene
+Prepared October 14-15, 2026; examiner white levels revised October 15, 2026.
+Not yet imported or checked in Unity.
+
+Seven static figures (OBJ/MTL plus textures) made from five avatars of the Microsoft Rocketbox
+Avatar Library, posed with one frame of a Rocketbox motion-capture animation and baked to a
+static mesh. Small hand props (notebook, pen, phone, camera) and their texture atlas are
+project-made. Exact source paths, the upstream commit and SHA-256 hashes of every source file
+and every shipped file are in sources.json.
+
+===============================================================================
+1. Microsoft Rocketbox Avatar Library (MIT License)
+===============================================================================
+Title:      Microsoft Rocketbox Avatar Library (avatars and animations)
+Author:     Microsoft (copyright holder). The avatars were created by Rocketbox Studios GmbH
+            (original avatar creation team, Markus Wojcik et al.) and released by Microsoft
+            Research (Mar Gonzalez-Franco et al.).
+Source:     https://github.com/microsoft/Microsoft-Rocketbox
+Commit:     0943055db6ec570bcef9f2c8b41c9e5467c808f9 (2022-10-02), fetched October 14-15, 2026
+            with a partial git clone and sparse checkout (no Git LFS objects involved).
+Licence:    MIT License, https://github.com/microsoft/Microsoft-Rocketbox/blob/0943055db6ec570bcef9f2c8b41c9e5467c808f9/LICENSE.md
+            The repository README states: "12/2020: Updated license to MIT." and
+            "November 2020 License Update: The library of avatars is now released under MIT
+            License." The LICENSE.md at the repository root is the only licence file in the
+            repository and covers the avatar and animation assets. (The original 2020 blog
+            announcement said "for research and academic use"; that was replaced by the MIT
+            licence update above.)
+Attribution (required by MIT: keep the copyright and permission notice below with the files):
+            "Human figures from the Microsoft Rocketbox Avatar Library, Copyright (c) 2020
+             Microsoft, MIT License (github.com/microsoft/Microsoft-Rocketbox)."
+Suggested citation (optional, requested by the authors for research use):
+            M. Gonzalez-Franco, E. Ofek, Y. Pan, A. Antley, A. Steed, B. Spanlang, A. Maselli,
+            D. Banakou, N. Pelechano, S. Orts Escolano, V. Orvalho, L. Trutoiu, M. Wojcik,
+            M. V. Sanchez-Vives, J. Bailenson, M. Slater and J. Lanier, "The Rocketbox library
+            and the utility of freely available rigged avatars", Frontiers in Virtual Reality,
+            2020, DOI 10.3389/frvir.2020.561558.
+
+Avatars and animations used (paths in the repository):
+  Assets/Avatars/Professions/Police_Male_03     (textures m172_*)  -> PoliceOfficer_*
+  Assets/Avatars/Professions/Medical_Male_04    (textures m162_*)  -> ForensicExaminer_*
+  Assets/Avatars/Professions/Police_Male_07     (textures m176_*)  -> Detective_*
+  Assets/Avatars/Professions/Business_Female_04 (textures f020_*)  -> DetectiveFemale_*
+  Assets/Avatars/Adults/Male_Adult_12           (textures m007_*)  -> PasserBy_*
+  Assets/Animations/all_animations_max_motextr_static/
+     m_idle_neutral_02 (frame 30), m_documents_note (frame 190), m_crouch_idle (frame 1),
+     m_take_picture (frame 80), m_idle_look_around_02 (frame 40),
+     m_cell_phone_textmessage (frame 100), f_documents_note (frame 150)
+
+What was changed (all scripts are in Source~):
+  - Geometry: the hipoly skinned mesh of each avatar was posed with one animation frame
+    (body bones copied in world space, Blender 5.2.2 as the bpy module), evaluated and baked to a
+    static OBJ in metres, Y up, facing +Z, feet on y = 0, centred in x/z. No rig, no blend
+    shapes. Material names were renamed to Body/Head/Equipment/Pistol/Protection/Hair.
+    DetectiveFemale hair cards are duplicated back-to-back so they render from both sides with
+    back-face culling.
+  - Textures: 2048 px TGA converted to JPG (colour 2048 px, normal 1024 px; Equipment and
+    Pistol smaller) and the Rocketbox specular map packed into a metallic/smoothness PNG.
+    PoliceOfficer_Equipment: the small "RBX" badge on the radio was cloned out.
+    PoliceOfficer_Pistol: two maker-style grip medallions were cloned out.
+    ForensicExaminer_Body: the green medical scrubs were recoloured to a white disposable
+    coverall with long sleeves and the hands to blue nitrile gloves (texture edit, the mesh is
+    unchanged). ForensicExaminer_Protection: the surgical cap was recoloured white.
+    Revision October 15, 2026: the white of both maps was lowered to a median of 220 sRGB with
+    the highlights rolled off, so that no texel exceeds 240 (it was near-clipped at 245-255
+    before). The glove highlights roll off the same way, the cuffs blend over two texels, the
+    unused UV space is edge-padded, and the JPGs are saved 4:4:4 with a check that no decoded
+    texel exceeds 240 (this also caps the mask's few brightest texels, 241-243, at 240).
+    The sleeve/body labelling is now deterministic, which also changed the Body normal map
+    slightly (two triangles at the right shoulder now count as sleeve).
+    DetectiveFemale_Hair_Color.png keeps the RGBA hair/eyelash atlas (1024 x 512) with the
+    colour bled into transparent texels.
+  - The modified files remain under the MIT License (same copyright notice).
+
+Upstream licence text (MIT), reproduced as required:
+
+  MIT License
+
+  Copyright (c) 2020 Microsoft
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+Files under this licence:
+  PoliceOfficer_Standing.obj/.mtl, PoliceOfficer_TakingNotes.obj/.mtl (avatar part),
+  PoliceOfficer_Body_*, PoliceOfficer_Head_*, PoliceOfficer_Equipment_*, PoliceOfficer_Pistol_*,
+  ForensicExaminer_Crouching.obj/.mtl, ForensicExaminer_Photographing.obj/.mtl (avatar part),
+  ForensicExaminer_Body_*, ForensicExaminer_Head_*, ForensicExaminer_Protection_*,
+  Detective_LookingAround.obj/.mtl, Detective_Body_*, Detective_Head_*,
+  DetectiveFemale_TakingNotes.obj/.mtl (avatar part), DetectiveFemale_Body_*,
+  DetectiveFemale_Head_*, DetectiveFemale_Hair_Color.png,
+  PasserBy_Phone.obj/.mtl (avatar part), PasserBy_Body_*, PasserBy_Head_*.
+
+Content notes: the avatars are generic characters made by the Rocketbox artists, not likenesses
+of named people. Uniform text is the generic word "POLICE"; the detective's small belt badge reads
+"LIEUTENANT A. SMITH ... DEPARTMENT POLICE" (generic, no real agency name or seal). No product
+brands or logos remain after the edits above.
+
+This pack is not affiliated with or endorsed by Microsoft.
+
+===============================================================================
+2. Project-owned original work
+===============================================================================
+Author:   Jewelry-store-vr-demo project (made with Claude, October 2026). No third-party input.
+Licence:  Project-owned; may be used, modified and redistributed with the project.
+Files:    PeopleProps_Color.jpg, PeopleProps_MetallicSmoothness.png (procedural atlas: notebook
+          cover and handwritten-style page with illegible scribble lines, pen, phone body and a
+          blurred generic camera-app screen with a recording timer, camera body, lens, flash), the hand-prop geometry inside the
+          OBJ files (groups Props and PropScreen: pocket notebook and ballpoint pen, smartphone,
+          DSLR with zoom lens and speedlight), and everything in Source~ (build scripts and
+          Preview.jpg, a Blender Cycles render of the seven figures, not a Unity screenshot).
+          No real product shapes, names or logos.

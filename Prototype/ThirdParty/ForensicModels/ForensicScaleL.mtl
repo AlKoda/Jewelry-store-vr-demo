@@ -1,0 +1,5 @@
+newmtl ScalePlastic
+Kd 1.000 1.000 1.000
+Ks 0.100 0.100 0.100
+d 1.000
+map_Kd ForensicScaleL_Color.jpg

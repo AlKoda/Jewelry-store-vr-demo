@@ -1,0 +1,7 @@
+newmtl Stationery
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd StationerySet_Color.jpg
+# Normal StationerySet_Normal.jpg
+# MetallicSmoothness StationerySet_MetallicSmoothness.png

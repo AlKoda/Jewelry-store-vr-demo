@@ -1,0 +1,7 @@
+newmtl GoldBar100g
+Kd 1.0000 1.0000 1.0000
+Ks 0.6000 0.6000 0.6000
+Ns 811.9
+d 1.000
+illum 2
+map_Kd GoldBar100g_Color.png

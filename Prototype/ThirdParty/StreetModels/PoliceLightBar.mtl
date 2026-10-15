@@ -1,0 +1,30 @@
+newmtl PaintBlack
+Kd 0.0450 0.0450 0.0500
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd Proc_PaintedMetal_Color.jpg
+
+newmtl LensClear
+Kd 0.8500 0.8700 0.9000
+Ks 0.04 0.04 0.04
+d 0.300
+
+newmtl Rubber
+Kd 0.0300 0.0300 0.0300
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl LedRed
+Kd 0.3500 0.0200 0.0200
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl LedBlue
+Kd 0.0200 0.0500 0.3500
+Ks 0.04 0.04 0.04
+d 1.000
+
+newmtl LedWhite
+Kd 0.6000 0.6000 0.6000
+Ks 0.04 0.04 0.04
+d 1.000

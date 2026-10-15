@@ -1,0 +1,17 @@
+newmtl Mouse
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Mouse_Color.jpg
+
+newmtl Rubber
+Kd 0.035 0.035 0.035
+Ks 0.050 0.050 0.050
+d 1.0
+
+newmtl Pad
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_FabricCharcoal_Color.jpg
+# Normal Shared_FabricCharcoal_Normal.jpg

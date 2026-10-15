@@ -1,0 +1,13 @@
+newmtl Camera
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd CCTVBulletHousing_Color.jpg
+# Normal CCTVBulletHousing_Normal.jpg
+# MetallicSmoothness CCTVBulletHousing_MetallicSmoothness.png
+
+newmtl Window
+Kd 0.050 0.050 0.060
+Ks 0.500 0.500 0.500
+Ns 200
+d 0.55

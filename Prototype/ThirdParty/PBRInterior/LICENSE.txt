@@ -1,0 +1,117 @@
+PBRInterior - interior PBR materials for the night jewellery-store scene
+Prepared October 14, 2026; revised October 15, 2026 after an independent review
+(see section 2). Not yet imported or checked in Unity.
+
+Everything in this folder is either CC0 1.0 material from ambientCG (adapted) or
+original project work that is offered under CC0 1.0 as well. No attribution is
+required; the credits below are given as a courtesy. Commercial use, modification
+and redistribution are allowed. Exact mirror repositories, commits, download URLs
+and SHA-256 hashes of every source file and every shipped file are in sources.json.
+
+CC0 1.0 Universal (public domain dedication):
+https://creativecommons.org/publicdomain/zero/1.0/
+
+-------------------------------------------------------------------------------
+1. ambientCG materials (CC0 1.0), created by Lennart Demes / ambientCG
+-------------------------------------------------------------------------------
+Publisher licence: https://docs.ambientcg.com/license/ - the ambientCG docs state
+that the asset files (and the preview renders) are provided under the Creative
+Commons CC0 1.0 Universal licence and that attribution is optional. The same terms
+are already recorded in this repository for NightMaterials and PBRExterior.
+
+ambientCG cannot be reached from the build container, so the unmodified 2K-JPG
+(Fingerprints009: 4K-JPG) downloads were taken from public GitHub repositories
+that committed them as downloaded (ambientCG file names, MaterialX/usdc sidecars
+and preview images still present). Those repositories' own licences, where they
+have one, cover their code, not these CC0 files. Where a second independent copy
+was found, its SHA-256 was compared and matched (listed per asset).
+
+ Shipped set      <- ambientCG asset (page)                         mirror @ commit
+ FloorTile_*      <- Marble021  https://ambientcg.com/view?id=Marble021
+                     github.com/pextonjack/Leonardo2025 @ b7da314e (match: paula048/test_inz)
+ StoneTop_*       <- Marble019  https://ambientcg.com/view?id=Marble019
+                     github.com/salocin0430/agm_3d_web @ 8f97d32d (match: Zeta-Arcade/AWayHome)
+ StoneTopDark_*   <- Marble006  https://ambientcg.com/view?id=Marble006
+                     github.com/JStockwell/Project_FETEn @ dfd7719e (match: eldaca/UAS-Arcade-Game)
+ Walnut_*         <- Wood067    https://ambientcg.com/view?id=Wood067
+                     github.com/Dadaskis/TextureArchive @ 461af934 (single copy found)
+ PlasterWarm_*    <- PaintedPlaster017 https://ambientcg.com/view?id=PaintedPlaster017
+                     github.com/KawaguchiMasora/Abandoned-Prison-Break @ 34c4afaa
+                     (match: LlamahatStudio/StepIntoTheVirtual)
+ VelvetCharcoal_* <- Fabric023  https://ambientcg.com/view?id=Fabric023
+                     github.com/Dadaskis/TextureArchive @ 461af934 (match: Melistpc/AssetBuilds)
+ SuedeCream_*     <- Fabric028  https://ambientcg.com/view?id=Fabric028
+                     github.com/Melistpc/AssetBuilds @ 74bb6265 (match: tkms0617/Bliney)
+ BronzeBrushed_*, BrushedSteel_*
+                  <- Metal009   https://ambientcg.com/view?id=Metal009
+                     github.com/Dadaskis/TextureArchive @ 461af934
+                     (match: tomasbarak/unity-game-polirooms)
+ Chrome_*         <- Metal049A  https://ambientcg.com/view?id=Metal049A
+                     github.com/Dadaskis/TextureArchive @ 461af934 (match: anniedoris/CADBench)
+ BrassPolished_*  <- Metal048A  https://ambientcg.com/view?id=Metal048A
+                     github.com/anniedoris/CADBench @ 99e41a2e (single copy found)
+ Leather_*        <- Leather027 https://ambientcg.com/view?id=Leather027
+                     github.com/JStockwell/Project_FETEn @ dfd7719e
+                     (match: Git LFS oid in GoldenRose01/Crisis_protocol)
+ Carpet_*         <- Carpet012  https://ambientcg.com/view?id=Carpet012
+                     github.com/Dadaskis/TextureArchive @ 461af934 (match: pextonjack/Leonardo2025)
+ Terrazzo_*       <- Terrazzo005 https://ambientcg.com/view?id=Terrazzo005
+                     github.com/JStockwell/Project_FETEn @ dfd7719e (single copy found)
+ Wallpaper_*      <- Wallpaper001A https://ambientcg.com/view?id=Wallpaper001A (paper base)
+                     github.com/pextonjack/Leonardo2025 @ b7da314e
+                     (match: Recall-R/Cheap_motel, Zenexus/wardrobe-planner-au,
+                     fungame2270/Visual_Puzzles_CV)
+ GlassSmudge_*    <- Fingerprints009 https://ambientcg.com/view?id=Fingerprints009
+                     github.com/tomasbarak/unity-game-polirooms @ 62c6ede1 (single copy found)
+
+Voluntary credit: "Created using Marble021, Marble019, Marble006, Wood067,
+PaintedPlaster017, Fabric023, Fabric028, Metal009, Metal049A, Metal048A,
+Leather027, Carpet012, Terrazzo005, Wallpaper001A and Fingerprints009 from
+ambientCG.com, licensed under the Creative Commons CC0 1.0 Universal License."
+
+-------------------------------------------------------------------------------
+2. Changes made (all by this project, October 14-15, 2026)
+-------------------------------------------------------------------------------
+ - All maps resampled with a periodic (wrap-padded) Lanczos filter, so every map
+   stays seamless; normal maps renormalised and kept in the OpenGL (+Y) convention;
+   roughness packed into <Name>_MetallicSmoothness.png as A = 1 - roughness,
+   R = metallic, G = B = 0.
+ - Colour remaps: StoneTop neutral white; Leather albedo scaled up to a mean of
+   about sRGB 30 (median 29); StoneTopDark albedo floor-lifted in linear space
+   (c' = 0.009 + k * c, median sRGB 16 -> 39, 5th percentile 5 -> 28, soft
+   shoulder on the brightest veins); Walnut desaturated toward chocolate with half of the broad
+   banding flattened; PlasterWarm, VelvetCharcoal, SuedeCream, BronzeBrushed,
+   BrushedSteel, Chrome, BrassPolished and Carpet re-coloured from the source's
+   luminance variation; roughness re-graded per material (see sources.json).
+ - PlasterWarm: hairline cracks of PaintedPlaster017 (present only in its colour
+   map) detected and filled from shifted, tone-matched copies of crack-free
+   plaster; the roughness map is patched with the same copies; the scanned
+   normal map is only resampled and scaled to 45 % strength.
+ - StoneTop, StoneTopDark, Chrome, BrassPolished: no normal map is shipped,
+   because the source normal maps are flat (polished surfaces).
+ - VelvetCharcoal / SuedeCream: the source weave lines blurred away, an original
+   fine pile/nap normal blended on top.
+ - FloorTile: original 4 x 4 large-format tile layout (60 cm tiles, joints, bevel,
+   lippage, per-tile tone) cut from Marble021; AO from the joints.
+ - Wallpaper: original ogee print over the Wallpaper001A paper.
+ - GlassSmudge: Fingerprints009 opacity/roughness re-scaled and gated by an
+   original cluster mask, plus original wipe arcs and dust; delivered as an RGBA
+   overlay with a MetallicSmoothness map and no normal map.
+ - Revision after review (October 15, 2026): StoneTopDark_Color rebuilt (floor
+   lift above); PlasterWarm rebuilt (crack fill above); CeilingPaint and
+   SafeSteel regenerated (section 3); StoneTop_Normal.png, StoneTopDark_Normal.png,
+   Chrome_Normal.png, BrassPolished_Normal.png and GlassSmudge_Normal.png removed
+   because they carried no relief.
+
+-------------------------------------------------------------------------------
+3. Project-owned original work (no third-party content)
+-------------------------------------------------------------------------------
+ SafeSteel_* (procedural dark satin powder-coated steel: orange peel, scratch
+ clusters, two bare-metal gouges, burnished patches) and CeilingPaint_*
+ (procedural matte rolled ceiling emulsion: roller stipple, nine roller lanes,
+ tram-line ridges, tonal drift), and the procedural parts listed in 2,
+ were generated from scratch by Source~/build_pbr_interior.py (numpy and Pillow,
+ fixed seeds), written for this project with Claude on October 14, 2026
+ (CeilingPaint and SafeSteel regenerated on October 15, 2026). The
+ project owns them and offers them under CC0 1.0. No attribution is required.
+ No real brand, logo, trademark or person appears in any map.

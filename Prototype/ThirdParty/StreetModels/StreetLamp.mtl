@@ -1,0 +1,15 @@
+newmtl LampMetal
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd StreetLamp_LampMetal_Color.jpg
+
+newmtl LampGlass
+Kd 0.8200 0.8200 0.7800
+Ks 0.04 0.04 0.04
+d 0.350
+
+newmtl LampBulb
+Kd 1.0000 0.9200 0.7500
+Ks 0.04 0.04 0.04
+d 1.000

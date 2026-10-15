@@ -1,0 +1,17 @@
+newmtl Tripod
+Kd 1.000 1.000 1.000
+Ks 0.200 0.200 0.200
+d 1.000
+map_Kd CameraTripod_Color.jpg
+
+newmtl Camera
+Kd 1.000 1.000 1.000
+Ks 0.200 0.200 0.200
+d 1.000
+map_Kd CameraTripod_Color.jpg
+
+newmtl LensGlass
+Kd 0.020 0.030 0.050
+Ks 0.900 0.900 0.900
+d 1.000
+Ns 300

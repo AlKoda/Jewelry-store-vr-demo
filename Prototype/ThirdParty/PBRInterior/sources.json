@@ -1,0 +1,2340 @@
+{
+ "pack": "PBRInterior",
+ "prepared": "2026-10-14",
+ "status": "Fetched October 14, revised October 15 after review; not yet wired; unverified in Unity",
+ "build_script": "Source~/build_pbr_interior.py (python3 build_pbr_interior.py <ambientCG source dir> <output dir>)",
+ "channel_conventions": {
+  "Color": "sRGB albedo JPEG q90",
+  "Normal": "OpenGL +Y tangent-space PNG",
+  "MetallicSmoothness": "RGBA PNG, R = metallic, G = B = 0, A = 1 - roughness (linear)",
+  "AO": "linear grayscale JPEG",
+  "ColorAlpha": "RGBA PNG, sRGB colour, linear alpha"
+ },
+ "revision": "2026-10-15 after an independent review: StoneTopDark_Color rebuilt with a linear floor lift (median sRGB 39, p5 28); PlasterWarm cracks filled from shifted, tone-matched plaster in the colour map (roughness patched to match), scanned normal untouched; CeilingPaint and SafeSteel regenerated with real, measurable relief, lane/scratch variation (CeilingPaint colour now 512 px); five flat normal maps removed.",
+ "removed_after_review": [
+  {
+   "file": "StoneTop_Normal.png",
+   "reason": "no relief: every pixel within 0.32 degrees of +Z (8-bit rounding of a flat normal); the source normal is flat too"
+  },
+  {
+   "file": "StoneTopDark_Normal.png",
+   "reason": "no relief: every pixel within 0.32 degrees of +Z (8-bit rounding of a flat normal); the source normal is flat too"
+  },
+  {
+   "file": "Chrome_Normal.png",
+   "reason": "no relief: every pixel within 0.32 degrees of +Z (8-bit rounding of a flat normal); the source normal is flat too"
+  },
+  {
+   "file": "BrassPolished_Normal.png",
+   "reason": "no relief: every pixel within 0.32 degrees of +Z (8-bit rounding of a flat normal); the source normal is flat too"
+  },
+  {
+   "file": "GlassSmudge_Normal.png",
+   "reason": "no relief: every pixel within 0.32 degrees of +Z; grease films are below 8-bit normal precision"
+  }
+ ],
+ "files": [
+  {
+   "file": "BrassPolished_Color.jpg",
+   "material": "BrassPolished",
+   "bytes": 67820,
+   "sha256": "413d26e865e96f0823ab4636fb728e29e865c55b47365c5de64c0569029c81a9",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Albedo mapped to polished brass sRGB (236,208,146); metallic 1; roughness clipped 0.05-0.2; 1024 px. No normal map: the source NormalGL is flat, so BrassPolished_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Metal048A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal048A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/anniedoris/CADBench",
+     "mirror_commit": "99e41a2eeb351f04611e83980f9f23cb0ca216c7",
+     "mirror_path": "CADVis/Materials/Part/Metal048A_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Metal048A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/anniedoris/CADBench/99e41a2eeb351f04611e83980f9f23cb0ca216c7/CADVis/Materials/Part/Metal048A_2K-JPG/Metal048A_2K-JPG_Color.jpg",
+       "sha256": "04091139f43a4d59ecfbf8606b748f35b61493c0b3c6172fa73e9db8f1d1c490"
+      },
+      {
+       "file": "Metal048A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/anniedoris/CADBench/99e41a2eeb351f04611e83980f9f23cb0ca216c7/CADVis/Materials/Part/Metal048A_2K-JPG/Metal048A_2K-JPG_Roughness.jpg",
+       "sha256": "db1f3aba87724dc4de89dea1072c250f4b4c4637e9cc33627b5555bca931c2ec"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BrassPolished_MetallicSmoothness.png",
+   "material": "BrassPolished",
+   "bytes": 171686,
+   "sha256": "519376bd795426df24aacf04df70b9a64ef1aef529397e8ef759c2810449da46",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Albedo mapped to polished brass sRGB (236,208,146); metallic 1; roughness clipped 0.05-0.2; 1024 px. No normal map: the source NormalGL is flat, so BrassPolished_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Metal048A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal048A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/anniedoris/CADBench",
+     "mirror_commit": "99e41a2eeb351f04611e83980f9f23cb0ca216c7",
+     "mirror_path": "CADVis/Materials/Part/Metal048A_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Metal048A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/anniedoris/CADBench/99e41a2eeb351f04611e83980f9f23cb0ca216c7/CADVis/Materials/Part/Metal048A_2K-JPG/Metal048A_2K-JPG_Color.jpg",
+       "sha256": "04091139f43a4d59ecfbf8606b748f35b61493c0b3c6172fa73e9db8f1d1c490"
+      },
+      {
+       "file": "Metal048A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/anniedoris/CADBench/99e41a2eeb351f04611e83980f9f23cb0ca216c7/CADVis/Materials/Part/Metal048A_2K-JPG/Metal048A_2K-JPG_Roughness.jpg",
+       "sha256": "db1f3aba87724dc4de89dea1072c250f4b4c4637e9cc33627b5555bca931c2ec"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BronzeBrushed_Color.jpg",
+   "material": "BronzeBrushed",
+   "bytes": 141136,
+   "sha256": "37f26e4c69c8dcfefb94381e8f5848b86d0b0c0939b1c46ee0c31dffa2b43a88",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5 (brushing along U)",
+   "changes": "Brushed-steel luminance mapped onto bronze/brass specular colour sRGB (203,168,118); metallic 1; roughness x0.82 (0.18-0.62); 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Metal009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal009",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal009_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tomasbarak/unity-game-polirooms",
+     "source_files": [
+      {
+       "file": "Metal009_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Color.jpg",
+       "sha256": "209d3bb050be9f58c5af179d9712fa7799567a4cd50afd338d37674bdcff765b"
+      },
+      {
+       "file": "Metal009_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_NormalGL.jpg",
+       "sha256": "8773d9e97a4b057ced3e538d8ecc6069d27c8948191d61daf79b9ad93d93e3b3"
+      },
+      {
+       "file": "Metal009_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Roughness.jpg",
+       "sha256": "e802f013b93cb1bd4b55cd91f02a1863233475a7f8bd0e6755cfaa447a729674"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BronzeBrushed_MetallicSmoothness.png",
+   "material": "BronzeBrushed",
+   "bytes": 590942,
+   "sha256": "9ba023d03dd343e34ea1fcbc199f1aa0570bad9c8722f85256481e0053c37646",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5 (brushing along U)",
+   "changes": "Brushed-steel luminance mapped onto bronze/brass specular colour sRGB (203,168,118); metallic 1; roughness x0.82 (0.18-0.62); 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Metal009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal009",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal009_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tomasbarak/unity-game-polirooms",
+     "source_files": [
+      {
+       "file": "Metal009_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Color.jpg",
+       "sha256": "209d3bb050be9f58c5af179d9712fa7799567a4cd50afd338d37674bdcff765b"
+      },
+      {
+       "file": "Metal009_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_NormalGL.jpg",
+       "sha256": "8773d9e97a4b057ced3e538d8ecc6069d27c8948191d61daf79b9ad93d93e3b3"
+      },
+      {
+       "file": "Metal009_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Roughness.jpg",
+       "sha256": "e802f013b93cb1bd4b55cd91f02a1863233475a7f8bd0e6755cfaa447a729674"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BronzeBrushed_Normal.png",
+   "material": "BronzeBrushed",
+   "bytes": 737686,
+   "sha256": "6734a4a2c90d25e4edd12279e49bee7d515bd1ad6c91bffe91e36f75ac71b5e4",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5 (brushing along U)",
+   "changes": "Brushed-steel luminance mapped onto bronze/brass specular colour sRGB (203,168,118); metallic 1; roughness x0.82 (0.18-0.62); 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Metal009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal009",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal009_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tomasbarak/unity-game-polirooms",
+     "source_files": [
+      {
+       "file": "Metal009_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Color.jpg",
+       "sha256": "209d3bb050be9f58c5af179d9712fa7799567a4cd50afd338d37674bdcff765b"
+      },
+      {
+       "file": "Metal009_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_NormalGL.jpg",
+       "sha256": "8773d9e97a4b057ced3e538d8ecc6069d27c8948191d61daf79b9ad93d93e3b3"
+      },
+      {
+       "file": "Metal009_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Roughness.jpg",
+       "sha256": "e802f013b93cb1bd4b55cd91f02a1863233475a7f8bd0e6755cfaa447a729674"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BrushedSteel_Color.jpg",
+   "material": "BrushedSteel",
+   "bytes": 145609,
+   "sha256": "e75ac8a0479a1e34606ac66e4c34ee5275607eca425a9aa5657280bd49435e09",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5 (brushing along U)",
+   "changes": "Albedo mapped to stainless-steel reflectance sRGB (192,194,196); metallic 1; roughness clipped 0.2-0.75; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Metal009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal009",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal009_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tomasbarak/unity-game-polirooms",
+     "source_files": [
+      {
+       "file": "Metal009_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Color.jpg",
+       "sha256": "209d3bb050be9f58c5af179d9712fa7799567a4cd50afd338d37674bdcff765b"
+      },
+      {
+       "file": "Metal009_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_NormalGL.jpg",
+       "sha256": "8773d9e97a4b057ced3e538d8ecc6069d27c8948191d61daf79b9ad93d93e3b3"
+      },
+      {
+       "file": "Metal009_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Roughness.jpg",
+       "sha256": "e802f013b93cb1bd4b55cd91f02a1863233475a7f8bd0e6755cfaa447a729674"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BrushedSteel_MetallicSmoothness.png",
+   "material": "BrushedSteel",
+   "bytes": 639468,
+   "sha256": "6eee6c45e51b1e982fe862ddb80cac5938cd0e96516cbe8c13a7d17045bd5b25",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5 (brushing along U)",
+   "changes": "Albedo mapped to stainless-steel reflectance sRGB (192,194,196); metallic 1; roughness clipped 0.2-0.75; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Metal009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal009",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal009_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tomasbarak/unity-game-polirooms",
+     "source_files": [
+      {
+       "file": "Metal009_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Color.jpg",
+       "sha256": "209d3bb050be9f58c5af179d9712fa7799567a4cd50afd338d37674bdcff765b"
+      },
+      {
+       "file": "Metal009_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_NormalGL.jpg",
+       "sha256": "8773d9e97a4b057ced3e538d8ecc6069d27c8948191d61daf79b9ad93d93e3b3"
+      },
+      {
+       "file": "Metal009_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Roughness.jpg",
+       "sha256": "e802f013b93cb1bd4b55cd91f02a1863233475a7f8bd0e6755cfaa447a729674"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "BrushedSteel_Normal.png",
+   "material": "BrushedSteel",
+   "bytes": 737686,
+   "sha256": "6734a4a2c90d25e4edd12279e49bee7d515bd1ad6c91bffe91e36f75ac71b5e4",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5 (brushing along U)",
+   "changes": "Albedo mapped to stainless-steel reflectance sRGB (192,194,196); metallic 1; roughness clipped 0.2-0.75; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Metal009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal009",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal009_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tomasbarak/unity-game-polirooms",
+     "source_files": [
+      {
+       "file": "Metal009_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Color.jpg",
+       "sha256": "209d3bb050be9f58c5af179d9712fa7799567a4cd50afd338d37674bdcff765b"
+      },
+      {
+       "file": "Metal009_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_NormalGL.jpg",
+       "sha256": "8773d9e97a4b057ced3e538d8ecc6069d27c8948191d61daf79b9ad93d93e3b3"
+      },
+      {
+       "file": "Metal009_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal009_2K-JPG/Metal009_2K-JPG_Roughness.jpg",
+       "sha256": "e802f013b93cb1bd4b55cd91f02a1863233475a7f8bd0e6755cfaa447a729674"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Carpet_AO.jpg",
+   "material": "Carpet",
+   "bytes": 502997,
+   "sha256": "b20479cd4ec5588261b59c97c3e01c67374b1109dd13bb5f3c0910238670ee15",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "L",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Saturation x0.45 and scaled to dark charcoal-navy sRGB (50,53,60); roughness clipped 0.75-1; AO kept; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Carpet012",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Carpet012",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Carpet012_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/pextonjack/Leonardo2025",
+     "source_files": [
+      {
+       "file": "Carpet012_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Color.jpg",
+       "sha256": "d48e34403b6330baf54daa1b6d02ee63a0586be84091626491913558ce78f7c1"
+      },
+      {
+       "file": "Carpet012_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_NormalGL.jpg",
+       "sha256": "56c5aae443394be225391baefbb357a24fb28df4926796ed20834b472addd433"
+      },
+      {
+       "file": "Carpet012_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Roughness.jpg",
+       "sha256": "ed3eb3aedf45e485009985cf1d24c7e83096f815cea10c776e0574d5b067c2d0"
+      },
+      {
+       "file": "Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "sha256": "f23423e94674cc92bbaafa5e78d2dfd303b3d0f73da43316af5676276dc0420d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Carpet_Color.jpg",
+   "material": "Carpet",
+   "bytes": 503336,
+   "sha256": "542723f69cb66025290b7f9bfc09b79ad0c8153ea73523842c973ddf624d35bc",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Saturation x0.45 and scaled to dark charcoal-navy sRGB (50,53,60); roughness clipped 0.75-1; AO kept; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Carpet012",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Carpet012",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Carpet012_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/pextonjack/Leonardo2025",
+     "source_files": [
+      {
+       "file": "Carpet012_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Color.jpg",
+       "sha256": "d48e34403b6330baf54daa1b6d02ee63a0586be84091626491913558ce78f7c1"
+      },
+      {
+       "file": "Carpet012_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_NormalGL.jpg",
+       "sha256": "56c5aae443394be225391baefbb357a24fb28df4926796ed20834b472addd433"
+      },
+      {
+       "file": "Carpet012_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Roughness.jpg",
+       "sha256": "ed3eb3aedf45e485009985cf1d24c7e83096f815cea10c776e0574d5b067c2d0"
+      },
+      {
+       "file": "Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "sha256": "f23423e94674cc92bbaafa5e78d2dfd303b3d0f73da43316af5676276dc0420d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Carpet_MetallicSmoothness.png",
+   "material": "Carpet",
+   "bytes": 879099,
+   "sha256": "fe9a66f910b5912546f472483ec5fa5355321e7f9df1492d6b01867d4e42a85f",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Saturation x0.45 and scaled to dark charcoal-navy sRGB (50,53,60); roughness clipped 0.75-1; AO kept; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Carpet012",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Carpet012",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Carpet012_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/pextonjack/Leonardo2025",
+     "source_files": [
+      {
+       "file": "Carpet012_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Color.jpg",
+       "sha256": "d48e34403b6330baf54daa1b6d02ee63a0586be84091626491913558ce78f7c1"
+      },
+      {
+       "file": "Carpet012_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_NormalGL.jpg",
+       "sha256": "56c5aae443394be225391baefbb357a24fb28df4926796ed20834b472addd433"
+      },
+      {
+       "file": "Carpet012_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Roughness.jpg",
+       "sha256": "ed3eb3aedf45e485009985cf1d24c7e83096f815cea10c776e0574d5b067c2d0"
+      },
+      {
+       "file": "Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "sha256": "f23423e94674cc92bbaafa5e78d2dfd303b3d0f73da43316af5676276dc0420d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Carpet_Normal.png",
+   "material": "Carpet",
+   "bytes": 2845097,
+   "sha256": "6dcf844e67da2d02203474f0fab72aa67822573ffd223c4e998c11aad1b7f295",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Saturation x0.45 and scaled to dark charcoal-navy sRGB (50,53,60); roughness clipped 0.75-1; AO kept; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Carpet012",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Carpet012",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Carpet012_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/pextonjack/Leonardo2025",
+     "source_files": [
+      {
+       "file": "Carpet012_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Color.jpg",
+       "sha256": "d48e34403b6330baf54daa1b6d02ee63a0586be84091626491913558ce78f7c1"
+      },
+      {
+       "file": "Carpet012_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_NormalGL.jpg",
+       "sha256": "56c5aae443394be225391baefbb357a24fb28df4926796ed20834b472addd433"
+      },
+      {
+       "file": "Carpet012_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_Roughness.jpg",
+       "sha256": "ed3eb3aedf45e485009985cf1d24c7e83096f815cea10c776e0574d5b067c2d0"
+      },
+      {
+       "file": "Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Carpet012_2K-JPG/Carpet012_2K-JPG_AmbientOcclusion.jpg",
+       "sha256": "f23423e94674cc92bbaafa5e78d2dfd303b3d0f73da43316af5676276dc0420d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "CeilingPaint_Color.jpg",
+   "material": "CeilingPaint",
+   "bytes": 9763,
+   "sha256": "0d6ecb33caa897fc05d22469a3dff4f449743506ba351987f983ef05517d2553",
+   "pixels": [
+    512,
+    512
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "2.0 x 2.0",
+   "changes": "Original procedural matte ceiling emulsion, rebuilt after review: rounded roller stipple of 3-6 mm with ~0.09 mm relief (normal mean tilt 2.4 deg, 99th percentile 5.1 deg), nine 22 cm roller lanes with their own stipple strength, tone (~+/-2 %) and sheen, wavy lane edges with intermittent tram-line ridges, low-frequency tonal drift; off-white sRGB (232,230,224), colour p1-p99 luminance 225-234; roughness 0.8-0.97 (smoothness mean 0.10, std 0.04); colour 512 px, normal and MS 1024 px.",
+   "source": "original procedural work (Source~/build_pbr_interior.py)",
+   "author": "Jewelry-store VR demo project (generated with Claude, October 14, 2026; regenerated October 15, 2026)",
+   "license": "Project-owned; offered as CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+   "file": "CeilingPaint_MetallicSmoothness.png",
+   "material": "CeilingPaint",
+   "bytes": 973601,
+   "sha256": "da384affa290b6053ae6292733b6fc94ac2ba3d4fef962f24c183c572a64fd58",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "2.0 x 2.0",
+   "changes": "Original procedural matte ceiling emulsion, rebuilt after review: rounded roller stipple of 3-6 mm with ~0.09 mm relief (normal mean tilt 2.4 deg, 99th percentile 5.1 deg), nine 22 cm roller lanes with their own stipple strength, tone (~+/-2 %) and sheen, wavy lane edges with intermittent tram-line ridges, low-frequency tonal drift; off-white sRGB (232,230,224), colour p1-p99 luminance 225-234; roughness 0.8-0.97 (smoothness mean 0.10, std 0.04); colour 512 px, normal and MS 1024 px.",
+   "source": "original procedural work (Source~/build_pbr_interior.py)",
+   "author": "Jewelry-store VR demo project (generated with Claude, October 14, 2026; regenerated October 15, 2026)",
+   "license": "Project-owned; offered as CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+   "file": "CeilingPaint_Normal.png",
+   "material": "CeilingPaint",
+   "bytes": 1394142,
+   "sha256": "a1f4ee07a4a9bd441bf0fc28be1b2d4dfdb43f2dc29969ea66da3d86ff26f411",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "2.0 x 2.0",
+   "changes": "Original procedural matte ceiling emulsion, rebuilt after review: rounded roller stipple of 3-6 mm with ~0.09 mm relief (normal mean tilt 2.4 deg, 99th percentile 5.1 deg), nine 22 cm roller lanes with their own stipple strength, tone (~+/-2 %) and sheen, wavy lane edges with intermittent tram-line ridges, low-frequency tonal drift; off-white sRGB (232,230,224), colour p1-p99 luminance 225-234; roughness 0.8-0.97 (smoothness mean 0.10, std 0.04); colour 512 px, normal and MS 1024 px.",
+   "source": "original procedural work (Source~/build_pbr_interior.py)",
+   "author": "Jewelry-store VR demo project (generated with Claude, October 14, 2026; regenerated October 15, 2026)",
+   "license": "Project-owned; offered as CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+   "file": "Chrome_Color.jpg",
+   "material": "Chrome",
+   "bytes": 48181,
+   "sha256": "018776c97569550b294338434d9bc07ef8b9fea582affbef44d782c858830c55",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Albedo mapped to chromium reflectance sRGB (196,197,198); metallic 1; roughness x1.2 clipped 0.02-0.12; 1024 px. No normal map: the source NormalGL is flat, so Chrome_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Metal049A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal049A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal049A_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/anniedoris/CADBench",
+     "source_files": [
+      {
+       "file": "Metal049A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal049A_2K-JPG/Metal049A_2K-JPG_Color.jpg",
+       "sha256": "c1a10d52fdff335204c5105531e563f4cb36e48df2cdf2f2be2fa4535a31a658"
+      },
+      {
+       "file": "Metal049A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal049A_2K-JPG/Metal049A_2K-JPG_Roughness.jpg",
+       "sha256": "037db8698cbb75d85ea377e1ce75ee0b54dcf4d481fe4ca6dfc92202bb02b81c"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Chrome_MetallicSmoothness.png",
+   "material": "Chrome",
+   "bytes": 493533,
+   "sha256": "a805a922dbd49ffd3620f257dc8faed63dcf605f0d161fa4fff5daa24d4d53bf",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Albedo mapped to chromium reflectance sRGB (196,197,198); metallic 1; roughness x1.2 clipped 0.02-0.12; 1024 px. No normal map: the source NormalGL is flat, so Chrome_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Metal049A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Metal049A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Metal/Metal049A_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/anniedoris/CADBench",
+     "source_files": [
+      {
+       "file": "Metal049A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal049A_2K-JPG/Metal049A_2K-JPG_Color.jpg",
+       "sha256": "c1a10d52fdff335204c5105531e563f4cb36e48df2cdf2f2be2fa4535a31a658"
+      },
+      {
+       "file": "Metal049A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Metal/Metal049A_2K-JPG/Metal049A_2K-JPG_Roughness.jpg",
+       "sha256": "037db8698cbb75d85ea377e1ce75ee0b54dcf4d481fe4ca6dfc92202bb02b81c"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "FloorTile_AO.jpg",
+   "material": "FloorTile",
+   "bytes": 22198,
+   "sha256": "7074c057ba04d82d1142f8e55a7d7864a9da3b9d9d6d65054c0103e2b882c46f",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "L",
+   "real_world_tile_m": "2.4 x 2.4 (4 x 4 tiles of 0.60 m, 2.5 mm joints)",
+   "changes": "Original tile layout built at 4096 px: sixteen native-resolution 1024 px windows of Marble021 (random offset, 90-degree turns, mirroring), warm ivory tint, +35 % vein contrast, per-tile tone shift; procedural grout, 1 mm micro-bevel, 1.5 mm joint depth and per-tile lippage; normal from that height field; polished roughness 0.05-0.3, grout 0.85; AO from grout/bevel; downsampled to 2048 px.",
+   "derived_from": [
+    {
+     "asset": "Marble021",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble021",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Marble",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/paula048/test_inz",
+     "source_files": [
+      {
+       "file": "Marble021_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Color.jpg",
+       "sha256": "8eae10b9fa829a88458a076cff1235da48aa2aaf3ab043535cce59ec5bce1fbf"
+      },
+      {
+       "file": "Marble021_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Roughness.jpg",
+       "sha256": "26287d257dd85cbab6b3828b609ea9df955ce84691d2898514f208cab3492489"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "FloorTile_Color.jpg",
+   "material": "FloorTile",
+   "bytes": 905658,
+   "sha256": "3bafd6ffe743e141749e092a4b25c801ace41b5da2b993ec0530efc680936f12",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "2.4 x 2.4 (4 x 4 tiles of 0.60 m, 2.5 mm joints)",
+   "changes": "Original tile layout built at 4096 px: sixteen native-resolution 1024 px windows of Marble021 (random offset, 90-degree turns, mirroring), warm ivory tint, +35 % vein contrast, per-tile tone shift; procedural grout, 1 mm micro-bevel, 1.5 mm joint depth and per-tile lippage; normal from that height field; polished roughness 0.05-0.3, grout 0.85; AO from grout/bevel; downsampled to 2048 px.",
+   "derived_from": [
+    {
+     "asset": "Marble021",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble021",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Marble",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/paula048/test_inz",
+     "source_files": [
+      {
+       "file": "Marble021_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Color.jpg",
+       "sha256": "8eae10b9fa829a88458a076cff1235da48aa2aaf3ab043535cce59ec5bce1fbf"
+      },
+      {
+       "file": "Marble021_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Roughness.jpg",
+       "sha256": "26287d257dd85cbab6b3828b609ea9df955ce84691d2898514f208cab3492489"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "FloorTile_MetallicSmoothness.png",
+   "material": "FloorTile",
+   "bytes": 440846,
+   "sha256": "acc036dbcb1465a71b88b7a4d30fed6a1f6e5370739302311f557b2d0947c31d",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "2.4 x 2.4 (4 x 4 tiles of 0.60 m, 2.5 mm joints)",
+   "changes": "Original tile layout built at 4096 px: sixteen native-resolution 1024 px windows of Marble021 (random offset, 90-degree turns, mirroring), warm ivory tint, +35 % vein contrast, per-tile tone shift; procedural grout, 1 mm micro-bevel, 1.5 mm joint depth and per-tile lippage; normal from that height field; polished roughness 0.05-0.3, grout 0.85; AO from grout/bevel; downsampled to 2048 px.",
+   "derived_from": [
+    {
+     "asset": "Marble021",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble021",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Marble",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/paula048/test_inz",
+     "source_files": [
+      {
+       "file": "Marble021_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Color.jpg",
+       "sha256": "8eae10b9fa829a88458a076cff1235da48aa2aaf3ab043535cce59ec5bce1fbf"
+      },
+      {
+       "file": "Marble021_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Roughness.jpg",
+       "sha256": "26287d257dd85cbab6b3828b609ea9df955ce84691d2898514f208cab3492489"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "FloorTile_Normal.png",
+   "material": "FloorTile",
+   "bytes": 1014370,
+   "sha256": "3d5bf6bc0c4066d3f82fbd2d029f15ce9de2fffc28e1dfdde9f492fe9598e4a0",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "2.4 x 2.4 (4 x 4 tiles of 0.60 m, 2.5 mm joints)",
+   "changes": "Original tile layout built at 4096 px: sixteen native-resolution 1024 px windows of Marble021 (random offset, 90-degree turns, mirroring), warm ivory tint, +35 % vein contrast, per-tile tone shift; procedural grout, 1 mm micro-bevel, 1.5 mm joint depth and per-tile lippage; normal from that height field; polished roughness 0.05-0.3, grout 0.85; AO from grout/bevel; downsampled to 2048 px.",
+   "derived_from": [
+    {
+     "asset": "Marble021",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble021",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Marble",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/paula048/test_inz",
+     "source_files": [
+      {
+       "file": "Marble021_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Color.jpg",
+       "sha256": "8eae10b9fa829a88458a076cff1235da48aa2aaf3ab043535cce59ec5bce1fbf"
+      },
+      {
+       "file": "Marble021_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Marble/Marble021_2K-JPG_Roughness.jpg",
+       "sha256": "26287d257dd85cbab6b3828b609ea9df955ce84691d2898514f208cab3492489"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "GlassSmudge_ColorAlpha.png",
+   "material": "GlassSmudge",
+   "bytes": 1265575,
+   "sha256": "38283600cc254309d8e545b87017bd52fa7486f4a4afd5fa5c522fbe919da267",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.6 x 0.6 (prints ~2 cm)",
+   "changes": "Fingerprint opacity resampled to 512 px (one 15 cm source tile), tiled 4 x 4 and gated by an original periodic cluster mask; original faint cloth-wipe arcs and dust; alpha capped at 0.6 in GlassSmudge_ColorAlpha.png (RGB constant grease grey); roughness 0.03 clean glass up to ~0.55 in grease. No normal map: grease films are sub-micron and the former GlassSmudge_Normal.png was flat at 8 bits, so it was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Fingerprints009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fingerprints009",
+     "variant": "4K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/tomasbarak/unity-game-polirooms",
+     "mirror_commit": "62c6ede133f6cb4b938ff2f2798488e1ede24264",
+     "mirror_path": "Assets/Textures/Fingerprints009_4K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Fingerprints009_4K-JPG_Opacity.jpg",
+       "download_url": "https://raw.githubusercontent.com/tomasbarak/unity-game-polirooms/62c6ede133f6cb4b938ff2f2798488e1ede24264/Assets/Textures/Fingerprints009_4K-JPG/Fingerprints009_4K-JPG_Opacity.jpg",
+       "sha256": "70c89459a51c55123db0a1b4bf8f33c2120f45196d0fe1f886352232422ff5a3"
+      },
+      {
+       "file": "Fingerprints009_4K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/tomasbarak/unity-game-polirooms/62c6ede133f6cb4b938ff2f2798488e1ede24264/Assets/Textures/Fingerprints009_4K-JPG/Fingerprints009_4K-JPG_Roughness.jpg",
+       "sha256": "2702b417967d40b008af44fe258399494d75a5e402fb6fb6c7087571c8b196a9"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "GlassSmudge_MetallicSmoothness.png",
+   "material": "GlassSmudge",
+   "bytes": 299419,
+   "sha256": "11380e8f194b0ed6f16dbe2bcae379a6e0309bc6658838433e1c22bf6e748aa5",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.6 x 0.6 (prints ~2 cm)",
+   "changes": "Fingerprint opacity resampled to 512 px (one 15 cm source tile), tiled 4 x 4 and gated by an original periodic cluster mask; original faint cloth-wipe arcs and dust; alpha capped at 0.6 in GlassSmudge_ColorAlpha.png (RGB constant grease grey); roughness 0.03 clean glass up to ~0.55 in grease. No normal map: grease films are sub-micron and the former GlassSmudge_Normal.png was flat at 8 bits, so it was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Fingerprints009",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fingerprints009",
+     "variant": "4K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/tomasbarak/unity-game-polirooms",
+     "mirror_commit": "62c6ede133f6cb4b938ff2f2798488e1ede24264",
+     "mirror_path": "Assets/Textures/Fingerprints009_4K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Fingerprints009_4K-JPG_Opacity.jpg",
+       "download_url": "https://raw.githubusercontent.com/tomasbarak/unity-game-polirooms/62c6ede133f6cb4b938ff2f2798488e1ede24264/Assets/Textures/Fingerprints009_4K-JPG/Fingerprints009_4K-JPG_Opacity.jpg",
+       "sha256": "70c89459a51c55123db0a1b4bf8f33c2120f45196d0fe1f886352232422ff5a3"
+      },
+      {
+       "file": "Fingerprints009_4K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/tomasbarak/unity-game-polirooms/62c6ede133f6cb4b938ff2f2798488e1ede24264/Assets/Textures/Fingerprints009_4K-JPG/Fingerprints009_4K-JPG_Roughness.jpg",
+       "sha256": "2702b417967d40b008af44fe258399494d75a5e402fb6fb6c7087571c8b196a9"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Leather_Color.jpg",
+   "material": "Leather",
+   "bytes": 168264,
+   "sha256": "8e0bec18f1036b233d82b66562be2ebc3907d77b344dc06b17a7d2adc7d7425f",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.2 x 0.2 (pebble grain ~5 mm)",
+   "changes": "Albedo scaled up (linear mean) into the PBR range: result mean sRGB ~30, median 29, p5 22 (source mean 15, median 15, below the PBR range); roughness clipped 0.3-0.65; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Leather027",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Leather027",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Leather027",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 equals the Git LFS oid in github.com/GoldenRose01/Crisis_protocol",
+     "source_files": [
+      {
+       "file": "Leather027_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_Color.jpg",
+       "sha256": "23322349f1d19ed2523cd04bd96e2c3f323e720bfda4ef1f18d81a205e9c1081"
+      },
+      {
+       "file": "Leather027_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_NormalGL.jpg",
+       "sha256": "7b981e6f1b5b2500feaac38a27805438555161e12563e6b575867a8e2fd8dcf8"
+      },
+      {
+       "file": "Leather027_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_Roughness.jpg",
+       "sha256": "ef2f5f5b1e65bbd38242daa54b2e0b1c7c14d551705a488d5185b26500147eb3"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Leather_MetallicSmoothness.png",
+   "material": "Leather",
+   "bytes": 819817,
+   "sha256": "0d758ef013e569ea6db50d12228c0b61711be776aa30101b06865d4355b5b107",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.2 x 0.2 (pebble grain ~5 mm)",
+   "changes": "Albedo scaled up (linear mean) into the PBR range: result mean sRGB ~30, median 29, p5 22 (source mean 15, median 15, below the PBR range); roughness clipped 0.3-0.65; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Leather027",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Leather027",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Leather027",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 equals the Git LFS oid in github.com/GoldenRose01/Crisis_protocol",
+     "source_files": [
+      {
+       "file": "Leather027_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_Color.jpg",
+       "sha256": "23322349f1d19ed2523cd04bd96e2c3f323e720bfda4ef1f18d81a205e9c1081"
+      },
+      {
+       "file": "Leather027_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_NormalGL.jpg",
+       "sha256": "7b981e6f1b5b2500feaac38a27805438555161e12563e6b575867a8e2fd8dcf8"
+      },
+      {
+       "file": "Leather027_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_Roughness.jpg",
+       "sha256": "ef2f5f5b1e65bbd38242daa54b2e0b1c7c14d551705a488d5185b26500147eb3"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Leather_Normal.png",
+   "material": "Leather",
+   "bytes": 1796494,
+   "sha256": "19a57f765dae042bef030ffac2d3d0f67a16edad2ea3b40b780e2b4cf2da417a",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.2 x 0.2 (pebble grain ~5 mm)",
+   "changes": "Albedo scaled up (linear mean) into the PBR range: result mean sRGB ~30, median 29, p5 22 (source mean 15, median 15, below the PBR range); roughness clipped 0.3-0.65; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Leather027",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Leather027",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Leather027",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 equals the Git LFS oid in github.com/GoldenRose01/Crisis_protocol",
+     "source_files": [
+      {
+       "file": "Leather027_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_Color.jpg",
+       "sha256": "23322349f1d19ed2523cd04bd96e2c3f323e720bfda4ef1f18d81a205e9c1081"
+      },
+      {
+       "file": "Leather027_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_NormalGL.jpg",
+       "sha256": "7b981e6f1b5b2500feaac38a27805438555161e12563e6b575867a8e2fd8dcf8"
+      },
+      {
+       "file": "Leather027_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Leather027/Leather027_2K-JPG_Roughness.jpg",
+       "sha256": "ef2f5f5b1e65bbd38242daa54b2e0b1c7c14d551705a488d5185b26500147eb3"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "PlasterWarm_Color.jpg",
+   "material": "PlasterWarm",
+   "bytes": 281742,
+   "sha256": "bddcbb59016c5486ebc285cc64f26bf54d73d74350fbc32d1b3ee4a244b34171",
+   "pixels": [
+    2048,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "2.0 x 1.0",
+   "changes": "Hairline cracks (present only in the source colour map) detected with a median-difference line filter and filled from shifted copies of crack-free plaster, tone-matched to the local mean, so the plaster grain continues through the former cracks; the roughness map is patched with the same shifted copies so both stay consistent; the scanned NormalGL is not touched apart from resampling and a baked strength of 0.45 (45 % of the scan relief; Unity bump scale 1 = that, 2.2 = full scan relief); luminance mapped onto warm greige sRGB (214,203,186) at 60 % contrast; roughness 0.82 +/- (matte paint); colour 2048 x 1024, normal/MS 1024 x 512.",
+   "derived_from": [
+    {
+     "asset": "PaintedPlaster017",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=PaintedPlaster017",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/KawaguchiMasora/Abandoned-Prison-Break",
+     "mirror_commit": "34c4afaae60f7203c42b3d709388c845b19afd5d",
+     "mirror_path": "Assets/3D/Materials/PaintedPlaster017_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/LlamahatStudio/StepIntoTheVirtual",
+     "source_files": [
+      {
+       "file": "PaintedPlaster017_2K-JPG_Color.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_Color.jpg",
+       "sha256": "1690e0a8839a1db6ac7e339929ddfad885b5c34145ea206f2aa03d7669f73f44"
+      },
+      {
+       "file": "PaintedPlaster017_2K-JPG_NormalGL.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_NormalGL.jpg",
+       "sha256": "8cacf9983fedd60bf28faa231d841ada117298ed4daa8675d3bf771069144470"
+      },
+      {
+       "file": "PaintedPlaster017_2K-JPG_Roughness.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_Roughness.jpg",
+       "sha256": "c22b06fa7c7ad48fd1218575899627a68d0340af1133330881bc04587689179e"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "PlasterWarm_MetallicSmoothness.png",
+   "material": "PlasterWarm",
+   "bytes": 227151,
+   "sha256": "c5adbf7d5109cd974c1664d66e176054bf5c02d34ec9ee18a969ad0b9e9e72ad",
+   "pixels": [
+    1024,
+    512
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "2.0 x 1.0",
+   "changes": "Hairline cracks (present only in the source colour map) detected with a median-difference line filter and filled from shifted copies of crack-free plaster, tone-matched to the local mean, so the plaster grain continues through the former cracks; the roughness map is patched with the same shifted copies so both stay consistent; the scanned NormalGL is not touched apart from resampling and a baked strength of 0.45 (45 % of the scan relief; Unity bump scale 1 = that, 2.2 = full scan relief); luminance mapped onto warm greige sRGB (214,203,186) at 60 % contrast; roughness 0.82 +/- (matte paint); colour 2048 x 1024, normal/MS 1024 x 512.",
+   "derived_from": [
+    {
+     "asset": "PaintedPlaster017",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=PaintedPlaster017",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/KawaguchiMasora/Abandoned-Prison-Break",
+     "mirror_commit": "34c4afaae60f7203c42b3d709388c845b19afd5d",
+     "mirror_path": "Assets/3D/Materials/PaintedPlaster017_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/LlamahatStudio/StepIntoTheVirtual",
+     "source_files": [
+      {
+       "file": "PaintedPlaster017_2K-JPG_Color.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_Color.jpg",
+       "sha256": "1690e0a8839a1db6ac7e339929ddfad885b5c34145ea206f2aa03d7669f73f44"
+      },
+      {
+       "file": "PaintedPlaster017_2K-JPG_NormalGL.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_NormalGL.jpg",
+       "sha256": "8cacf9983fedd60bf28faa231d841ada117298ed4daa8675d3bf771069144470"
+      },
+      {
+       "file": "PaintedPlaster017_2K-JPG_Roughness.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_Roughness.jpg",
+       "sha256": "c22b06fa7c7ad48fd1218575899627a68d0340af1133330881bc04587689179e"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "PlasterWarm_Normal.png",
+   "material": "PlasterWarm",
+   "bytes": 951135,
+   "sha256": "b41fb1d77f81a489f8390960b96b153d312d12b8d5140a786ae4a66da4212986",
+   "pixels": [
+    1024,
+    512
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "2.0 x 1.0",
+   "changes": "Hairline cracks (present only in the source colour map) detected with a median-difference line filter and filled from shifted copies of crack-free plaster, tone-matched to the local mean, so the plaster grain continues through the former cracks; the roughness map is patched with the same shifted copies so both stay consistent; the scanned NormalGL is not touched apart from resampling and a baked strength of 0.45 (45 % of the scan relief; Unity bump scale 1 = that, 2.2 = full scan relief); luminance mapped onto warm greige sRGB (214,203,186) at 60 % contrast; roughness 0.82 +/- (matte paint); colour 2048 x 1024, normal/MS 1024 x 512.",
+   "derived_from": [
+    {
+     "asset": "PaintedPlaster017",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=PaintedPlaster017",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/KawaguchiMasora/Abandoned-Prison-Break",
+     "mirror_commit": "34c4afaae60f7203c42b3d709388c845b19afd5d",
+     "mirror_path": "Assets/3D/Materials/PaintedPlaster017_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/LlamahatStudio/StepIntoTheVirtual",
+     "source_files": [
+      {
+       "file": "PaintedPlaster017_2K-JPG_Color.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_Color.jpg",
+       "sha256": "1690e0a8839a1db6ac7e339929ddfad885b5c34145ea206f2aa03d7669f73f44"
+      },
+      {
+       "file": "PaintedPlaster017_2K-JPG_NormalGL.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_NormalGL.jpg",
+       "sha256": "8cacf9983fedd60bf28faa231d841ada117298ed4daa8675d3bf771069144470"
+      },
+      {
+       "file": "PaintedPlaster017_2K-JPG_Roughness.jpg",
+       "download_url": "https://media.githubusercontent.com/media/KawaguchiMasora/Abandoned-Prison-Break/34c4afaae60f7203c42b3d709388c845b19afd5d/Assets/3D/Materials/PaintedPlaster017_2K-JPG/PaintedPlaster017_2K-JPG_Roughness.jpg",
+       "sha256": "c22b06fa7c7ad48fd1218575899627a68d0340af1133330881bc04587689179e"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "SafeSteel_Color.jpg",
+   "material": "SafeSteel",
+   "bytes": 32981,
+   "sha256": "f0d298123e59315721b7c79d1959d750a3cb2e9bb9b0d4be3b096ee0bb813d45",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Original procedural dark graphite satin powder coat, rebuilt after review: orange peel of 2-4 mm with ~20 micrometre relief (normal mean tilt 1.6 deg, 99th percentile 3.9 deg); seven clusters of near-parallel fine scratches plus nine faint single ones, intermittent along their length, lighter toward the grey primer (~+22 sRGB levels at the 99.9th percentile over the median, up to ~+45 at the strongest scratch centres) and rougher (smoothness down by 0.1-0.4 at the scratch centres); two short gouges to bare metal (metallic 1, bright steel); burnished patches of about +0.1 smoothness (low-pass lift 0.11); base sRGB (60,62,65), smoothness median 0.57 (p1 0.50, p99 0.69); 1024 px.",
+   "source": "original procedural work (Source~/build_pbr_interior.py)",
+   "author": "Jewelry-store VR demo project (generated with Claude, October 14, 2026; regenerated October 15, 2026)",
+   "license": "Project-owned; offered as CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+   "file": "SafeSteel_MetallicSmoothness.png",
+   "material": "SafeSteel",
+   "bytes": 688396,
+   "sha256": "4d30cc3cc1bf9e4df05c7fe2f72a6864876305f83613f04ed544210082021feb",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Original procedural dark graphite satin powder coat, rebuilt after review: orange peel of 2-4 mm with ~20 micrometre relief (normal mean tilt 1.6 deg, 99th percentile 3.9 deg); seven clusters of near-parallel fine scratches plus nine faint single ones, intermittent along their length, lighter toward the grey primer (~+22 sRGB levels at the 99.9th percentile over the median, up to ~+45 at the strongest scratch centres) and rougher (smoothness down by 0.1-0.4 at the scratch centres); two short gouges to bare metal (metallic 1, bright steel); burnished patches of about +0.1 smoothness (low-pass lift 0.11); base sRGB (60,62,65), smoothness median 0.57 (p1 0.50, p99 0.69); 1024 px.",
+   "source": "original procedural work (Source~/build_pbr_interior.py)",
+   "author": "Jewelry-store VR demo project (generated with Claude, October 14, 2026; regenerated October 15, 2026)",
+   "license": "Project-owned; offered as CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+   "file": "SafeSteel_Normal.png",
+   "material": "SafeSteel",
+   "bytes": 1059069,
+   "sha256": "f082dde778e56f7ac255f0b609a6b4194cd0300f6a3455545cd2e6eadb4a3b1c",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Original procedural dark graphite satin powder coat, rebuilt after review: orange peel of 2-4 mm with ~20 micrometre relief (normal mean tilt 1.6 deg, 99th percentile 3.9 deg); seven clusters of near-parallel fine scratches plus nine faint single ones, intermittent along their length, lighter toward the grey primer (~+22 sRGB levels at the 99.9th percentile over the median, up to ~+45 at the strongest scratch centres) and rougher (smoothness down by 0.1-0.4 at the scratch centres); two short gouges to bare metal (metallic 1, bright steel); burnished patches of about +0.1 smoothness (low-pass lift 0.11); base sRGB (60,62,65), smoothness median 0.57 (p1 0.50, p99 0.69); 1024 px.",
+   "source": "original procedural work (Source~/build_pbr_interior.py)",
+   "author": "Jewelry-store VR demo project (generated with Claude, October 14, 2026; regenerated October 15, 2026)",
+   "license": "Project-owned; offered as CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  {
+   "file": "StoneTopDark_Color.jpg",
+   "material": "StoneTopDark",
+   "bytes": 1611984,
+   "sha256": "a5bc2478c5965b28406c33b3d91df68b2eeaaba4cd996fdc7e5eb9e730982b18",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "1.0 x 1.0",
+   "changes": "Albedo floor-lifted in linear space, c' = 0.009 + k x c with k set so the median lands at sRGB ~38 (result: median 39, p5 28, p25 32, mean 50, 12 % of pixels below sRGB 30; source median 16, p5 5), soft shoulder above linear 0.6 so the white veins do not clip; roughness 0.03 + 0.8 x source (0.04-0.25). No normal map: the source NormalGL is flat (polished slab), so StoneTopDark_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Marble006",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble006",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Marble006",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/eldaca/UAS-Arcade-Game",
+     "source_files": [
+      {
+       "file": "Marble006_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Marble006/Marble006_2K-JPG_Color.jpg",
+       "sha256": "cdb95bab77e422c604bd73c2a723c13b617d406bb9dcd971015b839d9c4b4077"
+      },
+      {
+       "file": "Marble006_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Marble006/Marble006_2K-JPG_Roughness.jpg",
+       "sha256": "7bc9c2f2067026d045542f1ce4b1b0c75cc0dbd63e6fbfa1b5e2c6ca54c65b5d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "StoneTopDark_MetallicSmoothness.png",
+   "material": "StoneTopDark",
+   "bytes": 692322,
+   "sha256": "34bff2e48c7f8afe969de3a7d5219c681736023d0cf140ea53bf9eded0be2ea2",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "1.0 x 1.0",
+   "changes": "Albedo floor-lifted in linear space, c' = 0.009 + k x c with k set so the median lands at sRGB ~38 (result: median 39, p5 28, p25 32, mean 50, 12 % of pixels below sRGB 30; source median 16, p5 5), soft shoulder above linear 0.6 so the white veins do not clip; roughness 0.03 + 0.8 x source (0.04-0.25). No normal map: the source NormalGL is flat (polished slab), so StoneTopDark_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Marble006",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble006",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Marble006",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/eldaca/UAS-Arcade-Game",
+     "source_files": [
+      {
+       "file": "Marble006_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Marble006/Marble006_2K-JPG_Color.jpg",
+       "sha256": "cdb95bab77e422c604bd73c2a723c13b617d406bb9dcd971015b839d9c4b4077"
+      },
+      {
+       "file": "Marble006_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Marble006/Marble006_2K-JPG_Roughness.jpg",
+       "sha256": "7bc9c2f2067026d045542f1ce4b1b0c75cc0dbd63e6fbfa1b5e2c6ca54c65b5d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "StoneTop_Color.jpg",
+   "material": "StoneTop",
+   "bytes": 786933,
+   "sha256": "40c571e5bf0a327c9c9e2cfe12de0f06e80cd291d88c286f54e484350548d02f",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "1.0 x 1.0",
+   "changes": "Colour scaled to mean sRGB (236,235,232); roughness re-polished to 0.04 + 0.3 x source (0.04-0.25). No normal map: the source NormalGL is flat (polished slab), so StoneTop_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Marble019",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble019",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/salocin0430/agm_3d_web",
+     "mirror_commit": "8f97d32db178fbd0535123f8076b4a3ecc7a6f3f",
+     "mirror_path": "public/textures/floor/marble",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Zeta-Arcade/AWayHome",
+     "source_files": [
+      {
+       "file": "Marble019_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/salocin0430/agm_3d_web/8f97d32db178fbd0535123f8076b4a3ecc7a6f3f/public/textures/floor/marble/Marble019_2K-JPG_Color.jpg",
+       "sha256": "883707695ee89857684f17313ffabd0a9c58d617dbeac47a52d8769ab3dd4534"
+      },
+      {
+       "file": "Marble019_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/salocin0430/agm_3d_web/8f97d32db178fbd0535123f8076b4a3ecc7a6f3f/public/textures/floor/marble/Marble019_2K-JPG_Roughness.jpg",
+       "sha256": "990e082c62b9ec57233be96529ad9485b67e49d44999ddb7d5bb8d871f421917"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "StoneTop_MetallicSmoothness.png",
+   "material": "StoneTop",
+   "bytes": 520008,
+   "sha256": "b4f435fc0102f33384eb6e6ed5d97e78ff65606eaab71a5c04cac39d25fd4fca",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "1.0 x 1.0",
+   "changes": "Colour scaled to mean sRGB (236,235,232); roughness re-polished to 0.04 + 0.3 x source (0.04-0.25). No normal map: the source NormalGL is flat (polished slab), so StoneTop_Normal.png was removed after review.",
+   "derived_from": [
+    {
+     "asset": "Marble019",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Marble019",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/salocin0430/agm_3d_web",
+     "mirror_commit": "8f97d32db178fbd0535123f8076b4a3ecc7a6f3f",
+     "mirror_path": "public/textures/floor/marble",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Zeta-Arcade/AWayHome",
+     "source_files": [
+      {
+       "file": "Marble019_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/salocin0430/agm_3d_web/8f97d32db178fbd0535123f8076b4a3ecc7a6f3f/public/textures/floor/marble/Marble019_2K-JPG_Color.jpg",
+       "sha256": "883707695ee89857684f17313ffabd0a9c58d617dbeac47a52d8769ab3dd4534"
+      },
+      {
+       "file": "Marble019_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/salocin0430/agm_3d_web/8f97d32db178fbd0535123f8076b4a3ecc7a6f3f/public/textures/floor/marble/Marble019_2K-JPG_Roughness.jpg",
+       "sha256": "990e082c62b9ec57233be96529ad9485b67e49d44999ddb7d5bb8d871f421917"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "SuedeCream_Color.jpg",
+   "material": "SuedeCream",
+   "bytes": 151204,
+   "sha256": "4f580a84563a442d47af8554b7ff53474e100a2727fb51b86294ed7e94179bc5",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Weave stripes blurred away (sigma 3 px) leaving the mottle; luminance mapped onto cream sRGB (214,199,172) at 55 % contrast; source normal blurred x1.2 plus an original fine nap normal; roughness ~0.9; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Fabric028",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fabric028",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Melistpc/AssetBuilds",
+     "mirror_commit": "74bb626582f057debdd1d73be0757b4f513c04f4",
+     "mirror_path": "Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tkms0617/Bliney",
+     "source_files": [
+      {
+       "file": "Fabric028_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_Color.jpg",
+       "sha256": "7145697a98c9e2cf1f81eb4cc2fd13b019eaf4c8e9f9553bedd035d8b0eb7505"
+      },
+      {
+       "file": "Fabric028_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_NormalGL.jpg",
+       "sha256": "2358a730fe639dd04de47bbce0521834c652de4cc79a9cec4e486a69247ee6aa"
+      },
+      {
+       "file": "Fabric028_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_Roughness.jpg",
+       "sha256": "7f2c05d58ce4484608eeda3847e4a0d96f4493d415de5a53077f83d8ce03b294"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "SuedeCream_MetallicSmoothness.png",
+   "material": "SuedeCream",
+   "bytes": 243915,
+   "sha256": "ccb22edbea0ec9afda227d9e661314ee151aaeb845e4886c144139ab9e11879a",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Weave stripes blurred away (sigma 3 px) leaving the mottle; luminance mapped onto cream sRGB (214,199,172) at 55 % contrast; source normal blurred x1.2 plus an original fine nap normal; roughness ~0.9; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Fabric028",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fabric028",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Melistpc/AssetBuilds",
+     "mirror_commit": "74bb626582f057debdd1d73be0757b4f513c04f4",
+     "mirror_path": "Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tkms0617/Bliney",
+     "source_files": [
+      {
+       "file": "Fabric028_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_Color.jpg",
+       "sha256": "7145697a98c9e2cf1f81eb4cc2fd13b019eaf4c8e9f9553bedd035d8b0eb7505"
+      },
+      {
+       "file": "Fabric028_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_NormalGL.jpg",
+       "sha256": "2358a730fe639dd04de47bbce0521834c652de4cc79a9cec4e486a69247ee6aa"
+      },
+      {
+       "file": "Fabric028_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_Roughness.jpg",
+       "sha256": "7f2c05d58ce4484608eeda3847e4a0d96f4493d415de5a53077f83d8ce03b294"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "SuedeCream_Normal.png",
+   "material": "SuedeCream",
+   "bytes": 1937992,
+   "sha256": "2b83e334a0a1fd0a21aa929e1dc08c1c043c9ba3b266a82233d72c9ef236a739",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Weave stripes blurred away (sigma 3 px) leaving the mottle; luminance mapped onto cream sRGB (214,199,172) at 55 % contrast; source normal blurred x1.2 plus an original fine nap normal; roughness ~0.9; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Fabric028",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fabric028",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Melistpc/AssetBuilds",
+     "mirror_commit": "74bb626582f057debdd1d73be0757b4f513c04f4",
+     "mirror_path": "Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/tkms0617/Bliney",
+     "source_files": [
+      {
+       "file": "Fabric028_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_Color.jpg",
+       "sha256": "7145697a98c9e2cf1f81eb4cc2fd13b019eaf4c8e9f9553bedd035d8b0eb7505"
+      },
+      {
+       "file": "Fabric028_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_NormalGL.jpg",
+       "sha256": "2358a730fe639dd04de47bbce0521834c652de4cc79a9cec4e486a69247ee6aa"
+      },
+      {
+       "file": "Fabric028_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Melistpc/AssetBuilds/74bb626582f057debdd1d73be0757b4f513c04f4/Assets/MelisHouseMaker/PBRTextures/Fabric028_2K-JPG/Fabric028_2K-JPG_Roughness.jpg",
+       "sha256": "7f2c05d58ce4484608eeda3847e4a0d96f4493d415de5a53077f83d8ce03b294"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Terrazzo_Color.jpg",
+   "material": "Terrazzo",
+   "bytes": 1708607,
+   "sha256": "fdc9b8a979eecd604e756ad9b506180f15d6a837759b7fd76c024b9edd13b95d",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "1.0 x 1.0 (chips 1-4 cm)",
+   "changes": "Colour unchanged (resampled only); roughness 0.03 + 0.55 x source (polished, 0.04-0.32); normal 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Terrazzo005",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Terrazzo005",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Terrazzo005",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Terrazzo005_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_Color.jpg",
+       "sha256": "7071be9fb567d79f0a9567faee1d76b6c8cd9e141e68aa78ca09e458b3a00fae"
+      },
+      {
+       "file": "Terrazzo005_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_NormalGL.jpg",
+       "sha256": "bcb7ad2d33345a6542b3b30b927a9ef5ffdc68bdabdcf9070fb98702258af78b"
+      },
+      {
+       "file": "Terrazzo005_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_Roughness.jpg",
+       "sha256": "8661edd5b70cf998296a74299ef50a794ed975dc58b138e44c92a8ef3bd16852"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Terrazzo_MetallicSmoothness.png",
+   "material": "Terrazzo",
+   "bytes": 589014,
+   "sha256": "28ac2d6ec38523b21cdffd3323926f2411f27f6a118865a8b8d57243c8b96953",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "1.0 x 1.0 (chips 1-4 cm)",
+   "changes": "Colour unchanged (resampled only); roughness 0.03 + 0.55 x source (polished, 0.04-0.32); normal 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Terrazzo005",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Terrazzo005",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Terrazzo005",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Terrazzo005_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_Color.jpg",
+       "sha256": "7071be9fb567d79f0a9567faee1d76b6c8cd9e141e68aa78ca09e458b3a00fae"
+      },
+      {
+       "file": "Terrazzo005_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_NormalGL.jpg",
+       "sha256": "bcb7ad2d33345a6542b3b30b927a9ef5ffdc68bdabdcf9070fb98702258af78b"
+      },
+      {
+       "file": "Terrazzo005_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_Roughness.jpg",
+       "sha256": "8661edd5b70cf998296a74299ef50a794ed975dc58b138e44c92a8ef3bd16852"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Terrazzo_Normal.png",
+   "material": "Terrazzo",
+   "bytes": 1476410,
+   "sha256": "41847a6b9ca179e62b200156f1f0ccaf0bdd7a68dc4929c89ed0a645e483a480",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "1.0 x 1.0 (chips 1-4 cm)",
+   "changes": "Colour unchanged (resampled only); roughness 0.03 + 0.55 x source (polished, 0.04-0.32); normal 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Terrazzo005",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Terrazzo005",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/JStockwell/Project_FETEn",
+     "mirror_commit": "dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f",
+     "mirror_path": "Assets/Textures/Terrazzo005",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Terrazzo005_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_Color.jpg",
+       "sha256": "7071be9fb567d79f0a9567faee1d76b6c8cd9e141e68aa78ca09e458b3a00fae"
+      },
+      {
+       "file": "Terrazzo005_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_NormalGL.jpg",
+       "sha256": "bcb7ad2d33345a6542b3b30b927a9ef5ffdc68bdabdcf9070fb98702258af78b"
+      },
+      {
+       "file": "Terrazzo005_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/JStockwell/Project_FETEn/dfd7719eb252fed3de3ecc3bef664c1b9ceddf1f/Assets/Textures/Terrazzo005/Terrazzo005_2K-JPG_Roughness.jpg",
+       "sha256": "8661edd5b70cf998296a74299ef50a794ed975dc58b138e44c92a8ef3bd16852"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "VelvetCharcoal_Color.jpg",
+   "material": "VelvetCharcoal",
+   "bytes": 125226,
+   "sha256": "d37306b03f473a5f17028caff0a8a8c02b2e45e62356ab45762315052bd47593",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Rib weave blurred away (sigma 2.5 px) leaving the crush shading; luminance mapped onto charcoal sRGB (50,50,54); source normal blurred x1.5 plus an original fine pile normal; roughness 0.82 +/-; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Fabric023",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fabric023",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Fabric023_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Melistpc/AssetBuilds",
+     "source_files": [
+      {
+       "file": "Fabric023_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_Color.jpg",
+       "sha256": "6203923d2d83b2acb381e4815be54738f1f840c56dc22ec8a0d896363c994e51"
+      },
+      {
+       "file": "Fabric023_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_NormalGL.jpg",
+       "sha256": "d75226a938767db989717329f839a8763f5b08eab24f3e02fb376871d6d552d3"
+      },
+      {
+       "file": "Fabric023_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_Roughness.jpg",
+       "sha256": "02331b416537be035f5fedc94f2104124a29ad93ecee68099eb2d3dc9671d8bd"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "VelvetCharcoal_MetallicSmoothness.png",
+   "material": "VelvetCharcoal",
+   "bytes": 256689,
+   "sha256": "50ea9b6217e039b80c3990fc45d20a8d72d02697df30027f3c35afb59bfcdcb9",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Rib weave blurred away (sigma 2.5 px) leaving the crush shading; luminance mapped onto charcoal sRGB (50,50,54); source normal blurred x1.5 plus an original fine pile normal; roughness 0.82 +/-; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Fabric023",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fabric023",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Fabric023_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Melistpc/AssetBuilds",
+     "source_files": [
+      {
+       "file": "Fabric023_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_Color.jpg",
+       "sha256": "6203923d2d83b2acb381e4815be54738f1f840c56dc22ec8a0d896363c994e51"
+      },
+      {
+       "file": "Fabric023_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_NormalGL.jpg",
+       "sha256": "d75226a938767db989717329f839a8763f5b08eab24f3e02fb376871d6d552d3"
+      },
+      {
+       "file": "Fabric023_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_Roughness.jpg",
+       "sha256": "02331b416537be035f5fedc94f2104124a29ad93ecee68099eb2d3dc9671d8bd"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "VelvetCharcoal_Normal.png",
+   "material": "VelvetCharcoal",
+   "bytes": 2091263,
+   "sha256": "51e3c99a619f0d6b2e367c7ddbb317dd69719501c313dbafc2bf0fe17d6c8a1e",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5",
+   "changes": "Rib weave blurred away (sigma 2.5 px) leaving the crush shading; luminance mapped onto charcoal sRGB (50,50,54); source normal blurred x1.5 plus an original fine pile normal; roughness 0.82 +/-; 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Fabric023",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Fabric023",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Carpet/Fabric023_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Melistpc/AssetBuilds",
+     "source_files": [
+      {
+       "file": "Fabric023_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_Color.jpg",
+       "sha256": "6203923d2d83b2acb381e4815be54738f1f840c56dc22ec8a0d896363c994e51"
+      },
+      {
+       "file": "Fabric023_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_NormalGL.jpg",
+       "sha256": "d75226a938767db989717329f839a8763f5b08eab24f3e02fb376871d6d552d3"
+      },
+      {
+       "file": "Fabric023_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Carpet/Fabric023_2K-JPG/Fabric023_2K-JPG_Roughness.jpg",
+       "sha256": "02331b416537be035f5fedc94f2104124a29ad93ecee68099eb2d3dc9671d8bd"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Wallpaper_Color.jpg",
+   "material": "Wallpaper",
+   "bytes": 315908,
+   "sha256": "e962fd97f81645bdb571d7b0997bcdb89e49431a2f63819969aac205e57cd370",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5 (2 x 2 ogee repeats of 0.25 m)",
+   "changes": "Original tone-on-tone ogee print (lines, lozenge medallions, four-petal flowers) supersampled at 4096 px; ink sRGB (206,193,170) on ground (176,164,146) modulated by the paper's luminance; paper fibre normal x0.6 plus 40 micrometre ink relief; ink roughness 0.42, paper ~0.74.",
+   "derived_from": [
+    {
+     "asset": "Wallpaper001A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Wallpaper001A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Wallpaper",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Recall-R/Cheap_motel, Zenexus/wardrobe-planner-au and fungame2270/Visual_Puzzles_CV",
+     "source_files": [
+      {
+       "file": "Wallpaper001A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_Color.jpg",
+       "sha256": "6eca101abcf312d9e4579c20ad07d9ce6c4e5e76cdc4f0abd5456d15fb996d6b"
+      },
+      {
+       "file": "Wallpaper001A_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_NormalGL.jpg",
+       "sha256": "bb709a58fc41dbc31814358e098a66f0ad3a9e755879576eca62b0ae7b92070b"
+      },
+      {
+       "file": "Wallpaper001A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_Roughness.jpg",
+       "sha256": "0ca21e724a0a29c20505e6827fb667ab652db434bb9147399aaf1a1063461318"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Wallpaper_MetallicSmoothness.png",
+   "material": "Wallpaper",
+   "bytes": 585157,
+   "sha256": "e79c31c14d5af77c2e5bf69ed318359ffe80c4be061e2e6b1057f0bfde9cca41",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "0.5 x 0.5 (2 x 2 ogee repeats of 0.25 m)",
+   "changes": "Original tone-on-tone ogee print (lines, lozenge medallions, four-petal flowers) supersampled at 4096 px; ink sRGB (206,193,170) on ground (176,164,146) modulated by the paper's luminance; paper fibre normal x0.6 plus 40 micrometre ink relief; ink roughness 0.42, paper ~0.74.",
+   "derived_from": [
+    {
+     "asset": "Wallpaper001A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Wallpaper001A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Wallpaper",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Recall-R/Cheap_motel, Zenexus/wardrobe-planner-au and fungame2270/Visual_Puzzles_CV",
+     "source_files": [
+      {
+       "file": "Wallpaper001A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_Color.jpg",
+       "sha256": "6eca101abcf312d9e4579c20ad07d9ce6c4e5e76cdc4f0abd5456d15fb996d6b"
+      },
+      {
+       "file": "Wallpaper001A_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_NormalGL.jpg",
+       "sha256": "bb709a58fc41dbc31814358e098a66f0ad3a9e755879576eca62b0ae7b92070b"
+      },
+      {
+       "file": "Wallpaper001A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_Roughness.jpg",
+       "sha256": "0ca21e724a0a29c20505e6827fb667ab652db434bb9147399aaf1a1063461318"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Wallpaper_Normal.png",
+   "material": "Wallpaper",
+   "bytes": 1526143,
+   "sha256": "b3e128fd5cdc7b498842ad19f6af10318db67a47b7b3059ac140a7e33967ac54",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "0.5 x 0.5 (2 x 2 ogee repeats of 0.25 m)",
+   "changes": "Original tone-on-tone ogee print (lines, lozenge medallions, four-petal flowers) supersampled at 4096 px; ink sRGB (206,193,170) on ground (176,164,146) modulated by the paper's luminance; paper fibre normal x0.6 plus 40 micrometre ink relief; ink roughness 0.42, paper ~0.74.",
+   "derived_from": [
+    {
+     "asset": "Wallpaper001A",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Wallpaper001A",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/pextonjack/Leonardo2025",
+     "mirror_commit": "b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b",
+     "mirror_path": "Assets/Art/Source/Wallpaper",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "Color sha256 identical in github.com/Recall-R/Cheap_motel, Zenexus/wardrobe-planner-au and fungame2270/Visual_Puzzles_CV",
+     "source_files": [
+      {
+       "file": "Wallpaper001A_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_Color.jpg",
+       "sha256": "6eca101abcf312d9e4579c20ad07d9ce6c4e5e76cdc4f0abd5456d15fb996d6b"
+      },
+      {
+       "file": "Wallpaper001A_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_NormalGL.jpg",
+       "sha256": "bb709a58fc41dbc31814358e098a66f0ad3a9e755879576eca62b0ae7b92070b"
+      },
+      {
+       "file": "Wallpaper001A_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/pextonjack/Leonardo2025/b7da314e434a7a8c18bc2ed12bb3a39e5af03a6b/Assets/Art/Source/Wallpaper/Wallpaper001A_2K-JPG_Roughness.jpg",
+       "sha256": "0ca21e724a0a29c20505e6827fb667ab652db434bb9147399aaf1a1063461318"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0 (with original project additions)",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Walnut_Color.jpg",
+   "material": "Walnut",
+   "bytes": 1431463,
+   "sha256": "4c646a4f4f37fb73f8f74c68cd537f0944bc9f4d5cc6b84de5198a351287019d",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "1.0 x 1.0 (grain along U)",
+   "changes": "Saturation x0.62 toward a neutral chocolate walnut, half of the broad low-frequency banding removed (periodic Gaussian, sigma 160 px), scaled to mean sRGB (74,50,36); roughness x1.05 clipped 0.2-0.5 (satin lacquer); normal 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Wood067",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Wood067",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Wood/Wood067_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Wood067_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_Color.jpg",
+       "sha256": "4fcceb04809502a439281b929d7c42624a599ad532909c2cf01193fcfeff1f58"
+      },
+      {
+       "file": "Wood067_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_NormalGL.jpg",
+       "sha256": "500311e4edbf329d2ddd80ba58940e3628cd3b1336afccd0c1a51cd514ff1389"
+      },
+      {
+       "file": "Wood067_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_Roughness.jpg",
+       "sha256": "be6ef30a05d1503f972d1beb7b2586fa89375240325d7d70caf62614c518012d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Walnut_MetallicSmoothness.png",
+   "material": "Walnut",
+   "bytes": 580014,
+   "sha256": "3b5be6fe2b14777cf3f103f0317a6bee1e89cd2c68cf5687e2f4784d5434d0d8",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGBA",
+   "real_world_tile_m": "1.0 x 1.0 (grain along U)",
+   "changes": "Saturation x0.62 toward a neutral chocolate walnut, half of the broad low-frequency banding removed (periodic Gaussian, sigma 160 px), scaled to mean sRGB (74,50,36); roughness x1.05 clipped 0.2-0.5 (satin lacquer); normal 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Wood067",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Wood067",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Wood/Wood067_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Wood067_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_Color.jpg",
+       "sha256": "4fcceb04809502a439281b929d7c42624a599ad532909c2cf01193fcfeff1f58"
+      },
+      {
+       "file": "Wood067_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_NormalGL.jpg",
+       "sha256": "500311e4edbf329d2ddd80ba58940e3628cd3b1336afccd0c1a51cd514ff1389"
+      },
+      {
+       "file": "Wood067_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_Roughness.jpg",
+       "sha256": "be6ef30a05d1503f972d1beb7b2586fa89375240325d7d70caf62614c518012d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  },
+  {
+   "file": "Walnut_Normal.png",
+   "material": "Walnut",
+   "bytes": 987622,
+   "sha256": "3f0eb527a850cf5e02afdad622182e0abb486cf1881e780530c3e4d5fd70cda2",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "mode": "RGB",
+   "real_world_tile_m": "1.0 x 1.0 (grain along U)",
+   "changes": "Saturation x0.62 toward a neutral chocolate walnut, half of the broad low-frequency banding removed (periodic Gaussian, sigma 160 px), scaled to mean sRGB (74,50,36); roughness x1.05 clipped 0.2-0.5 (satin lacquer); normal 1024 px.",
+   "derived_from": [
+    {
+     "asset": "Wood067",
+     "provider": "ambientCG",
+     "original_source": "https://ambientcg.com/view?id=Wood067",
+     "variant": "2K-JPG",
+     "author": "Lennart Demes / ambientCG",
+     "license": "CC0-1.0",
+     "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+     "publisher_license": "https://docs.ambientcg.com/license/",
+     "mirror_repository": "https://github.com/Dadaskis/TextureArchive",
+     "mirror_commit": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+     "mirror_path": "PBR/Wood/Wood067_2K-JPG",
+     "mirror_note": "unmodified ambientCG download committed to a public GitHub repository; the repository's own licence (if any) covers its code, not these CC0 files",
+     "integrity_check": "single mirror found; folder carries the ambientCG MaterialX/usdc sidecars and preview, file names unchanged",
+     "source_files": [
+      {
+       "file": "Wood067_2K-JPG_Color.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_Color.jpg",
+       "sha256": "4fcceb04809502a439281b929d7c42624a599ad532909c2cf01193fcfeff1f58"
+      },
+      {
+       "file": "Wood067_2K-JPG_NormalGL.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_NormalGL.jpg",
+       "sha256": "500311e4edbf329d2ddd80ba58940e3628cd3b1336afccd0c1a51cd514ff1389"
+      },
+      {
+       "file": "Wood067_2K-JPG_Roughness.jpg",
+       "download_url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Wood/Wood067_2K-JPG/Wood067_2K-JPG_Roughness.jpg",
+       "sha256": "be6ef30a05d1503f972d1beb7b2586fa89375240325d7d70caf62614c518012d"
+      }
+     ]
+    }
+   ],
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "author": "Lennart Demes / ambientCG; adapted by the Jewelry-store VR demo project"
+  }
+ ]
+}

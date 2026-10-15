@@ -1,0 +1,561 @@
+{
+ "shader": "Built-in Standard (metallic workflow)",
+ "colour_space_note": "albedo values are sRGB colours as typed into the Unity colour picker",
+ "materials": {
+  "Acrylic": {
+   "albedo_srgb": [
+    0.977,
+    0.9863,
+    0.9909
+   ],
+   "albedo_hex": "#F9FCFD",
+   "alpha": 0.25,
+   "metallic": 0.0,
+   "smoothness": 0.95,
+   "rendering_mode": "Transparent",
+   "emission": 0.0,
+   "note": "clear acrylic"
+  },
+  "BlackMetal": {
+   "albedo_srgb": [
+    0.3347,
+    0.3347,
+    0.3511
+   ],
+   "albedo_hex": "#55555A",
+   "alpha": 1.0,
+   "metallic": 0.8,
+   "smoothness": 0.55,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "black anodised / painted metal"
+  },
+  "Brass": {
+   "albedo_srgb": [
+    0.9532,
+    0.8667,
+    0.6741
+   ],
+   "albedo_hex": "#F3DDAC",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.75,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "polished brass"
+  },
+  "Chrome": {
+   "albedo_srgb": [
+    0.9035,
+    0.9035,
+    0.9137
+   ],
+   "albedo_hex": "#E6E6E9",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.95,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "chrome"
+  },
+  "Cord": {
+   "albedo_srgb": [
+    0.9288,
+    0.9035,
+    0.8503
+   ],
+   "albedo_hex": "#EDE6D9",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.15,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "cotton string / rope; also the silk knots of the pearl strands"
+  },
+  "Diamond": {
+   "albedo_srgb": [
+    0.9816,
+    0.9863,
+    1.0
+   ],
+   "albedo_hex": "#FAFCFF",
+   "alpha": 0.35,
+   "metallic": 0.25,
+   "smoothness": 0.98,
+   "rendering_mode": "Transparent",
+   "emission": 0.0,
+   "note": "brilliant; add reflection probe / sparkle shader"
+  },
+  "EarringPearlDrop": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "metallic from the R channel and smoothness from the alpha of the metallic-smoothness map (Standard: Source = Metallic Alpha, smoothness scale 1); the map gives the gold metallic 1 and the pearls 0, smoothness 0.71 everywhere (without the map use metallic 1, smoothness 0.71)",
+   "albedo_map": "EarringPearlDrop_Color.jpg",
+   "normal_map": "EarringPearlDrop_Normal.png",
+   "metallic_smoothness_map": "EarringPearlDrop_MetallicSmoothness.png"
+  },
+  "Emerald": {
+   "albedo_srgb": [
+    0.1689,
+    0.6956,
+    0.4587
+   ],
+   "albedo_hex": "#2BB175",
+   "alpha": 0.7,
+   "metallic": 0.2,
+   "smoothness": 0.96,
+   "rendering_mode": "Transparent",
+   "emission": 0.0,
+   "note": "emerald"
+  },
+  "GemPaper": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.2,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "diamond paper: left half outside print, right half blue liner",
+   "albedo_map": "GemPaper_Color.png"
+  },
+  "GiftBag": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.25,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "matte black paper with gold foil print",
+   "albedo_map": "GiftBag_Color.png"
+  },
+  "Glass": {
+   "albedo_srgb": [
+    0.9532,
+    0.9723,
+    0.977
+   ],
+   "albedo_hex": "#F3F8F9",
+   "alpha": 0.2,
+   "metallic": 0.0,
+   "smoothness": 0.97,
+   "rendering_mode": "Transparent",
+   "emission": 0.0,
+   "note": "crystal / lens glass"
+  },
+  "Gold18k": {
+   "albedo_srgb": [
+    1.0,
+    0.8932,
+    0.6594
+   ],
+   "albedo_hex": "#FFE4A8",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.9,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "18k yellow gold"
+  },
+  "GoldBar100g": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.9,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "minted bar; add GoldBar100g_Normal.png",
+   "albedo_map": "GoldBar100g_Color.png",
+   "normal_map": "GoldBar100g_Normal.png"
+  },
+  "GoldBar1kg": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.78,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "cast bar; add GoldBar1kg_Normal.png as normal map (strength 1)",
+   "albedo_map": "GoldBar1kg_Color.png",
+   "normal_map": "GoldBar1kg_Normal.png"
+  },
+  "GoldCoin": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.85,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "coin faces; add GoldCoin_Normal.png",
+   "albedo_map": "GoldCoin_Color.png",
+   "normal_map": "GoldCoin_Normal.png"
+  },
+  "LeatherBlack": {
+   "albedo_srgb": [
+    0.2179,
+    0.2092,
+    0.2031
+   ],
+   "albedo_hex": "#383534",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.45,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "black leather"
+  },
+  "LeatherBrown": {
+   "albedo_srgb": [
+    0.4812,
+    0.3347,
+    0.2315
+   ],
+   "albedo_hex": "#7B553B",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.42,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "calf leather strap"
+  },
+  "PaperBlack": {
+   "albedo_srgb": [
+    0.2031,
+    0.2031,
+    0.2092
+   ],
+   "albedo_hex": "#343435",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.3,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "matte black card box"
+  },
+  "PaperWhite": {
+   "albedo_srgb": [
+    0.9628,
+    0.958,
+    0.9435
+   ],
+   "albedo_hex": "#F6F4F1",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.2,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "card stock"
+  },
+  "Pearl": {
+   "albedo_srgb": [
+    0.9676,
+    0.9532,
+    0.9238
+   ],
+   "albedo_hex": "#F7F3EC",
+   "alpha": 1.0,
+   "metallic": 0.1,
+   "smoothness": 0.8,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "akoya pearl, slight pink-cream"
+  },
+  "PlasticBlack": {
+   "albedo_srgb": [
+    0.2179,
+    0.2179,
+    0.2262
+   ],
+   "albedo_hex": "#38383A",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.55,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "black ABS"
+  },
+  "PlasticGrey": {
+   "albedo_srgb": [
+    0.5785,
+    0.5872,
+    0.6041
+   ],
+   "albedo_hex": "#94969A",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.45,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "grey ABS"
+  },
+  "Platinum": {
+   "albedo_srgb": [
+    0.9188,
+    0.9137,
+    0.9035
+   ],
+   "albedo_hex": "#EAE9E6",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.9,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "platinum / white gold (rhodium plated)"
+  },
+  "PocketWatchVintage": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "metallic from the R channel and smoothness from the alpha of the metallic-smoothness map (Standard: Source = Metallic Alpha, smoothness scale 1)",
+   "albedo_map": "PocketWatchVintage_Color.jpg",
+   "normal_map": "PocketWatchVintage_Normal.png",
+   "metallic_smoothness_map": "PocketWatchVintage_MetallicSmoothness.png"
+  },
+  "PosScreen": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.9,
+   "rendering_mode": "Opaque",
+   "emission": 0.6,
+   "note": "till screen; use as emission map for a lit screen",
+   "albedo_map": "PosTablet_Screen.png",
+   "emission_map": "PosTablet_Screen.png"
+  },
+  "PriceTag": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.2,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "price tag print atlas (4 x 2 cells)",
+   "albedo_map": "PriceTags_Color.png"
+  },
+  "RingAntiqueTigerEye": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 1.0,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "metallic from the R channel and smoothness from the alpha of the metallic-smoothness map (Standard: Source = Metallic Alpha, smoothness scale 1)",
+   "albedo_map": "RingAntiqueTigerEye_Color.jpg",
+   "normal_map": "RingAntiqueTigerEye_Normal.png",
+   "metallic_smoothness_map": "RingAntiqueTigerEye_MetallicSmoothness.png"
+  },
+  "Ruby": {
+   "albedo_srgb": [
+    0.8047,
+    0.1689,
+    0.3173
+   ],
+   "albedo_hex": "#CD2B51",
+   "alpha": 0.7,
+   "metallic": 0.2,
+   "smoothness": 0.97,
+   "rendering_mode": "Transparent",
+   "emission": 0.0,
+   "note": "ruby"
+  },
+  "Sapphire": {
+   "albedo_srgb": [
+    0.2562,
+    0.3815,
+    0.762
+   ],
+   "albedo_hex": "#4161C2",
+   "alpha": 0.7,
+   "metallic": 0.2,
+   "smoothness": 0.97,
+   "rendering_mode": "Transparent",
+   "emission": 0.0,
+   "note": "blue sapphire"
+  },
+  "SatinRibbon": {
+   "albedo_srgb": [
+    0.8503,
+    0.7683,
+    0.5785
+   ],
+   "albedo_hex": "#D9C494",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.62,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "champagne satin ribbon"
+  },
+  "SteelBrushed": {
+   "albedo_srgb": [
+    0.8613,
+    0.8613,
+    0.8613
+   ],
+   "albedo_hex": "#DCDCDC",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.55,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "brushed steel"
+  },
+  "SteelPolished": {
+   "albedo_srgb": [
+    0.8932,
+    0.8932,
+    0.8932
+   ],
+   "albedo_hex": "#E4E4E4",
+   "alpha": 1.0,
+   "metallic": 1.0,
+   "smoothness": 0.88,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "polished stainless steel"
+  },
+  "TerminalTop": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.7,
+   "rendering_mode": "Opaque",
+   "emission": 0.25,
+   "note": "keypad + screen print; optional emission with the same texture",
+   "albedo_map": "PaymentTerminal_Color.png",
+   "emission_map": "PaymentTerminal_Color.png"
+  },
+  "VelvetBlack": {
+   "albedo_srgb": [
+    0.2179,
+    0.2179,
+    0.2315
+   ],
+   "albedo_hex": "#38383B",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.18,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "black velvet"
+  },
+  "VelvetCream": {
+   "albedo_srgb": [
+    0.8932,
+    0.8613,
+    0.8047
+   ],
+   "albedo_hex": "#E4DCCD",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.15,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "cream suede / velvet"
+  },
+  "VelvetNavy": {
+   "albedo_srgb": [
+    0.2031,
+    0.2442,
+    0.3667
+   ],
+   "albedo_hex": "#343E5E",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.18,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "navy velvet"
+  },
+  "Walnut": {
+   "albedo_srgb": [
+    0.5421,
+    0.4222,
+    0.3173
+   ],
+   "albedo_hex": "#8A6C51",
+   "alpha": 1.0,
+   "metallic": 0.0,
+   "smoothness": 0.55,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "lacquered walnut"
+  },
+  "WatchDial": {
+   "albedo_srgb": [
+    1.0,
+    1.0,
+    1.0
+   ],
+   "albedo_hex": "#FFFFFF",
+   "alpha": 1.0,
+   "metallic": 0.3,
+   "smoothness": 0.75,
+   "rendering_mode": "Opaque",
+   "emission": 0.0,
+   "note": "sunburst dial; texture WatchDial_Color.png",
+   "albedo_map": "WatchDial_Color.png"
+  }
+ }
+}

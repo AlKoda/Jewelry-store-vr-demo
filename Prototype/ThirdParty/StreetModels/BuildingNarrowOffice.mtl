@@ -1,0 +1,11 @@
+newmtl DT_PanelFacade
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_PanelFacade_Color.jpg
+
+newmtl DT_ConcreteFacade
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd DT_ConcreteFacade_Color.jpg

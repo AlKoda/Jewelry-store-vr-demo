@@ -1,0 +1,17 @@
+newmtl Case
+Kd 0.250 0.250 0.270
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Shared_PowderCoatGrey_Color.jpg
+# Normal Shared_PowderCoatGrey_Normal.jpg
+
+newmtl Front
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd DVRRecorder_Front_Color.jpg
+
+newmtl Rubber
+Kd 0.035 0.035 0.035
+Ks 0.050 0.050 0.050
+d 1.0

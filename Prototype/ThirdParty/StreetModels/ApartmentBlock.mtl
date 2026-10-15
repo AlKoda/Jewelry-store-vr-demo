@@ -1,0 +1,34 @@
+newmtl TrimStone
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd ApartmentBlock_TrimStone_Color.jpg
+
+newmtl Plaster
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd ApartmentBlock_Plaster_Color.jpg
+
+newmtl WindowFrames
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd ApartmentBlock_WindowFrames_Color.jpg
+
+newmtl Glass
+Kd 0.1000 0.1100 0.1200
+Ks 0.04 0.04 0.04
+d 0.350
+
+newmtl CrownDark
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd ApartmentBlock_CrownDark_Color.jpg
+
+newmtl Interior
+Kd 1.0000 1.0000 1.0000
+Ks 0.04 0.04 0.04
+d 1.000
+map_Kd ApartmentBlock_Interior_Color.jpg

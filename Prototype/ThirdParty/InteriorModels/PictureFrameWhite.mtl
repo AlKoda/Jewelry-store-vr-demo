@@ -1,0 +1,19 @@
+newmtl Artwork
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PictureFrameWhite_Artwork_Color.jpg
+
+newmtl Frame
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd PictureFrameWhite_Frame_Color.jpg
+# Normal PictureFrameWhite_Frame_Normal.jpg
+# MetallicSmoothness PictureFrameWhite_Frame_MetallicSmoothness.png
+
+newmtl Glass
+Kd 0.920 0.940 0.950
+Ks 0.500 0.500 0.500
+Ns 200
+d 0.12

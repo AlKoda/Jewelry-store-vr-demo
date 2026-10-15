@@ -1,0 +1,10 @@
+newmtl GloveBoxCard
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.000
+map_Kd NitrileGloveBox_Color.jpg
+
+newmtl GloveNitrile
+Kd 0.220 0.420 0.860
+Ks 0.300 0.300 0.300
+d 1.000
