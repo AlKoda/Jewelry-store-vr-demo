@@ -12,7 +12,7 @@ This page gives the order to apply and check the work in. The details behind eac
 | ae7b302 | Twelve realism packs under Prototype/ThirdParty, about 262 MB. They are not in the Downloads ZIP; the launchers copy them in. |
 | 9305177 | The packs wired into the night store: street, lighting, interior, closing procedure, decals, sound, presenter switches and credits. Also adds Tools/sync-project.cmd. |
 | 6ceceea | 83 validator checks for that wiring, plus the builder bugs they exposed. |
-| (this commit) | The fixture detail and realism gap round: closer detail on the cases, counter, safes, doors and bays; trim; security devices; three street trees; lower gloss on small metals; 19 more checks. |
+| 7666170 | The fixture detail and realism gap round: closer detail on the cases, counter, safes, doors and bays; trim; security devices; three street trees; lower gloss on small metals; 19 more checks. |
 
 ## Steps
 
