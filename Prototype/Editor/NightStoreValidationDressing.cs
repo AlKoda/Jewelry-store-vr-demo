@@ -24,7 +24,7 @@ public static partial class NightStoreValidation
 
     private static void ClosingProcedureChecks(Transform root)
     {
-        dressingSurfaces.Clear();
+        DemoValidation.ClearRayMeshes();
         try
         {
             DressingDecks(root);
@@ -33,7 +33,7 @@ public static partial class NightStoreValidation
             DressingStockLook(root);
             DressingGlassZones(root);
         }
-        finally { dressingSurfaces.Clear(); }
+        finally { DemoValidation.ClearRayMeshes(); }
     }
 
     // Each case's deck group (one per case, merged by CombineLoose into one renderer per
@@ -107,7 +107,7 @@ public static partial class NightStoreValidation
                 counts.Add(safe + " none");
                 continue;
             }
-            List<DressingSurface> surfaces = DressingSurfaces(root, "Door", "Office/" + safe);
+            List<DemoValidation.RayMesh> surfaces = DressingSurfaces(root, "Door", "Office/" + safe);
             if (!DressingSurfaceBox(surfaces, out Bounds body)) { DressingWrong(wrong, safe + " has no body mesh"); continue; }
             body.Expand(0.01f);
             foreach (Transform piece in group)
@@ -123,7 +123,7 @@ public static partial class NightStoreValidation
             counts.Add(safe + " " + group.childCount);
         }
         DemoValidation.Info("Left-behind jewellery in the safes: " + string.Join(", ", counts) + (pack ? "" : " (JewelryModels not synced: StoreKit ring boxes only)")
-            + "; largest support gap " + DressingMm(worst) + (wrong.Count > 0 ? "; wrong: " + string.Join(", ", wrong) : ""));
+            + "; largest support gap " + DemoValidation.Mm(worst) + (wrong.Count > 0 ? "; wrong: " + string.Join(", ", wrong) : ""));
         if (pieces == 0 && wrong.Count == 0)
         {
             DemoValidation.Info("No left-behind jewellery in either safe: safe stock check skipped");
@@ -144,7 +144,7 @@ public static partial class NightStoreValidation
         int onDesk = 0, onFloor = 0;
         if (desk != null)
         {
-            List<DressingSurface> top = DressingSurfaces(root, null, "Office/Desk");
+            List<DemoValidation.RayMesh> top = DressingSurfaces(root, null, "Office/Desk");
             foreach (Transform piece in desk)
             {
                 onDesk++;
@@ -159,23 +159,23 @@ public static partial class NightStoreValidation
         Transform examples = root.Find(UVTraceBuilder.ExamplesName);
         if (examples != null)
             foreach (UVTrace trace in examples.GetComponentsInChildren<UVTrace>(true))
-                if (DressingMeshBounds(trace.transform, out Bounds quad)) traces.Add(DressingRect(quad));
+                if (DressingMeshBounds(trace.transform, out Bounds quad)) traces.Add(DemoValidation.Footprint(quad));
         float route = float.MaxValue, apart = float.MaxValue;
         if (floor != null)
         {
-            List<DressingSurface> ground = DressingSurfaces(root, null, "Architecture/Floor");
+            List<DemoValidation.RayMesh> ground = DressingSurfaces(root, null, "Architecture/Floor");
             foreach (Transform piece in floor)
             {
                 onFloor++;
                 if (!DressingMeshBounds(piece, out Bounds b)) { DressingWrong(wrong, piece.name + " has no mesh"); continue; }
                 if (!DressingSupport(b, ground, out float gap)) DressingWrong(wrong, piece.name + " not on the floor (" + DressingGapText(gap) + ")");
-                Rect footprint = DressingRect(b);
+                Rect footprint = DemoValidation.Footprint(b);
                 float fromRoute = DressingRouteGap(root, footprint);
                 route = Mathf.Min(route, fromRoute);
                 if (fromRoute < 0.3f) DressingWrong(wrong, piece.name + " " + fromRoute.ToString("0.00") + " m from the walk route");
                 foreach (Rect t in traces)
                 {
-                    float fromTrace = DressingRectGap(footprint, t);
+                    float fromTrace = DemoValidation.FootprintGap(footprint, t);
                     apart = Mathf.Min(apart, fromTrace);
                     if (fromTrace < 0.3f) DressingWrong(wrong, piece.name + " " + fromTrace.ToString("0.00") + " m from a UV trace");
                 }
@@ -306,7 +306,7 @@ public static partial class NightStoreValidation
 
     private static void DecalChecks(Transform root)
     {
-        dressingSurfaces.Clear();
+        DemoValidation.ClearRayMeshes();
         try
         {
             Dictionary<string, Rect> ambient = DecalLayout(NightDecals.AmbientAtlas, out Texture2D ambientPage);
@@ -319,7 +319,7 @@ public static partial class NightStoreValidation
             DecalHiddenSets(root, ambient);
             DecalTrail(root, evidence);
         }
-        finally { dressingSurfaces.Clear(); }
+        finally { DemoValidation.ClearRayMeshes(); }
     }
 
     // One shard scatter in front of each broken case and none before an intact one: every
@@ -516,7 +516,7 @@ public static partial class NightStoreValidation
     }
 
     // Lift of every triangle of meshes over surfaces, as "group min-max"; returns the triangles tested.
-    private static int DecalLiftGroup(string group, List<MeshFilter> meshes, List<DressingSurface> surfaces, List<string> lines, List<string> wrong)
+    private static int DecalLiftGroup(string group, List<MeshFilter> meshes, List<DemoValidation.RayMesh> surfaces, List<string> lines, List<string> wrong)
     {
         int tested = 0;
         float low = float.MaxValue, high = 0;
@@ -525,12 +525,12 @@ public static partial class NightStoreValidation
             {
                 tested++;
                 Vector3 n = t.Normal;
-                bool hit = DressingRay(new Ray(t.Centre, -n), 0.01f, surfaces, out float d, out Vector3 face);
+                bool hit = DemoValidation.TriangleRay(new Ray(t.Centre, -n), 0.01f, surfaces, out float d, out Vector3 face);
                 if (hit) { low = Mathf.Min(low, d); high = Mathf.Max(high, d); }
                 if (!hit || d < 0.0009f || d > 0.0045f || Mathf.Abs(Vector3.Dot(face, n)) <= 0.99f)
-                    DressingWrong(wrong, t.Path + (hit ? " " + DressingMm(d) + " off a face at " + (Mathf.Acos(Mathf.Clamp01(Mathf.Abs(Vector3.Dot(face, n)))) * Mathf.Rad2Deg).ToString("0") + " deg" : " has no surface within 10 mm"));
+                    DressingWrong(wrong, t.Path + (hit ? " " + DemoValidation.Mm(d) + " off a face at " + (Mathf.Acos(Mathf.Clamp01(Mathf.Abs(Vector3.Dot(face, n)))) * Mathf.Rad2Deg).ToString("0") + " deg" : " has no surface within 10 mm"));
             }
-        lines.Add(group + " " + (low == float.MaxValue ? "no hit" : DressingMm(low) + " to " + DressingMm(high)));
+        lines.Add(group + " " + (low == float.MaxValue ? "no hit" : DemoValidation.Mm(low) + " to " + DemoValidation.Mm(high)));
         return tested;
     }
 
@@ -571,7 +571,7 @@ public static partial class NightStoreValidation
 
         string[] models = NightDecals.ToolModels;
         Transform tools = evidence != null && evidence.Content != null ? evidence.Content.transform.Find(NightDecals.ToolsGroup) : null;
-        List<DressingSurface> ground = DressingSurfaces(root, null, "Architecture/Floor", "Exterior/Ground/Pavement");
+        List<DemoValidation.RayMesh> ground = DressingSurfaces(root, null, "Architecture/Floor", "Exterior/Ground/Pavement");
         int fromPack = 0, standIns = 0;
         float worst = 0;
         if (tools == null || tools.childCount != models.Length) DressingWrong(wrong, "Tools hold " + (tools != null ? tools.childCount : 0) + " of " + models.Length);
@@ -589,7 +589,7 @@ public static partial class NightStoreValidation
             }
         DemoValidation.Info("Presenter sets under " + NightDecals.SetsPath + ": " + string.Join(", ", sets) + "; renderers=" + renderers
             + (wear ? "" : "; " + NightDecals.AmbientSet + " not built" + (ambient != null ? "" : " (Ambient atlas not synced)"))
-            + "; tools from " + NightStreet.ForensicPack + "=" + fromPack + ", stand-ins=" + standIns + ", largest support gap " + DressingMm(worst)
+            + "; tools from " + NightStreet.ForensicPack + "=" + fromPack + ", stand-ins=" + standIns + ", largest support gap " + DemoValidation.Mm(worst)
             + (wrong.Count > 0 ? "; wrong: " + string.Join(", ", wrong) : ""));
         DemoValidation.Check(holder != null && wrong.Count == 0, "Hidden decal sets stay out of the bake and the discarded tools rest on the floor or pavement");
         DecalHiddenSorting(root);
@@ -656,7 +656,7 @@ public static partial class NightStoreValidation
         List<Rect> pieces = new List<Rect>();
         if (floor != null)
             foreach (Transform piece in floor)
-                if (DressingMeshBounds(piece, out Bounds b)) pieces.Add(DressingRect(b));
+                if (DressingMeshBounds(piece, out Bounds b)) pieces.Add(DemoValidation.Footprint(b));
         List<string> wrong = new List<string>();
         int mud = 0, dust = 0, dirt = 0;
         float route = 0, door = float.MaxValue, clear = float.MaxValue;
@@ -859,7 +859,8 @@ public static partial class NightStoreValidation
     private static bool DecalIn(Rect r, Vector2 p)
         => p.x >= r.xMin - 1e-4f && p.x <= r.xMax + 1e-4f && p.y >= r.yMin - 1e-4f && p.y <= r.yMax + 1e-4f;
 
-    // dP/du and dP/dv of a triangle (world metres per UV unit); false when its UVs are degenerate.
+    // dP/du and dP/dv of a triangle (world metres per UV unit); false when its UVs are degenerate
+    // or a tangent vanishes (InteriorTangents allows a zero one, so neither is shared).
     private static bool DecalTangents(DecalTri t, out Vector3 du, out Vector3 dv)
     {
         Vector3 e1 = t.B - t.A, e2 = t.C - t.A;
@@ -910,7 +911,7 @@ public static partial class NightStoreValidation
             {
                 Vector2 a = tri[i], b = tri[(i + 1) % 3], c = box[j], d = box[(j + 1) % 4];
                 if ((DecalSide(c, d, a) > 0) != (DecalSide(c, d, b) > 0) && (DecalSide(a, b, c) > 0) != (DecalSide(a, b, d) > 0)) return 0;
-                best = Mathf.Min(best, Mathf.Min(DressingPointSegment(a, c, d), DressingPointSegment(c, a, b)));
+                best = Mathf.Min(best, Mathf.Min(DemoValidation.PointSegmentDistance(a, c, d), DemoValidation.PointSegmentDistance(c, a, b)));
             }
         return best;
     }
@@ -930,9 +931,7 @@ public static partial class NightStoreValidation
     // The full scene path of t, for the logs.
     private static string DressingPath(Transform t) => DemoGeometry.PathUnder(t, null);
 
-    private static string DressingMm(float metres) => (metres * 1000).ToString("0.0") + " mm";
-
-    private static string DressingGapText(float gap) => float.IsNaN(gap) ? "no surface within 2 cm below" : DressingMm(gap) + " off";
+    private static string DressingGapText(float gap) => float.IsNaN(gap) ? "no surface within 2 cm below" : DemoValidation.Mm(gap) + " off";
 
     // World box of every mesh under t, inactive ones included: each mesh's bounds corners through
     // its object's matrix, as its renderer measures them when active. False without a mesh.
@@ -958,62 +957,20 @@ public static partial class NightStoreValidation
         return any;
     }
 
-    // inner lies inside outer (both world boxes).
+    // inner lies inside outer (both world boxes), exactly: the callers grow outer first, while
+    // InteriorContains keeps a 0.1 mm tolerance, so neither is shared.
     private static bool DressingContains(Bounds outer, Bounds inner)
         => inner.min.x >= outer.min.x && inner.min.y >= outer.min.y && inner.min.z >= outer.min.z
             && inner.max.x <= outer.max.x && inner.max.y <= outer.max.y && inner.max.z <= outer.max.z;
 
     // A ray down at the box's centre from 1 cm over its lowest point meets the surfaces 1 cm
     // below, within 4 mm: the piece rests on them. gap is the measured offset, NaN without a hit.
-    private static bool DressingSupport(Bounds b, List<DressingSurface> surfaces, out float gap)
+    private static bool DressingSupport(Bounds b, List<DemoValidation.RayMesh> surfaces, out float gap)
     {
         gap = float.NaN;
-        if (!DressingRay(new Ray(new Vector3(b.center.x, b.min.y + 0.01f, b.center.z), Vector3.down), 0.03f, surfaces, out float d, out _)) return false;
+        if (!DemoValidation.TriangleRay(new Ray(new Vector3(b.center.x, b.min.y + 0.01f, b.center.z), Vector3.down), 0.03f, surfaces, out float d, out _)) return false;
         gap = d - 0.01f;
         return Mathf.Abs(gap) <= 0.004f;
-    }
-
-    // x/z footprint as a Rect (x = world x, y = world z), as NightStoreLayout.RegionRect.
-    private static Rect DressingRect(Bounds b) => Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z);
-
-    // Shortest x/z distance between two footprints, 0 when they touch or overlap.
-    private static float DressingRectGap(Rect a, Rect b)
-    {
-        float dx = Mathf.Max(0, Mathf.Max(a.xMin - b.xMax, b.xMin - a.xMax)), dz = Mathf.Max(0, Mathf.Max(a.yMin - b.yMax, b.yMin - a.yMax));
-        return Mathf.Sqrt(dx * dx + dz * dz);
-    }
-
-    private static float DressingPointSegment(Vector2 p, Vector2 a, Vector2 b)
-    {
-        Vector2 ab = b - a;
-        float t = ab.sqrMagnitude > 1e-12f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0;
-        return Vector2.Distance(p, a + ab * t);
-    }
-
-    private static float DressingRectPoint(Rect r, Vector2 p)
-        => Vector2.Distance(p, new Vector2(Mathf.Clamp(p.x, r.xMin, r.xMax), Mathf.Clamp(p.y, r.yMin, r.yMax)));
-
-    // Distance from a segment to a footprint: 0 when the segment crosses it (slab clipping), else
-    // the nearest of its ends to the footprint and of the footprint's corners to the segment.
-    private static float DressingSegmentRect(Rect r, Vector2 a, Vector2 b)
-    {
-        float t0 = 0, t1 = 1;
-        Vector2 d = b - a;
-        bool crosses = true;
-        for (int axis = 0; axis < 2 && crosses; axis++)
-        {
-            float start = a[axis], step = d[axis], min = axis == 0 ? r.xMin : r.yMin, max = axis == 0 ? r.xMax : r.yMax;
-            if (Mathf.Abs(step) < 1e-9f) { crosses = start >= min && start <= max; continue; }
-            float u0 = (min - start) / step, u1 = (max - start) / step;
-            t0 = Mathf.Max(t0, Mathf.Min(u0, u1));
-            t1 = Mathf.Min(t1, Mathf.Max(u0, u1));
-            crosses = t0 <= t1;
-        }
-        if (crosses) return 0;
-        float best = Mathf.Min(DressingRectPoint(r, a), DressingRectPoint(r, b));
-        foreach (Vector2 corner in new[] { new Vector2(r.xMin, r.yMin), new Vector2(r.xMax, r.yMin), new Vector2(r.xMax, r.yMax), new Vector2(r.xMin, r.yMax) })
-            best = Mathf.Min(best, DressingPointSegment(corner, a, b));
-        return best;
     }
 
     // x/z distance from a footprint to the walk route (NightStoreLayout.Route, in store-root space).
@@ -1024,7 +981,7 @@ public static partial class NightStoreValidation
         for (int i = 0; i + 1 < route.Length; i++)
         {
             Vector3 a = root.TransformPoint(route[i]), b = root.TransformPoint(route[i + 1]);
-            best = Mathf.Min(best, DressingSegmentRect(r, new Vector2(a.x, a.z), new Vector2(b.x, b.z)));
+            best = Mathf.Min(best, DemoValidation.RectSegmentDistance(r, new Vector2(a.x, a.z), new Vector2(b.x, b.z)));
         }
         return best;
     }
@@ -1062,21 +1019,12 @@ public static partial class NightStoreValidation
 
     // ---------------------------------------------------------------- triangle rays
 
-    // A mesh the support and lift rays read: its world-space vertices, triangles and box, read
-    // once per check pass (inactive meshes included: hidden sets, LOD levels, the UV traces).
-    private sealed class DressingSurface
+    // The meshes under each path, skipping any below a child named skip (null: none skipped), as
+    // DemoValidation.RayMeshes read once per check pass (inactive meshes included: hidden sets,
+    // LOD levels, the UV traces), each boxed by its world-space vertices.
+    private static List<DemoValidation.RayMesh> DressingSurfaces(Transform root, string skip, params string[] paths)
     {
-        public Bounds Box;
-        public Vector3[] World;
-        public int[] Triangles;
-    }
-
-    private static readonly Dictionary<MeshFilter, DressingSurface> dressingSurfaces = new Dictionary<MeshFilter, DressingSurface>();
-
-    // The meshes under each path, skipping any below a child named skip (null: none skipped).
-    private static List<DressingSurface> DressingSurfaces(Transform root, string skip, params string[] paths)
-    {
-        List<DressingSurface> list = new List<DressingSurface>();
+        List<DemoValidation.RayMesh> list = new List<DemoValidation.RayMesh>();
         foreach (string path in paths)
         {
             Transform top = root.Find(path);
@@ -1085,20 +1033,7 @@ public static partial class NightStoreValidation
             {
                 Mesh mesh = f.sharedMesh;
                 if (mesh == null || mesh.vertexCount == 0 || (skip != null && DressingBelow(f.transform, top, skip))) continue;
-                if (!dressingSurfaces.TryGetValue(f, out DressingSurface s))
-                {
-                    Vector3[] world = mesh.vertices;
-                    Matrix4x4 matrix = f.transform.localToWorldMatrix;
-                    Bounds box = new Bounds();
-                    for (int i = 0; i < world.Length; i++)
-                    {
-                        world[i] = matrix.MultiplyPoint3x4(world[i]);
-                        if (i == 0) box = new Bounds(world[0], Vector3.zero);
-                        else box.Encapsulate(world[i]);
-                    }
-                    dressingSurfaces[f] = s = new DressingSurface { Box = box, World = world, Triangles = mesh.triangles };
-                }
-                list.Add(s);
+                list.Add(DemoValidation.RayMeshOf(f));
             }
         }
         return list;
@@ -1112,52 +1047,13 @@ public static partial class NightStoreValidation
         return false;
     }
 
-    private static bool DressingSurfaceBox(List<DressingSurface> surfaces, out Bounds box)
+    private static bool DressingSurfaceBox(List<DemoValidation.RayMesh> surfaces, out Bounds box)
     {
         box = new Bounds();
         for (int i = 0; i < surfaces.Count; i++)
             if (i == 0) box = surfaces[0].Box;
             else box.Encapsulate(surfaces[i].Box);
         return surfaces.Count > 0;
-    }
-
-    // Nearest hit of a world-space ray within maxDistance on either side of the surfaces'
-    // triangles (Moller-Trumbore), with that triangle's winding normal; false when nothing is
-    // hit (distance NaN). Boxes the ray misses are never read.
-    private static bool DressingRay(Ray ray, float maxDistance, List<DressingSurface> surfaces, out float distance, out Vector3 normal)
-    {
-        distance = float.NaN;
-        normal = Vector3.zero;
-        float best = float.MaxValue;
-        Vector3 origin = ray.origin, direction = ray.direction;
-        foreach (DressingSurface s in surfaces)
-        {
-            Bounds box = s.Box;
-            box.Expand(0.004f);
-            if (!box.IntersectRay(ray, out float enter) || enter > maxDistance) continue;
-            Vector3[] w = s.World;
-            int[] tri = s.Triangles;
-            for (int i = 0; i + 2 < tri.Length; i += 3)
-            {
-                Vector3 a = w[tri[i]], e1 = w[tri[i + 1]] - a, e2 = w[tri[i + 2]] - a, p = Vector3.Cross(direction, e2);
-                float det = Vector3.Dot(e1, p);
-                if (Mathf.Abs(det) < 1e-12f) continue;
-                float inv = 1 / det;
-                Vector3 q = origin - a;
-                float u = Vector3.Dot(q, p) * inv;
-                if (u < 0 || u > 1) continue;
-                Vector3 r = Vector3.Cross(q, e1);
-                float v = Vector3.Dot(direction, r) * inv;
-                if (v < 0 || u + v > 1) continue;
-                float t = Vector3.Dot(e2, r) * inv;
-                if (t < 0 || t > maxDistance || t >= best) continue;
-                best = t;
-                normal = Vector3.Cross(e1, e2).normalized;
-            }
-        }
-        if (best == float.MaxValue) return false;
-        distance = best;
-        return true;
     }
 }
 #endif

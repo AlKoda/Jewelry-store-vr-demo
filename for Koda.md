@@ -1,6 +1,6 @@
 # For Koda
 
-Updated October 15, 2026. Demo deadline: **October 27, 2026**.
+Updated October 16, 2026. Demo deadline: **October 27, 2026**.
 
 ## Your decisions
 
@@ -17,6 +17,10 @@ Updated October 15, 2026. Demo deadline: **October 27, 2026**.
      one line, then rebuild.
    Neither value is a decision. Once you choose a service, it becomes one more value with its
    own car, livery, tape text, siren and radio.
+   Since October 16 the shop also has wall sockets and light switches. Each is a single 82 mm
+   square plate: the sockets have a blank face with no pin holes, the switches one plain
+   rocker. Their size, pin pattern and switch style follow the country, so they stay generic
+   until you decide.
 2. Entry: did the offender enter through the door or the display window? This determines
    the final fracture pattern, debris, route and placement of marks (see 8).
 3. UV traces: what simulated material/observation is the instructor demonstrating?
@@ -41,8 +45,15 @@ Updated October 15, 2026. Demo deadline: **October 27, 2026**.
    - 15 dust shoe prints along the walk route to the office opening;
    - pry marks on the right door leaf at 1.05 m;
    - four latent fingertips on the central case top and a handprint on a cracked island top;
-   - the three tools from decision 5.
+   - the three tools from decision 5;
+   - since October 16, a cut CCTV cable hanging under the rear-left security camera.
    Which of these belong to your story, and where should they go?
+   The office has no video recorder (DVR) at arrival. The options are:
+   - (a) an intact recorder on the drawer unit;
+   - (b) its spot empty, with loose cut cables (the recorder was taken);
+   - (c) a damaged recorder.
+   A model is ready for any of them: InteriorModels DVRRecorder (project-made, treated as CC0,
+   206 triangles, one or two extra materials). Which fits the story?
 9. Stock in the safes: under the closing procedure (stock into the safes by 17:45, under
    dual control) the cases now hold display furniture only at night. The burglars smashed
    empty cases, forced both safes and dropped a little stock: a gold bar, a gem parcel, ring
@@ -88,6 +99,17 @@ Docs/HANDOFF.md lists every change. The presenter drawer's Scene tab gains these
 A session reset makes the light bar flash again and hides the alarm bell, the wear and the
 evidence. The underscore music keeps its setting through a reset.
 
+October 16 (unverified, never compiled in Unity): more detail where visitors stand:
+- the display and wall cases, the counter, both safes, the forced entrance doors, the shop
+  windows and the side-room doors (thicker case glass with a green edge, bevelled frames,
+  locks, hinges, door contacts);
+- trim round the office opening, skirting, a shadow gap under the ceiling, switches and
+  sockets;
+- motion detectors, a second alarm keypad, ceiling camera domes and smoke detectors;
+- three bare trees across the street.
+The small jewellery, coins and pearls are slightly less glossy, so they sparkle less in the
+headset. None of this changes a decision above.
+
 ## Remaining integration and manual review
 
 1. Use an isolated project with the latest Prototype Scripts, Editor, Shaders and ThirdParty.
@@ -111,7 +133,12 @@ evidence. The underscore music keeps its setting through a reset.
      (the "Light bar flashing" switch holds the bar steady);
    - the sound levels of the street, the room tone, footsteps, passing cars and the dog;
    - whether the reverb sounds natural;
-   - whether the glossier PBR floor and the darker velvet read well under the torch.
+   - whether the glossier PBR floor and the darker velvet read well under the torch;
+   - since October 16: whether the dropped ring, the coins and the pearl strand still sparkle
+     too much under the torch, and whether the green edge on the case tops reads as glass;
+   - since October 16: whether the three bare trees across the street suit late October, or
+     should keep some leaves. Leaves need a leaf texture the project does not have yet, so
+     they are left out for now.
 8. You own headset comfort, measured VR FPS/frame time, final scenario decisions and the
    instructor walkthrough. No Unity execution, bake, headset test or standalone build was
    performed for this asset-preparation batch. File checks are not performance certification.

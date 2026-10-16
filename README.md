@@ -6,6 +6,10 @@ On the Windows PC with Unity 6000.6.2f1 installed, double-click **Start-Demo.cmd
 
 Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, timers or forced sequence.
 
+## Apply the October 14–16 realism work — start here
+
+Pull main and follow [Docs/PC_VERIFICATION.md](Docs/PC_VERIFICATION.md): launcher, compile, the four validator runs with their expected PASS counts, then the desktop and headset checks. A ready-to-paste prompt for the next assistant is at the end. Nothing from October 14–16 has run in Unity yet (unverified).
+
 ## Night store source — October 11 (unverified)
 
 The expanded night store is now in source: run NightStoreValidation.RunNightQuick (no bake) or RunNight (bake) after syncing Scripts, Editor, Shaders and ThirdParty (Open-Unity-Glass.cmd and Start-Demo.cmd do this). The October 15 wiring batch (unverified) brings the realism packs into it. See the top of [HANDOFF](Docs/HANDOFF.md).

@@ -128,7 +128,7 @@ public static partial class NightStoreValidation
             reaching.Add(t.name);
             BoxCollider box = colliders.Length == 1 ? colliders[0] as BoxCollider : null;
             if (box == null || box.transform != t) { ok = false; continue; }
-            Bounds held = StreetBoxBounds(box);
+            Bounds held = DemoValidation.BoxColliderBounds(box);
             Vector3 inset = Vector3.one * 0.01f;
             ok &= held.Contains(b.min + inset) && held.Contains(b.max - inset);
         }
@@ -468,8 +468,10 @@ public static partial class NightStoreValidation
         if (ok)
         {
             Bounds bb = box.bounds;
-            bool hit = StreetMeshRay(new Ray(new Vector3(bb.center.x, bb.center.y, bb.max.z - 0.01f), Vector3.forward), 0.05f,
-                cladding.GetComponentsInChildren<MeshFilter>(true), out distance, out Vector3 normal);
+            List<DemoValidation.RayMesh> stone = new List<DemoValidation.RayMesh>();
+            foreach (MeshFilter f in cladding.GetComponentsInChildren<MeshFilter>(true)) stone.Add(DemoValidation.NewRayMesh(f));
+            bool hit = DemoValidation.TriangleRay(new Ray(new Vector3(bb.center.x, bb.center.y, bb.max.z - 0.01f), Vector3.forward), 0.05f,
+                stone, out distance, out Vector3 normal);
             ok = hit && Mathf.Abs(distance - 0.01f) <= 0.003f && normal.z < -0.99f && bb.min.y > L.CeilingY + 0.02f && bb.max.y < L.ParapetY - 0.02f
                 && Mathf.Abs(bb.center.x) > L.DoorHalf && (signRenderer == null || !signRenderer.bounds.Intersects(bb));
             DemoValidation.Info("Alarm bell box at x " + bb.center.x.ToString("0.00") + ", y " + bb.min.y.ToString("0.00") + ".." + bb.max.y.ToString("0.00")
@@ -542,9 +544,9 @@ public static partial class NightStoreValidation
                 if (!c.enabled || c.isTrigger) continue;
                 Bounds b = c.bounds;
                 if (b.size.y < body.stepOffset && b.min.y < 0.02f) continue;
-                Rect r = Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z);
+                Rect r = DemoValidation.Footprint(b);
                 float d = float.MaxValue;
-                for (int i = 0; i + 1 < route.Count; i++) d = Mathf.Min(d, StreetRectSegment(r, route[i], route[i + 1]));
+                for (int i = 0; i + 1 < route.Count; i++) d = Mathf.Min(d, DemoValidation.RectSegmentDistance(r, route[i], route[i + 1]));
                 measured++;
                 if (d < nearest) { nearest = d; nearestName = c.name; }
             }
@@ -669,85 +671,12 @@ public static partial class NightStoreValidation
         return parts;
     }
 
-    // A box collider's world bounds from its own centre and size (no physics query).
-    private static Bounds StreetBoxBounds(BoxCollider box)
-    {
-        Bounds bounds = new Bounds(box.transform.TransformPoint(box.center), Vector3.zero);
-        for (int i = 0; i < 8; i++)
-            bounds.Encapsulate(box.transform.TransformPoint(box.center + Vector3.Scale(box.size * 0.5f,
-                new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1))));
-        return bounds;
-    }
+    // A collider's world bounds: a box's from its own corners (DemoValidation.BoxColliderBounds,
+    // no physics sync), any other's from the physics bounds.
+    private static Bounds StreetColliderBounds(Collider c) => c is BoxCollider box ? DemoValidation.BoxColliderBounds(box) : c.bounds;
 
-    private static Bounds StreetColliderBounds(Collider c) => c is BoxCollider box ? StreetBoxBounds(box) : c.bounds;
-
-    // Nearest triangle of the meshes the ray meets within maxDistance, either side facing
-    // (Moller-Trumbore), with that triangle's front-face normal; false when it meets none.
-    private static bool StreetMeshRay(Ray ray, float maxDistance, MeshFilter[] filters, out float distance, out Vector3 normal)
-    {
-        distance = float.MaxValue;
-        normal = Vector3.zero;
-        bool hit = false;
-        foreach (MeshFilter f in filters)
-        {
-            Mesh mesh = f.sharedMesh;
-            if (mesh == null) continue;
-            Vector3[] v = mesh.vertices;
-            int[] triangles = mesh.triangles;
-            Matrix4x4 world = f.transform.localToWorldMatrix;
-            for (int i = 0; i + 2 < triangles.Length && v.Length > 0; i += 3)
-            {
-                Vector3 a = world.MultiplyPoint3x4(v[triangles[i]]), b = world.MultiplyPoint3x4(v[triangles[i + 1]]), c = world.MultiplyPoint3x4(v[triangles[i + 2]]);
-                Vector3 e1 = b - a, e2 = c - a, p = Vector3.Cross(ray.direction, e2);
-                float det = Vector3.Dot(e1, p);
-                if (Mathf.Abs(det) < 1e-12f) continue;
-                float inverse = 1 / det;
-                Vector3 s = ray.origin - a, q = Vector3.Cross(s, e1);
-                float u = Vector3.Dot(s, p) * inverse, w = Vector3.Dot(ray.direction, q) * inverse, d = Vector3.Dot(e2, q) * inverse;
-                if (u < 0 || w < 0 || u + w > 1 || d < 0 || d > maxDistance || d >= distance) continue;
-                distance = d;
-                normal = Vector3.Cross(e1, e2).normalized;
-                hit = true;
-            }
-        }
-        return hit;
-    }
-
-    // Distance in x/z (Rect x = world x, y = world z) from a point to a rectangle; 0 inside.
-    private static float StreetRectPoint(Rect r, Vector2 p)
-        => Vector2.Distance(p, new Vector2(Mathf.Clamp(p.x, r.xMin, r.xMax), Mathf.Clamp(p.y, r.yMin, r.yMax)));
-
-    private static float StreetPointSegment(Vector2 p, Vector2 a, Vector2 b)
-    {
-        Vector2 ab = b - a;
-        float t = ab.sqrMagnitude > 1e-12f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0;
-        return Vector2.Distance(p, a + ab * t);
-    }
-
-    // Distance from a segment to a rectangle: 0 when the segment crosses it (slab clipping),
-    // else the nearest of the segment's ends to the rectangle and of its corners to the segment.
-    private static float StreetRectSegment(Rect r, Vector2 a, Vector2 b)
-    {
-        float t0 = 0, t1 = 1;
-        Vector2 d = b - a;
-        bool crosses = true;
-        for (int axis = 0; axis < 2 && crosses; axis++)
-        {
-            float start = a[axis], step = d[axis], min = axis == 0 ? r.xMin : r.yMin, max = axis == 0 ? r.xMax : r.yMax;
-            if (Mathf.Abs(step) < 1e-9f) { crosses = start >= min && start <= max; continue; }
-            float u0 = (min - start) / step, u1 = (max - start) / step;
-            t0 = Mathf.Max(t0, Mathf.Min(u0, u1));
-            t1 = Mathf.Min(t1, Mathf.Max(u0, u1));
-            crosses = t0 <= t1;
-        }
-        if (crosses) return 0;
-        float best = Mathf.Min(StreetRectPoint(r, a), StreetRectPoint(r, b));
-        foreach (Vector2 corner in new[] { new Vector2(r.xMin, r.yMin), new Vector2(r.xMax, r.yMin), new Vector2(r.xMax, r.yMax), new Vector2(r.xMin, r.yMax) })
-            best = Mathf.Min(best, StreetPointSegment(corner, a, b));
-        return best;
-    }
-
-    // Gap between two boxes (0 when they touch or overlap).
+    // Gap between two boxes in 3D (0 when they touch or overlap); local, since the shared
+    // DemoValidation.FootprintGap measures x/z footprints only.
     private static float StreetGap(Bounds a, Bounds b) => Vector3.Max(Vector3.zero, Vector3.Max(a.min - b.max, b.min - a.max)).magnitude;
 
     // Where a pointer or a hand aims at a rack sample: the centre of its solid collider nearest

@@ -65,10 +65,23 @@ public static partial class StoreKit
     private static void PropPalette()
     {
         // Polished metals: almost all their look comes from the baked reflection probes.
-        // Yellow gold at its measured reflectance (linear F0 about 1.0, 0.71, 0.29), shared
-        // with ShopDisplayFinish's JewelryGold so the cases and the scattered pieces match.
-        Gold = Surface("KitGold", new Color(0.98f, 0.84f, 0.55f), 0.8f, 1, null, 1);
-        Silver = Surface("KitSilver", new Color(0.82f, 0.82f, 0.84f), 0.8f, 1, null, 1);
+        // Yellow gold at its measured reflectance (linear F0 about 1.0, 0.71, 0.29); the
+        // colour matches ShopDisplayFinish's JewelryGold, a separate material that keeps 0.8
+        // for the old shop. The reflectance is unchanged; the smoothness follows the
+        // small-metal rule. A curved metal or gloss part a few millimetres across (here the
+        // kit's rings, chain and bangle, tubes 3-6 mm across; the pack's band, 1.8 mm thick,
+        // and ring-box hinge pin, 1 mm; through JewelryRemap, the loupe's chrome) is seen at
+        // arm's length on Quest 2, about 20 px per degree or 0.9 mm per pixel at 1 m. It
+        // keeps smoothness <= 0.72, so its GGX alpha (1-s)^2 is >= 0.078 (0.8 gives 0.04): a
+        // light's highlight on it is twice as wide and a quarter as bright at its peak, so the
+        // sub-pixel spark flickers far less. 4x MSAA cannot fix that: it resolves geometry
+        // edges, not shading. Gems are capped at 0.85; flat glass, screens and lenses are
+        // exempt. One material serves desktop and VR, so desktop loses a little polish too: a
+        // VR-only runtime clamp would write the shared material assets in Editor Play mode.
+        // The thinnest parts (the pin and the band, 1-2 px at 1 m) still alias across their
+        // width; geometric specular anti-aliasing is left to the deferred shader.
+        Gold = Surface("KitGold", new Color(0.98f, 0.84f, 0.55f), 0.72f, 1, null, 1);
+        Silver = Surface("KitSilver", new Color(0.82f, 0.82f, 0.84f), 0.72f, 1, null, 1);
         // Black pebble-grain leather (PBRInterior, 0.2 m tile, ~5 mm grain) on the boxes; charcoal scalar without it.
         Leather = Surface("KitLeather", new Color(0.16f, 0.14f, 0.13f), 0.35f, 0, "Leather", 0.2f);
         Leatherette = Surface("KitLeatherette", new Color(0.07f, 0.07f, 0.075f), 0.3f, 0, null, 1);

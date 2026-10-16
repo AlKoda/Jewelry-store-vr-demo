@@ -9,9 +9,10 @@ using static DemoGeometry;
 // Procedural low-poly fixture library for the night store. Every builder returns a
 // root named after the fixture (snake_case, see Names) with its pivot at the bottom
 // centre of the footprint and its front facing -z. Exceptions: wall-mounted pieces
-// (sign_frame, exit_sign, alarm_keypad, security_camera) pivot at the bottom centre
-// of their back, which sits on z = 0; ceiling pieces (track_light, downlight) pivot
-// at the ceiling contact and stay entirely at or below y = 0. Door frames pivot at the bottom
+// (sign_frame, exit_sign, alarm_keypad, security_camera, pir_detector, light_switch,
+// socket_outlet) pivot at the bottom centre of their back, which sits on z = 0; ceiling
+// pieces (track_light, downlight, cctv_dome, smoke_detector) pivot at the ceiling
+// contact and stay entirely at or below y = 0. Door frames pivot at the bottom
 // centre of the opening; every hinged leaf ("Door", "DoorLeft", "DoorRight") is a
 // child whose pivot is on its hinge axis, so rotating it about local y swings it.
 // Drawers ("Drawer", "Drawer0".."Drawer2") slide along local -z.
@@ -43,7 +44,8 @@ public static partial class StoreKit
         "display_case", "wall_case", "wall_display", "counter", "drawer_unit", "office_desk", "office_chair",
         "shelving_unit", "locker_cabinet", "safe_large", "safe_tall", "waiting_sofa", "side_table", "planter",
         "sign_frame", "storefront_doors", "office_door", "service_door", "window_module", "bollard", "exit_sign",
-        "security_camera", "track_light", "downlight", "pos_terminal", "alarm_keypad"
+        "security_camera", "track_light", "downlight", "pos_terminal", "alarm_keypad", "cctv_dome", "smoke_detector",
+        "pir_detector", "light_switch", "socket_outlet"
     };
 
     private static readonly Dictionary<string, Func<Transform, GameObject>> Builders = new Dictionary<string, Func<Transform, GameObject>>
@@ -55,23 +57,32 @@ public static partial class StoreKit
         { "side_table", SideTable }, { "planter", Planter }, { "sign_frame", SignFrame },
         { "storefront_doors", p => StorefrontDoors(p) }, { "office_door", p => OfficeDoor(p) },
         { "service_door", p => ServiceDoor(p) }, { "window_module", p => WindowModule(p) }, { "bollard", Bollard },
-        { "exit_sign", ExitSign }, { "security_camera", SecurityCamera }, { "track_light", TrackLight },
-        { "downlight", Downlight }, { "pos_terminal", PosTerminal }, { "alarm_keypad", AlarmKeypad }
+        { "exit_sign", ExitSign }, { "security_camera", p => SecurityCamera(p) }, { "track_light", TrackLight },
+        { "downlight", Downlight }, { "pos_terminal", PosTerminal }, { "alarm_keypad", AlarmKeypad },
+        { "cctv_dome", p => CctvDome(p) }, { "smoke_detector", p => SmokeDetector(p) }, { "pir_detector", p => PirDetector(p) },
+        { "light_switch", p => LightSwitch(p) }, { "socket_outlet", p => SocketOutlet(p) }
     };
 
-    // Triangle budgets for the procedural builds and the gallery variants (<name>__<variant>).
+    // Triangle budgets for the procedural builds and the gallery variants (<name>__<variant>),
+    // about 15-25 % over each build's count so a small detail fits without a budget change:
+    // display case 1100 (front broken 1118, all broken 1036, with drawer 1246), wall case 972
+    // (all broken 906), counter 498, safe_large 931, safe_tall 774, storefront doors 1006
+    // (broken open 1088), office door 352, service door 218, window bay 286 (cracked 526,
+    // broken 378); the devices (StoreKitDevices.cs) dome 206, smoke detector 86, PIR 44,
+    // switch 40 and socket 30.
     private static readonly Dictionary<string, int> Budgets = new Dictionary<string, int>
     {
-        { "display_case", 900 }, { "display_case__FrontBroken", 900 }, { "display_case__AllBroken", 900 },
-        { "display_case__Drawer", 900 }, { "wall_case", 900 }, { "wall_case__AllBroken", 900 },
-        { "wall_display", 400 }, { "counter", 400 }, { "drawer_unit", 450 }, { "office_desk", 400 },
+        { "display_case", 1300 }, { "display_case__FrontBroken", 1300 }, { "display_case__AllBroken", 1300 },
+        { "display_case__Drawer", 1450 }, { "wall_case", 1150 }, { "wall_case__AllBroken", 1150 },
+        { "wall_display", 400 }, { "counter", 600 }, { "drawer_unit", 450 }, { "office_desk", 400 },
         { "office_chair", 700 }, { "office_chair__Toppled", 700 }, { "shelving_unit", 400 }, { "locker_cabinet", 200 },
-        { "safe_large", 900 }, { "safe_large__Closed", 900 }, { "safe_tall", 800 }, { "waiting_sofa", 400 },
-        { "side_table", 300 }, { "planter", 300 }, { "sign_frame", 200 }, { "storefront_doors", 500 },
-        { "storefront_doors__BrokenOpen", 700 }, { "office_door", 300 }, { "service_door", 300 },
-        { "window_module", 300 }, { "window_module__Cracked", 500 }, { "window_module__Broken", 500 },
+        { "safe_large", 1150 }, { "safe_large__Closed", 1150 }, { "safe_tall", 1000 }, { "waiting_sofa", 400 },
+        { "side_table", 300 }, { "planter", 300 }, { "sign_frame", 200 }, { "storefront_doors", 1200 },
+        { "storefront_doors__BrokenOpen", 1300 }, { "office_door", 420 }, { "service_door", 300 },
+        { "window_module", 400 }, { "window_module__Cracked", 650 }, { "window_module__Broken", 500 },
         { "bollard", 250 }, { "exit_sign", 100 }, { "security_camera", 250 }, { "track_light", 300 },
-        { "downlight", 200 }, { "pos_terminal", 100 }, { "alarm_keypad", 200 }
+        { "downlight", 200 }, { "pos_terminal", 100 }, { "alarm_keypad", 200 }, { "cctv_dome", 250 },
+        { "smoke_detector", 120 }, { "pir_detector", 80 }, { "light_switch", 60 }, { "socket_outlet", 50 }
     };
 
     public static int Budget(string entry) => Budgets.TryGetValue(entry, out int budget) ? budget
@@ -97,6 +108,9 @@ public static partial class StoreKit
     public static Material Lacquer { get; private set; }
     public static Material Fabric { get; private set; }
     public static Material Glass { get; private set; }
+    // The dark blue-green edge a 10 mm float-glass pane shows edge-on; opaque, so the band
+    // adds no transparent renderer.
+    public static Material GlassEdge { get; private set; }
     public static Material SafeLining { get; private set; }
     public static Material PaintedGrey { get; private set; }
     public static Material Stainless { get; private set; }
@@ -136,7 +150,7 @@ public static partial class StoreKit
 
     public static void Palette()
     {
-        if (Walnut != null && Glass != null && Gold != null && Brick != null) return;
+        if (Walnut != null && Glass != null && Gold != null && Brick != null && GlassEdge != null) return;
         EnsureFolder("Assets/CrimeSceneDemo");
         EnsureFolder(Folder);
         Walnut = Surface("KitWalnut", new Color(0.30f, 0.20f, 0.14f), 0.35f, 0, "Walnut", 0.6f);
@@ -156,6 +170,7 @@ public static partial class StoreKit
         Stainless = Surface("KitStainless", new Color(0.62f, 0.62f, 0.60f), 0.55f, 0.8f, "BrushedSteel", 0.5f);
         DeviceBlack = Surface("KitDeviceBlack", new Color(0.10f, 0.10f, 0.11f), 0.4f, 0, null, 1);
         DeviceGrey = Surface("KitDeviceGrey", new Color(0.58f, 0.58f, 0.56f), 0.45f, 0.2f, null, 1);
+        GlassEdge = Surface("KitGlassEdge", new Color(0.16f, 0.30f, 0.27f), 0.85f, 0, null, 1);
         Foliage = Surface("KitFoliage", new Color(0.17f, 0.30f, 0.13f), 0.25f, 0, null, 1);
         Soil = Surface("KitSoil", new Color(0.12f, 0.09f, 0.07f), 0.05f, 0, null, 1);
         LightLens = Emissive(Surface("KitLightLens", new Color(0.85f, 0.85f, 0.82f), 0.8f, 0, null, 1), Color.black);
@@ -417,7 +432,7 @@ public static partial class StoreKit
         {
             if (!includeMovingParts && IsMovingPart(renderer.transform, root.transform)) continue;
             StaticEditorFlags flags = StaticEditorFlags.BatchingStatic | StaticEditorFlags.OccludeeStatic;
-            if (!Transparent(renderer))
+            if (!DemoAssetLibrary.Blended(renderer))
             {
                 bool small = renderer.bounds.size.x < SmallProp && renderer.bounds.size.y < SmallProp && renderer.bounds.size.z < SmallProp;
                 flags |= StaticEditorFlags.ReflectionProbeStatic;
@@ -427,13 +442,6 @@ public static partial class StoreKit
             }
             GameObjectUtility.SetStaticEditorFlags(renderer.gameObject, flags);
         }
-    }
-
-    private static bool Transparent(Renderer renderer)
-    {
-        foreach (Material m in renderer.sharedMaterials)
-            if (m == null || m.renderQueue < 3000) return false;
-        return true;
     }
 
     // Meshes with a second UV set (saved KitMesh parts unless loose) can take lightmaps.
@@ -474,33 +482,57 @@ public static partial class StoreKit
 
     private static float Range(System.Random rng, float a, float b) => a + (float)rng.NextDouble() * (b - a);
 
-    // Framed walnut panels: 50 mm stiles and rails standing 15 mm proud of an inset
-    // body w x d between y0 and y1, on the front, both ends and optionally the back.
+    // Key cylinder on a face, the plug's back at centre: a bronze plug 22 mm across standing
+    // 4.5 mm proud with a rounded front edge (open at the back, which sits on the face) and a
+    // dark 1.6 x 7 mm keyway along `up`, 0.3 mm in front of the plug; 50 triangles.
+    private static void KeyCylinder(KitMesh k, Vector3 centre, Vector3 outward, Vector3 up)
+    {
+        k.Lathe(Bronze, centre, Quaternion.FromToRotation(Vector3.up, outward), new[] { 0.011f, 0.011f, 0.009f }, new[] { 0f, 0.003f, 0.0045f }, 10, true, false, true);
+        Vector3 side = Vector3.Cross(up, outward).normalized * 0.0008f, along = up * 0.0035f, c = centre + outward * 0.0048f;
+        k.Face(DeviceBlack, outward, c - side - along, c + side - along, c + side + along, c - side + along);
+    }
+
+    // Lock on a face, its back at centre: a 32 x 70 mm escutcheon plate, 3 mm thick, with
+    // the key cylinder 12 mm above its middle (cupboards, drawers, doors, safes); 62 triangles.
+    private static void KeyLock(KitMesh k, Material plate, Vector3 centre, Vector3 outward, Vector3 up)
+    {
+        k.Box(plate, centre + outward * 0.0015f, V(0.032f, 0.07f, 0.003f), Quaternion.LookRotation(outward, up));
+        KeyCylinder(k, centre + outward * 0.003f + up * 0.012f, outward, up);
+    }
+
+    // Framed panels: 50 mm stiles and rails standing 15 mm proud of an inset body w x d
+    // between y0 and y1, on the front, both ends and optionally the back, as bevelled bars.
+    // Every member lies outside the body and the members butt: the rails run between the
+    // stiles, and the front and back stiles cover the corners in front of the end stiles, so
+    // no two faces overlap in one plane (no z-fighting at the joints or against the body's
+    // top). The outer extent is w/2 + 15 mm by d/2 + 15 mm. 16 bars with a back (448
+    // triangles), 12 without (336).
     private static void FramedPanels(KitMesh k, Material m, float w, float d, float y0, float y1, bool back)
     {
-        const float s = 0.05f, t = 0.02f, proud = 0.015f;
-        float h = y1 - y0, cy = (y0 + y1) * 0.5f;
+        const float s = 0.05f, proud = 0.015f, bevel = 0.003f;
+        float h = y1 - y0, cy = (y0 + y1) * 0.5f, fx = w * 0.5f + proud;
         for (int side = -1; side <= 1; side += 2)
         {
             if (side < 0 || back)
             {
-                float z = side * (d * 0.5f + proud - t * 0.5f);
-                k.Box(m, V(-(w * 0.5f - s * 0.5f), cy, z), V(s, h, t));
-                k.Box(m, V(w * 0.5f - s * 0.5f, cy, z), V(s, h, t));
-                k.Box(m, V(0, y1 - s * 0.5f, z), V(w - 2 * s, s, t));
-                k.Box(m, V(0, y0 + s * 0.5f, z), V(w - 2 * s, s, t));
+                float z = side * (d * 0.5f + proud * 0.5f);
+                k.Bar(m, V(-(fx - s * 0.5f), cy, z), V(s, h, proud), bevel);
+                k.Bar(m, V(fx - s * 0.5f, cy, z), V(s, h, proud), bevel);
+                k.Bar(m, V(0, y1 - s * 0.5f, z), V(2 * (fx - s), s, proud), bevel);
+                k.Bar(m, V(0, y0 + s * 0.5f, z), V(2 * (fx - s), s, proud), bevel);
             }
-            float x = side * (w * 0.5f + proud - t * 0.5f);
-            k.Box(m, V(x, cy, -(d * 0.5f - s * 0.5f)), V(t, h, s));
-            k.Box(m, V(x, cy, d * 0.5f - s * 0.5f), V(t, h, s));
-            k.Box(m, V(x, y1 - s * 0.5f, 0), V(t, s, d - 2 * s));
-            k.Box(m, V(x, y0 + s * 0.5f, 0), V(t, s, d - 2 * s));
+            float x = side * (w * 0.5f + proud * 0.5f);
+            k.Bar(m, V(x, cy, -(d * 0.5f - s * 0.5f)), V(proud, h, s), bevel);
+            k.Bar(m, V(x, cy, d * 0.5f - s * 0.5f), V(proud, h, s), bevel);
+            k.Bar(m, V(x, y1 - s * 0.5f, 0), V(proud, s, d - 2 * s), bevel);
+            k.Bar(m, V(x, y0 + s * 0.5f, 0), V(proud, s, d - 2 * s), bevel);
         }
     }
 
     // Drawer in its own space: z = 0 is the carcass face, the 20 mm front stands in
-    // front of it, the open-top tray runs `depth` back and a bronze bar pull sits on the front.
-    private static void Drawer(KitMesh k, float w, float h, float depth, Material front, Material inside)
+    // front of it, the open-top tray runs `depth` back and a bronze bar pull sits on the
+    // front; locked adds a key lock near its right end, under the pull's height.
+    private static void Drawer(KitMesh k, float w, float h, float depth, Material front, Material inside, bool locked = false)
     {
         float ih = h * 0.7f, y = -h * 0.5f + 0.01f + ih * 0.5f;
         k.Box(front, V(0, 0, -0.01f), V(w, h, 0.02f));
@@ -509,6 +541,7 @@ public static partial class StoreKit
         k.Box(front, V(w * 0.5f - 0.026f, y, depth * 0.5f), V(0.012f, ih, depth));
         k.Box(front, V(0, y, depth - 0.006f), V(w - 0.064f, ih, 0.012f));
         k.Box(Bronze, V(0, h * 0.15f, -0.03f), V(Mathf.Min(0.3f, w * 0.35f), 0.012f, 0.02f));
+        if (locked) KeyLock(k, Bronze, V(w * 0.5f - 0.06f, -h * 0.15f, -0.02f), Vector3.back, Vector3.up);
     }
 
     // Jagged crown of thin shards left in an empty frame opening: corner is the opening's
@@ -618,56 +651,128 @@ public static partial class StoreKit
     public static GameObject WallCase(Transform parent, CaseGlass glass = CaseGlass.Intact)
         => Case("wall_case", parent, 1.8f, 0.6f, true, glass, false, 0);
 
-    // Walnut cabinet on a recessed plinth, framed panels, cream suede deck at 0.70 m,
-    // 25 mm bronze posts and rails and five (four with a back panel) separate panes:
-    // Glass_Front, Glass_Back, Glass_Left, Glass_Right, Glass_Top. A broken pane is
-    // removed and leaves a crown of shards in its frame, plus fragments on the deck.
+    // Walnut cabinet on a dark recessed plinth (a shadow gap), framed panels, cream suede
+    // deck at 0.70 m with a piped edge, 25 mm bronze posts and rails and five (four with a
+    // back panel) separate 10 mm panes: Glass_Front, Glass_Back, Glass_Left, Glass_Right,
+    // Glass_Top. The rails run between the posts and stop 0.5 mm under the top pane, which
+    // lies on them flush with the frame's outer faces, so its edge shows: an opaque green
+    // band (GlassEdge) 0.3 mm outside each side; the case top stays at 1.05. Inside, a
+    // silicone bead runs along the foot of each standing pane and an LED channel with its
+    // diffuser (LightLens, off) hangs under the front rail (an island case also under the
+    // back one). The staff side (+z on an island case, -z on a wall case, served from the
+    // front) has two cupboard locks and the doors' meeting line in the carcass panel and a
+    // key lock at the foot of its sliding pane. A broken pane is removed and leaves a
+    // crown of shards in its frame, plus fragments on the deck. All of the detail is faces
+    // and submeshes of Body, so the case keeps its renderers. Triangles: intact display case
+    // 1100 (Body 1040), front broken 1118, all broken 1036, with drawer 1246; wall case 972
+    // (Body 924), all broken 906.
     private static GameObject Case(string kind, Transform parent, float w, float d, bool backPanel, CaseGlass glass, bool drawer, float drawerOut)
     {
         const float h = 1.05f, deck = 0.70f, post = 0.025f, rail = 0.0425f;
+        // Pane thickness, the top pane's seat over the rails and the bars' bevel.
+        const float lid = 0.010f, seat = 0.0005f, bevel = 0.003f;
+        const float railTop = h - lid - seat, railH = post - lid - seat, half = lid * 0.5f;
+        float paneX = w * 0.5f - rail, paneZ = d * 0.5f - rail;
+        int staff = backPanel ? -1 : 1;
+        bool allBroken = glass == CaseGlass.AllBroken, frontBroken = glass != CaseGlass.Intact;
+        float pw = w - 0.11f, pd = d - 0.11f;
+        float paneY0 = deck + 0.01f, paneH = h - post - paneY0, paneCy = paneY0 + paneH * 0.5f;
         GameObject root = Root(kind, parent);
         KitMesh body = new KitMesh();
-        body.Box(Walnut, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), false);
+        body.Box(FrameMetal, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), false);
         body.Box(Walnut, V(0, (0.08f + deck) * 0.5f, 0), V(w - 0.02f, deck - 0.08f, d - 0.02f));
         FramedPanels(body, Walnut, w - 0.02f, d - 0.02f, 0.08f, deck, !backPanel);
         body.Box(Suede, V(0, deck + 0.005f, 0), V(w - 0.08f, 0.01f, d - 0.08f), false);
+        // Piping 5 mm wide and 3 mm high, 12.5 mm inside the panes; the pieces butt at the corners.
+        const float inset = 0.0125f;
+        float px = paneX - half - inset, pz = paneZ - half - inset;
+        for (int s = -1; s <= 1; s += 2)
+        {
+            body.Box(Suede, V(0, deck + 0.0115f, s * pz), V(2 * px + 0.005f, 0.003f, 0.005f), false);
+            body.Box(Suede, V(s * px, deck + 0.0115f, 0), V(0.005f, 0.003f, 2 * pz - 0.005f), false);
+        }
         for (int s = -1; s <= 1; s += 2)
         {
             body.Box(Bronze, V(0, deck + 0.0075f, s * (d * 0.5f - 0.034f)), V(w - 0.056f, 0.015f, 0.012f));
             body.Box(Bronze, V(s * (w * 0.5f - 0.034f), deck + 0.0075f, 0), V(0.012f, 0.015f, d - 0.08f));
-            body.Box(Bronze, V(0, h - post * 0.5f, s * (d * 0.5f - rail)), V(w - 0.06f, post, post));
-            body.Box(Bronze, V(s * (w * 0.5f - rail), h - post * 0.5f, 0), V(post, post, d - 0.06f));
-            for (int t = -1; t <= 1; t += 2)
-                body.Box(Bronze, V(s * (w * 0.5f - rail), (deck + 0.01f + h) * 0.5f, t * (d * 0.5f - rail)), V(post, h - deck - 0.01f, post));
         }
-        float paneY0 = deck + 0.01f, paneH = h - post - paneY0, paneCy = paneY0 + paneH * 0.5f;
-        if (backPanel) body.Box(Walnut, V(0, paneCy, d * 0.5f - rail), V(w - 0.11f, paneH, 0.012f));
+        // Posts in the corners and rails between them, so no two bars overlap at a corner.
+        for (int s = -1; s <= 1; s += 2)
+        {
+            for (int t = -1; t <= 1; t += 2)
+                body.Bar(Bronze, V(s * paneX, (paneY0 + railTop) * 0.5f, t * paneZ), V(post, railTop - paneY0, post), bevel);
+            body.Bar(Bronze, V(0, railTop - railH * 0.5f, s * paneZ), V(pw, railH, post), bevel);
+            body.Bar(Bronze, V(s * paneX, railTop - railH * 0.5f, 0), V(post, railH, pd), bevel);
+        }
+        if (backPanel) body.Box(Walnut, V(0, paneCy, paneZ), V(w - 0.11f, paneH, 0.012f));
         if (drawer) body.Box(Fabric, V(0, 0.59f, -(d * 0.5f - 0.01f) - 0.001f), V(w - 0.14f, 0.11f, 0.002f));
+        if (!allBroken)
+        {
+            // The top pane's edge band: 0.3 mm outside its sides, 0.1 mm inside its faces.
+            float ex = (w - 0.06f) * 0.5f + 0.0003f, ez = (d - 0.06f) * 0.5f + 0.0003f, e0 = h - lid + 0.0001f, e1 = h - 0.0001f;
+            for (int s = -1; s <= 1; s += 2)
+            {
+                body.Face(GlassEdge, V(0, 0, s), V(-ex, e0, s * ez), V(ex, e0, s * ez), V(ex, e1, s * ez), V(-ex, e1, s * ez));
+                body.Face(GlassEdge, V(s, 0, 0), V(s * ex, e0, -ez), V(s * ex, e0, ez), V(s * ex, e1, ez), V(s * ex, e1, -ez));
+            }
+        }
+        // Silicone beads: a sloped strip from 4 mm up each standing pane's inner face to 4 mm
+        // onto the deck, both edges 0.3 mm off the glass and the suede.
+        float zi = paneZ - half, xi = paneX - half, b0 = paneY0 + 0.0003f, b1 = paneY0 + 0.004f;
+        for (int s = -1; s <= 1; s += 2)
+        {
+            if (s < 0 ? !frontBroken : !backPanel && !allBroken)
+                body.Face(DeviceBlack, V(0, 1, -s), V(-pw * 0.5f, b1, s * (zi - 0.0003f)), V(pw * 0.5f, b1, s * (zi - 0.0003f)),
+                    V(pw * 0.5f, b0, s * (zi - 0.004f)), V(-pw * 0.5f, b0, s * (zi - 0.004f)));
+            if (!allBroken)
+                body.Face(DeviceBlack, V(-s, 1, 0), V(s * (xi - 0.0003f), b1, -pd * 0.5f), V(s * (xi - 0.0003f), b1, pd * 0.5f),
+                    V(s * (xi - 0.004f), b0, pd * 0.5f), V(s * (xi - 0.004f), b0, -pd * 0.5f));
+        }
+        // LED channels inside the glass under the front rail (and the back one on an island
+        // case), each with its diffuser 0.5 mm under it.
+        for (int s = -1; s <= (backPanel ? -1 : 1); s += 2)
+        {
+            float lz = s * (zi - 0.008f), ly = h - post - 0.0085f, lx = (w - 0.14f) * 0.5f;
+            body.Box(FrameMetal, V(0, h - post - 0.004f, lz), V(w - 0.12f, 0.008f, 0.012f));
+            body.Face(LightLens, Vector3.down, V(-lx, ly, lz - 0.003f), V(lx, ly, lz - 0.003f), V(lx, ly, lz + 0.003f), V(-lx, ly, lz + 0.003f));
+        }
+        // Staff-side cupboard: two locks and the doors' 3 mm meeting line in the carcass
+        // panel, all inside the frame's 15 mm projection.
+        float fz = staff * (d - 0.02f) * 0.5f, mz = fz + staff * 0.0003f;
+        for (int s = -1; s <= 1; s += 2) KeyLock(body, Bronze, V(s * 0.07f, deck - 0.13f, fz), V(0, 0, staff), Vector3.up);
+        body.Face(DeviceBlack, V(0, 0, staff), V(-0.0015f, 0.13f, mz), V(0.0015f, 0.13f, mz), V(0.0015f, deck - 0.05f, mz), V(-0.0015f, deck - 0.05f, mz));
+        // Sliding-pane lock on the staff side: its housing stands on the deck trim against
+        // the pane's outer face.
+        if (backPanel ? !frontBroken : !allBroken)
+        {
+            float zo = staff * (paneZ + half);
+            body.Bar(Bronze, V(0, paneY0 + 0.016f, zo + staff * 0.005f), V(0.05f, 0.022f, 0.010f), 0.002f);
+            KeyCylinder(body, V(0, paneY0 + 0.016f, zo + staff * 0.010f), V(0, 0, staff), Vector3.up);
+        }
         Part(body, "Body", root, Vector3.zero, kind + "_body" + (drawer ? "_drawer" : ""));
 
-        bool allBroken = glass == CaseGlass.AllBroken, frontBroken = glass != CaseGlass.Intact;
-        float pw = w - 0.11f, pd = d - 0.11f;
         System.Random rng = new System.Random(kind.Length * 31 + (int)glass);
         KitMesh shards = new KitMesh();
-        Vector3 frontCorner = V(-pw * 0.5f, paneY0, -(d * 0.5f - rail)), backCorner = V(-pw * 0.5f, paneY0, d * 0.5f - rail);
+        Vector3 frontCorner = V(-pw * 0.5f, paneY0, -paneZ), backCorner = V(-pw * 0.5f, paneY0, paneZ);
         if (frontBroken) Crown(shards, rng, frontCorner, Vector3.right, Vector3.up, pw, paneH, 8);
-        else CasePane(root, "Glass_Front", V(0, paneCy, -(d * 0.5f - rail)), V(pw, paneH, 0.006f));
+        else CasePane(root, "Glass_Front", V(0, paneCy, -paneZ), V(pw, paneH, lid));
         if (!backPanel)
         {
             if (allBroken) Crown(shards, rng, backCorner, Vector3.right, Vector3.up, pw, paneH, 8);
-            else CasePane(root, "Glass_Back", V(0, paneCy, d * 0.5f - rail), V(pw, paneH, 0.006f));
+            else CasePane(root, "Glass_Back", V(0, paneCy, paneZ), V(pw, paneH, lid));
         }
         for (int s = -1; s <= 1; s += 2)
         {
             string name = s < 0 ? "Glass_Left" : "Glass_Right";
-            if (allBroken) Crown(shards, rng, V(s * (w * 0.5f - rail), paneY0, -pd * 0.5f), Vector3.forward, Vector3.up, pd, paneH, 5);
-            else CasePane(root, name, V(s * (w * 0.5f - rail), paneCy, 0), V(0.006f, paneH, pd));
+            if (allBroken) Crown(shards, rng, V(s * paneX, paneY0, -pd * 0.5f), Vector3.forward, Vector3.up, pd, paneH, 5);
+            else CasePane(root, name, V(s * paneX, paneCy, 0), V(lid, paneH, pd));
         }
-        if (allBroken) Crown(shards, rng, V(-pw * 0.5f, h - post * 0.5f, -pd * 0.5f), Vector3.right, Vector3.forward, pw, pd, 8);
-        else CasePane(root, "Glass_Top", V(0, h - post * 0.5f, 0), V(pw, 0.006f, pd));
+        // The top pane overlays the frame (its edge exposed); its crown lies on the rails.
+        if (allBroken) Crown(shards, rng, V(-(w - 0.06f) * 0.5f, railTop + 0.0005f, -(d - 0.06f) * 0.5f), Vector3.right, Vector3.forward, w - 0.06f, d - 0.06f, 8);
+        else CasePane(root, "Glass_Top", V(0, h - lid * 0.5f, 0), V(w - 0.06f, lid, d - 0.06f));
         if (frontBroken)
         {
-            Spill(shards, rng, V(0, deck + 0.012f, 0), w * 0.5f - 0.1f, d * 0.5f - 0.1f, allBroken ? 16 : 10);
+            Spill(shards, rng, V(0, deck + 0.0145f, 0), w * 0.5f - 0.1f, d * 0.5f - 0.1f, allBroken ? 16 : 10);
             Spill(shards, rng, V(0, 0.003f, -d * 0.5f - 0.3f), w * 0.4f, 0.22f, 6);
             Part(shards, "Shards", root, Vector3.zero, kind + "_shards_" + glass);
         }
@@ -675,11 +780,12 @@ public static partial class StoreKit
         if (drawer)
         {
             KitMesh tray = new KitMesh();
-            Drawer(tray, w - 0.14f, 0.11f, 0.45f, Walnut, Suede);
+            Drawer(tray, w - 0.14f, 0.11f, 0.45f, Walnut, Suede, true);
             Part(tray, "Drawer", root, V(0, 0.59f, -(d * 0.5f - 0.01f) - drawerOut), kind + "_drawer");
         }
         // Solid cabinet up to the deck, then one thin box per pane still standing, so the
         // deck stays reachable through a broken pane and tools settle on it, not on a lid.
+        // The top box (1.025-1.05) ends at the top pane's upper face.
         Collide(root, V(0, deck * 0.5f, 0), V(w, deck, d));
         const float slab = 0.02f;
         if (!frontBroken) Collide(root, V(0, paneCy, -(d * 0.5f - rail)), V(w, paneH, slab));
@@ -726,16 +832,17 @@ public static partial class StoreKit
         return root;
     }
 
-    // Checkout counter: framed walnut on a recessed plinth, 40 mm stone top with a 20 mm overhang.
+    // Checkout counter: framed walnut on a dark recessed plinth (a shadow gap), 40 mm stone
+    // top with a 20 mm overhang and its long edges eased (498 triangles).
     public static GameObject Counter(Transform parent)
     {
         const float w = 1.8f, d = 0.6f, h = 0.95f;
         GameObject root = Root("counter", parent);
         KitMesh k = new KitMesh();
-        k.Box(Walnut, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), false);
+        k.Box(FrameMetal, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), false);
         k.Box(Walnut, V(0, (0.08f + h - 0.04f) * 0.5f, 0), V(w - 0.02f, h - 0.12f, d - 0.02f));
         FramedPanels(k, Walnut, w - 0.02f, d - 0.02f, 0.08f, h - 0.04f, true);
-        k.Box(Stone, V(0, h - 0.02f, 0), V(w + 0.04f, 0.04f, d + 0.04f));
+        k.Bar(Stone, V(0, h - 0.02f, 0), V(w + 0.04f, 0.04f, d + 0.04f), 0.004f);
         Part(k, "Body", root, Vector3.zero, "counter");
         Collide(root, V(0, h * 0.5f, 0), V(w + 0.04f, h, d + 0.04f));
         return root;
@@ -873,19 +980,27 @@ public static partial class StoreKit
 
     // Steel safe on four feet with 90 mm walls, a bronze-brown lining and two shelves.
     // The inset door ("Door") hinges on the right seen from the front and swings out:
-    // bronze bolts on its free edge, dial and spoked (or single lever) handle outside,
-    // lined panel inside. openAngle 0 is closed.
+    // bronze bolts on its free edge, a spoked (or single lever) handle outside, lined panel
+    // inside. openAngle 0 is closed. The top and bottom walls have their long edges bevelled
+    // (the side walls stay square, so no vertical edge changes bevel halfway up); the hinge
+    // barrels have domed finials and plates on the right wall; dark receivers on the left
+    // jamb face the three bolts. The door slab is bevelled, with a dark channel on its free
+    // edge, a stainless bolt bar and carriers on its inner face (clear of the lining) and a
+    // key lock right of the large safe's dial (index mark above it) or the tall safe's
+    // electronic lock (keys, screen off). Nothing on the door passes its hinge line (x 0).
+    // Triangles: safe_large 931 (Body 336, Door 595), safe_tall 774.
     private static GameObject Safe(string kind, Transform parent, float w, float d, float h, bool spokes, float openAngle)
     {
         const float wall = 0.09f, foot = 0.05f, gap = 0.004f;
+        bool keypad = !spokes;
         GameObject root = Root(kind, parent);
         float hb = h - foot, cy = foot + hb * 0.5f;
         KitMesh k = new KitMesh();
         for (int sx = -1; sx <= 1; sx += 2)
             for (int sz = -1; sz <= 1; sz += 2)
                 k.Box(SafeSteel, V(sx * (w * 0.5f - 0.08f), foot * 0.5f, sz * (d * 0.5f - 0.08f)), V(0.09f, foot, 0.09f), false);
-        k.Box(SafeSteel, V(0, h - wall * 0.5f, 0), V(w, wall, d));
-        k.Box(SafeSteel, V(0, foot + wall * 0.5f, 0), V(w, wall, d));
+        k.Bar(SafeSteel, V(0, h - wall * 0.5f, 0), V(w, wall, d), 0.008f);
+        k.Bar(SafeSteel, V(0, foot + wall * 0.5f, 0), V(w, wall, d), 0.008f);
         k.Box(SafeSteel, V(-(w * 0.5f - wall * 0.5f), cy, 0), V(wall, hb - 2 * wall, d));
         k.Box(SafeSteel, V(w * 0.5f - wall * 0.5f, cy, 0), V(wall, hb - 2 * wall, d));
         k.Box(SafeSteel, V(0, cy, d * 0.5f - wall * 0.5f), V(w - 2 * wall, hb - 2 * wall, wall));
@@ -901,17 +1016,62 @@ public static partial class StoreKit
             k.Box(SafeLining, V(0, y0 + (y1 - y0) * i / 3f, (zf + zb) * 0.5f), V(2 * ix, 0.02f, zb - zf));
         float hingeX = w * 0.5f - wall - gap, W = w - 2 * wall - 2 * gap, H = hb - 2 * wall - 2 * gap, dy = foot + wall + gap + H * 0.5f;
         for (int s = -1; s <= 1; s += 2)
-            k.Cylinder(SafeSteel, V(hingeX + 0.02f, dy + s * H * 0.3f - 0.07f, -d * 0.5f - 0.012f),
-                V(hingeX + 0.02f, dy + s * H * 0.3f + 0.07f, -d * 0.5f - 0.012f), 0.018f, 8);
+        {
+            // Hinge barrel with a domed finial, on a plate on the right wall's front face. The
+            // plate is 10 mm shorter than the barrel, so the barrel's bottom cap and the plate's
+            // bottom never share a plane.
+            float yc = dy + s * H * 0.3f;
+            k.Lathe(SafeSteel, V(hingeX + 0.02f, yc - 0.07f, -d * 0.5f - 0.012f), Quaternion.identity,
+                new[] { 0.018f, 0.018f, 0.012f, 0f }, new[] { 0f, 0.14f, 0.15f, 0.155f }, 12, true, true, false);
+            k.Box(SafeSteel, V(hingeX + 0.045f, yc, -d * 0.5f - 0.003f), V(0.04f, 0.13f, 0.006f));
+        }
+        // Bolt receivers: 46 mm dark squares (the bolts are 44 mm across) on the left jamb at
+        // the bolts' heights, in front of the lining.
+        float rx = -(w * 0.5f - wall) + 0.0005f, rz = -d * 0.5f + wall * 0.5f;
+        for (int i = -1; i <= 1; i++)
+        {
+            float ry = dy + i * H * 0.3f;
+            k.Face(DeviceBlack, Vector3.right, V(rx, ry - 0.023f, rz - 0.023f), V(rx, ry + 0.023f, rz - 0.023f),
+                V(rx, ry + 0.023f, rz + 0.023f), V(rx, ry - 0.023f, rz + 0.023f));
+        }
         Part(k, "Body", root, Vector3.zero, kind + "_body");
 
         KitMesh door = new KitMesh();
-        door.Box(SafeSteel, V(-W * 0.5f, dy, wall * 0.5f), V(W, H, wall));
+        door.Bar(SafeSteel, V(-W * 0.5f, dy, wall * 0.5f), V(W, H, wall), 0.006f);
         door.Box(SafeLining, V(-W * 0.5f, dy, wall + 0.006f), V(W - 0.12f, H - 0.12f, 0.012f));
         for (int i = -1; i <= 1; i++)
             door.Cylinder(Bronze, V(-W + 0.01f, dy + i * H * 0.3f, wall * 0.5f), V(-W - 0.035f, dy + i * H * 0.3f, wall * 0.5f), 0.022f, 12);
+        // The bolts' 46 mm channel on the free edge (wider than the bolts it lets out); on the
+        // inner face the bolt bar with a carrier at each bolt, their backs on the slab and
+        // clear of the lining panel's edge.
+        float ex = -W - 0.0005f, ez = wall * 0.5f;
+        door.Face(DeviceBlack, Vector3.left, V(ex, dy - H * 0.35f, ez - 0.023f), V(ex, dy + H * 0.35f, ez - 0.023f),
+            V(ex, dy + H * 0.35f, ez + 0.023f), V(ex, dy - H * 0.35f, ez + 0.023f));
+        door.Box(Stainless, V(-W + 0.03f, dy, wall + 0.008f), V(0.03f, H * 0.6f + 0.06f, 0.016f));
+        for (int i = -1; i <= 1; i++) door.Box(Stainless, V(-W + 0.035f, dy + i * H * 0.3f, wall + 0.009f), V(0.045f, 0.03f, 0.018f));
         Quaternion outward = Quaternion.FromToRotation(Vector3.up, Vector3.back);
-        door.Lathe(Bronze, V(-W * 0.5f, dy + H * 0.22f, 0), outward, new[] { 0.07f, 0.07f, 0.05f }, new[] { 0f, 0.018f, 0.03f }, 20, true, false, true);
+        Vector3 lockAt = V(-W * 0.5f, dy + H * 0.22f, 0);
+        if (keypad)
+        {
+            // Electronic lock: a dark housing, its screen (off, as EmissionChecks requires)
+            // and twelve grey keys, 0.3 mm proud of its front.
+            Vector3 kc = lockAt + V(0, 0, -0.01f), sc = kc + V(0, 0.035f, -0.0103f);
+            door.Bar(DeviceBlack, kc, V(0.075f, 0.11f, 0.02f), 0.004f);
+            door.Face(DeviceScreen, Vector3.back, sc + V(-0.025f, -0.009f, 0), sc + V(0.025f, -0.009f, 0), sc + V(0.025f, 0.009f, 0), sc + V(-0.025f, 0.009f, 0));
+            for (int r = 0; r < 4; r++)
+                for (int c = 0; c < 3; c++)
+                {
+                    Vector3 key = kc + V((c - 1) * 0.02f, 0.012f - r * 0.0145f, -0.0103f);
+                    door.Face(DeviceGrey, Vector3.back, key + V(-0.007f, -0.0045f, 0), key + V(0.007f, -0.0045f, 0),
+                        key + V(0.007f, 0.0045f, 0), key + V(-0.007f, 0.0045f, 0));
+                }
+        }
+        else
+        {
+            door.Lathe(Bronze, lockAt, outward, new[] { 0.07f, 0.07f, 0.05f }, new[] { 0f, 0.018f, 0.03f }, 20, true, false, true);
+            door.Face(DeviceBlack, Vector3.back, lockAt + V(-0.004f, 0.08f, -0.0005f), lockAt + V(0.004f, 0.08f, -0.0005f), lockAt + V(0, 0.072f, -0.0005f));
+        }
+        KeyLock(door, Bronze, V(-W * 0.5f + 0.16f, dy + H * 0.22f, 0), Vector3.back, Vector3.up);
         Vector3 hub = V(-W * 0.5f, dy - H * 0.05f, 0), hubFront = hub + V(0, 0, -0.05f);
         door.Cylinder(Bronze, hub, hub + V(0, 0, -0.06f), 0.03f, 12);
         int arms = spokes ? 3 : 1;
@@ -1035,14 +1195,21 @@ public static partial class StoreKit
     // Double glass doors in a dark metal frame (2.0 x 2.4). DoorLeft hinges at the left
     // jamb, DoorRight at the right; positive angles open both into the shop (+z). Each
     // hinge axis lies on the leaf's +z face, so an opened leaf swings clear of the jamb.
+    // Bevelled jambs, head, hinge stiles and rails (the lock stile stays square: the pry
+    // marks and the UV smear span its 70 mm faces); 12 mm glazing beads round the glass on
+    // both faces; through-bolted pull bars whose standoffs pass through the glass; a
+    // deadlock on both faces of each bottom rail; a door contact under the head over each
+    // leaf's magnet (2.6 cm apart when closed). Triangles: each leaf 432, the frame 118,
+    // closed 1006, one leaf broken 1088, both broken 1170.
     public static GameObject StorefrontDoors(Transform parent, float openLeft = 0, float openRight = 0, bool brokenLeft = false, bool brokenRight = false)
     {
         const float half = 0.92f, leafW = 0.915f, leafH = 2.30f, hinge = half - 0.0025f;
         GameObject root = Root("storefront_doors", parent);
         KitMesh frame = new KitMesh();
-        for (int s = -1; s <= 1; s += 2) frame.Box(FrameMetal, V(s * 0.96f, 1.2f, 0), V(0.08f, 2.4f, 0.12f));
-        frame.Box(FrameMetal, V(0, 2.36f, 0), V(2 * half, 0.08f, 0.12f));
+        for (int s = -1; s <= 1; s += 2) frame.Bar(FrameMetal, V(s * 0.96f, 1.2f, 0), V(0.08f, 2.4f, 0.12f), 0.004f);
+        frame.Bar(FrameMetal, V(0, 2.36f, 0), V(2 * half, 0.08f, 0.12f), 0.004f);
         frame.Box(Stainless, V(0, 0.005f, 0), V(2 * half, 0.01f, 0.14f), false);
+        for (int s = -1; s <= 1; s += 2) frame.Box(DeviceGrey, V(s * 0.1525f, 2.314f, 0.04f), V(0.06f, 0.012f, 0.012f));
         Part(frame, "Frame", root, Vector3.zero, "storefront_frame");
         for (int s = -1; s <= 1; s += 2) Collide(root, V(s * 0.96f, 1.2f, 0), V(0.08f, 2.4f, 0.12f));
         Collide(root, V(0, 2.36f, 0), V(2 * half, 0.08f, 0.12f));
@@ -1055,20 +1222,31 @@ public static partial class StoreKit
             float x = -s;
             bool broken = s < 0 ? brokenLeft : brokenRight;
             KitMesh leaf = new KitMesh();
-            leaf.Box(FrameMetal, V(x * 0.035f, 0.01f + leafH * 0.5f, zc), V(0.07f, leafH, t));
+            float gw = leafW - 0.14f, gh = leafH - 0.25f;
+            leaf.Bar(FrameMetal, V(x * 0.035f, 0.01f + leafH * 0.5f, zc), V(0.07f, leafH, t), 0.003f);
             leaf.Box(FrameMetal, V(x * (leafW - 0.035f), 0.01f + leafH * 0.5f, zc), V(0.07f, leafH, t));
-            leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.01f + leafH - 0.035f, zc), V(leafW - 0.14f, 0.07f, t));
-            leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.01f + 0.09f, zc), V(leafW - 0.14f, 0.18f, t));
+            leaf.Bar(FrameMetal, V(x * leafW * 0.5f, 0.01f + leafH - 0.035f, zc), V(leafW - 0.14f, 0.07f, t), 0.003f);
+            leaf.Bar(FrameMetal, V(x * leafW * 0.5f, 0.01f + 0.09f, zc), V(leafW - 0.14f, 0.18f, t), 0.003f);
             for (int f = -1; f <= 1; f += 2)
             {
-                leaf.Box(Bronze, V(x * (leafW - 0.1f), 1.05f, zc + f * 0.06f), V(0.025f, 0.6f, 0.025f));
-                for (int e = -1; e <= 1; e += 2)
-                    leaf.Box(Bronze, V(x * (leafW - 0.1f), 1.05f + e * 0.25f, zc + f * 0.0375f), V(0.015f, 0.015f, 0.025f));
+                // Glazing beads round the glass (x 0.07-0.845, y 0.19-2.24, faces zc +- 4 mm).
+                float bz = zc + f * 0.010f;
+                leaf.Box(FrameMetal, V(x * 0.076f, 0.19f + gh * 0.5f, bz), V(0.012f, gh, 0.012f));
+                leaf.Box(FrameMetal, V(x * (leafW - 0.076f), 0.19f + gh * 0.5f, bz), V(0.012f, gh, 0.012f));
+                leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.196f, bz), V(gw - 0.024f, 0.012f, 0.012f));
+                leaf.Box(FrameMetal, V(x * leafW * 0.5f, 0.19f + gh - 0.006f, bz), V(gw - 0.024f, 0.012f, 0.012f));
+                leaf.Cylinder(Bronze, V(x * (leafW - 0.1f), 0.75f, zc + f * 0.06f), V(x * (leafW - 0.1f), 1.35f, zc + f * 0.06f), 0.0125f, 10);
+                KeyLock(leaf, Bronze, V(x * (leafW - 0.12f), 0.10f, zc + f * t * 0.5f), f > 0 ? Vector3.forward : Vector3.back, Vector3.up);
             }
+            // The pull bars are through-bolted: each standoff runs from bar axis to bar axis
+            // through the glass, so no open end shows.
+            for (int e = -1; e <= 1; e += 2)
+                leaf.Cylinder(Bronze, V(x * (leafW - 0.1f), 1.05f + e * 0.25f, zc - 0.06f), V(x * (leafW - 0.1f), 1.05f + e * 0.25f, zc + 0.06f), 0.008f, 8, false);
+            // Contact magnet on the top rail's shop face, under the frame's contact.
+            leaf.Box(DeviceGrey, V(x * (leafW - 0.15f), 0.01f + leafH - 0.02f, 0.006f), V(0.06f, 0.012f, 0.012f));
             float angle = s < 0 ? -openLeft : openRight;
             GameObject leafObject = leaf.Emit(s < 0 ? "DoorLeft" : "DoorRight", root.transform, V(s * hinge, 0, -zc),
                 Quaternion.Euler(0, angle, 0), Folder, s < 0 ? "storefront_leaf_left" : "storefront_leaf_right");
-            float gw = leafW - 0.14f, gh = leafH - 0.25f;
             PaneChild("Glass", leafObject.transform, V(x * leafW * 0.5f, 0.19f + gh * 0.5f, zc), gw, gh, 0.008f, broken, 20 + s, new Vector2(0.05f, -0.1f));
             Collide(leafObject, V(x * leafW * 0.5f, 0.01f + leafH * 0.5f, zc), V(leafW, leafH, t));
             if (broken) Spill(shards, rng, V(s * 0.45f, 0.003f, 0.45f), 0.45f, 0.4f, 12);
@@ -1088,6 +1266,10 @@ public static partial class StoreKit
     // Single leaf in a 0.9 x 2.1 opening, hinged on the left seen from the front. The
     // hinge axis (and the butt hinges) lie on the leaf's +z face, the side it opens
     // towards, so the opened leaf's back corner swings into the opening, not the casing.
+    // A door contact under the head faces the magnet on the leaf's -z face (2 cm apart
+    // closed); the office door has a key lock under its lever on both faces, the service
+    // door one on its push side above the bar. All of it stays clear of the Staff Only
+    // sign (x <= 0.647, y 1.45-1.65). Triangles: office_door 352, service_door 218.
     private static GameObject HingedDoor(string kind, Transform parent, Material leafMaterial, Material hardware, bool service, float open)
     {
         const float half = 0.45f, leafW = 0.894f, leafH = 2.09f, casing = 0.07f, t = 0.04f, zc = -t * 0.5f;
@@ -1096,17 +1278,20 @@ public static partial class StoreKit
         for (int s = -1; s <= 1; s += 2) frame.Box(leafMaterial, V(s * (half + casing * 0.5f), (2.1f + casing) * 0.5f, 0), V(casing, 2.1f + casing, 0.14f));
         frame.Box(leafMaterial, V(0, 2.1f + casing * 0.5f, 0), V(2 * half, casing, 0.14f));
         foreach (float y in new[] { 0.25f, 1.05f, 1.85f }) frame.Box(hardware, V(-half + 0.002f, y, -zc), V(0.012f, 0.1f, 0.025f));
+        frame.Box(DeviceGrey, V(-half + 0.002f + leafW - 0.13f, 2.094f, -0.032f), V(0.06f, 0.012f, 0.012f));
         Part(frame, "Frame", root, Vector3.zero, kind + "_frame");
         for (int s = -1; s <= 1; s += 2) Collide(root, V(s * (half + casing * 0.5f), (2.1f + casing) * 0.5f, 0), V(casing, 2.1f + casing, 0.14f));
         Collide(root, V(0, 2.1f + casing * 0.5f, 0), V(2 * half, casing, 0.14f));
         KitMesh leaf = new KitMesh();
         float cx = leafW * 0.5f, cy = 0.005f + leafH * 0.5f;
         leaf.Box(leafMaterial, V(cx, cy, zc), V(leafW, leafH, t));
+        leaf.Box(DeviceGrey, V(leafW - 0.13f, 0.005f + leafH - 0.02f, zc - t * 0.5f - 0.006f), V(0.06f, 0.012f, 0.012f));
         if (service)
         {
             leaf.Box(hardware, V(cx, 1.0f, zc - 0.055f), V(0.66f, 0.035f, 0.03f));
             for (int e = -1; e <= 1; e += 2) leaf.Box(hardware, V(cx + e * 0.36f, 1.0f, zc - 0.045f), V(0.07f, 0.09f, 0.05f));
             leaf.Box(hardware, V(cx, 0.13f, zc - 0.0215f), V(leafW - 0.04f, 0.25f, 0.003f));
+            KeyLock(leaf, hardware, V(leafW - 0.07f, 1.18f, zc - t * 0.5f), Vector3.back, Vector3.up);
         }
         else
         {
@@ -1116,6 +1301,7 @@ public static partial class StoreKit
                 leaf.Cylinder(hardware, V(hx, 1.0f, zc + f * 0.02f), V(hx, 1.0f, zc + f * 0.03f), 0.026f, 10);
                 leaf.Box(hardware, V(hx, 1.0f, zc + f * 0.037f), V(0.018f, 0.018f, 0.016f));
                 leaf.Box(hardware, V(hx - 0.055f, 1.0f, zc + f * 0.045f), V(0.12f, 0.018f, 0.018f));
+                KeyLock(leaf, hardware, V(hx, 0.92f, zc + f * t * 0.5f), f > 0 ? Vector3.forward : Vector3.back, Vector3.up);
             }
         }
         GameObject leafObject = leaf.Emit("Door", root.transform, V(-half + 0.002f, 0, -zc), Quaternion.Euler(0, -open, 0), Folder, kind + "_leaf");
@@ -1125,9 +1311,15 @@ public static partial class StoreKit
 
     // One 2.0 x 3.0 facade bay: 40 mm half mullions each side (adjacent bays form 80 mm),
     // kick panel to 0.35, sill, transom bar at 2.6, fascia and head, one "Glass" child.
+    // Street-side snap caps (bevelled bars) cover the mullions, sill and transom: adjacent
+    // bays' 30 mm mullion caps butt into one 60 mm cap with a V seam, and the horizontal
+    // caps butt into them; the sill cap's top stands 1 mm over the sill's, so the two never
+    // share a plane. 12 mm beads hold the glass on the shop face and a 5 mm gasket lies 0.4
+    // mm in front of its street face, all in the frame's metal (no extra submesh).
     // Cracked adds radial crack lines ("Cracks" under Glass); Broken leaves a jagged
     // hole in the pane and fragments ("Shards") on the floor inside and out and on the sill.
     // width (default 2.0) narrows the bay for sidelights; the frame sections stay the same.
+    // Triangles: intact 286, cracked 526, broken 378.
     public static GameObject WindowModule(Transform parent, Pane state = Pane.Intact, float width = 2.0f)
     {
         const float gy0 = 0.43f, gy1 = 2.56f;
@@ -1140,6 +1332,21 @@ public static partial class StoreKit
         k.Box(FrameMetal, V(0, 2.6f, 0), V(gw, 0.08f, 0.12f));
         k.Box(FrameMetal, V(0, 2.78f, 0), V(gw, 0.28f, 0.10f));
         k.Box(FrameMetal, V(0, 2.96f, 0), V(gw, 0.08f, 0.14f));
+        for (int s = -1; s <= 1; s += 2) k.Bar(FrameMetal, V(s * (width * 0.5f - 0.015f), 1.5f, -0.0725f), V(0.03f, 3.0f, 0.025f), 0.004f);
+        k.Bar(FrameMetal, V(0, 0.4155f, -0.0775f), V(width - 0.06f, 0.031f, 0.035f), 0.004f);
+        k.Bar(FrameMetal, V(0, 2.575f, -0.0725f), V(width - 0.06f, 0.03f, 0.025f), 0.004f);
+        // Beads on the pane's shop face (z 0.005) and the gasket in front of its street face (z -0.005).
+        const float gasket = -0.0054f;
+        float gx = gw * 0.5f, ix = gx - 0.005f;
+        for (int s = -1; s <= 1; s += 2)
+        {
+            k.Box(FrameMetal, V(s * (gx - 0.006f), (gy0 + gy1) * 0.5f, 0.0125f), V(0.012f, gy1 - gy0, 0.015f));
+            k.Face(FrameMetal, Vector3.back, V(s * ix, gy0, gasket), V(s * gx, gy0, gasket), V(s * gx, gy1, gasket), V(s * ix, gy1, gasket));
+        }
+        k.Box(FrameMetal, V(0, gy0 + 0.006f, 0.0125f), V(gw - 0.024f, 0.012f, 0.015f));
+        k.Box(FrameMetal, V(0, gy1 - 0.006f, 0.0125f), V(gw - 0.024f, 0.012f, 0.015f));
+        foreach (float y in new[] { gy0, gy1 - 0.005f })
+            k.Face(FrameMetal, Vector3.back, V(-ix, y, gasket), V(ix, y, gasket), V(ix, y + 0.005f, gasket), V(-ix, y + 0.005f, gasket));
         foreach (float y in new[] { 0.05f, 0.30f }) k.Box(Bronze, V(0, y, -0.052f), V(gw - 0.12f, 0.008f, 0.004f));
         Part(k, "Frame", root, Vector3.zero, "window_frame");
         for (int s = -1; s <= 1; s += 2) Collide(root, V(s * mullion, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
@@ -1156,7 +1363,10 @@ public static partial class StoreKit
             System.Random rng = new System.Random(13);
             Spill(shards, rng, V(0, 0.003f, 0.65f), width * 0.45f, 0.55f, 11);
             Spill(shards, rng, V(0, 0.003f, -0.35f), width * 0.45f, 0.25f, 7);
-            Spill(shards, rng, V(0, 0.432f, 0), width * 0.425f, 0.03f, 4);
+            // On the sill's street side, between the cap's front and the gasket (fragments reach
+            // 45 mm from their centre), so none runs through the shop-side bead or the pane's
+            // remaining bottom edge.
+            Spill(shards, rng, V(0, 0.432f, -0.0502f), width * 0.425f, 0, 4);
             Part(shards, "Shards", root, Vector3.zero, "window_shards");
         }
         return root;
@@ -1243,15 +1453,20 @@ public static partial class StoreKit
         => k.Stroke(ExitLetters, V(ax, ay, -0.051f), V(bx, by, -0.051f), ExitStroke, Vector3.back);
 
     // Wall-mounted bullet camera: plate, arm, housing tilted 15 degrees down, hood and lens.
-    public static GameObject SecurityCamera(Transform parent)
+    // aim (degrees about y) turns the arm and housing about the plate's front centre; the
+    // plate itself stays square to the wall, so a camera aimed along a room still sits flat
+    // on its wall. The triangle count does not depend on aim.
+    public static GameObject SecurityCamera(Transform parent, float aim = 0)
     {
         GameObject root = Root("security_camera", parent);
         KitMesh k = new KitMesh();
         k.Box(DeviceGrey, V(0, 0.06f, -0.006f), V(0.08f, 0.12f, 0.012f));
-        k.Box(DeviceGrey, V(0, 0.08f, -0.087f), V(0.03f, 0.03f, 0.15f));
-        k.Box(DeviceGrey, V(0, 0.105f, -0.17f), V(0.035f, 0.05f, 0.035f));
-        Vector3 c = V(0, 0.15f, -0.26f);
-        Quaternion q = Quaternion.Euler(-15, 0, 0);
+        Quaternion yaw = Quaternion.Euler(0, aim, 0);
+        Vector3 pivot = V(0, 0.08f, -0.012f);
+        k.Box(DeviceGrey, pivot + yaw * (V(0, 0.08f, -0.087f) - pivot), V(0.03f, 0.03f, 0.15f), yaw);
+        k.Box(DeviceGrey, pivot + yaw * (V(0, 0.105f, -0.17f) - pivot), V(0.035f, 0.05f, 0.035f), yaw);
+        Vector3 c = pivot + yaw * (V(0, 0.15f, -0.26f) - pivot);
+        Quaternion q = yaw * Quaternion.Euler(-15, 0, 0);
         k.Box(DeviceGrey, c, V(0.09f, 0.08f, 0.22f), q);
         k.Box(DeviceGrey, c + q * V(0, 0.048f, -0.02f), V(0.11f, 0.012f, 0.26f), q);
         k.Cylinder(DeviceBlack, c + q * V(0, 0, -0.11f), c + q * V(0, 0, -0.122f), 0.032f, 12);
@@ -1342,8 +1557,10 @@ public static partial class StoreKit
             Vector3 slot = V((i % 8 - 3.5f) * 2.6f, 0, (i / 8) * 3.2f);
             GameObject g = BuildEntry(entries[i], gallery);
             g.name = entries[i];
-            float lift = entries[i] == "track_light" || entries[i] == "downlight" ? 2.4f
-                : entries[i] == "exit_sign" || entries[i] == "alarm_keypad" || entries[i] == "security_camera" ? 1.0f : 0;
+            string e = entries[i];
+            float lift = e == "track_light" || e == "downlight" || e == "cctv_dome" || e == "smoke_detector" ? 2.4f
+                : e == "exit_sign" || e == "alarm_keypad" || e == "security_camera" || e == "pir_detector" || e == "light_switch"
+                || e == "socket_outlet" ? 1.0f : 0;
             g.transform.localPosition = slot + V(0, lift, 0);
             TextMesh label = Text("Label_" + entries[i], gallery, entries[i].Replace("__", " "), slot + V(0, 0.01f, -1.0f), 0, 0.02f, Color.white);
             label.transform.localRotation = Quaternion.Euler(90, 0, 0);

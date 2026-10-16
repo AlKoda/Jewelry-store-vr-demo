@@ -20,7 +20,8 @@ public static class ShopDisplayFinish
         Material linen=Mat(Folder,"CounterStone",new Color(.77f,.75f,.69f),.21f);
         Material pad=Mat(Folder,"DisplayVelvet",new Color(.16f,.21f,.23f),.04f);
         Material suede=Mat(Folder,"DisplaySuede",new Color(.55f,.58f,.53f),.06f);
-        // Same gold as StoreKitProps' KitGold, so cased and scattered jewellery match.
+        // The colour matches StoreKitProps' KitGold, so cased and scattered jewellery match.
+        // The night store holds KitGold at 0.72 smoothness against VR shimmer; the old shop keeps 0.8.
         Material gold=Mat(Folder,"JewelryGold",new Color(.98f,.84f,.55f),.8f);
         gold.SetFloat("_Metallic",1f);
         Material glass=Translucent(Mat(Folder,"ClearGlass",new Color(.78f,.88f,.90f,.07f),.55f));

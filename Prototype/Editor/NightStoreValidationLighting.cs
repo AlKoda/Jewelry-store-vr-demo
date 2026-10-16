@@ -549,38 +549,12 @@ public static partial class NightStoreValidation
             wash.TransformPoint(-0.49f, 0.49f, 0), wash.TransformPoint(0.49f, 0.49f, 0) };
         foreach (Vector3 p in points)
         {
-            float y = GlowSurfaceY(filter, p);
+            float y = DemoValidation.SurfaceY(filter, p);
             if (float.IsNaN(y)) return false;
             low = Mathf.Min(low, p.y - y);
             high = Mathf.Max(high, p.y - y);
         }
         return true;
-    }
-
-    // Height of the topmost triangle of the mesh straight below p (a ray from 0.5 m above it,
-    // Moller-Trumbore, either side facing); NaN when none lies there.
-    private static float GlowSurfaceY(MeshFilter filter, Vector3 p)
-    {
-        Mesh mesh = filter.sharedMesh;
-        if (mesh == null) return float.NaN;
-        Vector3[] v = mesh.vertices;
-        int[] triangles = mesh.triangles;
-        Matrix4x4 world = filter.transform.localToWorldMatrix;
-        Vector3 origin = p + Vector3.up * 0.5f, down = Vector3.down;
-        float best = float.MaxValue;
-        for (int i = 0; i + 2 < triangles.Length && v.Length > 0; i += 3)
-        {
-            Vector3 a = world.MultiplyPoint3x4(v[triangles[i]]), b = world.MultiplyPoint3x4(v[triangles[i + 1]]), c = world.MultiplyPoint3x4(v[triangles[i + 2]]);
-            Vector3 e1 = b - a, e2 = c - a, q = Vector3.Cross(down, e2);
-            float det = Vector3.Dot(e1, q);
-            if (Mathf.Abs(det) < 1e-12f) continue;
-            float inverse = 1 / det;
-            Vector3 s = origin - a, r = Vector3.Cross(s, e1);
-            float u = Vector3.Dot(s, q) * inverse, w = Vector3.Dot(down, r) * inverse, d = Vector3.Dot(e2, r) * inverse;
-            if (u < 0 || w < 0 || u + w > 1 || d < 0 || d >= best) continue;
-            best = d;
-        }
-        return best < float.MaxValue ? origin.y - best : float.NaN;
     }
 
     // A colour as a property block hands it back (SetColor may convert it to the active colour

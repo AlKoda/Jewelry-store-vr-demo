@@ -36,6 +36,16 @@ public sealed class KitMesh : ProceduralMesh
         }
     }
 
+    // A box with the four edges along its longest axis bevelled (ProceduralMesh.ChamferBox
+    // turned onto that axis): profiles, posts, rails, stiles, mouldings. Its end faces stay
+    // square, as on cut extrusions and mouldings; 28 triangles.
+    public void Bar(Material material, Vector3 centre, Vector3 size, float bevel)
+    {
+        if (size.x >= size.y && size.x >= size.z) ChamferBox(material, centre, size, bevel, Quaternion.identity);
+        else if (size.y >= size.z) ChamferBox(material, centre, new Vector3(size.y, size.x, size.z), bevel, Quaternion.Euler(0, 0, 90));
+        else ChamferBox(material, centre, new Vector3(size.z, size.y, size.x), bevel, Quaternion.Euler(0, 90, 0));
+    }
+
     private static readonly Dictionary<string, Mesh> saved = new Dictionary<string, Mesh>();
 
     // Every mesh asset path saved or reused since the editor domain loaded.
@@ -96,9 +106,7 @@ public sealed class KitMesh : ProceduralMesh
         g.AddComponent<MeshFilter>().sharedMesh = Save(folder, assetName);
         MeshRenderer renderer = g.AddComponent<MeshRenderer>();
         renderer.sharedMaterials = materials.ToArray();
-        bool transparent = true;
-        foreach (Material m in materials) transparent &= m != null && m.renderQueue >= 3000;
-        if (transparent) { renderer.shadowCastingMode = ShadowCastingMode.Off; renderer.receiveShadows = false; }
+        if (DemoAssetLibrary.Blended(renderer)) { renderer.shadowCastingMode = ShadowCastingMode.Off; renderer.receiveShadows = false; }
         return g;
     }
 }

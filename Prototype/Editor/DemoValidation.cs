@@ -707,5 +707,297 @@ public static class DemoValidation
         Debug.Log(success ? "JEWELRY_VALIDATION_PASS" : "JEWELRY_VALIDATION_FAIL " + error);
         EditorApplication.Exit(success ? 0 : 1);
     }
+
+    // --- Geometry helpers for the night store's area validators (NightStoreValidation*) ---
+
+    // A mesh the triangle rays read: the world box they test first, then the mesh's world-space
+    // vertices and triangles. An eager one reads those at once and boxes its vertices; a lazy one
+    // is boxed by its renderer and read on the first ray that reaches that box, so the meshes a
+    // ray never nears are never read.
+    public sealed class RayMesh
+    {
+        public Bounds Box;
+        public Vector3[] World;
+        public int[] Triangles;
+        internal MeshFilter Unread;
+    }
+
+    private static readonly Dictionary<MeshFilter, RayMesh> rayMeshes = new Dictionary<MeshFilter, RayMesh>();
+
+    // The filter's RayMesh, read once per check pass: a pass clears the cache when it starts and
+    // ends (ClearRayMeshes), since a mesh that moves in between would keep its old place. Inactive
+    // meshes are included; lazy needs the filter's renderer, and the first call in a pass decides.
+    // Null without a mesh or with an empty one.
+    public static RayMesh RayMeshOf(MeshFilter filter, bool lazy = false)
+    {
+        if (filter == null) return null;
+        if (rayMeshes.TryGetValue(filter, out RayMesh m)) return m;
+        m = NewRayMesh(filter, lazy);
+        if (m != null) rayMeshes[filter] = m;
+        return m;
+    }
+
+    // An uncached RayMesh, as RayMeshOf builds it.
+    public static RayMesh NewRayMesh(MeshFilter filter, bool lazy = false)
+    {
+        Mesh mesh = filter != null ? filter.sharedMesh : null;
+        if (mesh == null || mesh.vertexCount == 0) return null;
+        Renderer renderer = lazy ? filter.GetComponent<Renderer>() : null;
+        if (renderer != null) return new RayMesh { Box = renderer.bounds, Unread = filter };
+        RayMesh m = new RayMesh();
+        ReadRayMesh(m, filter);
+        for (int i = 0; i < m.World.Length; i++)
+            if (i == 0) m.Box = new Bounds(m.World[0], Vector3.zero);
+            else m.Box.Encapsulate(m.World[i]);
+        return m;
+    }
+
+    public static void ClearRayMeshes() => rayMeshes.Clear();
+
+    private static void ReadRayMesh(RayMesh m, MeshFilter filter)
+    {
+        Mesh mesh = filter.sharedMesh;
+        Matrix4x4 toWorld = filter.transform.localToWorldMatrix;
+        Vector3[] vertices = mesh.vertices;
+        for (int i = 0; i < vertices.Length; i++) vertices[i] = toWorld.MultiplyPoint3x4(vertices[i]);
+        m.World = vertices;
+        m.Triangles = mesh.triangles;
+        m.Unread = null;
+    }
+
+    // Nearest hit of a world-space ray within maxDistance on either side of the meshes'
+    // triangles (Moller-Trumbore), with that triangle's winding normal; false when nothing is
+    // hit (distance NaN). Null entries are skipped, and boxes the ray misses are never read.
+    public static bool TriangleRay(Ray ray, float maxDistance, List<RayMesh> meshes, out float distance, out Vector3 normal)
+    {
+        float best = float.MaxValue;
+        normal = Vector3.zero;
+        foreach (RayMesh m in meshes) TriangleRayInto(ray, maxDistance, m, ref best, ref normal);
+        distance = best < float.MaxValue ? best : float.NaN;
+        return best < float.MaxValue;
+    }
+
+    // The same against one mesh (null: no hit).
+    public static bool TriangleRay(Ray ray, float maxDistance, RayMesh mesh, out float distance)
+    {
+        float best = float.MaxValue;
+        Vector3 normal = Vector3.zero;
+        TriangleRayInto(ray, maxDistance, mesh, ref best, ref normal);
+        distance = best < float.MaxValue ? best : float.NaN;
+        return best < float.MaxValue;
+    }
+
+    private static void TriangleRayInto(Ray ray, float maxDistance, RayMesh m, ref float best, ref Vector3 normal)
+    {
+        if (m == null) return;
+        Bounds box = m.Box;
+        box.Expand(0.004f);
+        if (!box.IntersectRay(ray, out float enter) || enter > maxDistance) return;
+        if (m.Unread != null) ReadRayMesh(m, m.Unread);
+        Vector3[] w = m.World;
+        int[] tri = m.Triangles;
+        if (w == null || w.Length == 0 || tri == null) return;
+        Vector3 origin = ray.origin, direction = ray.direction;
+        for (int i = 0; i + 2 < tri.Length; i += 3)
+        {
+            Vector3 a = w[tri[i]], e1 = w[tri[i + 1]] - a, e2 = w[tri[i + 2]] - a, p = Vector3.Cross(direction, e2);
+            float det = Vector3.Dot(e1, p);
+            if (Mathf.Abs(det) < 1e-12f) continue;
+            float inv = 1 / det;
+            Vector3 s = origin - a;
+            float u = Vector3.Dot(s, p) * inv;
+            if (u < 0 || u > 1) continue;
+            Vector3 q = Vector3.Cross(s, e1);
+            float v = Vector3.Dot(direction, q) * inv;
+            if (v < 0 || u + v > 1) continue;
+            float t = Vector3.Dot(e2, q) * inv;
+            if (t < 0 || t > maxDistance || t >= best) continue;
+            best = t;
+            normal = Vector3.Cross(e1, e2).normalized;
+        }
+    }
+
+    // Height of the topmost triangle of the mesh straight below p (a ray down from 0.5 m above
+    // it, either side facing); NaN when none lies there.
+    public static float SurfaceY(MeshFilter filter, Vector3 p)
+    {
+        Vector3 origin = p + Vector3.up * 0.5f;
+        return TriangleRay(new Ray(origin, Vector3.down), float.MaxValue, NewRayMesh(filter), out float d) ? origin.y - d : float.NaN;
+    }
+
+    // A box collider's world bounds round its eight corners, from its own centre and size (no
+    // physics query, so no transform sync is needed).
+    public static Bounds BoxColliderBounds(BoxCollider box)
+    {
+        Transform t = box.transform;
+        Bounds b = new Bounds(t.TransformPoint(box.center), Vector3.zero);
+        for (int i = 0; i < 8; i++)
+            b.Encapsulate(t.TransformPoint(box.center + Vector3.Scale(box.size * 0.5f,
+                new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1))));
+        return b;
+    }
+
+    // A box's x/z footprint as a Rect (x = world x, y = world z), as NightStoreLayout.RegionRect.
+    public static Rect Footprint(Bounds b) => Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z);
+
+    // Shortest x/z distance between two footprints, 0 when they touch or overlap.
+    public static float FootprintGap(Rect a, Rect b)
+    {
+        float dx = Mathf.Max(0, Mathf.Max(a.xMin - b.xMax, b.xMin - a.xMax)), dz = Mathf.Max(0, Mathf.Max(a.yMin - b.yMax, b.yMin - a.yMax));
+        return Mathf.Sqrt(dx * dx + dz * dz);
+    }
+
+    // Gap between two boxes' x/z footprints (0 when they touch or overlap).
+    public static float FootprintGap(Bounds a, Bounds b)
+    {
+        float dx = Mathf.Max(0, Mathf.Max(a.min.x - b.max.x, b.min.x - a.max.x)), dz = Mathf.Max(0, Mathf.Max(a.min.z - b.max.z, b.min.z - a.max.z));
+        return Mathf.Sqrt(dx * dx + dz * dz);
+    }
+
+    // Distance in x/z (Rect x = world x, y = world z) from a point to a rectangle; 0 inside.
+    public static float RectPointDistance(Rect r, Vector2 p)
+        => Vector2.Distance(p, new Vector2(Mathf.Clamp(p.x, r.xMin, r.xMax), Mathf.Clamp(p.y, r.yMin, r.yMax)));
+
+    public static float PointSegmentDistance(Vector2 p, Vector2 a, Vector2 b)
+    {
+        Vector2 ab = b - a;
+        float t = ab.sqrMagnitude > 1e-12f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0;
+        return Vector2.Distance(p, a + ab * t);
+    }
+
+    // Distance from a segment to a rectangle: 0 when the segment crosses it (slab clipping),
+    // else the nearest of the segment's ends to the rectangle and of its corners to the segment.
+    public static float RectSegmentDistance(Rect r, Vector2 a, Vector2 b)
+    {
+        float t0 = 0, t1 = 1;
+        Vector2 d = b - a;
+        bool crosses = true;
+        for (int axis = 0; axis < 2 && crosses; axis++)
+        {
+            float start = a[axis], step = d[axis], min = axis == 0 ? r.xMin : r.yMin, max = axis == 0 ? r.xMax : r.yMax;
+            if (Mathf.Abs(step) < 1e-9f) { crosses = start >= min && start <= max; continue; }
+            float u0 = (min - start) / step, u1 = (max - start) / step;
+            t0 = Mathf.Max(t0, Mathf.Min(u0, u1));
+            t1 = Mathf.Min(t1, Mathf.Max(u0, u1));
+            crosses = t0 <= t1;
+        }
+        if (crosses) return 0;
+        float best = Mathf.Min(RectPointDistance(r, a), RectPointDistance(r, b));
+        foreach (Vector2 corner in new[] { new Vector2(r.xMin, r.yMin), new Vector2(r.xMax, r.yMin), new Vector2(r.xMax, r.yMax), new Vector2(r.xMin, r.yMax) })
+            best = Mathf.Min(best, PointSegmentDistance(corner, a, b));
+        return best;
+    }
+
+    public static string Mm(float metres) => (metres * 1000).ToString("0.0") + " mm";
+
+    // Appends the filter's mesh in world space: its vertices, and its triangles (every
+    // submesh) offset past the vertices already listed. Nothing without a mesh.
+    public static void AppendWorldMesh(MeshFilter filter, List<Vector3> vertices, List<int> triangles)
+    {
+        Mesh mesh = filter != null ? filter.sharedMesh : null;
+        if (mesh == null) return;
+        int offset = vertices.Count;
+        Matrix4x4 toWorld = filter.transform.localToWorldMatrix;
+        foreach (Vector3 v in mesh.vertices) vertices.Add(toWorld.MultiplyPoint3x4(v));
+        foreach (int i in mesh.triangles) triangles.Add(offset + i);
+    }
+
+    // The first pair of same-facing triangles (a and b, indices into triangles / 3) that lie in
+    // one plane, every corner of each within planeTolerance of the other's plane, and overlap
+    // more than minOverlap across: each triangle shrunk by minOverlap / 2 from its edges still
+    // overlaps the other with positive area. Two such faces z-fight. Triangles that only share an
+    // edge or touch at a corner (adjoining faces, a face's own two halves) do not count, and
+    // neither do opposite-facing pairs (a butt joint's end faces, a panel's two sides) or
+    // degenerate triangles. False (a and b -1) when no pair overlaps. All pairs: meant for meshes
+    // of a few thousand triangles.
+    public static bool CoplanarOverlap(List<Vector3> vertices, List<int> triangles, float planeTolerance, float minOverlap, out int a, out int b)
+    {
+        a = b = -1;
+        int count = triangles.Count / 3;
+        Vector3[] normals = new Vector3[count];
+        Bounds[] boxes = new Bounds[count];
+        bool[] valid = new bool[count];
+        for (int i = 0; i < count; i++)
+        {
+            Vector3 p0 = vertices[triangles[3 * i]], p1 = vertices[triangles[3 * i + 1]], p2 = vertices[triangles[3 * i + 2]];
+            Vector3 n = Vector3.Cross(p1 - p0, p2 - p0);
+            valid[i] = n.sqrMagnitude > 1e-18f;
+            normals[i] = valid[i] ? n.normalized : Vector3.zero;
+            boxes[i] = new Bounds(p0, Vector3.zero);
+            boxes[i].Encapsulate(p1);
+            boxes[i].Encapsulate(p2);
+            boxes[i].Expand(2 * planeTolerance);
+        }
+        Vector2[] first = new Vector2[3], second = new Vector2[3];
+        for (int i = 0; i < count; i++)
+        {
+            if (!valid[i]) continue;
+            for (int j = i + 1; j < count; j++)
+            {
+                if (!valid[j] || Vector3.Dot(normals[i], normals[j]) < 0.9999f || !boxes[i].Intersects(boxes[j])) continue;
+                if (!CoplanarCorners(vertices, triangles, j, normals[i], vertices[triangles[3 * i]], planeTolerance)
+                    || !CoplanarCorners(vertices, triangles, i, normals[j], vertices[triangles[3 * j]], planeTolerance)) continue;
+                // Both triangles in the plane's own 2D frame, from the first one's first corner.
+                Vector3 origin = vertices[triangles[3 * i]], u = (vertices[triangles[3 * i + 1]] - origin).normalized, v = Vector3.Cross(normals[i], u);
+                for (int k = 0; k < 3; k++)
+                {
+                    Vector3 pi = vertices[triangles[3 * i + k]] - origin, pj = vertices[triangles[3 * j + k]] - origin;
+                    first[k] = new Vector2(Vector3.Dot(pi, u), Vector3.Dot(pi, v));
+                    second[k] = new Vector2(Vector3.Dot(pj, u), Vector3.Dot(pj, v));
+                }
+                float inset = minOverlap * 0.5f;
+                if (PolygonArea(ShrunkOverlap(ShrunkOverlap(new List<Vector2>(first), first, inset), second, inset)) > 1e-12f)
+                {
+                    a = i;
+                    b = j;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Every corner of triangle t lies within tolerance of the plane through p with normal n.
+    private static bool CoplanarCorners(List<Vector3> vertices, List<int> triangles, int t, Vector3 n, Vector3 p, float tolerance)
+    {
+        for (int k = 0; k < 3; k++)
+            if (Mathf.Abs(Vector3.Dot(n, vertices[triangles[3 * t + k]] - p)) > tolerance) return false;
+        return true;
+    }
+
+    // The part of polygon inside triangle tri shrunk by inset from each of its edges
+    // (Sutherland-Hodgman against the three inset half-planes); tri's winding may be either way.
+    private static List<Vector2> ShrunkOverlap(List<Vector2> polygon, Vector2[] tri, float inset)
+    {
+        float winding = Mathf.Sign((tri[1].x - tri[0].x) * (tri[2].y - tri[0].y) - (tri[1].y - tri[0].y) * (tri[2].x - tri[0].x));
+        for (int e = 0; e < 3 && polygon.Count > 0; e++)
+        {
+            Vector2 p = tri[e], edge = tri[(e + 1) % 3] - p;
+            float length = edge.magnitude;
+            if (length < 1e-9f) return new List<Vector2>();
+            List<Vector2> kept = new List<Vector2>();
+            for (int k = 0; k < polygon.Count; k++)
+            {
+                Vector2 c = polygon[k], d = polygon[(k + 1) % polygon.Count];
+                float fc = winding * (edge.x * (c.y - p.y) - edge.y * (c.x - p.x)) / length - inset;
+                float fd = winding * (edge.x * (d.y - p.y) - edge.y * (d.x - p.x)) / length - inset;
+                if (fc >= 0) kept.Add(c);
+                if ((fc >= 0) != (fd >= 0)) kept.Add(c + (d - c) * (fc / (fc - fd)));
+            }
+            polygon = kept;
+        }
+        return polygon;
+    }
+
+    private static float PolygonArea(List<Vector2> polygon)
+    {
+        float twice = 0;
+        for (int k = 0; k < polygon.Count; k++)
+        {
+            Vector2 c = polygon[k], d = polygon[(k + 1) % polygon.Count];
+            twice += c.x * d.y - d.x * c.y;
+        }
+        return Mathf.Abs(twice) * 0.5f;
+    }
 }
 #endif

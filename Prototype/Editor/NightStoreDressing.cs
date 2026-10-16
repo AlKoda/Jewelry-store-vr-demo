@@ -198,17 +198,21 @@ public static class NightStoreDressing
 
     // ---------------------------------------------------------------- left-behind jewellery
 
-    // The jewellery palette beside StoreKit's (saved in StoreKit.Folder): an opaque diamond
-    // (smoothness held at 0.92 so its specular does not shimmer in VR), pearl and the ring
-    // box's navy velvet, at JewelryModels materials.json's values otherwise.
+    // The jewellery palette beside StoreKit's (saved in StoreKit.Folder): an opaque stand-in
+    // for the diamond (metallic 0.9, not materials.json's transparent 0.25), then the pearl
+    // and the ring box's navy velvet at JewelryModels materials.json's values. The gem's and
+    // the pearl's smoothness follow the small-metal rule in StoreKit.PropPalette (at most
+    // 0.72, gems 0.85). The GemParcel's diamonds are flat facets 1-2 px across that pop
+    // from frame to frame at 0.92, so the gem takes the 0.85 cap; the pearls are 7 mm
+    // beads and take 0.70 (a pearl's lustre is soft anyway).
     public static Material Gem { get; private set; }
     public static Material Pearl { get; private set; }
     public static Material VelvetNavy { get; private set; }
 
     private static void JewelPalette()
     {
-        Gem = Metallic(Mat(StoreKit.Folder, "KitGem", new Color(0.92f, 0.94f, 0.97f), 0.92f), 0.9f);
-        Pearl = Metallic(Mat(StoreKit.Folder, "KitPearl", new Color(0.97f, 0.95f, 0.92f), 0.8f), 0.1f);
+        Gem = Metallic(Mat(StoreKit.Folder, "KitGem", new Color(0.92f, 0.94f, 0.97f), 0.85f), 0.9f);
+        Pearl = Metallic(Mat(StoreKit.Folder, "KitPearl", new Color(0.97f, 0.95f, 0.92f), 0.70f), 0.1f);
         VelvetNavy = Metallic(Mat(StoreKit.Folder, "KitVelvetNavy", new Color(0.20f, 0.24f, 0.37f), 0.18f), 0);
     }
 
