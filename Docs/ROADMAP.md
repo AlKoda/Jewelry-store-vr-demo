@@ -1,3 +1,34 @@
+## Fixture detail, trim, security devices and street trees — October 16 (Claude, unverified, never compiled in Unity)
+
+The first gap round after the realism wiring. The A numbers are the realism critic's gap list of October 15: A1 the main fixtures, A4 the wet street, A9 fabrics and small metals in VR, A13 alarm and security hardware, A15 architectural trim, A16 minor exterior items, A17 weak textures. HANDOFF has the details, the triangle and budget tables, the check names and the PC steps.
+
+- [x] Validator helper cleanup: the area files' private ray and footprint helpers are shared DemoValidation helpers, with the new CoplanarOverlap and AppendWorldMesh; StoreKit.Transparent and KitMesh.Emit's loop use DemoAssetLibrary.Blended. This closes the October 16 cleanup item below.
+- [x] A1, fixture detail (done, unverified): 10 mm case panes with a green edge on the overlay top, bevelled bronze posts and rails that butt, beads, piping, LED channels, staff-side locks and a plinth gap on the 14 cases; the counter; bevelled safes with hinges, bolt receivers, bolt-work, a dial safe and a keypad safe; glazing beads, through-bolted pulls, deadlocks and contacts on the forced doors; caps, beads and gaskets on the 8 facade bays; contacts and locks on the two side-room doors. The z-fighting frame joints on the cases and the counter are fixed.
+- [x] A13, security hardware, the rest without the roller grille (done, unverified): three PIR detectors, door contacts, a second alarm keypad, two CCTV domes and two smoke detectors; the corner camera's plate square to the wall, and the camera 3 cm lower so its hood clears the ceiling. The roller grille waits on the entry decision (2).
+- [x] A15, architectural trim (done, unverified): architraves round the office opening, the skirting corners and the missing office-face run, a ceiling shadow gap, switches with one plain rocker and sockets with blank faces (decision 1). The cut CCTV cable is in the hidden Case evidence set; the DVR is left to decision 8.
+- [x] A9, partial (done, unverified): the small-metal smoothness clamp (gold, silver, coin and bar 0.72, pearl 0.70, gem 0.85). The sheen and specular anti-aliasing shader stays open.
+- [x] A16, trees only (done, unverified): three bare deciduous trees across the street. The LED street column and the CSI van or ambulance stay open.
+- [x] 19 new checks: 8 in StoreKitValidation (CaseGlass, FrameJoint, FixturePart, SafeBolt, CaseHardware, Glazing, Contact, Device) and 11 in the new NightStoreValidationDetail.cs.
+- [ ] Sync the Downloads ZIP: StoreKitDevices.cs and NightStoreValidationDetail.cs with fresh .meta files, and the changed Editor files.
+- [ ] Run on the PC and report the first FAIL line, if any, with the Info lines above it. Expected:
+  - RunGallery +8, with the "<entry> triangles=... submeshes=" lines read against HANDOFF's table;
+  - RunNightQuick +19, recording "Budget: triangles=" (about 163k), "Budget: materials=" (about 129; then set MaterialBudget to that value + 8) and "Budget: submeshes";
+  - RunNight +19, recording the Lightmaps= line and judging the case Bodies' baked sharpness (the probe-lit hardware split is the fallback);
+  - the ShopCity runs: no change.
+- [ ] Frame Debugger batches and SetPass calls at the arrival view and at the central cluster, on a baked build.
+- [ ] Headset checks (Quest 2 over Link, baked build): shimmer on the dropped ring, the coins and the pearl strand under the torch; the case edge band; no flicker at the case corners or the architraves; the trees through the windows.
+- [ ] Desktop check: a tool set down on a case top rests on the glass.
+- [ ] Next round, in order:
+  1. Wet-street reflection streaks (A4): a per-camera, ground-aligned mode in GlowBillboard, each streak at the lamp's mirror point for the eye and turned to each camera in onPreCull (about 6 additive cards, transparency 57 -> 63 of 70; the glow-card checks need widening). A fixed streak would slide off its lamp's mirror line as the guest walks.
+  2. The sheen and specular anti-aliasing shader (the rest of A9): one forward-only surface shader with a sheen term for velvet and suede and roughness widening from the screen-space normal variance for the small metals and the thinnest parts, with lightmaps, probes and single-pass and multiview stereo; it needs a compile and a headset profile.
+  3. Foliage for the trees: alpha-tested leaf cards need a leaf texture the repository lacks, one cutout material and cutout overdraw seen through the facade.
+  4. Second-tier fixtures and safe edge-wear (A17).
+- Deferred, each with its reason:
+  - The DVR, its cables and trunking: whether the recorder is intact, taken or damaged decides what footage exists, which is part of decision 8. InteriorModels DVRRecorder is ready (206 triangles; as shipped, its textured case and printed front would add two materials (its constant rubber can share an existing one); with the case remapped to KitDeviceBlack, the front adds one).
+  - Green rims on the broken glass: the Glass and Shards renderers must stay all-blended (shadows, the case-glass merge and the transparency count depend on it), so opaque rims need a sibling renderer per broken part (+6 to +10), and the fracture look waits on decision 2.
+  - The probe-lit hardware split: a fallback only, if the bake blurs the case Bodies (+14 renderers, FixturePartChecks updated).
+  - Laminated glass and the roller grille: decision 2. The call point: decision 10. Socket and switch faces: decision 1.
+
 ## Validator checks for the realism wiring — October 16 (Claude, unverified, never compiled)
 
 This batch adds checks for the October 15 wiring's behaviours: 82 in the night store's runs and 1 more in the ShopCity runs. It also fixes the builder and runtime issues the checks exposed. HANDOFF has the check names, the PASS counts and the PC steps.
@@ -21,7 +52,7 @@ This batch adds checks for the October 15 wiring's behaviours: 82 in the night s
   - RunGlass and every other ShopCity run +5;
   - RunGallery: no change.
 - [ ] Still unchecked, because batch mode cannot observe them; they stay on the PC lists: audible playback and reverb wetness, the Scene tab's drawing, the start menu's key handling, the halos in the headset, and the glass footsteps on the door and sidelight fragments (a known gap).
-- [ ] Cleanup: the area files' private triangle-ray helpers (StreetMeshRay, InteriorRay, DressingRay) could become one DemoValidation helper, and StoreKit's private Transparent duplicates DemoAssetLibrary.Blended.
+- [x] Cleanup: the area files' private triangle-ray helpers (StreetMeshRay, InteriorRay, DressingRay) could become one DemoValidation helper, and StoreKit's private Transparent duplicates DemoAssetLibrary.Blended. Done in the fixture-detail round above (unverified).
 
 ## Realism packs wired into the night store — October 15 (Claude, unverified, never compiled)
 
@@ -70,10 +101,10 @@ The twelve packs are wired into the night store for Quest 2 over Link and for mo
   - GlassSmudge: its fingerprint clusters read as evidence; listed for Koda with the ambient wear.
   - Country presets: Koda's decision 1; a decided service becomes one more PoliceLook value.
   - Laminated glass: waits on the entry decision (decision 2).
-  - Fixture-detail generator: a large procedural StoreKit pass that gets its own batch.
+  - Fixture-detail generator: a large procedural StoreKit pass that gets its own batch. Done in the October 16 fixture-detail round (unverified).
   - Sheen, specular anti-aliasing, torch beams, people's hands: custom shaders, particles and rigs, each needing headset checks; the metals are clamped meanwhile.
   - Pack torch models: the runtime torches work in both modes; pack meshes need prefab references and hand-pose checks.
-  - Security hardware, procedure props, trim and trees: separate batches (the bell box is added now).
+  - Security hardware, procedure props, trim and trees: separate batches (the bell box is added now). The October 16 fixture-detail round adds the security devices, the trim and three bare trees (unverified); the procedure props and the roller grille remain.
   - Other vehicles and buildings (Hatchback, SedanClassic, the Downtown buildings): CC BY, cost materials and sit behind the arrival view.
   - Country-specific street furniture (signs, hydrant, name plates, LED light bar): depends on the country.
   - ApartmentBlock LODs: it is at LOD0 from 14 m or more, and decimation would damage its flat facade.

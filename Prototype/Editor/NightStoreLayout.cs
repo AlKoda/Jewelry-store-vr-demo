@@ -133,8 +133,8 @@ public static class NightStoreLayout
         }
     }
 
-    // Wall pieces (signs, keypad, camera, exit sign) pivot at their back. Left-wall
-    // pieces face +x (yaw -90), right-wall ones -x (yaw 90).
+    // Wall pieces (signs, keypads, camera, exit sign, detectors, switches, sockets) pivot at
+    // their back. Left-wall pieces face +x (yaw -90), right-wall ones -x (yaw 90).
     public static readonly Fixture[] Fixtures =
     {
         // Central cluster: three cases side by side; the middle one's drawer pulled out.
@@ -172,8 +172,27 @@ public static class NightStoreLayout
         // entrance (the plan's points 0.2 and 0.15 m in would float in front of glass).
         new Fixture("Showroom", "ExitSign", "exit_sign", 0, 2.62f, 0.065f, 180),
         new Fixture("Showroom", "AlarmKeypad", "alarm_keypad", -2.0f, 1.4f, 0.065f, 180),
-        // Corner camera on the rear-left partition, turned towards the entrance.
-        new Fixture("Showroom", "SecurityCamera", "security_camera", -7.7f, 2.78f, RearZ - Partition * 0.5f, -42.5f),
+        // Corner camera on the rear-left partition: plate flat on the partition;
+        // StoreKit.SecurityCamera turns its arm and housing by CameraAim towards the entrance.
+        // Its hood's raised rear rises 0.231 m above the pivot, so at 2.75 it stays 2 cm under
+        // the ceiling and below the shadow gap (at 2.78 it cut 1 cm into the slab).
+        new Fixture("Showroom", "SecurityCamera", "security_camera", -7.7f, 2.75f, RearZ - Partition * 0.5f, 0),
+        // Wall devices (the pivot is the back's bottom centre on the wall): PIR detectors high
+        // in the front corners and in the office, a second keypad by the office opening,
+        // switches beside it on both faces, and blank-faced sockets above the skirting (their
+        // faces wait on decision 1). All clear of the wall graphics, the fixtures, the
+        // architraves (|x| <= 0.845) and the 0.1 m skirting.
+        new Fixture("Showroom", "PIR_FrontLeft", "pir_detector", MinX, 2.45f, 0.40f, -90),
+        new Fixture("Showroom", "PIR_FrontRight", "pir_detector", MaxX, 2.45f, 0.40f, 90),
+        new Fixture("Office", "PIR_Office", "pir_detector", 2.5f, 2.45f, MaxZ, 0),
+        new Fixture("Showroom", "AlarmKeypad_Office", "alarm_keypad", -1.2f, 1.35f, RearZ - Partition * 0.5f, 0),
+        new Fixture("Showroom", "Switch_Showroom", "light_switch", -0.98f, 1.05f, RearZ - Partition * 0.5f, 0),
+        new Fixture("Office", "Switch_Office", "light_switch", 0.98f, 1.05f, RearZ + Partition * 0.5f, 180),
+        new Fixture("Showroom", "Socket_LeftWall", "socket_outlet", MinX, 0.3f, 1.0f, -90),
+        new Fixture("Showroom", "Socket_RightWall", "socket_outlet", MaxX, 0.3f, 2.75f, 90),
+        new Fixture("Showroom", "Socket_Counter", "socket_outlet", 6.8f, 0.3f, RearZ - Partition * 0.5f, 0),
+        new Fixture("Office", "Socket_Desk", "socket_outlet", -(OfficeHalf - Partition * 0.5f), 0.3f, 9.25f, -90),
+        new Fixture("Office", "Socket_Drawers", "socket_outlet", OfficeHalf - Partition * 0.5f, 0.3f, 9.85f, 90),
         // Office: exactly two safes, open (angles come from the dressing's case state).
         new Fixture("Office", "SafeLarge", "safe_large", 1.3f, 0, 11.35f, 0),
         new Fixture("Office", "SafeTall", "safe_tall", -1.0f, 0, 11.45f, 0),
@@ -186,6 +205,10 @@ public static class NightStoreLayout
         new Fixture("Office", "OfficeDoor", "office_door", -3.9f, 0, RearZ, 0),
         new Fixture("Office", "ServiceDoor", "service_door", 3.9f, 0, RearZ, 0),
     };
+
+    // The security camera's aim (degrees about y, from facing -z): its housing looks at the
+    // entrance while the fixture itself stands at yaw 0, square to the partition.
+    public const float CameraAim = -42.5f;
 
     public static Fixture Find(string name)
     {
@@ -211,6 +234,11 @@ public static class NightStoreLayout
         new Vector4(6.7f, CeilingY, 4.2f, -90), new Vector4(6.7f, CeilingY, 6.2f, -90),
         new Vector4(-5.5f, CeilingY, 6.9f, 180), new Vector4(5.5f, CeilingY, 6.9f, 180)
     };
+
+    // Ceiling devices, each at least 0.95 m from every downlight, track and diffuser: CCTV
+    // domes over the entrance aisle and in the office, smoke detectors mid-showroom and in the office.
+    public static readonly Vector3[] Domes = { V(0, CeilingY, 2.5f), V(0.15f, CeilingY, 11.2f) },
+        SmokeDetectors = { V(0, CeilingY, 6.0f), V(-1.25f, CeilingY, 11.2f) };
 
     // ---------------------------------------------------------------- regions
     public static readonly InteriorBounds.Region Showroom = new InteriorBounds.Region(MinX + 0.3f, MaxX - 0.3f, MinZ + 0.25f, RearZ - 0.25f);

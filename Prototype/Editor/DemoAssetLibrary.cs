@@ -310,8 +310,12 @@ public static class DemoAssetLibrary
         ["PeopleModels/PasserBy_Phone/PropScreen"] = MapGlow(0.9f, 0.5f, MaterialGlobalIlluminationFlags.None),
         ["ForensicModels/NitrileGloveBox/GloveBoxCard"] = Surface(0, 0.3f),
         ["ForensicModels/NitrileGloveBox/GloveNitrile"] = Surface(0, 0.45f),
-        ["JewelryModels/GoldCoin/GoldCoin"] = Surface(1, 0.85f),
-        ["JewelryModels/GoldBar1kg/GoldBar1kg"] = Surface(1, 0.78f),
+        // Below materials.json's 0.85 and 0.78 by the small-metal rule (StoreKit.PropPalette;
+        // check "Dressing and jewellery finishes stay at or below 0.72 smoothness (gems 0.85),
+        // glass and mapped surfaces aside"): the coin's 1 mm rim and 3 mm edge, and the stamped
+        // normal-map relief of both. Neither model has a metallic-smoothness map, so the scalar applies.
+        ["JewelryModels/GoldCoin/GoldCoin"] = Surface(1, 0.72f),
+        ["JewelryModels/GoldBar1kg/GoldBar1kg"] = Surface(1, 0.72f),
         ["JewelryModels/GemParcel/GemPaper"] = Surface(0, 0.2f),
     };
 

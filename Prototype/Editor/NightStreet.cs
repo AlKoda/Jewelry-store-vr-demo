@@ -8,9 +8,11 @@ using L = NightStoreLayout;
 // through DemoAssetLibrary.PlacePack, so every level of a model shares one material per
 // surface and its CC BY / MIT credit is recorded. Every model is optional: a missing one
 // is skipped (the bollards fall back to StoreKit's procedural bollard), so a project
-// unpacked from the ZIP builds today's street. Nothing here picks a country: no road
-// signs, hydrants or name plates (Koda's decision #1); the only police item, the guard
-// figure, comes from PoliceLook.Active and is absent by default.
+// unpacked from the ZIP builds today's street. The one procedural street item is the row
+// of bare trees on the far pavement (Trees), built with or without the packs. Nothing here
+// picks a country: no road signs, hydrants or name plates (Koda's decision #1), and the
+// trees name no species and are not pollarded; the only police item, the guard figure,
+// comes from PoliceLook.Active and is absent by default.
 //
 // Props whose footprint reaches a movement region get one bounds collider (the walker,
 // teleport arcs and tool placement stop on them); the rest stand outside the play area
@@ -18,8 +20,15 @@ using L = NightStoreLayout;
 public static class NightStreet
 {
     public const string StreetPack = "StreetModels", ForensicPack = "ForensicModels", PeoplePack = PoliceLook.FigurePack;
-    public const string GroupName = "Street", PeopleGroup = "People";
+    public const string GroupName = "Street", PeopleGroup = "People", TreeGroup = "Trees";
     public const string Apartment = "ApartmentBlock", ApartmentPath = "Exterior/Buildings/" + Apartment;
+
+    // Exterior/Trees/Tree_i: 1.2 m behind the far kerb (FarKerbZ -14) and midway between the
+    // far probe row's probes (every 4 m at z -15.5), so a probe never sits in a crown. With a
+    // crown reach of at most 1.29 m they stay over 3 m from the far lanterns (x -6 and 7),
+    // 1.2 m from the bus shelter (x -11.45..-7.55), clear of the cycle stands (x -6.6 and
+    // -5.6) and off the facades, the posters' wall included.
+    public static readonly Vector3[] TreePositions = { V(-14.0f, 0, -15.2f), V(2.0f, 0, -15.2f), V(18.0f, 0, -15.2f) };
 
     // ApartmentBlock's OBJ spans x -0.355..15.355 with its facade plane at z 0 facing +z.
     // Unity mirrors x on import, so a root at x0 + PivotX puts the block on x0..x0 + Width.
@@ -138,11 +147,13 @@ public static class NightStreet
         return any;
     }
 
-    // Exterior/Street (furniture and kit by the kerb, at the table and across the street)
-    // and Exterior/People; both groups exist even when every model is missing.
+    // Exterior/Street (furniture and kit by the kerb, at the table and across the street),
+    // Exterior/People and Exterior/Trees; the first two exist even when every model is
+    // missing, and the procedural trees stand in every build.
     public static void Apply(Transform exterior, bool imported = true)
     {
         Transform street = Group(GroupName, exterior), people = Group(PeopleGroup, exterior);
+        Trees(exterior);
         if (!imported) return;
         foreach (Item item in Furniture) Place(item, street);
         foreach (Item item in Figures) Place(item, people);
@@ -160,6 +171,70 @@ public static class NightStreet
         if (InPlayArea(g)) DemoAssetLibrary.AddBoundsCollider(g);
         return g;
     }
+
+    // Exterior/Trees: three bare deciduous trees across the street, a late-autumn
+    // simplification (the wet leaves in the gutter are theirs; foliage cards are deferred).
+    public static void Trees(Transform exterior)
+    {
+        Transform group = Group(TreeGroup, exterior);
+        for (int i = 0; i < TreePositions.Length; i++) Tree(group, i);
+    }
+
+    // Tree_i, 592 triangles and about 6.2 m tall: a tapering trunk (54) in a 1 m grate (2),
+    // four diagonal limbs (no limb points at a facade) that bend upwards into closed cones
+    // (34 each), and five two-segment branches from inside each cone (20 each). A branch
+    // stays within 60 degrees of its limb's heading, so the crown reaches at most 1.29 m from
+    // the trunk and 1.15 m in z (z about -16.35..-14.05): it never overhangs the road and keeps
+    // 0.4 m from the apartment block's projections. The tips stay 2.4 cm across, about 2 px at
+    // 12 m, so they do not flicker. Loose (no lightmap UVs): StoreKit.MarkStatic makes it a GI
+    // contributor lit by the probes. It casts no shadow (the far pavement bakes at 2 texels per
+    // metre, too coarse for branch shadows, which would only smudge the lantern pools), has no
+    // collider (outside the play area) and no LODGroup (every budget eye sees it above LOD0 height).
+    private static void Tree(Transform parent, int i)
+    {
+        System.Random rng = new System.Random(41 + i);
+        float TreeRange(float a, float b) => a + (float)rng.NextDouble() * (b - a);
+        KitMesh k = new KitMesh { Lightmapped = false };
+        // Bark: KitConcrete, already in the scene (a mottled light grey; the untextured 0.56 grey without PBRExterior).
+        Material bark = StoreKit.Concrete;
+        k.Lathe(bark, Vector3.zero, Quaternion.identity, new[] { 0.17f, 0.15f, 0.13f, 0.11f }, new[] { 0f, 0.9f, 2.4f, 3.5f }, 8, true, false, true);
+        // The grate, GroundLift (3 mm) proud of the paving like the far-pavement decals.
+        const float grate = 0.5f, lift = 0.003f;
+        k.Face(StoreKit.FrameMetal, Vector3.up, V(-grate, lift, -grate), V(grate, lift, -grate), V(grate, lift, grate), V(-grate, lift, grate));
+        Vector3 a0 = V(0, 3.35f, 0);
+        for (int j = 0; j < 4; j++)
+        {
+            float yaw = 45 + 90 * j + TreeRange(-10, 10), tilt = TreeRange(30, 40);
+            Vector3 dir = Quaternion.Euler(0, yaw, 0) * (Quaternion.Euler(tilt, 0, 0) * Vector3.up);
+            Vector3 a1 = a0 + dir * 0.8f;
+            // The elbow (14-18 degrees) is closed: the limb runs on 3 cm past a1 into the cone (same
+            // taper), which shuts the wedge of up to 23 mm on its outer side, and the cone's base is
+            // capped (+4), where its hexagon's corners stand out of the limb's flats (the two
+            // hexagons are turned differently). Open, both showed the sky or a lit window through.
+            Branch(k, bark, a0, a1, new[] { 0.09f, 0.0744f }, new[] { 0f, 0.83f }, 6);
+            Vector3 dir2 = Vector3.Slerp(dir, Vector3.up, 0.45f).normalized, a2 = a1 + dir2 * 0.7f;
+            k.Lathe(bark, a1, Quaternion.FromToRotation(Vector3.up, dir2), new[] { 0.075f, 0.06f, 0f }, new[] { 0f, 0.7f, 0.8f }, 6, true, true, false);
+            // The branches start inside the cone, 4 cm past its 6 cm ring.
+            Vector3 s0 = a2 + dir2 * 0.04f;
+            for (int s = 0; s < 5; s++)
+            {
+                float azimuth = yaw + TreeRange(-60, 60), tiltS = TreeRange(6, 15), length = TreeRange(1.0f, 1.5f);
+                Vector3 sdir = Quaternion.Euler(0, azimuth, 0) * (Quaternion.Euler(tiltS, 0, 0) * Vector3.up);
+                Vector3 s1 = s0 + sdir * 0.55f * length;
+                // 5 mm past s1 for the same reason (the droop bends it up to 10 degrees).
+                Branch(k, bark, s0, s1, new[] { 0.025f, 0.018f }, new[] { 0f, 0.55f * length + 0.005f }, 5);
+                // The outer half droops slightly towards the horizontal.
+                Vector3 sdir2 = Vector3.Slerp(sdir, new Vector3(sdir.x, 0, sdir.z).normalized, 0.12f).normalized;
+                Branch(k, bark, s1, s1 + sdir2 * 0.45f * length, new[] { 0.018f, 0.012f }, new[] { 0f, 0.45f * length }, 5);
+            }
+        }
+        GameObject tree = k.Emit("Tree_" + i, parent, TreePositions[i], Quaternion.identity, NightStoreBuilder.Folder, "night_tree");
+        tree.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+    }
+
+    // An open smooth lathe from a towards b (radii at heights along it; b only sets the direction).
+    private static void Branch(KitMesh k, Material m, Vector3 a, Vector3 b, float[] radii, float[] heights, int sides)
+        => k.Lathe(m, a, Quaternion.FromToRotation(Vector3.up, b - a), radii, heights, sides, true, false, false);
 
     // Whether the prop's footprint (its renderers' x/z extent) touches a movement region.
     // The store root sits at the world origin, as the builder always places it.

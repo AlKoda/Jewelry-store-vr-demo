@@ -18,7 +18,7 @@ public static partial class NightStoreValidation
 {
     private static void InteriorPackChecks(Transform root)
     {
-        interiorMeshes.Clear();
+        DemoValidation.ClearRayMeshes();
         try
         {
             InteriorPropList(root);
@@ -37,7 +37,7 @@ public static partial class NightStoreValidation
             InteriorGraphicsMaterials(root, sheets);
             InteriorNeutral(root);
         }
-        finally { interiorMeshes.Clear(); }
+        finally { DemoValidation.ClearRayMeshes(); }
     }
 
     // ---------------------------------------------------------------- props
@@ -69,7 +69,7 @@ public static partial class NightStoreValidation
         if (!plants)
             DemoValidation.Info(user ? "StoreKit planter override present: the planters keep the user model and get no snake plant"
                 : "InteriorModels SnakePlant not present: the planters keep their StoreKit body");
-        List<InteriorMesh> floor = InteriorMeshes(root.Find("Architecture/Floor"));
+        List<DemoValidation.RayMesh> floor = InteriorMeshes(root.Find("Architecture/Floor"));
         bool ok = true;
         foreach (string name in NightInterior.Planters)
         {
@@ -96,7 +96,7 @@ public static partial class NightStoreValidation
                 DemoValidation.Info("Planter " + name + ": snake plant " + (plant != null) + ", colliders " + colliders.Length + ", Body left " + (body != null));
                 continue;
             }
-            Bounds solid = InteriorColliderBox(box);
+            Bounds solid = DemoValidation.BoxColliderBounds(box);
             float floorY = InteriorFloorY(floor, b.center);
             int casters = 0;
             bool shadows = true;
@@ -106,7 +106,7 @@ public static partial class NightStoreValidation
                 casters++;
                 shadows &= r.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.On;
             }
-            DemoValidation.Info("Planter " + name + ": snake plant " + InteriorSize(b) + " m, " + InteriorMm(b.min.y - floorY)
+            DemoValidation.Info("Planter " + name + ": snake plant " + InteriorSize(b) + " m, " + DemoValidation.Mm(b.min.y - floorY)
                 + " above the floor, collider " + InteriorSize(solid) + " m, shadow casters " + casters);
             // The box covers the plant (shrunk 1 cm) and is no more than 1 cm larger: the plant's own bounds, not the old pot box.
             ok &= !float.IsNaN(floorY) && Mathf.Abs(b.min.y - floorY) <= 0.003f && InteriorContains(solid, b, 0.01f)
@@ -136,7 +136,7 @@ public static partial class NightStoreValidation
         if (ok)
         {
             float lift = b.min.y - InteriorFloorY(InteriorMeshes(root.Find("Architecture/Floor")), b.center), scale = -1;
-            Rect area = InteriorRect(b);
+            Rect area = DemoValidation.Footprint(b);
             ok &= area.Contains(new Vector2(sofa.position.x, sofa.position.z)) && area.Contains(new Vector2(table.position.x, table.position.z))
                 && rug.GetComponentsInChildren<Collider>(true).Length == 0 && b.size.y < 0.02f && lift >= 0 && lift <= 0.004f;
             int count = 0;
@@ -152,7 +152,7 @@ public static partial class NightStoreValidation
                     && Mathf.Abs(r.scaleInLightmap - seat.scaleInLightmap) < 0.001f;
             }
             ok &= count > 0;
-            DemoValidation.Info("Rug: " + InteriorSize(b) + " m, " + InteriorMm(lift) + " above the floor, x " + b.min.x.ToString("0.00") + ".." + b.max.x.ToString("0.00")
+            DemoValidation.Info("Rug: " + InteriorSize(b) + " m, " + DemoValidation.Mm(lift) + " above the floor, x " + b.min.x.ToString("0.00") + ".." + b.max.x.ToString("0.00")
                 + ", z " + b.min.z.ToString("0.00") + ".." + b.max.z.ToString("0.00") + ", lightmap scale " + scale.ToString("0.00") + " (sofa " + seat.scaleInLightmap.ToString("0.00") + ")");
         }
         else DemoValidation.Info("Rug, sofa, side table or the sofa's lightmapped part missing");
@@ -177,14 +177,14 @@ public static partial class NightStoreValidation
         bool found = monitor != null && keyboard != null && desk != null && InteriorBox(monitor, out m) && InteriorBox(keyboard, out k)
             && InteriorBox(deskBody != null ? deskBody : desk, out d);
         float deskY = float.NaN;
-        if (found && InteriorRay(new Ray(new Vector3(m.center.x, 1.5f, m.center.z), Vector3.down), 1.5f, InteriorMeshes(desk), out float down, out _))
+        if (found && DemoValidation.TriangleRay(new Ray(new Vector3(m.center.x, 1.5f, m.center.z), Vector3.down), 1.5f, InteriorMeshes(desk), out float down, out _))
             deskY = 1.5f - down;
         if (!found || float.IsNaN(deskY))
         {
             DemoValidation.Info("Office desk, monitor or keyboard missing, or no desk top under the monitor");
             DemoValidation.Check(false, label);
         }
-        Rect surface = InteriorRect(d), screen = InteriorRect(m), keys = InteriorRect(k);
+        Rect surface = DemoValidation.Footprint(d), screen = DemoValidation.Footprint(m), keys = DemoValidation.Footprint(k);
 
         // The tray: the dressing's Leatherette and Felt above the desk top, inside its footprint.
         float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
@@ -209,17 +209,17 @@ public static partial class NightStoreValidation
         Transform loupe = root.Find("Dressing/" + NightStoreDressing.StockGroup + "/" + NightStoreDressing.StockDesk + "/JewelersLoupe");
         Bounds l = default;
         bool lens = loupe != null && InteriorBox(loupe, out l);
-        Rect glass = lens ? InteriorRect(l) : new Rect();
+        Rect glass = lens ? DemoValidation.Footprint(l) : new Rect();
 
         bool seated = Mathf.Abs(m.min.y - deskY) <= 0.003f && Mathf.Abs(k.min.y - deskY) <= 0.003f;
         bool apart = !InteriorGrowRect(screen, 0.005f).Overlaps(InteriorGrowRect(keys, 0.005f));
         bool clear = tray && !InteriorGrowRect(screen, 0.01f).Overlaps(held) && !InteriorGrowRect(keys, 0.01f).Overlaps(held);
         if (lens) clear &= !InteriorGrowRect(glass, 0.005f).Overlaps(screen) && !InteriorGrowRect(glass, 0.005f).Overlaps(keys) && !InteriorGrowRect(glass, 0.005f).Overlaps(held);
         bool inside = InteriorInside(screen, surface) && InteriorInside(keys, surface) && (!tray || InteriorInside(held, surface)) && (!lens || InteriorInside(glass, surface));
-        DemoValidation.Info("Desk top " + deskY.ToString("0.000") + " m; monitor base " + InteriorMm(m.min.y - deskY) + ", keyboard base " + InteriorMm(k.min.y - deskY)
-            + "; monitor-keyboard gap " + InteriorMm(InteriorGap(screen, keys))
-            + (tray ? "; tray gap to monitor " + InteriorMm(InteriorGap(held, screen)) + ", to keyboard " + InteriorMm(InteriorGap(held, keys)) : "; no tray found on the desk")
-            + (lens ? "; loupe gap to keyboard " + InteriorMm(InteriorGap(glass, keys)) + ", to monitor " + InteriorMm(InteriorGap(glass, screen)) : "; no loupe on the desk (JewelryModels not present)"));
+        DemoValidation.Info("Desk top " + deskY.ToString("0.000") + " m; monitor base " + DemoValidation.Mm(m.min.y - deskY) + ", keyboard base " + DemoValidation.Mm(k.min.y - deskY)
+            + "; monitor-keyboard gap " + DemoValidation.Mm(DemoValidation.FootprintGap(screen, keys))
+            + (tray ? "; tray gap to monitor " + DemoValidation.Mm(DemoValidation.FootprintGap(held, screen)) + ", to keyboard " + DemoValidation.Mm(DemoValidation.FootprintGap(held, keys)) : "; no tray found on the desk")
+            + (lens ? "; loupe gap to keyboard " + DemoValidation.Mm(DemoValidation.FootprintGap(glass, keys)) + ", to monitor " + DemoValidation.Mm(DemoValidation.FootprintGap(glass, screen)) : "; no loupe on the desk (JewelryModels not present)"));
         DemoValidation.Check(seated && apart && clear && inside, label);
     }
 
@@ -278,7 +278,7 @@ public static partial class NightStoreValidation
         bool ok = extinguisher != null && InteriorBox(extinguisher, out b) && NightInterior.Props.Contains("Showroom/" + name);
         float gap = float.NaN;
         Vector3 face = Vector3.zero;
-        if (ok && InteriorRay(new Ray(new Vector3(b.center.x, 0.05f, b.max.z - 0.01f), Vector3.forward), 0.05f, InteriorMeshes(root.Find("Architecture/Skirting")), out float d, out face))
+        if (ok && DemoValidation.TriangleRay(new Ray(new Vector3(b.center.x, 0.05f, b.max.z - 0.01f), Vector3.forward), 0.05f, InteriorMeshes(root.Find("Architecture/Skirting")), out float d, out face))
             gap = d - 0.01f;
         int levels = 1;
         foreach (string suffix in new[] { "_LOD1", "_LOD2" })
@@ -292,7 +292,7 @@ public static partial class NightStoreValidation
             for (int i = 0; i < levels; i++) lods &= Mathf.Abs(placed[i].screenRelativeTransitionHeight - heights[i]) < 1e-4f && placed[i].renderers.Length > 0;
         }
         if (ok)
-            DemoValidation.Info("Extinguisher: back " + InteriorMm(gap) + " off the skirting, base " + InteriorMm(b.min.y) + ", x " + b.min.x.ToString("0.000") + ".."
+            DemoValidation.Info("Extinguisher: back " + DemoValidation.Mm(gap) + " off the skirting, base " + DemoValidation.Mm(b.min.y) + ", x " + b.min.x.ToString("0.000") + ".."
                 + b.max.x.ToString("0.000") + " (opening half-width " + L.OfficeOpeningHalf.ToString("0.00") + "), " + levels + " LOD levels");
         else DemoValidation.Info("Extinguisher missing from Showroom or from NightInterior.Props");
         DemoValidation.Check(ok && gap >= 0.002f && gap <= 0.012f && Mathf.Abs(face.z) > 0.99f && b.min.y >= -0.002f && b.min.y <= 0.003f
@@ -316,7 +316,7 @@ public static partial class NightStoreValidation
         bool ok = clock != null && InteriorBox(clock, out b) && NightInterior.Props.Contains("Showroom/" + name);
         float back = float.NaN;
         Vector3 wall = Vector3.zero;
-        if (ok && InteriorRay(new Ray(new Vector3(b.center.x, b.center.y, b.max.z), Vector3.forward), 0.02f, InteriorMeshes(root.Find("Architecture/Walls")), out float d, out wall))
+        if (ok && DemoValidation.TriangleRay(new Ray(new Vector3(b.center.x, b.center.y, b.max.z), Vector3.forward), 0.02f, InteriorMeshes(root.Find("Architecture/Walls")), out float d, out wall))
             back = d;
         bool lod1 = true;
         string topFile = "none";
@@ -336,7 +336,7 @@ public static partial class NightStoreValidation
         }
         else if (ok) DemoValidation.Info("WallClock_LOD1 not present: the clock's top level is the full model");
         if (ok)
-            DemoValidation.Info("Wall clock: back " + InteriorMm(back) + " off the partition, y " + b.min.y.ToString("0.000") + ".." + b.max.y.ToString("0.000")
+            DemoValidation.Info("Wall clock: back " + DemoValidation.Mm(back) + " off the partition, y " + b.min.y.ToString("0.000") + ".." + b.max.y.ToString("0.000")
                 + " (opening " + L.OfficeOpeningHeight.ToString("0.00") + ", ceiling " + L.CeilingY.ToString("0.00") + "), top level " + topFile);
         else DemoValidation.Info("Wall clock missing from Showroom or from NightInterior.Props");
         DemoValidation.Check(ok && back <= 0.003f && Mathf.Abs(wall.z) > 0.99f && b.min.y >= L.OfficeOpeningHeight + 0.02f && b.max.y <= L.CeilingY - 0.02f
@@ -358,13 +358,13 @@ public static partial class NightStoreValidation
         }
         Transform ceiling = root.Find(L.CeilingPath);
         if (ceiling == null) DemoValidation.Check(false, label);
-        List<InteriorMesh> slab = InteriorMeshes(ceiling.Find("CeilingSlab"));
+        List<DemoValidation.RayMesh> slab = InteriorMeshes(ceiling.Find("CeilingSlab"));
         List<Rect> downlights = new List<Rect>(), tracks = new List<Rect>();
         foreach (Transform t in ceiling)
         {
             Bounds fitting = default;
             bool downlight = t.name.StartsWith("Downlight_", StringComparison.Ordinal), track = t.name.StartsWith("TrackLight_", StringComparison.Ordinal);
-            if ((downlight || track) && InteriorBox(t, out fitting)) (downlight ? downlights : tracks).Add(InteriorRect(fitting));
+            if ((downlight || track) && InteriorBox(t, out fitting)) (downlight ? downlights : tracks).Add(DemoValidation.Footprint(fitting));
         }
         bool ok = downlights.Count > 0 && tracks.Count > 0;
         float worst = 0, nearDownlight = float.MaxValue, nearTrack = float.MaxValue;
@@ -379,17 +379,17 @@ public static partial class NightStoreValidation
                 continue;
             }
             float flush = float.NaN;
-            if (InteriorRay(new Ray(new Vector3(b.center.x, b.min.y, b.center.z), Vector3.up), 0.2f, slab, out float up, out _)) flush = b.max.y - (b.min.y + up);
+            if (DemoValidation.TriangleRay(new Ray(new Vector3(b.center.x, b.min.y, b.center.z), Vector3.up), 0.2f, slab, out float up, out _)) flush = b.max.y - (b.min.y + up);
             ok &= Mathf.Abs(flush) <= 0.003f;
             worst = float.IsNaN(flush) ? float.NaN : Mathf.Max(worst, Mathf.Abs(flush));
-            Rect area = InteriorRect(b);
-            foreach (Rect r in downlights) nearDownlight = Mathf.Min(nearDownlight, InteriorGap(area, r));
-            foreach (Rect r in tracks) nearTrack = Mathf.Min(nearTrack, InteriorGap(area, r));
+            Rect area = DemoValidation.Footprint(b);
+            foreach (Rect r in downlights) nearDownlight = Mathf.Min(nearDownlight, DemoValidation.FootprintGap(area, r));
+            foreach (Rect r in tracks) nearTrack = Mathf.Min(nearTrack, DemoValidation.FootprintGap(area, r));
             foreach (MeshRenderer r in diffuser.GetComponentsInChildren<MeshRenderer>(true))
                 ok &= r.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off
                     && (GameObjectUtility.GetStaticEditorFlags(r.gameObject) & StaticEditorFlags.OccluderStatic) == 0;
         }
-        DemoValidation.Info("Ceiling diffusers: largest offset from the slab underside " + InteriorMm(worst) + "; nearest downlight " + nearDownlight.ToString("0.00")
+        DemoValidation.Info("Ceiling diffusers: largest offset from the slab underside " + DemoValidation.Mm(worst) + "; nearest downlight " + nearDownlight.ToString("0.00")
             + " m, nearest track rail " + nearTrack.ToString("0.00") + " m");
         DemoValidation.Check(ok && nearDownlight >= 0.4f && nearTrack >= 0.3f, label);
     }
@@ -448,7 +448,7 @@ public static partial class NightStoreValidation
 
     // What a picture's ray may land on: every rendered mesh of the store except the graphics
     // meshes themselves and the camera-facing glow cards.
-    private static List<InteriorMesh> InteriorSurfaces(Transform root, List<InteriorSheet> sheets)
+    private static List<DemoValidation.RayMesh> InteriorSurfaces(Transform root, List<InteriorSheet> sheets)
     {
         Transform glow = root.Find(NightLighting.GroupName + "/" + NightLighting.GlowGroupName);
         HashSet<Transform> own = new HashSet<Transform>();
@@ -469,7 +469,7 @@ public static partial class NightStoreValidation
             DemoValidation.Info("No wall graphics placed (WallGraphics not present): flatness check skipped");
             return;
         }
-        List<InteriorMesh> surfaces = InteriorSurfaces(root, sheets);
+        List<DemoValidation.RayMesh> surfaces = InteriorSurfaces(root, sheets);
         bool ok = true;
         foreach (InteriorSheet s in sheets)
         {
@@ -486,12 +486,12 @@ public static partial class NightStoreValidation
                     ok &= InteriorTangents(p0, p1, p2, s.Uvs[t], s.Uvs[t + 1], s.Uvs[t + 2], out Vector3 du, out Vector3 dv)
                         && Vector3.Dot(du, right) > 0 && Vector3.Dot(dv, Vector3.up) > 0;
                 }
-                bool hit = InteriorRay(new Ray((p0 + p1 + p2) / 3, -n), 0.08f, surfaces, out float d, out Vector3 behind);
+                bool hit = DemoValidation.TriangleRay(new Ray((p0 + p1 + p2) / 3, -n), 0.08f, surfaces, out float d, out Vector3 behind);
                 ok &= hit && d >= 0.0005f && d <= 0.07f && Mathf.Abs(Vector3.Dot(behind, n)) > 0.98f;
                 if (hit) { near = Mathf.Min(near, d); far = Mathf.Max(far, d); }
             }
             ok &= orphans == 0;
-            DemoValidation.Info(s.Zone + " wall graphics: " + s.Corners.Count / 6 + " pictures, " + (near <= far ? InteriorMm(near) + " to " + InteriorMm(far) : "no surface hit")
+            DemoValidation.Info(s.Zone + " wall graphics: " + s.Corners.Count / 6 + " pictures, " + (near <= far ? DemoValidation.Mm(near) + " to " + DemoValidation.Mm(far) : "no surface hit")
                 + " off their surfaces" + (orphans > 0 ? "; " + orphans + " picture triangles outside every placed graphic" : ""));
         }
         DemoValidation.Check(ok, "Wall graphics lie flat 0.5 to 70 mm in front of their surfaces, facing out and unmirrored");
@@ -541,12 +541,12 @@ public static partial class NightStoreValidation
             Vector3 o = p - right * (Mathf.Sign(Vector3.Dot(local, right)) * 0.005f) - Vector3.up * (Mathf.Sign(local.y) * 0.005f);
             if (!origins.Exists(x => (x - o).sqrMagnitude < 1e-6f)) origins.Add(o);
         }
-        List<InteriorMesh> stone = InteriorMeshes(root.Find("Facade/Cladding"));
+        List<DemoValidation.RayMesh> stone = InteriorMeshes(root.Find("Facade/Cladding"));
         int backed = 0;
         float near = float.MaxValue, far = 0;
         foreach (Vector3 o in origins)
         {
-            if (!InteriorRay(new Ray(o, -facing), 0.08f, stone, out float d, out Vector3 behind) || Mathf.Abs(Vector3.Dot(behind, facing)) <= 0.98f) continue;
+            if (!DemoValidation.TriangleRay(new Ray(o, -facing), 0.08f, stone, out float d, out Vector3 behind) || Mathf.Abs(Vector3.Dot(behind, facing)) <= 0.98f) continue;
             backed++;
             near = Mathf.Min(near, d); far = Mathf.Max(far, d);
         }
@@ -557,7 +557,7 @@ public static partial class NightStoreValidation
                 post = Mathf.Min(post, new Vector2(card.center.x - lamp.position.x, card.center.z - lamp.position.z).magnitude);
         DemoValidation.Info("Lost-cat flyer: " + InteriorSize(card) + " m centred at x " + card.center.x.ToString("0.000") + ", y " + card.center.y.ToString("0.000")
             + ", z " + card.center.z.ToString("0.000") + "; " + backed + " of " + origins.Count + " rays on the facade cladding, "
-            + (near <= far ? InteriorMm(near) + " to " + InteriorMm(far) : "none") + " behind; nearest lamp post axis "
+            + (near <= far ? DemoValidation.Mm(near) + " to " + DemoValidation.Mm(far) : "none") + " behind; nearest lamp post axis "
             + (post < float.MaxValue ? post.ToString("0.00") + " m" : "none (no Exterior/Streetlights)"));
         DemoValidation.Check(backed == origins.Count && near >= 0.001f && far <= 0.012f && card.center.x > L.MaxX && post > 0.2f, label);
     }
@@ -690,7 +690,7 @@ public static partial class NightStoreValidation
             ok &= sheets.Exists(x => x.Zone == zone) == NightInterior.Graphics.Exists(x => x.Zone == zone);
         ok &= (inside == null || sheets.Exists(x => x.Zone == "Showroom"))
             && (outside == null || root.Find(NightInterior.StreetZone) == null || sheets.Exists(x => x.Zone == NightInterior.StreetZone));
-        List<InteriorMesh> surfaces = InteriorSurfaces(root, sheets);
+        List<DemoValidation.RayMesh> surfaces = InteriorSurfaces(root, sheets);
         int faces = 0;
         float near = float.MaxValue, far = 0;
         foreach (InteriorSheet s in sheets)
@@ -725,7 +725,7 @@ public static partial class NightStoreValidation
                 if (g < 0) { ok = false; continue; }
                 if (Vector3.Dot(n, NightInterior.Graphics[g].Normal.normalized) <= 0.99f) continue;
                 front++;
-                bool hit = InteriorRay(new Ray(c, -n), 0.08f, surfaces, out float d, out _);
+                bool hit = DemoValidation.TriangleRay(new Ray(c, -n), 0.08f, surfaces, out float d, out _);
                 ok &= hit && Mathf.Abs(d - NightInterior.GiltDepth) <= 0.002f;
                 if (hit) { near = Mathf.Min(near, d); far = Mathf.Max(far, d); }
             }
@@ -736,7 +736,7 @@ public static partial class NightStoreValidation
         List<string> names = new List<string>();
         foreach (NightInterior.PlacedGraphic g in NightInterior.Graphics) names.Add(g.Zone + ": " + g.Name + " (" + g.Frame + ")");
         DemoValidation.Info("Wall graphics placed: " + (names.Count > 0 ? string.Join(", ", names) : "none"));
-        DemoValidation.Info("Gilt moulding: " + faces + " face triangles, " + (near <= far ? InteriorMm(near) + " to " + InteriorMm(far) : "none") + " off the wall");
+        DemoValidation.Info("Gilt moulding: " + faces + " face triangles, " + (near <= far ? DemoValidation.Mm(near) + " to " + DemoValidation.Mm(far) : "none") + " off the wall");
         DemoValidation.Check(ok, "Wall graphics use the two atlas pages and the gilt moulding, alpha-tested, unlit and shadowless");
     }
 
@@ -786,7 +786,8 @@ public static partial class NightStoreValidation
         return DemoAssetLibrary.Atlas(NightInterior.GraphicsPack, atlas + ".json");
     }
 
-    // dP/du and dP/dv of a triangle (the standard tangent frame); false when its UVs are degenerate.
+    // dP/du and dP/dv of a triangle (the standard tangent frame); false when its UVs are degenerate
+    // (a zero tangent passes, unlike in DecalTangents, so neither is shared).
     private static bool InteriorTangents(Vector3 p0, Vector3 p1, Vector3 p2, Vector2 w0, Vector2 w1, Vector2 w2, out Vector3 du, out Vector3 dv)
     {
         Vector3 e1 = p1 - p0, e2 = p2 - p0;
@@ -808,7 +809,7 @@ public static partial class NightStoreValidation
         Collider[] colliders = t.GetComponentsInChildren<Collider>(true);
         BoxCollider box = colliders.Length == 1 && colliders[0].transform == t ? colliders[0] as BoxCollider : null;
         if (box == null) return false;
-        Bounds solid = InteriorColliderBox(box);
+        Bounds solid = DemoValidation.BoxColliderBounds(box);
         return InteriorContains(solid, b, 0.01f) && InteriorContains(InteriorGrow(b, 0.01f), solid, 0);
     }
 
@@ -820,18 +821,8 @@ public static partial class NightStoreValidation
         return t != null && DemoAssetLibrary.WorldBounds(t.gameObject, out b);
     }
 
-    // World box round a BoxCollider's eight corners, without waiting for a physics transform sync.
-    private static Bounds InteriorColliderBox(BoxCollider box)
-    {
-        Transform t = box.transform;
-        Bounds b = new Bounds(t.TransformPoint(box.center), Vector3.zero);
-        for (int i = 0; i < 8; i++)
-            b.Encapsulate(t.TransformPoint(box.center + Vector3.Scale(box.size * 0.5f,
-                new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1))));
-        return b;
-    }
-
-    // inner, shrunk by shrink on every side, lies inside outer (0.1 mm tolerance).
+    // inner, shrunk by shrink on every side, lies inside outer (0.1 mm tolerance, for the
+    // imported models' rounding; DressingContains is exact, so neither is shared).
     private static bool InteriorContains(Bounds outer, Bounds inner, float shrink)
     {
         const float e = 1e-4f;
@@ -856,104 +847,33 @@ public static partial class NightStoreValidation
         return true;
     }
 
-    // x/z footprints as Rects (x = world x, y = world z), as NightStoreLayout.RegionRect does.
-    private static Rect InteriorRect(Bounds b) => Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z);
-
     private static Rect InteriorGrowRect(Rect r, float margin) => Rect.MinMaxRect(r.xMin - margin, r.yMin - margin, r.xMax + margin, r.yMax + margin);
 
     private static bool InteriorInside(Rect inner, Rect outer)
         => inner.xMin >= outer.xMin - 0.001f && inner.yMin >= outer.yMin - 0.001f && inner.xMax <= outer.xMax + 0.001f && inner.yMax <= outer.yMax + 0.001f;
 
-    // Shortest x/z distance between two footprints, 0 when they touch or overlap.
-    private static float InteriorGap(Rect a, Rect b)
-    {
-        float dx = Mathf.Max(0, Mathf.Max(a.xMin - b.xMax, b.xMin - a.xMax)), dz = Mathf.Max(0, Mathf.Max(a.yMin - b.yMax, b.yMin - a.yMax));
-        return Mathf.Sqrt(dx * dx + dz * dz);
-    }
-
-    private static string InteriorMm(float metres) => (metres * 1000).ToString("0.0") + " mm";
-
     private static string InteriorSize(Bounds b) => b.size.x.ToString("0.000") + " x " + b.size.y.ToString("0.000") + " x " + b.size.z.ToString("0.000");
 
     // Height of the floor top under a point, by a ray down from 5 cm; NaN when it misses.
-    private static float InteriorFloorY(List<InteriorMesh> floor, Vector3 at)
-        => InteriorRay(new Ray(new Vector3(at.x, 0.05f, at.z), Vector3.down), 0.5f, floor, out float d, out _) ? 0.05f - d : float.NaN;
+    private static float InteriorFloorY(List<DemoValidation.RayMesh> floor, Vector3 at)
+        => DemoValidation.TriangleRay(new Ray(new Vector3(at.x, 0.05f, at.z), Vector3.down), 0.5f, floor, out float d, out _) ? 0.05f - d : float.NaN;
 
     // ---------------------------------------------------------------- triangle rays
 
-    // A rendered mesh the ray checks read: its renderer's world box, then on the first ray that
-    // reaches that box its world-space vertices and triangles (read once per check pass).
-    private sealed class InteriorMesh
+    // The active, enabled meshes under t that keep passes (all of them without keep), as lazy
+    // DemoValidation.RayMeshes: boxed by their renderers and read on the first ray that reaches
+    // that box, once per check pass.
+    private static List<DemoValidation.RayMesh> InteriorMeshes(Transform t, Func<MeshFilter, bool> keep = null)
     {
-        public MeshFilter Filter;
-        public Bounds Box;
-        public Vector3[] World;
-        public int[] Triangles;
-    }
-
-    private static readonly Dictionary<MeshFilter, InteriorMesh> interiorMeshes = new Dictionary<MeshFilter, InteriorMesh>();
-
-    // The active, enabled meshes under t that keep passes (all of them without keep).
-    private static List<InteriorMesh> InteriorMeshes(Transform t, Func<MeshFilter, bool> keep = null)
-    {
-        List<InteriorMesh> list = new List<InteriorMesh>();
+        List<DemoValidation.RayMesh> list = new List<DemoValidation.RayMesh>();
         if (t == null) return list;
         foreach (MeshFilter filter in t.GetComponentsInChildren<MeshFilter>(false))
         {
             MeshRenderer r = filter.GetComponent<MeshRenderer>();
             if (filter.sharedMesh == null || filter.sharedMesh.vertexCount == 0 || r == null || !r.enabled || (keep != null && !keep(filter))) continue;
-            if (!interiorMeshes.TryGetValue(filter, out InteriorMesh m)) interiorMeshes[filter] = m = new InteriorMesh { Filter = filter, Box = r.bounds };
-            list.Add(m);
+            list.Add(DemoValidation.RayMeshOf(filter, true));
         }
         return list;
-    }
-
-    // Nearest hit of a world-space ray within maxDistance on either side of the meshes'
-    // triangles (Moller-Trumbore), with that triangle's winding normal; false when nothing is hit.
-    // Boxes the ray misses are never read.
-    private static bool InteriorRay(Ray ray, float maxDistance, List<InteriorMesh> meshes, out float distance, out Vector3 normal)
-    {
-        distance = float.NaN;
-        normal = Vector3.zero;
-        float best = float.MaxValue;
-        Vector3 origin = ray.origin, direction = ray.direction;
-        foreach (InteriorMesh m in meshes)
-        {
-            Bounds box = m.Box;
-            box.Expand(0.004f);
-            if (!box.IntersectRay(ray, out float enter) || enter > maxDistance) continue;
-            if (m.World == null)
-            {
-                Mesh mesh = m.Filter.sharedMesh;
-                Matrix4x4 toWorld = m.Filter.transform.localToWorldMatrix;
-                Vector3[] vertices = mesh.vertices;
-                for (int i = 0; i < vertices.Length; i++) vertices[i] = toWorld.MultiplyPoint3x4(vertices[i]);
-                m.World = vertices;
-                m.Triangles = mesh.triangles;
-            }
-            Vector3[] w = m.World;
-            int[] tri = m.Triangles;
-            for (int i = 0; i + 2 < tri.Length; i += 3)
-            {
-                Vector3 a = w[tri[i]], e1 = w[tri[i + 1]] - a, e2 = w[tri[i + 2]] - a, p = Vector3.Cross(direction, e2);
-                float det = Vector3.Dot(e1, p);
-                if (Mathf.Abs(det) < 1e-12f) continue;
-                float inv = 1 / det;
-                Vector3 s = origin - a;
-                float u = Vector3.Dot(s, p) * inv;
-                if (u < 0 || u > 1) continue;
-                Vector3 q = Vector3.Cross(s, e1);
-                float v = Vector3.Dot(direction, q) * inv;
-                if (v < 0 || u + v > 1) continue;
-                float t = Vector3.Dot(e2, q) * inv;
-                if (t < 0 || t > maxDistance || t >= best) continue;
-                best = t;
-                normal = Vector3.Cross(e1, e2).normalized;
-            }
-        }
-        if (best == float.MaxValue) return false;
-        distance = best;
-        return true;
     }
 }
 #endif

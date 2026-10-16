@@ -12,7 +12,8 @@ using L = NightStoreLayout;
 // the bake and previews the same lights as shadowless realtime lights instead.
 // Output goes to Docs/VerificationNight. Invoke either with -executeMethod. The realism
 // packs' checks live in the area files of this partial class (NightStoreValidationStreet,
-// -Interior, -Dressing, -Lighting, -Sound and -Presenter), called from Generate and Tick.
+// -Interior, -Dressing, -Lighting, -Sound and -Presenter), the fixture-detail round's in
+// -Detail, called from Generate and Tick; their shared geometry helpers are DemoValidation's.
 [InitializeOnLoad]
 public static partial class NightStoreValidation
 {
@@ -75,6 +76,7 @@ public static partial class NightStoreValidation
             LightingPackChecks(root.transform);
             PresenterBuildChecks(root.transform);
             CreditChecks(root.transform);
+            DetailChecks(root.transform);
             DemoValidation.SaveScene(L.SceneName);
             if (bake)
             {
@@ -837,7 +839,7 @@ public static partial class NightStoreValidation
     private static void Budgets(Transform root)
     {
         string[] categories = { "store", "exterior", "dressing", "tools and player" };
-        int facadePanes = 0, largestTexture = 0, allRenderers = 0, allTransparent = 0, allTriangles = 0;
+        int facadePanes = 0, largestTexture = 0, allRenderers = 0, allTransparent = 0, allTriangles = 0, allSubmeshes = 0;
         HashSet<Material> materials = new HashSet<Material>();
         HashSet<Texture> textures = new HashSet<Texture>();
         Transform facade = root.Find("Facade");
@@ -871,6 +873,7 @@ public static partial class NightStoreValidation
             int count = 0;
             if (mesh != null)
                 for (int i = 0; i < mesh.subMeshCount; i++) count += (int)mesh.GetIndexCount(i) / 3;
+            if (mesh != null) allSubmeshes += mesh.subMeshCount;
             drawn.Add(r);
             counts.Add(count);
             kinds.Add(Category(r.transform, root));
@@ -942,6 +945,8 @@ public static partial class NightStoreValidation
         DemoValidation.Check(total <= TriangleBudget, "Night store triangle budget");
         DemoValidation.Info("Budget: renderers before static batching=" + renderers + " of " + RendererBudget + ", worst eye " + worstRenderers);
         DemoValidation.Check(renderers <= RendererBudget, "Night store renderer budget");
+        // Reported only (no check): one draw per submesh until static batching merges them.
+        DemoValidation.Info("Budget: submeshes (draw calls before static batching, all active renderers)=" + allSubmeshes);
         DemoValidation.Info("Budget: materials=" + materials.Count + " of " + MaterialBudget + "; textures=" + textures.Count + ", largest " + largestTexture + " px of " + TextureBudget);
         DemoValidation.Check(materials.Count <= MaterialBudget && largestTexture <= TextureBudget, "Night store material budget");
         DemoValidation.Info("Budget: transparent renderers=" + transparent + " of " + TransparentBudget + ", worst eye " + worstTransparent

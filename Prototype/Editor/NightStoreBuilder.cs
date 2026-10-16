@@ -9,12 +9,15 @@ using static DemoGeometry;
 using L = NightStoreLayout;
 
 // Generates the expanded night store from NightStoreLayout: root "NightStore" with
-// Architecture (floor, walls, partitions, ceiling and its fittings), Facade (window
-// bays, forced entrance, cladding, alarm bell box), Exterior (pavement, kerb, wet street,
-// buildings and the apartment block across the street, bollards, streetlights, police
-// car, equipment table and easel, street furniture and figures from NightStreet,
-// play-area walls), Showroom and Office (StoreKit fixtures, then NightInterior's props
-// and wall graphics), Dressing (NightStoreDressing, then NightDecals) and Anchors, the
+// Architecture (floor, walls, partitions, skirting, the walnut architraves round the office
+// opening, the ceiling with its shadow gap and its fittings, CCTV domes and smoke
+// detectors), Facade (window bays, forced entrance, cladding, alarm bell box), Exterior
+// (pavement, kerb, wet street, buildings and the apartment block across the street,
+// bollards, streetlights, police car, equipment table and easel, street furniture and
+// figures from NightStreet, play-area walls), Showroom and Office (StoreKit fixtures, the
+// wall devices among them, and the corner camera, square to its partition with only its
+// housing turned by NightStoreLayout.CameraAim; then NightInterior's props and wall
+// graphics), Dressing (NightStoreDressing, then NightDecals) and Anchors, the
 // hidden UV trace examples (UVTraceBuilder), then the tool station with the night
 // ToolLayout and the soundscape (NightAudioBuilder). CreatePlayer puts the rig at the
 // spawn beside the car with the layout's movement regions and its footsteps. Every
@@ -233,6 +236,12 @@ public static class NightStoreBuilder
 
     // ---------------------------------------------------------------- architecture
 
+    // Walnut architraves round the office opening on both faces of the partition: 45 mm
+    // wide, 18 mm proud (3 mm prouder than the skirting, which butts into their legs). The
+    // shadow gap is a dark 15 mm strip under the ceiling, 3 mm off the showroom and office walls.
+    public const float ArchitraveWidth = 0.045f, ArchitraveProud = 0.018f, ShadowGapHeight = 0.015f, ShadowGapOffset = 0.003f;
+    public const string ArchitravesName = "Architraves", ShadowGapName = "ShadowGap";
+
     private static void Architecture(Transform parent)
     {
         GameObject solid = Group("Colliders", parent).gameObject;
@@ -254,20 +263,44 @@ public static class NightStoreBuilder
         for (int s = -1; s <= 1; s += 2)
             Slab(walls, solid, StoreKit.Plaster, V(s * oh - half, 0, rz), V(s * oh + half, top, L.MaxZ));
 
-        // Walnut skirting along the showroom and office walls (gaps at the doors and the opening).
+        // Walnut skirting along the showroom and office walls (gaps at the doors and the
+        // opening). The segments butt at every corner, the architrave legs and the door
+        // casings instead of overlapping there, so no two faces overlap in one plane: the
+        // partition's runs stop at the side skirting's face and at the legs' outer faces
+        // (x +-(OfficeOpeningHalf + ArchitraveWidth)), and the office back run and the office
+        // face of the partition (+24 triangles) stop at the office side skirting.
         const float sk = 0.1f, st = 0.015f;
+        float legs = L.OfficeOpeningHalf + ArchitraveWidth;
         Slab(trim, null, StoreKit.Walnut, V(L.MinX, 0, L.MinZ), V(L.MinX + st, sk, rz - half));
         Slab(trim, null, StoreKit.Walnut, V(L.MaxX - st, 0, L.MinZ), V(L.MaxX, sk, rz - half));
-        float[] front = { L.MinX, officeDoor - 0.52f, officeDoor + 0.52f, -L.OfficeOpeningHalf, L.OfficeOpeningHalf, serviceDoor - 0.52f, serviceDoor + 0.52f, L.MaxX };
+        float[] front = { L.MinX + st, officeDoor - 0.52f, officeDoor + 0.52f, -legs, legs, serviceDoor - 0.52f, serviceDoor + 0.52f, L.MaxX - st };
         for (int i = 0; i + 1 < front.Length; i += 2)
             Slab(trim, null, StoreKit.Walnut, V(front[i], 0, rz - half - st), V(front[i + 1], sk, rz - half));
         for (int s = -1; s <= 1; s += 2)
             Slab(trim, null, StoreKit.Walnut, V(s * (oh - half) - (s > 0 ? st : 0), 0, rz + half), V(s * (oh - half) + (s < 0 ? st : 0), sk, L.MaxZ));
-        Slab(trim, null, StoreKit.Walnut, V(-oh + half, 0, L.MaxZ - st), V(oh - half, sk, L.MaxZ));
+        Slab(trim, null, StoreKit.Walnut, V(-oh + half + st, 0, L.MaxZ - st), V(oh - half - st, sk, L.MaxZ));
+        // The office face of the partition, from the architrave legs to the office side skirting.
+        for (int s = -1; s <= 1; s += 2)
+            Slab(trim, null, StoreKit.Walnut, V(Mathf.Min(s * legs, s * (oh - half - st)), 0, rz + half), V(Mathf.Max(s * legs, s * (oh - half - st)), sk, rz + half + st));
 
         floor.Emit("Floor", parent, Vector3.zero, Quaternion.identity, Folder, "night_floor");
         walls.Emit("Walls", parent, Vector3.zero, Quaternion.identity, Folder, "night_walls");
         trim.Emit("Skirting", parent, Vector3.zero, Quaternion.identity, Folder, "night_skirting");
+
+        // Architraves round the office opening on both faces (bevelled bars, lightmapped at the
+        // shell's density): two legs from the floor and the head between them, as HingedDoor's
+        // casings, their backs on the partition. The head tops at 2.445, under the wall clock;
+        // the legs end at x +-0.845, short of the extinguisher and the fire plan.
+        KitMesh architraves = new KitMesh();
+        float legHeight = L.OfficeOpeningHeight + ArchitraveWidth;
+        foreach (float n in new[] { -1f, 1f })
+        {
+            float z = (n < 0 ? NightInterior.ShowroomFace : NightInterior.OfficeFace) + n * ArchitraveProud * 0.5f;
+            for (int s = -1; s <= 1; s += 2)
+                architraves.Bar(StoreKit.Walnut, V(s * (L.OfficeOpeningHalf + ArchitraveWidth * 0.5f), legHeight * 0.5f, z), V(ArchitraveWidth, legHeight, ArchitraveProud), 0.003f);
+            architraves.Bar(StoreKit.Walnut, V(0, L.OfficeOpeningHeight + ArchitraveWidth * 0.5f, z), V(2 * L.OfficeOpeningHalf, ArchitraveWidth, ArchitraveProud), 0.003f);
+        }
+        architraves.Emit(ArchitravesName, parent, Vector3.zero, Quaternion.identity, Folder, "night_architraves");
 
         // Ceiling slab (its top is the roof) with the fittings, all off. The overview
         // capture and the presenter map hide this whole group.
@@ -275,11 +308,36 @@ public static class NightStoreBuilder
         GameObject ceilingSolid = Group("Colliders", ceilingGroup).gameObject;
         Slab(ceiling, ceilingSolid, StoreKit.CeilingPaint, V(L.MinX, top, L.MinZ), V(L.MaxX, top + L.Slab, L.MaxZ));
         ceiling.Emit("CeilingSlab", ceilingGroup, Vector3.zero, Quaternion.identity, Folder, "night_ceiling");
+
+        // Shadow gap: a dark strip ShadowGapOffset off each showroom and office wall under the
+        // ceiling, facing the room (seven faces, 14 triangles). Probe-lit (a 15 mm strip would
+        // waste a lightmap chart) and shadowless. None runs on the facade, whose window heads
+        // reach the ceiling: the side strips start at the end bays' outer mullions, whose backs
+        // (z 0.06) are the only frame at the wall line (the heads stop 4 cm short of it).
+        KitMesh gap = new KitMesh { Lightmapped = false };
+        float g0 = top - ShadowGapHeight, e = ShadowGapOffset, sz = rz - half - e, oz = rz + half + e, ox = oh - half - e, head = 0.06f;
+        for (int s = -1; s <= 1; s += 2)
+        {
+            float x = s < 0 ? L.MinX + e : L.MaxX - e;
+            gap.Face(StoreKit.DeviceBlack, V(-s, 0, 0), V(x, g0, head), V(x, g0, sz), V(x, top, sz), V(x, top, head));
+            gap.Face(StoreKit.DeviceBlack, V(-s, 0, 0), V(s * ox, g0, oz), V(s * ox, g0, L.MaxZ - e), V(s * ox, top, L.MaxZ - e), V(s * ox, top, oz));
+        }
+        gap.Face(StoreKit.DeviceBlack, Vector3.back, V(L.MinX + e, g0, sz), V(L.MaxX - e, g0, sz), V(L.MaxX - e, top, sz), V(L.MinX + e, top, sz));
+        gap.Face(StoreKit.DeviceBlack, Vector3.back, V(-ox, g0, L.MaxZ - e), V(ox, g0, L.MaxZ - e), V(ox, top, L.MaxZ - e), V(-ox, top, L.MaxZ - e));
+        gap.Face(StoreKit.DeviceBlack, Vector3.forward, V(-ox, g0, oz), V(ox, g0, oz), V(ox, top, oz), V(-ox, top, oz));
+        MeshRenderer gapRenderer = gap.Emit(ShadowGapName, ceilingGroup, Vector3.zero, Quaternion.identity, Folder, "night_shadow_gap").GetComponent<MeshRenderer>();
+        if (gapRenderer != null) gapRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+
         Vector3[] downlights = L.Downlights();
         for (int i = 0; i < downlights.Length; i++)
             StoreKit.Instantiate("downlight", ceilingGroup, downlights[i], 0).name = "Downlight_" + i;
         for (int i = 0; i < L.Tracks.Length; i++)
             StoreKit.Instantiate("track_light", ceilingGroup, L.Tracks[i], L.Tracks[i].w).name = "TrackLight_" + i;
+        // CCTV domes and smoke detectors, flush under the slab (small props: probe-lit, out of GI).
+        for (int i = 0; i < L.Domes.Length; i++)
+            StoreKit.Instantiate("cctv_dome", ceilingGroup, L.Domes[i], 0).name = "CctvDome_" + i;
+        for (int i = 0; i < L.SmokeDetectors.Length; i++)
+            StoreKit.Instantiate("smoke_detector", ceilingGroup, L.SmokeDetectors[i], 0).name = "SmokeDetector_" + i;
     }
 
     // A full-height partition along x at z with one opening (gapCentre +- gapHalf, up to gapTop).
@@ -656,8 +714,9 @@ public static class NightStoreBuilder
 
     // ---------------------------------------------------------------- fixtures
 
-    // A layout fixture: case, safe and door states come from the dressing's case state,
-    // everything else through StoreKit.Instantiate (user-converted model when present).
+    // A layout fixture: case, safe and door states come from the dressing's case state, the
+    // camera's aim from NightStoreLayout.CameraAim (always the procedural camera), everything
+    // else through StoreKit.Instantiate (user-converted model when present).
     private static void Place(L.Fixture f, Transform parent)
     {
         GameObject g;
@@ -671,6 +730,8 @@ public static class NightStoreBuilder
             case "safe_tall": g = StoreKit.SafeTall(parent, NightStoreDressing.SafeOpen(f.Name)); break;
             case "office_door": g = StoreKit.OfficeDoor(parent, 0); break;
             case "service_door": g = StoreKit.ServiceDoor(parent, 0); break;
+            // Square to the partition; only its arm and housing turn towards the entrance.
+            case "security_camera": g = StoreKit.SecurityCamera(parent, L.CameraAim); break;
             default: g = StoreKit.Instantiate(f.Kit, parent, f.Position, f.Yaw); break;
         }
         g.name = f.Name;

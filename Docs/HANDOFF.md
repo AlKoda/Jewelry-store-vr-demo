@@ -1,3 +1,152 @@
+# Fixture detail, trim, security devices and street trees — October 16 (Claude, unverified, never compiled in Unity)
+
+This round adds detail where guests stand: the 14 display and wall cases, the counter, both safes, the forced entrance doors, the eight facade bays and the two side-room doors. It also adds architectural trim, security devices and three bare trees across the street. The items were ranked by guest impact per unit of frame time; the small-metal finishes cost no frame time at all. An architect planned the round, a skeptic checked it against the code, a revised plan resolved every blocking point, and one implementer per file group wrote it. The fixture detail is faces and submeshes of each fixture's existing renderers. The only new renderers are 20 small static ones and 1 hidden one. No light and no texture is added. Nothing that depends on the country, the entry route or the evidence was decided (see "Open decisions stay open" below). **Nothing here has been compiled or run in Unity.**
+
+What was checked here: the Roslyn compile check (C# 9, UNITY_EDITOR, every Prototype/Scripts and Prototype/Editor file against older Unity reference DLLs, with a stub for the Unity 6 find APIs) ran on the working tree with this round's builder changes. It reported only the 2 pre-existing errors at NightLighting.cs:624 (those DLLs lack `LightingSettings.lightmapCompression`). A final cross-file review reran it on the merged tree (builders and validators together) with the same result, and Prototype/Scripts alone (no UNITY_EDITOR) has no error. None of this replaces a compile in Unity 6000.6.
+
+- **What the guest sees, by area** (default settings):
+  - **Cases** (8 display cases, 6 wall cases):
+    - 10 mm panes; the top pane is an overlay on the frame, so its dark green 10 mm edge shows on all four sides (KitGlassEdge, opaque). The case top stays at 1.05 m.
+    - Bevelled bronze posts and rails. The rails run between the posts, so the corners butt instead of overlapping, and stop 0.5 mm under the top pane, which lies on them.
+    - Inside: a black silicone bead at the foot of each standing pane, piping round the suede deck, and an LED channel with its diffuser (off) under the front rail (an island case also has one under the back rail).
+    - Staff side: two cupboard locks and the doors' meeting line in the carcass panel, and a key lock at the foot of the sliding pane. Both case drawers (the central case's and the knocked case's, which lies on the floor) have a lock too.
+    - A dark plinth gap (a shadow line) under the walnut carcass, also on the counter. The framed panels are rebuilt from bevelled members that butt (see the fixes below).
+  - **Counter:** the same dark plinth gap and framed panels, and a stone top with its long edges eased.
+  - **Safes:**
+    - Bevelled top and bottom walls; the side walls stay square, so no vertical edge changes its bevel halfway up.
+    - Barrel hinges with domed finials on plates, dark bolt receivers on the left jamb facing the three bolts, and a bevelled door with a dark bolt channel on its free edge. Inside the door: a stainless bolt bar with a carrier at each bolt.
+    - The large safe keeps its dial (with an index mark above it) and spoked handle and gains a key lock beside the dial. The tall safe's dial becomes an electronic lock (dark housing, a screen that is off, twelve grey keys) with its lever handle and a key lock.
+  - **Forced entrance doors:** bevelled jambs, head, hinge stiles and rails (the lock stile stays square, because the pry marks and the UV smear span its 70 mm faces), 12 mm glazing beads round the glass on both faces, round pull bars through-bolted to each other through the glass, a deadlock on both faces of each bottom rail, and a door contact under the head over each leaf's magnet.
+  - **Facade bays:** street-side snap caps on the mullions, sill and transom (adjacent bays' caps meet in one 60 mm cap with a V seam), 12 mm beads on the shop face of the glass and a 5 mm gasket in front of its street face. All of it is in the frame's metal, so the bays gain no submesh.
+  - **Side-room doors:** a door contact under the head facing a magnet on the leaf; the office door has a key lock under its lever on both faces, the service door one on its push side above the bar. All of it stays clear of the Staff Only sign.
+  - **Trim and devices:**
+    - Walnut architraves round the office opening on both faces of the partition (45 mm wide, 18 mm proud). The head runs between the legs, as on the side-room door casings.
+    - Skirting: the corrected corners and the run on the office face of the partition, which had none (see the fixes below).
+    - A 15 mm dark shadow gap under the ceiling round the showroom and office walls (none on the facade, whose window heads reach the ceiling).
+    - Three PIR detectors (high in the showroom's front corners and in the office), two light switches (both faces of the partition beside the opening), five sockets above the skirting, a second alarm keypad by the office opening, and two CCTV domes and two smoke detectors on the ceiling. The switch and socket plates are plain 82 mm squares: each switch has one wide rocker, each socket a blank insert with no pin pattern (decision 1).
+  - **The corner camera** on the rear-left partition: its plate now sits square to the wall; only the arm and housing turn towards the entrance (NightStoreLayout.CameraAim, -42.5°). Before, the whole camera was turned and half its plate was inside the partition. It also sits 3 cm lower (pivot at 2.75 m, was 2.78), so the hood's raised rear stays 2 cm under the ceiling and below the shadow gap; at 2.78 it cut 1 cm into the slab.
+  - **Across the street:** three bare deciduous trees on the far pavement (Exterior/Trees/Tree_0 to Tree_2), each about 6.2 m tall in a 1 m metal grate. They are a late-autumn simplification: the wet leaves in the gutter are theirs, and foliage is deferred. No species is named and they are not pollarded, since both hint at a country.
+  - **Hidden at arrival:** the corner camera's cut cable, 0.3 m of black cable with its copper core showing, hanging under the camera's plate. It is the only new evidence-like item, and it is in the hidden "Case evidence" set (decision 8).
+- **Per-fixture triangles, old -> new** (counted from the builder code; each StoreKit budget cap leaves room for a small detail above the new count):
+
+  | Fixture | Triangles | StoreKit budget cap |
+  |---|---|---|
+  | display_case, intact | 428 -> 1,100 (Body 368 -> 1,040, panes 60) | 900 -> 1,300 |
+  | display_case, front broken / all broken / with drawer | 448 -> 1,118 / 458 -> 1,036 / 512 -> 1,246 | 900 -> 1,300 / 1,300 / 1,450 |
+  | display_case with the cracked top (night store only) | 668 -> 1,340 | — |
+  | wall_case / all broken | 380 -> 972 (Body 924) / 906 | 900 -> 1,150 |
+  | counter | 226 -> 498 | 400 -> 600 |
+  | safe_large | 656 -> 931 (Body 190 -> 336, Door 466 -> 595) | 900 -> 1,150 |
+  | safe_tall | 544 -> 774 | 800 -> 1,000 |
+  | storefront_doors: closed / BrokenOpen / the night entrance, both panes broken | 310 -> 1,006 / 392 -> 1,088 / 474 -> 1,170 (each leaf 120 -> 432, the frame 46 -> 118) | 500 -> 1,200 / 700 -> 1,300 |
+  | window_module: intact / cracked / broken | 118 -> 286 / 358 -> 526 / 210 -> 378 | 300 -> 400 / 500 -> 650 / 500 |
+  | office_door / service_door | 204 -> 352 / 132 -> 218 | 300 -> 420 / 300 |
+  | New devices (StoreKitDevices.cs): cctv_dome / smoke_detector / pir_detector / light_switch / socket_outlet | 206 (a 16-sided loft, so the glossy dome shows no lathe rings) / 86 / 44 / 40 / 30 | 250 / 120 / 80 / 60 / 50 |
+  | alarm_keypad (the second one uses the existing builder) | 134 | 200 |
+  | security_camera | unchanged (aim only) | 250 |
+
+  The display-case Body is made of the plinth 10, carcass 12, 16 frame bars 448, deck 10, piping 40, deck trims 48, 8 rail and post bars 224, edge band 8, beads 8, two LED channels 28, cupboard locks 126 and the glass lock 78.
+- **Budgets** (estimates; the first RunNightQuick log replaces them):
+
+  | Budget | Limit | Before | After |
+  |---|---|---|---|
+  | Triangles, selected LOD at the worst eye | 220k | ~148k | ~163k (+15.1k: 8 display cases +5,402, 6 wall cases +3,552, counter +272, safes +505, entrance +696, 8 facade modules +1,344, side doors +234, 15 devices +1,080, architraves 168, office-face skirting 24, shadow gap 14, 3 trees 1,776 at 592 each with no LOD). Hidden: the cut cable, +40 in Case evidence |
+  | Materials | 136 | ~128 | ~129. The one addition is KitGlassEdge, the 10 mm glass edge on 13 case tops: no opaque blue-green dielectric exists in the palette, and the band must stay opaque so it adds no transparent renderer. Everything else reuses materials already in the scene: KitLightLens for the LED diffusers (KitStripLight is not in the night store); KitFrameMetal for the plinth gaps, the LED channels and the door and window beads, caps and gaskets; DeviceBlack for the case beads, keyways and bolt receivers; KitWindowDark for the domes; Lacquer, DeviceGrey and DeviceBlack for the devices; KitConcrete bark with a KitFrameMetal grate for the trees; DeviceBlack and Bronze for the cut cable |
+  | Transparent renderers, selected LOD | 70 | ~57 | +0: the edge band, the domes, the beads and the gaskets are all opaque |
+  | Renderers before static batching | 900 | ~530 | ~550: +20 (15 devices, the architraves, the shadow gap, 3 trees), plus 1 hidden (the cut cable) |
+  | Submeshes (draw calls before static batching) | — | — | about +116: 55 from the case Bodies, which go from 3 to 7 materials each (6 on the all-broken case), about 20 from the safes, doors and counter, and about 41 from the new renderers. The new small materials repeat across many static renderers, so static batching should merge most of them per lightmap (unmeasured). The new "Budget: submeshes" Info line logs the count |
+  | Lightmaps | 8 x 1024 | 2–4 estimated | 2–4 estimated. About 1.1 m² of architraves and 0.5 m² of skirting are added at shell density. A bevelled bar unwraps to about 3 charts against a box's 6, so the case Bodies' chart count stays about level. Probe-lit: every device (under 0.3 m), the shadow gap, the trees and the cut cable |
+  | Pixel lights | 4 | 4 | 4: no Light component added; the LED diffusers and the safe's screen stay black-emissive |
+  | Texture memory | — | ~155 MB | +0: no new texture |
+- **Shimmer: small-metal finishes** (smoothness; colours and reflectance unchanged). A curved metal part a few millimetres across, at arm's length on Quest 2 (about 0.9 mm per pixel at 1 m), turns its highlight into a sub-pixel spark at 0.8, which 4x MSAA cannot fix (it resolves geometry edges, not shading). At 0.72 or less the highlight is twice as wide and about a quarter as bright at its peak; it stays sub-pixel, but it flickers far less. Gems are capped at 0.85; flat glass, screens and lenses are exempt. One material serves desktop and VR, so the desktop loses a little polish too.
+
+  | Material | Before | After | Where |
+  |---|---|---|---|
+  | KitGold, KitSilver (StoreKitProps) | 0.80 | 0.72 | the kit's rings, chain and bangle; the pack's ring band, the ring box's hinge pin and the pearl strand's clasp; through JewelryRemap also the loupe's chrome |
+  | KitPearl (NightStoreDressing) | 0.80 | 0.70 | the 7 mm beads of the pearl strand |
+  | KitGem (NightStoreDressing) | 0.92 | 0.85 | the GemParcel's facets, 1–2 px across |
+  | JewelryModels GoldCoin (DemoAssetLibrary finish table) | 0.85 | 0.72 | the coin's milled edge |
+  | JewelryModels GoldBar1kg | 0.78 | 0.72 | the bar's stamped relief |
+
+  The old shop's JewelryGold (ShopDisplayFinish) is a separate material and keeps 0.8.
+- **Unchanged finishes, with reasons:**
+  - KitBronze and KitStainless keep their PBRInterior BronzeBrushed and BrushedSteel maps (smoothness about 0.62 and 0.53; scalars 0.45 and 0.55). They are already under the cap and sit on posts, rails, pulls and bolts at least 12 mm across.
+  - Velvet and suede (smoothness about 0.18 and 0.10) are matte and do not shimmer. They lack the sheen that makes fabric read as fabric, but the Standard shader has no sheen term.
+  - The thinnest parts (the ring box's 1 mm hinge pin and the band's 1.8 mm edge, 1–2 px at 1 m) still alias across their width.
+  - Both need one forward-only surface shader (deferred): the Standard BRDF plus a Charlie or Ashikhmin sheen term for velvet and suede, and roughness widening from the screen-space normal variance (ddx/ddy, Kaplanyan-Hoffman) for the small metals and those thin parts. It must keep directional lightmaps, light probes, box-projected reflection probes and single-pass instanced and multiview stereo, cast shadows through Fallback Standard, survive ForwardOnlyShaderStripping, ship through a material in the scene, and have a check that it compiles and is supported. It cannot be compiled or profiled here, and it touches every palette fabric and metal.
+- **Refactor** (behaviour-neutral; no existing check label or Info text changes):
+  - DemoValidation gains the geometry helpers the area files used to keep privately: `RayMesh` with `RayMeshOf`, `NewRayMesh` and `ClearRayMeshes`, `TriangleRay` (one Möller-Trumbore triangle ray for StreetMeshRay, InteriorRay and DressingRay), `SurfaceY` (was GlowSurfaceY), `BoxColliderBounds`, `Footprint`, `FootprintGap`, `RectPointDistance`, `PointSegmentDistance`, `RectSegmentDistance` and `Mm`. Two helpers are new: `AppendWorldMesh` (several meshes into one world-space list) and `CoplanarOverlap` (the first pair of same-facing triangles that lie in one plane and overlap with positive area, the cause of z-fighting; shared edges and touching corners do not count). The Street, Interior, Dressing and Lighting area files call them. Helpers with their own tolerances stay local, each with a comment giving the reason.
+  - `StoreKit.Transparent` and the transparency loop in `KitMesh.Emit` are replaced by `DemoAssetLibrary.Blended`, closing the October 16 entry's cleanup item.
+  - New `KitMesh.Bar`: a box with the four edges along its longest axis bevelled (ProceduralMesh.ChamferBox turned onto that axis), 28 triangles; its end faces stay square, as on cut profiles. `StoreKit.KeyLock` and `KeyCylinder` are the shared locks.
+  - `StoreKit.SecurityCamera(parent, aim)` takes an aim angle; the triangle count does not depend on it.
+- **Fixes found by review:**
+  - FramedPanels had coplanar 5 mm overlaps, which z-fight: the stile tops against the carcass top, and the corner stiles against each other. It is rebuilt so its members butt: the rails run between the stiles, and the front and back stiles cover the corners.
+  - The case top rails overlapped at the corners. They now run between the posts.
+  - Four skirting corners overlapped (the showroom's and the office's rear corners) and now butt. The showroom-face skirting now stops at the architrave legs' outer faces, x ±(OfficeOpeningHalf + ArchitraveWidth). The office face of the partition gets the skirting it lacked (+24 triangles).
+  - The corner camera's plate was half inside the partition, and its hood cut 1 cm into the ceiling slab (above).
+  - The storefront pull standoffs floated 21 mm off the glass; the standoffs now pass through it.
+  - Cross-file review: FrameJointChecks had been left out of `StoreKitValidation.Check` (written before `DemoValidation.CoplanarOverlap` existed); it is now called after CaseGlassChecks. A port of the builders and of the shipped CoplanarOverlap finds no overlap on the seven case and counter Bodies, and an overlap on each 6ceceea Body. The "Budget: submeshes" Info line was missing from NightStoreValidation.Budgets and is now logged.
+- **Side benefit:** a tool set down on a case top now rests on the glass. The top pane ends at the collider's top (1.05 m); before, the tool floated about 1 cm above the inset pane.
+- **Open decisions stay open** ("for Koda.md"):
+  - PoliceLook stays Provisional.
+  - No laminated-glass or roller-grille state, and no change to the fractures, glass fans or floor shards (decision 2); the case tops change shape only for the overlay pane.
+  - No UV trace, tool or evidence moves. The cut cable is hidden in Case evidence, and no video recorder (DVR) is placed (decision 8).
+  - The alarm bell stays off at arrival (decision 6), and `StockInSafes` stays true (decision 9).
+  - The sockets have blank faces and the switches one plain rocker (decision 1), and no call point is placed (decision 10).
+- **New checks** (Edit mode; none needs a pack):
+  - **StoreKitValidation**, 8 gallery checks. `StoreKitValidation.Check` runs inside RunGallery and inside NightStoreValidation's Generate, so they count in both:
+    - "Case panes are 10 mm and the top pane rests on the rails, its green edge band opaque on all four sides" (CaseGlassChecks)
+    - "Case and counter bodies have no coplanar overlapping faces, so their frame joints cannot z-fight" (FrameJointChecks; `CoplanarOverlap` on every case and counter Body)
+    - "Fixture detail stays merged: cases, safes, doors, bays and the counter keep their renderers and part names" (FixturePartChecks)
+    - "Safe bolt receivers on the jamb line up with the door's three bolts" (SafeBoltChecks)
+    - "Case locks face the staff side and the LED diffusers face down inside the glass" (CaseHardwareChecks)
+    - "Glazing beads, caps and gaskets frame the door and window glass without entering it" (GlazingChecks)
+    - "Door contacts pair up on closed leaves and part when a leaf is forced open" (ContactChecks)
+    - "Wall devices pivot at the bottom centre of their back, at most 6 cm proud; ceiling devices hang at or below the ceiling plane" (DeviceChecks)
+  - **NightStoreValidationDetail.cs** (new area file, prefix Detail; `DetailChecks` runs in Generate right after CreditChecks, before the first save, so it reads the meshes before Play mode's static batching), 11 checks:
+    - "Shared triangle-ray, footprint and coplanar helpers measure known shapes exactly" (DetailHelpers)
+    - "Dressing and jewellery finishes stay at or below 0.72 smoothness (gems 0.85), glass and mapped surfaces aside" (DetailMetals; it also runs without JewelryModels, because the StoreKit stand-ins carry KitGold)
+    - "Case tops show their green glass edge exactly where the top pane is intact, at the cases' 1.05 m height" (DetailCaseEdges)
+    - "Walnut architraves frame the office opening on both faces and the skirting butts into them, with no coplanar overlap" (DetailTrim; `CoplanarOverlap` on the architraves and skirting together)
+    - "A dark shadow gap runs round the showroom and office walls under the ceiling, probe-lit and shadowless" (DetailShadowGap)
+    - "Switches, sockets, PIR detectors and the office keypad sit on their walls, above the skirting and clear of the wall graphics and fixtures" (DetailWallDevices)
+    - "CCTV domes and smoke detectors hang flush under the ceiling, clear of the downlights, tracks and diffusers" (DetailCeilingDevices)
+    - "PIR detectors face into the showroom and the office, and the showroom ones never towards the shop windows" (DetailPirs: all three face their room's centre; only the two showroom ones must also face away from the facade)
+    - "The corner camera's plate sits flat on the partition and only its housing turns towards the entrance" (DetailCamera)
+    - "The only cut cable hangs under the security camera in the hidden Case evidence set, in front of the wall" (DetailCutCable)
+    - "Street trees stand on the far pavement clear of the lamps, the shelter, the racks and the facades, probe-lit, shadowless and without colliders" (DetailTrees; the crowns must stay within FarPavementZ + 0.3 and FarKerbZ + 0.3)
+  - **Existing checks that change without a new name:** "Store kit builds every fixture" now expects 31 fixtures (was 26). The per-entry Info line of "Store kit fixtures stay within their triangle budgets" now ends in `submeshes=`. NightStoreValidation.Budgets logs a new Info line, "Budget: submeshes (draw calls before static batching, all active renderers)=", which no check reads.
+- **Expected PASS-count changes** (on top of the October 16 validator entry's figures):
+
+  | Validator | Change | Made up of |
+  |---|---|---|
+  | NightStoreValidation.RunNightQuick | +19, with or without the packs | 8 StoreKitValidation checks (StoreKitValidation.Check runs inside it) and 11 Detail checks |
+  | NightStoreValidation.RunNight | +19, with or without the packs | the same |
+  | StoreKitValidation.RunGallery | +8 | the gallery checks |
+  | ShopCityValidation (every run), JewelrySceneValidation, GlassToolValidation | none | — |
+- **Checks predicted to fail:** none on today's code, by the plan's traces. The closest margins, in case one fails:
+  - the wall clock 1.5 cm above the architrave head (2.445 m);
+  - the front PIRs 14 cm from the Pissarro's gilt frame;
+  - the tree crowns about 0.33 m inside both z limits (the crowns span about z -16.35 to -14.05; worst-case reach 1.29 m across and 1.15 m in z);
+  - the case rails 0.5 mm under the top pane;
+  - the case LED diffuser 2.5 mm inside the CaseHardware limit.
+  - Existing checks to watch: "Night store material budget" (about 129 of 136), "Store kit fixtures stay within their triangle budgets" (the new caps), "Night store static flags follow the bake policy" (the architraves lightmapped, the devices, shadow gap and trees probe-lit) and the clock and extinguisher checks beside the office opening.
+- **Deferred** (each with its reason in ROADMAP): wet-street reflection streaks (A4, the next round's first item); the sheen and specular anti-aliasing shader (the rest of A9); foliage for the trees; the DVR and its cables (decision 8); green rims on the broken glass (the broken parts must stay all-blended, and decision 2); second-tier fixtures and safe edge-wear (A17). A fallback only, if the bake blurs the case Bodies: move the locks, keyways, LED parts, piping and beads into a probe-lit "Hardware" child per case (+14 renderers, with FixturePartChecks updated).
+- **Files added or changed:**
+  - New, each needing a fresh .meta guid when the Downloads ZIP is synced: Prototype/Editor/StoreKitDevices.cs (the five devices) and Prototype/Editor/NightStoreValidationDetail.cs (the Detail checks; it needs the matching NightStoreValidation.cs, which calls DetailChecks).
+  - Changed, keeping their existing .meta files:
+    - Editor builders: StoreKit (case, counter, safe, door and bay detail, KitGlassEdge, the budget caps, the camera aim, the five new Names and gallery lifts), KitMesh (Bar; Emit uses Blended), StoreKitProps (KitGold, KitSilver), NightStoreDressing (KitGem, KitPearl), DemoAssetLibrary (the coin and bar finishes), ShopDisplayFinish (a comment only), NightStoreBuilder (architraves, skirting, shadow gap, domes and smoke detectors, the camera with its aim), NightStoreLayout (the wall devices as Fixtures rows, the camera at yaw 0 and 2.75 m, CameraAim, Domes, SmokeDetectors), NightDecals (the cut cable), NightStreet (the trees).
+    - Editor validators: DemoValidation (the geometry helpers), NightStoreValidation (the DetailChecks call, the submeshes Info line), NightStoreValidationStreet, NightStoreValidationInterior, NightStoreValidationDressing and NightStoreValidationLighting (the shared helpers), StoreKitValidation (the 8 checks, 31 fixtures, the submeshes Info).
+  - No runtime script, shader, scene or pack file changed. Outside the ZIP: Docs/HANDOFF.md, Docs/ROADMAP.md and for Koda.md.
+- **To verify on the PC:**
+  1. **Compile.** Bring the two new files and the changed ones into the project (sync the ZIP, or open through Open-Unity-Glass.cmd or Start-Demo.cmd). The Console must show no compile error and no warning from these files.
+  2. **StoreKitValidation.RunGallery.** Expect +8. Read every "<entry> triangles=... submeshes=" line against the per-fixture table above, and record the coplanar result of FrameJointChecks.
+  3. **NightStoreValidation.RunNightQuick.** Expect +19. Record "Budget: triangles=" (about 163k expected), "Budget: materials=" (about 129) and "Budget: submeshes ...". Set MaterialBudget to the logged materials value + 8, as its comment says. Also record these Info lines: "Case edges: ..." (a band on 13 cases, none on RightIsland_Front), the DetailTrim coplanar result, each wall device's back gap, the PIR dots, the camera dot (at least 0.95) with its deepest plate vertex, the cut cable's wall gap, the trees' bounds, and DetailMetals' list of scanned materials.
+  4. **NightStoreValidation.RunNight.** Expect +19. Check the "Lightmaps=" line (2–4 maps estimated), and look at the case Bodies' baked sharpness. If they blur, use the probe-lit hardware fallback under Deferred.
+  5. **Frame Debugger:** record batches and SetPass calls at the arrival view and at the central cluster, on a baked build.
+  6. **Headset (Quest 2 over Link, baked build):** shimmer on the dropped ring, the coins and the pearl strand under the torch; the green edge band on the case tops; no flicker at any case corner or at the architraves; the trees through the windows.
+  7. **Desktop:** set a tool down on a case top; it must rest on the glass.
+
 # Validator checks for the realism wiring — October 16 (Claude, unverified, never compiled)
 
 The October 15 wiring (commit 9305177, the entry below) added behaviours that had no validator check, although CLAUDE.md asks for one per behaviour. This batch adds 83 checks: 82 in the night store's runs (six new NightStoreValidation area files, DemoValidation.LauncherChecks and one InterfaceChecks line) and 1 more in every ShopCity run. It also fixes the builder and runtime issues the checks exposed. An architect planned the checks and a skeptic traced each one against the code and the pack files (OBJ bounds and groups, MTLs, atlas JSONs, PNG sizes). One implementer per area wrote them, a wiring pass called them, and a cross-review read the whole diff. Every check looks at the built scene or the imported assets: objects, components, materials, static flags, mesh triangles and clips. None re-reads a constant the builder also reads, so a check fails when its behaviour breaks. When a check's pack is missing, it logs an Info line and skips, or checks the builder's fallback under a name of its own. **Nothing here has been compiled or run in Unity.**
@@ -173,7 +322,7 @@ What was checked here: tree-sitter found no syntax error. A Roslyn compile (C# 9
   - **Behaviour batch mode cannot observe:** audible playback, loudness and reverb wetness (no audio device; the reverb check only logs a linear wetness estimate); the Scene tab's drawing (OnGUI); the start menu's key handling (a second key press ignored, Esc quitting); the halos in both eyes and decal z-fighting. These stay on the PC lists.
   - **The player build's licence copy and its removal of stale notices:** they run only in a player build. The checks cover DemoBuild.LicenseFiles' naming and skip rules on a probe folder and on this project.
   - **Glass footsteps on the entrance doors' and right sidelight's floor fragments:** the glass zones do not cover all of them. The glass-zone check reports them (a known gap; the steps there stay hard).
-  - **Left open (minor cleanups):** the area files each keep a private triangle-ray helper (StreetMeshRay, InteriorRay, DressingRay) and private footprint helpers, which could become one DemoValidation helper. StoreKit's private Transparent duplicates DemoAssetLibrary.Blended.
+  - **Left open (minor cleanups):** the area files each keep a private triangle-ray helper (StreetMeshRay, InteriorRay, DressingRay) and private footprint helpers, which could become one DemoValidation helper. StoreKit's private Transparent duplicates DemoAssetLibrary.Blended. (Fixture-detail round above, unverified: both done.)
 - **Files added or changed** (the Downloads ZIP is synced to this batch: 59.1 MB, the six new area files added with fresh .meta guids, the 19 changed files updated):
   - New, each now in the ZIP with a fresh .meta guid: Prototype/Editor/NightStoreValidationStreet.cs, NightStoreValidationInterior.cs, NightStoreValidationDressing.cs, NightStoreValidationLighting.cs, NightStoreValidationPresenter.cs and NightStoreValidationSound.cs. They need the partial NightStoreValidation.cs below: with the 9305177 copy, the Editor scripts do not compile (CS0260).
   - Changed, keeping their existing .meta files:
@@ -357,10 +506,10 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
   - GlassSmudge and ambient wear by default: they read as evidence (decision 7).
   - Country presets: decision 1; a decided service becomes one more PoliceLook value.
   - Laminated glass: waits on the entry decision (decision 2).
-  - The fixture-detail generator: a large procedural StoreKit pass of its own.
+  - The fixture-detail generator: a large procedural StoreKit pass of its own. (October 16 fixture-detail round, unverified: done.)
   - Sheen, specular anti-aliasing, torch beams, people's hands: custom shaders, particles and rigs, each needing headset checks. The metals are clamped meanwhile.
   - Pack torch models: the runtime torches work in both modes; pack meshes need prefab references and hand-pose checks.
-  - Security hardware, procedure props, trim and trees: separate batches (only the bell box is added now).
+  - Security hardware, procedure props, trim and trees: separate batches (only the bell box is added now). (October 16 fixture-detail round, unverified: the security devices, the trim and three bare trees are added; the procedure props and the roller grille are not.)
   - Other vehicles and buildings (Hatchback, SedanClassic, the Downtown buildings): CC BY, they cost materials and sit behind the arrival view.
   - Country-specific street furniture: signs, hydrant, name plates and the LED light bar depend on the country.
   - ApartmentBlock LODs: it is at LOD0 from 14 m or more, and decimation would damage its flat facade.
@@ -736,7 +885,7 @@ Runtime: DemoModeSwitch (desktop/VR, F9), XRHeadTracking, XRControllerInput (bui
 
 Editor: DemoAssetLibrary (third-party models with fallback), DemoGeometry (shared primitive/material/text/mesh helpers), JewelryStoreBuilder, ShopCityRefinement, ShopPresentationExpansion (geometry); DemoToolsBuilder (tool station, review recorder, status board, photo frame, player for desktop and VR); ShopAssetDressing (third-party props); IntactStateBuilder (intact overlay + CrimeSceneState); DemoValidation (shared checks) with JewelrySceneValidation.Run, ShopCityValidation.Run and ShopCityValidation.RunExpanded; DemoBuild (Windows player).
 
-Night store (October 11–15, unverified): NightStoreLayout (every anchor), NightStoreBuilder, NightStoreDressing (robbery state and the closing procedure), NightLighting, StoreKit/StoreKitProps/KitMesh (fixtures and the palette set table), PoliceLook (the one police setting), NightStreet, NightInterior, NightDecals, NightAudioBuilder and PackImport (import rules for the twelve realism packs), validated by NightStoreValidation and StoreKitValidation. Runtime additions: PresenterSet (presenter switches), GlowBillboard, AmbientZones, AmbientEvents, Footsteps, DemoMusic, LightBarBlink, NightQuality. Tools/sync-project.cmd mirrors Prototype into a project for Start-Demo.cmd and Open-Unity-Glass.cmd.
+Night store (October 11–16, unverified): NightStoreLayout (every anchor), NightStoreBuilder, NightStoreDressing (robbery state and the closing procedure), NightLighting, StoreKit/StoreKitProps/StoreKitDevices/KitMesh (fixtures, the wall and ceiling devices and the palette set table), PoliceLook (the one police setting), NightStreet, NightInterior, NightDecals, NightAudioBuilder and PackImport (import rules for the twelve realism packs), validated by NightStoreValidation and StoreKitValidation. Runtime additions: PresenterSet (presenter switches), GlowBillboard, AmbientZones, AmbientEvents, Footsteps, DemoMusic, LightBarBlink, NightQuality. Tools/sync-project.cmd mirrors Prototype into a project for Start-Demo.cmd and Open-Unity-Glass.cmd.
 
 ## Next technical dependency
 

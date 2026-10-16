@@ -15,12 +15,13 @@ using L = NightStoreLayout;
 // (DecalsLightmapped), never a shadow caster, occluder or reflection-probe static. Hidden, as
 // presenter sets under Dressing/PresenterSets (off at arrival, probe-lit, never static):
 // AmbientWear (floor wear that could read as evidence) and CaseEvidence (a placeholder
-// footwear trail, pry marks, latent prints and the discarded tools; Koda's decisions 2 and
-// 5). PBRInterior's GlassSmudge is not placed: its fingerprint clusters read as evidence too
-// (listed for Koda). A missing atlas skips its decals, so a project unpacked from the ZIP
-// builds today's floors; the tools fall back to procedural stand-ins. A build without
-// imported assets (Apply's imported false) reads no SurfaceDecals or ForensicModels file at
-// all: no decal and no wear set, only the evidence set with the stand-in tools. Runs after
+// footwear trail, pry marks, latent prints, the security camera's cut cable and the
+// discarded tools; Koda's decisions 2, 5 and 8). PBRInterior's GlassSmudge is not placed:
+// its fingerprint clusters read as evidence too (listed for Koda). A missing atlas skips its
+// decals, so a project unpacked from the ZIP builds today's floors; the tools fall back to
+// procedural stand-ins. A build without imported assets (Apply's imported false) reads no
+// SurfaceDecals or ForensicModels file at all: no decal and no wear set, only the evidence
+// set with the cut cable and the stand-in tools. Runs after
 // NightStoreDressing.CombineLoose and StoreKit.MarkStatic and sets its own static flags.
 public static class NightDecals
 {
@@ -298,16 +299,18 @@ public static class NightDecals
         Close(content);
     }
 
-    // The case evidence, a placeholder until Koda decides the entry (decision 2) and the tools
-    // (decision 5): a mud trail from the street to the forced door, the tracked dirt inside it,
-    // a dust trail along the walk route to the office opening, pry marks on the right leaf's
-    // lock stile, latent prints on the central case's top and a handprint on the cracked top,
-    // and the crowbar, sledgehammer and screwdriver. Without the Evidence atlas only the tools
-    // (the stand-ins with imported false).
+    // The case evidence, a placeholder until Koda decides the entry (decision 2), the tools
+    // (decision 5) and what the set holds (decision 8): a mud trail from the street to the
+    // forced door, the tracked dirt inside it, a dust trail along the walk route to the office
+    // opening, pry marks on the right leaf's lock stile, latent prints on the central case's
+    // top and a handprint on the cracked top, the corner camera's cut cable hanging under its
+    // plate (at arrival the cable is concealed), and the crowbar, sledgehammer and
+    // screwdriver. Without the Evidence atlas only the cable and the tools (the stand-ins with
+    // imported false).
     private static void CaseEvidence(Transform root, Transform sets, string folder, bool imported)
     {
         Transform content = NewSet(sets, EvidenceSet, "Case evidence",
-            "Placeholder trail, pry marks, prints and tools for the instructor; Koda's decisions 2 (entry) and 5 (tools).");
+            "Placeholder trail, pry marks, prints, a cut camera cable and tools for the instructor; Koda's decisions 2 (entry), 5 (tools) and 8 (contents).");
         if (HasEvidence)
         {
             List<Decal> marks = new List<Decal>(), prints = new List<Decal>();
@@ -321,7 +324,31 @@ public static class NightDecals
             if (prints.Count > 0) EmitProbed(root, content, GlassPrintsName, prints, AtlasMaterial(folder, EvidenceGlassMaterial, EvidenceAtlas, GlassQueue), folder, "night_decals_evidence_glass", false, true);
         }
         PlaceTools(root, Group(ToolsGroup, content), folder, imported);
+        CutCable(root, content, folder);
         Close(content);
+    }
+
+    // The corner camera's cable, cut: 0.3 m of 7 mm black cable hanging from inside the
+    // camera's 12 mm wall plate (its open top 1 cm up inside it), drifting a little off the
+    // partition, with the copper core showing at the cut end. Offsets in the camera's own
+    // frame from its pivot (the bottom centre of its plate, on the partition; -z is off the
+    // wall), so the cable stays on the plate if the layout moves or turns the camera; the
+    // axis stays 6-8 mm in front of the wall, so the 3.5 mm radius keeps at least 2.5 mm off
+    // it. Probe-lit and never static (Close); 40 triangles. Its placement is decision 8.
+    public const string CutCableName = "CutCable";
+    private static readonly Vector3[] CutCablePoints = { V(0, 0.010f, -0.006f), V(0.004f, -0.10f, -0.0065f), V(0.010f, -0.20f, -0.0075f), V(0.014f, -0.29f, -0.008f) };
+
+    private static void CutCable(Transform root, Transform content, string folder)
+    {
+        Transform camera = root.Find("Showroom/SecurityCamera");
+        if (camera == null) return;
+        Vector3[] p = new Vector3[CutCablePoints.Length];
+        for (int i = 0; i < p.Length; i++) p[i] = content.InverseTransformPoint(camera.TransformPoint(CutCablePoints[i]));
+        KitMesh k = new KitMesh { Lightmapped = false };
+        for (int i = 0; i + 1 < p.Length; i++) k.Cylinder(StoreKit.DeviceBlack, p[i], p[i + 1], 0.0035f, 6, false);
+        Vector3 end = p[p.Length - 1], dir = (end - p[p.Length - 2]).normalized;
+        k.Face(StoreKit.Bronze, dir, KitMesh.Ring(end, Quaternion.FromToRotation(Vector3.up, dir), 0.0035f, 0, 6, 0));
+        k.Emit(CutCableName, content, Vector3.zero, Quaternion.identity, folder, "night_evidence_cut_cable");
     }
 
     // Shoe-print walk (README): heel-to-heel steps of 1.3-1.5 m, so prints Stride apart, Gait
