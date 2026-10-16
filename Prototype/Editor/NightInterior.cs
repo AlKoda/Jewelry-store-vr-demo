@@ -196,7 +196,8 @@ public static class NightInterior
         GameObject extinguisher = Place(ExtinguisherName, ExtinguisherName, showroom, ExtinguisherPosition, 180, DemoAssetLibrary.LodClass.Prop, true, false);
         if (extinguisher != null)
         {
-            extinguisher.transform.position += Vector3.forward * (ExtinguisherBack - WorldBounds(extinguisher).max.z);
+            DemoAssetLibrary.WorldBounds(extinguisher, out Bounds b);
+            extinguisher.transform.position += Vector3.forward * (ExtinguisherBack - b.max.z);
             DemoAssetLibrary.AddBoundsCollider(extinguisher);
             Props.Add("Showroom/" + ExtinguisherName);
         }
@@ -213,29 +214,15 @@ public static class NightInterior
                 Props.Add(L.CeilingPath + "/" + DiffuserPrefix + i);
     }
 
-    // An InteriorModels model under parent, renamed; null when the model is missing. Glass
-    // never casts a shadow; collider adds one bounds box on the root.
+    // An InteriorModels model under parent, renamed; null when the model is missing. PlacePack
+    // keeps glass and other blended surfaces from casting; collider adds one bounds box on the root.
     private static GameObject Place(string model, string name, Transform parent, Vector3 position, float yaw, DemoAssetLibrary.LodClass lod, bool shadows, bool collider)
     {
         GameObject g = DemoAssetLibrary.PlacePack(InteriorPack, model, parent, position, yaw, new DemoAssetLibrary.PackOptions { Lod = lod, Shadows = shadows });
         if (g == null) return null;
         g.name = name;
-        NightStreet.NoTransparentShadows(g);
         if (collider) DemoAssetLibrary.AddBoundsCollider(g);
         return g;
-    }
-
-    // World box of every renderer under g (all LOD levels share their bounds).
-    private static Bounds WorldBounds(GameObject g)
-    {
-        Bounds b = new Bounds(g.transform.position, Vector3.zero);
-        bool first = true;
-        foreach (Renderer r in g.GetComponentsInChildren<Renderer>(true))
-        {
-            if (first) { b = r.bounds; first = false; }
-            else b.Encapsulate(r.bounds);
-        }
-        return b;
     }
 
     // ---------------------------------------------------------------- wall graphics
@@ -284,9 +271,12 @@ public static class NightInterior
             // Tags on the left neighbour's shutter, 2 mm off it.
             new Spec("Graffiti_Tags", StreetZone, 3.0f, GraphicFrame.None, V(-12.2f, 1.25f, ShutterFace), Vector3.back) { Proud = 0.002f },
             new Spec(PosterCell, StreetZone, 3.0f, GraphicFrame.None, poster - normal * posterProud, normal) { Proud = posterProud },
-            // The lost-cat flyer taped to the first lamp post at 1.5 m on its shop side, a flat
-            // card 12 mm off the post (README).
-            new Spec("Flyer_LostCat", StreetZone, 0.23f, GraphicFrame.None, L.Streetlights[0] + V(0, 1.5f, L.Lamp.PostRadius), Vector3.forward) { Proud = 0.012f },
+            // The lost-cat flyer at 1.5 m, taped flat to the right pier's street face a sheet's
+            // 3 mm off the stone (the left pier carries the CCTV sign). The README tapes it to a
+            // lamp post, but every post here is about 0.1 m across (the lantern's round 88 mm, the
+            // KayKit streetlight's 105 mm octagon, the stand-in's 0.12 m box), so the flat 0.23 m
+            // card would leave about 6 cm of it in the air either side; the pier stands in every build.
+            new Spec("Flyer_LostCat", StreetZone, 0.23f, GraphicFrame.None, V(L.MaxX + L.Pier * 0.5f, 1.5f, PierFace), Vector3.back),
         };
     }
 

@@ -66,8 +66,10 @@ public static class NightStoreLayout
     }
 
     // Today's KayKit streetlight: head 0.96 units high, arm 0.24 units, at scale 4.5; the
-    // light 0.3 m under the head, clear of its housing. The square post's half-width at
-    // 1.5 m is 0.012 units (5.4 cm; the 0.03-unit base below 0.96 m is wider).
+    // light 0.3 m under the head, clear of its housing. The post is octagonal at 1.5 m, a
+    // vertex every 45 degrees: vertex radius 0.01166 units (52.5 mm; 48.5 mm to the flats),
+    // a vertex towards the shop at yaw -90, so PostRadius 0.054 clears it (the 0.03-unit
+    // base below 0.96 m is wider).
     public static readonly LampProfile KayKitLamp = new LampProfile
     {
         Pack = ShopCityRefinement.KitPack, Model = "streetlight", Scale = ShopCityRefinement.KitScale,

@@ -17,8 +17,8 @@ using L = NightStoreLayout;
 //   wind, the police car's idle at its bonnet and PoliceLook's radio loop, the street
 //   events, the alarm bell) and the interior room tone, inside the showroom and office
 //   rects; the wind through the forced doors in neither list; AmbientEvents (passing cars,
-//   the CC0 dog, and PoliceLook's sirens and radio traffic, none by default); a Room
-//   reverb zone in the showroom and one in the office; the AlarmBell presenter set,
+//   the CC0 dog, and PoliceLook's sirens and radio traffic, none by default); three Room
+//   reverb zones across the showroom and one in the office; the AlarmBell presenter set,
 //   silent at arrival (whether the alarm still rings is a scenario choice).
 // - NightStore/Music: DemoMusic with the investigation underscore (off at arrival, a
 //   presenter switch) and the reset sting.
@@ -37,9 +37,14 @@ public static class NightAudioBuilder
     public const string AlarmBellClip = "AlarmBell_Close_Loop.wav", InvestigationBed = "InvestigationLoop.ogg", ResetSting = "ResetSting.ogg";
 
     // Reverb zones (AudioReverbPreset.Room): centre in the store root's space, full effect
-    // within the first distance, none beyond the second.
-    public static readonly Vector3 ShowroomReverb = V(0, 1.5f, 4.25f), OfficeReverb = V(0, 1.5f, 10.25f);
-    public const float ShowroomReverbMin = 4, ShowroomReverbMax = 7, OfficeReverbMin = 1.5f, OfficeReverbMax = 3;
+    // within the first distance, none beyond the second. The showroom (15.4 by 8 m) is wider
+    // than one sphere can cover without reaching the street, so three zones stand in a row at
+    // mid-depth: each ends at z -0.25, so the pavement (z -0.35 and beyond) stays dry, and
+    // at mid-depth the reverb is full from side wall to side wall (x -7.7 to 7.7).
+    public static readonly Vector3[] ShowroomReverbs = { V(-4.75f, 1.5f, 4.25f), V(0, 1.5f, 4.25f), V(4.75f, 1.5f, 4.25f) };
+    public static readonly string[] ShowroomReverbNames = { "Reverb_ShowroomLeft", "Reverb_Showroom", "Reverb_ShowroomRight" };
+    public static readonly Vector3 OfficeReverb = V(0, 1.5f, 10.25f);
+    public const float ShowroomReverbMin = 3, ShowroomReverbMax = 4.5f, OfficeReverbMin = 1.5f, OfficeReverbMax = 3;
     public const float FootstepVolume = 0.35f, FootstepGlassVolume = 0.3f;
 
     public static void Apply(Transform root)
@@ -154,7 +159,8 @@ public static class NightAudioBuilder
         if (gap != null) gap.playOnAwake = true;
 
         Events(scape, look, dash, exterior);
-        Reverb(scape, "Reverb_Showroom", ShowroomReverb, ShowroomReverbMin, ShowroomReverbMax);
+        for (int i = 0; i < ShowroomReverbs.Length; i++)
+            Reverb(scape, ShowroomReverbNames[i], ShowroomReverbs[i], ShowroomReverbMin, ShowroomReverbMax);
         Reverb(scape, "Reverb_Office", OfficeReverb, OfficeReverbMin, OfficeReverbMax);
         AlarmBell(scape, root, exterior);
 

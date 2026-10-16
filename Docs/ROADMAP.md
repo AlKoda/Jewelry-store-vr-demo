@@ -1,3 +1,28 @@
+## Validator checks for the realism wiring — October 16 (Claude, unverified, never compiled)
+
+This batch adds checks for the October 15 wiring's behaviours: 82 in the night store's runs and 1 more in the ShopCity runs. It also fixes the builder and runtime issues the checks exposed. HANDOFF has the check names, the PASS counts and the PC steps.
+
+- [x] NightStoreValidation is partial, with six area files: street, interior, closing procedure and decals, lighting, presenter switches and credits, and sound and music. They are wired into Generate (Edit mode, before the first save), Tick stage 1, DisturbBeforeReset and stage 3.
+- [x] DemoValidation.LauncherChecks (the launcher mirror, all twelve packs together, the licence copy) runs in NightStoreValidation and in every ShopCity run. Also new: a check of the start menu's credits summary, and one that the old shop has no night-store components.
+- [x] Shared helpers: DemoAssetLibrary.WorldBounds and Blended, DemoGeometry.PathUnder and Opaque, and DemoBuild.AddMenuMusic.
+- [x] Fixes:
+  - glow halos turn to each rendering camera (Camera.onPreCull);
+  - the lost-cat flyer moved to the right pier;
+  - three showroom reverb zones, none reaching the pavement;
+  - no geometric shoe print at arrival;
+  - KitMesh's fingerprint includes atlas UVs;
+  - NightDecals takes an imported flag;
+  - AmbientZones holds a flat cutoff curve;
+  - the Scene-tab rows stay stable between Layout and Repaint.
+- [x] Sync the Downloads ZIP: the six new area files with fresh .meta files and the 19 changed files (59.1 MB).
+- [ ] Run on the PC and report the first FAIL line, if any, with the Info lines above it. Expected:
+  - RunNightQuick +82 (+44 from the ZIP alone);
+  - RunNight +81 (+43 from the ZIP alone);
+  - RunGlass and every other ShopCity run +5;
+  - RunGallery: no change.
+- [ ] Still unchecked, because batch mode cannot observe them; they stay on the PC lists: audible playback and reverb wetness, the Scene tab's drawing, the start menu's key handling, the halos in the headset, and the glass footsteps on the door and sidelight fragments (a known gap).
+- [ ] Cleanup: the area files' private triangle-ray helpers (StreetMeshRay, InteriorRay, DressingRay) could become one DemoValidation helper, and StoreKit's private Transparent duplicates DemoAssetLibrary.Blended.
+
 ## Realism packs wired into the night store — October 15 (Claude, unverified, never compiled)
 
 The twelve packs are wired into the night store for Quest 2 over Link and for mouse and keyboard, each with a primitive or procedural fallback, and the validator pass has landed. HANDOFF has the details, the check names and the PASS counts.
@@ -17,7 +42,7 @@ The twelve packs are wired into the night store for Quest 2 over Link and for mo
 - [x] Tools/sync-project.cmd: Open-Unity-Glass.cmd and Start-Demo.cmd mirror Scripts, Editor, Shaders and ThirdParty.
 - [x] Prep inside the packs: LOD1/LOD2 for 17 models and four atlases (two WallGraphics pages, the SurfaceDecals Ambient and Evidence sets), all checked by script.
 - [x] Validator pass: 21 new NightStoreValidation checks (asset library, import, police, LOD budget), 3 StoreKit palette checks, 2 InterfaceChecks and 5 ShopCity checks; two checks renamed; budgets counted at the LOD level selected from the worst eye; MaterialBudget 136. Expected: +26 RunNightQuick and RunNight, +3 RunGallery, +7 RunGlass and RunTextured, +6 the other ShopCity runs.
-- [ ] Checks for the new behaviours that still have none (CLAUDE.md asks for one each): street, lighting, interior, closing procedure, decals, soundscape and music, presenter switches and their reset, credits and licence notices, and the launcher mirror ("all twelve packs present").
+- [x] Checks for the new behaviours that still had none (CLAUDE.md asks for one each): street, lighting, interior, closing procedure, decals, soundscape and music, presenter switches and their reset, credits and licence notices, and the launcher mirror ("all twelve packs present"). The October 16 batch above covers them, unverified; what batch mode cannot observe stays on the PC lists.
 - [x] Copy the 12 new .cs files (each with a fresh .meta) and the changed scripts into Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip (59.0 MB). The twelve realism packs stay out of the ZIP; Start-Demo.cmd and Open-Unity-Glass.cmd mirror them from the repository.
 - [ ] Run on the PC:
   - the first RunNightQuick, recording the one-time reimport time and the Budget lines;
@@ -58,12 +83,11 @@ The twelve packs are wired into the night store for Quest 2 over Link and for mo
   - Bloom and flares: they need post-processing, and the scene renders LDR without packages.
   - Stock extras (price tags, stands, posters, vinyl, 100 g bars): they conflict with the closing procedure and cost materials.
   - Pre-placed barriers and markers: placing them is the trainee's task.
-  - The Downloads ZIP: synced separately; the new .cs files need fresh .meta files there (open item above).
 
 ## Realism asset packs — October 15 (Claude, unverified)
 
 - [x] Twelve license-checked packs in Prototype/ThirdParty (PBR materials, night HDRIs and skies, jewellery, forensic, street, interior and people models, wall graphics, decals, a night soundscape, music), with 95 register rows.
-- [x] Wire them into the night store with fallbacks, a texture import postprocessor, and LODs or decimation within the triangle and material budgets (the October 15 wiring batch above; unverified, never compiled). Its validator pass has landed; checks for most of the new behaviours are still open (see above).
+- [x] Wire them into the night store with fallbacks, a texture import postprocessor, and LODs or decimation within the triangle and material budgets (the October 15 wiring batch above; unverified, never compiled). Its validator pass has landed, and the checks for the remaining new behaviours followed in the October 16 batch (see above; unverified).
 - [ ] Decide the country (police livery, tape text, siren) — see for Koda.md, decision 1; the choice now sits behind `PoliceLook.Current`.
 
 ## Performance and realism fixes from the audit — October 15 (Claude, unverified, never compiled)
@@ -89,7 +113,7 @@ The audit's 46 confirmed findings are fixed in source, except for two that are d
 - [x] Tools released overhead drop to the floor. The grab scan no longer truncates.
 - [x] Theme re-lookup after a scene load; F2 not saved; presenter-only toasts kept off the headset; runtime materials and textures freed.
 - [x] 30 new validator checks.
-- [ ] Copy the changed files and the two new ones (ForwardOnlyShaderStripping.cs, MapAlbedo.shader, each with a fresh .meta) into Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip.
+- [x] Copy the changed files and the two new ones (ForwardOnlyShaderStripping.cs, MapAlbedo.shader, each with a fresh .meta) into Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip (done with 03ad44c).
 - [ ] Run the validators on the PC:
   - RunNightQuick and RunNight: +24 each. Record the bake seconds and the Lightmaps= line.
   - RunGallery: unchanged.

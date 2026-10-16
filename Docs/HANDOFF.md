@@ -1,3 +1,208 @@
+# Validator checks for the realism wiring — October 16 (Claude, unverified, never compiled)
+
+The October 15 wiring (commit 9305177, the entry below) added behaviours that had no validator check, although CLAUDE.md asks for one per behaviour. This batch adds 83 checks: 82 in the night store's runs (six new NightStoreValidation area files, DemoValidation.LauncherChecks and one InterfaceChecks line) and 1 more in every ShopCity run. It also fixes the builder and runtime issues the checks exposed. An architect planned the checks and a skeptic traced each one against the code and the pack files (OBJ bounds and groups, MTLs, atlas JSONs, PNG sizes). One implementer per area wrote them, a wiring pass called them, and a cross-review read the whole diff. Every check looks at the built scene or the imported assets: objects, components, materials, static flags, mesh triangles and clips. None re-reads a constant the builder also reads, so a check fails when its behaviour breaks. When a check's pack is missing, it logs an Info line and skips, or checks the builder's fallback under a name of its own. **Nothing here has been compiled or run in Unity.**
+
+What was checked here: tree-sitter found no syntax error. A Roslyn compile (C# 9, UNITY_EDITOR) of every Prototype/Scripts and Prototype/Editor file ran against older Unity reference DLLs, with a stub for the Unity 6 find APIs. It found no error in any validator file. The only errors left are the 2 pre-existing ones at NightLighting.cs:624: those DLLs lack `LightingSettings.lightmapCompression`. Prototype/Scripts also compiles alone without UNITY_EDITOR, so no editor API reached the runtime. None of this replaces a compile in Unity 6000.6.
+
+- **Wiring.**
+  - `NightStoreValidation` is now `public static partial class`. [InitializeOnLoad] and the static constructor stay in NightStoreValidation.cs. Each area file has its own `#if UNITY_EDITOR`, its usings and `using L = NightStoreLayout;`. Every helper, field and nested type in an area file carries that area's prefix: Street, Interior, Dressing or Decal, Glow or Lantern, Presenter or Credit, and Sound. The entry points keep the names the plan gave them (ClosingProcedureChecks, ArrivalPrintChecks, LightingPackChecks and so on). A scan of all seven files found no member defined twice.
+  - **Edit mode** (Generate, so RunNightQuick and RunNight):
+    - `DemoValidation.LauncherChecks()` runs right after the reimport Info line.
+    - After `PoliceLookChecks` and before the first `SaveScene`, in this order: StreetPackChecks, InteriorPackChecks, ClosingProcedureChecks, DecalChecks, LightingPackChecks, PresenterBuildChecks, CreditChecks.
+    - At that point NightLighting.Apply has set the lights, lenses, glow cards and lightmap scales. There is no bake, no realtime fallback and no player rig yet. The builders' records (NightInterior.Graphics and Props, NightDecals' statics) are still valid; they are not after Play mode's domain reload. Every mesh is read here too, because Play mode's static batching merges meshes.
+  - **Play mode, Tick stage 1:**
+    - ArrivalPrintChecks and PresenterArrivalChecks run right after LightingChecks, before anything is switched.
+    - StreetPlayChecks runs after PlacementChecks, LightingPlayChecks after RealtimeLightChecks, and SoundPlayChecks after StagedSoundChecks, before InterfaceChecks and ToolStage.
+    - Each check puts back what it changes: the sets, the light bar, the torches and lamp, the hand and pointer, the walker, the VR mode and the music.
+  - **Reset:** `PresenterDisturb()` is now the last step of DisturbBeforeReset. It shows every set, holds the light bar steady, turns the underscore on and counts the stings played so far. `PresenterResetChecks()` runs in stage 3, right after ResetChecks.
+  - ShopCityValidation.Generate, behind every ShopCity entry point, calls `DemoValidation.LauncherChecks()` right after Begin.
+  - DemoValidation.Check still throws on the first failure, so one failing check ends the run. A failure in Edit mode stops it before the scene is saved, and in RunNight before the bake.
+- **New checks.** Edit means before the first save; Play means Tick stage 1 unless stated. A pack name in square brackets marks a check that logs an Info line and skips without that pack.
+  - **Launcher and licences** (DemoValidation.LauncherChecks, Edit; in NightStoreValidation and in every ShopCity run):
+    - "Both launchers mirror the project through Tools/sync-project.cmd; the frozen launchers do not". It logs an Info line and skips when the project does not sit beside the repository's Tools/sync-project.cmd.
+    - "All twelve realism packs are mirrored together, each with its LICENSE.txt". It logs an Info line and skips when no pack is present (a project from the ZIP alone), and fails when only some are.
+    - "The licence copy ships every pack LICENSE.txt and Licenses/*.txt and skips ignored folders". It runs DemoBuild.LicenseFiles on a probe folder in the temp directory, then on this project's ThirdParty.
+  - **Street** (NightStoreValidationStreet.cs). Measurements come from renderer bounds, mesh vertices and triangles, colliders and flags:
+    - Edit, in StreetPackChecks, which syncs physics first:
+      - "Street furniture rests on the pavement, the street or the table under it" [StreetModels, ForensicModels]
+      - "Street props that reach the play area carry one bounds collider; the rest carry none" [StreetModels, ForensicModels or PeopleModels]
+      - "Street props cast shadows as listed, their glass never, and keep their LOD levels" [the same]
+      - "Figures stand at least 2.5 m outside the play area with no collider" [PeopleModels]. It measures on mesh vertices: the turned renderer boxes would show 2.38 m instead of 2.80 m.
+      - "Bollards stand in the anti-ram row, solid and grounded, the pack's casting shadows". It always runs; without StreetModels it checks the procedural bollards' colliders only.
+      - "The row across the street leaves the apartment block's slot free exactly when the block stands in it" (always runs)
+      - "The apartment block stands in its slot across the street, its facade to the shop" [StreetModels ApartmentBlock]. It checks the bounds and the triangle winding along the front, so a mirrored import fails.
+      - "The apartment block bakes into the lightmaps at the terrace's density and casts shadows" [StreetModels ApartmentBlock]
+      - "The KayKit skyline towers are gone; nothing stands beyond the far pavement" (always runs)
+      - "Brick on the left, render on the right and half-closed shutters on both neighbours and across the street" (always runs; measured per submesh)
+      - "Lit windows, the apartment's rooms and the bus shelter's lightbox are baked emitters, and the street adds no light". It always runs; the apartment and shelter parts only when those models are placed.
+      - "The alarm bell box sits on the fascia cladding, clear of the shop sign and the coping". It always runs: a triangle ray starts 1 cm in front of the box's back.
+      - "No hydrant, parking machine, traffic light, road sign or name plate stands outside the shop (country left open)" (always runs)
+    - Play, in StreetPlayChecks:
+      - "Street furniture and bollards keep the walk route and the spawn clear". Each collider must keep the walker's radius plus 5 cm from every route segment, not just from the route points.
+      - "Rack samples on the equipment table stay clickable from both sides, clear of the glove box". The desktop pointer aims from the street side and from the shop side.
+      - "Rack samples on the equipment table stay grabbable beside the glove box and under the camera". It reads HandInteractor's own grab choice by reflection, without spawning a tool.
+  - **Interior** (NightStoreValidationInterior.cs, InteriorPackChecks, Edit). Distances are triangle rays on the meshes themselves, since the skirting, glass and pictures have no colliders:
+    - "NightInterior.Props names the props this build placed" [InteriorModels]
+    - "Snake plants fill the three planters, each solid with one bounds collider". Without InteriorModels the check is named "Planters keep their procedural body without InteriorModels"; with a StoreKit planter override it is "User-converted planters stay as they are".
+    - "The rug lies flat under the sofa and side table, lightmapped, with no collider or shadow" [InteriorModels Rug]
+    - "Monitor and keyboard stand on the desk, clear of the transport tray, the loupe and each other" [ComputerMonitor and Keyboard]
+    - "The monitor screen glows without a light and stays out of the bake; monitor and keyboard are solid" [the same]
+    - "The extinguisher stands on the floor a few millimetres off the skirting, clear of the office opening" [FireExtinguisher]
+    - "The wall clock hangs flat on the lintel above the office opening, its top level the LOD1 file" [WallClock]
+    - "Ceiling diffusers sit flush under the ceiling between the downlights and cast no shadow" [CeilingDiffuser]
+    - "Wall graphics lie flat 0.5 to 70 mm in front of their surfaces, facing out and unmirrored" [WallGraphics]
+    - "The lost-cat flyer lies flat on the right pier's stone, clear of the lamp posts" [the WallGraphics street page]
+    - "Wall graphics sample only their own atlas cell at its aspect" [WallGraphics]. Cells are read fresh from the layout JSON, and U and V pixel density must agree within 2 %.
+    - "The still life and the lightbox take the rear and counter frames' place". Without the interior page it is named "Rear and counter sign frames keep their emblem without the WallGraphics atlas"; with a sign_frame override it logs an Info line and skips.
+    - "Wall graphics use the two atlas pages and the gilt moulding, alpha-tested, unlit and shadowless" [WallGraphics]. It also wants one picture quad per placed graphic and 40 gilt triangles per framed painting, with the moulding's face 3 cm off the wall.
+    - "Interior graphics and fittings stay country-neutral: no police notice, no pull-station call point" (always runs)
+  - **Closing procedure and decals** (NightStoreValidationDressing.cs):
+    - Edit, in ClosingProcedureChecks:
+      - "Cases hold display furniture only under the closing procedure". With `StockInSafes` false it is named "Intact cases keep their stocked decks while StockInSafes is off".
+      - "Left-behind jewellery lies on the open safes' lining and shelves". Without JewelryModels it checks StoreKit's ring-box stand-ins.
+      - "Jewellery on the desk and the floor rests on its surface, clear of the walk route and the UV traces"
+      - "Left-behind jewellery keeps its LOD levels, casts no shadow and stays opaque and probe-lit (glass lenses aside)" [JewelryModels]
+      - "Glass zones cover the entrance fans, the broken cases' floor spill and the shard scatter's impact points"
+    - Edit, in DecalChecks:
+      - "Glass shards lie in front of the broken cases only" [the SurfaceDecals shard scatter]
+      - "Always-on decals cast no shadow, are never occluders or probe-static, and bake at their surface's density" [SurfaceDecals]
+      - "Decal quads sample only their own atlas cells at the cells' aspect" [SurfaceDecals]
+      - "Decals lie 1 to 4.5 mm above the surface beneath them, parallel to it" [SurfaceDecals]
+      - "Hidden decal sets stay out of the bake and the discarded tools rest on the floor or pavement". It always runs; without ForensicModels it checks the stand-in tools.
+      - "Hidden floor marks draw before every transparent and the latent prints after the case glass" [SurfaceDecals]
+      - "The case-evidence trail runs from the pavement through the forced doors along the walk route" [the SurfaceDecals Evidence atlas]
+    - Play, at arrival: "No print-like or footwear-like mark is drawn at arrival". It always runs. It also looks for the small shop's untextured ShoePrint_GeometryPlaceholder by name, which the texture scan cannot see.
+  - **Lighting** (NightStoreValidationLighting.cs):
+    - Edit, in LightingPackChecks:
+      - "Glow halos and washes add no light: additive cards without collider, shadow or probes". Without the NightSky glow sprite it is named "Without the glow sprite no glow card is built and no light is added".
+      - "Each glow halo is saved on its lens, facing the arrival view" [the NightSky glow sprite]
+      - "The light bar's washes lie flat just over the street at the car and over the shop floor inside the entrance" [the same]. Mesh rays measure the gap, so the police car's collider no longer gets in the way.
+      - "The night sky is the overcast panorama; reflections come from the sky and the baked probes". Without the panorama it is named "The night sky is the procedural sky without the panorama; reflections come from the sky and the baked probes".
+      - "The across-street reflection probe encloses the far facades and the far pavement" (always runs)
+      - "Streetlight cookies throw their short sharp edge towards the nearer facade". Without the cookie it is named "Streetlights point straight down, turned to the nearer facade, without a cookie".
+      - "Each lantern holds its light and one lens at the bulb inside its glass, and casts no shadow" [StreetModels StreetLamp]
+    - Play, in LightingPlayChecks:
+      - "Torches and lit scene lamps project the NightSky cookies". Without NightSky it is named "Torches keep the generated cookie and scene lamps project none without NightSky".
+      - "The light bar crossfades between red and blue without a jump, and its washes follow"
+      - "Light bar steady switch holds both halves dimmed with the washes off (desktop-only toast); a reset flashes it again"
+      - "Glow halos turn to whichever camera renders them; a headlamp's halo shows only ahead of the car" [the NightSky glow sprite]. It needs the GlowBillboard fix below.
+      - "Quick-preview streetlights follow the lamp profile: shadowless, near ones per-pixel, far ones vertex-lit". It runs in RunNightQuick only; RunNight logs an Info line instead.
+  - **Presenter switches, reset and credits** (NightStoreValidationPresenter.cs):
+    - Edit:
+      - "Every presenter set is built hidden, its content a child of the set". The expected sets come from the pack files: Case evidence always, Ambient wear with SurfaceDecals' wear cells, and the Alarm bell with NightSoundscape's bell clip.
+      - "The credits file names every placed CC BY and MIT asset and nothing else". The credits needed are read from every mesh and clip the scene, its hidden sets and its referenced prefabs use.
+      - "The player build ships every pack's licence notice, the credited packs' among them"
+    - Play, at arrival:
+      - "Presenter sets are hidden at arrival and each listed once for the Scene tab; the underscore is off"
+      - "Each presenter-set switch shows and hides its set and confirms on the monitor only"
+    - Play, stage 3, after the reset:
+      - "A session reset hides every presenter set and makes the light bar flash again; the underscore keeps its setting"
+      - "A session reset plays the sting and ducks the underscore" [the Music ResetSting]
+  - **Sound and music** (NightStoreValidationSound.cs, SoundPlayChecks, Play). No audio device is assumed, so nothing asserts isPlaying. The checks read back volumes, filters, clips and start offsets, and drive AmbientZones.Step, AmbientEvents.Fire and Footsteps.Advance directly:
+    - "Night store soundscape and its street bed are built"
+    - "The street is muffled inside the shop and full range on the pavement"
+    - "Walking through the door fades the street (half the smoothing time gives half the blend at the log-frequency midpoint)"
+    - "Exterior beds, street events and the alarm bell blend with the zones; the door whistle, the music, the interface and the footsteps stay out"
+    - "The bank plays NightSoundscape's shutter, torch click and city bed, the bed in 2D" [NightSoundscape]
+    - "Looped beds start at random points; the door whistle starts at its beginning"
+    - "Cars pass and the CC0 dog barks now and then, each through its own 2D source and after the last has ended" [NightSoundscape]
+    - "The V8 idle plays 3D at the police car's bonnet, heard at the spawn and muffled inside with the street" [NightSoundscape]
+    - "The alarm bell rings from the bell box only while its set is shown" [NightSoundscape]
+    - "Room reverb fills the showroom wall to wall and the office, and stops before the pavement; music and interface sounds stay dry"
+    - "Desktop footsteps step every 0.7 m, crunch in the glass zones and skip jumps". Without NightSoundscape's footsteps it is named "The walker has footsteps whenever the bank has footstep takes".
+    - "Room-scale walking, teleports and snap turns make no footsteps in VR" [NightSoundscape]
+    - "Cones and markers set down with their own takes; other tools keep the thud". It always runs and spawns no marker.
+    - "The underscore and the reset sting play from NightStore/Music, 2D, wired to the session" [Music]
+    - "The underscore is off at arrival and its switch turns it on and off with a monitor-only toast; a sting ducks it" [the Music InvestigationLoop]. With the sting alone it is named "No underscore plays at arrival".
+    - "The start menu plays its theme, fading in, then to silence over DemoLauncher.MusicFadeSeconds before a map loads" [the Music MenuTheme]. It logs an Info line instead when the frame time is too long to drive the fade frame by frame.
+  - **DemoValidation.InterfaceChecks** (Play; NightStoreValidation and every ShopCity run): "The start menu's credits summary is the first credits line".
+  - **ShopCityValidation.BackdropChecks** (every ShopCity run): "The old shop has no night-store soundscape, music, footsteps, glow or presenter sets".
+- **Expected PASS-count changes** (on top of the October 15 entry's figures; all assume the default PoliceLook):
+
+  | Validator | With all twelve packs | From the ZIP alone, no packs | Made up of (ZIP-alone count in brackets) |
+  |---|---|---|---|
+  | NightStoreValidation.RunNightQuick | +82 (52 in Edit mode, 30 in Play mode) | +44 | Launcher 3 (2), Street 16 (10), Interior 14 (3), Closing procedure and decals 13 (6), Lighting 12 (8), Presenter and credits 7 (6), Sound 16 (8), InterfaceChecks 1 (1) |
+  | NightStoreValidation.RunNight | +81 | +43 | the same, less the quick-preview streetlight check, which logs an Info line once baked |
+  | ShopCityValidation: Run, RunExpanded, RunForms, RunInterior, RunRobbery, RunGlass, RunTextured | +5 | +4 | Launcher 3 (2), credits summary 1, old shop without night-store components 1 |
+  | StoreKitValidation.RunGallery | none | none | — |
+  | JewelrySceneValidation, GlassToolValidation | none | none | — |
+
+  - The night figures with the packs are 1 lower when the frame time is too long to drive the menu-theme fade (the "Menu theme fade not checked" Info line). From the ZIP alone the Music pack is absent, so that check is already left out.
+  - Each night and ShopCity figure is 1 lower when the project does not sit beside the repository's Tools/sync-project.cmd (the "Launchers not found" Info line).
+  - Against the counts before 9305177: RunNightQuick +108 and RunNight +107 with the packs (+59 and +58 from the ZIP alone), RunGallery +3, RunGlass and RunTextured +12, the other ShopCity runs +11.
+- **What runs from the ZIP alone.** These checks run with no pack: the launcher and licence checks; seven street checks in Edit mode (bollards, the row's slot, the towers, the facades, the emitters, the bell box, the neutral kerb) and all three Play checks; the planters' and sign frames' fallbacks and the interior neutrality check; the decks, safes, desk and floor, glass zones, hidden sets and arrival print checks; the glow-card fallback, sky, probe, cookie fallback, torch cookies, light bar, steady switch and quick-preview lamps; the presenter build, credits, licences, arrival and reset checks; the soundscape, zones (2), lists, offsets, reverb, footsteps fallback and set-down checks; and the credits summary in InterfaceChecks. Every other check logs a "... not present: ... skipped" Info line.
+- **Refactors** (behaviour-neutral; the October 15 entry's text is updated to match):
+  - `DemoAssetLibrary.WorldBounds` replaces NightInterior's private WorldBounds and the loops in Seat and NightStreet.InPlayArea, and the validators use it.
+  - `DemoAssetLibrary.Blended` is the one no-shadow rule: a renderer whose materials are all blended casts none. It replaces NightStreet.NoTransparentShadows and NightStoreBuilder's first-material test. No OBJ group in today's packs mixes blended and opaque materials, so no shadow changes.
+  - `DemoGeometry.PathUnder` replaces the private copies in NightDecals and NightLighting.
+  - `DemoGeometry.Opaque` moves out of DemoAssetLibrary, where it was private.
+  - `DemoBuild.AddMenuMusic` is now the one method that builds the launcher's MenuMusic object; CreateLauncherScene and the menu-theme check both call it.
+  - `NightDecals.Apply(root, folder, imported)`: every caller passed true before; NightStoreBuilder now passes its useImportedAssets.
+- **Bug fixes found while writing the checks:**
+  - GlowBillboard turned the halos to Camera.main in LateUpdate, so the evidence photo and the live viewfinder drew cards that faced the head. The cards now turn to each camera as it renders, on Camera.onPreCull, which fires once for the XR camera in single-pass or multiview.
+  - The lost-cat flyer: a flat 0.23 m card on a lamp post about 0.1 m across stood about 6 cm off the post on each side. It is now on the right pier's street face (x 8.3), 3 mm off the stone, in every build.
+  - The one showroom reverb zone (full within 4 m, none beyond 7 m) reached the pavement and missed the showroom's front corners. Three zones now stand in a row at mid-depth: Reverb_ShowroomLeft, Reverb_Showroom and Reverb_ShowroomRight, each full within 3 m and silent beyond 4.5 m.
+  - NightStoreDressing still placed the small shop's geometric shoe print (ShoePrint_GeometryPlaceholder) by the office opening, a footwear mark at arrival. It is gone. The procedural ring and ring-box stand-ins now cast no shadow, like the pack pieces.
+  - KitMesh's fingerprint ignored UVs, so a rebuild in the same session after an atlas change kept the cached mesh with the old atlas UVs. Explicit atlas UVs are now part of the fingerprint (ProceduralMesh flags them). Only the decal and wall-graphic meshes get new asset names.
+  - AmbientZones: a low-pass filter beside an AudioSource has a distance curve that Unity may write over cutoffFrequency. Each exterior filter now gets one flat curve at the zones' cutoff; the curve is shared, so a blend allocates nothing.
+  - DemoDesktopPanel: the Scene tab's SCENE DRESSING rows keep the label and note copied at the Layout event. A set destroyed since then keeps a disabled placeholder row, so Layout and Repaint draw the same controls.
+  - Tools/sync-project.cmd's header named a planned check; it now names DemoValidation.LauncherChecks (CRLF kept). NightStoreLayout changed only in a comment: the KayKit post is octagonal, and PostRadius 0.054 clears it.
+  - The skeptic found seven checks that would fail as first planned; each is fixed in the check:
+    - the extinguisher is measured on the skirting's triangles at 5 cm height;
+    - the flyer is moved (above);
+    - the gilt count is 40 triangles per frame;
+    - the loupe's StoreKit.Glass lens is allowed among the opaque jewellery;
+    - DirtEdge_WallBase keeps its 0.5 aspect;
+    - the evidence trail keeps a 5 cm margin to the dropped pieces;
+    - the wash height is measured with mesh rays.
+- **Checks predicted to fail:** none on today's code, by the cross-review's traces. The closest margins, in case one fails:
+  - "The KayKit skyline towers are gone ..." has 5 cm of margin: the deepest exterior renderer reaches z -27.0 against a limit of -27.05.
+  - The reverb check has 3.7 cm to spare at the side walls, and the pavement edge sits 4.60 m from the nearest zone against its 4.5 m reach.
+  - The glove box is about 3.8 cm from the nearest rack sample. For the grab, the L-scale is 3 cm away and the evidence camera 12 cm.
+  - The bell box's back must be within 3 mm of the cladding (0 mm expected).
+  - The extinguisher must stand 2–12 mm off the skirting (6 mm expected), the clock within 3 mm of the wall (1 mm expected), and the diffusers flush within 3 mm.
+  - The passer-by must stand at least 2.5 m outside the play area (about 2.80 m expected).
+  - The menu-theme fade logs an Info line, not a failure, when the frame time is too long.
+  - Unity allows reading imported meshes in Edit mode whatever their Read/Write setting. If a run logs "Not allowed to access vertices", the street figure and the apartment winding parts skip with an Info line; report it.
+- **Skipped, each with its reason:**
+  - **Moving the NitrileGloveBox:** HandInteractor.NearestTool ignores colliders that are not a tool, a rack sample or the camera, so a grab cannot be stolen. The two rack-sample checks now cover clicks and grabs; move the box only if one of them fails.
+  - **Adding Opaque to "Fade and Cutout helpers set the Standard blend state":** it would rename an existing check. "Transparency comes from the MTL alpha, finishes from the pack data" already covers part of the opaque role: the ApartmentBlock's WindowFrames material stays below queue 2500.
+  - **A real Grab() in the rack-sample check:** it would spawn a marker, and ToolStation.RemoveTool does not reset the marker numbering, so ToolStage's "Sequential marker numbers" would fail later. The check reads Grab's choice by reflection instead.
+  - **The exact 8/3/3 picture-quad counts:** a brittle copy of the builder's spec list. The check wants one quad per NightInterior.Graphics record instead.
+  - **A stale cached mesh after an atlas change:** this cannot happen in a fresh -executeMethod run, so the KitMesh fingerprint was fixed instead.
+  - **Behaviour batch mode cannot observe:** audible playback, loudness and reverb wetness (no audio device; the reverb check only logs a linear wetness estimate); the Scene tab's drawing (OnGUI); the start menu's key handling (a second key press ignored, Esc quitting); the halos in both eyes and decal z-fighting. These stay on the PC lists.
+  - **The player build's licence copy and its removal of stale notices:** they run only in a player build. The checks cover DemoBuild.LicenseFiles' naming and skip rules on a probe folder and on this project.
+  - **Glass footsteps on the entrance doors' and right sidelight's floor fragments:** the glass zones do not cover all of them. The glass-zone check reports them (a known gap; the steps there stay hard).
+  - **Left open (minor cleanups):** the area files each keep a private triangle-ray helper (StreetMeshRay, InteriorRay, DressingRay) and private footprint helpers, which could become one DemoValidation helper. StoreKit's private Transparent duplicates DemoAssetLibrary.Blended.
+- **Files added or changed** (the Downloads ZIP is synced to this batch: 59.1 MB, the six new area files added with fresh .meta guids, the 19 changed files updated):
+  - New, each now in the ZIP with a fresh .meta guid: Prototype/Editor/NightStoreValidationStreet.cs, NightStoreValidationInterior.cs, NightStoreValidationDressing.cs, NightStoreValidationLighting.cs, NightStoreValidationPresenter.cs and NightStoreValidationSound.cs. They need the partial NightStoreValidation.cs below: with the 9305177 copy, the Editor scripts do not compile (CS0260).
+  - Changed, keeping their existing .meta files:
+    - Editor validators: NightStoreValidation (partial, the wiring), DemoValidation (LauncherChecks, SyncsBefore, FilesMissing, the credits-summary check), ShopCityValidation (the LauncherChecks call, the old-shop check).
+    - Editor builders: DemoAssetLibrary, DemoGeometry, DemoBuild, KitMesh, NightAudioBuilder, NightDecals, NightInterior, NightLighting, NightStoreBuilder, NightStoreDressing, NightStoreLayout (a comment only), NightStreet.
+    - Scripts: AmbientZones, DemoDesktopPanel, GlowBillboard, ProceduralMesh.
+  - Outside the ZIP: Tools/sync-project.cmd (the header comment), Docs/HANDOFF.md and Docs/ROADMAP.md.
+  - No shader, pack or scene file changed.
+- **To verify on the PC:**
+  1. **Compile.** Bring the six new files and the 19 changed ones into the project: sync the ZIP, or open through Open-Unity-Glass.cmd or Start-Demo.cmd, which mirror Prototype. The Console must show no compile error and no warning from these files. A CS0260 error means the project still has the 9305177 NightStoreValidation.cs, which is not partial.
+  2. **NightStoreValidation.RunNightQuick with all twelve packs mirrored.** Expect +82 PASS lines over the October 15 figure (+108 over the count before 9305177), or +81 with the "Menu theme fade not checked" Info line. Record these Info lines from Docs/VerificationNight/runtime-results.txt:
+     - "Street packs", "Lighting packs" and "Sound packs" (all present), "Realism packs present: 12 of 12" and the "Licence copy" line (the probe publishes A.txt, A_Dog.txt, B_Originals_License.txt);
+     - the street furniture bases: grates -0.120 on -0.120, racks -0.120 on 0.000, the glove box 0.740 on 0.740;
+     - the figure gap: PasserBy_Phone about 2.80 m;
+     - the apartment block: x -3.80..11.91, z -26.00..-16.58, front slab about 226 m² facing the street against about 12 m² facing away;
+     - the walk route: nearest collider Bollard_2 at about 1.73 m; the glove box about 0.038 m from the nearest sample; the bell box cladding about 0.000 m behind its back;
+     - the extinguisher about 6 mm off the skirting; the clock about 1 mm off the partition; the lost-cat flyer centred near x 8.300 with every ray on the cladding, about 3 mm behind, and the nearest lamp post axis about 2.5 m away; the gilt moulding 30 mm off the wall;
+     - "Glow halos per camera: ahead faced, beside faced, behind faced; main camera faced";
+     - the "Reverb:" line: 4 zones, least across mid-depth 1.00, most along the pavement's inner edge 0.00 and 0.00 outside the door, plus the front corners' and side-wall cases' wet shares, for listening;
+     - the credits line (attribution lines after the built-in one, with nothing missing or extra) and the case-evidence trail line.
+  3. **If a FAIL line appears,** the run stops there. In Edit mode that is before the scene is saved. Report the FAIL line with the Info lines just above it. If a rack-sample check fails, move the NitrileGloveBox (NightStreet.Furniture) away from the samples.
+  4. **NightStoreValidation.RunNight.** Expect +81 (+80 without the menu-theme fade), and the Info line "Night lighting baked: the quick preview's streetlight profile is not in use". The new Edit-mode checks run before the bake, so a failure there leaves no lightmaps.
+  5. **Optional: a project unpacked from the ZIP alone, without a sync.** Expect +44 in RunNightQuick and +43 in RunNight, with "No realism pack in this project ..." and the per-pack "not present" Info lines.
+  6. **ShopCityValidation.RunGlass and one other ShopCity run.** Expect +5 each (+4 without the packs). "The old shop has no night-store soundscape, music, footsteps, glow or presenter sets" must pass, and the old shop must look and sound as before.
+  7. **StoreKitValidation.RunGallery.** This batch changes nothing there.
+  8. **Desktop:** toggle the SCENE DRESSING switches and reset the session with the drawer open; the Console must log no GUI error. Take an evidence photo and look through the live viewfinder towards a lamp: the halos face the photo camera, not the head.
+  9. **Headset (Quest 2 over Link):** the halos still face both eyes, and the per-camera billboard (six cards) adds no visible frame time.
+  10. **Speakers and headset:** the reverb is full across the showroom (judge whether it is too wet) and absent on the pavement; the street stays muffled inside (the flat cutoff curve); the lost-cat flyer lies flat on the right pier.
+
 # Realism packs wired into the night store — October 15 (Claude, unverified, never compiled)
 
 The twelve realism packs now feed the night store (JewelryStoreNight), for Quest 2 over Link and for mouse and keyboard. An architect planned the batch, a skeptic checked the plan against the code and the pack files, and a second architect pass resolved every blocking point. Prep scripts then made LOD variants and atlases inside seven packs, each file group was implemented in turn, a validator pass added the checks listed below, and a cross-review read the whole diff. A C# parser found no syntax errors in the 85 Editor and Scripts files, and a script that resolves every static `Class.Member` access found no renamed or removed names. Every placement goes through DemoAssetLibrary (or StoreKit's set table) and keeps a fallback: when a pack file is missing, the night store builds today's primitive or procedural version, so a project unpacked from the ZIP alone still builds today's store. **Nothing here has been compiled or run in Unity.** The night store itself has never run (there is no Docs/VerificationNight), so every budget figure below is an estimate.
@@ -10,7 +215,7 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
     - Across the street: the ApartmentBlock with its lit rooms (lightmapped), the rendered row on either side with half-closed metal shutters, and weathered fly posters on its blank ground floor. The KayKit skyline towers are gone. The sky is the generated overcast night panorama.
     - The neighbours: brick on the left, render on the right and metal shutters on both shopfronts, with graffiti tags on the left shutter, a utility box against the left neighbour and grime under the right neighbour's sill.
     - Street furniture: four anthracite bollards (StreetModels, with shadows) in the anti-ram row, two gully grates in the gutter, and across the street a bus shelter with a lit lightbox and two bike racks. There are no road signs, hydrants or name plates, because they depend on the country.
-    - Kit and people: a ForensicCase beside the equipment table and a box of nitrile gloves on it; one passer-by on his phone on the pavement left of the shop, 3 m outside the play area; a lost-cat flyer on the first lamp post.
+    - Kit and people: a ForensicCase beside the equipment table and a box of nitrile gloves on it; one passer-by on his phone on the pavement left of the shop, 3 m outside the play area; a lost-cat flyer taped to the right pier's street face (in every build: the posts are too thin for the flat card).
     - Surfaces: the wet asphalt and the wet paving slabs carry their PBRExterior colour, normal, smoothness and AO maps, and the kerbs are concrete. Always-on decals: puddles, oil, wet leaves, litter and chewing gum on the street and both pavements.
     - Sound: a stereo city bed, the wind, the V8 idle, a car passing unseen every 20–60 s and a distant dog every 1–4 minutes (the CC0 recording only). No sirens and no radio.
   - **Shop front:** an alarm bell box on the fascia (silent at arrival); three stickers on the left sidelight (alarm monitored, insurer approved, cards accepted) and a CCTV sign on the left pier. The wind whistles through the forced doors. The piers and fascia keep the NightMaterials dark marble.
@@ -19,7 +224,7 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
     - The closing procedure: stock went to the safes by 17:45, so the cases hold display furniture only. Glass shards lie on the floor in front of the three broken cases. A pearl strand and a gold band lie on the floor where the burglars dropped them, clear of the walk route and the UV traces.
     - Props: snake plants in place of the front and rear-left planters, a rug under the sofa and side table, a fire extinguisher right of the office opening and a wall clock above it, and four air diffusers on the ceiling.
     - Wall graphics: Heda's still life in a gilt frame replaces the rear sign frame's emblem, and the Aurel & Finch lightbox replaces the counter sign frame's. The fire evacuation plan hangs on the rear partition, and Pissarro's Boulevard Montmartre, also gilt-framed, over the seating corner.
-    - Sound: the street is muffled inside (low-passed to about 1.5 kHz and lowered to 55 %), under a room tone, with a Room reverb.
+    - Sound: the street is muffled inside (low-passed to about 1.5 kHz and lowered to 55 %), under a room tone, with three Room reverb zones in a row across the showroom.
   - **Office:** the two safes finished in PBRInterior's powder-coated safe steel; a snake plant in the office planter; a monitor with a glowing screen (no light) and a keyboard on the desk, with the transport tray moved to (-1.25, 0.75, 9.4) to clear them; the jeweller's loupe on the desk and a coin on the floor; in the open large safe a 1 kg gold bar, a gem parcel, three closed ring boxes and two coins, and in the tall safe one coin; a staff notice board, the October 2026 calendar and a gemmology certificate on the office side of the partition; a reverb zone of its own.
   - **Footsteps (desktop):** a step every 0.7 m of walking, and glass steps in the glass zones (the entrance fans and the strips in front of the broken cases). In VR, room-scale walking, teleports and snap turns make no steps.
   - **Hidden at arrival:** the alarm bell, the "Ambient wear" and "Case evidence" sets and the investigation underscore, each a switch in the drawer's Scene tab (see below). No print-like or footwear-like mark is visible at arrival.
@@ -36,13 +241,14 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
   - `PlacePack` places a pack model with the LOD levels from the prep files, in LOD classes with fixed screen-height transitions (Tiny 2 % / 0.6 % / cull 0.1 %, Prop 10 / 3 / 0.4 %, Large 30 / 10 / 0.4 %, Post 60 / 20 / 0.5 %), a fade mode of None and no colliders on the levels. A missing model returns null.
   - `PackMaterial` builds one shared material per pack, colour map, Kd colour (RGBA) and role (Glass, Cutout, Emissive or Opaque), saved under Assets/CrimeSceneDemo/PackMaterials. The finish, emissive and cut-out tables are keyed by pack, model and material, never by a bare name, so the Proc_PaintedMetal tints, the monitor's and the snake-plant pot's Shared_PlasticBlack, and the passer-by's Props and PropScreen stay separate, and the PoliceCar's "Interior" never glows. Transparency comes from the MTL d value (imported alpha below 0.99), never from a name, so the ApartmentBlock's WindowFrames stay opaque. Map-less finishes (for example PoliceCar Body and Lights at 0.89 smoothness, the lamp bulb and the lightbox emission) come from the packs' sources.json, models.json and materials.json.
   - Also new: atlas cell lookup from the pack JSON files (explicit pixel rects, y from the bottom), `Seat`, `DemoGeometry.Fade` and `Cutout`, `ProceduralMesh.Quad` with a UV rect, and credits: every placed CC BY or MIT model records its attribution, and NightStoreBuilder writes them to Resources/DemoCredits.txt. The importer helpers (NormalMapAt, DataMap, SignTexture, Audio) leave governed pack files to PackImport.
+  - Shared helpers that replace private copies (follow-up fixes, see "Files changed or added"): `DemoAssetLibrary.WorldBounds` (the world box of a model's renderers, used by Seat, NightStreet.InPlayArea and the extinguisher's set-back); `DemoAssetLibrary.Blended` (the one no-shadow rule: a renderer whose materials are all blended casts none; PlacePack and NightStoreBuilder's shadowed kit groups use it, and NightStreet.NoTransparentShadows is gone); `DemoGeometry.PathUnder` (NightDecals, NightLighting); and `DemoGeometry.Opaque` (PackMaterial's opaque role, formerly private in DemoAssetLibrary).
 - **PBR palette (StoreKit, StoreKitProps).** Each palette texture name has one source, in a fixed priority: the first set whose colour file exists supplies the colour, normal, MetallicSmoothness and AO maps and the tiling, so maps never mix across packs. The order is PBRInterior/PBRExterior, then ReferenceTextures (NightMaterials for the ceiling), then GeneratedTextures.
   - New materials: KitBrick (the left neighbour) and KitShutter (the half-closed shutters of the neighbours' and the across-street shopfronts). Stainless, Concrete, Render and Leather now take PBR sets. Six surfaces get AO maps: the floor, pavement, asphalt, render, brick and shutter.
   - FacadeStone stays the NightMaterials dark marble, on today's tint (`Calibrated = false`). GlassSmudge is not applied (it reads as fingerprints; Koda's decision 7).
   - The ReferenceTextures and generated sets keep their scalar finish. The NightMaterials 16 px constant maps equalled those scalars, so they look the same.
 - **Street and interior (NightStreet.cs, NightInterior.cs, new; NightStoreLayout, NightStoreBuilder):**
   - `NightStoreLayout.LampProfile` holds the lantern (light at 3.27 m, baked intensity 3.5) and the KayKit lamp as its fallback. Each post keeps exactly one "Lens", sized to fit inside the glass, and every lantern renderer is ShadowCastingMode.Off.
-  - The ApartmentBlock sits under Exterior/Buildings at StreetScale, matching its 6 texels/m import margin. Props whose footprint reaches a movement region get one bounds collider; blended renderers cast no shadows.
+  - The ApartmentBlock sits under Exterior/Buildings at StreetScale, matching its 6 texels/m import margin. Props whose footprint reaches a movement region get one bounds collider; renderers whose materials are all blended cast no shadows (`DemoAssetLibrary.Blended`, applied by PlacePack).
   - The fire extinguisher (Prop LODs) stands at x 1.05, set back until its stand is 6 mm off the walnut skirting; the clock uses its LOD1 file as the top level. The ceiling diffusers hide with the ceiling on the overview map.
   - The wall graphics are three KitMeshes from the two WallGraphics atlas pages, in three materials (interior page, street page, gilt moulding). Without the atlases the sign frames keep their emblems.
 - **Night lighting (NightLighting.cs, LightBarBlink, DemoLighting, ToolStation, GlowBillboard.cs new).** NightLighting reads the lamp profile and the placed car in Lights, UseRealtimeFallback, UseBaked and LightBar.
@@ -57,9 +263,11 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
   - Two hidden presenter sets under Dressing/PresenterSets, probe-lit and never static:
     - "Ambient wear": a water stain inside the entrance, heel scuffs, fine scratches and dust along the wall base (Koda's decision 7).
     - "Case evidence", a placeholder for Koda's decisions 2, 5 and 8: a mud shoe trail up to the forced doors, tracked dirt inside, 15 dust prints along the walk route, pry marks on the right door leaf, latent prints and a handprint on the case glass, and the crowbar, sledgehammer and flathead screwdriver (ForensicModels with their LODs, or procedural stand-ins without the pack).
+  - `NightDecals.Apply(root, folder, imported)`: NightStoreBuilder passes its useImportedAssets. With false no SurfaceDecals or ForensicModels file is read: no decal and no "Ambient wear" set are built, and "Case evidence" holds only the procedural stand-in tools.
 - **Sound and music (NightAudioBuilder.cs, AmbientZones.cs, AmbientEvents.cs, Footsteps.cs, DemoMusic.cs, all new; DemoSoundBank, DemoSounds, AmbientSound, ToolHolder).** NightAudioBuilder replaces NightStoreBuilder.StagedSounds.
   - The sound bank prefers the NightSoundscape takes (the DSLR shutter, the torch click, the city bed as a 2D bed) and keeps NightAudio as the fallback. Cones and markers have their own set-down takes; every other tool keeps the thud.
   - AmbientZones muffles the exterior beds inside the showroom and office and plays HVACRoomTone_Loop indoors. Every bed in the zones starts at a random point. The door whistle, in neither zone list, starts at its beginning.
+  - Reverb (AudioReverbPreset.Room): the 15.4 m showroom is wider than one zone can cover without reaching the street, so three zones (Reverb_ShowroomLeft, Reverb_Showroom, Reverb_ShowroomRight) stand in a row at mid-depth, each full within 3 m and silent beyond 4.5 m: at mid-depth the reverb is full from side wall to side wall, and the pavement stays dry. Reverb_Office is full within 1.5 m and none beyond 3 m.
   - AmbientEvents schedules the car passes and the dog (DogBarkDistant_04 only). Sirens and radio are scheduled only in ProvisionalRealisticUS.
   - DemoMusic: the investigation underscore (InvestigationLoop.ogg) is off at arrival; a reset plays ResetSting.ogg and ducks the bed under it. The start menu plays MenuTheme.ogg.
 - **Presenter switches (PresenterSet.cs, new; DemoDesktopPanel).** The drawer's Scene tab gains "Light bar flashing" under LIGHTING (with a note for visitors sensitive to flashing light), a SCENE DRESSING section with one switch per presenter set (Alarm bell, Ambient wear, Case evidence) and "Underscore music" under MUSIC. All are off at arrival except the light bar, which flashes. A session reset makes the light bar flash again and hides every presenter set; the underscore keeps its setting. Their toasts show on the monitor only. Docs/CONTROLS_AND_INTEGRATION.md has the table and the methods to bind.
@@ -90,7 +298,7 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
   | Pixel lights | 4 | 4 | 4: no realtime light added; the halos and washes are additive cards |
   | Texture memory referenced | — | — | ~155 MB at the capped import sizes (all packs at native size would be ~460 MB) |
 
-  Audio at arrival (default PoliceLook, all packs): 5 looping beds (the city bed, the wind, the car idle, the room tone and the door whistle), one AmbientEvents scheduler with 2 one-shot sources (the car passes and the dog), 2 reverb zones and 1 footstep source. The alarm bell and the underscore are off. The US preset adds the radio loop and the siren and radio sources.
+  Audio at arrival (default PoliceLook, all packs): 5 looping beds (the city bed, the wind, the car idle, the room tone and the door whistle), one AmbientEvents scheduler with 2 one-shot sources (the car passes and the dog), 4 reverb zones (three across the showroom, one in the office) and 1 footstep source. The alarm bell and the underscore are off. The US preset adds the radio loop and the siren and radio sources.
 - **One-time reimport:**
   - First open after the pull and sync: PackImport is a new texture and audio postprocessor, so Unity reimports every texture and audio clip in the project once, not only the packs. Expect several minutes.
   - First RunNightQuick or build: every pack model reimports once (props lose uv2; the buildings and the rug get their chart margins), and so does any pack texture or clip that does not match the rules. RunNightQuick and RunNight log the total as the Info line "Third-party assets reimported to the import rules (models, then pack textures and audio): N" (it used to read "Third-party models reimported with lightmap UVs"). Build (quick) and DemoBuild reimport without a log line. A second run should log no such line.
@@ -137,7 +345,8 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
   | ShopCityValidation.Run, RunExpanded, RunForms, RunInterior, RunRobbery | +6 | the same without the tape-text check |
   | JewelrySceneValidation, GlassToolValidation | none | no new checks |
 
-- **Behaviours with no check yet.** CLAUDE.md asks for a check for every new behaviour; these still have none and are the next validator batch: the street (lanterns and lamp profile, the ApartmentBlock facing the shop, the facade sets, the towers gone, figures at least 2.5 m outside the play area, furniture on its surface and clear of the walk route, colliders, the bell box); the lighting (halos and washes without lights, the panorama sky, the AcrossStreet probe, the NightSky cookies, the crossfade and steady modes); the interior (snake plants and rug with their fallbacks, the desk props clear of the tray, the monitor glow without a light, the partition fittings, the ceiling diffusers, wall-graphic size, facing and material count); the closing procedure (display-only cases, stock inside the safes, floor pieces clear of the route and the UV traces, glass zones); the decals (flags, cells, the trail, "No print-like or footwear-like mark is visible at arrival"); the soundscape, footsteps, set-downs, reverb, alarm bell and music; the presenter switches and their reset; the credits and the packs' licence notices; and the launcher mirror (Tools/sync-project.cmd's header still names a planned "all twelve packs are present" check that was not written).
+  October 16 update: the validator batch above adds more on top of these. RunNightQuick is now +108 in all (+59 from the ZIP alone), RunNight +107 (+58), RunGlass and RunTextured +12, the other ShopCity runs +11 (each 1 fewer without the packs), and RunGallery stays +3. The October 16 entry has the breakdown.
+- **Behaviours with no check yet** (now covered by the October 16 validator batch above). CLAUDE.md asks for a check for every new behaviour; these still have none and are the next validator batch: the street (lanterns and lamp profile, the ApartmentBlock facing the shop, the facade sets, the towers gone, figures at least 2.5 m outside the play area, furniture on its surface and clear of the walk route, colliders, the bell box); the lighting (halos and washes without lights, the panorama sky, the AcrossStreet probe, the NightSky cookies, the crossfade and steady modes); the interior (snake plants and rug with their fallbacks, the desk props clear of the tray, the monitor glow without a light, the partition fittings, the ceiling diffusers, wall-graphic size, facing and material count); the closing procedure (display-only cases, stock inside the safes, floor pieces clear of the route and the UV traces, glass zones); the decals (flags, cells, the trail, "No print-like or footwear-like mark is visible at arrival"); the soundscape, footsteps, set-downs, reverb, alarm bell and music; the presenter switches and their reset; the credits and the packs' licence notices; and the launcher mirror (Tools/sync-project.cmd's header still names a planned "all twelve packs are present" check that was not written).
 - **Existing checks to watch on the first run,** because the new content touches what they measure: "Night store material budget" (about 128 against 136), "Night store transparency budget" (about 57 of 70), "Night dressing is combined by material" (the new props sit in its batched zones), "Night store static flags follow the bake policy" (pack props without uv2 must be probe-lit), "Light lenses are captured by the baked reflection probes" (exactly one Lens per lantern) and, after the bake, "No lightmapped renderer outgrows one lightmap".
 - **Deferred** (each with its reason in ROADMAP):
   - GlamVelvetSofa: untextured (it reads black), 2.19 m wide with 1 cm to the side table, and CC BY. The StoreKit sofa stays.
@@ -171,7 +380,7 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
   - **Final textures.** A final texture dropped into ReferenceTextures under an existing name now comes second to the PBRInterior/PBRExterior set of that name. To use it, put its set first in `StoreKit.Sets`.
   - **Credits in the old shop.** DemoCredits lists only what the night store placed. JewelryStoreGlass, in the same player, places Khronos CC BY models whose lines its Settings tab therefore lacks; KhronosSamples.txt in ThirdPartyLicenses still carries them. Merging the credits needs a ShopCity or NightStoreBuilder change.
   - **Pack tools.** PeopleModels' older Source~/validate.py and write_sources.py stop on the _LOD files (that pack's README gives the workaround).
-- **Files changed or added** (the Downloads ZIP is synced: 59.0 MB, the 12 new .cs files added with fresh .meta guids, 26 changed files updated, the twelve packs left out):
+- **Files changed or added** (the Downloads ZIP was synced at commit 9305177 and again with the October 16 validator batch, which carries the follow-up fixes at the end of this list: 59.0 MB then, the 12 new .cs files added with fresh .meta guids, 26 changed files updated, the twelve packs left out):
   - New, each now in Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip with a fresh .meta guid:
     - Editor: PackImport.cs, PoliceLook.cs, NightStreet.cs, NightInterior.cs, NightDecals.cs, NightAudioBuilder.cs.
     - Scripts: PresenterSet.cs, GlowBillboard.cs, AmbientZones.cs, AmbientEvents.cs, Footsteps.cs, DemoMusic.cs.
@@ -186,6 +395,10 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
     - New Source~ scripts and previews: make_lods.py in StreetModels, PeopleModels, ForensicModels, InteriorModels and JewelryModels; StreetModels lod_sources.py and Preview_LODs.jpg; JewelryModels render_lods.py and Preview_LODs.jpg; InteriorModels LOD_Previews.jpg; make_atlas.py in WallGraphics and SurfaceDecals.
     - Updated README.md, LICENSE.txt and sources.json in StreetModels, PeopleModels, ForensicModels, InteriorModels, JewelryModels, WallGraphics and SurfaceDecals; models.json in InteriorModels and JewelryModels; StreetModels Source~/check_pack.py and README_build.txt.
   - Outside the ZIP: Tools/sync-project.cmd (new), Open-Unity-Glass.cmd, Start-Demo.cmd, README.md, for Koda.md, and Docs/HANDOFF.md, ROADMAP.md, ASSET_REGISTER.md and CONTROLS_AND_INTEGRATION.md.
+  - Follow-up fixes after 9305177 (unverified, never compiled; in the ZIP since the October 16 sync, with their existing .meta files):
+    - Editor: DemoAssetLibrary, DemoGeometry, NightStreet, NightLighting and NightStoreBuilder (the shared helpers above), NightInterior (the helpers and the lost-cat flyer moved from the first lamp post to the right pier, whatever the lamp), NightDecals (the helpers and Apply's imported flag), NightAudioBuilder (four reverb zones), KitMesh (explicit atlas UVs are part of a mesh's fingerprint, so a changed atlas gives a new mesh asset), DemoBuild (`AddMenuMusic`, the launcher's MenuMusic object, unchanged in behaviour), NightStoreDressing (JewelryStoreBuilder's geometric shoe print is no longer placed by the office opening, so no footwear mark shows at arrival; the procedural ring and ring-box stand-ins cast no shadows, like the pack pieces), NightStoreLayout (a comment on the KayKit post only).
+    - Scripts: GlowBillboard (the cards turn to each camera as it renders, on Camera.onPreCull, so the evidence photo and the viewfinder see them facing too), DemoDesktopPanel (a presenter set destroyed since the last Layout event keeps its row, inert, until the next one), ProceduralMesh (the explicit-UV flag KitMesh reads), AmbientZones (each exterior bed's low-pass filter gets a flat cutoff curve, so the source's distance curve cannot override the zones' cutoff).
+    - No new runtime or builder file, so no new .meta for those. The six new validator area files (NightStoreValidationDressing, Interior, Lighting, Presenter, Sound and Street; untracked, each needs a fresh .meta when synced) are now wired into the partial NightStoreValidation.cs. Copy them together with it. The October 16 entry above lists their checks and PASS counts; the figures in this entry's "To verify on the PC" leave them out.
 - **To verify on the PC:**
   1. **First compile and NightStoreValidation.RunNightQuick.** Open the project through Open-Unity-Glass.cmd or Start-Demo.cmd, so the packs are mirrored, and note how long the one-time texture and audio reimport takes. The Console must show no compile errors or warnings from the new files. Expect +26 PASS lines (+15 in a project unpacked from the ZIP without a sync). Record these Info lines here:
      - the "Third-party assets reimported to the import rules ..." count (and that a second RunNightQuick logs none and passes "PackImport.Apply leaves nothing to reimport on a second run");
@@ -207,9 +420,9 @@ The twelve realism packs now feed the night store (JewelryStoreNight), for Quest
      - no footsteps from room-scale walking, teleports or snap turns;
      - the frame time, judged only on a baked build.
   9. **Desktop (mouse and keyboard):** the drawer's Scene tab shows "Light bar flashing", the three SCENE DRESSING switches and "Underscore music", each working and each reset as described in CONTROLS_AND_INTEGRATION.md; footsteps every 0.7 m and glass steps in the glass zones; the menu theme fading before a map loads, a second key press ignored while it loads, and Esc quitting from an empty menu; the credits in the Settings tab and their first line on the start menu.
-  10. **Audio levels, on speakers and in the headset:** the city bed (0.45), the wind (0.35) and the V8 idle (0.5 at the bonnet) outside; the muffled street and the room tone inside; the door whistle, the cone and marker set-downs, car passes and the dog; the Room reverb, which may be too wet; no clicks where the loops wrap after the Vorbis re-encode; the menu theme at 0.25 (its README suggests 0.5), the underscore switch and the reset sting.
+  10. **Audio levels, on speakers and in the headset:** the city bed (0.45), the wind (0.35) and the V8 idle (0.5 at the bonnet) outside; the muffled street and the room tone inside; the door whistle, the cone and marker set-downs, car passes and the dog; the Room reverb across the showroom and in the office, which may be too wet, and none on the pavement; no clicks where the loops wrap after the Vorbis re-encode; the menu theme at 0.25 (its README suggests 0.5), the underscore switch and the reset sting.
   11. **Visual walk on a baked build, desktop and headset:**
-      - street: the lanterns upright with lit glass, the ApartmentBlock facing the shop (not mirrored, with lit rooms), the brick, render and shutter facades, the bus shelter's lightbox;
+      - street: the lanterns upright with lit glass, the ApartmentBlock facing the shop (not mirrored, with lit rooms), the brick, render and shutter facades, the bus shelter's lightbox, the lost-cat flyer flat on the right pier;
       - interior: the snake plants, the rug, the monitor glow, the extinguisher and clock with their LOD switches, the diffusers flush with the ceiling, the gilt frames not mirrored, the stickers readable from the pavement;
       - office: the safes' left-behind stock with nothing floating, the loupe and the tray on the desk;
       - presenter sets: Ambient wear and Case evidence each shown, then hidden again by a reset.

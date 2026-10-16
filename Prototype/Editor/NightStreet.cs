@@ -1,6 +1,5 @@
 #if UNITY_EDITOR
 using UnityEngine;
-using UnityEngine.Rendering;
 using static DemoGeometry;
 using L = NightStoreLayout;
 
@@ -150,37 +149,23 @@ public static class NightStreet
         if (Guard(out Item guard)) Place(guard, people);
     }
 
-    // One pack model under parent; null (nothing placed) when the model is missing.
+    // One pack model under parent; null (nothing placed) when the model is missing. PlacePack
+    // keeps glass and other blended surfaces from casting (DemoAssetLibrary.Blended).
     private static GameObject Place(Item item, Transform parent)
     {
         GameObject g = DemoAssetLibrary.PlacePack(item.Pack, item.Model, parent, item.Position, item.Yaw,
             new DemoAssetLibrary.PackOptions { Lod = item.Lod, Shadows = item.Shadows });
         if (g == null) return null;
         g.name = item.Name;
-        NoTransparentShadows(g);
         if (InPlayArea(g)) DemoAssetLibrary.AddBoundsCollider(g);
         return g;
-    }
-
-    // Glass and other blended surfaces cast no shadows (the Standard shader would dither them).
-    public static void NoTransparentShadows(GameObject g)
-    {
-        foreach (MeshRenderer r in g.GetComponentsInChildren<MeshRenderer>(true))
-            if (r.sharedMaterial != null && r.sharedMaterial.renderQueue >= 3000) r.shadowCastingMode = ShadowCastingMode.Off;
     }
 
     // Whether the prop's footprint (its renderers' x/z extent) touches a movement region.
     // The store root sits at the world origin, as the builder always places it.
     public static bool InPlayArea(GameObject g)
     {
-        bool first = true;
-        Bounds b = new Bounds();
-        foreach (Renderer r in g.GetComponentsInChildren<Renderer>(true))
-        {
-            if (first) { b = r.bounds; first = false; }
-            else b.Encapsulate(r.bounds);
-        }
-        if (first) return false;
+        if (!DemoAssetLibrary.WorldBounds(g, out Bounds b)) return false;
         foreach (InteriorBounds.Region region in L.Regions())
             if (b.max.x >= region.MinX && b.min.x <= region.MaxX && b.max.z >= region.MinZ && b.min.z <= region.MaxZ) return true;
         return false;

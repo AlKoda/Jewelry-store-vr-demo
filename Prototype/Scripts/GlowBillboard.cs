@@ -1,9 +1,12 @@
 using UnityEngine;
 
 // Camera-facing glow cards: the additive halos round the street-lamp and headlamp
-// lenses (NightLighting). Each quad turns to the main camera every frame (the head in
-// VR and on the desktop alike) and sits PullToEye in front of its lens towards the
-// eye, so the card lies in front of the lamp's housing instead of cutting through it.
+// lenses (NightLighting). Each quad turns to whichever camera is about to render
+// (Camera.onPreCull, before that camera culls): the head in VR (one callback for both
+// eyes, from the centre eye) and on the desktop, the evidence photo and the live
+// viewfinder alike, so a second view never draws cards that face the first. Each sits
+// PullToEye in front of its lens towards the eye, so the card lies in front of the
+// lamp's housing instead of cutting through it.
 // A card with a lens axis (the headlamps) fades out as the eye moves beside or behind
 // its lens. The tints are property blocks, which a scene does not save, so they are
 // applied again whenever the component is enabled, in edit mode too (faded for the
@@ -24,13 +27,20 @@ public sealed class GlowBillboard : MonoBehaviour
     private const string TintProperty = "_TintColor";
     private MaterialPropertyBlock block;
 
-    private void OnEnable() { ApplyTints(); }
-
-    private void LateUpdate()
+    private void OnEnable()
     {
-        if (!Application.isPlaying) return;
-        Camera view = Camera.main;
-        if (view != null) Face(view.transform.position);
+        ApplyTints();
+        Camera.onPreCull += FaceCamera;
+    }
+
+    private void OnDisable() { Camera.onPreCull -= FaceCamera; }
+
+    // Per rendering camera, one transform write per card and, with lens axes, one
+    // property-block write per card (six of each in the night store).
+    private void FaceCamera(Camera camera)
+    {
+        if (!Application.isPlaying || camera == null) return;
+        Face(camera.transform.position);
     }
 
     // Turns every quad to the eye (its forward pointing away from it) and pulls it

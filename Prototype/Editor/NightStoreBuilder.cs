@@ -166,7 +166,7 @@ public static class NightStoreBuilder
         NightStoreDressing.CombineLoose(zone["Dressing"], Folder);
         // Decals and the hidden presenter sets set their own static flags, after MarkStatic
         // (never occluders or reflection-probe static).
-        NightDecals.Apply(root.transform, Folder);
+        NightDecals.Apply(root.transform, Folder, useImportedAssets);
         // NightLighting.LightmapScales sets every zone's lightmap scale after Build (Apply
         // always follows Build); the KitMeshes' chart margins match it.
 
@@ -443,13 +443,13 @@ public static class NightStoreBuilder
         // Kit props share the atlas with shadows off; the car and the buildings need their
         // contact shadows on the wet street under the headlights and streetlights, and so do
         // the KayKit lamp posts. The lantern casts none (its light sits inside it). Glass
-        // never casts (the Standard shader would dither it).
+        // never casts (the Standard shader would dither it; PlacePack's rule, DemoAssetLibrary.Blended).
         List<string> shadowed = new List<string> { "PoliceCar", "Buildings" };
         if (L.Lamp.CastsShadows) shadowed.Add("Streetlights");
         foreach (string name in shadowed)
             foreach (MeshRenderer r in parent.Find(name).GetComponentsInChildren<MeshRenderer>(true))
             {
-                if (r.sharedMaterial != null && r.sharedMaterial.renderQueue >= 3000)
+                if (DemoAssetLibrary.Blended(r))
                 {
                     r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
                     continue;

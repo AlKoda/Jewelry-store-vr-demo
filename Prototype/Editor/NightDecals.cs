@@ -18,7 +18,9 @@ using L = NightStoreLayout;
 // footwear trail, pry marks, latent prints and the discarded tools; Koda's decisions 2 and
 // 5). PBRInterior's GlassSmudge is not placed: its fingerprint clusters read as evidence too
 // (listed for Koda). A missing atlas skips its decals, so a project unpacked from the ZIP
-// builds today's floors; the tools fall back to procedural stand-ins. Runs after
+// builds today's floors; the tools fall back to procedural stand-ins. A build without
+// imported assets (Apply's imported false) reads no SurfaceDecals or ForensicModels file at
+// all: no decal and no wear set, only the evidence set with the stand-in tools. Runs after
 // NightStoreDressing.CombineLoose and StoreKit.MarkStatic and sets its own static flags.
 public static class NightDecals
 {
@@ -110,16 +112,22 @@ public static class NightDecals
 
     // ---------------------------------------------------------------- build
 
-    public static void Apply(Transform root, string folder)
+    // imported false (a build without third-party assets): no atlas or scatter is loaded, so
+    // no decal is placed, and the evidence set holds the stand-in tools only.
+    public static void Apply(Transform root, string folder, bool imported = true)
     {
         Decals.Clear();
         AmbientCells = EvidenceCells = null;
         HasShards = false;
         if (root == null) return;
         StoreKit.Palette();
-        AmbientCells = Cells(AmbientAtlas);
-        EvidenceCells = Cells(EvidenceAtlas);
-        Texture2D shards = DemoAssetLibrary.Texture(Pack, ShardsFile + ".png");
+        Texture2D shards = null;
+        if (imported)
+        {
+            AmbientCells = Cells(AmbientAtlas);
+            EvidenceCells = Cells(EvidenceAtlas);
+            shards = DemoAssetLibrary.Texture(Pack, ShardsFile + ".png");
+        }
         HasShards = shards != null;
 
         // Always on: the shard scatter on the shop floor, then the ambient page outdoors.
@@ -142,7 +150,7 @@ public static class NightDecals
         if (dressing == null) return;
         Transform sets = Group(SetsGroup, dressing);
         if (ambient != null) AmbientWear(root, sets, ambient, folder);
-        CaseEvidence(root, sets, folder);
+        CaseEvidence(root, sets, folder, imported);
     }
 
     // UV rects of an atlas page, or null (skipping its decals) when the page or its layout is
@@ -294,8 +302,9 @@ public static class NightDecals
     // (decision 5): a mud trail from the street to the forced door, the tracked dirt inside it,
     // a dust trail along the walk route to the office opening, pry marks on the right leaf's
     // lock stile, latent prints on the central case's top and a handprint on the cracked top,
-    // and the crowbar, sledgehammer and screwdriver. Without the Evidence atlas only the tools.
-    private static void CaseEvidence(Transform root, Transform sets, string folder)
+    // and the crowbar, sledgehammer and screwdriver. Without the Evidence atlas only the tools
+    // (the stand-ins with imported false).
+    private static void CaseEvidence(Transform root, Transform sets, string folder, bool imported)
     {
         Transform content = NewSet(sets, EvidenceSet, "Case evidence",
             "Placeholder trail, pry marks, prints and tools for the instructor; Koda's decisions 2 (entry) and 5 (tools).");
@@ -311,7 +320,7 @@ public static class NightDecals
             if (marks.Count > 0) EmitProbed(root, content, DecalsName, marks, AtlasMaterial(folder, EvidenceMaterial, EvidenceAtlas, FloorQueue), folder, "night_decals_evidence", false, true);
             if (prints.Count > 0) EmitProbed(root, content, GlassPrintsName, prints, AtlasMaterial(folder, EvidenceGlassMaterial, EvidenceAtlas, GlassQueue), folder, "night_decals_evidence_glass", false, true);
         }
-        PlaceTools(root, Group(ToolsGroup, content), folder);
+        PlaceTools(root, Group(ToolsGroup, content), folder, imported);
         Close(content);
     }
 
@@ -488,14 +497,14 @@ public static class NightDecals
 
     public static string[] ToolModels => System.Array.ConvertAll(ToolTable, t => t.Model);
 
-    private static void PlaceTools(Transform root, Transform parent, string folder)
+    private static void PlaceTools(Transform root, Transform parent, string folder, bool imported)
     {
         foreach (Tool t in ToolTable)
         {
-            GameObject g = DemoAssetLibrary.PlacePack(NightStreet.ForensicPack, t.Model, parent, Vector3.zero, t.Yaw, new DemoAssetLibrary.PackOptions
+            GameObject g = imported ? DemoAssetLibrary.PlacePack(NightStreet.ForensicPack, t.Model, parent, Vector3.zero, t.Yaw, new DemoAssetLibrary.PackOptions
             {
                 ModelEuler = t.Euler, Shadows = true, Lod = DemoAssetLibrary.LodClass.Prop
-            });
+            }) : null;
             if (g == null) g = StandIn(t, parent, folder);
             g.name = t.Model;
             Vector3 point = root.TransformPoint(t.Position), centre = g.transform.TransformPoint(DemoAssetLibrary.LocalBounds(g).center);
@@ -680,13 +689,6 @@ public static class NightDecals
             Name = name, Cell = cell, Uv = uv, Size = Sizes[cell], Centre = root.TransformPoint(p), Normal = root.up,
             Up = root.TransformDirection(Quaternion.Euler(0, yaw, 0) * Vector3.forward), Mirror = mirror
         });
-
-    private static string PathUnder(Transform t, Transform root)
-    {
-        string path = t.name;
-        for (t = t.parent; t != null && t != root; t = t.parent) path = t.name + "/" + path;
-        return path;
-    }
 
     // ---------------------------------------------------------------- for the validators
 

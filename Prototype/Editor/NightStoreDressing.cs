@@ -13,7 +13,8 @@ using static DemoGeometry;
 // the floor shows the trail from the office past the right island and the central
 // cluster to the entrance (dropped rings, opened boxes and trays); the pack jewellery
 // left behind lies in the open safes, on the desk and on the floor (Stock); then the
-// glass fans at the entrance, the shoe print and the discarded torch. StockInSafes
+// glass fans at the entrance and the discarded torch. No footwear mark is dressed: the
+// prints are NightDecals' hidden "Case evidence" set (Koda's decision 2). StockInSafes
 // false restores the October 11 stocked decks (for Koda). Loose pieces are static
 // scenery the player cannot pick up; only the gas bottle and the toppled chair keep
 // colliders, so the dressing never snags the walker. Counts stay modest: every loose
@@ -94,14 +95,14 @@ public static class NightStoreDressing
 
         foreach (Fan fan in Fans) GlassFan(dressing, fan, meshFolder);
 
-        // The small shop's shoe print and cutting torch, by the office opening.
-        Transform print = JewelryStoreBuilder.ShoePrint(dressing, V(0.35f, 0.0015f, 7.75f), 8);
+        // The small shop's cutting torch, by the office opening. Its geometric shoe print is
+        // not reused: it would show a footwear mark at arrival, and the evidence set's dust
+        // trail replaces it.
         Transform torchPivot = Group("TorchSet", dressing);
         torchPivot.localPosition = V(-0.55f, 0, 8.95f);
         torchPivot.localRotation = Quaternion.Euler(0, 90, 0);
         Transform torch = JewelryStoreBuilder.Torch(torchPivot);
         torch.localPosition = V(-JewelryStoreBuilder.TorchCylinderX, 0, -JewelryStoreBuilder.TorchCylinderZ);
-        Paint(print, StoreKit.Soil);
         Paint(torch, StoreKit.DeviceBlack);
         foreach (Renderer r in torch.GetComponentsInChildren<Renderer>())
         {
@@ -299,6 +300,9 @@ public static class NightStoreDressing
             g = model == "RingGoldBand" ? StoreKit.DroppedRing(parent)
                 : model == "RingBoxClosed" ? StoreKit.JewelryBox(parent, StoreKit.JewelryBoxKind.Ring, 0) : null;
             if (g == null) return null;
+            // KitMesh casts by default; the stand-ins stay shadowless like the pack pieces.
+            foreach (MeshRenderer r in g.GetComponentsInChildren<MeshRenderer>())
+                r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         }
         Put(g, frame, local, yaw);
         DemoAssetLibrary.Seat(g, g.transform.position.y);

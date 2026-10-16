@@ -46,6 +46,7 @@ public static class ShopCityValidation
             SessionState.SetBool(FormsKey, forms);
             SessionState.SetBool(InteriorKey, interior);
             DemoValidation.Begin(textured ? "VerificationTextured" : glass ? "VerificationGlass" : robbery ? "VerificationRobbery" : interior ? "VerificationInterior" : forms ? "VerificationForms" : expanded ? "VerificationExpanded" : "VerificationCity");
+            DemoValidation.LauncherChecks();
             JewelryStoreBuilder.CreateStore();
             DemoToolsBuilder.Create(assets);
             ShopCityRefinement.Apply(assets);
@@ -633,6 +634,13 @@ public static class ShopCityValidation
         DemoValidation.Check(DemoSounds.Bank == null && DemoSounds.SetDownClip(DemoToolKind.Cone) == DemoSounds.Generated(DemoSound.Thud)
             && DemoSounds.SetDownClip(DemoToolKind.Marker) == DemoSounds.Generated(DemoSound.Thud), "Without a sound bank, set-downs keep the generated thud");
         DemoValidation.Check(Mathf.Approximately(ambience.spatialBlend, 0.6f), "Shop ambience keeps spatial blend 0.6");
+        // The night store's realism wiring stays out of the old shop (JewelryStoreGlass looks and
+        // sounds as before): no soundscape zones or street events, no footsteps or underscore, no
+        // glow cards, light bar or presenter sets, active or not.
+        int Placed<T>() where T : UnityEngine.Object => UnityEngine.Object.FindObjectsByType<T>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length;
+        int night = Placed<AmbientZones>() + Placed<AmbientEvents>() + Placed<Footsteps>() + Placed<DemoMusic>() + Placed<PresenterSet>()
+            + Placed<GlowBillboard>() + Placed<LightBarBlink>();
+        DemoValidation.Check(night == 0 && DemoMusic.Instance == null, "The old shop has no night-store soundscape, music, footsteps, glow or presenter sets");
     }
 
     private static void ExpansionChecks()

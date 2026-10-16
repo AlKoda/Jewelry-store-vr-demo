@@ -15,6 +15,9 @@ public class ProceduralMesh
     protected readonly List<Vector2> uvs = new List<Vector2>();
     protected readonly List<Material> materials = new List<Material>();
     protected readonly List<List<int>> triangles = new List<List<int>>();
+    // Set once a rect Quad added a face: its UVs come from the caller (an atlas cell), not
+    // from the positions, so equal vertices no longer imply equal UVs (KitMesh's fingerprint).
+    protected bool explicitUVs;
 
     public bool IsEmpty => vertices.Count == 0;
 
@@ -74,6 +77,7 @@ public class ProceduralMesh
     {
         Vector3 area = Vector3.Cross(b - a, c - a) + Vector3.Cross(c - a, d - a);
         if (area.sqrMagnitude < 1e-14f) return;
+        explicitUVs = true;
         bool flip = Vector3.Dot(area, outward) < 0;
         Vector3 n = flip ? -area.normalized : area.normalized;
         int start = vertices.Count;

@@ -7,7 +7,8 @@ rem /MIR also removes files deleted from Prototype. .meta files are excluded fro
 rem from the removal, so the project keeps its GUIDs and import settings and Unity writes the
 rem .meta files of new assets. A project unpacked from the Glass zip alone lacks the twelve
 rem realism packs (left out of the zip for size), and the night store then builds their
-rem primitive fallbacks; the planned NightStoreValidation check that all twelve are present fails.
+rem primitive fallbacks; DemoValidation.LauncherChecks (run by NightStoreValidation and
+rem ShopCityValidation) logs an Info line when none of the twelve is present and fails when only some are.
 rem Called by Start-Demo.cmd (UnityProject_Demo) and Open-Unity-Glass.cmd (UnityProject_Glass).
 rem The historical launchers (Open-Unity-Blockout, -Forms, -Interior and -Robbery) do not call it
 rem on purpose: they open the frozen October 9-10 snapshots, and /MIR would delete files there and

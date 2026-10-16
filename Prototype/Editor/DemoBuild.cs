@@ -101,18 +101,24 @@ public static class DemoBuild
         camera.backgroundColor = new Color(0.06f, 0.07f, 0.09f);
         view.AddComponent<AudioListener>();
         new GameObject("Launcher").AddComponent<DemoLauncher>();
-        AudioClip theme = MenuThemeClip();
-        if (theme != null)
-        {
-            DemoMusic music = new GameObject("MenuMusic").AddComponent<DemoMusic>();
-            music.Bed = theme;
-            music.PlayBedAtStart = true;
-            music.BedVolume = 0.25f;
-            music.FadeSeconds = 2.5f;
-        }
+        AddMenuMusic();
         DemoToolsBuilder.AddTheme(new GameObject("UiTheme"));
         Directory.CreateDirectory(DemoValidation.ScenesFolder);
         EditorSceneManager.SaveScene(scene, LauncherScene);
+    }
+
+    // The launcher's MenuMusic object in the active scene, as CreateLauncherScene saves it
+    // (the menu-theme check builds one too), or null without the Music pack.
+    public static DemoMusic AddMenuMusic()
+    {
+        AudioClip theme = MenuThemeClip();
+        if (theme == null) return null;
+        DemoMusic music = new GameObject("MenuMusic").AddComponent<DemoMusic>();
+        music.Bed = theme;
+        music.PlayBedAtStart = true;
+        music.BedVolume = 0.25f;
+        music.FadeSeconds = 2.5f;
+        return music;
     }
 
     // The menu theme as an asset (PackImport imports it as a streaming Vorbis bed), or null

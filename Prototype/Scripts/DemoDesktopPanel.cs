@@ -150,8 +150,10 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private string toolChip, toolsText, markerText, photoText, statusLine;
     // The strip's button actions, made once instead of on every event.
     private Action openDrawer, requestReset, toggleScene, photograph;
-    // The Scene tab's presenter sets sorted by label, rebuilt only when PresenterSet.All changes.
+    // The Scene tab's presenter sets sorted by label, rebuilt only when PresenterSet.All changes,
+    // with each row's label and note copied beside it at that Layout event.
     private readonly List<PresenterSet> dressing = new List<PresenterSet>(8);
+    private readonly List<string> dressingLabels = new List<string>(8), dressingNotes = new List<string>(8);
     private int dressingRevision = -1;
     private static readonly Comparison<PresenterSet> ByLabel = (a, b) => string.CompareOrdinal(a.Label, b.Label);
 
@@ -969,8 +971,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         }
     }
 
-    // One switch per presenter set (PresenterSet.All), sorted by label. The sorted copy is
-    // rebuilt only on a Layout event, so the event that follows it draws the same rows.
+    // One switch per presenter set (PresenterSet.All), sorted by label. The sorted copy and its
+    // labels and notes are rebuilt only on a Layout event, so the event that follows it draws
+    // the same rows with the same GUILayout controls.
     private void DressingSection(DemoUi.Skin s)
     {
         if (dressingRevision != PresenterSet.Revision && Event.current.type == EventType.Layout)
@@ -979,18 +982,30 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             dressing.Clear();
             for (int i = 0; i < PresenterSet.All.Count; i++) dressing.Add(PresenterSet.All[i]);
             dressing.Sort(ByLabel);
+            dressingLabels.Clear();
+            dressingNotes.Clear();
+            for (int i = 0; i < dressing.Count; i++) { dressingLabels.Add(dressing[i].Label); dressingNotes.Add(dressing[i].Note); }
         }
         if (dressing.Count == 0) return;
         Heading(s, "SCENE DRESSING");
         for (int i = 0; i < dressing.Count; i++)
         {
             PresenterSet set = dressing[i];
-            // Rows change only on a Layout event; a destroyed set is skipped until then.
-            if (set == null) continue;
-            bool shown = set.Shown;
-            // The delegate is made only inside the click branch.
-            if (DemoUi.Switch(set.Label, shown) != shown) Defer(set.Toggle);
-            if (!string.IsNullOrEmpty(set.Note)) GUILayout.Label(set.Note, s.Small);
+            if (set == null)
+            {
+                // Destroyed since the Layout event: the same row, inert, until the next one rebuilds the list.
+                bool was = GUI.enabled;
+                GUI.enabled = false;
+                DemoUi.Switch(dressingLabels[i], false);
+                GUI.enabled = was;
+            }
+            else
+            {
+                bool shown = set.Shown;
+                // The delegate is made only inside the click branch.
+                if (DemoUi.Switch(dressingLabels[i], shown) != shown) Defer(set.Toggle);
+            }
+            if (!string.IsNullOrEmpty(dressingNotes[i])) GUILayout.Label(dressingNotes[i], s.Small);
         }
     }
 

@@ -24,6 +24,11 @@ public sealed class KitMesh : ProceduralMesh
             int h = vertices.Count * 397 ^ TriangleCount;
             foreach (Vector3 p in vertices)
                 h = h * 31 + Mathf.RoundToInt(p.x * 1000) * 7 + Mathf.RoundToInt(p.y * 1000) * 13 + Mathf.RoundToInt(p.z * 1000);
+            // Atlas rects (rect Quad: decals, wall graphics) are part of the geometry, so a
+            // changed atlas JSON or cell gives a new asset instead of the session's cached mesh
+            // with stale UVs. Position-derived UVs add nothing, so other parts keep their names.
+            if (explicitUVs)
+                foreach (Vector2 uv in uvs) h = h * 31 + Mathf.RoundToInt(uv.x * 100000) * 7 + Mathf.RoundToInt(uv.y * 100000);
             foreach (Material m in materials) h = h * 31 + (m != null ? m.name.GetHashCode() : 0);
             if (!Lightmapped) h = h * 31 + 1; // Same geometry without uv2 is a different asset.
             else if (LightmapScale != 1) h = h * 31 + Mathf.RoundToInt(LightmapScale * 1000); // Different chart margins.

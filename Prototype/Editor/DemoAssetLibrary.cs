@@ -47,6 +47,21 @@ public static class DemoAssetLibrary
         return bounds;
     }
 
+    // World box of every renderer under g (all LOD levels share their bounds; inactive ones
+    // count unless includeInactive is false); false, with a zero-size box at g's position,
+    // when g has none.
+    public static bool WorldBounds(GameObject g, out Bounds bounds, bool includeInactive = true)
+    {
+        bounds = new Bounds(g.transform.position, Vector3.zero);
+        bool found = false;
+        foreach (Renderer r in g.GetComponentsInChildren<Renderer>(includeInactive))
+        {
+            if (!found) { bounds = r.bounds; found = true; }
+            else bounds.Encapsulate(r.bounds);
+        }
+        return found;
+    }
+
     // OBJ first (what the package-free project imports from glTF via Tools/glb_to_obj.py),
     // then FBX for models converted elsewhere. GLB needs a package and is not tried.
     public static GameObject Load(string pack, string model)
@@ -224,17 +239,10 @@ public static class DemoAssetLibrary
         return instance;
     }
 
-    // Lowers or raises the prop until its lowest renderer point rests on surface (world y).
+    // Lowers or raises the prop until its lowest active renderer point rests on surface (world y).
     public static void Seat(GameObject prop, float surface)
     {
-        Bounds bounds = new Bounds();
-        bool first = true;
-        foreach (Renderer r in prop.GetComponentsInChildren<Renderer>())
-        {
-            if (first) { bounds = r.bounds; first = false; }
-            else bounds.Encapsulate(r.bounds);
-        }
-        if (!first) prop.transform.position += Vector3.up * (surface - bounds.min.y);
+        if (WorldBounds(prop, out Bounds b, false)) prop.transform.position += Vector3.up * (surface - b.min.y);
     }
 
     // ---------------------------------------------------------------- pack materials
@@ -380,7 +388,7 @@ public static class DemoAssetLibrary
             m.SetFloat("_Glossiness", finished && finish.Smoothness > 0 ? finish.Smoothness : 0.95f);
         }
         else if (role == CutoutRole) DemoGeometry.Cutout(m, cutoff);
-        else Opaque(m);
+        else DemoGeometry.Opaque(m);
         if (role == EmissiveRole)
         {
             Color tint = finish.EmissionColor.maxColorComponent > 0 ? finish.EmissionColor : Color.white;
@@ -413,20 +421,6 @@ public static class DemoAssetLibrary
         if (n.Contains("plastic") || n.Contains("housing")) return new Vector2(0, 0.45f);
         if (n.Contains("void") || n.Contains("recess") || n.Contains("duct")) return new Vector2(0, 0.1f);
         return new Vector2(0, 0.3f);
-    }
-
-    // Standard Opaque mode, so a rebuilt asset never keeps an earlier blend state.
-    private static void Opaque(Material m)
-    {
-        m.SetFloat("_Mode", 0);
-        m.SetInt("_SrcBlend", (int)BlendMode.One);
-        m.SetInt("_DstBlend", (int)BlendMode.Zero);
-        m.SetInt("_ZWrite", 1);
-        m.DisableKeyword("_ALPHATEST_ON");
-        m.DisableKeyword("_ALPHABLEND_ON");
-        m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        m.SetOverrideTag("RenderType", "");
-        m.renderQueue = -1;
     }
 
     // A LOD file's base model: StreetLamp_LOD1 -> StreetLamp.
@@ -486,6 +480,17 @@ public static class DemoAssetLibrary
         public System.Func<string, Material> Remap;
     }
 
+    // Whether every material of r is blended (render queue 3000 or later: glass, fades), the
+    // surfaces that never cast a shadow; false without materials or with an empty slot.
+    public static bool Blended(Renderer r)
+    {
+        Material[] materials = r.sharedMaterials;
+        if (materials.Length == 0) return false;
+        foreach (Material m in materials)
+            if (m == null || m.renderQueue < 3000) return false;
+        return true;
+    }
+
     // A realism-pack model as root <model> (at the position and yaw, scaled) holding one
     // unpacked level per LOD file, LOD0, LOD1, ...; null when the model is absent, so the
     // caller keeps its fallback. Levels: Lod None -> the model alone; Tiny -> its _LOD1 and
@@ -531,17 +536,15 @@ public static class DemoAssetLibrary
             foreach (MeshRenderer r in renderers)
             {
                 Material[] materials = r.sharedMaterials;
-                bool blended = materials.Length > 0;
                 for (int k = 0; k < materials.Length; k++)
                 {
-                    if (materials[k] == null) { blended = false; continue; }
+                    if (materials[k] == null) continue;
                     Material remapped = o.Remap != null ? o.Remap(materials[k].name) : null;
                     materials[k] = remapped != null ? remapped : PackMaterial(pack, model, materials[k]);
-                    blended &= materials[k].renderQueue >= 3000;
                 }
                 r.sharedMaterials = materials;
                 // Glass and other blended surfaces never cast (the Standard shader would dither them).
-                r.shadowCastingMode = o.Shadows && !blended ? ShadowCastingMode.On : ShadowCastingMode.Off;
+                r.shadowCastingMode = o.Shadows && !Blended(r) ? ShadowCastingMode.On : ShadowCastingMode.Off;
                 r.receiveShadows = true;
                 r.lightProbeUsage = LightProbeUsage.BlendProbes;
                 r.reflectionProbeUsage = ReflectionProbeUsage.BlendProbes;

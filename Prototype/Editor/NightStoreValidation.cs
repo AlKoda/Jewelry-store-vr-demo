@@ -10,9 +10,11 @@ using L = NightStoreLayout;
 // shared tool, photo and reset stages with the night store's test points. RunNight
 // bakes the night lighting (NightLighting) before the captures; RunNightQuick skips
 // the bake and previews the same lights as shadowless realtime lights instead.
-// Output goes to Docs/VerificationNight. Invoke either with -executeMethod.
+// Output goes to Docs/VerificationNight. Invoke either with -executeMethod. The realism
+// packs' checks live in the area files of this partial class (NightStoreValidationStreet,
+// -Interior, -Dressing, -Lighting, -Sound and -Presenter), called from Generate and Tick.
 [InitializeOnLoad]
-public static class NightStoreValidation
+public static partial class NightStoreValidation
 {
     private const string Key = "NightStoreValidationStage";
     private const string BakeKey = "NightStoreValidationBake";
@@ -51,6 +53,7 @@ public static class NightStoreValidation
             int reimported = ThirdPartyModelImport.GenerateLightmapUVs();
             DemoValidation.Begin("VerificationNight");
             if (reimported > 0) DemoValidation.Info("Third-party assets reimported to the import rules (models, then pack textures and audio): " + reimported);
+            DemoValidation.LauncherChecks();
             // Fixture library first (it builds and removes its galleries at the origin).
             StoreKitValidation.Check();
             AssetLibraryChecks();
@@ -62,6 +65,16 @@ public static class NightStoreValidation
             Camera camera = DemoValidation.CreatePreviewCamera(150);
             NightLighting.Apply(root.transform, camera);
             PoliceLookChecks(root.transform);
+            // The realism packs as built, before the first save: lights, lenses, glow cards and
+            // lightmap scales final, no bake, no realtime fallback and no player rig yet, the
+            // builders' placement records still valid (StreetPackChecks syncs physics first).
+            StreetPackChecks(root.transform);
+            InteriorPackChecks(root.transform);
+            ClosingProcedureChecks(root.transform);
+            DecalChecks(root.transform);
+            LightingPackChecks(root.transform);
+            PresenterBuildChecks(root.transform);
+            CreditChecks(root.transform);
             DemoValidation.SaveScene(L.SceneName);
             if (bake)
             {
@@ -982,19 +995,25 @@ public static class NightStoreValidation
                 DemoValidation.TestPoints = L.TestPoints();
                 DemoValidation.BeforeReset = DisturbBeforeReset;
                 LightingChecks();
+                // Arrival as PresenterSet.Start left it, before any set is switched.
+                ArrivalPrintChecks();
+                PresenterArrivalChecks();
                 ZoneChecks();
                 EntranceChecks();
                 SpawnChecks();
                 WalkChecks();
                 TeleportChecks();
                 PlacementChecks();
+                StreetPlayChecks();
                 ToolStylingChecks();
                 CarriedLampChecks();
                 GlassChecks();
                 MapChecks();
                 InspectionChecks();
                 RealtimeLightChecks();
+                LightingPlayChecks();
                 StagedSoundChecks();
+                SoundPlayChecks();
                 DemoValidation.InterfaceChecks();
                 DemoValidation.ToolStage();
                 SessionState.SetInt(Key, 2);
@@ -1003,6 +1022,7 @@ public static class NightStoreValidation
             else if (stage == 3 && DemoValidation.ResetStage())
             {
                 ResetChecks();
+                PresenterResetChecks();
                 // The night's QualitySettings are project settings: put them back before exit.
                 DemoValidation.Check(NightQuality.Restore(), "Night quality settings restored after the run");
                 Summary();
@@ -1623,7 +1643,8 @@ public static class NightStoreValidation
 
     // Called by the shared photo stage just before it resets: the instructor left the
     // diagnostic daylight on, the UV examples showing, the flashlight on, a lit lamp in
-    // the showroom and a beacon on the floor.
+    // the showroom and a beacon on the floor; the presenter showed every set, held the
+    // light bar steady and turned the underscore on (PresenterDisturb).
     private static void DisturbBeforeReset()
     {
         DemoLighting lighting = DemoValidation.Find<DemoLighting>();
@@ -1633,6 +1654,7 @@ public static class NightStoreValidation
         DeployedTool lamp = DemoValidation.Find<ToolStation>().Spawn(DemoToolKind.Lamp);
         if (lamp != null) lamp.PlaceAt(new Vector3(-2, 0, 3), 30);
         DemoValidation.Find<DemoBeacon>().Place(new Vector3(1, 0, 3));
+        PresenterDisturb();
     }
 
     // After the shared reset stage: the arrival again, photographs kept, the camera on the table.

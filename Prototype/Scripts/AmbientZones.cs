@@ -8,10 +8,11 @@ using UnityEngine;
 // room tone silent. The blend takes Smoothing seconds, on a log-frequency scale.
 //
 // Start records each source's base volume, gives each exterior source an
-// AudioLowPassFilter (switched off while it would be transparent) and starts every looped
-// bed at a random time once its clip has loaded, so the layers never line up. It runs after
-// AmbientSound (order 50), whose source is one of the exterior beds. A source on an
-// inactive object (a presenter set's) is blended too and plays from its own playOnAwake.
+// AudioLowPassFilter (switched off while it would be transparent, its distance curve held
+// flat at the cutoff) and starts every looped bed at a random time once its clip has
+// loaded, so the layers never line up. It runs after AmbientSound (order 50), whose source
+// is one of the exterior beds. A source on an inactive object (a presenter set's) is
+// blended too and plays from its own playOnAwake.
 [DefaultExecutionOrder(50)]
 public sealed class AmbientZones : MonoBehaviour
 {
@@ -27,6 +28,12 @@ public sealed class AmbientZones : MonoBehaviour
 
     private float[] exteriorBase, interiorBase;
     private AudioLowPassFilter[] filters;
+    // A filter beside an AudioSource has a distance curve (the source's Low-Pass curve in the
+    // 3D graph, the cutoff as a share of CurveHz) that Unity may evaluate by listener distance
+    // and write over cutoffFrequency; one key at Cutoff keeps it flat at the zones' setting.
+    // One curve serves every filter (the setter copies it), so a blend allocates nothing.
+    private AnimationCurve flatCurve;
+    private const float CurveHz = 22000;
     // Random start offset per source (exterior then interior; -1 for no looped bed), and
     // which ones still wait for their clip to load.
     private float[] offsets;
@@ -75,6 +82,8 @@ public sealed class AmbientZones : MonoBehaviour
         offsets = new float[Exterior.Length + Interior.Length];
         pending = new bool[offsets.Length];
         for (int i = 0; i < offsets.Length; i++) offsets[i] = -1;
+        flatCurve = new AnimationCurve(new Keyframe(0, 1));
+        FlattenCurve(OutsideCutoff);
         for (int i = 0; i < Exterior.Length; i++)
         {
             AudioSource s = Exterior[i];
@@ -83,6 +92,7 @@ public sealed class AmbientZones : MonoBehaviour
             AudioLowPassFilter filter = s.GetComponent<AudioLowPassFilter>();
             if (filter == null) filter = s.gameObject.AddComponent<AudioLowPassFilter>();
             filter.lowpassResonanceQ = 1;
+            filter.customCutoffCurve = flatCurve;
             filter.cutoffFrequency = OutsideCutoff;
             filter.enabled = false;
             filters[i] = filter;
@@ -149,18 +159,23 @@ public sealed class AmbientZones : MonoBehaviour
         appliedBlend = Blend;
         Cutoff = Mathf.Exp(Mathf.Lerp(Mathf.Log(Mathf.Max(10, OutsideCutoff)), Mathf.Log(Mathf.Max(10, InsideCutoff)), Blend));
         float outside = Mathf.Lerp(1, InsideExteriorVolume, Blend);
+        FlattenCurve(Cutoff);
         for (int i = 0; i < Exterior.Length; i++)
         {
             if (Exterior[i] == null) continue;
             Exterior[i].volume = exteriorBase[i] * outside;
             AudioLowPassFilter filter = filters[i];
             if (filter == null) continue;
+            filter.customCutoffCurve = flatCurve;
             filter.cutoffFrequency = Cutoff;
             filter.enabled = Blend > 0.001f;
         }
         for (int i = 0; i < Interior.Length; i++)
             if (Interior[i] != null) Interior[i].volume = interiorBase[i] * Blend;
     }
+
+    // Puts the shared curve's one key at hz (as a share of CurveHz, at every distance).
+    private void FlattenCurve(float hz) => flatCurve.MoveKey(0, new Keyframe(0, Mathf.Clamp01(hz / CurveHz)));
 
     // The scene's listener (the head camera's), looked up at most once a second while missing.
     private bool FindListener()

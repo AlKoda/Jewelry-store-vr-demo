@@ -17,6 +17,14 @@ public static class DemoGeometry
         return g.transform;
     }
 
+    // The path of t under root, names joined by '/'.
+    public static string PathUnder(Transform t, Transform root)
+    {
+        string path = t.name;
+        for (t = t.parent; t != null && t != root; t = t.parent) path = t.name + "/" + path;
+        return path;
+    }
+
     public static GameObject Box(string name, Transform parent, Vector3 p, Vector3 size, Material material = null, bool collision = false)
         => Primitive(name, PrimitiveType.Cube, parent, p, size, material, collision);
 
@@ -107,6 +115,21 @@ public static class DemoGeometry
         material.SetFloat("_Cutoff", cutoff);
         material.SetOverrideTag("RenderType", "TransparentCutout");
         material.renderQueue = 2450;
+        return material;
+    }
+
+    // Standard-shader opaque mode, so a rebuilt material asset never keeps an earlier blend state.
+    public static Material Opaque(Material material)
+    {
+        material.SetFloat("_Mode", 0);
+        material.SetInt("_SrcBlend", (int)BlendMode.One);
+        material.SetInt("_DstBlend", (int)BlendMode.Zero);
+        material.SetInt("_ZWrite", 1);
+        material.DisableKeyword("_ALPHATEST_ON");
+        material.DisableKeyword("_ALPHABLEND_ON");
+        material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        material.SetOverrideTag("RenderType", "");
+        material.renderQueue = -1;
         return material;
     }
 

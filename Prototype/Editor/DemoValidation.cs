@@ -231,6 +231,13 @@ public static class DemoValidation
         Check(DemoUi.DefaultCredits.Contains("Barlow") && !string.IsNullOrEmpty(creditsText)
             && (creditsFile || creditsText == DemoUi.DefaultCredits) && ReferenceEquals(creditsText, DemoUi.Credits),
             "Credits fall back to the built-in line without a credits file");
+        // The start menu shows one line of them (DemoLauncher.FirstLine): the first, trimmed, which
+        // carries the Barlow font's OFL notice, never the attribution lines below it.
+        System.Reflection.MethodInfo firstLine = typeof(DemoLauncher).GetMethod("FirstLine", uiStatics);
+        string Summary(string text) => (string)firstLine.Invoke(null, new object[] { text });
+        Check(firstLine != null && Summary("Line one \nLine two") == "Line one" && Summary("") == "" && Summary(null) == ""
+            && Summary(creditsText) == creditsText.Split('\n')[0].Trim() && Summary(creditsText).Contains("Barlow"),
+            "The start menu's credits summary is the first credits line");
 
         DemoFeedback.Clear();
         for (int i = 1; i <= 5; i++) DemoFeedback.Post("message " + i);
@@ -384,6 +391,142 @@ public static class DemoValidation
         DefaultExecutionOrder handOrder = (DefaultExecutionOrder)Attribute.GetCustomAttribute(typeof(XRControllerInput), typeof(DefaultExecutionOrder));
         Check(headOrder != null && handOrder != null && headOrder.order < handOrder.order && handOrder.order < 0,
             "Head and controller poses are applied before HandInteractor places the held tool");
+    }
+
+    // Edit mode, no scene needed. With the project in the repository (UnityProject_Glass and
+    // UnityProject_Demo beside the README): Open-Unity-Glass and Start-Demo call
+    // Tools/sync-project.cmd before Unity starts, which mirrors Scripts, Editor, Shaders and
+    // ThirdParty with robocopy /MIR into a checked project and keeps its .meta files; the frozen
+    // October 9-10 launchers never mirror. Then the twelve realism packs, which reach a project
+    // only by that mirror: none (a project from the ZIP alone) is reported, some but not all fail.
+    // Then the licence notices a player build copies (DemoBuild.LicenseFiles), on a probe folder
+    // for its naming and skip rules and on this project's ThirdParty.
+    public static void LauncherChecks()
+    {
+        string repo = Path.GetFullPath(Path.Combine(Application.dataPath, "../.."));
+        string sync = Path.Combine(repo, "Tools", "sync-project.cmd");
+        if (!File.Exists(sync)) Info("Launchers not found beside this project: launcher checks skipped");
+        else
+        {
+            string text = File.ReadAllText(sync);
+            bool mirrors = true;
+            foreach (string part in new[] { "robocopy", "/MIR", "/XF *.meta", "in (Scripts Editor Shaders ThirdParty)", "\\Assets\\", "\\ProjectSettings\\", "errorlevel 8" })
+                mirrors &= text.IndexOf(part, StringComparison.OrdinalIgnoreCase) >= 0;
+            bool glass = SyncsBefore(Path.Combine(repo, "Open-Unity-Glass.cmd"), "start \"\"");
+            bool demo = SyncsBefore(Path.Combine(repo, "Start-Demo.cmd"), "-executeMethod DemoBuild.BuildLatest");
+            bool untouched = true;
+            List<string> frozen = new List<string>();
+            foreach (string name in new[] { "Blockout", "Forms", "Interior", "Robbery" })
+            {
+                string launcher = Path.Combine(repo, "Open-Unity-" + name + ".cmd");
+                if (!File.Exists(launcher)) continue;
+                string body = File.ReadAllText(launcher);
+                bool mirrored = body.IndexOf("sync-project", StringComparison.OrdinalIgnoreCase) >= 0 || body.IndexOf("/MIR", StringComparison.OrdinalIgnoreCase) >= 0;
+                untouched &= !mirrored;
+                frozen.Add(name + (mirrored ? " (MIRRORS)" : ""));
+            }
+            Info("Launchers in " + repo + ": sync-project " + (mirrors ? "mirrors the four folders" : "INCOMPLETE") + "; Open-Unity-Glass "
+                + (glass ? "syncs first" : "does NOT sync first") + "; Start-Demo " + (demo ? "syncs first" : "does NOT sync first")
+                + "; frozen launchers " + (frozen.Count > 0 ? string.Join(", ", frozen) : "none"));
+            Check(mirrors && glass && demo && untouched, "Both launchers mirror the project through Tools/sync-project.cmd; the frozen launchers do not");
+        }
+
+        // The twelve realism packs travel only by the mirror (the ZIP leaves them out for size).
+        List<string> present = new List<string>(), absent = new List<string>(), unlicensed = new List<string>();
+        foreach (string pack in PackImport.Packs)
+        {
+            if (!AssetDatabase.IsValidFolder(DemoAssetLibrary.Root + "/" + pack)) { absent.Add(pack); continue; }
+            present.Add(pack);
+            if (!File.Exists(Path.Combine(DemoBuild.ThirdPartyFolder, pack, "LICENSE.txt"))) unlicensed.Add(pack);
+        }
+        if (present.Count == 0) Info("No realism pack in this project (unpacked from the ZIP alone; run Tools/sync-project.cmd): pack mirror check skipped");
+        else
+        {
+            // A stale mirror shows as repository files the project lacks (Unity writes the .meta files).
+            string source = Path.Combine(repo, "Prototype", "ThirdParty");
+            if (Directory.Exists(source))
+            {
+                List<string> stale = new List<string>();
+                foreach (string pack in PackImport.Packs)
+                    if (Directory.Exists(Path.Combine(source, pack)))
+                        stale.Add(pack + " " + FilesMissing(Path.Combine(source, pack), Path.Combine(DemoBuild.ThirdPartyFolder, pack)));
+                Info("Realism pack files in the repository but not in this project: " + string.Join(", ", stale));
+            }
+            Info("Realism packs present: " + present.Count + " of " + PackImport.Packs.Length + (absent.Count > 0 ? "; absent: " + string.Join(", ", absent) : "")
+                + (unlicensed.Count > 0 ? "; without LICENSE.txt: " + string.Join(", ", unlicensed) : ""));
+            Check(absent.Count == 0 && unlicensed.Count == 0, "All twelve realism packs are mirrored together, each with its LICENSE.txt");
+        }
+
+        // The notices a player build copies to ThirdPartyLicenses. On a probe: a pack's LICENSE.txt
+        // and its Licenses/*.txt ship under the pack's name, a licence deeper in a pack under its
+        // folders' names; other text, other extensions and folders Unity ignores (a trailing ~, a
+        // leading dot) do not, and the list is sorted by the published name.
+        string probe = Path.Combine(Path.GetTempPath(), "JewelryLicenceProbe");
+        List<string> names = new List<string>();
+        try
+        {
+            if (Directory.Exists(probe)) Directory.Delete(probe, true);
+            foreach (string file in new[] { "A/LICENSE.txt", "A/Licenses/Dog.txt", "A/Licenses/readme.md", "A/Licenses/Old.txt~", "A/Notes.txt",
+                "A/Source~/LICENSE.txt", "B/Originals/License.txt", ".hidden/LICENSE.txt", "C~/LICENSE.txt" })
+            {
+                string path = Path.Combine(probe, file);
+                Directory.CreateDirectory(Path.GetDirectoryName(path));
+                File.WriteAllText(path, "probe");
+            }
+            foreach (KeyValuePair<string, string> notice in DemoBuild.LicenseFiles(probe)) names.Add(notice.Value);
+        }
+        finally { if (Directory.Exists(probe)) Directory.Delete(probe, true); }
+        bool rules = string.Join("|", names) == "A.txt|A_Dog.txt|B_Originals_License.txt";
+        // This project: every pack folder's LICENSE.txt as <pack>.txt, every .txt of its Licenses folder as <pack>_<file>.
+        HashSet<string> shipped = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+        foreach (KeyValuePair<string, string> notice in DemoBuild.LicenseFiles(DemoBuild.ThirdPartyFolder)) shipped.Add(notice.Value);
+        List<string> unshipped = new List<string>();
+        if (Directory.Exists(DemoBuild.ThirdPartyFolder))
+            foreach (string folder in Directory.GetDirectories(DemoBuild.ThirdPartyFolder))
+            {
+                string pack = Path.GetFileName(folder);
+                if (pack.EndsWith("~", StringComparison.Ordinal) || pack.StartsWith(".", StringComparison.Ordinal)) continue;
+                if (File.Exists(Path.Combine(folder, "LICENSE.txt")) && !shipped.Contains(pack + ".txt")) unshipped.Add(pack + ".txt");
+                string licences = Path.Combine(folder, "Licenses");
+                if (!Directory.Exists(licences)) continue;
+                foreach (string file in Directory.GetFiles(licences, "*.txt"))
+                    if (string.Equals(Path.GetExtension(file), ".txt", StringComparison.OrdinalIgnoreCase) && !shipped.Contains(pack + "_" + Path.GetFileName(file)))
+                        unshipped.Add(pack + "_" + Path.GetFileName(file));
+            }
+        Info("Licence copy: the probe publishes " + (names.Count > 0 ? string.Join(", ", names) : "nothing") + "; this project ships " + shipped.Count + " notices"
+            + (unshipped.Count > 0 ? "; not shipped: " + string.Join(", ", unshipped) : ""));
+        Check(rules && unshipped.Count == 0, "The licence copy ships every pack LICENSE.txt and Licenses/*.txt and skips ignored folders");
+    }
+
+    // Whether the batch file runs "call ...Tools\sync-project.cmd" on a line before the first line
+    // holding start (remarks and echoes aside); false without the file.
+    private static bool SyncsBefore(string file, string start)
+    {
+        if (!File.Exists(file)) return false;
+        bool synced = false;
+        foreach (string raw in File.ReadAllLines(file))
+        {
+            string line = raw.Trim();
+            if (line.StartsWith("rem ", StringComparison.OrdinalIgnoreCase) || line.StartsWith("::", StringComparison.Ordinal)
+                || line.StartsWith("echo", StringComparison.OrdinalIgnoreCase)) continue;
+            synced |= line.StartsWith("call ", StringComparison.OrdinalIgnoreCase) && line.IndexOf("Tools\\sync-project.cmd", StringComparison.OrdinalIgnoreCase) >= 0;
+            if (line.IndexOf(start, StringComparison.OrdinalIgnoreCase) >= 0) return synced;
+        }
+        return false;
+    }
+
+    // Files (not .meta) under from with no file at the same relative path under to.
+    private static int FilesMissing(string from, string to)
+    {
+        string root = Path.GetFullPath(from);
+        int missing = 0;
+        foreach (string file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
+        {
+            if (file.EndsWith(".meta", StringComparison.OrdinalIgnoreCase)) continue;
+            string relative = Path.GetFullPath(file).Substring(root.Length).TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (!File.Exists(Path.Combine(to, relative))) missing++;
+        }
+        return missing;
     }
 
     // Spawning, numbering, placement, tape following and a photo capture start.

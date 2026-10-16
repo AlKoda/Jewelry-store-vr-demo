@@ -591,13 +591,6 @@ public static class NightLighting
         }
     }
 
-    private static string PathUnder(Transform t, Transform root)
-    {
-        string path = t.name;
-        for (t = t.parent; t != null && t != root; t = t.parent) path = t.name + "/" + path;
-        return path;
-    }
-
     // Saved LightingSettings asset, assigned to the scene. All lights are Baked, so the
     // mixed-lighting mode is irrelevant; combined-directional lightmaps let normal maps
     // respond to the baked light (one extra lightmap sample per pixel, about 1.3 MB per
