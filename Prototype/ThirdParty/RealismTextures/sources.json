@@ -1,0 +1,1620 @@
+{
+ "pack": "RealismTextures",
+ "prepared": "2026-10-17",
+ "unverified_in_unity": true,
+ "conventions": {
+  "normal": "OpenGL tangent space (+Y up), import as Normal map",
+  "MetallicSmoothness": "Unity Standard _MetallicGlossMap: R metallic, A smoothness (sRGB off)",
+  "Occlusion": "greyscale, sRGB off",
+  "decals": "sRGB PNG RGBA, straight alpha; RGB under alpha<0.9 replaced by the nearest opaque colour (edge bleed)",
+  "atlases": "4x4 cells of 256 px in a 1024 atlas, cell 0 top-left, row-major"
+ },
+ "mirrors": {
+  "VoxogoBrusch/the-levels": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+  "TheMarco/liminal": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+  "Dadaskis/TextureArchive": "461af93437a915afd8cc8e9c3a90bcf1aaa6950c",
+  "EliteGamer007/6dof-drone-sim": "3b97077101bedb1326cf6483e04dc51ccf130fa3",
+  "Geadas11/Claude_steam_game": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa"
+ },
+ "license_evidence": {
+  "Poly Haven": "CC0 per https://polyhaven.com/license; authors from EliteGamer007/6dof-drone-sim assets/CREDITS.md and AmbientProps/sources.json",
+  "ambientCG": "CC0 per https://docs.ambientcg.com/license/",
+  "Sketchfab-derived PropMaps": "derived from the CC BY 4.0 colour maps in AmbientProps; same attribution as AmbientProps/LICENSE.txt"
+ },
+ "build": "python3 -P Source~/build_realism.py <download_root> Prototype/ThirdParty/AmbientProps <out_dir> (download_root holds sparse clones of the mirrors above)",
+ "total_bytes": 58418347,
+ "files": [
+  {
+   "file": "PropMaps/PlasticCrate_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/plastic_crate_01",
+    "authors": "PierreB3D",
+    "mirror": "the-levels/public/assets/models/plastic_crate_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "d2bea6f85ad3bce67e812069a2526a85c5602efc4f804e699592b2acf6f94571"
+  },
+  {
+   "file": "PropMaps/PlasticCrate_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/plastic_crate_01",
+    "authors": "PierreB3D",
+    "mirror": "the-levels/public/assets/models/plastic_crate_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "f07fb10eb79533061a9c3f50a313fae62feb164e1ad0dcde6ea2c9cc8a46d866"
+  },
+  {
+   "file": "PropMaps/PlasticCrate_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/plastic_crate_01",
+    "authors": "PierreB3D",
+    "mirror": "the-levels/public/assets/models/plastic_crate_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "dc913007755c11f6f3f657ddb68923a7da964fa94ddb90c2ddd315ab1c01a067"
+  },
+  {
+   "file": "PropMaps/PlasticThermos_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/plastic_thermos",
+    "authors": "PierreB3D",
+    "mirror": "the-levels/public/assets/models/plastic_thermos/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ada250664a7915e4b16c4e0f50d1494f1926c993a47863c951dbfe3f8b74b395"
+  },
+  {
+   "file": "PropMaps/PlasticThermos_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/plastic_thermos",
+    "authors": "PierreB3D",
+    "mirror": "the-levels/public/assets/models/plastic_thermos/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "aca9ffb6ba19a1e9a3740cd59cde6516064bc615d9908a9479f33e9257d90c8f"
+  },
+  {
+   "file": "PropMaps/PlasticThermos_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/plastic_thermos",
+    "authors": "PierreB3D",
+    "mirror": "the-levels/public/assets/models/plastic_thermos/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "7dc8e99bb70159696de31480ad1bbaf4ca4123f881d8acb479f57a62af6f739e"
+  },
+  {
+   "file": "PropMaps/UtilityBoxSmall_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/utility_box_02",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/utility_box_02/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "1c70bc0cc8632826da4d7f9ef10d6077db37a7df312c96fef1d77633ecb216d5"
+  },
+  {
+   "file": "PropMaps/UtilityBoxSmall_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/utility_box_02",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/utility_box_02/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "74fb9571a7f34e0808a818ebfac58d86defa83fabce36bf6af50cf7d54b4ac93"
+  },
+  {
+   "file": "PropMaps/UtilityBoxSmall_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/utility_box_02",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/utility_box_02/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "0d59c0e8814d5e18889d91936d463a56047a95d5b1d7b7af5955ea56bdb7f1f0"
+  },
+  {
+   "file": "PropMaps/SprayPaintBottles_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/spray_paint_bottles",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/spray_paint_bottles/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "f5ab52bb1ec4505ebf2364988a1b0e5d0110104f255c44216bb017f460460ded"
+  },
+  {
+   "file": "PropMaps/SprayPaintBottles_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/spray_paint_bottles",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/spray_paint_bottles/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "80de808f1905a1a9661f4838fdbb0129ec65e52ed42c076fcf595bd4db7199ab"
+  },
+  {
+   "file": "PropMaps/SprayPaintBottles_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/spray_paint_bottles",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/spray_paint_bottles/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "50cb4d3b4c4f25090899a00aca6d4b60e80d4b1559133b45a897e40f332eb03e"
+  },
+  {
+   "file": "PropMaps/SprayPaintBottles_Dirty_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/spray_paint_bottles",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/spray_paint_bottles/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "8d63261657a8b44d7e96c1727f6bd4542f32c4379348c3ec468a9567f01739a9"
+  },
+  {
+   "file": "PropMaps/SprayPaintBottles_Dirty_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/spray_paint_bottles",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/spray_paint_bottles/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "bf5f6eddfda59d31c47391333e1745f9525004d8fa3ff22d07fe388ed2a20d2a"
+  },
+  {
+   "file": "PropMaps/SprayPaintBottles_Dirty_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/spray_paint_bottles",
+    "authors": "James Ray Cock",
+    "mirror": "the-levels/public/assets/models/spray_paint_bottles/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "153ffee9a70eddfa522e45b491426eafd062a87ccdce91dce1ba9102a982a3a0"
+  },
+  {
+   "file": "PropMaps/ElectricCables_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_electric_cables",
+    "authors": "Kuutti Siitonen",
+    "mirror": "the-levels/public/assets/models/modular_electric_cables/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "8b895ba5c841887dd5ebf282416d4ea2fbcec8fe5300c5f9691224cff24ae7bc"
+  },
+  {
+   "file": "PropMaps/ElectricCables_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_electric_cables",
+    "authors": "Kuutti Siitonen",
+    "mirror": "the-levels/public/assets/models/modular_electric_cables/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "1124bc84d49aec1a40c9f26c55e92592385d76f7bc35f310cf96a46394c2174d"
+  },
+  {
+   "file": "PropMaps/ElectricCables_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_electric_cables",
+    "authors": "Kuutti Siitonen",
+    "mirror": "the-levels/public/assets/models/modular_electric_cables/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "fd0de2dce66137f42ad2391d3ad5fb261342af450185b45d45945f4aee1eb77e"
+  },
+  {
+   "file": "PropMaps/ElectricCables_Boxes_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_electric_cables",
+    "authors": "Kuutti Siitonen",
+    "mirror": "the-levels/public/assets/models/modular_electric_cables/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ffd80f9a5225d2b157384fb0243abf359c5e2d9aedb5196af80130b714305e5a"
+  },
+  {
+   "file": "PropMaps/ElectricCables_Boxes_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_electric_cables",
+    "authors": "Kuutti Siitonen",
+    "mirror": "the-levels/public/assets/models/modular_electric_cables/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "d75f4b577e4e4dd2be31a83699965b217412d5f4ab8b3028d4f4ca47806aebc3"
+  },
+  {
+   "file": "PropMaps/ElectricCables_Boxes_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_electric_cables",
+    "authors": "Kuutti Siitonen",
+    "mirror": "the-levels/public/assets/models/modular_electric_cables/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "1eecf2c134d85b5c43aae48661770e58818c1b735764dcbb2b277f60f106b634"
+  },
+  {
+   "file": "PropMaps/IndustrialPipes_Group01_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "authors": "Jorge Camacho",
+    "mirror": "the-levels/public/assets/models/modular_industrial_pipes_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "b79f74b0495433c9d4302f0deb8671b564860c8249740459edc1b4da99ad8972"
+  },
+  {
+   "file": "PropMaps/IndustrialPipes_Group01_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "authors": "Jorge Camacho",
+    "mirror": "the-levels/public/assets/models/modular_industrial_pipes_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "3d6ec2f50cc9f252f24cc193ea6577241844f371639c0252661725b97045cbb9"
+  },
+  {
+   "file": "PropMaps/IndustrialPipes_Group01_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "authors": "Jorge Camacho",
+    "mirror": "the-levels/public/assets/models/modular_industrial_pipes_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "df7b1f5bb1139d1db59ea89dceb404feeed6526b3fd8ce690c750a83d3b4a687"
+  },
+  {
+   "file": "PropMaps/IndustrialPipes_Group02_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "authors": "Jorge Camacho",
+    "mirror": "the-levels/public/assets/models/modular_industrial_pipes_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "dad091ef2809782c5344088425ea63e4865e519d3038c51d8d3d9c24ac1e7061"
+  },
+  {
+   "file": "PropMaps/IndustrialPipes_Group02_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "authors": "Jorge Camacho",
+    "mirror": "the-levels/public/assets/models/modular_industrial_pipes_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "2f7b8f2a5d5c67ba0160908fb08aacad5ab80f901138be8c187ff67cc2f6703c"
+  },
+  {
+   "file": "PropMaps/IndustrialPipes_Group02_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+    "authors": "Jorge Camacho",
+    "mirror": "the-levels/public/assets/models/modular_industrial_pipes_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "35da396451572d384c4844bc50f15adc3f9275a707d90b93de16c15b8c21c066"
+  },
+  {
+   "file": "PropMaps/RustedCan_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/can_rusted",
+    "authors": "Rahul Chaudhary",
+    "mirror": "liminal/models/cc0/can_rusted/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "9c1a1d74a7c893df5baca682e7bdc56d5e3f8b2bc42141cc0c422bd120af4c3f"
+  },
+  {
+   "file": "PropMaps/RustedCan_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/can_rusted",
+    "authors": "Rahul Chaudhary",
+    "mirror": "liminal/models/cc0/can_rusted/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "7f527e29fb9912aea19c3a7fcdf9bc3c7e5286b9c0b92d13a26fcdb2ea7c574e"
+  },
+  {
+   "file": "PropMaps/RustedCan_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/can_rusted",
+    "authors": "Rahul Chaudhary",
+    "mirror": "liminal/models/cc0/can_rusted/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "c28a5c990101d95f208eb0e56811c3df046cfb114102fe49c089ac79060dff0c"
+  },
+  {
+   "file": "PropMaps/PowerBox_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/power_box_01",
+    "authors": "Rico Cilliers, Yann Kervran",
+    "mirror": "liminal/models/cc0/power_box_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "704809612c14524dbc3e0ccbc2d2bc6d83b78c807bedc1f6dd408bf670524afb"
+  },
+  {
+   "file": "PropMaps/PowerBox_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/power_box_01",
+    "authors": "Rico Cilliers, Yann Kervran",
+    "mirror": "liminal/models/cc0/power_box_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "6b832a59f0b834308445dd6c19406273b35dfd75ab4acb76896a3ceeef50325a"
+  },
+  {
+   "file": "PropMaps/PowerBox_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/power_box_01",
+    "authors": "Rico Cilliers, Yann Kervran",
+    "mirror": "liminal/models/cc0/power_box_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "078535e68bc17a61d7b7f3ec567763a0485aa147fc93007c46ce9e9a0975f448"
+  },
+  {
+   "file": "PropMaps/WetFloorSign_Normal.png",
+   "kind": "normal (OpenGL, Unity)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/WetFloorSign_01",
+    "authors": "Fran Calvente",
+    "mirror": "liminal/models/cc0/WetFloorSign_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "85ebf99ff633f2310fb47f398df0982633493e244a3f8a43dfe3962c42b0cf12"
+  },
+  {
+   "file": "PropMaps/WetFloorSign_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/WetFloorSign_01",
+    "authors": "Fran Calvente",
+    "mirror": "liminal/models/cc0/WetFloorSign_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "29ff4b3fb88ac5493d65b3238cfc77ff79eff79f59a2a7ceeb472cdc4ed437cf"
+  },
+  {
+   "file": "PropMaps/WetFloorSign_Occlusion.jpg",
+   "kind": "ambient occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/WetFloorSign_01",
+    "authors": "Fran Calvente",
+    "mirror": "liminal/models/cc0/WetFloorSign_01/textures",
+    "uv_match_correlation": 1.0
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "78ac26f9979a5f544d83bd7c1bd009b4b408d0bb0968ec6284c2070bf7ebbb23"
+  },
+  {
+   "file": "PropMaps/CardboardBoxSet_Normal.png",
+   "kind": "normal (OpenGL, Unity), derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/set-of-cardboard-boxes-8986ba512f704ac5b253286a0d1ad8bb",
+    "authors": "NotAnotherApocalypticCo. (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "fb6a0ad08814759e01c6b7085f055e6048a692f7416d9fa61ea9f397328aa31f"
+  },
+  {
+   "file": "PropMaps/CardboardBoxSet_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/set-of-cardboard-boxes-8986ba512f704ac5b253286a0d1ad8bb",
+    "authors": "NotAnotherApocalypticCo. (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "a830b900ccb8b3864cc87601a6018c559c23444721de580353e66515fae405da"
+  },
+  {
+   "file": "PropMaps/CardboardBoxSet_Occlusion.jpg",
+   "kind": "cavity occlusion, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/set-of-cardboard-boxes-8986ba512f704ac5b253286a0d1ad8bb",
+    "authors": "NotAnotherApocalypticCo. (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "6fac6fa4e1acadc10e3bf8d7c3e1a21ff5011d4f6f8f2fedd1ee36277bf72922"
+  },
+  {
+   "file": "PropMaps/ACCondenserSet_Normal.png",
+   "kind": "normal (OpenGL, Unity), derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/air-conditioners-65417369a2724c9ebf06e7698238a856",
+    "authors": "Lora (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "5ea862791a1ed1098264cf0ac48d9f43e8379e3b222754b19846d63bf4cefc50"
+  },
+  {
+   "file": "PropMaps/ACCondenserSet_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/air-conditioners-65417369a2724c9ebf06e7698238a856",
+    "authors": "Lora (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "436d4d980e7aa03c160899eb825d5ef3368b580e1798ea068362cf34fd5cec61"
+  },
+  {
+   "file": "PropMaps/ACCondenserSet_Occlusion.jpg",
+   "kind": "cavity occlusion, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/air-conditioners-65417369a2724c9ebf06e7698238a856",
+    "authors": "Lora (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "aa764c9448d4ec197ecf5232965173568d07bff9c492cc291c0b04cdeb7533d0"
+  },
+  {
+   "file": "PropMaps/IndoorACUnit_Normal.png",
+   "kind": "normal (OpenGL, Unity), derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/indoor-air-conditioner-unit-d93c5557a9ba46afbb00e35f48343077",
+    "authors": "Rylae Shylna (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "fb46940d5c5a4d1b2eaab3217a225208e63db4c6975e0dd7f3b204c8e7a9c743"
+  },
+  {
+   "file": "PropMaps/IndoorACUnit_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/indoor-air-conditioner-unit-d93c5557a9ba46afbb00e35f48343077",
+    "authors": "Rylae Shylna (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "5ee4f9304c1f5a582e4aab1f36d7ee45989a1c3eafb0f00044bda54dcf2ab7e2"
+  },
+  {
+   "file": "PropMaps/IndoorACUnit_Occlusion.jpg",
+   "kind": "cavity occlusion, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/indoor-air-conditioner-unit-d93c5557a9ba46afbb00e35f48343077",
+    "authors": "Rylae Shylna (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "f5b500a492f769ff081528b62bfedbcc8cc225e08bb6be7d7e292faaea29b88c"
+  },
+  {
+   "file": "PropMaps/NetworkServerRackRow_Normal.png",
+   "kind": "normal (OpenGL, Unity), derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/network-server-rack-3b15fb8779274844b54e63a40194d450",
+    "authors": "Khoa Nguyen (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "4251cd8286b9385426244f3b3bca3fa1b26ca711ca5279f2a9b57a90a8aa529a"
+  },
+  {
+   "file": "PropMaps/NetworkServerRackRow_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/network-server-rack-3b15fb8779274844b54e63a40194d450",
+    "authors": "Khoa Nguyen (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "7b8cdedcc1f5a574ed5b22291872cc937d8fda3ab229447b3a1aa73a40204335"
+  },
+  {
+   "file": "PropMaps/NetworkServerRackRow_Occlusion.jpg",
+   "kind": "cavity occlusion, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/network-server-rack-3b15fb8779274844b54e63a40194d450",
+    "authors": "Khoa Nguyen (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "e0a8120ccca030111c850ff01069e35566ed7c8b9e0c33956e7e4375228d2aee"
+  },
+  {
+   "file": "PropMaps/LightSwitch_Normal.png",
+   "kind": "normal (OpenGL, Unity), derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/light-switch-808c3de4dd874fc1b67ff15cd2645555",
+    "authors": "Avot (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "4528ae4d4ed18f3c12180ab014b7a5681cd0f2717e19c4ff8fd272f82367804f"
+  },
+  {
+   "file": "PropMaps/LightSwitch_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/light-switch-808c3de4dd874fc1b67ff15cd2645555",
+    "authors": "Avot (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "c79a6f6c9d54318697ae7229ff7d0962ed35f5d1cb92d136cd2c63c6bc7cdda2"
+  },
+  {
+   "file": "PropMaps/LightSwitch_Occlusion.jpg",
+   "kind": "cavity occlusion, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/light-switch-808c3de4dd874fc1b67ff15cd2645555",
+    "authors": "Avot (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "50f47d67798869e350b801eb0264cd7ade8b5b3f57a15aed1581c05db76d2ea8"
+  },
+  {
+   "file": "PropMaps/PowerOutlet_Normal.png",
+   "kind": "normal (OpenGL, Unity), derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/outlet-192d0b1de17f4fcdbfeca3fe873c7bdf",
+    "authors": "Drake (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "5727c26b437605dad93d0605a689d99618f036cfca98cee27cf991c96e9fa80f"
+  },
+  {
+   "file": "PropMaps/PowerOutlet_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/outlet-192d0b1de17f4fcdbfeca3fe873c7bdf",
+    "authors": "Drake (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "a77c27525efd960ebfc9fe5492825dde931245798bca9820f38d1966aac50870"
+  },
+  {
+   "file": "PropMaps/PowerOutlet_Occlusion.jpg",
+   "kind": "cavity occlusion, derived",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "derived by this project from the AmbientProps colour map",
+    "page": "https://sketchfab.com/3d-models/outlet-192d0b1de17f4fcdbfeca3fe873c7bdf",
+    "authors": "Drake (colour map); derivation: this project"
+   },
+   "licence": "CC-BY-4.0",
+   "note": "APPROXIMATION from colour (high-pass luminance relief); not a scanned map",
+   "sha256": "4671caa9b3f506528b0003eac39249c4e1761a73fa379231b6fc3e1ed80661bf"
+  },
+  {
+   "file": "Surfaces/PaintedMetalChipped_Color.jpg",
+   "kind": "colour (tileable)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Metal/PaintedMetal004_2K-JPG/PaintedMetal004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "e04f0c8c7c0d61a57fe95a0156dad7d6985965f71b16345646ce0a4a9390ef79"
+  },
+  {
+   "file": "Surfaces/PaintedMetalChipped_Normal.png",
+   "kind": "normal (OpenGL, tileable)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Metal/PaintedMetal004_2K-JPG/PaintedMetal004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "e928a82a61bf60da03884ca1c9f15cbda6db626e665e0f32cfa1cc0f89d26c14"
+  },
+  {
+   "file": "Surfaces/PaintedMetalChipped_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Metal/PaintedMetal004_2K-JPG/PaintedMetal004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "279490de9557b2354f2a100c5ea97dbfe8d15028369a9fbaedee93443bc22e60"
+  },
+  {
+   "file": "Surfaces/PaintedMetalChipped_Occlusion.jpg",
+   "kind": "occlusion from displacement cavity",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Metal/PaintedMetal004_2K-JPG/PaintedMetal004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "6dfe55ecba1af8d181949ee50241b136d9c1039258debef350103eb5dfc1a9ff"
+  },
+  {
+   "file": "Surfaces/PaintedMetalChipped_Neutral.jpg",
+   "kind": "colour with paint desaturated (multiply by tint in shader)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "e17b208592c894a156c6b10bca5e3ddf7816ba98022b07f2f2062c88ddd6351f"
+  },
+  {
+   "file": "Surfaces/PaintedMetalChipped_PaintMask.png",
+   "kind": "white = paint, black = bare metal chip",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "5d6f9ea7cbc41f43f610e6070a285cd077f918c241ac36c4c4b624db14fee1ea"
+  },
+  {
+   "file": "Surfaces/PlasticTextured_Color.jpg",
+   "kind": "colour (tileable)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=Rubber004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Carpet/Rubber004_2K-JPG/Rubber004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "7bb48053fd3e87a6ae7c03a50a1eb43dd3cc7bc789c15da4db702229280ca2c4"
+  },
+  {
+   "file": "Surfaces/PlasticTextured_Normal.png",
+   "kind": "normal (OpenGL, tileable)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=Rubber004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Carpet/Rubber004_2K-JPG/Rubber004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "165c97b77f60cedc912e8b35742cbe12287f839fc5bd1503745b05bc00573403"
+  },
+  {
+   "file": "Surfaces/PlasticTextured_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=Rubber004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Carpet/Rubber004_2K-JPG/Rubber004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "044ebd0d8437016291e7c966811cc77681e4b07df1f554b1f28abf5d91eb1bfd"
+  },
+  {
+   "file": "Surfaces/PlasticTextured_Occlusion.jpg",
+   "kind": "occlusion from displacement cavity",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=Rubber004",
+    "authors": "Lennart Demes (ambientCG)",
+    "mirror": "github.com/Dadaskis/TextureArchive @ 461af934 TextureArchive/PBR/Carpet/Rubber004_2K-JPG/Rubber004_2K-JPG_"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ce83374ef7d2172f0e074ebaeba0a0bdb817c99bd9f3ba87f33da6fabff6af2b"
+  },
+  {
+   "file": "Surfaces/RustCoarse_Color.jpg",
+   "kind": "colour (tileable)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/rust_coarse_01",
+    "authors": "Dimitrios Savva, Rico Cilliers",
+    "mirror": "github.com/EliteGamer007/6dof-drone-sim @ 3b970771 assets/polyhaven/textures/rust_coarse_01"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "e837cd50f183387985a0efcb67b93d572a0060fdd2fdd6b1c9dd891f09a126ab"
+  },
+  {
+   "file": "Surfaces/RustCoarse_Normal.png",
+   "kind": "normal (OpenGL, tileable)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/rust_coarse_01",
+    "authors": "Dimitrios Savva, Rico Cilliers",
+    "mirror": "github.com/EliteGamer007/6dof-drone-sim @ 3b970771 assets/polyhaven/textures/rust_coarse_01"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ea24168713c51ed861d827869986958418f3280dcc340c131b0e023984fb2292"
+  },
+  {
+   "file": "Surfaces/RustCoarse_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/rust_coarse_01",
+    "authors": "Dimitrios Savva, Rico Cilliers",
+    "mirror": "github.com/EliteGamer007/6dof-drone-sim @ 3b970771 assets/polyhaven/textures/rust_coarse_01"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "65909a63785b7510c73ed48b89c89527a4ceed49f5907b2fb94ffc2a3dacee32"
+  },
+  {
+   "file": "Surfaces/RustCoarse_Occlusion.jpg",
+   "kind": "occlusion",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/rust_coarse_01",
+    "authors": "Dimitrios Savva, Rico Cilliers",
+    "mirror": "github.com/EliteGamer007/6dof-drone-sim @ 3b970771 assets/polyhaven/textures/rust_coarse_01"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "34ae52cc31a86684cb7e47d274c3c4cfc1537daa6f2695ad834ac577f5d8f0fc"
+  },
+  {
+   "file": "Surfaces/CardboardPanel_Color.jpg",
+   "kind": "colour (tileable, 0.5 x 1 aspect)",
+   "size": [
+    256,
+    512
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/cardboard_box_01",
+    "authors": "Rahul Chaudhary",
+    "mirror": "github.com/Geadas11/Claude_steam_game @ 8b6aa56f assets/3d/models/cardboard_box_01/textures (2k)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "de796585d7f62cf4929c11cc67d1bd14dfd62c61d3c08ddc34e125cf0765ffcc"
+  },
+  {
+   "file": "Surfaces/CardboardPanel_Normal.png",
+   "kind": "normal (OpenGL, tileable)",
+   "size": [
+    256,
+    512
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/cardboard_box_01",
+    "authors": "Rahul Chaudhary",
+    "mirror": "github.com/Geadas11/Claude_steam_game @ 8b6aa56f assets/3d/models/cardboard_box_01/textures (2k)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ae4168ade876927e626f5717bff602d9d510af76aa2db609551add7652adce42"
+  },
+  {
+   "file": "Surfaces/CardboardPanel_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    256,
+    512
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/cardboard_box_01",
+    "authors": "Rahul Chaudhary",
+    "mirror": "github.com/Geadas11/Claude_steam_game @ 8b6aa56f assets/3d/models/cardboard_box_01/textures (2k)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "006d1d985c052621dbeb96cf959c5345856fc168769adeae57cbb72491ef9677"
+  },
+  {
+   "file": "Surfaces/CardboardPanel_Occlusion.jpg",
+   "kind": "occlusion",
+   "size": [
+    256,
+    512
+   ],
+   "source": {
+    "provider": "Poly Haven",
+    "page": "https://polyhaven.com/a/cardboard_box_01",
+    "authors": "Rahul Chaudhary",
+    "mirror": "github.com/Geadas11/Claude_steam_game @ 8b6aa56f assets/3d/models/cardboard_box_01/textures (2k)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "e62ffa4925a9e2aa294d307ed9d10733f1ec4a15e139e98e68aaedbed39b1134"
+  },
+  {
+   "file": "Decals/PeelingPaint_Chips01.png",
+   "kind": "decal: bare substrate showing through chipped paint (multiply/alpha blend over a painted wall)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)"
+   },
+   "licence": "CC0-1.0",
+   "note": "chip shapes from PaintedMetal004 opacity; substrate colour and radial falloff procedural",
+   "sha256": "8c2372b1693bdbe8868bb0a057858975be26310c0f3a5671c7ee87fdd19962f3"
+  },
+  {
+   "file": "Decals/PeelingPaint_Chips01_Normal.png",
+   "kind": "normal (OpenGL)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "b6db6c35d5806155ed82650560c7c1ba0e500b83ff7b1cd323cf1fbe8923418a"
+  },
+  {
+   "file": "Decals/PeelingPaint_Chips02.png",
+   "kind": "decal: bare substrate showing through chipped paint (multiply/alpha blend over a painted wall)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)"
+   },
+   "licence": "CC0-1.0",
+   "note": "chip shapes from PaintedMetal004 opacity; substrate colour and radial falloff procedural",
+   "sha256": "85c3a05695ed31b2f59ff7168a88caf6f63cf8494a8817f1a8f96cf65bde1be3"
+  },
+  {
+   "file": "Decals/PeelingPaint_Chips02_Normal.png",
+   "kind": "normal (OpenGL)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "ambientCG",
+    "page": "https://ambientcg.com/view?id=PaintedMetal004",
+    "authors": "Lennart Demes (ambientCG)"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ef52cd0a7c3aec26621cc82e526b217c34a386bc6f238f50046deb1c159c9f0f"
+  },
+  {
+   "file": "Decals/Cobweb_Corner01.png",
+   "kind": "decal/quad: cobweb anchored at the top-left corner (texel 0,0)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural, not photographic",
+   "sha256": "baff9fc0c5c5d149f9aa7af43829a56dbe69f09056ad645e920ac4970f48ca5a"
+  },
+  {
+   "file": "Decals/Cobweb_Corner02.png",
+   "kind": "decal/quad: cobweb anchored at the top-left corner (texel 0,0)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural, not photographic",
+   "sha256": "14a4323d6ba0024496e8a31f2840f8a79bd6c5d8fcf42ba316999b8145c4e032"
+  },
+  {
+   "file": "Decals/Cobweb_Hanging01.png",
+   "kind": "quad: sagging cobweb, top edge anchored to ceiling/shelf",
+   "size": [
+    512,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural, not photographic",
+   "sha256": "df25f58ccc001694defe2d5d5133332a760ad8ef0c8133bea11fffd97c2c241c"
+  },
+  {
+   "file": "Decals/RainOnGlass.png",
+   "kind": "glass overlay: drops and run-down trails (low alpha; use the normal for refraction/specular)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural; tileable horizontally only",
+   "sha256": "b941f39a0e79b12b8abd6e95e5def8c795cf8f04a3a4474f47dea37011ad0f83"
+  },
+  {
+   "file": "Decals/RainOnGlass_Normal.png",
+   "kind": "normal (OpenGL)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "6588ef6b749dd1012070f75222fa805ccb7416256d0f0a697d1a87cdf82ce833"
+  },
+  {
+   "file": "Decals/RainOnGlass_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness (wet = 0.97)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "ff928a3e95d040dd3676e22b40d7fd437f40670bd1c6a2495b18e720df03e7de"
+  },
+  {
+   "file": "Decals/DrinkSpill_Cola.png",
+   "kind": "floor decal: drink spill",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural",
+   "sha256": "e66a439acca897f320c9e31c3995131e2169dc562a87a75f48114cbc98767e82"
+  },
+  {
+   "file": "Decals/DrinkSpill_Cola_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "94d0c29f9d1a0a854ad5d9eb5d2ea062a81eed204afa1739984619055db4a382"
+  },
+  {
+   "file": "Decals/DrinkSpill_Coffee.png",
+   "kind": "floor decal: drink spill",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural",
+   "sha256": "07e234c34715f427998eb4fba633d88a3758fc859476b2a9dfb8fe77babf237b"
+  },
+  {
+   "file": "Decals/DrinkSpill_Coffee_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "8875e1b9b91d4630b50b19b997b7b80fc178e20edc251dc4b7ff6f6b5c9dd75e"
+  },
+  {
+   "file": "Decals/DrinkSpill_Beer.png",
+   "kind": "floor decal: drink spill",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural",
+   "sha256": "afb0f451bf103e2d97116d86faf553da385305772009caab78260dcafa4b0f11"
+  },
+  {
+   "file": "Decals/DrinkSpill_Beer_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "1791ed128b9d09b97c2e712b3cc01ece9b78e289021fb5c76277a539d777ca41"
+  },
+  {
+   "file": "Decals/DrinkSpill_SodaDriedRing.png",
+   "kind": "floor decal: drink spill",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural",
+   "sha256": "bc3637ac365170a199b2755c5802310465b70266b9b1922a63b1f0aa7ebed8e1"
+  },
+  {
+   "file": "Decals/DrinkSpill_SodaDriedRing_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    512,
+    512
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "29ae7d578dd87c9be60b4bb36a6f837e1a9e56be57ce5071137dfd0653bf7ab1"
+  },
+  {
+   "file": "Decals/BottleCaps_Atlas.png",
+   "kind": "4x4 atlas (256 px cells): crown caps, top view, flat + bent + rusty, with contact shadow",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural, unbranded",
+   "sha256": "a05da2418f42cf08e2eab94f4cb2d12e5479162572fb12765d0660ddfb236038"
+  },
+  {
+   "file": "Decals/BottleCaps_Atlas_MetallicSmoothness.png",
+   "kind": "R metallic, A smoothness",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "92fd7c2b5e91d950b3889fe8864ee6b040058148512f75bddd044d7969e6e5aa"
+  },
+  {
+   "file": "Decals/PigeonDroppings_Atlas.png",
+   "kind": "4x4 atlas (256 px cells): bird droppings for ledges, kerbs, bench tops",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "procedural",
+   "sha256": "8da399d97f7c0680eab40a507148da07d0660574ba8c67dcc91ec3dcb46a29f8"
+  },
+  {
+   "file": "Decals/PigeonDroppings_Atlas_Normal.png",
+   "kind": "normal (OpenGL)",
+   "size": [
+    1024,
+    1024
+   ],
+   "source": {
+    "provider": "this project (procedural, Source~/build_realism.py)",
+    "page": "",
+    "authors": "this project"
+   },
+   "licence": "CC0-1.0",
+   "note": "",
+   "sha256": "e5edd2ba0c21f02a4c818fa225bfc4bdd14b7ddf2575f17d07bc9ea077c539ff"
+  }
+ ]
+}
