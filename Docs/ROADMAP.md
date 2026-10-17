@@ -1,3 +1,9 @@
+## Three more asset packs — October 17 (Claude, unverified)
+
+- [x] AmbientProps, CutoutDecals, RealFoley fetched with licences and register rows (see HANDOFF).
+- [ ] Wire them into the night store, with fallbacks and validator checks; swap the synthetic footsteps for RealFoley using its README table.
+- [ ] Listen to RealFoley and check the props and decals in the headset.
+
 ## Fixture detail and realism gap round — October 16 (Claude, unverified, never run in Unity)
 
 The first gap round after the realism wiring, ranked by guest impact per unit of frame time. The Roslyn compile check reports only the 2 known NightLighting.cs:624 errors (an API the old reference DLLs lack); nothing has been compiled or run in Unity. The A numbers are the realism critic's gap list of October 15: A1 the main fixtures, A4 the wet street, A9 fabrics and small metals in VR, A13 alarm and security hardware, A15 architectural trim, A16 minor exterior items, A17 weak textures. HANDOFF has the details, the triangle and budget tables, the check names and the PC steps.

@@ -1,0 +1,38 @@
+AmbientProps - lived-in ambient props for the night jewellery store, office and street
+Prepared 2026-10-17. Not yet imported or checked in Unity (unverified).
+
+Three sources and two licences. Per-file source URL, mirror commit and SHA-256 are in sources.json.
+  1. Poly Haven models: CC0 1.0. No attribution required; credits below are a courtesy.
+  2. Sketchfab models: CC BY 4.0. ATTRIBUTION IS REQUIRED wherever the demo is shared (credits screen / docs).
+  3. Quaternius models (via Poly Pizza): CC0 1.0.
+
+CC0 1.0:   https://creativecommons.org/publicdomain/zero/1.0/
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
+Licence evidence, Poly Haven: CC0 per https://polyhaven.com/license (github.com/Poly-Haven/polyhaven.com public/locales/en/license.json: "Our assets are all licensed as CC0"); authors from the Poly Haven API listing (Akshay25798/VFX-Houdini-Asset_Browser downloads/json/models.json) or, for newer assets, the credits files of EliteGamer007/6dof-drone-sim and EfeAkkurt/cycase. The mirror repositories ship the unmodified 1K glTF.
+
+Licence evidence, Sketchfab: CC BY 4.0: each GLB is a Sketchfab download whose embedded glTF asset.extras records author, license "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)", source URL and title (checked in every file); the mirror TheMarco/liminal also records them in models/cc_by/<name>/SOURCE.md. sketchfab.com itself is not reachable from the build container.
+
+Licence evidence, Poly Pizza (Quaternius): CC0 1.0 per bumbeishvili/green-diamond assets/models/CREDITS.md and manifest.json (author Quaternius, poly.pizza source URL); Quaternius publishes all packs as CC0. poly.pizza is not reachable from the build container.
+
+CC BY 4.0 attribution lines (copy into the demo credits):
+  "Network Server Rack" by Khoa Nguyen (https://sketchfab.com/ngdkh), https://sketchfab.com/3d-models/network-server-rack-3b15fb8779274844b54e63a40194d450, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded. (NetworkServerRackRow.*)
+  "Indoor air conditioner unit" by Rylae Shylna (https://sketchfab.com/risteralline), https://sketchfab.com/3d-models/indoor-air-conditioner-unit-d93c5557a9ba46afbb00e35f48343077, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded. (IndoorACUnit.*)
+  "air conditioners" by Lora (https://sketchfab.com/Lora_o), https://sketchfab.com/3d-models/air-conditioners-65417369a2724c9ebf06e7698238a856, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded. (ACCondenserSet.*)
+  "Light Switch" by Avot (https://sketchfab.com/avot), https://sketchfab.com/3d-models/light-switch-808c3de4dd874fc1b67ff15cd2645555, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded. (LightSwitch.*)
+  "Outlet" by Drake (https://sketchfab.com/dlp14c), https://sketchfab.com/3d-models/outlet-192d0b1de17f4fcdbfeca3fe873c7bdf, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded. (PowerOutlet.*)
+  "Alarm Light" by 5CNG5 (https://sketchfab.com/5CNG5), https://sketchfab.com/3d-models/alarm-light-0e009c47066d4ab4b4329fdd4820f141, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded, decimated. (AlarmBeacon.*)
+  "Set of Cardboard Boxes" by NotAnotherApocalypticCo. (https://sketchfab.com/notanotherapocalypticco), https://sketchfab.com/3d-models/set-of-cardboard-boxes-8986ba512f704ac5b253286a0d1ad8bb, licensed under CC BY 4.0. Modified: converted to OBJ, scaled, grounded. (CardboardBoxSet.*)
+
+CC0 credits (courtesy):
+  "Modular Industrial Pipes 01" by Jorge Camacho, https://polyhaven.com/a/modular_industrial_pipes_01 (IndustrialPipes.*)
+  "Modular Electric Cables" by Kuutti Siitonen, https://polyhaven.com/a/modular_electric_cables (ElectricCables.*)
+  "Spray Paint Bottles" by James Ray Cock, https://polyhaven.com/a/spray_paint_bottles (SprayPaintBottles.*)
+  "Plastic Crate 01" by PierreB3D, https://polyhaven.com/a/plastic_crate_01 (PlasticCrate.*)
+  "Utility Box 02" by James Ray Cock, https://polyhaven.com/a/utility_box_02 (UtilityBoxSmall.*)
+  "Plastic Thermos" by PierreB3D, https://polyhaven.com/a/plastic_thermos (PlasticThermos.*)
+  "Can Rusted" by Rahul Chaudhary, https://polyhaven.com/a/can_rusted (RustedCan.*)
+  "Power Box 01" by Rico Cilliers, Yann Kervran, https://polyhaven.com/a/power_box_01 (PowerBox.*)
+  "Wet Floor Sign 01" by Fran Calvente, https://polyhaven.com/a/WetFloorSign_01 (WetFloorSign.*)
+  "Wheelie bin" by Quaternius, https://poly.pizza/m/XSwahu252t (WheelieBin.*)
+  "Dumpster" by Quaternius, https://poly.pizza/m/PKsbolkZSr (Dumpster.*)

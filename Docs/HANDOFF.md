@@ -1,3 +1,24 @@
+# Three more asset packs — October 17 (Claude, unverified, not yet used in any scene)
+
+New packs under Prototype/ThirdParty, each with LICENSE.txt, sources.json and README.md, plus rows in ASSET_REGISTER.md. None is wired into a builder yet, and none has been imported into Unity.
+- **AmbientProps** (21 MB, 18 OBJ models, about 51k triangles, CC0 and CC BY 4.0):
+  - a network/server rack row, a wall split AC unit and outdoor condensers;
+  - pipes and cable conduit, a power box, a utility box, an alarm beacon;
+  - cardboard boxes, a crate, spray cans, a food tin and a thermos;
+  - a wet-floor sign, a wheelie bin and a dumpster.
+  - Colour maps only. The wall items still need placing against walls. The power outlet is US style, which bears on decision 1. The CC BY credit lines are in its LICENSE.txt.
+- **CutoutDecals** (28 MB, 25 alpha PNGs, CC0):
+  - leaf atlases (green, autumn, dry, wet) and leaf clusters;
+  - foliage crown cards for the three street trees, and grass clumps;
+  - weeds and moss for cracks, stains, cracks, floor scuffs;
+  - a litter atlas (receipts, scraps, crumpled paper, bag pieces, lids, cigarette butts) and three graffiti cut-outs.
+- **RealFoley** (14 MB, 136 recorded clips, CC0 except ServerFans_Loop CC BY 3.0 and CameraShutter_02 CC BY 4.0):
+  - real footsteps on stone, concrete, wet pavement, glass, carpet and heels, with 5 to 10 variations each;
+  - glass debris, keys, set-downs, shutters, switches, zips, case latches, radio static and knobs;
+  - HVAC, fluorescent buzz, compressor and server-fan loops, city and rain beds, door sounds.
+  - Its README has the old → new replacement table for the synthetic NightSoundscape and NightAudio clips. The clips have not been listened to yet.
+- **Next:** wire the props, decals and sounds in through DemoAssetLibrary, NightDecals and NightAudioBuilder, each with a fallback and a validator check. Then listen on the PC and in the headset.
+
 # Fixture detail and realism gap round — October 16 (Claude, unverified, never run in Unity)
 
 **To apply and verify everything since October 14 on the PC, follow [PC_VERIFICATION.md](PC_VERIFICATION.md)** (one ordered checklist and a ready-to-paste prompt for the next assistant).

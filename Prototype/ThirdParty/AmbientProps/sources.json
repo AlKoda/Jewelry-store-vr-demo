@@ -1,0 +1,681 @@
+{
+ "pack": "AmbientProps",
+ "prepared": "2026-10-17",
+ "unverified_in_unity": true,
+ "units": "metres, Y up, ground at y = 0, model centred in x/z; OBJ/MTL + PNG base colour (map_Kd)",
+ "license_evidence": {
+  "Poly Haven": "CC0 per https://polyhaven.com/license (github.com/Poly-Haven/polyhaven.com public/locales/en/license.json: \"Our assets are all licensed as CC0\"); authors from the Poly Haven API listing (Akshay25798/VFX-Houdini-Asset_Browser downloads/json/models.json) or, for newer assets, the credits files of EliteGamer007/6dof-drone-sim and EfeAkkurt/cycase. The mirror repositories ship the unmodified 1K glTF.",
+  "Sketchfab": "CC BY 4.0: each GLB is a Sketchfab download whose embedded glTF asset.extras records author, license \"CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)\", source URL and title (checked in every file); the mirror TheMarco/liminal also records them in models/cc_by/<name>/SOURCE.md. sketchfab.com itself is not reachable from the build container.",
+  "Poly Pizza (Quaternius)": "CC0 1.0 per bumbeishvili/green-diamond assets/models/CREDITS.md and manifest.json (author Quaternius, poly.pizza source URL); Quaternius publishes all packs as CC0. poly.pizza is not reachable from the build container."
+ },
+ "total_triangles": 46151,
+ "models": {
+  "IndustrialPipes": {
+   "title": "Modular Industrial Pipes 01",
+   "provider": "Poly Haven",
+   "authors": [
+    "Jorge Camacho"
+   ],
+   "page": "https://polyhaven.com/a/modular_industrial_pipes_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/VoxogoBrusch/the-levels",
+   "mirror_commit": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+   "mirror_path": "public/assets/models/modular_industrial_pipes_01/modular_industrial_pipes_01_1k.gltf",
+   "source_sha256": "455d3a0fe95b7900a08cbebb23cfb2c341672fcb67ae7355d776e53cfa3d0688",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 5000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 4995,
+   "size_m_xyz": [
+    1.397,
+    1.955,
+    0.308
+   ],
+   "ground_y0": true,
+   "files": {
+    "IndustrialPipes.mtl": {
+     "bytes": 307,
+     "sha256": "bdd4b04035288f85b4e062daec72d07d9ecb6ed4fe5fd21b0987ef1f63b293c4"
+    },
+    "IndustrialPipes.obj": {
+     "bytes": 472133,
+     "sha256": "e5e549f9169964614b6497d1bc6ff5c7f8566ab8c570ee566cd378dae085cbff"
+    },
+    "IndustrialPipes_modular_industrial_pipes_01_group01.png": {
+     "bytes": 1341897,
+     "sha256": "54a6cc39becca58fe05455ceed4309181adbc705f0c1a7494ec7ca4e8e512ba5"
+    },
+    "IndustrialPipes_modular_industrial_pipes_01_group02.png": {
+     "bytes": 1426706,
+     "sha256": "8a30569c039e2e64106a4715916e6a6c4d60406285453437bec1f26a51585907"
+    }
+   },
+   "suggested_use": "Exposed pipe runs at the back wall / service corridor / facade (8 pieces laid out side by side; split by OBJ group)."
+  },
+  "ElectricCables": {
+   "title": "Modular Electric Cables",
+   "provider": "Poly Haven",
+   "authors": [
+    "Kuutti Siitonen"
+   ],
+   "page": "https://polyhaven.com/a/modular_electric_cables",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/VoxogoBrusch/the-levels",
+   "mirror_commit": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+   "mirror_path": "public/assets/models/modular_electric_cables/modular_electric_cables_1k.gltf",
+   "source_sha256": "f9292a9eff5bea32dde06356633da84615c508c9c0ee0246fc96c301cfd71fe8",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 5000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 5235,
+   "size_m_xyz": [
+    2.077,
+    0.757,
+    0.214
+   ],
+   "ground_y0": true,
+   "files": {
+    "ElectricCables.mtl": {
+     "bytes": 269,
+     "sha256": "9a9cf76da973814da0d80a060e6a2c26df042a8d550af1fa9ff286f0f6cb14fd"
+    },
+    "ElectricCables.obj": {
+     "bytes": 446813,
+     "sha256": "ab709ffd4a7cff008e078454091efb560dda621a0378f11d2c839d82246e2f43"
+    },
+    "ElectricCables_modular_electric_cables.png": {
+     "bytes": 929333,
+     "sha256": "9958cee33b971759365bdeed5f57da249367a2607e54171f2701b3262cc27148"
+    },
+    "ElectricCables_modular_electric_cables_boxes.png": {
+     "bytes": 1444137,
+     "sha256": "da3ed0cf7ae76dcdd745b454c2b886113f0d39cc0bd557c998bd0ede88740804"
+    }
+   },
+   "suggested_use": "Surface-mounted conduit/cable runs and junction boxes; 49-piece kit laid flat in the XY plane on a grid, each piece (OBJ group) needs its own placement."
+  },
+  "SprayPaintBottles": {
+   "title": "Spray Paint Bottles",
+   "provider": "Poly Haven",
+   "authors": [
+    "James Ray Cock"
+   ],
+   "page": "https://polyhaven.com/a/spray_paint_bottles",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/VoxogoBrusch/the-levels",
+   "mirror_commit": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+   "mirror_path": "public/assets/models/spray_paint_bottles/spray_paint_bottles_1k.gltf",
+   "source_sha256": "fcb7661279eb97394fbb881d38c6972f53ceefab661f7b2b8dd5476bdd6f7800",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 4000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 4000,
+   "size_m_xyz": [
+    0.158,
+    0.229,
+    0.066
+   ],
+   "ground_y0": true,
+   "files": {
+    "SprayPaintBottles.mtl": {
+     "bytes": 259,
+     "sha256": "8b2ab74014c9484974e6c741769efc97cf97f2459265f6ec14d0906b5f8b8c96"
+    },
+    "SprayPaintBottles.obj": {
+     "bytes": 237273,
+     "sha256": "2ef0e1d1099c2a19ecfe9f56c9d1a57f3eef76903a15efadeef68b588c646168"
+    },
+    "SprayPaintBottles_spray_paint_bottles.png": {
+     "bytes": 554076,
+     "sha256": "a26be7e690f64db881d2f132e4bc4a6d2a510f923591b99bd22e5af66c6f1c17"
+    },
+    "SprayPaintBottles_spray_paint_bottles_dirty.png": {
+     "bytes": 709934,
+     "sha256": "0b07d39b4212cb11f8a360b772f1c43d96459b888332e74297cf4a733ace55bf"
+    }
+   },
+   "suggested_use": "Discarded cans in the back alley; clean and dirty material variants."
+  },
+  "PlasticCrate": {
+   "title": "Plastic Crate 01",
+   "provider": "Poly Haven",
+   "authors": [
+    "PierreB3D"
+   ],
+   "page": "https://polyhaven.com/a/plastic_crate_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/VoxogoBrusch/the-levels",
+   "mirror_commit": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+   "mirror_path": "public/assets/models/plastic_crate_01/plastic_crate_01_1k.gltf",
+   "source_sha256": "42556fc8e39e5834ebf474dff79d4c0524fd3074be6c86c0c6704a10be8b3756",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 4000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 4000,
+   "size_m_xyz": [
+    0.298,
+    0.264,
+    0.408
+   ],
+   "ground_y0": true,
+   "files": {
+    "PlasticCrate.mtl": {
+     "bytes": 112,
+     "sha256": "e9a4ca874930fbc022206b43cfdaf29198f1d62dfacf1e92283798ede4f6227f"
+    },
+    "PlasticCrate.obj": {
+     "bytes": 379305,
+     "sha256": "8cca175ce6ad6adaa303f5449a1a0814f43d75c49bff44165e15396e7b912220"
+    },
+    "PlasticCrate_plastic_crate_01.png": {
+     "bytes": 1302428,
+     "sha256": "63b4b17d66b8607f9236c0785e0f8c5a1be0742c46380655c4d5b99367f74f39"
+    }
+   },
+   "suggested_use": "Back-room storage, stacked by the rear door."
+  },
+  "UtilityBoxSmall": {
+   "title": "Utility Box 02",
+   "provider": "Poly Haven",
+   "authors": [
+    "James Ray Cock"
+   ],
+   "page": "https://polyhaven.com/a/utility_box_02",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/VoxogoBrusch/the-levels",
+   "mirror_commit": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+   "mirror_path": "public/assets/models/utility_box_02/utility_box_02_1k.gltf",
+   "source_sha256": "d3f87ce0852709498602f6a096be99a9e13f0ac2619f99edcebad9e89f9faf00",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 4000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 3999,
+   "size_m_xyz": [
+    0.92,
+    1.12,
+    0.432
+   ],
+   "ground_y0": true,
+   "files": {
+    "UtilityBoxSmall.mtl": {
+     "bytes": 111,
+     "sha256": "42fc8e8f6fbec3f3802d457403dd3645de4843d932048b0c516ea4ee33eec8b3"
+    },
+    "UtilityBoxSmall.obj": {
+     "bytes": 275320,
+     "sha256": "24bb5f39c0bd946d8092da78d9cc523e16e071d7fa324739a0d125b2e10ada61"
+    },
+    "UtilityBoxSmall_utility_box_02.png": {
+     "bytes": 1268103,
+     "sha256": "11131c4592505edb00893a3560992532a1c985ca81bd88e8e58bfd636c5b2415"
+    }
+   },
+   "suggested_use": "Electrical cabinet on the facade/back wall (complements StreetModels/UtilityBox)."
+  },
+  "PlasticThermos": {
+   "title": "Plastic Thermos",
+   "provider": "Poly Haven",
+   "authors": [
+    "PierreB3D"
+   ],
+   "page": "https://polyhaven.com/a/plastic_thermos",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/VoxogoBrusch/the-levels",
+   "mirror_commit": "1e7c37785504d23d9a2f669b3b922eac14cedb01",
+   "mirror_path": "public/assets/models/plastic_thermos/plastic_thermos_1k.gltf",
+   "source_sha256": "0b97530ae3e0ba3f5eddabd065fe554fe2634a5b97357c6b1e0f72774c5983d1",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 3000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 2999,
+   "size_m_xyz": [
+    0.14,
+    0.32,
+    0.109
+   ],
+   "ground_y0": true,
+   "files": {
+    "PlasticThermos.mtl": {
+     "bytes": 112,
+     "sha256": "468a867078e86c7b733e528d64d71701be42941b37f43a6011b115aebf1fd02e"
+    },
+    "PlasticThermos.obj": {
+     "bytes": 203279,
+     "sha256": "2eecd4e8b45c7ebaadff84bb02efbd11d5bff75fa50fc0926bb3301734fc35e2"
+    },
+    "PlasticThermos_plastic_thermos.png": {
+     "bytes": 607644,
+     "sha256": "52d87f492b54f54e26604bdd693f0a3bcb017e53e931ae2e1104a6e73d462b5d"
+    }
+   },
+   "suggested_use": "Office/staff-room desk clutter (stand-in for a mug)."
+  },
+  "RustedCan": {
+   "title": "Can Rusted",
+   "provider": "Poly Haven",
+   "authors": [
+    "Rahul Chaudhary"
+   ],
+   "page": "https://polyhaven.com/a/can_rusted",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc0/can_rusted/can_rusted_1k.gltf",
+   "source_sha256": "0014435958bacf2744a4a8e1d6aa180fbd4411533db59e5f80bc7c13bbd235c2",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 3520,
+   "size_m_xyz": [
+    0.125,
+    0.151,
+    0.125
+   ],
+   "ground_y0": true,
+   "files": {
+    "RustedCan.mtl": {
+     "bytes": 97,
+     "sha256": "ad86c1bac7b031f139d8d3419d721072034343881899f6054b3029d1bcffb9fe"
+    },
+    "RustedCan.obj": {
+     "bytes": 187998,
+     "sha256": "1989100292264f82eda4d701792afb391384db2aa476db4c59aefc3ed9900950"
+    },
+    "RustedCan_can_rusted.png": {
+     "bytes": 1722742,
+     "sha256": "9f51774d9997ce90c66559b0510e0297ac2e9f5de071ec433e07d04c972fec84"
+    }
+   },
+   "suggested_use": "Litter in gutter/alley (a food tin, not a crushed drinks can)."
+  },
+  "PowerBox": {
+   "title": "Power Box 01",
+   "provider": "Poly Haven",
+   "authors": [
+    "Rico Cilliers",
+    "Yann Kervran"
+   ],
+   "page": "https://polyhaven.com/a/power_box_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc0/power_box_01/power_box_01_1k.gltf",
+   "source_sha256": "edb54e68fb1229e9f59906459d782c2ddc576f6bd1141cf09ad864f48d7cb93b",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 5000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 4997,
+   "size_m_xyz": [
+    0.462,
+    0.503,
+    0.399
+   ],
+   "ground_y0": true,
+   "files": {
+    "PowerBox.mtl": {
+     "bytes": 100,
+     "sha256": "5d1cb0f891ad3c9e50abcfd105c6f534fac9f48fee598c830209130baf8457cb"
+    },
+    "PowerBox.obj": {
+     "bytes": 394665,
+     "sha256": "c026eab52831ade94a98e590f2d144f6c9d793227bd346ca8c9ddbfb83f6026d"
+    },
+    "PowerBox_power_box_01.png": {
+     "bytes": 836388,
+     "sha256": "11f11d6e688163e90e257dba474de818902201855f8db6317ef8874ef650b953"
+    }
+   },
+   "suggested_use": "Wall-mounted electrical box in the office / back room."
+  },
+  "WetFloorSign": {
+   "title": "Wet Floor Sign 01",
+   "provider": "Poly Haven",
+   "authors": [
+    "Fran Calvente"
+   ],
+   "page": "https://polyhaven.com/a/WetFloorSign_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc0/WetFloorSign_01/WetFloorSign_01_1k.gltf",
+   "source_sha256": "ba5b10d2de7bb60b77dc3e44a96446181a078e35597947a490a4b6de906059e4",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 228,
+   "size_m_xyz": [
+    0.3,
+    0.63,
+    0.358
+   ],
+   "ground_y0": true,
+   "files": {
+    "WetFloorSign.mtl": {
+     "bytes": 110,
+     "sha256": "aa054823f10d0cd9085ed550a7530d6e5258a297fa17294eefe220ac9b2b5580"
+    },
+    "WetFloorSign.obj": {
+     "bytes": 17116,
+     "sha256": "a8059c7bc3750e8ea3550252390348e32592b0f318dd72e5df9df2e28346a7b1"
+    },
+    "WetFloorSign_WetFloorSign_01.png": {
+     "bytes": 148255,
+     "sha256": "af120ccce725b21fdfef938c1e63239b7f7ea3bac1b62fa55e7992af7fab8320"
+    }
+   },
+   "suggested_use": "Cleaner left it near the staff door."
+  },
+  "NetworkServerRackRow": {
+   "title": "Network Server Rack",
+   "provider": "Sketchfab",
+   "authors": [
+    "Khoa Nguyen (https://sketchfab.com/ngdkh)"
+   ],
+   "page": "https://sketchfab.com/3d-models/network-server-rack-3b15fb8779274844b54e63a40194d450",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/network_server_rack/network_server_rack.glb",
+   "source_sha256": "aae465c69b2c7ce6f628a269904c2acf1b6b6b5e407f25b6d3c5dd0d3e888976",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 1144,
+   "size_m_xyz": [
+    1.115,
+    1.831,
+    2.1
+   ],
+   "ground_y0": true,
+   "files": {
+    "NetworkServerRackRow.mtl": {
+     "bytes": 112,
+     "sha256": "c235ee94a7b34cee7d6d4be20e1abb3f8719237030ff8bcac59a2207b380761e"
+    },
+    "NetworkServerRackRow.obj": {
+     "bytes": 102047,
+     "sha256": "c943509d8b965e926ebc6dc6e817e67c5c0d48ace699d551562f4bd5322d56c1"
+    },
+    "NetworkServerRackRow_Material_001.png": {
+     "bytes": 1198686,
+     "sha256": "9c8d4bd1ce28a3f73b8f1eddee86acf47dab7b42d930daa289ecac03fc50b8db"
+    }
+   },
+   "suggested_use": "Row of three 1.8 m network cabinets (about 0.87 m wide x 0.75 m deep each) for the office/back room; long axis along Z."
+  },
+  "IndoorACUnit": {
+   "title": "Indoor air conditioner unit",
+   "provider": "Sketchfab",
+   "authors": [
+    "Rylae Shylna (https://sketchfab.com/risteralline)"
+   ],
+   "page": "https://sketchfab.com/3d-models/indoor-air-conditioner-unit-d93c5557a9ba46afbb00e35f48343077",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/indoor_air_conditioner/indoor_air_conditioner_unit.glb",
+   "source_sha256": "a12a839ea134576bb86b17ffff093456a593dad7cca0a8470df91c2739ea0c6c",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 2.35 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 528,
+   "size_m_xyz": [
+    1.248,
+    0.425,
+    0.309
+   ],
+   "ground_y0": true,
+   "files": {
+    "IndoorACUnit.mtl": {
+     "bytes": 94,
+     "sha256": "d55ad8a462ef7c33ef560257899a6a4919808c87541a40c4aef9ad0c899351b9"
+    },
+    "IndoorACUnit.obj": {
+     "bytes": 43710,
+     "sha256": "f9e5a53ec7103c117b25a4d5c785afe8dcba61468fa5400e8e76e7384df20dc0"
+    },
+    "IndoorACUnit_mIndoor.png": {
+     "bytes": 612566,
+     "sha256": "ea25df36e77bf43e6c98249db5de5c2c3853ee3b9b4f86a8915e072d8d0c93f9"
+    }
+   },
+   "suggested_use": "Wall split AC indoor unit, high on the office or sales-floor wall (scale 2.35 as used by the mirror -> 1.25 m wide)."
+  },
+  "ACCondenserSet": {
+   "title": "air conditioners",
+   "provider": "Sketchfab",
+   "authors": [
+    "Lora (https://sketchfab.com/Lora_o)"
+   ],
+   "page": "https://sketchfab.com/3d-models/air-conditioners-65417369a2724c9ebf06e7698238a856",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/air_conditioners/air_conditioners.glb",
+   "source_sha256": "9e9176638753d5b0006dda68cbc4f5c7d01968a150c54ad9e33566e279f620e1",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.01 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 584,
+   "size_m_xyz": [
+    6.213,
+    4.528,
+    5.116
+   ],
+   "ground_y0": true,
+   "files": {
+    "ACCondenserSet.mtl": {
+     "bytes": 104,
+     "sha256": "bac244ee4c32f047fd747bb5db4a089343c1c310e76270b4deedd6f1a2c4a97d"
+    },
+    "ACCondenserSet.obj": {
+     "bytes": 61614,
+     "sha256": "69b00086f26dc1aa8a933ea6695cc4300f3e656c1089b41054746c76821188a4"
+    },
+    "ACCondenserSet_conditioner.png": {
+     "bytes": 1181654,
+     "sha256": "fcfd3efed6935e16d8bd6e6e9bbe5d391046d4bf983c81f377acceb59feb3fad"
+    }
+   },
+   "suggested_use": "Outdoor condenser collection (centimetre source scaled x0.01): three floor units about 2.1 x 1.0 x 1.5 m and five wall units about 1.1 x 0.85 x 0.45 m in one OBJ. Split by connected parts or place the whole cluster on the back yard/roof; consider x0.75 for domestic-size wall units."
+  },
+  "LightSwitch": {
+   "title": "Light Switch",
+   "provider": "Sketchfab",
+   "authors": [
+    "Avot (https://sketchfab.com/avot)"
+   ],
+   "page": "https://sketchfab.com/3d-models/light-switch-808c3de4dd874fc1b67ff15cd2645555",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/light_switch/light_switch.glb",
+   "source_sha256": "9cd0939b7d86bfbbc2b0969057ec5723506a2767c3bf2685c32d836087585270",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 3668,
+   "size_m_xyz": [
+    0.015,
+    0.114,
+    0.07
+   ],
+   "ground_y0": true,
+   "files": {
+    "LightSwitch.mtl": {
+     "bytes": 101,
+     "sha256": "b0c2d821e352448b1589e979179b65197e3c16076362d837317dd77bff7447a1"
+    },
+    "LightSwitch.obj": {
+     "bytes": 234393,
+     "sha256": "f4ef4a8707ca29fbeb2722999611e30ea5c1845b333a351d3c0cf5366e6e67e2"
+    },
+    "LightSwitch_lightswitch.png": {
+     "bytes": 606177,
+     "sha256": "7d5a0137c8f55371f411528bdc0c30445758c3146778cef7ebec06eda805afc1"
+    }
+   },
+   "suggested_use": "Beside doors at 1.1 m; face is along +/-X (rotate to the wall)."
+  },
+  "PowerOutlet": {
+   "title": "Outlet",
+   "provider": "Sketchfab",
+   "authors": [
+    "Drake (https://sketchfab.com/dlp14c)"
+   ],
+   "page": "https://sketchfab.com/3d-models/outlet-192d0b1de17f4fcdbfeca3fe873c7bdf",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/outlet/outlet.glb",
+   "source_sha256": "b53483ed21dd0fcb98349b603e094cbb33195a6d268000d134def989b02d8ffa",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 28,
+   "size_m_xyz": [
+    0.08,
+    0.12,
+    0.005
+   ],
+   "ground_y0": true,
+   "files": {
+    "PowerOutlet.mtl": {
+     "bytes": 103,
+     "sha256": "3193a9e0c34cc13e79bd3f4152375118a9a187d7af6718d0a9447931a85c14ac"
+    },
+    "PowerOutlet.obj": {
+     "bytes": 2236,
+     "sha256": "ea5ac2bb6ba5534abde014c52424febc763dbbefd6409c0b3a1222148c76d436"
+    },
+    "PowerOutlet_Material_001.png": {
+     "bytes": 113017,
+     "sha256": "ccfeb99e1038c84a5471400f1870900846822e20bf30197f9aef5b945fab4ccb"
+    }
+   },
+   "suggested_use": "Wall sockets at 0.3 m along office/back-room walls (US duplex style)."
+  },
+  "AlarmBeacon": {
+   "title": "Alarm Light",
+   "provider": "Sketchfab",
+   "authors": [
+    "5CNG5 (https://sketchfab.com/5CNG5)"
+   ],
+   "page": "https://sketchfab.com/3d-models/alarm-light-0e009c47066d4ab4b4329fdd4820f141",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/alarm_light/alarm_light.glb",
+   "source_sha256": "be7b19f86c0f10477dbe072386221d36702298ffef6a5c4d4d758532157f3f34",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.17 --target-tris 4000 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 3997,
+   "size_m_xyz": [
+    0.145,
+    0.18,
+    0.092
+   ],
+   "ground_y0": true,
+   "files": {
+    "AlarmBeacon.mtl": {
+     "bytes": 247,
+     "sha256": "b8913fe922ca28f9e5ab424b56461b6f93f8e674f8bad2ce6d8a04967e406040"
+    },
+    "AlarmBeacon.obj": {
+     "bytes": 319854,
+     "sha256": "1a1bcb0e9e9936285c0bdcccfa8f063023f49465bbc64af65b87b8002d1f2fb1"
+    }
+   },
+   "suggested_use": "Wall-mounted alarm beacon/sounder (scale 0.17 as used by the mirror); Lumina material should be emissive red. No textures (constant MTL colours)."
+  },
+  "CardboardBoxSet": {
+   "title": "Set of Cardboard Boxes",
+   "provider": "Sketchfab",
+   "authors": [
+    "NotAnotherApocalypticCo. (https://sketchfab.com/notanotherapocalypticco)"
+   ],
+   "page": "https://sketchfab.com/3d-models/set-of-cardboard-boxes-8986ba512f704ac5b253286a0d1ad8bb",
+   "license": "CC-BY-4.0",
+   "license_url": "https://creativecommons.org/licenses/by/4.0/",
+   "mirror_repository": "https://github.com/TheMarco/liminal",
+   "mirror_commit": "e0950c5982e79878c4e04f1cca89b70190df8dd1",
+   "mirror_path": "models/cc_by/cardboard_boxes/cardboard_boxes.glb",
+   "source_sha256": "682655d5e4a5f1384712c677ddb4e42adaad314f3aa1ba6fcd3d3f3d110111f0",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 1188,
+   "size_m_xyz": [
+    1.446,
+    0.85,
+    0.943
+   ],
+   "ground_y0": true,
+   "files": {
+    "CardboardBoxSet.mtl": {
+     "bytes": 117,
+     "sha256": "e92b408748b22741ba202f10bc09d657cfaa55f71c52f76e13ceb83cb54235b4"
+    },
+    "CardboardBoxSet.obj": {
+     "bytes": 72392,
+     "sha256": "d4dd48c95bf4b89a19cd96fc3a7a099d54a0ce8e256170965c80272fde3a66f6"
+    },
+    "CardboardBoxSet_Cardboard_Box_Mat.png": {
+     "bytes": 1331165,
+     "sha256": "992424f90f97b01db1ce3c8e005b4ff53d7b1287b827b95070ab13242b20179a"
+    }
+   },
+   "suggested_use": "Four box sizes side by side (11 OBJ groups); flattened/stacked boxes by the bins or in the back room."
+  },
+  "WheelieBin": {
+   "title": "Wheelie bin",
+   "provider": "Poly Pizza (Quaternius)",
+   "authors": [
+    "Quaternius"
+   ],
+   "page": "https://poly.pizza/m/XSwahu252t",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/props/trash_bin_wheelie.glb",
+   "source_sha256": "13ab0e6971b8880edc24e79884265133990f1476124d7ca71ca88a0e1ec62bca",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.5 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 739,
+   "size_m_xyz": [
+    0.609,
+    1.106,
+    0.796
+   ],
+   "ground_y0": true,
+   "files": {
+    "WheelieBin.mtl": {
+     "bytes": 125,
+     "sha256": "447aac035c8142e76f5d593d6e2688af8b622e1bc2d71002d96d33e2561cce72"
+    },
+    "WheelieBin.obj": {
+     "bytes": 29723,
+     "sha256": "291379f2d6c4b1ca174bcc444d7073d1a87240db7a8ba4ae1e7b8665929917da"
+    }
+   },
+   "suggested_use": "Back alley / beside the rear door. Low-poly, flat colours (no textures); set metallic 0."
+  },
+  "Dumpster": {
+   "title": "Dumpster",
+   "provider": "Poly Pizza (Quaternius)",
+   "authors": [
+    "Quaternius"
+   ],
+   "page": "https://poly.pizza/m/PKsbolkZSr",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror_repository": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/props/dumpster.glb",
+   "source_sha256": "028d71f23ffae44192c45b729603c6b5b92c1f4d77e60a237972ca92f96eecd7",
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.7 --max-texture 1024 (base colour only; normal/roughness maps not carried)",
+   "triangles": 302,
+   "size_m_xyz": [
+    1.709,
+    1.421,
+    0.907
+   ],
+   "ground_y0": true,
+   "files": {
+    "Dumpster.mtl": {
+     "bytes": 184,
+     "sha256": "ebf49bc0709072df02d2ff322ce6c6b7e26c238df09a00d07bb1e5ff63701f01"
+    },
+    "Dumpster.obj": {
+     "bytes": 20089,
+     "sha256": "a4f306cc42430e5996843c1bfaabd6aa233f22800cbf4ab02f37c9f4fa75b02b"
+    }
+   },
+   "suggested_use": "Back alley. Low-poly, flat colours (no textures); set metallic 0."
+  }
+ }
+}

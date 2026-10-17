@@ -1,0 +1,11 @@
+newmtl spray_paint_bottles_dirty
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd SprayPaintBottles_spray_paint_bottles_dirty.png
+
+newmtl spray_paint_bottles
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd SprayPaintBottles_spray_paint_bottles.png

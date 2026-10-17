@@ -1,0 +1,22 @@
+  - borgwalk4.ogg
+  license: "CC-BY-SA-4.0"
+  copyright: "Modified version from borgwalk1 and borgwalk2 by https://github.com/Samuka-C."
+  source: "https://github.com/space-wizards/space-station-14/pull/36867"
+
+- files:
+  - heelsclack1.ogg
+  - heelsclack5.ogg
+  license: "CC0-1.0"
+  copyright: "Taken from NachtmahrTV on freesound.org, clipped by Centronias"
+  source: "https://freesound.org/people/NachtmahrTV/sounds/571801/"
+
+
+- files: ["server_fans.ogg"]
+  license: "CC-BY-3.0"
+  copyright: "Taken from source"
+  source: "https://freesound.org/people/DeVern/sounds/610761/"
+
+- files: ["camera_snap.ogg"]
+  license: "CC-BY-4.0"
+  copyright: "Taken from freesound, edited by ketufaispikinut(GitHub)"
+  source: "https://freesound.org/people/thecheeseman/sounds/51360/"

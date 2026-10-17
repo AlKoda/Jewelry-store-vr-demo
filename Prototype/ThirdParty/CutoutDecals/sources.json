@@ -1,0 +1,2047 @@
+{
+ "pack": "CutoutDecals",
+ "prepared": "2026-10-17",
+ "total_bytes_png": 28307596,
+ "conventions": {
+  "Color": "sRGB PNG RGBA, straight (not premultiplied) alpha; RGB under alpha<0.9 replaced by the nearest opaque colour (edge bleeding, no dark halo)",
+  "uv": "rects: pixel x,y from top-left; uv = [u, v, w, h] with Unity bottom-left origin"
+ },
+ "build": "python3 -P Source~/build_cutouts.py <download_root> <out_dir> (download_root holds sparse clones of the repos named in sources[].url)",
+ "files": [
+  {
+   "rects": [
+    {
+     "name": "green_00_potted_plant_02",
+     "x": 0,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_01_potted_plant_02",
+     "x": 512,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_02_potted_plant_02",
+     "x": 1024,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_03_potted_plant_02",
+     "x": 1536,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_04_weed_plant_02",
+     "x": 0,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_05_weed_plant_02",
+     "x": 512,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_06_weed_plant_02",
+     "x": 1024,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_07_weed_plant_02",
+     "x": 1536,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_08_weed_plant_02",
+     "x": 0,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_09_potted_plant_01",
+     "x": 512,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_10_potted_plant_01",
+     "x": 1024,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_11_potted_plant_01",
+     "x": 1536,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_12_potted_plant_01",
+     "x": 0,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_13_potted_plant_01",
+     "x": 512,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_14_potted_plant_02",
+     "x": 1024,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "green_15_potted_plant_02",
+     "x": 1536,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.0,
+      0.25,
+      0.25
+     ]
+    }
+   ],
+   "group": "Leaves",
+   "real_size": "each cell 0.16 x 0.16 m (leaf 8-15 cm)",
+   "description": "16 single photographed leaves (arrowhead, dock, lobed), green colour state; 4x4 grid of 512 px cells, uv rects listed (Unity bottom-left origin).",
+   "placement": "Single fallen leaves on pavement, kerb, doormat, window ledge; random yaw",
+   "derived": "original colours",
+   "file": "Leaves/Leaves_Green_Atlas.png",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "bytes": 3064031,
+   "sha256": "caa2502a7b88c3290c86867a73e1fbe5504a126800b2f3f4d4bfa8817a3d64b7",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "rects": [
+    {
+     "name": "autumn_00_potted_plant_02",
+     "x": 0,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_01_potted_plant_02",
+     "x": 512,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_02_potted_plant_02",
+     "x": 1024,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_03_potted_plant_02",
+     "x": 1536,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_04_weed_plant_02",
+     "x": 0,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_05_weed_plant_02",
+     "x": 512,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_06_weed_plant_02",
+     "x": 1024,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_07_weed_plant_02",
+     "x": 1536,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_08_weed_plant_02",
+     "x": 0,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_09_potted_plant_01",
+     "x": 512,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_10_potted_plant_01",
+     "x": 1024,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_11_potted_plant_01",
+     "x": 1536,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_12_potted_plant_01",
+     "x": 0,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_13_potted_plant_01",
+     "x": 512,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_14_potted_plant_02",
+     "x": 1024,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "autumn_15_potted_plant_02",
+     "x": 1536,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.0,
+      0.25,
+      0.25
+     ]
+    }
+   ],
+   "group": "Leaves",
+   "real_size": "each cell 0.16 x 0.16 m (leaf 8-15 cm)",
+   "description": "16 single photographed leaves (arrowhead, dock, lobed), autumn colour state; 4x4 grid of 512 px cells, uv rects listed (Unity bottom-left origin).",
+   "placement": "Single fallen leaves on pavement, kerb, doormat, window ledge; random yaw",
+   "derived": "HSV recolour \"autumn\" in build_cutouts.py:recolour",
+   "file": "Leaves/Leaves_Autumn_Atlas.png",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "bytes": 3122182,
+   "sha256": "922942c4266b9a1afdbb8fddb6be1eaef0bb88f7b1c606730a8ab13f778d6ca8",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "rects": [
+    {
+     "name": "dry_00_potted_plant_02",
+     "x": 0,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_01_potted_plant_02",
+     "x": 512,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_02_potted_plant_02",
+     "x": 1024,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_03_potted_plant_02",
+     "x": 1536,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_04_weed_plant_02",
+     "x": 0,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_05_weed_plant_02",
+     "x": 512,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_06_weed_plant_02",
+     "x": 1024,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_07_weed_plant_02",
+     "x": 1536,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_08_weed_plant_02",
+     "x": 0,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_09_potted_plant_01",
+     "x": 512,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_10_potted_plant_01",
+     "x": 1024,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_11_potted_plant_01",
+     "x": 1536,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_12_potted_plant_01",
+     "x": 0,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_13_potted_plant_01",
+     "x": 512,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_14_potted_plant_02",
+     "x": 1024,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "dry_15_potted_plant_02",
+     "x": 1536,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.0,
+      0.25,
+      0.25
+     ]
+    }
+   ],
+   "group": "Leaves",
+   "real_size": "each cell 0.16 x 0.16 m (leaf 8-15 cm)",
+   "description": "16 single photographed leaves (arrowhead, dock, lobed), dry colour state; 4x4 grid of 512 px cells, uv rects listed (Unity bottom-left origin).",
+   "placement": "Single fallen leaves on pavement, kerb, doormat, window ledge; random yaw",
+   "derived": "HSV recolour \"dry\" in build_cutouts.py:recolour",
+   "file": "Leaves/Leaves_Dry_Atlas.png",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "bytes": 2741000,
+   "sha256": "88539bdce58b2596adc2add843b6adcbfe78fd1ad637dd3c86c0dcbb047dd5f0",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "rects": [
+    {
+     "name": "wet_00_potted_plant_02",
+     "x": 0,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_01_potted_plant_02",
+     "x": 512,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_02_potted_plant_02",
+     "x": 1024,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_03_potted_plant_02",
+     "x": 1536,
+     "y": 0,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.75,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_04_weed_plant_02",
+     "x": 0,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_05_weed_plant_02",
+     "x": 512,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_06_weed_plant_02",
+     "x": 1024,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_07_weed_plant_02",
+     "x": 1536,
+     "y": 512,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.5,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_08_weed_plant_02",
+     "x": 0,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_09_potted_plant_01",
+     "x": 512,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_10_potted_plant_01",
+     "x": 1024,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_11_potted_plant_01",
+     "x": 1536,
+     "y": 1024,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.25,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_12_potted_plant_01",
+     "x": 0,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.0,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_13_potted_plant_01",
+     "x": 512,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.25,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_14_potted_plant_02",
+     "x": 1024,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.5,
+      0.0,
+      0.25,
+      0.25
+     ]
+    },
+    {
+     "name": "wet_15_potted_plant_02",
+     "x": 1536,
+     "y": 1536,
+     "w": 512,
+     "h": 512,
+     "uv": [
+      0.75,
+      0.0,
+      0.25,
+      0.25
+     ]
+    }
+   ],
+   "group": "Leaves",
+   "real_size": "each cell 0.16 x 0.16 m (leaf 8-15 cm)",
+   "description": "16 single photographed leaves (arrowhead, dock, lobed), wet colour state; 4x4 grid of 512 px cells, uv rects listed (Unity bottom-left origin).",
+   "placement": "Single fallen leaves on pavement, kerb, doormat, window ledge; random yaw",
+   "derived": "HSV recolour \"wet\" in build_cutouts.py:recolour",
+   "file": "Leaves/Leaves_Wet_Atlas.png",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "bytes": 2461240,
+   "sha256": "357588f273df375a2f50148ebfc4541a626d6961aab38fc16efe590a8500b0d7",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Leaves",
+   "real_size": "0.9 x 0.9 m",
+   "description": "Pile of dry brown leaves with soft contact shadow",
+   "placement": "Doorway corners, tree bases, against kerb",
+   "file": "Leaves/LeafCluster_DryPile.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 1071106,
+   "sha256": "0293e9a205fddeadc2b25c17d7af4fa734a796e2ff7754fc15631c90063c877a",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Leaves",
+   "real_size": "1.2 x 1.2 m",
+   "description": "Loose scatter of mixed autumn leaves",
+   "placement": "Pavement, under the three street trees",
+   "file": "Leaves/LeafCluster_AutumnScatter.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 698600,
+   "sha256": "3df169da872ddb42136233e0d53e4835c5eb469a348882134701ac61bcc9ce13",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Leaves",
+   "real_size": "1.6 x 0.8 m (long axis U)",
+   "description": "Wet dark leaves washed into a band, for gutters",
+   "placement": "Along the kerb/gutter line, drains",
+   "file": "Leaves/LeafCluster_WetGutter.png",
+   "pixels": [
+    1024,
+    512
+   ],
+   "bytes": 403714,
+   "sha256": "7d914755c5dfda4251940af44443e43ae9881df57345aca2cc3bb5105fad6c8e",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Leaves",
+   "real_size": "0.8 x 0.8 m",
+   "description": "Freshly fallen green leaves after wind",
+   "placement": "Under trees, planters",
+   "file": "Leaves/LeafCluster_GreenFresh.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 618884,
+   "sha256": "07ca48b6d91fcf9ad862fb2dc7315a96e2835594cc1c7e7a36466644dcb644eb",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Foliage",
+   "rects": [
+    {
+     "name": "Summer_A",
+     "x": 0,
+     "y": 0,
+     "w": 1024,
+     "h": 1024,
+     "uv": [
+      0.0,
+      0.5,
+      0.5,
+      0.5
+     ]
+    },
+    {
+     "name": "Summer_B",
+     "x": 1024,
+     "y": 0,
+     "w": 1024,
+     "h": 1024,
+     "uv": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+     ]
+    },
+    {
+     "name": "Autumn",
+     "x": 0,
+     "y": 1024,
+     "w": 1024,
+     "h": 1024,
+     "uv": [
+      0.0,
+      0.0,
+      0.5,
+      0.5
+     ]
+    },
+    {
+     "name": "Sparse_LateAutumn",
+     "x": 1024,
+     "y": 1024,
+     "w": 1024,
+     "h": 1024,
+     "uv": [
+      0.5,
+      0.0,
+      0.5,
+      0.5
+     ]
+    }
+   ],
+   "real_size": "each card ~1.8 x 1.8 m",
+   "description": "Four dense leaf-crown billboard cards (summer x2, autumn, sparse late autumn) built from the photographed leaves; inner leaves darkened for self-shadowing",
+   "placement": "Crossed quads / billboards on the three bare procedural trees; Standard Cutout 0.4, double-sided",
+   "file": "Foliage/FoliageCrown_Atlas.png",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "bytes": 4931353,
+   "sha256": "f9f480db960bd4837ffc34e1babf9bb045d7184f850c770ffc6ec02c77b20873",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven flower_empodium",
+     "page": "https://polyhaven.com/a/flower_empodium",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/flower_empodium/textures/flower_empodium_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Foliage",
+   "rects": [
+    {
+     "name": "Green_Tall",
+     "x": 0,
+     "y": 0,
+     "w": 512,
+     "h": 1024,
+     "uv": [
+      0.0,
+      0,
+      0.25,
+      1
+     ]
+    },
+    {
+     "name": "Green_Short",
+     "x": 512,
+     "y": 0,
+     "w": 512,
+     "h": 1024,
+     "uv": [
+      0.25,
+      0,
+      0.25,
+      1
+     ]
+    },
+    {
+     "name": "Mixed_Dry",
+     "x": 1024,
+     "y": 0,
+     "w": 512,
+     "h": 1024,
+     "uv": [
+      0.5,
+      0,
+      0.25,
+      1
+     ]
+    },
+    {
+     "name": "Straw_Dry",
+     "x": 1536,
+     "y": 0,
+     "w": 512,
+     "h": 1024,
+     "uv": [
+      0.75,
+      0,
+      0.25,
+      1
+     ]
+    }
+   ],
+   "real_size": "each card 0.25 x 0.5 m, root at bottom centre",
+   "description": "Four upright grass clump cards from photographed grass blades (green tall/short, mixed, dry straw)",
+   "placement": "Crossed quads at tree pits, wall bases, pavement cracks; Cutout 0.4",
+   "file": "Foliage/GrassClump_Atlas.png",
+   "pixels": [
+    2048,
+    1024
+   ],
+   "bytes": 1421007,
+   "sha256": "84a809b984360a49277085191b33762873d82056a73b8ee4f7d7a52084f2904d",
+   "sources": [
+    {
+     "asset": "Poly Haven potted_plant_02",
+     "page": "https://polyhaven.com/a/potted_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/potted_plant_02/textures/potted_plant_02_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven weed_plant_02",
+     "page": "https://polyhaven.com/a/weed_plant_02",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/weed_plant_02/textures/weed_plant_02_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven flower_empodium",
+     "page": "https://polyhaven.com/a/flower_empodium",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/tuniveza/Generative-Games/831f115caeea2201fdac5315bac4fcb707eeaf85/The-Ruins-of-Bezan/assets/models/flower_empodium/textures/flower_empodium_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Weeds",
+   "real_size": "1.2 x 0.3 m (long axis U)",
+   "description": "Moss/grass photo masked to a crack line with tiny lobed weed leaves",
+   "placement": "Pavement slab joints, kerb/wall junction",
+   "file": "Ground/WeedsInCrack_Moss.png",
+   "pixels": [
+    1024,
+    256
+   ],
+   "bytes": 216224,
+   "sha256": "e3205cce88c5ffadb5199f6210de9f84600e718390743f7385a9e53f538bc0f1",
+   "sources": [
+    {
+     "asset": "ambientCG Ground037",
+     "page": "https://ambientcg.com/view?id=Ground037",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground037_2K-JPG/Ground037_2K-JPG_Color.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Weeds",
+   "real_size": "1.2 x 0.3 m (long axis U)",
+   "description": "Moss/grass photo masked to a crack line with tiny lobed weed leaves",
+   "placement": "Pavement slab joints, kerb/wall junction",
+   "file": "Ground/WeedsInCrack_Clover.png",
+   "pixels": [
+    1024,
+    256
+   ],
+   "bytes": 191063,
+   "sha256": "39bdd9557da78c064cea607f558a78f79ac109833fb2cbb74b8cc74bfbac2a1a",
+   "sources": [
+    {
+     "asset": "ambientCG Ground079S",
+     "page": "https://ambientcg.com/view?id=Ground079S",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground079S_2K-JPG/Ground079S_2K-JPG_Color.jpg"
+    },
+    {
+     "asset": "Poly Haven potted_plant_01",
+     "page": "https://polyhaven.com/a/potted_plant_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/potted_plant_01/textures/potted_plant_01_leaves_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Weeds",
+   "real_size": "0.8 x 0.8 m",
+   "description": "Irregular moss patch (ambientCG Ground037 moss photo, fbm mask)",
+   "placement": "Shaded wall bases, north side of kerb, roof ledge",
+   "file": "Ground/MossPatch.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 561608,
+   "sha256": "c01d4bde099d91fae89381ade2298eaacf3ac11c1f10a4726596686b6978dc96",
+   "sources": [
+    {
+     "asset": "ambientCG Ground037",
+     "page": "https://ambientcg.com/view?id=Ground037",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground037_2K-JPG/Ground037_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Stains",
+   "real_size": "1.2 x 1.2 m",
+   "description": "Dark engine-oil stain, asphalt photo darkened under an fbm blob",
+   "placement": "Parking bay, road by the kerb",
+   "file": "Stains/Stain_OilLarge.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 761908,
+   "sha256": "b33e834c637c091f3c95bd9e1cd314aef7ddaa4b332081ab1233dfc64fe70edf",
+   "sources": [
+    {
+     "asset": "ambientCG Asphalt010",
+     "page": "https://ambientcg.com/view?id=Asphalt010",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Asphalt/Asphalt010_2K-JPG/Asphalt010_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Stains",
+   "real_size": "1.0 x 1.0 m",
+   "description": "Wet mud splash/smear from ground photo",
+   "placement": "Street near tree pits, entrance mat",
+   "file": "Stains/Stain_MudSplash.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 802585,
+   "sha256": "e75135beaabd24d519fa36166dedc234a8275fc7d698f3db7afb39dfa759971e",
+   "sources": [
+    {
+     "asset": "ambientCG Ground049C",
+     "page": "https://ambientcg.com/view?id=Ground049C",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground049C_2K-JPG/Ground049C_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Stains",
+   "real_size": "1.0 x 1.0 m",
+   "description": "Soft dust/grit patch, very feathered",
+   "placement": "Interior corners, under shelving, pavement",
+   "file": "Stains/Stain_DustPatch.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 1098189,
+   "sha256": "716fad075b1ef201ff15c9715b6a55881877edd7d42b4c8608a9bf5d21a93a4f",
+   "sources": [
+    {
+     "asset": "ambientCG Ground072",
+     "page": "https://ambientcg.com/view?id=Ground072",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground072_2K-JPG/Ground072_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Stains",
+   "real_size": "1.5 x 0.35 m, opaque edge at V=0",
+   "description": "Splashed dirt along a wall base, photo soil under a rising noisy gradient",
+   "placement": "Exterior wall/shutter base, kerb face; tile in U",
+   "file": "Stains/DirtEdge_WallBase.png",
+   "pixels": [
+    1024,
+    256
+   ],
+   "bytes": 344410,
+   "sha256": "d921ca5d386c38a782213465cf9a2e1c235119601137beed86abcf1f0d9512e4",
+   "sources": [
+    {
+     "asset": "ambientCG Ground053",
+     "page": "https://ambientcg.com/view?id=Ground053",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground053_2K-JPG/Ground053_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Stains",
+   "real_size": "0.3 x 0.6 m, source at top",
+   "description": "Rust run-off streak below a bracket/bolt, from rusted-can photo",
+   "placement": "Under shutter guides, sign brackets, drainpipe clips",
+   "file": "Stains/RustStreak_Wall.png",
+   "pixels": [
+    512,
+    1024
+   ],
+   "bytes": 109924,
+   "sha256": "e453af6d0ff1ddaf7099859ffe894cf727dbc37866c4366d348aed35ed107357",
+   "sources": [
+    {
+     "asset": "Poly Haven can_rusted",
+     "page": "https://polyhaven.com/a/can_rusted",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/can_rusted/textures/can_rusted_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Cracks",
+   "real_size": "1.5 x 1.5 m",
+   "description": "Alligator crack network lifted from an asphalt photo (local-darkness key)",
+   "placement": "Road surface, old car-park patches",
+   "file": "Cracks/Crack_AsphaltNetwork.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 576502,
+   "sha256": "0d2139f950e623d23d3572b92bbeb1620b8a4599cbfc54e8e3deddbfd338e5d4",
+   "sources": [
+    {
+     "asset": "ambientCG Asphalt021",
+     "page": "https://ambientcg.com/view?id=Asphalt021",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Asphalt/Asphalt021_2K-JPG/Asphalt021_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Cracks",
+   "real_size": "1.2 x 1.2 m",
+   "description": "Hairline concrete cracks lifted from a concrete photo",
+   "placement": "Pavement slabs, interior screed, plinths",
+   "file": "Cracks/Crack_ConcreteHairline.png",
+   "pixels": [
+    1024,
+    1024
+   ],
+   "bytes": 340537,
+   "sha256": "1364aa9f248f0f7af03af205d7b1ffc4285fa0a6cac168198bd290634f8fdbf0",
+   "sources": [
+    {
+     "asset": "ambientCG Concrete033",
+     "page": "https://ambientcg.com/view?id=Concrete033",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Concrete/Concrete033_2K-JPG/Concrete033_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Scuffs",
+   "real_size": "1.0 x 0.5 m",
+   "description": "Black rubber heel/trolley scuff arcs, colour from tyre photo (no footprints)",
+   "placement": "Shop floor near counters and door, threshold",
+   "file": "Scuffs/RubberScuffs_Floor.png",
+   "pixels": [
+    1024,
+    512
+   ],
+   "bytes": 69915,
+   "sha256": "abf7b182161b7df8a4d47583da9a38942822d83344b36eb6090fb2afb5e44ec9",
+   "sources": [
+    {
+     "asset": "Poly Haven old_tyre",
+     "page": "https://polyhaven.com/a/old_tyre",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/old_tyre/textures/old_tyre_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Litter",
+   "rects": [
+    {
+     "name": "Receipt_0",
+     "x": 4,
+     "y": 4,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.001953125,
+      0.798828125,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "Receipt_1",
+     "x": 412,
+     "y": 4,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.201171875,
+      0.798828125,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "Receipt_2",
+     "x": 820,
+     "y": 4,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.400390625,
+      0.798828125,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "LabelScrap_0",
+     "x": 1228,
+     "y": 4,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.599609375,
+      0.798828125,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "LabelScrap_1",
+     "x": 1636,
+     "y": 4,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.798828125,
+      0.798828125,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "LabelScrap_2",
+     "x": 4,
+     "y": 412,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.001953125,
+      0.599609375,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "LabelScrap_3",
+     "x": 412,
+     "y": 412,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.201171875,
+      0.599609375,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CrumpledPaper_0",
+     "x": 820,
+     "y": 412,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.400390625,
+      0.599609375,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CrumpledPaper_1",
+     "x": 1228,
+     "y": 412,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.599609375,
+      0.599609375,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CrumpledPaper_2",
+     "x": 1636,
+     "y": 412,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.798828125,
+      0.599609375,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "PlasticBag_0",
+     "x": 4,
+     "y": 820,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.001953125,
+      0.400390625,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "PlasticBag_1",
+     "x": 412,
+     "y": 820,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.201171875,
+      0.400390625,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "Cap_RustyLid",
+     "x": 820,
+     "y": 820,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.400390625,
+      0.400390625,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "Cap_RustyLid_Crushed",
+     "x": 1228,
+     "y": 820,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.599609375,
+      0.400390625,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CigaretteButt_0",
+     "x": 1636,
+     "y": 820,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.798828125,
+      0.400390625,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CigaretteButt_1",
+     "x": 4,
+     "y": 1228,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.001953125,
+      0.201171875,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CigaretteButt_2",
+     "x": 412,
+     "y": 1228,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.201171875,
+      0.201171875,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CigaretteButt_3",
+     "x": 820,
+     "y": 1228,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.400390625,
+      0.201171875,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CigaretteButt_4",
+     "x": 1228,
+     "y": 1228,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.599609375,
+      0.201171875,
+      0.19921875,
+      0.19921875
+     ]
+    },
+    {
+     "name": "CigaretteButt_5",
+     "x": 1636,
+     "y": 1228,
+     "w": 408,
+     "h": 408,
+     "uv": [
+      0.798828125,
+      0.201171875,
+      0.19921875,
+      0.19921875
+     ]
+    }
+   ],
+   "real_size": "cell size by item: receipt 8x28 cm, label scraps 10-20 cm, crumpled paper 7 cm, bag 35 cm, cap 3 cm, butt 3 cm (cell width ~2x item length)",
+   "description": "20 litter cutouts on 408 px cells: receipts, torn product-label flyer scraps, crumpled paper, plastic bag fragments, rusty lid caps, cigarette butts",
+   "placement": "Gutter, pavement, doorway, under benches; random yaw, 1-3 mm above ground",
+   "file": "Litter/Litter_Atlas.png",
+   "pixels": [
+    2048,
+    2048
+   ],
+   "bytes": 2034188,
+   "sha256": "44fd4959d8ca5c610a976d06f60ed04c5ae4df87fe4fcbb59fc16e37bff51f8d",
+   "sources": [
+    {
+     "asset": "Poly Haven book_encyclopedia_set_01",
+     "page": "https://polyhaven.com/a/book_encyclopedia_set_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/book_encyclopedia_set_01/textures/book_encyclopedia_set_01_paper_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven trashbag",
+     "page": "https://polyhaven.com/a/trashbag",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/trashbag/textures/trashbag_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven long_life_food",
+     "page": "https://polyhaven.com/a/long_life_food",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/long_life_food/textures/long_life_food_diff_1k.jpg"
+    },
+    {
+     "asset": "Poly Haven can_rusted",
+     "page": "https://polyhaven.com/a/can_rusted",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/TheMarco/liminal/e0950c5982e79878c4e04f1cca89b70190df8dd1/models/cc0/can_rusted/textures/can_rusted_diff_1k.jpg"
+    },
+    {
+     "asset": "ambientCG Ground072",
+     "page": "https://ambientcg.com/view?id=Ground072",
+     "author": "ambientCG (Lennart Demes)",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/Dadaskis/TextureArchive/461af93437a915afd8cc8e9c3a90bcf1aaa6950c/PBR/Ground/Ground072_2K-JPG/Ground072_2K-JPG_Color.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Graffiti",
+   "real_size": "~1.6 m wide (pieces), 0.5 m (tag)",
+   "description": "Pink/orange bubble-letter piece with throw-up and tags; keyed off a Poly Haven roller-shutter photo (saturation + darkness vs. local background)",
+   "placement": "Side walls, shutters, utility boxes across the street (not on the shop front)",
+   "file": "Graffiti/Graffiti_PieceBubble.png",
+   "pixels": [
+    378,
+    800
+   ],
+   "bytes": 394251,
+   "sha256": "18856fc341ed43b0a391681c66d59833d27a7e84531ce04e1071b0c3bc78ee41",
+   "sources": [
+    {
+     "asset": "Poly Haven rollershutter_door",
+     "page": "https://polyhaven.com/a/rollershutter_door",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/EliteGamer007/6dof-drone-sim/3b97077101bedb1326cf6483e04dc51ccf130fa3/assets/polyhaven/models/rollershutter_door/textures/rollershutter_door_graffiti_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Graffiti",
+   "real_size": "~1.6 m wide (pieces), 0.5 m (tag)",
+   "description": "Teal/blue \"Snak\" piece with tags and handwriting; keyed off a Poly Haven roller-shutter photo (saturation + darkness vs. local background)",
+   "placement": "Side walls, shutters, utility boxes across the street (not on the shop front)",
+   "file": "Graffiti/Graffiti_PieceSnak.png",
+   "pixels": [
+    590,
+    412
+   ],
+   "bytes": 246747,
+   "sha256": "c75c3e6cb46c7f60bdfff0c19eebedb3e27dfdbf8ed8513cf960bb297cbff2ea",
+   "sources": [
+    {
+     "asset": "Poly Haven rollershutter_window_01",
+     "page": "https://polyhaven.com/a/rollershutter_window_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/EliteGamer007/6dof-drone-sim/3b97077101bedb1326cf6483e04dc51ccf130fa3/assets/polyhaven/models/rollershutter_window_01/textures/rollershutter_window_01_graffiti_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  },
+  {
+   "group": "Graffiti",
+   "real_size": "~1.6 m wide (pieces), 0.5 m (tag)",
+   "description": "Small purple/red \"FLOW\" throw-up; keyed off a Poly Haven roller-shutter photo (saturation + darkness vs. local background)",
+   "placement": "Side walls, shutters, utility boxes across the street (not on the shop front)",
+   "file": "Graffiti/Graffiti_TagFlow.png",
+   "pixels": [
+    230,
+    115
+   ],
+   "bytes": 26428,
+   "sha256": "7b24f4b464560122179f731106a1396c88fd08463c4612b61b9d2efd7a6d8665",
+   "sources": [
+    {
+     "asset": "Poly Haven rollershutter_window_01",
+     "page": "https://polyhaven.com/a/rollershutter_window_01",
+     "author": "Poly Haven",
+     "license": "CC0 1.0",
+     "url": "https://raw.githubusercontent.com/EliteGamer007/6dof-drone-sim/3b97077101bedb1326cf6483e04dc51ccf130fa3/assets/polyhaven/models/rollershutter_window_01/textures/rollershutter_window_01_graffiti_diff_1k.jpg"
+    }
+   ],
+   "license": "CC0 1.0 (derived work, also CC0)",
+   "modifications": "Cut out / recoloured / composited by Source~/build_cutouts.py (seeded, reproducible)",
+   "unverified_in_unity": true
+  }
+ ]
+}

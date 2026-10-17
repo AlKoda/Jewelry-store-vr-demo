@@ -1,0 +1,1 @@
+- **Camera Shutter**, roachpowder, [Freesound 170229](https://freesound.org/people/roachpowder/sounds/170229/), CC0-1.0. Public HQ MP3 preview converted to mono 44.1 kHz WAV, high-pass 100 Hz and non-amplifying limiter at 0.85, played at 0.28 gain. This is not the original master recording.

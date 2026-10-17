@@ -1,0 +1,5 @@
+newmtl power_box_01
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.000
+map_Kd PowerBox_power_box_01.png

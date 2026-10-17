@@ -1,0 +1,16 @@
+CutoutDecals - photo-derived alpha cutouts (leaves, foliage cards, grass, weeds, stains, cracks,
+scuffs, litter, graffiti). Prepared October 17, 2026. Not yet imported or checked in Unity.
+
+All source photographs are CC0 1.0 (public domain dedication):
+  - Poly Haven (polyhaven.com) models: potted_plant_01, potted_plant_02, weed_plant_02,
+    flower_empodium, can_rusted, old_tyre, book_encyclopedia_set_01, trashbag, long_life_food,
+    rollershutter_door, rollershutter_window_01 (1k diffuse textures, fetched from GitHub mirrors).
+  - ambientCG (ambientcg.com, Lennart Demes): Ground037, Ground049C, Ground053, Ground072,
+    Ground079S, Asphalt010, Asphalt021, Concrete033 (2K-JPG Color maps, via the
+    Dadaskis/TextureArchive mirror).
+Exact raw URLs and commits are in sources.json.
+
+Derived images (cut-outs, recolours, composites) were made for this project with
+Source~/build_cutouts.py and are likewise released under CC0 1.0. No attribution is required;
+courtesy credit: "Photographs: Poly Haven and ambientCG, CC0".
+Product labels in Litter_Atlas and the graffiti come from Poly Haven's own fictional textures.

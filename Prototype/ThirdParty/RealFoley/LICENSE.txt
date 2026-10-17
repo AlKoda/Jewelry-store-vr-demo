@@ -1,0 +1,234 @@
+RealFoley - licences and provenance
+Prepared October 17, 2026 for the Jewelry-store-vr-demo project. Status: fetched and processed; not wired; not auditioned (unverified).
+
+Every audio file in this folder is a processed copy of a real recording (or a mix of two, marked 'layered' in sources.json).
+No file is synthesized, NonCommercial, NoDerivatives, ShareAlike or of unknown licence.
+
+CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/  (no attribution required; credits below are voluntary)
+CC BY 3.0: https://creativecommons.org/licenses/by/3.0/   CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
+ATTRIBUTION REQUIRED (show in the in-app credits and keep in Docs/ASSET_REGISTER.md):
+  CameraShutter_02.wav: "camera snap" by thecheeseman (https://freesound.org/people/thecheeseman/sounds/51360/), edited by ketufaispikinut (Space Station 14), licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); trimmed and normalised.
+  ServerFans_Loop.ogg: "Server fans" by DeVern (https://freesound.org/people/DeVern/sounds/610761/), licensed CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/); via Space Station 14; trimmed, looped and normalised.
+
+Licence verification: freesound.org and opengameart.org could not be opened from the preparation environment. The licence of
+each recording is taken from the licence record of the GitHub mirror that supplied it (copies or excerpts in Licenses/).
+Please open the original pages once before a public release. Changes to every file: trimming, mono/stereo downmix,
+resampling to 48 kHz, high-pass filtering, fades, loudness normalisation, loop crossfades, layering (see sources.json).
+
+CREDITS (author - title - original - licence - mirror @ commit - files)
+
+- AlaskaRobotics - "Machine Hum (power-washer compressor)" - https://freesound.org/people/AlaskaRobotics/sounds/221566/ - CC0 1.0 - https://github.com/LautiGR116/EchoProtocol @ a93c6da6e5d1
+    CompressorHum_Loop.ogg
+- Anthousai - "door - open 01.wav" - https://freesound.org/s/398750/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    DoorOpen_01.wav
+- DeVern - "server_fans" - https://freesound.org/people/DeVern/sounds/610761/ - CC BY 3.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    ServerFans_Loop.ogg
+- Dominik_W - "Rain (strong), city, street, distant traffic" - https://freesound.org/s/398593/ - CC0 1.0 - https://github.com/Aarymanv/hillbomb-sf @ 937d362243a5
+    RainCityStreet_Loop.ogg
+- HECKFRICKER - "House Vent Loop 03" - https://freesound.org/people/HECKFRICKER/sounds/753542/ - CC0 1.0 - https://github.com/LautiGR116/EchoProtocol @ a93c6da6e5d1
+    HVACVentAir_Loop.ogg
+- IanStarGem - "Switch Flip #1" - https://freesound.org/s/278205/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    SwitchClick_05.wav
+- JoelMcDaniel - "Fluorescent Light Buzzing" - https://freesound.org/people/JoelMcDaniel/sounds/830440/ - CC0 1.0 - https://github.com/LautiGR116/EchoProtocol @ a93c6da6e5d1
+    FluorescentBuzz_Loop.ogg
+- JovianSounds - "Radio Sign Off / Squelch" - https://freesound.org/people/JovianSounds/sounds/524205/ - CC0 1.0 - https://github.com/Warexpor/DarkwoodMP-YokWare @ d9d2237e4071
+    RadioSquelchTail_01.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - drip1.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    WaterDrip_01.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - drip2.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    WaterDrip_02.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - drip3.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    WaterDrip_03.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - drip4.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    WaterDrip_04.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - pickup1.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    PickUp_01.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - pickup2.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    PickUp_02.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - pickup3.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    PickUp_03.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - pickup4.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    PickUp_04.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - setDown1.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    PlasticSetDown_01.wav
+- Kenney (www.kenney.nl) - "Foley Sounds 1.0 - setDown2.ogg" - https://kenney.nl/assets/foley-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    PlasticSetDown_02.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_carpet_000.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Carpet_01.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_carpet_001.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Carpet_02.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_carpet_002.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Carpet_03.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_carpet_003.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Carpet_04.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_carpet_004.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Carpet_05.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_concrete_000.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_01.wav, Footstep_Glass_06.wav, Footstep_Stone_01.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_concrete_001.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_02.wav, Footstep_Stone_02.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_concrete_002.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_03.wav, Footstep_Glass_07.wav, Footstep_Stone_03.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_concrete_003.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_04.wav, Footstep_Glass_08.wav, Footstep_Stone_04.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - footstep_concrete_004.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_05.wav, Footstep_Stone_05.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_light_000.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_01.wav, GlassDebris_Light_01.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_light_001.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_02.wav, GlassDebris_Light_02.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_light_002.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_08.wav, GlassDebris_Light_03.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_light_003.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_04.wav, GlassDebris_Light_04.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_light_004.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_06.wav, GlassDebris_Light_05.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_medium_000.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_07.wav, GlassDebris_Medium_01.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_medium_001.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    GlassDebris_Medium_02.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_medium_002.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_03.wav, GlassDebris_Medium_03.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_medium_003.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    GlassDebris_Medium_04.wav
+- Kenney (www.kenney.nl) - "Impact Sounds 1.0 - impactGlass_medium_004.ogg" - https://kenney.nl/assets/impact-sounds - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Glass_05.wav, GlassDebris_Medium_05.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - cloth1.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    ClothRustle_01.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - cloth2.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    ClothRustle_02.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - cloth3.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    ClothRustle_03.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - cloth4.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    ClothRustle_04.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - clothBelt.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    ClothBelt_01.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - clothBelt2.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    ClothBelt_02.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - footstep00.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Concrete_07.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - footstep04.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_Concrete_08.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - metalClick.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    MetalClick_01.wav
+- Kenney (www.kenney.nl) - "RPG Audio 1.0 - metalLatch.ogg" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    CaseLatch_01.wav
+- Lightnessko - "Door unlocking with keys" - https://freesound.org/s/390328/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    DoorUnlockKeys_01.wav
+- Lightnessko - "Keys jingling" - https://freesound.org/s/390324/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Keys_05.wav
+- LukaCafuka - "Radio static" - https://freesound.org/people/LukaCafuka/sounds/760335/ - CC0 1.0 - https://github.com/Warexpor/DarkwoodMP-YokWare @ d9d2237e4071
+    RadioStatic_Far_Loop.ogg
+- NachtmahrTV - "Rustling fabric" - https://freesound.org/s/556711/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    ClothRustle_07.wav
+- NachtmahrTV; clipped by Centronias - "heelsclack (clipped from a NachtmahrTV recording by Centronias)" - https://freesound.org/people/NachtmahrTV/sounds/571801/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    Footstep_Heels_01.wav, Footstep_Heels_02.wav, Footstep_Heels_03.wav, Footstep_Heels_04.wav, Footstep_Heels_05.wav
+- RutgerMuller - "Footsteps in Factory Hall on Wood and Concrete.wav" - https://freesound.org/s/155858/ - CC0 1.0 - https://github.com/Aarymanv/hillbomb-sf @ 937d362243a5
+    Footstep_Concrete_01.wav, Footstep_Concrete_02.wav, Footstep_Concrete_03.wav, Footstep_Concrete_04.wav, Footstep_Concrete_05.wav, Footstep_Concrete_06.wav, Footstep_Wet_04.wav, Footstep_Wet_05.wav, Footstep_Wet_06.wav, Footstep_Wet_07.wav, Footstep_Wet_08.wav
+- RutgerMuller - "Zipper Unzip 3 (Slow) .wav" - https://freesound.org/s/51176/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Zipper_02.wav
+- SEF7 - "Walkie Talkie famous beep" - https://freesound.org/people/SEF7/sounds/701326/ - CC0 1.0 - https://github.com/Warexpor/DarkwoodMP-YokWare @ d9d2237e4071
+    RadioKeyBeep_01.wav
+- SEF7 - "Walkie Talkie radio static" - https://freesound.org/people/SEF7/sounds/701330/ - CC0 1.0 - https://github.com/Warexpor/DarkwoodMP-YokWare @ d9d2237e4071
+    RadioStatic_Near_Loop.ogg
+- SomeoneCool15 - "Light Switch Click On and Off" - https://freesound.org/s/423512/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    SwitchClick_03.wav, SwitchClick_04.wav
+- Soundkrampf - "Night city atmosphere" - https://freesound.org/s/237329/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    NightCityAtmos_Loop.ogg
+- Tee_Hee_Tummy_Tums - "Zipper.aif" - https://freesound.org/s/263039/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Zipper_01.wav
+- WakuWakuWakuWaku - "Indoor Footsteps.wav" - https://freesound.org/s/366111/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Footstep_Stone_08.wav, Footstep_Stone_09.wav, Footstep_Stone_10.wav
+- WasabiWielder - "Clothes Rustling 1" - https://freesound.org/s/334219/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    ClothRustle_06.wav
+- WeeJee_vdH - "Picking Up Keys" - https://freesound.org/s/267711/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Keys_06.wav
+- greatsoundstube - "Press radio knob.wav" - https://freesound.org/people/greatsoundstube/sounds/629301/ - CC0 1.0 - https://github.com/Warexpor/DarkwoodMP-YokWare @ d9d2237e4071
+    RadioKnob_01.wav, RadioKnob_02.wav
+- guitarguy1985 - "doorbell2.wav" - https://freesound.org/s/69385/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    ShopDoorBell_02.wav
+- jwheeler91 - "DoorBell Shortened" - https://freesound.org/s/442280/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    ShopDoorBell_01.wav
+- klangfabrik - "winter wind 01c.aiff" - https://freesound.org/s/117513/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    WindWinter_Loop.ogg
+- kyles - "window small trailer rv glass smash with an axe debris fall metal grill.wav" - https://freesound.org/s/452670/ - CC0 1.0 - https://github.com/Aarymanv/hillbomb-sf @ 937d362243a5
+    GlassDebrisSettle_01.wav
+- leonelmail - "Ambience City Quiet Night Air Tone" - https://freesound.org/s/427841/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    NightCityAirTone_Loop.ogg
+- leosalom - "ZIP.WAV" - https://freesound.org/s/234885/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Zipper_03.wav
+- martian - "foley cloth rustle.wav" - https://freesound.org/s/19291/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    ClothRustle_05.wav
+- mzui - "Room Tone Office 13" - https://freesound.org/s/203306/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    OfficeRoomTone_Loop.ogg
+- nithala - "wind.wav" - https://freesound.org/s/525292/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    WindSoft_Loop.ogg
+- roachpowder - "Camera Shutter" - https://freesound.org/people/roachpowder/sounds/170229/ - CC0 1.0 - https://github.com/Tombonator3000/SIGNAL-47 @ 726b2d965fdc
+    CameraShutter_01.wav
+- roofusj - "steady rain in the city.wav" - https://freesound.org/s/217236/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    RainSteadyCity_Loop.ogg
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_door_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    DoorHandle_01.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_door_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    DoorHandle_02.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_door_03.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    DoorHandle_03.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_door_04.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    DoorHandle_04.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_door_05.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    DoorHandle_05.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_footstep_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    Footstep_Stone_06.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_footstep_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    Footstep_Stone_07.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_footstep_wet_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    Footstep_Wet_01.wav, Footstep_Wet_04.wav, Footstep_Wet_07.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_footstep_wet_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    Footstep_Wet_02.wav, Footstep_Wet_05.wav, Footstep_Wet_08.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_footstep_wet_03.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    Footstep_Wet_03.wav, Footstep_Wet_06.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_glass_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    GlassShard_01.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_glass_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    GlassShard_02.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_glass_03.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    GlassShard_03.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_glass_04.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    GlassShard_04.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_glass_05.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    GlassShard_05.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_glass_06.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    GlassShard_06.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_items_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    PlasticSetDown_03.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_items_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    PlasticSetDown_04.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_lock_open_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    CaseLatch_02.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_loop_highway.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    DistantHighway_Loop.ogg
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_loop_machine_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    MachineHum_A_Loop.ogg
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_loop_machine_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    MachineHum_B_Loop.ogg
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_switch_01.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    SwitchClick_01.wav
+- rubberduck (OpenGameArt) - "100 CC0 SFX #2 - sfx100v2_switch_02.ogg" - https://opengameart.org/content/100-cc0-sfx-2 - CC0 1.0 - https://github.com/KasparPlaas/BiomeSurvivor @ f66f491319cd
+    SwitchClick_02.wav
+- soundmary - "Door close.wav" - https://freesound.org/s/117614/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    DoorClose_01.wav
+- thecheeseman; edited by ketufaispikinut - "camera_snap (edited by ketufaispikinut)" - https://freesound.org/people/thecheeseman/sounds/51360/ - CC BY 4.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    CameraShutter_02.wav
+- thefirecrowd - "duct tape peels.wav" - https://freesound.org/people/thefirecrowd/sounds/203107/ - CC0 1.0 - https://github.com/lala11112/seodaemun-recycle-demo @ 67bb760141ca
+    TapePeel_01.wav
+- timgormly - "Plastic Bag Crinkle.aif" - https://freesound.org/s/142592/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    PlasticBag_01.wav
+- uEffects - "Camera Focusing and Shutter" - https://freesound.org/s/207865/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    CameraFocusShutter_01.wav
+- unfa - "Glass Break" - https://freesound.org/s/221528/ - CC0 1.0 - https://github.com/Aarymanv/hillbomb-sf @ 937d362243a5
+    GlassBreak_01.wav
+- vmgraw - "Keys Jingling" - https://freesound.org/s/235614/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    Keys_01.wav, Keys_02.wav, Keys_03.wav, Keys_04.wav
+- wjtaylor - "door_close" - https://freesound.org/s/266682/ - CC0 1.0 - https://github.com/hey8v0/ST-iPhonie @ 020eb9a25120
+    DoorClose_02.wav
