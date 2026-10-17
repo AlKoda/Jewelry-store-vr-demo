@@ -1,0 +1,41 @@
+# ESC-50: Dataset for Environmental Sound Classification
+# https://github.com/karoldvl/ESC-50/
+# https://dx.doi.org/10.7910/DVN/YDEPUT
+
+## Dataset license
+
+The dataset as a whole is available under the terms of the Creative Commons
+Attribution-NonCommercial license (http://creativecommons.org/licenses/by-nc/3.0/).
+
+The ESC-10 subset is licensed as a Creative Commons Attribution 3.0 Unported
+(https://creativecommons.org/licenses/by/3.0/) dataset.
+
+...(excerpt: only the clips used in RealFoley2)
+- [3-155766-A.ogg]: clip derived from Crickets and Other Insects (http://www.freesound.org/people/kslagerman/sounds/155766/) by kslagerman [CC0]
+- [4-181362-A.ogg]: clip derived from Crickets calling at night, UK (http://www.freesound.org/people/icuttv/sounds/181362/) by icuttv [CC0]
+- [4-202749-A.ogg]: clip derived from Soft, Chilled Crickets Field Recording (http://www.freesound.org/people/rayjensen/sounds/202749/) by rayjensen [CC0]
+- [1-155858-B.ogg]: clip derived from Footsteps in Factory Hall on Wood and Concrete.wav (http://www.freesound.org/people/RutgerMuller/sounds/155858/) by RutgerMuller [CC0]
+- [1-155858-C.ogg]: clip derived from Footsteps in Factory Hall on Wood and Concrete.wav (http://www.freesound.org/people/RutgerMuller/sounds/155858/) by RutgerMuller [CC0]
+- [1-155858-D.ogg]: clip derived from Footsteps in Factory Hall on Wood and Concrete.wav (http://www.freesound.org/people/RutgerMuller/sounds/155858/) by RutgerMuller [CC0]
+- [1-155858-E.ogg]: clip derived from Footsteps in Factory Hall on Wood and Concrete.wav (http://www.freesound.org/people/RutgerMuller/sounds/155858/) by RutgerMuller [CC0]
+- [3-249913-A.ogg]: clip derived from walking slow on the street (http://www.freesound.org/people/hintringer/sounds/249913/) by hintringer [CC0]
+- [3-94343-A.ogg]: clip derived from Fotsteg p\xe5 asfalt.wav (http://www.freesound.org/people/Ryding/sounds/94343/) by Ryding [CC0]
+- [5-234855-A.ogg]: clip derived from Footsteps_Carpet.wav (http://www.freesound.org/people/mlsulli/sounds/234855/) by mlsulli [CC0]
+- [5-244310-A.ogg]: clip derived from Walking on pavement.wav (http://www.freesound.org/people/JohnsonBrandEditing/sounds/244310/) by JohnsonBrandEditing [CC0]
+- [2-102435-A.ogg]: clip derived from old alarm clock ringing (http://www.freesound.org/people/tuberatanka/sounds/102435/) by tuberatanka [CC0]
+- [3-131943-A.ogg]: clip derived from Wind up clock with twin bell alarm (http://www.freesound.org/people/AngryAdam/sounds/131943/) by AngryAdam [CC0]
+- [1-62849-A.ogg]: clip derived from clock_tick_close.wav (http://www.freesound.org/people/life_interconnected/sounds/62849/) by life_interconnected [CC0]
+- [2-141584-A.ogg]: clip derived from Plastic Quartz Clock Tick (http://www.freesound.org/people/MentalSanityOff/sounds/141584/) by MentalSanityOff [CC0]
+- [3-164688-A.ogg]: clip derived from Ticking_clock.wav (http://www.freesound.org/people/Adam_N/sounds/164688/) by Adam_N [CC0]
+- [3-170377-A.ogg]: clip derived from TicTac of a wall clock (http://www.freesound.org/people/felix.blume/sounds/170377/) by felix.blume [CC0]
+- [5-210571-A.ogg]: clip derived from wall_clock.wav (http://www.freesound.org/people/Sclolex/sounds/210571/) by Sclolex [CC0]
+- [2-70936-A.ogg]: clip derived from police.wav (http://www.freesound.org/people/guitarguy1985/sounds/70936/) by guitarguy1985 [CC0]
+- [2-70938-A.ogg]: clip derived from police2.wav (http://www.freesound.org/people/guitarguy1985/sounds/70938/) by guitarguy1985 [CC0]
+- [5-133989-A.ogg]: clip derived from Whelen WPS-3016 Siren.mp3 (http://www.freesound.org/people/2887679652/sounds/133989/) by 2887679652 [CC0]
+- [5-133989-B.ogg]: clip derived from Whelen WPS-3016 Siren.mp3 (http://www.freesound.org/people/2887679652/sounds/133989/) by 2887679652 [CC0]
+- [5-150409-A.ogg]: clip derived from siren.mp3 (http://www.freesound.org/people/radiopassiveboy/sounds/150409/) by radiopassiveboy [CC0]
+- [3-154758-A.ogg]: clip derived from Car Engine Idling.wav (http://www.freesound.org/people/jpkweli/sounds/154758/) by jpkweli [CC0]
+- [4-186935-A.ogg]: clip derived from engine_idle_loop.wav (http://www.freesound.org/people/ReadeOnly/sounds/186935/) by ReadeOnly [CC0]
+- [4-186940-A.ogg]: clip derived from engine3_idle_loop.wav (http://www.freesound.org/people/ReadeOnly/sounds/186940/) by ReadeOnly [CC0]
+
+Source: https://github.com/karolpiczak/ESC-50/blob/33c8ce9eb2cf0b1c2f8bcf322eb349b6be34dbb6/LICENSE

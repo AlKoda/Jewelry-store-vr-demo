@@ -1,0 +1,117 @@
+RealFoley2 - licences and provenance
+Prepared October 17, 2026 for the Jewelry-store-vr-demo project. Status: fetched and processed; not wired; not auditioned (unverified).
+
+Every audio file in this folder is a processed copy of one real recording. No file is synthesized, layered, NonCommercial, NoDerivatives, ShareAlike or of unknown licence.
+
+CC0 1.0 Universal: https://creativecommons.org/publicdomain/zero/1.0/  (no attribution required; credits below are voluntary)
+CC BY 4.0: https://creativecommons.org/licenses/by/4.0/
+
+ATTRIBUTION REQUIRED (show in the in-app credits and keep in Docs/ASSET_REGISTER.md):
+  ElectricalHum_Loop.ogg: "electrical substation_hum.wav" by Zabuhailo (https://freesound.org/people/Zabuhailo/sounds/167673/), licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); clipped by Jhrushbe (Delta-V); looped and normalised.
+  EngineIdle_InspectorJ_Loop.ogg: Freesound sound 338954 by InspectorJ (www.jshaw.co.uk) of Freesound.org (https://freesound.org/people/InspectorJ/sounds/338954/), licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); via Space Station 14; trimmed, looped and normalised.
+  EngineStart_02.wav: Freesound sound 338954 by InspectorJ (www.jshaw.co.uk) of Freesound.org (https://freesound.org/people/InspectorJ/sounds/338954/), licensed CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/); via Space Station 14; trimmed and normalised.
+
+Licence verification: freesound.org, bigsoundbank.com and itch.io could not be opened from the preparation environment. The licence of
+each recording is taken from the licence record of the GitHub mirror that supplied it (copies or excerpts in Licenses/).
+ESC-50 clips: the dataset as a whole is CC BY-NC 3.0; only clips whose Freesound original is CC0 per the dataset's LICENSE are used.
+Please open the original pages once before a public release. Changes to every file: trimming, mono downmix, resampling to 48 kHz,
+high-pass filtering, fades, loudness normalisation, loop crossfades (see sources.json).
+
+CREDITS (author - title - original - licence - mirror @ commit - files)
+
+- 2887679652 - "Whelen WPS-3016 Siren.mp3" - https://freesound.org/people/2887679652/sounds/133989/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Siren_US_Wail_01.wav, Siren_US_Wail_02.wav
+- Adam_N - "Ticking_clock.wav" - https://freesound.org/people/Adam_N/sounds/164688/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    ClockTick_Fast_Loop.ogg
+- AngryAdam - "Wind up clock with twin bell alarm" - https://freesound.org/people/AngryAdam/sounds/131943/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    AlarmBellSmall_Loop.ogg
+- bassmosphere (remixed by Jhrushbe) - "relay click" - https://freesound.org/people/bassmosphere/sounds/384698/ - CC0 1.0 - https://github.com/DeltaV-Station/Delta-v @ a042876d0050
+    RelayClick_01.wav
+- BenjaminNelan - "doorknob" - https://freesound.org/people/BenjaminNelan/sounds/321087/ - CC0 1.0 - https://github.com/crystallpunk-14/crystall-punk-14 @ 5b6108377e40
+    DoorKnob_01.wav
+- Dashman71 - "cherping summer night crickets.wav" - https://freesound.org/people/Dashman71/sounds/477863/ - CC0 1.0 - https://github.com/victorrentea/victor-effects @ 753149cae0da
+    NightCrickets_Loop.ogg
+- deleted_user_7020630 - "School bell.wav" - https://freesound.org/people/deleted_user_7020630/sounds/378394/ - CC0 1.0 - https://github.com/victorrentea/victor-effects @ 753149cae0da
+    AlarmBell_Loop.ogg, AlarmBell_Stop_01.wav
+- dslrguide (converted by Themias) - "pen click" - https://freesound.org/people/dslrguide/sounds/321484 - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    PenClick_01.wav
+- felix.blume - "TicTac of a wall clock" - https://freesound.org/people/felix.blume/sounds/170377/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    ClockTick_Wall_Loop.ogg
+- Fenodyrie - "bell" - https://freesound.org/people/Fenodyrie/sounds/583950/ - CC0 1.0 - https://github.com/crystallpunk-14/crystall-punk-14 @ 5b6108377e40
+    ShopBell_01.wav
+- Fenodyrie - "bell (short)" - https://freesound.org/people/Fenodyrie/sounds/583950/ - CC0 1.0 - https://github.com/crystallpunk-14/crystall-punk-14 @ 5b6108377e40
+    ShopBell_02.wav
+- guitarguy1985 - "police.wav" - https://freesound.org/people/guitarguy1985/sounds/70936/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Siren_Police_01.wav
+- guitarguy1985 - "police2.wav" - https://freesound.org/people/guitarguy1985/sounds/70938/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Siren_Police_02.wav
+- hintringer - "walking slow on the street" - https://freesound.org/people/hintringer/sounds/249913/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Footstep_Pavement_15.wav, Footstep_Pavement_16.wav, Footstep_Pavement_17.wav, Footstep_Pavement_18.wav
+- icuttv - "Crickets calling at night, UK" - https://freesound.org/people/icuttv/sounds/181362/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    NightCrickets_Far_Loop.ogg
+- InspectorJ (www.jshaw.co.uk) - "vehicleengineidle.ogg (cut from Freesound 338954)" - https://freesound.org/people/InspectorJ/sounds/338954/ - CC BY 4.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    EngineIdle_InspectorJ_Loop.ogg
+- InspectorJ (www.jshaw.co.uk) - "vehiclestartup.ogg (cut from Freesound 338954)" - https://freesound.org/people/InspectorJ/sounds/338954/ - CC BY 4.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    EngineStart_02.wav
+- JohnsonBrandEditing - "Walking on pavement.wav" - https://freesound.org/people/JohnsonBrandEditing/sounds/244310/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Footstep_Pavement_01.wav, Footstep_Pavement_02.wav, Footstep_Pavement_03.wav, Footstep_Pavement_04.wav, Footstep_Pavement_05.wav, Footstep_Pavement_06.wav, Footstep_Pavement_07.wav, Footstep_Pavement_08.wav
+- Joseph Sardin (BigSoundBank) - "Siren, French Gendarmerie (0886)" - https://bigsoundbank.com/siren-french-gendarmerie-s0886.html - CC0 1.0 - https://github.com/FEDCHER67/Game @ 0957711d5745
+    Siren_EuroTwoTone_01.wav
+- jpkweli - "Car Engine Idling.wav" - https://freesound.org/people/jpkweli/sounds/154758/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    EngineIdle_Car_Loop.ogg
+- jwheeler91 - "DoorBell Shortened" - https://freesound.org/people/jwheeler91/sounds/442280/ - CC0 1.0 - https://github.com/victorrentea/victor-effects @ 753149cae0da
+    ShopDoorBell_01_HQ.wav
+- Kenney (www.kenney.nl) - "https://kenney.nl/assets/rpg-audio" - https://kenney.nl/assets/rpg-audio - CC0 1.0 - https://github.com/series-ai/jam-ready-assets @ 2d7c41049c1d
+    Footstep_BootLeather_01.wav, Footstep_BootLeather_02.wav, Footstep_BootLeather_03.wav, Footstep_BootLeather_04.wav, Footstep_BootLeather_05.wav, Footstep_BootLeather_06.wav, Footstep_BootLeather_07.wav, Footstep_BootLeather_08.wav, PageTurn_01.wav, NotebookSetDown_01.wav, PageTurn_02.wav, NotebookSetDown_02.wav, PageTurn_03.wav, NotebookSetDown_03.wav, NotebookOpen_01.wav, NotebookClose_01.wav, PouchHandle_01.wav, PouchHandle_02.wav
+- kslagerman - "Crickets and Other Insects" - https://freesound.org/people/kslagerman/sounds/155766/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    NightInsects_Loop.ogg
+- life_interconnected - "clock_tick_close.wav" - https://freesound.org/people/life_interconnected/sounds/62849/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    ClockTick_Close_Loop.ogg
+- MentalSanityOff - "Plastic Quartz Clock Tick" - https://freesound.org/people/MentalSanityOff/sounds/141584/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    ClockTick_Quartz_Loop.ogg
+- mlsulli - "Footsteps_Carpet.wav" - https://freesound.org/people/mlsulli/sounds/234855/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Footstep_Carpet_06.wav, Footstep_Carpet_07.wav, Footstep_Carpet_08.wav, Footstep_Carpet_09.wav, Footstep_Carpet_10.wav, Footstep_Carpet_11.wav, Footstep_Carpet_12.wav, Footstep_Carpet_13.wav
+- NOX Sound - "https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound" - https://nox-sound-design.itch.io/essentials-series-sfx-nox-sound - CC0 1.0 - https://github.com/FEDCHER67/Game @ 0957711d5745
+    Footstep_Boot_01.wav, Footstep_Boot_02.wav, Footstep_Boot_03.wav, Footstep_Boot_04.wav, Footstep_Boot_05.wav, Footstep_Boot_06.wav, EngineIdle_Police_Loop.ogg, EngineStart_01.wav, CarDoorClose_01.wav, CarDoorOpen_01.wav, CarDoorClose_02.wav, CarDoorOpen_02.wav, CarDoorClose_03.wav, CarDoorOpen_03.wav
+- Nox_Sound (edited by themias) - "toolbox open" - https://freesound.org/people/Nox_Sound/sounds/556648/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    KitCaseOpen_01.wav
+- Nox_Sound (edited by themias) - "toolbox close" - https://freesound.org/people/Nox_Sound/sounds/556648/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    KitCaseClose_01.wav
+- PDaefaul (cut by Krunklehorn) - "Pen Clicks and Writing on Paper (paper_scribble1 cut)" - https://freesound.org/people/PDaefaul/sounds/631971/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    PenWriting_01.wav
+- PDaefaul (cut by Krunklehorn) - "Pen Clicks and Writing on Paper (paper_scribble2 cut)" - https://freesound.org/people/PDaefaul/sounds/631971/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    PenWriting_02.wav
+- PDaefaul (cut by Krunklehorn) - "Pen Clicks and Writing on Paper (paper_scribble3 cut)" - https://freesound.org/people/PDaefaul/sounds/631971/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    PenWriting_03.wav
+- PDaefaul (cut by Krunklehorn) - "Pen Clicks and Writing on Paper (paper_scribble4 cut)" - https://freesound.org/people/PDaefaul/sounds/631971/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    PenWriting_04.wav
+- PDaefaul (cut by Krunklehorn) - "Pen Clicks and Writing on Paper (paper_scribble5 cut)" - https://freesound.org/people/PDaefaul/sounds/631971/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    PenWriting_05.wav
+- Piotr Zaczek (blukotek) - "policesiren" - https://freesound.org/people/blukotek/sounds/431651/ - CC0 1.0 - https://github.com/space-wizards/space-station-14 @ d469c989fbd1
+    Siren_Police_04.wav
+- radiopassiveboy - "siren.mp3" - https://freesound.org/people/radiopassiveboy/sounds/150409/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Siren_Police_03.wav
+- rayjensen - "Soft, Chilled Crickets Field Recording" - https://freesound.org/people/rayjensen/sounds/202749/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    NightCrickets_Soft_Loop.ogg
+- ReadeOnly - "engine_idle_loop.wav" - https://freesound.org/people/ReadeOnly/sounds/186935/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    EngineIdle_CarB_Loop.ogg
+- ReadeOnly - "engine3_idle_loop.wav" - https://freesound.org/people/ReadeOnly/sounds/186940/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    EngineIdle_Diesel_Loop.ogg
+- Rudmer_Rotteveel - "flashlight click (Freesound 502506)" - https://freesound.org/people/Rudmer_Rotteveel/sounds/502506/ - CC0 1.0 - https://github.com/huynguyen03dev/godot-ai-playground @ 61d39903dbf9
+    TorchClick_01.wav
+- RutgerMuller - "Footsteps in Factory Hall on Wood and Concrete.wav" - https://freesound.org/people/RutgerMuller/sounds/155858/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Footstep_Concrete_01_HQ.wav, Footstep_Concrete_02_HQ.wav, Footstep_Concrete_03_HQ.wav, Footstep_Concrete_04_HQ.wav, Footstep_Concrete_05_HQ.wav, Footstep_Concrete_06_HQ.wav
+- Ryding - "Fotsteg p\xe5 asfalt.wav" - https://freesound.org/people/Ryding/sounds/94343/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    Footstep_Pavement_09.wav, Footstep_Pavement_10.wav, Footstep_Pavement_11.wav, Footstep_Pavement_12.wav, Footstep_Pavement_13.wav, Footstep_Pavement_14.wav
+- Sclolex - "wall_clock.wav" - https://freesound.org/people/Sclolex/sounds/210571/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    ClockTick_WallB_Loop.ogg
+- Spaghetto87 - "paper/note rustle (Freesound 731484)" - https://freesound.org/people/Spaghetto87/sounds/731484/ - CC0 1.0 - https://github.com/huynguyen03dev/godot-ai-playground @ 61d39903dbf9
+    PaperRustle_01.wav, PaperRustle_02.wav, PaperRustle_03.wav, PaperRustle_04.wav, PaperRustle_05.wav, PaperRustle_06.wav
+- tuberatanka - "old alarm clock ringing" - https://freesound.org/people/tuberatanka/sounds/102435/ - CC0 1.0 - https://github.com/karolpiczak/ESC-50 @ 33c8ce9eb2cf
+    AlarmBellClock_Loop.ogg
+- unfa - "Glass Break" - https://freesound.org/people/unfa/sounds/221528/ - CC0 1.0 - https://github.com/victorrentea/victor-effects @ 753149cae0da
+    GlassBreak_01_HQ.wav
+- Zabuhailo (clipped by Jhrushbe) - "electrical substation_hum.wav" - https://freesound.org/people/Zabuhailo/sounds/167673/ - CC BY 4.0 - https://github.com/DeltaV-Station/Delta-v @ a042876d0050
+    ElectricalHum_Loop.ogg
+- Zott820 - "cash register" - https://freesound.org/people/Zott820/sounds/209578/ - CC0 1.0 - https://github.com/crystallpunk-14/crystall-punk-14 @ 5b6108377e40
+    CashRegister_01.wav

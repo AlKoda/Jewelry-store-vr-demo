@@ -1,3 +1,8 @@
+## Four more asset packs — October 17, round 2 (Claude, unverified)
+
+- [x] AmbientProps2, RealismTextures, RealFoley2 fetched with licences and register rows.
+- [ ] Wire all packs in with fallbacks and checks; audition RealFoley/RealFoley2.
+
 ## Three more asset packs — October 17 (Claude, unverified)
 
 - [x] AmbientProps, CutoutDecals, RealFoley fetched with licences and register rows (see HANDOFF).

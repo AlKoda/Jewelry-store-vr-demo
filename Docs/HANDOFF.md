@@ -1,3 +1,17 @@
+# Four more asset packs — October 17, round 2 (Claude, unverified, not yet used in any scene)
+
+- **AmbientProps2** (24 MB, 56 models):
+  - 24 Poly Haven CC0 models with normal and smoothness maps; the maps are named in `# Normal` / `# MetallicSmoothness` MTL comments, so DemoAssetLibrary must assign them.
+  - 23 stylised Kenney CC0 props.
+  - 9 street models (cars, van, scooter, trees, bin, cart; three are CC BY 3.0).
+- **RealismTextures** (56 MB): normal/smoothness/occlusion maps for the AmbientProps models, four tileable surfaces, and decals (peeling paint, plus generated cobwebs, rain on glass, spills, bottle caps, droppings).
+- **RealFoley2** (8.7 MB, 112 recordings, CC0 except 3 CC BY 4.0):
+  - alarm bells, a shop bell, boot and pavement steps, more carpet steps;
+  - sirens, car doors, engine idles, crickets, electrical hum, clocks, torch click, paper and pen, a kit case;
+  - higher-quality copies of three RealFoley clips.
+  - Some ESC-50 sources are short 5 s clips.
+- None of these has been auditioned or imported in Unity yet. See each pack's README for scale notes and gaps.
+
 # Three more asset packs — October 17 (Claude, unverified, not yet used in any scene)
 
 New packs under Prototype/ThirdParty, each with LICENSE.txt, sources.json and README.md, plus rows in ASSET_REGISTER.md. None is wired into a builder yet, and none has been imported into Unity.
