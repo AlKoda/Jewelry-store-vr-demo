@@ -1,0 +1,15 @@
+newmtl Frame
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd SidewalkChalkboard_Frame_Color.jpg
+# Normal SidewalkChalkboard_Frame_Normal.jpg
+# MetallicSmoothness SidewalkChalkboard_Frame_MetallicSmoothness.png
+
+newmtl Board
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd SidewalkChalkboard_Board_Color.jpg
+# Normal SidewalkChalkboard_Board_Normal.jpg
+# MetallicSmoothness SidewalkChalkboard_Board_MetallicSmoothness.png

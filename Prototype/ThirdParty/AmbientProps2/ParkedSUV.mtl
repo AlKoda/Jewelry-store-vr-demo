@@ -1,0 +1,29 @@
+newmtl Grey
+Kd 0.161 0.161 0.161
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Black
+Kd 0.012 0.012 0.012
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl White
+Kd 0.557 0.557 0.557
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Windows
+Kd 0.027 0.027 0.027
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl Headlights
+Kd 0.639 0.302 0.102
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl TailLights
+Kd 0.639 0.075 0.059
+Ks 0.05 0.05 0.05
+d 1.000

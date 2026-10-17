@@ -1,0 +1,54 @@
+newmtl bodywork
+Kd 0.459 0.459 0.459
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl plastic
+Kd 0.031 0.031 0.031
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl glass
+Kd 0.000 0.000 0.000
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl front_lights
+Kd 0.800 0.714 0.106
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl back_lights
+Kd 0.800 0.141 0.047
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl front_lights_down
+Kd 0.800 0.165 0.086
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl details
+Kd 0.271 0.271 0.271
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl back_plate_001
+Kd 0.220 0.220 0.220
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl front_plate
+Kd 0.220 0.220 0.220
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl wheel
+Kd 0.000 0.000 0.000
+Ks 0.05 0.05 0.05
+d 1.000
+
+newmtl kidney
+Kd 0.388 0.388 0.388
+Ks 0.05 0.05 0.05
+d 1.000

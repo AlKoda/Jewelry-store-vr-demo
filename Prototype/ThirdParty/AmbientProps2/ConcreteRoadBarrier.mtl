@@ -1,0 +1,7 @@
+newmtl Concrete
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd ConcreteRoadBarrier_Color.jpg
+# Normal ConcreteRoadBarrier_Normal.jpg
+# MetallicSmoothness ConcreteRoadBarrier_MetallicSmoothness.png

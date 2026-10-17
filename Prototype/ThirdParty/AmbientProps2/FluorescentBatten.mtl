@@ -1,0 +1,15 @@
+newmtl Fitting
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd FluorescentBatten_Fitting_Color.jpg
+# Normal FluorescentBatten_Fitting_Normal.jpg
+# MetallicSmoothness FluorescentBatten_Fitting_MetallicSmoothness.png
+
+newmtl Tube
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd FluorescentBatten_Fitting_Color.jpg
+# Normal FluorescentBatten_Fitting_Normal.jpg
+# MetallicSmoothness FluorescentBatten_Fitting_MetallicSmoothness.png

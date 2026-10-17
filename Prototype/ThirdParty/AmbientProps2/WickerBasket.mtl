@@ -1,0 +1,7 @@
+newmtl Wicker
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd WickerBasket_Color.jpg
+# Normal WickerBasket_Normal.jpg
+# MetallicSmoothness WickerBasket_MetallicSmoothness.png

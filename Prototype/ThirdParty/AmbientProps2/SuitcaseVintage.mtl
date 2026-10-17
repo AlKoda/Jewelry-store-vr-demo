@@ -1,0 +1,15 @@
+newmtl CaseB
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd SuitcaseVintage_CaseB_Color.jpg
+# Normal SuitcaseVintage_CaseB_Normal.jpg
+# MetallicSmoothness SuitcaseVintage_CaseB_MetallicSmoothness.png
+
+newmtl CaseA
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd SuitcaseVintage_CaseA_Color.jpg
+# Normal SuitcaseVintage_CaseA_Normal.jpg
+# MetallicSmoothness SuitcaseVintage_CaseA_MetallicSmoothness.png

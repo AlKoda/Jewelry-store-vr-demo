@@ -1,0 +1,7 @@
+newmtl Pack
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd CigarettePack_Color.jpg
+# Normal CigarettePack_Normal.jpg
+# MetallicSmoothness CigarettePack_MetallicSmoothness.png

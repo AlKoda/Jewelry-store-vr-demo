@@ -1,0 +1,15 @@
+newmtl Broom
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Broom_Broom_Color.jpg
+# Normal Broom_Broom_Normal.jpg
+# MetallicSmoothness Broom_Broom_MetallicSmoothness.png
+
+newmtl Bristles
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd Broom_Broom_Color.jpg
+# Normal Broom_Broom_Normal.jpg
+# MetallicSmoothness Broom_Broom_MetallicSmoothness.png

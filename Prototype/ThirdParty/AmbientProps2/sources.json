@@ -1,0 +1,1678 @@
+{
+ "pack": "AmbientProps2",
+ "prepared": "2026-10-17",
+ "unverified_in_unity": true,
+ "units": "metres, Y up, ground at y = 0, centred in x/z (FluorescentBatten: ceiling pivot, top at y = 0)",
+ "texture_convention": {
+  "Color": "sRGB JPG/PNG (map_Kd)",
+  "Normal": "_Normal.jpg, tangent-space OpenGL +Y, named in the MTL as a \"# Normal <file>\" comment line",
+  "MetallicSmoothness": "_MetallicSmoothness.png RGBA, R = G = B = metallic, A = smoothness, \"# MetallicSmoothness <file>\" comment line"
+ },
+ "license_evidence": {
+  "Poly Haven": "CC0 per https://polyhaven.com/license; ids and the CC0 statement also in the mirror Geadas11/Claude_steam_game assets/3d/CREDITS.md and Hona/daxship; authors from the Poly Haven API listing (Akshay25798/VFX-Houdini-Asset_Browser downloads/json/models.json) or the credits files of ReidT205/blacksite-assets ATTRIBUTION.md and m4tthewdavis/fallout-minnesota assets/CREDITS.md. Six authors were not found in a reachable mirror; CC0 needs no attribution.",
+  "Kenney": "CC0 1.0 per the License.txt shipped in each kit (kenney-food-kit/3D/food/License.txt, kenney-mini-market/3D/city/License.txt, kenney_furniture-kit/License.txt), copied to Source~/licenses/.",
+  "Poly Pizza (green-diamond)": "Licence and author per item in bumbeishvili/green-diamond assets/models/manifest.json and CREDITS.md (CC0 for Quaternius / Isa Lousberg; CC BY 3.0 for PuKkBuMXDD and Poly by Google). poly.pizza is not reachable from the build container.",
+  "Poly Pizza (DankNooner)": "Scooter: ssebs/DankNooner v1/attributions.md, \"Scooter by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/9RqkkBOPNtd)\". Single-source evidence; confirm on poly.pizza before release."
+ },
+ "total_triangles": 156503,
+ "pack_bytes": 23970536,
+ "models": {
+  "CashRegisterVintage": {
+   "title": "Cash Register 01",
+   "provider": "Poly Haven",
+   "authors": "Joe Seabuhr",
+   "page": "https://polyhaven.com/a/CashRegister_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/CashRegister_01/",
+   "source_files_sha256": {
+    "CashRegister_01.bin": "51cfd1329ae1700faaf4d1ce6116f73e795b6a31af7e86fbbb1047b57aa0fe3f",
+    "CashRegister_01.gltf": "9e7cd6c659466b56f3e8dd3375d3e9a47751556dcddca5b305badda95ea65bf9",
+    "textures/CashRegister_01_arm_2k.jpg": "ebdb551da131b20ad38bf1fc24d5acfaf6d1a024f0d282631a5254474307f280",
+    "textures/CashRegister_01_diff_2k.jpg": "222144e43c9df703685cc4cbbbc7ade26c8ce1beb81b8e410b91328a9443f0fb",
+    "textures/CashRegister_01_glass_arm_2k.jpg": "858244b4434f417a4af43fb10a839f53598ea175253f8fa02e2152bc45c92f26",
+    "textures/CashRegister_01_glass_diff_2k.jpg": "7ec614d0b53c8e807594dfa4d9f7f5e60126fa4add96bff65a04477652a75259",
+    "textures/CashRegister_01_glass_nor_gl_2k.jpg": "15ec1f4a61b4bf50c71d147f7c99e1a37a7dba4d6a47f6b782a80b5eb2b54ed6",
+    "textures/CashRegister_01_nor_gl_2k.jpg": "1e2e6aaa8267b77f2911b2c9d2cbbd0821c2aa3e34ff9aa04718ed93e00d35df"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Vintage brass till; back counter / display piece (the working POS is JewelryModels/PosTablet + PaymentTerminal).",
+   "tris": 5003,
+   "size_m": [
+    0.6,
+    0.621,
+    0.624
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "CashRegisterVintage_Color.jpg",
+    "CashRegisterVintage_MetallicSmoothness.png",
+    "CashRegisterVintage_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "StreetPlanterBox": {
+   "title": "Planter Box 01",
+   "provider": "Poly Haven",
+   "authors": "James Ray Cock",
+   "page": "https://polyhaven.com/a/planter_box_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/planter_box_01/",
+   "source_files_sha256": {
+    "planter_box_01.bin": "cc97bc9ee05a90c78e27ca575a83eba86955e863dea8a12826f6ff02c2c11db3",
+    "planter_box_01.gltf": "949c6988e3a69f002f714c2055ecdd80c4103daff745cda3242ca0e43db06e76",
+    "textures/planter_box_01_arm_2k.jpg": "58763cec7101451530347be30113574c64f5044b695da9e6bacb6318150bba00",
+    "textures/planter_box_01_diff_2k.jpg": "2b3e15dc8759344a6ab8757e0ef72bc3dbad4c6273d090b006c0caa00f0400d9",
+    "textures/planter_box_01_nor_gl_2k.jpg": "b70b7c4a7c125239819e987becda1659db4a20207d3120746817a2ca897184bf"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Potted planter by the shop entrance / sidewalk.",
+   "tris": 5038,
+   "size_m": [
+    0.913,
+    0.425,
+    0.414
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "StreetPlanterBox_Color.jpg",
+    "StreetPlanterBox_MetallicSmoothness.png",
+    "StreetPlanterBox_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "WaterBottleGallon": {
+   "title": "Plastic Bottle Gallon",
+   "provider": "Poly Haven",
+   "authors": "Rahul Chaudhary",
+   "page": "https://polyhaven.com/a/plastic_bottle_gallon",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/plastic_bottle_gallon/",
+   "source_files_sha256": {
+    "plastic_bottle_gallon.bin": "b1b6177d5f54389102442aeaef488364a685d0c2320aa8911abce9b7c97a15a8",
+    "plastic_bottle_gallon.gltf": "3fcc3e7a02491d07f344bdf490967f8262f91151fc23e375968ae9a6b08b941e",
+    "textures/plastic_bottle_gallon_arm_2k.jpg": "1f4e8fc0530c855ca0b4396a7af437490bbe11132fea572fc4b0accd4adc8ead",
+    "textures/plastic_bottle_gallon_diff_2k.jpg": "396c3f59b8715a1c5a306c6961c8237cb21f2a745eae741ec5f1c034daf62813",
+    "textures/plastic_bottle_gallon_nor_gl_2k.jpg": "ae936236becf6b996abc834a2d76746359b96fd44a4479c482282f22c6957715"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Plastic drink/water bottle on desks, back room (0.27 m).",
+   "tris": 4000,
+   "size_m": [
+    0.166,
+    0.275,
+    0.126
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "WaterBottleGallon_Color.jpg",
+    "WaterBottleGallon_MetallicSmoothness.png",
+    "WaterBottleGallon_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "FoodPackets": {
+   "title": "Long Life Food",
+   "provider": "Poly Haven",
+   "authors": "Mia Pecina Zorko",
+   "page": "https://polyhaven.com/a/long_life_food",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/long_life_food/",
+   "source_files_sha256": {
+    "long_life_food.bin": "efd51e3ea3aa7cb047c33792a484466e105f9ffd88cc1c508bf73dcafabed42e",
+    "long_life_food.gltf": "17f0332cf9a02f064fb6c5f1e84ff8b3c0eadfcb8f00c6d5e696a6e94739f598",
+    "textures/long_life_food_arm_2k.jpg": "b4e485f4e3d53a48c7295e60a46cebf8d1df5bf37ee089a641c1b579b7985003",
+    "textures/long_life_food_diff_2k.jpg": "90e8fb0a6a148e5245bcf64a9b7842c811261f06adf193ee0094f23fc12d9626",
+    "textures/long_life_food_nor_gl_2k.jpg": "1c5a10dbb1cd04303f8383ae3c0d90df3129a71a61df64903840633ce403830f"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Snack/food packets on the staff-room shelf or a desk.",
+   "tris": 4712,
+   "size_m": [
+    0.524,
+    0.238,
+    0.114
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "FoodPackets_Color.jpg",
+    "FoodPackets_MetallicSmoothness.png",
+    "FoodPackets_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "PlasticTub": {
+   "title": "Plastic Container",
+   "provider": "Poly Haven",
+   "authors": "not recorded in a reachable mirror (see the Poly Haven page)",
+   "page": "https://polyhaven.com/a/plastic_container",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/plastic_container/",
+   "source_files_sha256": {
+    "plastic_container.bin": "483cded86a33068853199b6f535336a00c317c988a219c75c1eaa9060304aa6a",
+    "plastic_container.gltf": "88ac9e3678cdf4b305a362f9545ffdd38c7b855140c0e1d60a9f998951eaebc2",
+    "textures/plastic_container_arm_2k.jpg": "fe2fb43c6cef7a478e760451ef773a1dbfd22c031f4b8e43a737bd8ba6b8d065",
+    "textures/plastic_container_diff_2k.jpg": "78aaa58c14cff2f2784c25889908d374c3d8f8f145ead27b3eeef88ec5a49308",
+    "textures/plastic_container_nor_gl_2k.jpg": "d86a55fdfc7574f932b65efa1b80189701fbfb0e3ae65d2631b8241bc2bf69b5"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Storage tub in the back room.",
+   "tris": 4070,
+   "size_m": [
+    0.895,
+    0.43,
+    0.626
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "PlasticTub_Color.jpg",
+    "PlasticTub_MetallicSmoothness.png",
+    "PlasticTub_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "DisplayShelvesWood": {
+   "title": "Wooden Display Shelves 01",
+   "provider": "Poly Haven",
+   "authors": "James Ray Cock",
+   "page": "https://polyhaven.com/a/wooden_display_shelves_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/wooden_display_shelves_01/",
+   "source_files_sha256": {
+    "textures/wooden_display_shelves_01_arm_2k.jpg": "f2240882e5c67fac0a79843628633857375852f171c13bc02603c93686b6933f",
+    "textures/wooden_display_shelves_01_diff_2k.jpg": "532b4fc7e9147cc35287cbc4796e789c3973f916b53019ff0fa10c068f96e056",
+    "textures/wooden_display_shelves_01_nor_gl_2k.jpg": "266eaa323e91dcf42e8c30bf9850da39fead76f589f1ff52c5a2f9a3b546e504",
+    "wooden_display_shelves_01.bin": "e6c000a780626e618c1f1c0c1ec2ec29e1452e7824055ba53b40963d857edfbe",
+    "wooden_display_shelves_01.gltf": "b3a7633c2c341ee459d7235549671696b5466513ee1d26bfcc6fc0b05cb97b4d"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Shop shelving (1.56 m) for the sales floor or back office.",
+   "tris": 3174,
+   "size_m": [
+    0.372,
+    1.556,
+    1.078
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "DisplayShelvesWood_Color.jpg",
+    "DisplayShelvesWood_MetallicSmoothness.png",
+    "DisplayShelvesWood_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "Broom": {
+   "title": "Plastic Broom",
+   "provider": "Poly Haven",
+   "authors": "not recorded in a reachable mirror (see the Poly Haven page)",
+   "page": "https://polyhaven.com/a/plastic_broom",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/plastic_broom/",
+   "source_files_sha256": {
+    "plastic_broom.bin": "236ced2fe52ffb6b890ca2e2aa8c1e3e2df538689fcbc77e9757f8e87819ff6c",
+    "plastic_broom.gltf": "14bdacb14fa3130182f94f40bb601f8a166e7d5f492f1d4f0c9e45f9e8f163d6",
+    "textures/plastic_broom_arm_2k.jpg": "c4b3af9fd762d37321bbdd9c0f1d205faecebab5a1cb69f19f94de5e9bb40e0f",
+    "textures/plastic_broom_diff_2k.jpg": "151899083c03c1c5e8e0512e735753397387eb7b0a2d9b8ca9885917775eb820",
+    "textures/plastic_broom_nor_gl_2k.jpg": "95645d843dba6cc9c9cc6ebdc121954a5ffc59dbfb87c69ead4d4dff5d5ba669"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Leaning in the back room / by the staff door. 9.7k tris (bristles kept at source detail).",
+   "tris": 9676,
+   "size_m": [
+    0.416,
+    1.197,
+    0.567
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "Broom_Broom_Color.jpg",
+    "Broom_Broom_MetallicSmoothness.png",
+    "Broom_Broom_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "Dustpan": {
+   "title": "Dustpan",
+   "provider": "Poly Haven",
+   "authors": "not recorded in a reachable mirror (see the Poly Haven page)",
+   "page": "https://polyhaven.com/a/dustpan",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/dustpan/",
+   "source_files_sha256": {
+    "dustpan.bin": "14d316b081ed949f8897fcc26bdc7abb8775c630ad4fe69712f9eacf2e027c30",
+    "dustpan.gltf": "faca6028d5aa00ca8125f08c7aef3ca28679d2f2071c78348b1dfaa4804428e1",
+    "textures/dustpan_arm_2k.jpg": "eacfc4e878eca0c0ab2712386ad773773e70f7e9b2cd1185d18848f39e3d2a20",
+    "textures/dustpan_diff_2k.jpg": "8918a21745d7c763c8d50cc323081875fba606d5dc5ecc997ca8d43ba797993e",
+    "textures/dustpan_nor_gl_2k.jpg": "466baab5414d3a71559f3027813a7e12c65dbcff8b989c31cf57d3f56bfd04fc"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "With the broom.",
+   "tris": 4332,
+   "size_m": [
+    0.332,
+    0.1,
+    0.368
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "Dustpan_Color.jpg",
+    "Dustpan_MetallicSmoothness.png",
+    "Dustpan_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "CigarettePack": {
+   "title": "Cigarette Pack",
+   "provider": "Poly Haven",
+   "authors": "not recorded in a reachable mirror (see the Poly Haven page)",
+   "page": "https://polyhaven.com/a/cigarette_pack",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/cigarette_pack/",
+   "source_files_sha256": {
+    "cigarette_pack.bin": "81cc5555f7d81aa1271a84dce3e94ff666b947e34b9b515c5e751946c901b00c",
+    "cigarette_pack.gltf": "19b6b8c92ee02256f37a9ff448868ce3b91b8d324e3bddcfcc1181b26f4c8374",
+    "textures/cigarette_pack_arm_2k.jpg": "59c3871cf97b4d2a6f237e8cbc730f647fa0dc580d7e83523d8a0d0843525c36",
+    "textures/cigarette_pack_diff_2k.jpg": "e7742efdfb9724ba02d78eda426bd68f69a47c3cb4f74ade531ce84cef343104",
+    "textures/cigarette_pack_nor_gl_2k.jpg": "9df89e21bb92462e12dd2ef9c491d3aeae83be6a9fdb612e2173fb3c5b65bbae"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Street/alley litter, staff smoking spot.",
+   "tris": 2814,
+   "size_m": [
+    0.056,
+    0.103,
+    0.029
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "CigarettePack_Color.jpg",
+    "CigarettePack_MetallicSmoothness.png",
+    "CigarettePack_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "FluorescentBatten": {
+   "title": "Mounted Fluorescent Lights",
+   "provider": "Poly Haven",
+   "authors": "Ulan Cabanilla",
+   "page": "https://polyhaven.com/a/mounted_fluorescent_lights",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/mounted_fluorescent_lights/",
+   "source_files_sha256": {
+    "mounted_fluorescent_lights.bin": "587851c1b4e09e4cf3438f3d8bb084d4591f6be3a7bb1b4324b84af97b3c5f03",
+    "mounted_fluorescent_lights.gltf": "4b103d87a23069802d033cdbafd16356715bdb42494c23f608f2f19d01dcb3ca",
+    "textures/mounted_fluorescent_lights_arm_2k.jpg": "521e6afd5297234f4a23ea9c61506745c9b7c74f06510857636e863dd2ed7d32",
+    "textures/mounted_fluorescent_lights_diff_2k.jpg": "b519a5b02cf7b220dff62b50862e98f5cfa15483158ca09845a75f73f828cfcd",
+    "textures/mounted_fluorescent_lights_emission_2k.jpg": "8f19530ed341bd219f87d4561b5575bb78cc879eac5390b7b95d86605862ebb4",
+    "textures/mounted_fluorescent_lights_nor_gl_2k.jpg": "e64a97826f538b4136bcf37851b85e75d6864c3e3f1cc195bb2b93e200def731"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Ceiling batten for back room / office (pivot: top at y = 0, hangs down).",
+   "tris": 6522,
+   "size_m": [
+    0.912,
+    0.035,
+    0.645
+   ],
+   "min_y": -0.0354,
+   "maps": [
+    "FluorescentBatten_Fitting_Color.jpg",
+    "FluorescentBatten_Fitting_MetallicSmoothness.png",
+    "FluorescentBatten_Fitting_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "MetalStool": {
+   "title": "Metal Stool 01",
+   "provider": "Poly Haven",
+   "authors": "not recorded in a reachable mirror (see the Poly Haven page)",
+   "page": "https://polyhaven.com/a/metal_stool_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/metal_stool_01/",
+   "source_files_sha256": {
+    "metal_stool_01.bin": "a57dae498990e7b56cba33b64721d1d0b940ca6352248de149740cd4678d451d",
+    "metal_stool_01.gltf": "c5886418d98b7ec4e932f54a2ba44896dd9e61276bf62d21697b9136f2b0803e",
+    "textures/metal_stool_01_arm_2k.jpg": "e66ecd34e5a14da864bbf23f3034dfde5347ff3d2d6038d220b49bdd9e0fa83f",
+    "textures/metal_stool_01_diff_2k.jpg": "33252d4df87ebc9250382a63aa5ea5aba27c131eef21dc610c2e2797c9c9b656",
+    "textures/metal_stool_01_nor_gl_2k.jpg": "75ab8250fa50c3e7bb835190cac0369e79217a376dfaf11181cc2f91e244cadf"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Workbench / back-office stool.",
+   "tris": 5000,
+   "size_m": [
+    0.352,
+    0.883,
+    0.355
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "MetalStool_Color.jpg",
+    "MetalStool_MetallicSmoothness.png",
+    "MetalStool_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "TeaSetMugs": {
+   "title": "Tea Set 01",
+   "provider": "Poly Haven",
+   "authors": "Rico Cilliers (model), James Ray Cock (texturing), Jurita Burger (graphic design)",
+   "page": "https://polyhaven.com/a/tea_set_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/tea_set_01/",
+   "source_files_sha256": {
+    "tea_set_01.glb": "9ab11742c274f464d0cf580c4dedf9ef7b13fae0abed3e9acabca52475421e01",
+    "tea_set_01_tea_set_01_arm_1k.jpg": "160661eccada2ab02a78d4957ca804921d31633489433517f20f34f0db7ef502",
+    "tea_set_01_tea_set_01_diff_1k.jpg": "110eb0aa11b6f532792e8b161cbe8e7a9a2b94694f217b4d9745fe32f3945ed8",
+    "tea_set_01_tea_set_01_nor_gl_1k.jpg": "0b3d5998d1d60a46a9807ccdbc8245464de4ba479bbca3eda6257575dc25b342"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept); GLB unpacked first with Source~/unglb.py",
+   "use": "Mugs/cups on a tray in the staff room (split by connected parts for single cups).",
+   "tris": 4999,
+   "size_m": [
+    0.918,
+    0.165,
+    0.484
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "TeaSetMugs_Color.jpg",
+    "TeaSetMugs_MetallicSmoothness.png",
+    "TeaSetMugs_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "ConcreteRoadBarrier": {
+   "title": "Concrete Road Barrier",
+   "provider": "Poly Haven",
+   "authors": "Amal Kumar",
+   "page": "https://polyhaven.com/a/concrete_road_barrier",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/concrete_road_barrier/",
+   "source_files_sha256": {
+    "concrete_road_barrier.glb": "53b4e6df067d3c6ea5f229e20101807584faf762d0318180d7a9e29e6b299c27",
+    "concrete_road_barrier_concrete_road_barrier_arm_1k.jpg": "b940847648012f2db8c24b16e07ad1e39b3bd33ea493203364deca209606e4b4",
+    "concrete_road_barrier_concrete_road_barrier_diff_1k.jpg": "88b2d79829ffec7b11ac4d9c8554328f30b665d2c17f634197fde4f1ca8696fe",
+    "concrete_road_barrier_concrete_road_barrier_nor_gl_1k.jpg": "c1072f51ff5c3d7158f0fbb0aa26e82b816b745b9f03639c4816832af2b37c52"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept); GLB unpacked first with Source~/unglb.py",
+   "use": "Street edge / closed-off lane (1.55 m).",
+   "tris": 5000,
+   "size_m": [
+    1.545,
+    0.832,
+    0.639
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ConcreteRoadBarrier_Color.jpg",
+    "ConcreteRoadBarrier_MetallicSmoothness.png",
+    "ConcreteRoadBarrier_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "SidewalkChalkboard": {
+   "title": "Standing Chalkboard 01",
+   "provider": "Poly Haven",
+   "authors": "ParzivalCG",
+   "page": "https://polyhaven.com/a/standing_chalkboard_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/standing_chalkboard_01/",
+   "source_files_sha256": {
+    "standing_chalkboard_01.bin": "5d848d6ed6dd5c69a99620bbddc7516b2175cbc4b1fdefc02538c27dd8ddeb69",
+    "standing_chalkboard_01.gltf": "54225f9dbff29e5acf15da82a7cf6cdc93c85a5f4efa0fa6cbf90e93c8b56519",
+    "textures/standing_chalkboard_01_board_arm_2k.jpg": "06224b87bddcd007ff3d9b25a290620ed96de913e200cc237df74676ba4208c5",
+    "textures/standing_chalkboard_01_board_diff_2k.jpg": "fa59a7a015c8aaa737d234f95a5b50e7b5ad616046895ae890ba9648a5b118eb",
+    "textures/standing_chalkboard_01_board_nor_gl_2k.jpg": "b0b1a8bdf1a1d6b6de3ed69b865e94ce61d2b8fdde72a2e48cadd533de5c2b91",
+    "textures/standing_chalkboard_01_frame_arm_2k.jpg": "3ef75fa77d92a1d7d914a00629682aba91d84593b09967863b7bb17de7756ca4",
+    "textures/standing_chalkboard_01_frame_diff_2k.jpg": "6154d5a59469c8c18924b766c097bfc3f8915af32e89edaf9e652ad94ced5ddd",
+    "textures/standing_chalkboard_01_frame_nor_gl_2k.jpg": "b798608bc865db00714ddfb80be30546ff36319b451983f25962cfdec1d88e40"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "A-board shop sign on the pavement.",
+   "tris": 2372,
+   "size_m": [
+    0.92,
+    1.509,
+    0.759
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "SidewalkChalkboard_Board_Color.jpg",
+    "SidewalkChalkboard_Board_MetallicSmoothness.png",
+    "SidewalkChalkboard_Board_Normal.jpg",
+    "SidewalkChalkboard_Frame_Color.jpg",
+    "SidewalkChalkboard_Frame_MetallicSmoothness.png",
+    "SidewalkChalkboard_Frame_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "SuitcaseVintage": {
+   "title": "Vintage Suitcase",
+   "provider": "Poly Haven",
+   "authors": "Maximilian Schuster",
+   "page": "https://polyhaven.com/a/vintage_suitcase",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/vintage_suitcase/",
+   "source_files_sha256": {
+    "textures/vintage_suitcase_01_arm_2k.jpg": "5a696cdd9ac9e583a7d775d7b317994bd39aab4f4f07e61d7ec68f5c154b0672",
+    "textures/vintage_suitcase_01_diff_2k.jpg": "f3d17fb4023cb59f0cdbc74027163d2336455d268b4517a48b1ead084b32aca4",
+    "textures/vintage_suitcase_01_nor_gl_2k.jpg": "ce79ebf2f20eefbf3c265af3c7fb08d4375fdecd1402d3b4dcec0b509fc25ef8",
+    "textures/vintage_suitcase_02_arm_2k.jpg": "0c53ba2096048d93640a944882b156e204335523595c15cf00fe3ec73037ce29",
+    "textures/vintage_suitcase_02_diff_2k.jpg": "c04e1e4f801e2a602658a7039f50c9426c42efb019237e34f841faaaf44f5fb9",
+    "textures/vintage_suitcase_02_nor_gl_2k.jpg": "eed991c879b18e5f8bb67ceb4f3c54d86ca852814e235b041b8d324401403507",
+    "vintage_suitcase.bin": "8a29ec4465a213c8d81b2d472358eae295da3221b54bebeae699f0d2cb7a32eb",
+    "vintage_suitcase.gltf": "fded41843f1d426aebadfea80d2a0b9268049b996ce7364278ddf9b6e18ad745"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Two suitcases (side by side); lost property / office.",
+   "tris": 4998,
+   "size_m": [
+    1.608,
+    0.568,
+    0.239
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "SuitcaseVintage_CaseA_Color.jpg",
+    "SuitcaseVintage_CaseA_MetallicSmoothness.png",
+    "SuitcaseVintage_CaseA_Normal.jpg",
+    "SuitcaseVintage_CaseB_Color.jpg",
+    "SuitcaseVintage_CaseB_MetallicSmoothness.png",
+    "SuitcaseVintage_CaseB_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "MonoblocChair": {
+   "title": "Plastic Monobloc Chair 01",
+   "provider": "Poly Haven",
+   "authors": "Kuutti Siitonen",
+   "page": "https://polyhaven.com/a/plastic_monobloc_chair_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/plastic_monobloc_chair_01/",
+   "source_files_sha256": {
+    "plastic_monobloc_chair_01.bin": "db5c778488d01d7e7d3409e2cda53ee8f6dd523a327c080000d549dd0f83b375",
+    "plastic_monobloc_chair_01.gltf": "1f5976383ee8064012babb608cd40b9653d3855113ef0e4fdf4e8b96fd5d6615",
+    "textures/plastic_monobloc_chair_01_arm_2k.jpg": "a8eda64bc7dc6e50c85b9a45af2201c758d98ca54d144d90c70eaf10a4dc1164",
+    "textures/plastic_monobloc_chair_01_diff_2k.jpg": "97aa591b9291614799ba98b02a37913c381dee6695e1e5f9f42574e0119d755e",
+    "textures/plastic_monobloc_chair_01_nor_gl_2k.jpg": "d20c1838a13b3efc0b51a2edd12a3d701f1d2846abc06bb202bff99952e994de"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Staff smoking spot / back yard.",
+   "tris": 3356,
+   "size_m": [
+    0.642,
+    0.88,
+    0.628
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "MonoblocChair_Color.jpg",
+    "MonoblocChair_MetallicSmoothness.png",
+    "MonoblocChair_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "PlasticJug": {
+   "title": "Jug 01",
+   "provider": "Poly Haven",
+   "authors": "Kuutti Siitonen",
+   "page": "https://polyhaven.com/a/jug_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/jug_01/",
+   "source_files_sha256": {
+    "jug_01.bin": "2dd3772547ae41cc7beeaa5f002e741cfe2c014ed4717731c5076810154bedb9",
+    "jug_01.gltf": "4ac09cde8eae1f4f338430833f62eba5619b74eb8f9d0c72a292247fcdd9fc63",
+    "textures/jug_01_arm_2k.jpg": "d6e7bbe6c0bb3c1fa2ba7d13d587bded40ef76275d19ad2c7b59076e271ba7d6",
+    "textures/jug_01_diff_2k.jpg": "23582ddf55627f7920ce32edc14f465f67aa938d3fde0247f4564278c00211b1",
+    "textures/jug_01_nor_gl_2k.jpg": "25cf8bcc5100126741496b42104eac50369016692892403826f8c9c804df6254"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Staff room counter.",
+   "tris": 4000,
+   "size_m": [
+    0.275,
+    0.211,
+    0.168
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "PlasticJug_Color.jpg",
+    "PlasticJug_MetallicSmoothness.png",
+    "PlasticJug_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "WornMetalRack": {
+   "title": "Worn Metal Rack",
+   "provider": "Poly Haven",
+   "authors": "Luca B",
+   "page": "https://polyhaven.com/a/worn_metal_rack",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/worn_metal_rack/",
+   "source_files_sha256": {
+    "textures/worn_metal_rack_arm_2k.jpg": "1f88a4c7d864e533a1556f82334d5a0b9494172494287ec657b82527abbe48ea",
+    "textures/worn_metal_rack_diff_2k.jpg": "7ffcb11dc334a424c77154ef2dcbc310a1dba0eebfc6f7b9e52bb3c99fc75961",
+    "textures/worn_metal_rack_nor_gl_2k.jpg": "dab6e92bd938e5ce0ddccba9f948ee64c585c87cec797ec9211cabe9ae1c663d",
+    "worn_metal_rack.bin": "b8cfa4138b7c0e0e69738c6f24dec7fecdc2f336f524312db48167816776fd13",
+    "worn_metal_rack.gltf": "cec4dab53535d3bf36ae47485917dfacbd670b75c39467c1d0a8faf206540802"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Back-room stock shelving (1.9 m).",
+   "tris": 6372,
+   "size_m": [
+    0.915,
+    1.9,
+    0.6
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "WornMetalRack_Color.jpg",
+    "WornMetalRack_MetallicSmoothness.png",
+    "WornMetalRack_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "CleanerSprayBottle": {
+   "title": "Multi Cleaner Bottle",
+   "provider": "Poly Haven",
+   "authors": "James Ray Cock",
+   "page": "https://polyhaven.com/a/multi_cleaner_bottle",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/multi_cleaner_bottle/",
+   "source_files_sha256": {
+    "multi_cleaner_bottle.bin": "2163efdc37de9a825cede4b579563db12e5c6b0ef2fc8afab063a4540e98eceb",
+    "multi_cleaner_bottle.gltf": "80e1e338ec8e538c672fe2deefe963a328cf14de054952ec8e5eb20b183701e1",
+    "textures/multi_cleaner_bottle_arm_2k.jpg": "2e92505b79e0749d37ca503ca8c424b55cb9da12963ac369c55a0ef8725c71b7",
+    "textures/multi_cleaner_bottle_diff_2k.jpg": "f7a76ec94a4af7090301be1a58325c01c2964ddf37119b0147bd82635e4265a7",
+    "textures/multi_cleaner_bottle_nor_gl_2k.jpg": "f709b2540fbd846d8852524877178d56c74f7baf0602eb039840ab640e3f00b8"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Glass cleaner by the counter / cleaning cupboard.",
+   "tris": 4000,
+   "size_m": [
+    0.088,
+    0.229,
+    0.09
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "CleanerSprayBottle_Color.jpg",
+    "CleanerSprayBottle_MetallicSmoothness.png",
+    "CleanerSprayBottle_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "LaptopClassic": {
+   "title": "Classic Laptop",
+   "provider": "Poly Haven",
+   "authors": "Arrangemonk",
+   "page": "https://polyhaven.com/a/classic_laptop",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/classic_laptop/",
+   "source_files_sha256": {
+    "classic_laptop.bin": "0f1602f2fe856fd330e95df44af0fd9986aeac873343307c70e036041e789fb9",
+    "classic_laptop.gltf": "f74ab1871f3c9cd29e7c6144d2656bf4bf38e16d8e0a1f20afd146bb0a191480",
+    "textures/classic_laptop_arm_2k.jpg": "d6f26a39ec9466103cc9614fbe0c7a9863870dc08be9b9c1e77e61fb56265327",
+    "textures/classic_laptop_diff_2k.jpg": "b2bb60fe0a6c9be58b670d7d21185fddf96bc45b528f73cd368269ff716c95e2",
+    "textures/classic_laptop_nor_gl_2k.jpg": "3f7610224096f4c40c246d3ec5d0d2a4ae24354ae4d15acc8d96078cb2219b7e"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Office desk (older laptop stands in for the missing PC tower).",
+   "tris": 5017,
+   "size_m": [
+    0.652,
+    0.543,
+    0.486
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "LaptopClassic_Laptop_Color.jpg",
+    "LaptopClassic_Laptop_MetallicSmoothness.png",
+    "LaptopClassic_Laptop_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "WickerBasket": {
+   "title": "Wicker Basket 02",
+   "provider": "Poly Haven",
+   "authors": "not recorded in a reachable mirror (see the Poly Haven page)",
+   "page": "https://polyhaven.com/a/wicker_basket_02",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/wicker_basket_02/",
+   "source_files_sha256": {
+    "textures/wicker_basket_02_arm_2k.jpg": "4db62f8fbb877fdfadd2f57c15ddbcfe7629d0383f66a3b0c81d8d983ce63c78",
+    "textures/wicker_basket_02_diff_2k.jpg": "909dea21d2662bd3e0331573ec576ea77f883478fa7a65a095e64361d0bdc293",
+    "textures/wicker_basket_02_nor_gl_2k.jpg": "8c75197b9d892e001bd6b6a7b2220892645cf4cbdf32481bd7979e9bece00106",
+    "wicker_basket_02.bin": "bd92d61a377879fa28c2bdb18fd0b0a42c42c7333c04e324f346b68689655fdb",
+    "wicker_basket_02.gltf": "13187108ca221090b025a6924db5202e46a4672b5e58ccdc011280f61fc9ae3d"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Shop decoration / staff room.",
+   "tris": 5000,
+   "size_m": [
+    0.347,
+    0.2,
+    0.253
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "WickerBasket_Color.jpg",
+    "WickerBasket_MetallicSmoothness.png",
+    "WickerBasket_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "ToolCart": {
+   "title": "Tool Cart",
+   "provider": "Poly Haven",
+   "authors": "Savva Zakharov",
+   "page": "https://polyhaven.com/a/tool_cart",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/tool_cart/",
+   "source_files_sha256": {
+    "textures/tool_cart_arm_2k.jpg": "cdd42d9566d4bb5eb45b32276a6e7823769a8f7f24a81a11dbceabac30267d65",
+    "textures/tool_cart_diff_2k.jpg": "0906a849c3130027b49036f0f474bef74ba145eb95eb2f9c947739dc9522183a",
+    "textures/tool_cart_nor_gl_2k.jpg": "476067789444681a9c423d9940067eb72756a6b840db3a5a255ef25485c246d9",
+    "tool_cart.bin": "3962637a4faec733b10d9970bfeea6696a48b6fd361fda085cc3d122138f6aaa",
+    "tool_cart.gltf": "c04540c26277493df6c467568df468b57e297844d0d8b6470d9ca3aa9a217d1a"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Maintenance cart in the back room. 8k tris.",
+   "tris": 8000,
+   "size_m": [
+    1.273,
+    0.963,
+    0.754
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ToolCart_Color.jpg",
+    "ToolCart_MetallicSmoothness.png",
+    "ToolCart_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "JerryCan": {
+   "title": "Metal Jerrycan",
+   "provider": "Poly Haven",
+   "authors": "Sean Buckley",
+   "page": "https://polyhaven.com/a/metal_jerrycan",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Geadas11/Claude_steam_game",
+   "mirror_commit": "8b6aa56f951450b7a05434615bcdda2bd2d1e8fa",
+   "mirror_path": "assets/3d/models/metal_jerrycan/",
+   "source_files_sha256": {
+    "metal_jerrycan.bin": "d84ce2528b28a477c5309fc289a50a3deb61287265a787bd728e639c5230408c",
+    "metal_jerrycan.gltf": "edb73c08afb4662b34234eaab7fe8e4000622fb095a0639539247e82118420c8",
+    "textures/metal_jerrycan_arm_2k.jpg": "b83095cc78f9f63628184c6392f063ea58b3d1cc86c3e345edf6ed8fd202025e",
+    "textures/metal_jerrycan_diff_2k.jpg": "ac8d951523d5bc4879718b518be81603745f515350db07f653990429ec36ab11",
+    "textures/metal_jerrycan_nor_gl_2k.jpg": "8f9b6c6e2fb535a049d86b60031d5d9199c3d82e348f0c939c996e76820f5d22"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Back yard / alley.",
+   "tris": 4812,
+   "size_m": [
+    0.35,
+    0.455,
+    0.17
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "JerryCan_Color.jpg",
+    "JerryCan_MetallicSmoothness.png",
+    "JerryCan_Normal.jpg"
+   ],
+   "max_px": 512
+  },
+  "AirDuctKit": {
+   "title": "Modular Airduct Circular 01",
+   "provider": "Poly Haven",
+   "authors": "Riley Queen",
+   "page": "https://polyhaven.com/a/modular_airduct_circular_01",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/Hona/daxship",
+   "mirror_commit": "d63856c6af9aba445a4fe8bf832d0e0ecf2572e5",
+   "mirror_path": "apps/web/public/assets/models/environment/poly-haven/modular_airduct_circular_01/",
+   "source_files_sha256": {
+    "modular_airduct_circular_01.bin": "80418c8aed92c97b6149b51124d47ccfa0619a77234449687f29377833293f2d",
+    "modular_airduct_circular_01_1k.gltf": "7087958648acaa201fb3f1900e1ff61c2bfed7372f648346b4dc70d92b618274",
+    "textures/modular_airduct_circular_01_arm_1k.jpg": "98bf68e4768aafc6303ddd1fa69cacad153a074c1b8af189356b41152793f0d6",
+    "textures/modular_airduct_circular_01_diff_1k.jpg": "cff727bb5d96a91e955cc62f800d30d6f717092232358962dcf3ce803ba6cf01",
+    "textures/modular_airduct_circular_01_nor_gl_1k.jpg": "209c47b9e18cd62bc08780a6c684c228d87201e5c2e35809f600c38e40934332"
+   },
+   "conversion": "Source~/build_ph2.py -> InteriorModels/Source~/convert_ph.py (Color / Normal / MetallicSmoothness maps kept)",
+   "use": "Ceiling duct kit: 16 pieces (straights, bends, braces, fan, rectangular converter) laid out side by side in one OBJ; split by connected parts. 10k tris for the whole kit.",
+   "tris": 10000,
+   "size_m": [
+    4.167,
+    1.324,
+    1.463
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "AirDuctKit_Color.jpg",
+    "AirDuctKit_MetallicSmoothness.png",
+    "AirDuctKit_Normal.jpg"
+   ],
+   "max_px": 1024
+  },
+  "ParkedSUV": {
+   "title": "SUV / crossover",
+   "provider": "Poly Pizza",
+   "authors": "Quaternius",
+   "page": "https://poly.pizza/m/xsMtZhBkxL",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/cars/car_suv.glb",
+   "source_files_sha256": {
+    "car_suv.glb": "1a9ce2bba813dca5005abab09715b01b8b5f4a9c48d7260463afdfeb876aa8b6"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1",
+   "use": "Parked civilian car (4.2 m), flat colours.",
+   "tris": 3294,
+   "size_m": [
+    2.111,
+    1.528,
+    4.209
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "ParkedPickup": {
+   "title": "Pickup truck",
+   "provider": "Poly Pizza",
+   "authors": "Quaternius",
+   "page": "https://poly.pizza/m/qn4grQgHm8",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/cars/car_pickup.glb",
+   "source_files_sha256": {
+    "car_pickup.glb": "9d6b2e33af0d37bf42b2e7af850949f4efd0ddbb9a88077812d152d8b4c1c3eb"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1",
+   "use": "Parked pickup (5.2 m); 6.4k tris.",
+   "tris": 6432,
+   "size_m": [
+    2.312,
+    1.848,
+    5.18
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ParkedPickup_Atlas.png"
+   ],
+   "max_px": 512
+  },
+  "ParkedVan": {
+   "title": "Panel van",
+   "provider": "Poly Pizza",
+   "authors": "PuKkBuMXDD",
+   "page": "https://poly.pizza/m/BbRojf2v3H",
+   "license": "CC-BY-3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/cars/car_van.glb",
+   "source_files_sha256": {
+    "car_van.glb": "674ad1ba089b45026b86fa9d26058414cd9f44e6bd03315eafb95a188f9fc736"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.75",
+   "use": "Parked panel van (4.3 m, long axis X), flat colours.",
+   "tris": 3225,
+   "size_m": [
+    4.261,
+    2.385,
+    2.389
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "StreetTreeMaple": {
+   "title": "Red maple (MapleTree_2)",
+   "provider": "Poly Pizza",
+   "authors": "Quaternius",
+   "page": "https://poly.pizza/m/iGFtQd0PJO",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/nature/tree_maple_red.glb",
+   "source_files_sha256": {
+    "tree_maple_red.glb": "b0be498473db38717bc18d6673f6cde0f153eed95572f9d8bc35aecc77b00c1e"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1",
+   "use": "Street tree with leaves (6.7 m); scale 0.7 for a young street tree.",
+   "tris": 4800,
+   "size_m": [
+    6.701,
+    6.714,
+    6.244
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "StreetTreeMaple_MapleTree_Bark.png",
+    "StreetTreeMaple_MapleTree_Leaves.png"
+   ],
+   "max_px": 1024
+  },
+  "StreetTreeYoung": {
+   "title": "Young broadleaf tree 4 (NormalTree_4)",
+   "provider": "Poly Pizza",
+   "authors": "Quaternius",
+   "page": "https://poly.pizza/m/etFGNvsiFv",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/nature/tree_young_4.glb",
+   "source_files_sha256": {
+    "tree_young_4.glb": "f8f3e73377ca29c18f01d2982f3ab2b58027ff81fa5d866f585fcb72a430ff64"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1 --target-tris 5000",
+   "use": "Street tree (5.1 m); decimated 6,338 -> 4,999 tris with tools/glb_to_obj.py --target-tris (UVs resampled: check leaves).",
+   "tris": 4999,
+   "size_m": [
+    5.673,
+    5.096,
+    2.401
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "StreetTreeYoung_NormalTree_Bark.png",
+    "StreetTreeYoung_NormalTree_Leaves.png"
+   ],
+   "max_px": 1024
+  },
+  "FloweringBush": {
+   "title": "Bush with flowers",
+   "provider": "Poly Pizza",
+   "authors": "Quaternius",
+   "page": "https://poly.pizza/m/U1ymDy8tbY",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/nature/bush_flowering.glb",
+   "source_files_sha256": {
+    "bush_flowering.glb": "1cea22ad68e0e47bc986c0e25a704e2fbaae71a2c64ebb71f69401abc7d54e3f"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1",
+   "use": "Planter filler / tree pit.",
+   "tris": 1368,
+   "size_m": [
+    1.915,
+    1.582,
+    1.965
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "FloweringBush_Flowers.png",
+    "FloweringBush_Leaves_NormalTree.png"
+   ],
+   "max_px": 1024
+  },
+  "ShoppingCart": {
+   "title": "Shopping cart",
+   "provider": "Poly Pizza",
+   "authors": "Poly by Google",
+   "page": "https://poly.pizza/m/4lhRcMbl1pw",
+   "license": "CC-BY-3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/props/shopping_cart.glb",
+   "source_files_sha256": {
+    "shopping_cart.glb": "fbc39c44a15e3856957c9619df15aa62443c7d6d1690db74838bea6fbe55bd0a"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1",
+   "use": "Abandoned trolley on the street.",
+   "tris": 2868,
+   "size_m": [
+    0.66,
+    1.0,
+    1.216
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "ParkLitterBin": {
+   "title": "Park litter bin",
+   "provider": "Poly Pizza",
+   "authors": "Isa Lousberg",
+   "page": "https://poly.pizza/m/2UXIdGYkg9",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/bumbeishvili/green-diamond",
+   "mirror_commit": "4d0fc086f71d89040c6a9355b782fea4de7d6e7c",
+   "mirror_path": "assets/models/props/trash_bin_park.glb",
+   "source_files_sha256": {
+    "trash_bin_park.glb": "3d29f5350aff4ac32db1f18ca7b47cb4db44a3f3bb7c5cc036648b1a2082dbe0"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.8",
+   "use": "Pavement litter bin.",
+   "tris": 504,
+   "size_m": [
+    0.8,
+    0.914,
+    0.8
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ParkLitterBin_tiny_treats_1.png"
+   ],
+   "max_px": 1024
+  },
+  "ParkedScooter": {
+   "title": "Scooter",
+   "provider": "Poly Pizza",
+   "authors": "Poly by Google",
+   "page": "https://poly.pizza/m/9RqkkBOPNtd",
+   "license": "CC-BY-3.0",
+   "license_url": "https://creativecommons.org/licenses/by/3.0/",
+   "mirror": "https://github.com/ssebs/DankNooner",
+   "mirror_commit": "2d0f7af27726a6f58aa486f7940267f8231339c9",
+   "mirror_path": "v1/assets/vehicles/Scooter01.glb",
+   "source_files_sha256": {
+    "Scooter01.glb": "ff2ce4eb6fe698ebc4dd336721e566bee31fa76f49b26ab3c00fda6bd5d98a97"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.0024",
+   "use": "Parked moped/scooter on the pavement (1.8 m). Licence evidence: v1/attributions.md of the mirror only.",
+   "tris": 2116,
+   "size_m": [
+    1.832,
+    1.285,
+    0.807
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ParkedScooter_Cylinder.png"
+   ],
+   "max_px": 1024
+  },
+  "MugStylised": {
+   "title": "Kenney Food Kit: mug",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/mug.glb",
+   "source_files_sha256": {
+    "mug.glb": "5215ef74dbbc3a1c0ecf8d0937adde745bbcbd65d8facd228d9f3371991da435"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Mug on desks / counter.",
+   "tris": 232,
+   "size_m": [
+    0.12,
+    0.096,
+    0.1
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "MugStylised_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "CupCoffeeKenney": {
+   "title": "Kenney Food Kit: cup-coffee",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/cup-coffee.glb",
+   "source_files_sha256": {
+    "cup-coffee.glb": "d74652ad1821bc5dedf1b2e1deb4e0ca0c498aa73880e7df5b91e5e729af6f81"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Coffee cup (Kenney \"cup-coffee\"; 0.05 m tall at this scale: check the shape and rescale).",
+   "tris": 108,
+   "size_m": [
+    0.076,
+    0.049,
+    0.1
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "CupCoffeeKenney_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "TeaCup": {
+   "title": "Kenney Food Kit: cup-tea",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/cup-tea.glb",
+   "source_files_sha256": {
+    "cup-tea.glb": "c2d60aeca48197b75ddb9f1ba145bd5e9c9e66e720b8ab67947f0b2a49ee1edd"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Cup on a desk.",
+   "tris": 144,
+   "size_m": [
+    0.083,
+    0.07,
+    0.102
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "TeaCup_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "DrinkCan": {
+   "title": "Kenney Food Kit: soda-can",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/soda-can.glb",
+   "source_files_sha256": {
+    "soda-can.glb": "4ae68cbd532e69353ae1392e95bb57afa7cb2acc98f3bb46dc5a017c765c89fe"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Drink can (0.12 m).",
+   "tris": 164,
+   "size_m": [
+    0.079,
+    0.123,
+    0.079
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "DrinkCan_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "DrinkCanCrushed": {
+   "title": "Kenney Food Kit: soda-can-crushed",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/soda-can-crushed.glb",
+   "source_files_sha256": {
+    "soda-can-crushed.glb": "6c052d69d4ec25083f05619bd48086d1666b0ddc9ddec5f6859fcd1f847be554"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Crushed can litter in gutter / alley.",
+   "tris": 212,
+   "size_m": [
+    0.086,
+    0.063,
+    0.086
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "DrinkCanCrushed_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "PlasticSodaBottle": {
+   "title": "Kenney Food Kit: soda-bottle",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/soda-bottle.glb",
+   "source_files_sha256": {
+    "soda-bottle.glb": "879a49cec70fed49244256c9250e72fdf27dcdc5d2dbb093c9ac9c9a08170f4d"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Plastic drink bottle (0.2 m).",
+   "tris": 100,
+   "size_m": [
+    0.063,
+    0.203,
+    0.055
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "PlasticSodaBottle_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "GlassBottle": {
+   "title": "Kenney Food Kit: bottle-oil",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/bottle-oil.glb",
+   "source_files_sha256": {
+    "bottle-oil.glb": "a87a7a6146be0996b17aca3ccd011cfe0d045593db03f89829f88b6228b49d57"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Glass bottle (Kenney oil bottle, 0.22 m) as litter / staff room.",
+   "tris": 96,
+   "size_m": [
+    0.049,
+    0.218,
+    0.049
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "GlassBottle_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "PizzaBox": {
+   "title": "Kenney Food Kit: pizza-box",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/pizza-box.glb",
+   "source_files_sha256": {
+    "pizza-box.glb": "6762e9233d74f720486630eb043e7f65cf0f437c6ac77f8b037b7bed2c4ddd23"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Takeaway pizza box on the office desk or by the bins.",
+   "tris": 84,
+   "size_m": [
+    0.33,
+    0.309,
+    0.333
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "PizzaBox_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "NoodleBox": {
+   "title": "Kenney Food Kit: chinese",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/chinese.glb",
+   "source_files_sha256": {
+    "chinese.glb": "6aa08a486ba711b7565062b691d286d16b3916cc01574a4fcb8287d7369e0396"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Takeaway noodle box.",
+   "tris": 162,
+   "size_m": [
+    0.159,
+    0.198,
+    0.195
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "NoodleBox_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "TakeawayClamshell": {
+   "title": "Kenney Food Kit: styrofoam-dinner",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/styrofoam-dinner.glb",
+   "source_files_sha256": {
+    "styrofoam-dinner.glb": "8aea06883ec0075b9220e35aab1d9a2faf9364f87fee3493609697371685a182"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Open foam takeaway box with food.",
+   "tris": 240,
+   "size_m": [
+    0.441,
+    0.288,
+    0.266
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "TakeawayClamshell_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "TakeawayClamshellEmpty": {
+   "title": "Kenney Food Kit: styrofoam",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/styrofoam.glb",
+   "source_files_sha256": {
+    "styrofoam.glb": "c200d274835a9fdeef0aaa39224199b7abbcb374fb87e3cd41605153d5c1c474"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Open empty foam takeaway box (litter).",
+   "tris": 152,
+   "size_m": [
+    0.441,
+    0.288,
+    0.266
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "TakeawayClamshellEmpty_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "DrinkCarton": {
+   "title": "Kenney Food Kit: carton",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/carton.glb",
+   "source_files_sha256": {
+    "carton.glb": "b63a5081c6edbda7ba8172e6a776f222e781f886a011a887789b2fde42095d04"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Drink carton.",
+   "tris": 94,
+   "size_m": [
+    0.081,
+    0.207,
+    0.081
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "DrinkCarton_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "BagFlat": {
+   "title": "Kenney Food Kit: bag-flat",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/bag-flat.glb",
+   "source_files_sha256": {
+    "bag-flat.glb": "97d736b7a0cb00b1b9da5d7e548182ef6e0cef27b979b07ee69d153d4ecf9cd9"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.35 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Flattened bag (litter).",
+   "tris": 114,
+   "size_m": [
+    0.228,
+    0.067,
+    0.164
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "BagFlat_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "PaperBag": {
+   "title": "Kenney Food Kit: bag",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/food-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-food-kit/3D/food/Models/GLB format/bag.glb",
+   "source_files_sha256": {
+    "bag.glb": "17803bb1e467d5cfd5ca9479a206870e60d160548c884b07ea294f1265334a06"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 0.6 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Paper shopping/takeaway bag (0.36 m).",
+   "tris": 46,
+   "size_m": [
+    0.132,
+    0.36,
+    0.247
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "PaperBag_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "ShopShelfBags": {
+   "title": "Kenney Mini Market: shelf-bags",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/mini-market",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-mini-market/3D/city/Models/GLB format/shelf-bags.glb",
+   "source_files_sha256": {
+    "shelf-bags.glb": "17725a5f680aff17dbc6ac3398ef0339d78b5b76bbfaa29292a5084479c4bd69"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 2 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Stocked shop shelf (stylised; 1.4 m deep at this scale, consider 1.4-1.6).",
+   "tris": 892,
+   "size_m": [
+    1.6,
+    1.727,
+    1.4
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ShopShelfBags_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "ShopShelfBoxes": {
+   "title": "Kenney Mini Market: shelf-boxes",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/mini-market",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-mini-market/3D/city/Models/GLB format/shelf-boxes.glb",
+   "source_files_sha256": {
+    "shelf-boxes.glb": "3f340fe9207a4b85739d8d11104cf5b4cad3a130afcbfc1fadb47c17d6a9e210"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 2 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Stocked shop shelf with boxes.",
+   "tris": 436,
+   "size_m": [
+    1.6,
+    1.7,
+    1.4
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ShopShelfBoxes_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "ShoppingBasket": {
+   "title": "Kenney Mini Market: shopping-basket",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/mini-market",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-mini-market/3D/city/Models/GLB format/shopping-basket.glb",
+   "source_files_sha256": {
+    "shopping-basket.glb": "a7704926cb56c5a9ab74488230fc7c4d7b914387c59e9c1b6f62376965c0ea7d"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1.3 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Hand basket.",
+   "tris": 288,
+   "size_m": [
+    0.455,
+    0.325,
+    0.455
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "ShoppingBasket_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "BottleReturnMachine": {
+   "title": "Kenney Mini Market: bottle-return",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/mini-market",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/series-ai/jam-ready-assets",
+   "mirror_commit": "2d7c41049c1db4d670b1ded88a7aeec0d7c2f38c",
+   "mirror_path": "kenney-mini-market/3D/city/Models/GLB format/bottle-return.glb",
+   "source_files_sha256": {
+    "bottle-return.glb": "039eefd7eb61876eb8bfa3937f2890e75ec4e6629a6c97640504baa3ef51991f"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1.65 (Kenney colormap atlas copied per model as <Name>_colormap.png); LFS object fetched from media.githubusercontent.com",
+   "use": "Vending/bottle-return machine (1.8 m) for a street front.",
+   "tris": 324,
+   "size_m": [
+    0.743,
+    1.803,
+    0.794
+   ],
+   "min_y": 0.0,
+   "maps": [
+    "BottleReturnMachine_colormap.png"
+   ],
+   "max_px": 512
+  },
+  "CoatRackStanding": {
+   "title": "Kenney Furniture Kit: coatRackStanding",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/furniture-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/RetroDECK/RetroQUEST",
+   "mirror_commit": "dfa19a5602a31f64bd890d15279a61f43b127328",
+   "mirror_path": "assets/kenney_furniture-kit/Models/GLTF format/coatRackStanding.glb",
+   "source_files_sha256": {
+    "coatRackStanding.glb": "d8231c22dab63ceb9fc8678f6c8ceafc62afa8726b51a73b4ce349043d3cdc91"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 2.35 (Kenney colormap atlas copied per model as <Name>_colormap.png)",
+   "use": "Coat stand in the office (1.8 m), flat colours.",
+   "tris": 190,
+   "size_m": [
+    0.641,
+    1.81,
+    0.641
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "CoatRackWall": {
+   "title": "Kenney Furniture Kit: coatRack",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/furniture-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/RetroDECK/RetroQUEST",
+   "mirror_commit": "dfa19a5602a31f64bd890d15279a61f43b127328",
+   "mirror_path": "assets/kenney_furniture-kit/Models/GLTF format/coatRack.glb",
+   "source_files_sha256": {
+    "coatRack.glb": "0f56540d57367ea6fea6b9aedf305d4fc58abeec8ff3b039dbff44360d819c76"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 2.35 (Kenney colormap atlas copied per model as <Name>_colormap.png)",
+   "use": "Wall hook rail in the staff room.",
+   "tris": 132,
+   "size_m": [
+    1.053,
+    0.658,
+    0.316
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "DoorMat": {
+   "title": "Kenney Furniture Kit: rugDoormat",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/furniture-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/RetroDECK/RetroQUEST",
+   "mirror_commit": "dfa19a5602a31f64bd890d15279a61f43b127328",
+   "mirror_path": "assets/kenney_furniture-kit/Models/GLTF format/rugDoormat.glb",
+   "source_files_sha256": {
+    "rugDoormat.glb": "bd888e41853342cdc0d34d3f09b99cedc50a144f47b514943b65cdb9a2cfd802"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1.75 (Kenney colormap atlas copied per model as <Name>_colormap.png)",
+   "use": "Door mat at the entrance / staff door (0.75 x 0.42 m).",
+   "tris": 204,
+   "size_m": [
+    0.751,
+    0.018,
+    0.415
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "RugRectangle": {
+   "title": "Kenney Furniture Kit: rugRectangle",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/furniture-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/RetroDECK/RetroQUEST",
+   "mirror_commit": "dfa19a5602a31f64bd890d15279a61f43b127328",
+   "mirror_path": "assets/kenney_furniture-kit/Models/GLTF format/rugRectangle.glb",
+   "source_files_sha256": {
+    "rugRectangle.glb": "a989d2d59c04e3071e0c90388b113a9a8f339ce1814ef984c51cb6dcd7c8e0eb"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1.75 (Kenney colormap atlas copied per model as <Name>_colormap.png)",
+   "use": "Rectangular rug (2.75 x 1.6 m) for the office.",
+   "tris": 28,
+   "size_m": [
+    2.748,
+    0.018,
+    1.61
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  },
+  "RugRound": {
+   "title": "Kenney Furniture Kit: rugRound",
+   "provider": "Kenney",
+   "authors": "Kenney (www.kenney.nl)",
+   "page": "https://kenney.nl/assets/furniture-kit",
+   "license": "CC0-1.0",
+   "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "mirror": "https://github.com/RetroDECK/RetroQUEST",
+   "mirror_commit": "dfa19a5602a31f64bd890d15279a61f43b127328",
+   "mirror_path": "assets/kenney_furniture-kit/Models/GLTF format/rugRound.glb",
+   "source_files_sha256": {
+    "rugRound.glb": "c4cdc8f51ed2dbfb853b147521ed40e995307392fd3b19045b2203ea50f376db"
+   },
+   "conversion": "Tools/glb_to_obj.py --ground --scale 1.75 (Kenney colormap atlas copied per model as <Name>_colormap.png)",
+   "use": "Round rug (1.6 m).",
+   "tris": 188,
+   "size_m": [
+    1.61,
+    0.018,
+    1.61
+   ],
+   "min_y": 0.0,
+   "maps": [],
+   "max_px": 0
+  }
+ }
+}

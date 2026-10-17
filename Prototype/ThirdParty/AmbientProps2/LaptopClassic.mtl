@@ -1,0 +1,12 @@
+newmtl Laptop
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd LaptopClassic_Laptop_Color.jpg
+# Normal LaptopClassic_Laptop_Normal.jpg
+# MetallicSmoothness LaptopClassic_Laptop_MetallicSmoothness.png
+
+newmtl Screen
+Kd 0.019 0.019 0.019
+Ks 0.050 0.050 0.050
+d 1.0

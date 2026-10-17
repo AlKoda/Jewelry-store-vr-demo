@@ -1,0 +1,7 @@
+newmtl Cart
+Kd 1.000 1.000 1.000
+Ks 0.050 0.050 0.050
+d 1.0
+map_Kd ToolCart_Color.jpg
+# Normal ToolCart_Normal.jpg
+# MetallicSmoothness ToolCart_MetallicSmoothness.png

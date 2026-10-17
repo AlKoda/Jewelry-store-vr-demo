@@ -1,0 +1,77 @@
+AmbientProps2 - second batch of lived-in props for the night jewellery store, office and street
+Prepared 2026-10-17. Not yet imported or checked in Unity (unverified).
+
+Per-file source URL, mirror commit and SHA-256 are in sources.json. Two licences:
+  1. CC0 1.0 (Poly Haven, Kenney, Quaternius, Isa Lousberg): no attribution required; credits below are a courtesy.
+  2. CC BY 3.0 (Poly Pizza uploads by PuKkBuMXDD and Poly by Google): ATTRIBUTION IS REQUIRED wherever the demo is shared.
+
+CC0 1.0:   https://creativecommons.org/publicdomain/zero/1.0/
+CC BY 3.0: https://creativecommons.org/licenses/by/3.0/
+
+Licence evidence, Poly Haven: CC0 per https://polyhaven.com/license; ids and the CC0 statement also in the mirror Geadas11/Claude_steam_game assets/3d/CREDITS.md and Hona/daxship; authors from the Poly Haven API listing (Akshay25798/VFX-Houdini-Asset_Browser downloads/json/models.json) or the credits files of ReidT205/blacksite-assets ATTRIBUTION.md and m4tthewdavis/fallout-minnesota assets/CREDITS.md. Six authors were not found in a reachable mirror; CC0 needs no attribution.
+
+Licence evidence, Kenney: CC0 1.0 per the License.txt shipped in each kit (kenney-food-kit/3D/food/License.txt, kenney-mini-market/3D/city/License.txt, kenney_furniture-kit/License.txt), copied to Source~/licenses/.
+
+Licence evidence, Poly Pizza (green-diamond): Licence and author per item in bumbeishvili/green-diamond assets/models/manifest.json and CREDITS.md (CC0 for Quaternius / Isa Lousberg; CC BY 3.0 for PuKkBuMXDD and Poly by Google). poly.pizza is not reachable from the build container.
+
+Licence evidence, Poly Pizza (DankNooner): Scooter: ssebs/DankNooner v1/attributions.md, "Scooter by Poly by Google [CC-BY] (https://creativecommons.org/licenses/by/3.0/) via Poly Pizza (https://poly.pizza/m/9RqkkBOPNtd)". Single-source evidence; confirm on poly.pizza before release.
+
+CC BY 3.0 attribution lines (copy into the demo credits):
+  "Panel van" by PuKkBuMXDD (https://poly.pizza/m/BbRojf2v3H), licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified: converted to OBJ, scaled, grounded. (ParkedVan.*)
+  "Shopping cart" by Poly by Google (https://poly.pizza/m/4lhRcMbl1pw), licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified: converted to OBJ, scaled, grounded. (ShoppingCart.*)
+  "Scooter" by Poly by Google (https://poly.pizza/m/9RqkkBOPNtd), licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified: converted to OBJ, scaled, grounded. (ParkedScooter.*)
+
+CC0 credits (courtesy):
+  "Cash Register 01" by Joe Seabuhr, https://polyhaven.com/a/CashRegister_01 (CashRegisterVintage.*)
+  "Planter Box 01" by James Ray Cock, https://polyhaven.com/a/planter_box_01 (StreetPlanterBox.*)
+  "Plastic Bottle Gallon" by Rahul Chaudhary, https://polyhaven.com/a/plastic_bottle_gallon (WaterBottleGallon.*)
+  "Long Life Food" by Mia Pecina Zorko, https://polyhaven.com/a/long_life_food (FoodPackets.*)
+  "Plastic Container" by not recorded in a reachable mirror (see the Poly Haven page), https://polyhaven.com/a/plastic_container (PlasticTub.*)
+  "Wooden Display Shelves 01" by James Ray Cock, https://polyhaven.com/a/wooden_display_shelves_01 (DisplayShelvesWood.*)
+  "Plastic Broom" by not recorded in a reachable mirror (see the Poly Haven page), https://polyhaven.com/a/plastic_broom (Broom.*)
+  "Dustpan" by not recorded in a reachable mirror (see the Poly Haven page), https://polyhaven.com/a/dustpan (Dustpan.*)
+  "Cigarette Pack" by not recorded in a reachable mirror (see the Poly Haven page), https://polyhaven.com/a/cigarette_pack (CigarettePack.*)
+  "Mounted Fluorescent Lights" by Ulan Cabanilla, https://polyhaven.com/a/mounted_fluorescent_lights (FluorescentBatten.*)
+  "Metal Stool 01" by not recorded in a reachable mirror (see the Poly Haven page), https://polyhaven.com/a/metal_stool_01 (MetalStool.*)
+  "Tea Set 01" by Rico Cilliers (model), James Ray Cock (texturing), Jurita Burger (graphic design), https://polyhaven.com/a/tea_set_01 (TeaSetMugs.*)
+  "Concrete Road Barrier" by Amal Kumar, https://polyhaven.com/a/concrete_road_barrier (ConcreteRoadBarrier.*)
+  "Standing Chalkboard 01" by ParzivalCG, https://polyhaven.com/a/standing_chalkboard_01 (SidewalkChalkboard.*)
+  "Vintage Suitcase" by Maximilian Schuster, https://polyhaven.com/a/vintage_suitcase (SuitcaseVintage.*)
+  "Plastic Monobloc Chair 01" by Kuutti Siitonen, https://polyhaven.com/a/plastic_monobloc_chair_01 (MonoblocChair.*)
+  "Jug 01" by Kuutti Siitonen, https://polyhaven.com/a/jug_01 (PlasticJug.*)
+  "Worn Metal Rack" by Luca B, https://polyhaven.com/a/worn_metal_rack (WornMetalRack.*)
+  "Multi Cleaner Bottle" by James Ray Cock, https://polyhaven.com/a/multi_cleaner_bottle (CleanerSprayBottle.*)
+  "Classic Laptop" by Arrangemonk, https://polyhaven.com/a/classic_laptop (LaptopClassic.*)
+  "Wicker Basket 02" by not recorded in a reachable mirror (see the Poly Haven page), https://polyhaven.com/a/wicker_basket_02 (WickerBasket.*)
+  "Tool Cart" by Savva Zakharov, https://polyhaven.com/a/tool_cart (ToolCart.*)
+  "Metal Jerrycan" by Sean Buckley, https://polyhaven.com/a/metal_jerrycan (JerryCan.*)
+  "Modular Airduct Circular 01" by Riley Queen, https://polyhaven.com/a/modular_airduct_circular_01 (AirDuctKit.*)
+  "SUV / crossover" by Quaternius, https://poly.pizza/m/xsMtZhBkxL (ParkedSUV.*)
+  "Pickup truck" by Quaternius, https://poly.pizza/m/qn4grQgHm8 (ParkedPickup.*)
+  "Red maple (MapleTree_2)" by Quaternius, https://poly.pizza/m/iGFtQd0PJO (StreetTreeMaple.*)
+  "Young broadleaf tree 4 (NormalTree_4)" by Quaternius, https://poly.pizza/m/etFGNvsiFv (StreetTreeYoung.*)
+  "Bush with flowers" by Quaternius, https://poly.pizza/m/U1ymDy8tbY (FloweringBush.*)
+  "Park litter bin" by Isa Lousberg, https://poly.pizza/m/2UXIdGYkg9 (ParkLitterBin.*)
+  "Kenney Food Kit: mug" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (MugStylised.*)
+  "Kenney Food Kit: cup-coffee" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (CupCoffeeKenney.*)
+  "Kenney Food Kit: cup-tea" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (TeaCup.*)
+  "Kenney Food Kit: soda-can" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (DrinkCan.*)
+  "Kenney Food Kit: soda-can-crushed" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (DrinkCanCrushed.*)
+  "Kenney Food Kit: soda-bottle" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (PlasticSodaBottle.*)
+  "Kenney Food Kit: bottle-oil" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (GlassBottle.*)
+  "Kenney Food Kit: pizza-box" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (PizzaBox.*)
+  "Kenney Food Kit: chinese" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (NoodleBox.*)
+  "Kenney Food Kit: styrofoam-dinner" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (TakeawayClamshell.*)
+  "Kenney Food Kit: styrofoam" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (TakeawayClamshellEmpty.*)
+  "Kenney Food Kit: carton" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (DrinkCarton.*)
+  "Kenney Food Kit: bag-flat" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (BagFlat.*)
+  "Kenney Food Kit: bag" by Kenney (www.kenney.nl), https://kenney.nl/assets/food-kit (PaperBag.*)
+  "Kenney Mini Market: shelf-bags" by Kenney (www.kenney.nl), https://kenney.nl/assets/mini-market (ShopShelfBags.*)
+  "Kenney Mini Market: shelf-boxes" by Kenney (www.kenney.nl), https://kenney.nl/assets/mini-market (ShopShelfBoxes.*)
+  "Kenney Mini Market: shopping-basket" by Kenney (www.kenney.nl), https://kenney.nl/assets/mini-market (ShoppingBasket.*)
+  "Kenney Mini Market: bottle-return" by Kenney (www.kenney.nl), https://kenney.nl/assets/mini-market (BottleReturnMachine.*)
+  "Kenney Furniture Kit: coatRackStanding" by Kenney (www.kenney.nl), https://kenney.nl/assets/furniture-kit (CoatRackStanding.*)
+  "Kenney Furniture Kit: coatRack" by Kenney (www.kenney.nl), https://kenney.nl/assets/furniture-kit (CoatRackWall.*)
+  "Kenney Furniture Kit: rugDoormat" by Kenney (www.kenney.nl), https://kenney.nl/assets/furniture-kit (DoorMat.*)
+  "Kenney Furniture Kit: rugRectangle" by Kenney (www.kenney.nl), https://kenney.nl/assets/furniture-kit (RugRectangle.*)
+  "Kenney Furniture Kit: rugRound" by Kenney (www.kenney.nl), https://kenney.nl/assets/furniture-kit (RugRound.*)
