@@ -85,7 +85,7 @@ The drawer's Scene tab (Tab, Scene) gains presenter switches. They have no key a
 SCENE DRESSING lists one switch per PresenterSet in the scene, sorted by label, each with its note underneath.
 
 Also new (October 15, unverified):
-- Footsteps sound while the desktop visitor walks (one per 0.7 m, glass steps in the glass debris zones). In VR they stay silent: room-scale walking does not move the rig, and teleports and snap turns are skipped.
+- Footsteps sound while the desktop visitor walks (one per 0.7 m, glass steps in the glass debris zones). In VR they stay silent: room-scale walking does not move the rig, teleports and snap turns are skipped, and smooth thumbstick movement (October 18) does not drive them yet.
 - On the start menu, a second key press or click while a map loads is ignored. The menu music fades out over 0.6 s before the map loads. Esc quits even when no map is listed.
 
 Walls, the storefront barrier and InteriorBounds keep the player inside. InteriorBounds.Contains/Clamp are the shared definition of the interior; use them to filter XR teleport destinations.
@@ -106,8 +106,10 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Trigger | Photograph while holding the camera; switch a held scene lamp on/off (at most two lit, the oldest goes out); select a held tape post or measuring reel |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
 | B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape → scene lamp) |
-| Left thumbstick forward, release | Teleport along a ballistic arc (blue with a ring marker when the landing is valid, red otherwise; refused outside the shop, with a strong vibration on an invalid release); a comfort fade blinks on arrival |
+| Left thumbstick (default, October 18, unverified) | Smooth walking at up to 1.4 m/s in the direction the head looks, with strafe; 0.2 dead zone; blocked by fixtures and the interior bounds; no comfort vignette yet |
+| Left thumbstick forward, release (after F8) | Teleport along a ballistic arc (blue with a ring marker when the landing is valid, red otherwise; refused outside the shop, with a strong vibration on an invalid release); a comfort fade blinks on arrival |
 | Right thumbstick left / right | Snap turn 45° (with comfort fade) |
+| F8 (desktop presenter key) | Switch VR movement between smooth walking and teleport |
 | Right thumbstick click | Flashlight on the right hand |
 | Left menu button | Show / hide the controller hints on both hands |
 | Left thumbstick click | UV torch in the left hand |
@@ -132,6 +134,7 @@ If controller poses do not arrive under a future OpenXR version, the fallback is
 | HandInteractor.SpawnIntoHand(kind) / RemoveHeld() | New tool in the hand; remove the held one |
 | XRLocomotion.FindDestination(Ray, out Vector3) | Valid floor point under the pointer for a preview marker, or false |
 | XRLocomotion.TryTeleport(Ray) / TryTeleport(Vector3) | Move the rig so the head lands over the target; refused outside InteriorBounds or more than MaxStepHeight above the floor |
+| XRLocomotion.SmoothMove(Vector2 stick, float deltaTime) | Walk the rig along the flattened head direction at MoveSpeed; slides along walls, stays inside InteriorBounds; returns metres moved |
 | XRLocomotion.SnapLeft() / SnapRight() | Turn around the head |
 
 Both adapters derive from ToolHolder, which owns the held tool, the camera hand-off (EvidenceCamera.HoldBy / ReturnToRack) and the release on DemoSession.Resetting. Tools stay under DeploymentRoot while held, so reset and removal keep working. Physical headset movement is not constrained by any of this; only teleport targets are.

@@ -185,6 +185,26 @@ public static class ShopCityValidation
         bool street = locomotion.FindArcDestination(new Vector3(0, 1.6f, 1), new Vector3(0, 0.3f, -1).normalized, 6, arc, out Vector3 outside);
         DemoValidation.Check(!street, "Teleport arc refuses the street");
 
+        // Smooth stick movement walks along the head's view and never leaves the interior.
+        Quaternion rigTurn = locomotion.transform.rotation;
+        Quaternion headTurn = head.localRotation;
+        locomotion.transform.rotation = Quaternion.identity;
+        head.localRotation = Quaternion.identity;
+        locomotion.TryTeleport(new Vector3(1, 0, 2)); // the right-hand aisle the arc check uses
+        Vector3 startHead = head.position;
+        float moved = 0;
+        for (int i = 0; i < 10; i++) moved += locomotion.SmoothMove(Vector2.up, 0.05f);
+        Vector3 walked = head.position - startHead;
+        DemoValidation.Check(moved > 0.5f && walked.z > 0.5f && Mathf.Abs(walked.x) < 0.05f && Mathf.Abs(walked.y) < 0.05f,
+            "Smooth stick movement walks the head forward at floor level");
+        locomotion.TryTeleport(new Vector3(0, 0, 1.2f));
+        for (int i = 0; i < 200; i++) locomotion.SmoothMove(Vector2.down, 0.05f);
+        DemoValidation.Check(locomotion.Bounds.Contains(new Vector3(head.position.x, locomotion.transform.position.y, head.position.z)),
+            "Smooth stick movement stops at the interior bounds");
+        DemoValidation.Check(locomotion.SmoothMove(new Vector2(0.1f, 0.1f), 0.05f) == 0, "Smooth stick movement ignores the dead zone");
+        locomotion.transform.rotation = rigTurn;
+        head.localRotation = headTurn;
+
         // Fade and hint toggling only exist while the VR component set is live.
         DemoModeSwitch mode = DemoValidation.Find<DemoModeSwitch>();
         XRComfortFade fade = head.GetComponent<XRComfortFade>();

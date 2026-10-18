@@ -1,3 +1,20 @@
+# Smooth VR movement — October 18 (Claude, unverified, never run in Unity)
+
+- **What changed:**
+  - In VR the left thumbstick now walks smoothly, at up to 1.4 m/s, in the direction the head looks. The left stick also strafes; stick values below 0.2 are ignored.
+  - Movement stops at walls and fixtures: rays at knee and chest height keep a 0.25 m body radius, and the rig slides along walls.
+  - Each step needs a valid floor under the head: inside InteriorBounds and no step higher than 0.35 m.
+  - The right stick still snap turns.
+- **Switching modes:** teleport is still available. The presenter presses **F8** on the PC to switch between smooth walking and teleport (`XRControllerInput.SmoothMovement`, default smooth). Smooth walking is on the left hand (`SmoothMoves`, set in DemoToolsBuilder).
+- **Code:** `XRLocomotion.SmoothMove(stick, dt)` returns the distance moved, and `XRControllerInput.MovedDistance` exposes it so footsteps can be driven from it later. VR footsteps are not wired yet.
+- **New checks in ShopCityValidation.LocomotionChecks:**
+  - "Smooth stick movement walks the head forward at floor level"
+  - "Smooth stick movement stops at the interior bounds"
+  - "Smooth stick movement ignores the dead zone"
+  - Expected: +3 PASS in every ShopCity run.
+- **Comfort:** smooth movement can cause motion sickness for some guests. There is no vignette yet; if anyone feels unwell, switch to teleport with F8.
+- **Compile check:** only the two known NightLighting.cs:624 errors.
+
 # Four more asset packs — October 17, round 2 (Claude, unverified, not yet used in any scene)
 
 - **AmbientProps2** (24 MB, 56 models):

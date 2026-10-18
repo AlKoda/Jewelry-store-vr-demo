@@ -29,6 +29,11 @@ public sealed class XRControllerInput : MonoBehaviour
     public DemoLighting Lighting;
     public DemoLighting UVLighting;
     public bool Teleports = true;
+    // Smooth movement with the stick instead of teleporting (when both are on, smooth wins).
+    // Switch at runtime with SetSmoothMovement or the drawer/hint toggle.
+    public bool SmoothMoves;
+    public static bool SmoothMovement = true;
+    public float MovedDistance { get; private set; }
     public bool SnapTurns;
     public float ArcSpeed = 6f;
     public DemoToolKind SpawnKind = DemoToolKind.Cone;
@@ -215,7 +220,13 @@ public sealed class XRControllerInput : MonoBehaviour
 
     private void Stick(Vector2 stick)
     {
-        if (Teleports && Locomotion != null) Teleport(stick.y);
+        MovedDistance = 0;
+        if (SmoothMoves && SmoothMovement && Locomotion != null)
+        {
+            if (aiming) CancelAim();
+            MovedDistance = Locomotion.SmoothMove(stick, Time.deltaTime);
+        }
+        else if (Teleports && Locomotion != null) Teleport(stick.y);
         if (SnapTurns && Locomotion != null)
         {
             if (!turned && stick.x > 0.7f) { Locomotion.SnapRight(); turned = true; Buzz(HandEvent.Select); }

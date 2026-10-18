@@ -280,7 +280,7 @@ public static class DemoToolsBuilder
         locomotion.ComfortFade=fade;
         XRControllerInput left=CreateHand(player.transform,"LeftHand",UnityEngine.XR.XRNode.LeftHand,-1,locomotion,bounds);
         XRControllerInput right=CreateHand(player.transform,"RightHand",UnityEngine.XR.XRNode.RightHand,1,locomotion,bounds);
-        left.Teleports=true; left.SnapTurns=false;
+        left.Teleports=true; left.SmoothMoves=true; left.SnapTurns=false;
         right.Teleports=false; right.SnapTurns=true;
         WireHand(left);
         WireHand(right);

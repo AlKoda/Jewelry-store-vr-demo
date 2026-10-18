@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Rig-level teleport and snap turn without toolkit dependencies. Put it on the
+// Rig-level teleport, smooth thumbstick movement and snap turn without toolkit dependencies. Put it on the
 // rig root (the Player), point Head at the camera and bind controller actions
 // to these methods. Teleports land the head over the target, are refused
 // outside the interior bounds and refused onto surfaces above floor level.
@@ -15,6 +15,10 @@ public sealed class XRLocomotion : MonoBehaviour
     public float SnapTurnDegrees = 45f;
     public float MaxTeleportDistance = 8f;
     public float MaxStepHeight = 0.35f;
+    // Smooth movement: walking pace, the stick dead zone and the body radius kept clear of walls.
+    public float MoveSpeed = 1.4f;
+    public float MoveDeadZone = 0.2f;
+    public float BodyRadius = 0.25f;
 
     private const float ArcGravity = 9.81f;
     private const float ArcStep = 0.05f;
@@ -81,6 +85,50 @@ public sealed class XRLocomotion : MonoBehaviour
         Vector3 head = HeadOrRoot.position;
         Relocate(transform, transform.position + new Vector3(floorPoint.x - head.x, floorPoint.y - transform.position.y, floorPoint.z - head.z));
         if (ComfortFade != null) ComfortFade.Fade();
+        return true;
+    }
+
+    // Smooth movement from a thumbstick: forward is where the head looks (flattened), the
+    // speed ramps with the stick past the dead zone, and the step is refused or slid along
+    // a wall when knee or chest rays hit something within BodyRadius, or when the floor
+    // under the new head position is not a valid destination (outside the bounds, a step
+    // too high, no floor). Returns the distance moved, for footsteps.
+    public float SmoothMove(Vector2 stick, float deltaTime)
+    {
+        float amount = stick.magnitude;
+        if (amount < MoveDeadZone || deltaTime <= 0) return 0;
+        Transform head = HeadOrRoot;
+        Vector3 forward = head.forward; forward.y = 0;
+        if (forward.sqrMagnitude < 1e-4f) forward = transform.forward;
+        forward.Normalize();
+        Vector3 right = new Vector3(forward.z, 0, -forward.x);
+        float speed = MoveSpeed * Mathf.InverseLerp(MoveDeadZone, 1f, Mathf.Min(amount, 1f));
+        Vector3 step = (forward * stick.y + right * stick.x).normalized * speed * deltaTime;
+        if (TryStep(step)) return step.magnitude;
+        // Slide along a wall: try each horizontal component on its own.
+        Vector3 alongX = new Vector3(step.x, 0, 0), alongZ = new Vector3(0, 0, step.z);
+        if (Mathf.Abs(step.x) >= Mathf.Abs(step.z)) { if (TryStep(alongX)) return alongX.magnitude; if (TryStep(alongZ)) return alongZ.magnitude; }
+        else { if (TryStep(alongZ)) return alongZ.magnitude; if (TryStep(alongX)) return alongX.magnitude; }
+        return 0;
+    }
+
+    private bool TryStep(Vector3 step)
+    {
+        float length = step.magnitude;
+        if (length < 1e-5f) return false;
+        Vector3 direction = step / length;
+        Vector3 head = HeadOrRoot.position;
+        float floorY = transform.position.y;
+        foreach (float height in new[] { 0.45f, 1.1f })
+        {
+            Vector3 origin = new Vector3(head.x, floorY + height, head.z);
+            if (DemoPhysics.Nearest(new Ray(origin, direction), length + BodyRadius, out RaycastHit _, transform)) return false;
+        }
+        Vector3 target = new Vector3(head.x, floorY, head.z) + step;
+        if (!DemoPhysics.Nearest(new Ray(target + Vector3.up * (MaxStepHeight + 0.2f), Vector3.down), MaxStepHeight * 2 + 0.4f,
+                out RaycastHit floor, transform, null, true)
+            || !IsDestination(floor.point, floor.normal)) return false;
+        Relocate(transform, transform.position + new Vector3(step.x, floor.point.y - floorY, step.z));
         return true;
     }
 

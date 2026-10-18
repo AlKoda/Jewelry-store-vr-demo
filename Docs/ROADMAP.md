@@ -1,3 +1,8 @@
+## Smooth VR movement — October 18 (Claude, unverified)
+
+- [x] Left-stick smooth walking with wall and bounds stops; F8 switches to teleport; 3 checks.
+- [ ] Headset test on the PC; consider a comfort vignette and VR footsteps from MovedDistance.
+
 ## Four more asset packs — October 17, round 2 (Claude, unverified)
 
 - [x] AmbientProps2, RealismTextures, RealFoley2 fetched with licences and register rows.

@@ -204,6 +204,11 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             HudVisible = !HudVisible;
             if (HudVisible) DemoFeedback.Post("HUD on  (F2 hides it)", FeedbackTone.Info, true);
         }
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            XRControllerInput.SmoothMovement = !XRControllerInput.SmoothMovement;
+            DemoFeedback.Post(XRControllerInput.SmoothMovement ? "VR movement: smooth walking  (F8 for teleport)" : "VR movement: teleport  (F8 for smooth walking)", FeedbackTone.Info, true);
+        }
         if (Input.GetKeyDown(KeyCode.LeftBracket)) ChangeScale(-0.25f);
         if (Input.GetKeyDown(KeyCode.RightBracket)) ChangeScale(0.25f);
     }
