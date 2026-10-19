@@ -222,7 +222,7 @@ public sealed class XRHandHud : MonoBehaviour
         float outer = side, innerSide = -side;
         AddTip(Control.Secondary, back, "Remove / next tool", new Vector3(outer * 0.085f, 0.07f, 0.01f), outer > 0, null);
         AddTip(Control.Primary, face, null, new Vector3(outer * 0.085f, 0.044f, 0f), outer > 0, input.Label);
-        AddTip(Control.Trigger, "Trigger", "Use: photo, lamp, tape end", new Vector3(outer * 0.08f, -0.005f, 0.04f), outer > 0, null);
+        AddTip(Control.Trigger, "Trigger", left ? "Hold: tool wheel (empty hand)" : "Use: photo, lamp, tape end", new Vector3(outer * 0.08f, -0.005f, 0.04f), outer > 0, null);
         AddTip(Control.Stick, "Stick", stick, new Vector3(innerSide * 0.085f, 0.06f, 0.01f), innerSide > 0, null);
         if (left) AddTip(Control.Menu, "Menu", "Hide hints", new Vector3(innerSide * 0.085f, 0.034f, -0.01f), innerSide > 0, null);
         AddTip(Control.Grip, "Grip", "Grab / drop", new Vector3(innerSide * 0.08f, -0.03f, -0.02f), innerSide > 0, null);

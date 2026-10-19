@@ -91,7 +91,7 @@ public abstract class ToolHolder : MonoBehaviour
         float depth = Mathf.Max(DropSearchDepth + 1, origin.y - floor + 0.25f);
         Vector3 landing = DemoPhysics.Nearest(new Ray(origin, Vector3.down), depth, out RaycastHit hit, tool.transform, null, true)
             ? hit.point : new Vector3(p.x, floor, p.z);
-        tool.PlaceAt(landing, tool.transform.eulerAngles.y);
+        tool.PlaceAt(landing, Heading(tool.transform)); // upright, keeping where the tool pointed
         // A cone or marker sounds as itself when the bank has its takes, any other tool thuds.
         if (audible) DemoSounds.PlaySetDown(tool.Kind, landing, 0.5f);
     }
@@ -133,6 +133,14 @@ public abstract class ToolHolder : MonoBehaviour
         if (highlighted != null) highlighted.SetHighlight(false);
         highlighted = tool;
         if (highlighted != null) highlighted.SetHighlight(true);
+    }
+
+    // Compass heading of a freely turned transform: its forward flattened, or its up when it points straight down or up.
+    public static float Heading(Transform t)
+    {
+        Vector3 f = Vector3.ProjectOnPlane(t.forward, Vector3.up);
+        if (f.sqrMagnitude < 0.01f) f = Vector3.ProjectOnPlane(-t.up * Mathf.Sign(t.forward.y), Vector3.up);
+        return f.sqrMagnitude < 1e-6f ? t.eulerAngles.y : Mathf.Atan2(f.x, f.z) * Mathf.Rad2Deg;
     }
 
     // Nearest point inside the interior, when bounds are assigned.

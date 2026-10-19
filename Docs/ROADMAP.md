@@ -1,3 +1,8 @@
+## Quest 3 hand interaction — October 19 (Claude, unverified)
+
+- [x] Free rotation of held tools, upright on release; left-trigger tool wheel with right-hand pointer; camera on the wheel; 10 checks.
+- [ ] Headset test: wheel size and distance, torch aim pitch, camera handling.
+
 ## Smooth VR movement — October 18 (Claude, unverified)
 
 - [x] Left-stick smooth walking with wall and bounds stops; F8 switches to teleport; 3 checks.

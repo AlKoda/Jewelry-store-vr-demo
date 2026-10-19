@@ -1,3 +1,15 @@
+# Quest 3 hand interaction — October 19 (Claude, unverified, never run in Unity)
+
+- **Free hold:** a held tool now follows the controller's full rotation (`HandInteractor.FreeRotation`, default on; off restores heading-only). The carried scene lamp still hangs upright. On release, `ToolHolder.Heading` flattens the tool's forward, and the tool drops and stands upright on the surface below as before.
+- **Tool wheel (`XRToolWheel`, new, on the left controller):**
+  - Hold the left trigger with an empty left hand: a ring of seven slots (six tool kinds plus the evidence camera) opens above the controller, facing the head.
+  - Point the right controller at a slot; a ray shows the aim. Releasing the left trigger, or pressing the right trigger, gives that item to the right hand. Releasing over nothing closes it.
+  - Camera slot: puts a held tool down, then takes the camera; choosing it again returns the camera. A tool slot while holding the camera returns the camera first.
+  - The left trigger keeps its old use while the left hand holds something. The right trigger never photographs while the wheel is open. A/X and B/Y still spawn and cycle as before.
+- **Already in place, nothing changed:** in VR the flashlight (right) and UV torch (left) are parented to the controller and aim along it. The held camera rides the hand and shoots from its own lens, with the viewfinder on its rear screen. Headset test needed: Quest controller forward may point slightly up; add a pitch offset to `DemoLighting.HandLensOffset`'s rotation if the beam feels off.
+- **Checks:** ShopCityValidation.FreeHoldAndWheelChecks adds 10 PASS lines to RunGlass (13 with the smooth-movement batch).
+- **Compile:** the cloud Roslyn check shows only the 2 known NightLighting.cs:624 errors; runtime has 0 errors.
+
 # Smooth VR movement — October 18 (Claude, unverified, never run in Unity)
 
 - **What changed:**

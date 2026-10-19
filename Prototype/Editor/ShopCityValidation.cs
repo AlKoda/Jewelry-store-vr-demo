@@ -110,6 +110,7 @@ public static class ShopCityValidation
                 LightingChecks();
                 PanelChecks();
                 HandChecks();
+                FreeHoldAndWheelChecks();
                 DemoValidation.InterfaceChecks();
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
@@ -459,6 +460,75 @@ public static class ShopCityValidation
             screenDark = screenBlock.GetTexture("_MainTex") == Texture2D.blackTexture;
         }
         DemoValidation.Check(screenLive && screenDark, "Camera screen shows the viewfinder while held");
+    }
+
+    // Held tools turn freely with the controller and stand upright on release; the left
+    // controller's tool wheel hands the pointed item (a tool or the camera) to the right hand.
+    private static void FreeHoldAndWheelChecks()
+    {
+        DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
+        DemoValidation.Find<DemoModeSwitch>().Apply(true);
+        HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
+        HandInteractor left = desktop.transform.Find("LeftHand").GetComponent<HandInteractor>();
+        Pose saved = new Pose(hand.transform.position, hand.transform.rotation);
+        Pose savedLeft = new Pose(left.transform.position, left.transform.rotation);
+
+        hand.transform.SetPositionAndRotation(new Vector3(-3, 1.2f, 5), Quaternion.Euler(30, 60, 70));
+        DeployedTool cone = hand.SpawnIntoHand(DemoToolKind.Cone);
+        bool turned = cone != null && Quaternion.Angle(cone.transform.rotation, hand.transform.rotation) < 0.5f;
+        hand.Release();
+        bool upright = cone != null && Vector3.Angle(cone.transform.up, Vector3.up) < 0.5f && cone.transform.position.y < 0.05f;
+        if (cone != null) hand.Remove(cone);
+        DemoValidation.Check(turned, "A held tool turns with the controller in every axis");
+        DemoValidation.Check(upright, "A freely turned tool stands upright on the floor when released");
+
+        DeployedTool lamp = hand.SpawnIntoHand(DemoToolKind.Lamp);
+        bool lampUpright = lamp != null && Vector3.Angle(lamp.transform.up, Vector3.up) < 0.5f;
+        hand.RemoveHeld();
+        DemoValidation.Check(lampUpright, "A carried lamp still hangs upright under a rolled hand");
+
+        XRControllerInput leftInput = left.GetComponent<XRControllerInput>();
+        XRToolWheel wheel = leftInput != null ? leftInput.Wheel : null;
+        DemoValidation.Check(wheel != null && hand.GetComponent<XRControllerInput>().Wheel == null, "Only the left controller has a tool wheel");
+        if (wheel == null) return;
+        left.transform.SetPositionAndRotation(new Vector3(-3, 1.1f, 5), Quaternion.identity);
+        DemoValidation.Check(leftInput.WheelTrigger(true) && wheel.Open && XRToolWheel.Active == wheel && wheel.Target == hand,
+            "Left trigger with an empty hand opens the tool wheel for the right hand");
+        Vector3 n = wheel.Face.forward;
+        System.Action<int> aim = slot => hand.transform.SetPositionAndRotation(
+            (slot < 0 ? wheel.Face.position : wheel.SlotPosition(slot)) - n * 0.4f, Quaternion.LookRotation(n));
+        bool slotsRight = true;
+        for (int i = 0; i < XRToolWheel.SlotCount; i++)
+            slotsRight &= wheel.SlotAt(new Ray(wheel.SlotPosition(i) - n * 0.4f, n)) == i;
+        DemoValidation.Check(slotsRight && wheel.SlotAt(new Ray(wheel.Face.position - n * 0.4f, n)) == -1,
+            "Each wheel slot is picked by a ray through it, the centre picks nothing");
+        aim((int)DemoToolKind.Marker);
+        wheel.Refresh();
+        bool hovered = wheel.Hovered == (int)DemoToolKind.Marker;
+        bool chosen = leftInput.WheelTrigger(false) && !wheel.Open && hand.Held != null && hand.Held.Kind == DemoToolKind.Marker;
+        DemoValidation.Check(hovered && chosen, "Releasing the left trigger over a slot puts that tool in the right hand");
+
+        leftInput.WheelTrigger(true);
+        aim(XRToolWheel.CameraSlot);
+        wheel.Refresh();
+        bool camera = hand.GetComponent<XRControllerInput>().WheelTrigger(true) && !wheel.Open && hand.HoldingCamera && hand.Held == null;
+        DemoValidation.Check(camera, "Right trigger on the camera slot puts the marker down and the camera in hand");
+        leftInput.WheelTrigger(true);
+        aim((int)DemoToolKind.Cone);
+        wheel.Refresh();
+        leftInput.WheelTrigger(false);
+        DemoValidation.Check(!hand.HoldingCamera && hand.Held != null && hand.Held.Kind == DemoToolKind.Cone,
+            "Choosing a tool while holding the camera returns the camera first");
+        hand.RemoveHeld();
+        leftInput.WheelTrigger(true);
+        hand.transform.SetPositionAndRotation(new Vector3(0, 3, 0), Quaternion.identity);
+        wheel.Refresh();
+        leftInput.WheelTrigger(false);
+        DemoValidation.Check(!wheel.Open && hand.Held == null && !hand.HoldingCamera, "Releasing the wheel with nothing pointed gives nothing");
+        foreach (DeployedTool t in Object.FindObjectsByType<DeployedTool>(FindObjectsSortMode.None))
+            if (t.Kind == DemoToolKind.Marker && t.Holder == null && Vector3.Distance(t.transform.position, new Vector3(-3, 0, 5)) < 1.5f) desktop.Station.RemoveTool(t);
+        hand.transform.SetPositionAndRotation(saved.position, saved.rotation);
+        left.transform.SetPositionAndRotation(savedLeft.position, savedLeft.rotation);
     }
 
     private static void HandChecks()

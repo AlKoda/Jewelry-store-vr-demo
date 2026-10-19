@@ -102,7 +102,8 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 
 | Controller | Action |
 |---|---|
-| Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; release puts it down on the surface beneath |
+| Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; the held tool turns freely with the controller, and release stands it upright on the surface beneath |
+| Left trigger, hold (empty left hand; October 19, unverified) | Open the tool wheel: point the right controller at a tool or the camera, then release the left trigger or press the right trigger to take it in the right hand |
 | Trigger | Photograph while holding the camera; switch a held scene lamp on/off (at most two lit, the oldest goes out); select a held tape post or measuring reel |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
 | B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape → scene lamp) |

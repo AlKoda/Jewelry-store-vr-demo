@@ -3,7 +3,7 @@ using UnityEngine;
 // Tracked-hand adapter without any toolkit dependency. Something else moves this
 // transform (XRControllerInput now, a TrackedPoseDriver if ever needed) and
 // input bindings call Grab, Release, Trigger, SpawnIntoHand and RemoveHeld.
-// Held tools hang below the hand with the hand's heading; releasing drops them
+// Held tools hang below the hand and turn freely with it (FreeRotation); releasing drops them
 // onto the surface beneath (ToolHolder.Place). The nearest grabbable tool is
 // highlighted while the hand is empty.
 public sealed class HandInteractor : ToolHolder
@@ -15,6 +15,9 @@ public sealed class HandInteractor : ToolHolder
     // Fallback floor height without bounds; a carried lamp is clamped to the floor of
     // the region under it (Bounds.FloorAt: the night staging bay's street is lower).
     public float FloorY = 0f;
+    // Held tools turn with the controller in every axis (a lamp still hangs upright);
+    // off, they keep only the hand's heading as before. Release always stands the tool upright.
+    public static bool FreeRotation = true;
 
     protected override Transform CameraAnchor => transform;
 
@@ -39,7 +42,8 @@ public sealed class HandInteractor : ToolHolder
             ? transform.position + Vector3.down * Mathf.Abs(LampHeldOffset.y)
             : transform.TransformPoint(HeldOffset);
         if (Held.Kind == DemoToolKind.Lamp) p.y = Mathf.Max(p.y, Bounds != null ? Bounds.FloorAt(p) : FloorY);
-        Held.PlaceAt(p, transform.eulerAngles.y);
+        if (Held.Kind != DemoToolKind.Lamp && FreeRotation) Held.transform.SetPositionAndRotation(p, transform.rotation);
+        else Held.PlaceAt(p, Heading(transform));
     }
 
     // Grab the closest available tool, rack sample or camera within reach.

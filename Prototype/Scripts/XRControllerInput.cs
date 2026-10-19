@@ -48,6 +48,8 @@ public sealed class XRControllerInput : MonoBehaviour
     public bool MenuHeld => menu;
     public bool Left => Node == XRNode.LeftHand;
     public HandInteractor Hand => hand;
+    // The left hand's radial tool menu (left trigger with an empty hand); null on the right.
+    public XRToolWheel Wheel => wheel;
     public XRHandHud Hud => hud;
     public static bool HintsVisible => hintsVisible;
 
@@ -57,6 +59,7 @@ public sealed class XRControllerInput : MonoBehaviour
 
     private HandInteractor hand;
     private XRHandHud hud;
+    private XRToolWheel wheel;
     private InputDevice device;
     private bool grip, trigger, primary, secondary, stickClick, menu, aiming, aimValid, turned;
     private Vector3 aimPoint;
@@ -70,13 +73,18 @@ public sealed class XRControllerInput : MonoBehaviour
         hud = GetComponent<XRHandHud>();
         if (hud == null) hud = gameObject.AddComponent<XRHandHud>();
         hud.Build(this);
+        if (Left)
+        {
+            wheel = GetComponent<XRToolWheel>();
+            if (wheel == null) wheel = gameObject.AddComponent<XRToolWheel>();
+        }
         RefreshLabel();
         ApplyHints();
     }
 
     private void OnEnable() { Application.onBeforeRender += LatePose; }
 
-    private void OnDisable() { Application.onBeforeRender -= LatePose; CancelAim(); }
+    private void OnDisable() { Application.onBeforeRender -= LatePose; CancelAim(); if (wheel != null) wheel.Hide(); }
 
     // Forget any destination shown so far, e.g. when tracking drops or the hand is disabled.
     private void CancelAim()
@@ -117,7 +125,7 @@ public sealed class XRControllerInput : MonoBehaviour
                 if (holding) Buzz(HandEvent.Place);
             }
         }
-        if (Changed(device, CommonUsages.triggerButton, ref trigger) && trigger)
+        if (Changed(device, CommonUsages.triggerButton, ref trigger) && !WheelTrigger(trigger) && trigger)
         {
             bool camera = hand.HoldingCamera, held = hand.Held != null;
             hand.Trigger();
@@ -155,6 +163,49 @@ public sealed class XRControllerInput : MonoBehaviour
         if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
         if (late.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
         if (hand != null && hand.Held != null) hand.FollowHand();
+    }
+
+    // The tool wheel takes the trigger first: the left trigger opens it with an empty left hand and,
+    // released over a slot, chooses it; the right trigger chooses while any wheel is open.
+    // True when the wheel used this press or release.
+    public bool WheelTrigger(bool pressed)
+    {
+        if (Left && wheel != null)
+        {
+            if (pressed && hand.Held == null && !hand.HoldingCamera)
+            {
+                OpenWheel();
+                Buzz(HandEvent.Select);
+                return true;
+            }
+            if (!pressed && wheel.Open)
+            {
+                bool chose = wheel.Hovered >= 0;
+                bool given = chose && wheel.Confirm();
+                if (!chose) wheel.Hide();
+                if (chose) Buzz(given ? HandEvent.Spawn : HandEvent.Refused);
+                return true;
+            }
+            return false;
+        }
+        XRToolWheel open = XRToolWheel.Active;
+        if (!Left && pressed && open != null && open.Open)
+        {
+            bool chose = open.Hovered >= 0;
+            if (chose) Buzz(open.Confirm() ? HandEvent.Spawn : HandEvent.Refused);
+            return true; // a right trigger never photographs or selects while the wheel is up
+        }
+        return false;
+    }
+
+    // Points the wheel at the other (right) controller, which receives the chosen item.
+    public void OpenWheel()
+    {
+        if (wheel == null) return;
+        foreach (XRControllerInput other in FindObjectsByType<XRControllerInput>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            if (other != this && !other.Left) { wheel.Pointer = other.transform; wheel.Target = other.Hand; }
+        if (Locomotion != null) wheel.Head = Locomotion.Head;
+        wheel.Show();
     }
 
     // B/Y with an empty hand: the next kind for A/X, shown on the carousel above the controller.
