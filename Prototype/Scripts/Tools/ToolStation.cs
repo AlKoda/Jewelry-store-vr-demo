@@ -120,7 +120,8 @@ public sealed class ToolStation : MonoBehaviour
         UpdateLampShadows();
     }
 
-    // One portable lamp remains shadowed alongside the white torch; no short-range
+    // One portable lamp remains shadowed alongside whichever torch is lit (white or UV,
+    // never both: DemoLighting.TorchesExclusive); no short-range
     // unshadowed substitute is permitted to illuminate through solid walls.
     public void UpdateLampShadows()
     {
@@ -133,7 +134,7 @@ public sealed class ToolStation : MonoBehaviour
             // beams crossing walls. Profile the two shadow maps in actual PCVR.
             lamp.shadows = LightShadows.Soft;
             lamp.shadowCustomResolution=1024;
-            lamp.shadowBias=.015f;lamp.shadowNormalBias=.12f;
+            lamp.shadowBias=.04f;lamp.shadowNormalBias=.3f;
             lamp.range=DemoToolGeometry.LampRange;
         }
     }

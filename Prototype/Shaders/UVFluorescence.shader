@@ -1,6 +1,6 @@
 // Simulated fluorescent trace for the UV torch: invisible until the torch's beam
 // falls on it. The torch (DemoLighting) publishes _UVTorchPosition, _UVTorchDirection
-// and _UVTorchParams (x = cos of the half outer angle, y = range, z = 1 when on);
+// and _UVTorchParams (x = cos of the half outer angle, y = range, z = 1 when on, w = cos of the half inner angle);
 // UVTrace sets the per-renderer _Visibility (0..1) from its line-of-sight test, so a
 // trace never glows through a wall. Per pixel: torch on * soft cone edge * distance
 // falloff * _Visibility * mask alpha. Premultiplied output: the glow adds light and a
@@ -57,9 +57,13 @@ Shader "CrimeScene/UVFluorescence"
                 float3 ray=i.world-_UVTorchPosition.xyz;
                 float dist=length(ray);
                 float cosAngle=dot(ray/max(dist,1e-4),_UVTorchDirection.xyz);
-                float cone=smoothstep(_UVTorchParams.x,_UVTorchParams.x+_EdgeSoftness,cosAngle);
+                // Soft edge from the outer to the inner cone (w), as the spot light itself fades;
+                // older callers that leave w at 0 keep the fixed _EdgeSoftness band.
+                float innerCos=_UVTorchParams.w>_UVTorchParams.x?_UVTorchParams.w:_UVTorchParams.x+_EdgeSoftness;
+                float cone=smoothstep(_UVTorchParams.x,innerCos,cosAngle);
                 float reach=dist/max(_UVTorchParams.y,1e-3);
                 float falloff=saturate(1-reach*reach);
+                falloff*=falloff; // closer to Unity's point/spot attenuation curve
                 float glow=_UVTorchParams.z*cone*falloff*_Visibility*tex2D(_MainTex,i.uv).a;
                 fixed4 color=fixed4(_GlowColor.rgb*(_Intensity*glow),glow*0.2);
                 UNITY_APPLY_FOG_COLOR(i.fogCoord,color,fixed4(0,0,0,0));

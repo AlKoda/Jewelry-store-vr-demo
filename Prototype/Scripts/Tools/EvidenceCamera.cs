@@ -92,7 +92,7 @@ public sealed class EvidenceCamera : MonoBehaviour
             flash.color = new Color(1f, 0.97f, 0.92f);
             flash.shadows = LightShadows.Soft;
             flash.shadowCustomResolution=1024;
-            flash.shadowBias=.015f;flash.shadowNormalBias=.12f;
+            flash.shadowBias=.04f;flash.shadowNormalBias=.3f;
             flash.renderMode = LightRenderMode.ForcePixel;
         }
         if (flash == null) return;
@@ -185,18 +185,14 @@ public sealed class EvidenceCamera : MonoBehaviour
 
     // One manual render into the viewfinder; the camera's target, enabled state and pose are exactly
     // as before afterwards, and a capture in progress owns the camera, so ticks wait until it has
-    // finished. While the flashlight is on it is the scene's only realtime shadow
-    // (ToolStation.UpdateLampShadows) and rides beside the lens, so the preview skips its shadow map;
-    // a lit lamp keeps its shadow so its beam still stops at walls. Saved photos keep every shadow.
+    // finished. Shadows stay on, as in the saved photo: switching them off globally for the preview
+    // let the torch and lamp beams pass through walls and counters on the rear screen.
     private void TickViewfinder()
     {
         if(IsCapturing || viewfinder==null || photoCamera==null || !photoCamera.gameObject.activeInHierarchy) return;
         RenderTexture previous=photoCamera.targetTexture;
-        bool dropShadows=lighting!=null && lighting.FlashlightOn;
-        ShadowQuality shadows=QualitySettings.shadows;
         try
         {
-            if(dropShadows) QualitySettings.shadows=ShadowQuality.Disable;
             photoCamera.targetTexture=viewfinder;
             photoCamera.Render();
         }
@@ -204,7 +200,6 @@ public sealed class EvidenceCamera : MonoBehaviour
         {
             // In the editor these are the project's quality settings: restored even if Render throws.
             photoCamera.targetTexture=previous;
-            if(dropShadows) QualitySettings.shadows=shadows;
         }
     }
 

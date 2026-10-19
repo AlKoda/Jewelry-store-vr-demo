@@ -74,15 +74,19 @@ public static class SceneReviewPass {
  static void Place(string model,Transform parent,Vector3 pos,float yaw){var go=DemoAssetLibrary.PlacePack("InteriorModels",model,parent,pos,yaw,new DemoAssetLibrary.PackOptions{Shadows=true,Lod=DemoAssetLibrary.LodClass.Prop});if(!go)throw new Exception("Missing interior model "+model);}
  static void Reflections(){
  var root=GameObject.Find("NightStore").transform;var probes=Group("CaseReflectionProbes",root);
- var entrance=new GameObject("EntranceGlassReflection");entrance.transform.SetParent(root,false);entrance.transform.localPosition=new Vector3(0,1.2f,.5f);var doorProbe=entrance.AddComponent<ReflectionProbe>();doorProbe.mode=ReflectionProbeMode.Baked;doorProbe.boxProjection=true;doorProbe.size=new Vector3(5,3.5f,5);doorProbe.resolution=256;doorProbe.hdr=true;doorProbe.importance=6;
- foreach(string name in new[]{"CentralCase_Left","CentralCase_Middle","CentralCase_Right","LeftIsland_Rear","RightIsland_Rear","RightIsland_Front"}){var fixture=root.Find("Showroom/"+name);var go=new GameObject(name+"_Reflection");go.transform.SetParent(probes,false);go.transform.position=fixture.TransformPoint(new Vector3(0,.88f,0));var probe=go.AddComponent<ReflectionProbe>();probe.mode=ReflectionProbeMode.Baked;probe.boxProjection=true;probe.size=Mathf.Abs(fixture.eulerAngles.y%180)>45?new Vector3(1.15f,1.2f,2.3f):new Vector3(2.3f,1.2f,1.15f);probe.resolution=128;probe.hdr=true;probe.importance=5;}
+ var entrance=new GameObject("EntranceGlassReflection");entrance.transform.SetParent(root,false);entrance.transform.localPosition=new Vector3(0,1.2f,.5f);var doorProbe=entrance.AddComponent<ReflectionProbe>();doorProbe.mode=ReflectionProbeMode.Baked;doorProbe.boxProjection=true;doorProbe.size=new Vector3(5,3.5f,5);doorProbe.resolution=256;doorProbe.hdr=true;doorProbe.importance=6;doorProbe.blendDistance=.5f;
+ foreach(string name in new[]{"CentralCase_Left","CentralCase_Middle","CentralCase_Right","LeftIsland_Rear","RightIsland_Rear","RightIsland_Front"}){var fixture=root.Find("Showroom/"+name);var go=new GameObject(name+"_Reflection");go.transform.SetParent(probes,false);go.transform.position=fixture.TransformPoint(new Vector3(0,.88f,0));var probe=go.AddComponent<ReflectionProbe>();probe.mode=ReflectionProbeMode.Baked;probe.boxProjection=true;probe.size=Mathf.Abs(fixture.eulerAngles.y%180)>45?new Vector3(1.15f,1.2f,2.3f):new Vector3(2.3f,1.2f,1.15f);probe.resolution=256;probe.hdr=true;probe.importance=5;
+ // A 1 m default blend on a 1.2 m box never reaches full weight: the case would reflect the room, soft and offset.
+ probe.blendDistance=.1f;}
  }
  static void SpecularLighting(){
  var group=GameObject.Find("NightStore/Lighting").transform;
  // The baked headlights provide the diffuse navigation light. Low-energy realtime
  // companions provide view-dependent highlights on metal/glass and moving leaves.
  foreach(var original in group.GetComponentsInChildren<Light>().Where(l=>l.name.StartsWith("Headlight_")).ToArray()){
-  var go=new GameObject(original.name+"_Specular");go.transform.SetParent(group,false);go.transform.SetPositionAndRotation(original.transform.position,original.transform.rotation);var light=go.AddComponent<Light>();light.type=LightType.Spot;light.range=original.range;light.spotAngle=original.spotAngle;light.innerSpotAngle=original.innerSpotAngle;light.color=original.color;light.intensity=.16f;light.cookie=original.cookie;light.shadows=LightShadows.None;light.renderMode=LightRenderMode.Auto;light.lightmapBakeType=LightmapBakeType.Realtime;
+  var go=new GameObject(original.name+"_Specular");go.transform.SetParent(group,false);go.transform.SetPositionAndRotation(original.transform.position,original.transform.rotation);var light=go.AddComponent<Light>();light.type=LightType.Spot;light.range=original.range;light.spotAngle=original.spotAngle;light.innerSpotAngle=original.innerSpotAngle;light.color=original.color;light.intensity=.16f;light.cookie=original.cookie;
+  // Shadowed (hard, 512): unshadowed, an 18 m spot lit shelf backs and jewellery behind the store's solid walls.
+  light.shadows=LightShadows.Hard;light.shadowCustomResolution=512;light.shadowBias=.05f;light.shadowNormalBias=.4f;light.shadowNearPlane=.2f;light.renderMode=LightRenderMode.Auto;light.lightmapBakeType=LightmapBakeType.Realtime;
  }
  }
 }

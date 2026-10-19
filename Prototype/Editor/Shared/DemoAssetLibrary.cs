@@ -191,6 +191,59 @@ public static class DemoAssetLibrary
         m.SetFloat("_GlossMapScale", 1);
     }
 
+    // AmbientProps ships colour maps only; RealismTextures/PropMaps holds their normal, packed
+    // metallic/smoothness and occlusion maps, one set per material, not per model:
+    // "IndustrialPipes_modular_industrial_pipes_01_group02" -> "IndustrialPipes_Group02",
+    // "..._boxes" -> "<Model>_Boxes", "..._dirty" -> "<Model>_Dirty", otherwise "<Model>".
+    public static string PropMapSet(string colourName)
+    {
+        if (string.IsNullOrEmpty(colourName)) return null;
+        int cut = colourName.IndexOf('_');
+        string model = cut > 0 ? colourName.Substring(0, cut) : colourName;
+        string lower = colourName.ToLowerInvariant();
+        foreach (string suffix in new[] { "Boxes", "Group01", "Group02", "Dirty" })
+            if (lower.EndsWith("_" + suffix.ToLowerInvariant(), System.StringComparison.Ordinal)) return model + "_" + suffix;
+        return model;
+    }
+
+    // Sets whose smoothness was estimated from the colour's luminance (no source roughness):
+    // their packed alpha runs high, so it is scaled down to read as worn paint, not wet plastic.
+    private static readonly HashSet<string> EstimatedPropMaps = new HashSet<string>
+        { "CardboardBoxSet", "ACCondenserSet", "IndoorACUnit", "NetworkServerRackRow", "LightSwitch", "PowerOutlet" };
+
+    // Puts the matching PropMaps set on one AmbientProps material; false when there is none.
+    public static bool ApplyPropMaps(Material m, float bump = 0.55f)
+    {
+        string set = m != null && m.mainTexture != null ? PropMapSet(m.mainTexture.name) : null;
+        if (set == null) return false;
+        Texture2D normal = NormalMapAny("RealismTextures", "PropMaps/" + set + "_Normal");
+        Texture2D packed = DataMap("RealismTextures", "PropMaps/" + set + "_MetallicSmoothness.png");
+        Texture2D occlusion = DataMap("RealismTextures", "PropMaps/" + set + "_Occlusion.jpg");
+        if (normal == null && packed == null && occlusion == null) return false;
+        if (normal != null)
+        {
+            m.SetTexture("_BumpMap", normal);
+            m.EnableKeyword("_NORMALMAP");
+            m.SetFloat("_BumpScale", bump);
+        }
+        if (packed != null)
+        {
+            ApplyMetallicSmoothness(m, packed);
+            int cut = set.IndexOf('_');
+            m.SetFloat("_GlossMapScale", EstimatedPropMaps.Contains(cut > 0 ? set.Substring(0, cut) : set) ? 0.6f : 1f);
+        }
+        ApplyOcclusion(m, occlusion);
+        EditorUtility.SetDirty(m);
+        return true;
+    }
+
+    // Standard's ambient occlusion map (G channel, linear); null clears it.
+    public static void ApplyOcclusion(Material m, Texture2D occlusion)
+    {
+        m.SetTexture("_OcclusionMap", occlusion);
+        m.SetFloat("_OcclusionStrength", occlusion != null ? 1f : 0f);
+    }
+
     // Gives a saved material an albedo (the texture carries the colour, a light tint of
     // the saved colour is kept so it does not darken it) and an optional normal map.
     public static void ApplyTextures(Material m, Texture2D albedo, Texture2D normal, float bump)
@@ -410,6 +463,14 @@ public static class DemoAssetLibrary
         Vector2 scalars = finished ? new Vector2(finish.Metallic, finish.Smoothness) : NamedSurface(imported.name);
         m.SetFloat("_Metallic", scalars.x);
         m.SetFloat("_Glossiness", scalars.y);
+        // With a packed map the scalar smoothness is ignored by Standard; a tuned finish then scales the map instead.
+        if (m.GetTexture("_MetallicGlossMap") != null && finished && finish.Smoothness > 0) m.SetFloat("_GlossMapScale", finish.Smoothness);
+        // Ambient occlusion when the pack ships one (PBRInterior/PBRExterior do); AmbientProps take their
+        // whole set (normal, packed, occlusion) from RealismTextures/PropMaps, matched per material.
+        ApplyOcclusion(m, stem != null && role != GlassRole
+            ? DataMap(pack, stem + "_Occlusion.jpg") ?? DataMap(pack, stem + "_Occlusion.png") ?? DataMap(pack, stem + "_AO.png") ?? DataMap(pack, stem + "_AO.jpg")
+            : null);
+        if (pack == "AmbientProps" && role != GlassRole) ApplyPropMaps(m);
         if (role == GlassRole)
         {
             DemoGeometry.Translucent(m);

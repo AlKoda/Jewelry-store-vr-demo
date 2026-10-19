@@ -1101,7 +1101,7 @@ public static partial class NightStoreValidation
         int casters = 0;
         bool torch = false;
         foreach (Light light in UnityEngine.Object.FindObjectsByType<Light>(FindObjectsSortMode.None))
-            if (light.isActiveAndEnabled && light.shadows != LightShadows.None && light.lightmapBakeType != LightmapBakeType.Baked)
+            if (light.isActiveAndEnabled && light.shadows != LightShadows.None && light.lightmapBakeType != LightmapBakeType.Baked && !StreetShadow(light))
             {
                 casters++;
                 torch |= light == lighting.FlashlightLight;
@@ -1146,9 +1146,16 @@ public static partial class NightStoreValidation
             Transform t = group.Find(name);
             ReflectionProbe probe = t != null ? t.GetComponent<ReflectionProbe>() : null;
             reflections &= probe != null && probe.mode == UnityEngine.Rendering.ReflectionProbeMode.Baked && probe.boxProjection
-                && probe.resolution == NightLighting.ReflectionResolution && (!baked || probe.bakedTexture != null);
+                && probe.resolution == NightLighting.ReflectionResolution && (!baked || probe.bakedTexture != null)
+                && probe.blendDistance < Mathf.Min(probe.size.x, probe.size.z) * 0.25f;
         }
-        DemoValidation.Check(reflections, "Reflection probes are baked for showroom, office and street");
+        DemoValidation.Check(reflections, "Reflection probes are baked for showroom, office and street, with blend zones narrower than their boxes");
+        // AmbientProps materials find their RealismTextures/PropMaps set per material, not per model.
+        DemoValidation.Check(DemoAssetLibrary.PropMapSet("IndustrialPipes_modular_industrial_pipes_01_group02") == "IndustrialPipes_Group02"
+            && DemoAssetLibrary.PropMapSet("ElectricCables_modular_electric_cables_boxes") == "ElectricCables_Boxes"
+            && DemoAssetLibrary.PropMapSet("SprayPaintBottles_spray_paint_bottles_dirty") == "SprayPaintBottles_Dirty"
+            && DemoAssetLibrary.PropMapSet("ACCondenserSet_conditioner") == "ACCondenserSet",
+            "Ambient prop materials map to their own PBR map sets");
 
         Color night = RenderSettings.ambientLight;
         lighting.SetNight(false);
@@ -1184,14 +1191,20 @@ public static partial class NightStoreValidation
             if (!light.isActiveAndEnabled || light.lightmapBakeType == LightmapBakeType.Baked) continue;
             if (group != null && light.transform.IsChildOf(group)) fallback++;
             else outside++;
-            if (light.shadows != LightShadows.None) shadows++;
+            if (light.shadows != LightShadows.None && !StreetShadow(light)) shadows++;
         }
     }
 
+    // The street's own realtime shadows (the headlights' specular companions, and the quick preview's
+    // near stand-ins) are fixed, low-resolution and outside the torch/lamp shadow budget counted here.
+    private static bool StreetShadow(Light light)
+        => light.name.StartsWith("Headlight_", StringComparison.Ordinal) || light.name.StartsWith("Streetlight_", StringComparison.Ordinal);
+
     // Arrival has no realtime light at all once baked (RunNightQuick: only the seven
     // shadowless stand-ins). The flashlight or the UV torch with the two lit lamps the
-    // station allows stay within RealtimeLightBudget, and only one of them shadows:
-    // the flashlight while it is on, else the lamp lit last (ToolStation.UpdateLampShadows).
+    // station allows stay within RealtimeLightBudget. Whichever torch is on (they are exclusive)
+    // shadows, and so does the lamp lit last (ToolStation.UpdateLampShadows): the UV torch is
+    // shadowed since October 19 so its violet pool stops at walls.
     private static void RealtimeLightChecks()
     {
         bool baked = SessionState.GetBool(BakedKey, false);
@@ -1227,7 +1240,7 @@ public static partial class NightStoreValidation
         DemoValidation.Info("Realtime lights: arrival " + arrivalRealtime + " (+" + arrivalFallback + " quick-preview stand-ins); two lamps " + lamps
             + "; with flashlight " + withTorch + " (" + torchShadows + " shadowed); with UV torch " + withUV + " (" + uvShadows + " shadowed)");
         DemoValidation.Check(arrival && lamps == 1 && newest && withTorch == 2 && withUV == 2 && Mathf.Max(withTorch, withUV) <= RealtimeLightBudget
-            && lampShadows == 1 && torchShadows == ShadowLightBudget && uvShadows == 1
+            && lampShadows == 1 && torchShadows == ShadowLightBudget && uvShadows == ShadowLightBudget
             && torchOwns && handedBack && remaining && after == 0 && station.DeployedCount == before,
             "Night store realtime light budget");
         DemoValidation.Check(pixel && headlights, "Handheld lights keep a per-pixel slot");
@@ -1499,7 +1512,7 @@ public static partial class NightStoreValidation
         bool whiteOnly = lighting.FlashlightOn && !lighting.UVTorchOn;
         lighting.Flashlight(false);
         Light uv = lighting.UVTorchLight;
-        bool tuned = uv != null && uv.type == LightType.Spot && uv.shadows == LightShadows.None && Mathf.Abs(uv.range - 6) < 0.01f
+        bool tuned = uv != null && uv.type == LightType.Spot && uv.shadows == LightShadows.Soft && Mathf.Abs(uv.range - 6) < 0.01f
             && Mathf.Abs(uv.spotAngle - 32) < 0.01f && lighting.UVTorchModel != null;
         DemoValidation.Check(uvOnly && whiteOnly && tuned && !lighting.UVTorchOn && !lighting.FlashlightOn, "UV torch and white flashlight are exclusive");
 
@@ -1530,6 +1543,34 @@ public static partial class NightStoreValidation
         Vector3 beyond = new Vector3(L.OfficeHalf + 1.5f, 1.5f, target.z);
         bool wall = Vector3.Distance(beyond, target) < uv.range && beyond.x > L.OfficeHalf + L.Partition;
         DemoValidation.Check(wall && AimUV(lighting, beyond, target, drops) < 0.01f, "UV trace stays dark behind a wall");
+        // A thin board 0.25 m above the trace, over the strip from 0.1 to 0.5 of its width on the +x side,
+        // blocks two of the five sample points (the +x corners): a partial glow. The same board casting no
+        // shadow (like clear case glass) does not block. A cone standing on the trace hides at least its centre.
+        Vector3 size = drops.transform.lossyScale, overhead = target + Vector3.up * 1.5f;
+        GameObject cover = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cover.transform.SetPositionAndRotation(target + drops.transform.right * (size.x * 0.3f) + Vector3.up * 0.25f,
+            Quaternion.LookRotation(Vector3.up, drops.transform.up));
+        cover.transform.localScale = new Vector3(size.x * 0.4f, size.y * 1.4f, 0.02f);
+        Physics.SyncTransforms();
+        float partial = AimUV(lighting, overhead, target, drops);
+        cover.GetComponent<Renderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        float glassLike = AimUV(lighting, overhead, target, drops);
+        UnityEngine.Object.DestroyImmediate(cover);
+        ToolStation uvStation = DemoValidation.Find<ToolStation>();
+        DeployedTool cone = uvStation.Spawn(DemoToolKind.Cone);
+        float underTool = 1;
+        if (cone != null)
+        {
+            cone.PlaceAt(target, 0);
+            Physics.SyncTransforms();
+            underTool = AimUV(lighting, overhead, target, drops);
+            uvStation.RemoveTool(cone);
+        }
+        Physics.SyncTransforms();
+        DemoValidation.Info("UV trace visibility: partly covered " + partial.ToString("0.00") + ", under shadowless cover " + glassLike.ToString("0.00")
+            + ", under a cone " + underTool.ToString("0.00"));
+        DemoValidation.Check(partial > 0.1f && partial < 0.9f && glassLike > 0.9f, "A partly covered UV trace glows partly; shadowless glass does not block it");
+        DemoValidation.Check(cone != null && underTool < 0.85f, "A deployed tool standing on a UV trace hides its glow");
         lighting.UVTorch(false);
         lighting.SetUVExamples(false);
 

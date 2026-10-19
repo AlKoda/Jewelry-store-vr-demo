@@ -35,7 +35,7 @@ public static class DisplayCaseReflections
         var probe=new GameObject(name).AddComponent<ReflectionProbe>();
         probe.transform.position=position;probe.center=bounds.center-position;probe.size=bounds.size;
         probe.boxProjection=true;probe.mode=ReflectionProbeMode.Baked;probe.resolution=resolution;
-        probe.hdr=true;probe.nearClipPlane=.03f;probe.farClipPlane=50;probe.importance=5;
+        probe.hdr=true;probe.nearClipPlane=.03f;probe.farClipPlane=50;probe.importance=5;probe.blendDistance=.25f;
         probe.clearFlags=ReflectionProbeClearFlags.SolidColor;probe.backgroundColor=RenderSettings.ambientEquatorColor;
         var flags=new Dictionary<GameObject,StaticEditorFlags>();
         var disabled=new List<Renderer>();

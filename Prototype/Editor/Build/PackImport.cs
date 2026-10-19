@@ -216,6 +216,7 @@ public sealed class PackImport : AssetPostprocessor
     {
         if (pack == "WallGraphics" || pack == "SurfaceDecals") return true;
         if (pack == "PBRInterior") return Starts(stem, "FloorTile") || Starts(stem, "Terrazzo");
+        if (pack == "RealismTextures") return Starts(stem, "Rust") || Starts(stem, "PaintedMetal") || Starts(stem, "Surfaces/");
         if (pack == "PBRExterior") return Starts(stem, "Asphalt") || Starts(stem, "Pavement") || Starts(stem, "Concrete") || Starts(stem, "Granite");
         return false;
     }

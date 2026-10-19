@@ -318,7 +318,7 @@ public static partial class NightStoreValidation
     // strips reach both side walls, the facade end and the office back wall.
     private static void DetailShadowGap(Transform root)
     {
-        const string label = "A dark shadow gap runs round the showroom and office walls under the ceiling, probe-lit and shadowless";
+        const string label = "A dark shadow gap runs round the showroom and office walls under the ceiling, probe-lit and casting two-sided";
         Transform gap = root.Find(L.CeilingPath + "/" + NightStoreBuilder.ShadowGapName);
         MeshRenderer r = gap != null ? gap.GetComponent<MeshRenderer>() : null;
         MeshFilter f = gap != null ? gap.GetComponent<MeshFilter>() : null;
@@ -330,7 +330,7 @@ public static partial class NightStoreValidation
         }
         StaticEditorFlags flags = GameObjectUtility.GetStaticEditorFlags(gap.gameObject);
         Material[] materials = r.sharedMaterials;
-        bool ok = materials.Length == 1 && materials[0] == StoreKit.DeviceBlack && r.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.Off
+        bool ok = materials.Length == 1 && materials[0] == StoreKit.DeviceBlack && r.shadowCastingMode == UnityEngine.Rendering.ShadowCastingMode.TwoSided
             && r.receiveGI == ReceiveGI.LightProbes && (flags & StaticEditorFlags.BatchingStatic) != 0 && (flags & StaticEditorFlags.OccluderStatic) == 0;
         // Wall planes as (axis: 0 x, 2 z; position; the room side's sign).
         float ox = L.OfficeHalf - L.Partition * 0.5f;

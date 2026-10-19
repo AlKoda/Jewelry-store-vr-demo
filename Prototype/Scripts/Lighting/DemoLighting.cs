@@ -323,8 +323,8 @@ public sealed class DemoLighting : MonoBehaviour
         DemoSounds.Play(DemoSound.Switch, at, 0.25f);
     }
 
-    // Violet spot without shadows (the trace's own line-of-sight test keeps the glow
-    // out of occluded places); switching it off darkens every trace at once.
+    // Shadowed violet spot; the fluorescent traces add their own multi-point sight test
+    // (UVTrace), since their glow is unlit. Switching it off darkens every trace at once.
     public void UVTorch(bool on)
     {
         if (on && TorchesExclusive) Flashlight(false);
@@ -335,6 +335,7 @@ public sealed class DemoLighting : MonoBehaviour
             Shader.SetGlobalVector(UVParamsId, Vector4.zero);
             UVTrace.HideAll();
         }
+        if (Session != null && Session.Station != null) Session.Station.UpdateLampShadows();
     }
 
     public void ToggleUVExamples()
@@ -369,9 +370,11 @@ public sealed class DemoLighting : MonoBehaviour
     {
         Transform beam = uv.Light.transform;
         float cosine = Mathf.Cos(uv.Light.spotAngle * 0.5f * Mathf.Deg2Rad);
+        // w: the inner cone, so the glow's soft edge matches the light's own spot falloff.
+        float inner = Mathf.Cos(Mathf.Min(uv.Light.innerSpotAngle, uv.Light.spotAngle - 1) * 0.5f * Mathf.Deg2Rad);
         Shader.SetGlobalVector(UVPositionId, beam.position);
         Shader.SetGlobalVector(UVDirectionId, beam.forward);
-        Shader.SetGlobalVector(UVParamsId, new Vector4(cosine, uv.Light.range, 1, 0));
+        Shader.SetGlobalVector(UVParamsId, new Vector4(cosine, uv.Light.range, 1, inner));
         UVTrace.UpdateAll(beam.position, beam.forward, cosine, uv.Light.range, deltaTime);
     }
 
@@ -403,7 +406,16 @@ public sealed class DemoLighting : MonoBehaviour
             light.spotAngle = UVSpotAngle;
             light.intensity = UVIntensity;
             light.color = UVColor;
-            light.shadows = LightShadows.None;
+            // Shadowed like the white torch, so the violet pool stops at walls, the counter and
+            // closed cases instead of lighting whatever lies behind them. The torches are exclusive,
+            // so this never adds a second torch shadow map. Clear glass casts no shadow (its renderers
+            // are ShadowCastingMode.Off), so the beam still reaches into a case.
+            light.shadows = LightShadows.Soft;
+            light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.High;
+            light.shadowCustomResolution = 1024;
+            light.shadowBias = .04f;
+            light.shadowNormalBias = .3f;
+            light.shadowNearPlane = .06f;
         }
         else
         {
@@ -414,8 +426,9 @@ public sealed class DemoLighting : MonoBehaviour
             light.shadows = LightShadows.Soft;
             light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.VeryHigh;
             light.shadowCustomResolution = 2048;
-            light.shadowBias = .015f;
-            light.shadowNormalBias = .12f;
+            // Near Unity's defaults (0.05 / 0.4): the earlier 0.015 / 0.12 striped grazing floors and walls.
+            light.shadowBias = .04f;
+            light.shadowNormalBias = .3f;
             light.shadowNearPlane = .06f;
         }
         torch.Light = light;

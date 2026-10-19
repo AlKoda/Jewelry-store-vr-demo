@@ -326,7 +326,8 @@ public static class NightStoreBuilder
         gap.Face(StoreKit.DeviceBlack, Vector3.back, V(-ox, g0, L.MaxZ - e), V(ox, g0, L.MaxZ - e), V(ox, top, L.MaxZ - e), V(-ox, top, L.MaxZ - e));
         gap.Face(StoreKit.DeviceBlack, Vector3.forward, V(-ox, g0, oz), V(ox, g0, oz), V(ox, top, oz), V(-ox, top, oz));
         MeshRenderer gapRenderer = gap.Emit(ShadowGapName, ceilingGroup, Vector3.zero, Quaternion.identity, Folder, "night_shadow_gap").GetComponent<MeshRenderer>();
-        if (gapRenderer != null) gapRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        // Two-sided: these one-sided faces bound the ceiling recess, and light leaked into the slot past them.
+        if (gapRenderer != null) gapRenderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.TwoSided;
 
         Vector3[] downlights = L.Downlights();
         for (int i = 0; i < downlights.Length; i++)

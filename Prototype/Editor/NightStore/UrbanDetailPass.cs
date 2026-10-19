@@ -30,7 +30,7 @@ public static class UrbanDetailPass
         m.SetTexture("_BumpMap",DemoAssetLibrary.NormalMapAny("RealismTextures","Surfaces/"+set+"_Normal"));m.EnableKeyword("_NORMALMAP");m.SetFloat("_BumpScale",.4f);
         DemoAssetLibrary.ApplyMetallicSmoothness(m,DemoAssetLibrary.DataMap("RealismTextures","Surfaces/"+set+"_MetallicSmoothness.png"));
         m.SetFloat("_GlossMapScale",gloss);
-        m.SetTexture("_OcclusionMap",DemoAssetLibrary.Texture("RealismTextures","Surfaces/"+set+"_Occlusion.jpg"));return m;
+        DemoAssetLibrary.ApplyOcclusion(m,DemoAssetLibrary.DataMap("RealismTextures","Surfaces/"+set+"_Occlusion.jpg"));return m;
     }
     static void Buildings()
     {
@@ -92,12 +92,9 @@ public static class UrbanDetailPass
         var go=DemoAssetLibrary.PlacePack(pack,name,parent,position,yaw,new DemoAssetLibrary.PackOptions{Scale=scale,Shadows=true,Lod=DemoAssetLibrary.LodClass.Prop});
         if(!go)throw new Exception("Selected asset missing: "+pack+"/"+name);
         DemoAssetLibrary.Seat(go,position.y);
-        // AmbientProps' colour-only source maps have matching supplementary PBR maps.
-        if(pack=="AmbientProps")foreach(var r in go.GetComponentsInChildren<MeshRenderer>())foreach(var m in r.sharedMaterials){
-            var normal=DemoAssetLibrary.NormalMapAny("RealismTextures","PropMaps/"+name+"_Normal");if(normal){m.SetTexture("_BumpMap",normal);m.EnableKeyword("_NORMALMAP");m.SetFloat("_BumpScale",.55f);}
-            var ms=DemoAssetLibrary.DataMap("RealismTextures","PropMaps/"+name+"_MetallicSmoothness.png");if(ms)DemoAssetLibrary.ApplyMetallicSmoothness(m,ms);
-            m.SetTexture("_OcclusionMap",DemoAssetLibrary.Texture("RealismTextures","PropMaps/"+name+"_Occlusion.jpg"));
-        }
+        // AmbientProps' colour-only materials take their RealismTextures/PropMaps set, matched per
+        // material (pipes group 1/2, cable boxes, dirty spray cans), not per model.
+        if(pack=="AmbientProps")foreach(var r in go.GetComponentsInChildren<MeshRenderer>())foreach(var m in r.sharedMaterials)if(m)DemoAssetLibrary.ApplyPropMaps(m);
         return go;
     }
     static void Props()

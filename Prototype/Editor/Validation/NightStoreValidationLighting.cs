@@ -466,13 +466,13 @@ public static partial class NightStoreValidation
         {
             Light light = LightAt(group, "Streetlight_" + i);
             if (light == null || !LanternNearShop(root, light.transform.position, out bool near)) { ok = false; continue; }
-            ok &= light.lightmapBakeType == LightmapBakeType.Realtime && light.shadows == LightShadows.None
+            ok &= light.lightmapBakeType == LightmapBakeType.Realtime && light.shadows == (near ? LightShadows.Hard : LightShadows.None)
                 && Mathf.Abs(light.intensity - profile.RealtimeIntensity) < 0.001f
                 && light.renderMode == (near ? LightRenderMode.Auto : LightRenderMode.ForceVertex);
             modes.Add(i + " " + light.renderMode + " at " + light.intensity.ToString("0.00"));
         }
         DemoValidation.Info("Quick-preview streetlights (" + profile.Model + "): " + string.Join("; ", modes));
-        DemoValidation.Check(ok, "Quick-preview streetlights follow the lamp profile: shadowless, near ones per-pixel, far ones vertex-lit");
+        DemoValidation.Check(ok, "Quick-preview streetlights follow the lamp profile: near ones per-pixel with hard shadows, far ones vertex-lit and shadowless");
     }
 
     // ---------------------------------------------------------------- helpers

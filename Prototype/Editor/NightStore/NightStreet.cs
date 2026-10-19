@@ -229,7 +229,8 @@ public static class NightStreet
             }
         }
         GameObject tree = k.Emit("Tree_" + i, parent, TreePositions[i], Quaternion.identity, NightStoreBuilder.Folder, "night_tree");
-        tree.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        // Casts in the bake, so the trees stand on the wet street instead of floating under the lanterns.
+        tree.GetComponent<MeshRenderer>().shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
     }
 
     // An open smooth lathe from a towards b (radii at heights along it; b only sets the direction).

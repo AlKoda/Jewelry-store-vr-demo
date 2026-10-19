@@ -569,6 +569,8 @@ public static class NightLighting
             probe.intensity = 1;
             // The small office probe wins where it overlaps the showroom's.
             probe.importance = i == 1 ? 2 : 1;
+            // Unity's default 1 m blend would fade the office probe over most of its small box.
+            probe.blendDistance = i == 1 ? 0.5f : 0.75f;
         }
     }
 
@@ -661,7 +663,7 @@ public static class NightLighting
 
     // RunNightQuick, or a build whose bake was skipped or failed (NightStoreBuilder.
     // BuildScene): no lightmaps, so baked lights would not render at all. They become
-    // realtime and shadowless at legacy-falloff intensities; the headlights and near
+    // realtime at legacy-falloff intensities (hard low shadows on the near ones); the headlights and near
     // streetlights are Auto, so the flashlight, UV torch and lamps (ForcePixel) keep their
     // per-pixel slots, the far streetlights are vertex-lit, and the flat ambient is lifted
     // to stand in for the missing bounce. A preview only, never the shipped look.
@@ -673,7 +675,13 @@ public static class NightLighting
         {
             if (light.name == "DiagnosticSun" || light.name.EndsWith("_Specular")) continue;
             light.lightmapBakeType = LightmapBakeType.Realtime;
-            light.shadows = LightShadows.None;
+            // Hard low-resolution shadows on the near lights, so a preview build does not show street
+            // light inside the store through its walls; the far, vertex-lit streetlights stay shadowless.
+            bool near = light.name.StartsWith("Headlight_") || light.name.StartsWith("Streetlight_") && NearSide(int.Parse(light.name.Substring(12)));
+            light.shadows = near ? LightShadows.Hard : LightShadows.None;
+            light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
+            light.shadowBias = .05f;
+            light.shadowNormalBias = .4f;
             if (light.name.StartsWith("Headlight_"))
             {
                 light.intensity = HeadlightRealtime;
@@ -687,7 +695,7 @@ public static class NightLighting
             }
         }
         RenderSettings.ambientLight = FallbackAmbient.gamma;
-        Debug.LogWarning("NightLighting: not baked (RunNightQuick or a preview build). Baked lights switched to realtime without shadows and the ambient lifted; run RunNight or Play-Keyboard.cmd bake for the real look.");
+        Debug.LogWarning("NightLighting: not baked (RunNightQuick or a preview build). Baked lights switched to realtime (near ones with hard low shadows) and the ambient lifted; run RunNight or Play-Keyboard.cmd bake for the real look.");
     }
 
     // The inverse of UseRealtimeFallback, before a bake of a quick build: every scene

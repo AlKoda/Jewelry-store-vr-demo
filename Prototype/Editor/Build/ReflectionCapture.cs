@@ -26,6 +26,14 @@ public static class ReflectionCapture
                 EditorUtility.SetDirty(p);
             }
         }finally{for(int i=0;i<probes.Length;i++)probes[i].intensity=intensities[i];RenderSettings.reflectionIntensity=ambient;}
+        // Second pass with the probes back on: metals and glass seen in a cubemap now show the first
+        // pass's reflections instead of black (one bounce, no feedback since the first pass was clean).
+        foreach(var p in probes){
+            string path=folder+"/"+p.name+".exr";
+            if(!Lightmapping.BakeReflectionProbe(p,path))throw new Exception("Reflection bounce capture failed: "+p.name);
+            AssetDatabase.ImportAsset(path,ImportAssetOptions.ForceUpdate);
+            p.bakedTexture=AssetDatabase.LoadAssetAtPath<Cubemap>(path);p.customBakedTexture=p.bakedTexture;EditorUtility.SetDirty(p);
+        }
         AssetDatabase.SaveAssets();EditorSceneManager.SaveOpenScenes();Debug.Log("CLEAN_REFLECTION_CAPTURE_PASS probes="+probes.Length);
     }
     public static void RebuildSaved(){try{
