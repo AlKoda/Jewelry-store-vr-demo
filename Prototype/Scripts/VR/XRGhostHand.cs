@@ -18,7 +18,7 @@ public sealed class XRGhostHand : MonoBehaviour
     public static readonly Quaternion GripPitch = Quaternion.Euler(12f,0,0);
     public static Pose TorchPose(bool left){
         // The lens is 9.5 cm ahead of the handle contact, between thumb and fingers.
-        var contact=new Vector3(left?-.002f:.002f,-.022f,.04f);
+        var contact=new Vector3(left?.002f:-.002f,-.022f,.04f);
         return new Pose(contact+GripPitch*Vector3.forward*.095f,GripPitch);
     }
     public static bool HideControllers = true;
@@ -38,14 +38,16 @@ public sealed class XRGhostHand : MonoBehaviour
     Animator nativeAnimator;
     bool native;
     bool torchGrip;
+    // Swap visuals only; controller input and tool ownership keep their physical side.
+    bool ModelLeft => !input.Left;
     bool TryNative(){
-        var prefab=Resources.Load<GameObject>("MetaHands/"+(input.Left?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
+        var prefab=Resources.Load<GameObject>("MetaHands/"+(ModelLeft?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
         root=new GameObject("Meta controller hand").transform;root.SetParent(transform,false);root.localPosition=Vector3.zero;
         var model=Instantiate(prefab,root,false);var bones=model.GetComponentsInChildren<Transform>();
         Transform wrist=null,middle=null,index=null,little=null;
         foreach(var b in bones){if(b.name=="XRHand_Wrist")wrist=b;if(b.name=="XRHand_MiddleTip")middle=b;if(b.name=="XRHand_IndexProximal")index=b;if(b.name=="XRHand_LittleProximal")little=b;}
         if(!wrist||!middle||!index||!little){Destroy(root.gameObject);root=null;return false;}
-        var controller=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+(input.Left?"Left":"Right"));
+        var controller=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+(ModelLeft?"Left":"Right"));
         if(!controller){Destroy(root.gameObject);root=null;return false;}
         // Match Meta's UnityXRControllerHands prefab overrides: remove the FBX
         // conversion from the armature and mesh, then apply the authored grip pose.
@@ -66,11 +68,11 @@ public sealed class XRGhostHand : MonoBehaviour
         model.transform.localRotation=Quaternion.identity;
         var forward=root.InverseTransformDirection(middle.position-wrist.position).normalized;
         var across=root.InverseTransformDirection(little.position-index.position).normalized;
-        if(input.Left)across=-across;
+        if(ModelLeft)across=-across;
         var meshFrame=Quaternion.LookRotation(forward,Vector3.Cross(forward,across));
-        var controllerFrame=Quaternion.LookRotation(Vector3.forward,input.Left?-Vector3.right:Vector3.right);
+        var controllerFrame=Quaternion.LookRotation(Vector3.forward,ModelLeft?-Vector3.right:Vector3.right);
         model.transform.localRotation=GripPitch*controllerFrame*Quaternion.Inverse(meshFrame);
-        var wristAnchor=new Vector3(input.Left?-.012f:.012f,-.025f,-.07f);
+        var wristAnchor=new Vector3(ModelLeft?-.012f:.012f,-.025f,-.07f);
         model.transform.localPosition+=wristAnchor-root.InverseTransformPoint(wrist.position);
 
         foreach(var r in model.GetComponentsInChildren<Renderer>()){r.sharedMaterial=material;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;}
@@ -83,7 +85,7 @@ public sealed class XRGhostHand : MonoBehaviour
         // A cylindrical flashlight needs the fingers around its barrel, rather
         // than the controller's vertical grip. Preserve the controller beam axis.
         var rotation=GripPitch*Quaternion.AngleAxis(180,Vector3.forward)*Quaternion.Euler(90,0,0)*Quaternion.Inverse(GripPitch);
-        var fingerRingCentre=new Vector3(input.Left?-.012f:.012f,-.039f,.025f);
+        var fingerRingCentre=new Vector3(ModelLeft?-.012f:.012f,-.039f,.025f);
         root.localRotation=rotation;
         root.localPosition=new Vector3(0,-.025f,.015f)-rotation*fingerRingCentre;
     }

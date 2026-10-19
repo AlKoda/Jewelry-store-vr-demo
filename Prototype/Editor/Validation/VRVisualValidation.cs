@@ -23,7 +23,10 @@ public static class VRVisualValidation
                 var ghost=owner.AddComponent<XRGhostHand>();ghost.Build(input);ghost.Root.gameObject.SetActive(true);
                 ghost.SetTorchGrip(pose>0);ghost.SetPose(pose==0?0:pose==1?.8f:1,pose==2?1:0,1,0);
                 var animator=ghost.Root.GetComponentInChildren<Animator>();
-                if(!animator)throw new Exception("Official hand animator missing");animator.Update(.1f);
+                if(!animator)throw new Exception("Official hand animator missing");
+                var expected=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+(input.Left?"Right":"Left"));
+                if(animator.runtimeAnimatorController!=expected)throw new Exception("Visual grab hand swap missing");
+                animator.Update(.1f);
                 if(pose==0){
                     Transform wrist=null,middle=null;
                     foreach(var bone in ghost.Root.GetComponentsInChildren<Transform>()){
