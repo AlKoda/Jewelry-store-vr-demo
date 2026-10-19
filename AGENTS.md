@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Repository reorganisation (done); next: fixes from the Quest 3 test | — | 2026-10-19 | idle, waiting for Koda's test notes |
-| ChatGPT | Reorganization reconciliation and Quest 3 OpenXR setup | Prototype, Tools, launchers, Docs, snapshot | 2026-10-19 | authored hand animation/build checks passed; headset grip retest pending |
+| ChatGPT | Reorganization reconciliation and Quest 3 OpenXR setup | Prototype, Tools, launchers, Docs, snapshot | 2026-10-19 | hand import/unit repair built and visually checked; headset acceptance pending |
 
 ## One project: edit it, never fork it
 
@@ -34,3 +34,4 @@ Update your own row **before** you start and again when you stop. Pull first: an
 - Work directly on `main`. Pull before editing and again before pushing. Small commits with clear messages.
 - With every batch: update the top of `Docs/HANDOFF.md` (state table) and `Docs/ROADMAP.md`. Mark anything not run in Unity as **unverified**. Keep HANDOFF short: it describes the present, and the History files hold the past.
 - Nothing can be compiled outside Unity. Koda runs the validators on the PC and reports the results; never claim something works in Unity or the headset before that report.
+

@@ -39,3 +39,5 @@ VR_VISUAL_VALIDATION_PASS: rendered icon texture and stable body holster anchors
 Latest VR polish: VR_VISUAL_VALIDATION_PASS (rendered icons, smooth belt, Meta skinned assets); EXISTING_SCENE_DELIVERY_PASS. Human hand/grip/comfort acceptance pending.
 
 Authored hand follow-up: both Meta animation controllers loaded; left/right middle fingertip open-to-closed movement >2.5 cm; VR_VISUAL_VALIDATION_PASS and EXISTING_SCENE_DELIVERY_PASS. Human fit pending.
+
+Hand repair: actual XRGhostHand skinned mesh size/thickness passed in four left/right open/closed cases (12x7x19 cm open, 11x8x15 cm curled). Render preview inspected. VR_VISUAL_VALIDATION_PASS and EXISTING_SCENE_DELIVERY_PASS. Human headset acceptance pending.

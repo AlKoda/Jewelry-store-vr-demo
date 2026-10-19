@@ -4,7 +4,38 @@ using UnityEngine;
 using Object=UnityEngine.Object;
 public static class VRVisualValidation
 {
+    public static void HandsRun(){
+        try{CheckHands();UnityEditor.EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);UnityEditor.EditorApplication.Exit(1);}
+    }
+    public static void CheckHands(){
+        var stage=new GameObject("Hand render validation");
+        var cameraObject=new GameObject("Hand validation camera");
+        var rt=new RenderTexture(960,640,24);var previous=RenderTexture.active;
+        var camera=cameraObject.AddComponent<Camera>();camera.targetTexture=rt;camera.stereoTargetEye=StereoTargetEyeMask.None;camera.cullingMask=1<<31;
+        camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.07f,.09f,.12f);camera.orthographic=true;camera.orthographicSize=.2f;camera.nearClipPlane=.01f;
+        try{
+            for(int side=0;side<2;side++)for(int pose=0;pose<2;pose++){
+                var owner=new GameObject("Hand validation owner");owner.transform.SetParent(stage.transform,false);
+                owner.transform.localPosition=new Vector3(side*.24f-.12f,0,pose*.22f-.11f);
+                var input=owner.AddComponent<XRControllerInput>();input.Node=side==0?UnityEngine.XR.XRNode.LeftHand:UnityEngine.XR.XRNode.RightHand;
+                var ghost=owner.AddComponent<XRGhostHand>();ghost.Build(input);ghost.Root.gameObject.SetActive(true);
+                ghost.SetPose(pose==0?0:1,pose==0?0:1,1,0);
+                var animator=ghost.Root.GetComponentInChildren<Animator>();
+                if(!animator)throw new Exception("Official hand animator missing");animator.Update(.1f);
+                foreach(var t in owner.GetComponentsInChildren<Transform>())t.gameObject.layer=31;
+                var renderer=ghost.Root.GetComponentInChildren<SkinnedMeshRenderer>();
+                var baked=new Mesh();renderer.BakeMesh(baked);var bounds=new Bounds(renderer.transform.TransformPoint(baked.vertices[0]),Vector3.zero);
+                foreach(var v in baked.vertices)bounds.Encapsulate(renderer.transform.TransformPoint(v));Object.DestroyImmediate(baked);
+                if(bounds.size.magnitude<.08f||bounds.size.magnitude>.35f||Mathf.Min(bounds.size.x,bounds.size.y,bounds.size.z)<.012f)throw new Exception("Hand has invalid scale or collapsed mesh: "+bounds.size);
+                Debug.Log("HAND_MESH_SHAPE_PASS side="+side+" pose="+pose+" size="+bounds.size);
+            }
+            camera.transform.position=new Vector3(.12f,.65f,-.38f);camera.transform.LookAt(Vector3.zero);camera.Render();
+            RenderTexture.active=rt;var read=new Texture2D(960,640,TextureFormat.RGB24,false);read.ReadPixels(new Rect(0,0,960,640),0,0);read.Apply();
+            System.IO.Directory.CreateDirectory("Builds");System.IO.File.WriteAllBytes("Builds/hand-rig-validation.png",read.EncodeToPNG());Object.DestroyImmediate(read);
+        }finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(stage);Object.DestroyImmediate(cameraObject);}
+    }
     public static void Check(){
+        CheckHands();
         var mesh=DemoUi.RoundedQuad(1,1,0,1);
         if(mesh.uv.Length!=mesh.vertexCount)throw new Exception("VR icon panel lacks UVs");
         var root=new GameObject("Temporary VR icon validation");var cameraObject=new GameObject("Temporary icon camera");

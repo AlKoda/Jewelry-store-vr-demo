@@ -50,3 +50,7 @@ Strict saved-scene build and VRVisualValidation passed, including rendered icon 
 ## Authored hand animation follow-up
 
 The current build uses Meta SDK 207.0.1 OpenXR animation controllers, clips and masks on the official mesh skeleton. Flex/Pinch/Point inputs replace manual bone-axis rotations. A Unity validator confirms both middle fingertips move more than 2.5 cm between open and closed poses. Surface shading and lower tool/torch grip placement address flat appearance and tools resting above the hand. This is controller-driven animation, not optical hand tracking or the full Interaction SDK grab stack. Human visual acceptance remains required.
+
+## Hand import repair
+
+Previous headset feedback rejected the hand result. Finger movement alone had missed the FBX armature/unit mismatch. The repaired setup preserves Meta bake-axis/hierarchy settings, compensates the retained 100x conversion at the model wrapper, and aligns after Animator reset. CheckHands now instantiates the actual controller-hand component, bakes both skinned meshes in open/closed poses, checks physical dimensions and thickness, and renders a preview for inspection. The preview shows intact hands; headset grip fit still requires a human check.

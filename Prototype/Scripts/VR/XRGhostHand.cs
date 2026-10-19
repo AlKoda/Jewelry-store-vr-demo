@@ -38,19 +38,23 @@ public sealed class XRGhostHand : MonoBehaviour
         Transform wrist=null,middle=null,index=null,little=null;
         foreach(var b in bones){if(b.name=="XRHand_Wrist")wrist=b;if(b.name=="XRHand_MiddleTip")middle=b;if(b.name=="XRHand_IndexProximal")index=b;if(b.name=="XRHand_LittleProximal")little=b;}
         if(!wrist||!middle||!index||!little){Destroy(root.gameObject);root=null;return false;}
-        var forward=root.InverseTransformDirection(middle.position-wrist.position).normalized;
-        var across=root.InverseTransformDirection(little.position-index.position).normalized;if(input.Left)across=-across;
-        var up=Vector3.Cross(forward,across).normalized;
-        model.transform.localRotation=Quaternion.Inverse(Quaternion.LookRotation(forward,up))*model.transform.localRotation;
-        model.transform.localPosition-=root.InverseTransformPoint(wrist.position)+Vector3.forward*.05f;
         var controller=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+(input.Left?"Left":"Right"));
         if(!controller){Destroy(root.gameObject);root=null;return false;}
+        // This FBX retains a 100x armature conversion. Authored clips use metre translations.
+        // Compensate on the model wrapper, leaving every animated bone and bind pose intact.
+        model.transform.localScale *= .01f;
         nativeAnimator=wrist.parent.GetComponent<Animator>();
         if(!nativeAnimator)nativeAnimator=wrist.parent.gameObject.AddComponent<Animator>();
         nativeAnimator.runtimeAnimatorController=controller;
         nativeAnimator.applyRootMotion=false;
         nativeAnimator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
         nativeAnimator.Rebind();nativeAnimator.Update(0);
+        var forward=root.InverseTransformDirection(middle.position-wrist.position).normalized;
+        var across=root.InverseTransformDirection(little.position-index.position).normalized;if(input.Left)across=-across;
+        var up=Vector3.Cross(forward,across).normalized;
+        model.transform.localRotation=Quaternion.Inverse(Quaternion.LookRotation(forward,up))*model.transform.localRotation;
+        model.transform.localPosition-=root.InverseTransformPoint(wrist.position)+Vector3.forward*.05f;
+
         foreach(var r in model.GetComponentsInChildren<Renderer>()){r.sharedMaterial=material;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;}
         DemoUi.ToHeadsetUiLayer(root);native=true;Apply(true);return true;
     }
