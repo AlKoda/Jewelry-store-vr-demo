@@ -1,3 +1,32 @@
+# VR comfort and hands round — October 19, batch 2 (Claude, unverified, never run in Unity)
+
+Built in order of difficulty, as Koda asked. Each item's settings are first guesses to tune from the Quest 3 test.
+
+- **Comfort vignette (`XRComfortVignette`, on the rig, added by XRLocomotion.Awake):**
+  - A soft black ring at the edge of the view that fades in only while the stick glides the rig. Real walking in the room never triggers it, and neither do teleports (a jump over 0.5 m in one frame).
+  - The middle of the view (16 cm radius at 30 cm, about 28° from centre) is always fully clear. At full speed the outer edge reaches `Strength` = 0.35 opacity, over a 0.18 s fade.
+  - It shows only in VR, on the headset-interface layer, so photos never show it. F7 switches it.
+- **Wheel by thumbstick:** while the tool wheel is open, the left stick pushed past 0.6 picks the slot it points to, and it wins over the right-hand pointer. It never walks while the wheel is open. Releasing the left trigger still confirms; `XRToolWheel.SlotFromStick` does the mapping.
+- **Camera controls (EvidenceCamera, while held in the right hand):**
+  - Right stick up/down: zoom 1–4x (`ZoomBy`, FOV divided).
+  - A: flash, a spot light at the lens for the capture frame only.
+  - B: review this session's photos on the rear screen (`ReviewStep`, newest first, loaded from the saved PNGs); past the oldest it returns to live view.
+  - Trigger: shoots, or leaves review mode.
+  - Zoom and review reset when the camera goes back to its rack. Photos cannot be deleted, on purpose: evidence.
+- **Distance grab (HandInteractor):** with nothing within reach, the tool the controller points at (8 cm sphere cast, up to 4 m, blocked by anything in between) is highlighted. Grip pulls it into the hand over 0.18 s. This covers tools lying on the floor. `HandInteractor.DistanceGrab` switches it.
+- **Holsters (`XRHolsters`, on the rig):**
+  - Flashlight on the right hip, UV torch on the left hip, camera on the chest. They are placed from the head's position and heading, so they follow standing, sitting and bending, and never go lower than 25 cm above the floor.
+  - Grip inside a holster's 16 cm takes its item into that hand. A torch moves to that controller and lights (`DemoLighting.MoveTorch`). Grip again at the same holster puts it away.
+  - Faint rings mark the holsters and brighten when a hand is near; they hide with the controller hints.
+  - Stick click now toggles whichever torch rides that hand. A session reset puts the torches back on their default hands.
+- **See-through hands (`XRGhostHand`, on each controller, VR only):**
+  - A primitive hand (palm, four three-joint fingers, thumb) on the new `CrimeScene/GhostHand` shader: a depth pre-pass plus alpha with a soft rim. DemoUiTheme.Ghost keeps the shader in the build; the fallback is the unlit interface material.
+  - Grip closes the middle, ring and little fingers, the trigger closes the index finger, and touching any face button or the stick lowers the thumb.
+  - Opacity starts at 0.35; F3/F4 change it in steps of 0.1. While the hands show, the controller model is hidden (`HideControllers`); the button hints stay.
+  - The palm offsets are guesses for the Touch Plus grip.
+- **Checks:** ShopCityValidation.VRComfortChecks adds 13 PASS lines to RunGlass, on top of the 10 from batch 1 and the 3 from smooth movement.
+- **Compile:** the cloud Roslyn check shows only the 2 known NightLighting.cs:624 errors; runtime has 0 errors. The new shader has not been compiled at all.
+
 # Quest 3 hand interaction — October 19 (Claude, unverified, never run in Unity)
 
 - **Free hold:** a held tool now follows the controller's full rotation (`HandInteractor.FreeRotation`, default on; off restores heading-only). The carried scene lamp still hangs upright. On release, `ToolHolder.Heading` flattens the tool's forward, and the tool drops and stands upright on the surface below as before.

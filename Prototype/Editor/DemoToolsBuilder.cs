@@ -305,6 +305,7 @@ public static class DemoToolsBuilder
         theme.Medium=AssetDatabase.LoadAssetAtPath<Font>(FontFolder+"/Barlow-Medium.ttf");
         theme.SemiBold=AssetDatabase.LoadAssetAtPath<Font>(FontFolder+"/Barlow-SemiBold.ttf");
         theme.Shaded=Shader.Find("CrimeScene/UiShaded");
+        theme.Ghost=Shader.Find("CrimeScene/GhostHand");
         if(theme.Regular==null||theme.Medium==null||theme.SemiBold==null)
             Debug.LogWarning("Interface fonts missing under "+FontFolder+"; the built-in font is used.");
         if(theme.Shaded==null) Debug.LogWarning("CrimeScene/UiShaded missing; the controllers fall back to a lit shader.");

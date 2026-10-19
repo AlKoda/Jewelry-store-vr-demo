@@ -30,6 +30,10 @@ public sealed class XRToolWheel : MonoBehaviour
     public Transform Pointer;
     public HandInteractor Target;
     public Transform Head;
+    // The left thumbstick while the wheel is open: pushed past StickPick it picks the slot it
+    // points to and wins over the right-hand pointer.
+    public Vector2 Stick;
+    public float StickPick = 0.6f;
 
     private Transform root;
     private TextMesh title;
@@ -45,6 +49,7 @@ public sealed class XRToolWheel : MonoBehaviour
         root.gameObject.SetActive(true);
         Active = this;
         Hovered = -1;
+        Stick = Vector2.zero;
         Refresh();
     }
 
@@ -94,6 +99,13 @@ public sealed class XRToolWheel : MonoBehaviour
         return Mathf.RoundToInt(Mathf.Repeat(angle, 360) / (360f / SlotCount)) % SlotCount;
     }
 
+    // Slot a stick direction points to, as seen on the wheel (up is the top slot, clockwise).
+    public static int SlotFromStick(Vector2 stick)
+    {
+        float angle = Mathf.Atan2(stick.x, stick.y) * Mathf.Rad2Deg;
+        return Mathf.RoundToInt(Mathf.Repeat(angle, 360) / (360f / SlotCount)) % SlotCount;
+    }
+
     public Vector3 SlotPosition(int slot) => root != null ? root.TransformPoint(SlotLocal(slot)) : transform.position;
 
     private Vector3 SlotLocal(int slot)
@@ -113,12 +125,13 @@ public sealed class XRToolWheel : MonoBehaviour
     {
         root.localPosition = Centre;
         if (Head != null) DemoUi.FaceViewer(root, Head.position);
-        int hovered = Pointer != null ? SlotAt(new Ray(Pointer.position, Pointer.forward)) : -1;
+        bool byStick = Stick.magnitude > StickPick;
+        int hovered = byStick ? SlotFromStick(Stick) : Pointer != null ? SlotAt(new Ray(Pointer.position, Pointer.forward)) : -1;
         if (hovered != Hovered && hovered >= 0) DemoSounds.Play(DemoSound.Click, root.position, 0.15f);
         Hovered = hovered;
         for (int i = 0; i < tiles.Count; i++) tiles[i].localScale = Vector3.one * (i == Hovered ? 1.25f : 1f);
-        title.text = Hovered >= 0 ? SlotName(Hovered) : "Point with the right hand";
-        if (Pointer == null) return;
+        title.text = Hovered >= 0 ? SlotName(Hovered) : "Point, or push the left stick";
+        if (Pointer == null || byStick) { if (ray != null) ray.enabled = false; return; }
         LineRenderer line = Ray();
         line.enabled = true;
         line.SetPosition(0, Pointer.position);

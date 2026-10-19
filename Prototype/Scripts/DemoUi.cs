@@ -723,6 +723,15 @@ public static class DemoUi
         return new Material(shader) { color = color, hideFlags = HideFlags.DontSave };
     }
 
+    // See-through hand material (CrimeScene/GhostHand, kept in the build by DemoUiTheme), else the
+    // unlit alpha-blended interface material; color.a is the opacity.
+    public static Material GhostMaterial(Color color)
+    {
+        Shader shader = Theme != null && Theme.Ghost != null ? Theme.Ghost : Shader.Find("CrimeScene/GhostHand");
+        if (shader == null) return UnlitMaterial(color);
+        return new Material(shader) { color = color, hideFlags = HideFlags.DontSave };
+    }
+
     // Faces the transform's readable side (+Z away from the viewer, as TextMesh expects) towards the eye.
     public static void FaceViewer(Transform t, Vector3 eye)
     {

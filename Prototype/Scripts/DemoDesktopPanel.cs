@@ -209,6 +209,13 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             XRControllerInput.SmoothMovement = !XRControllerInput.SmoothMovement;
             DemoFeedback.Post(XRControllerInput.SmoothMovement ? "VR movement: smooth walking  (F8 for teleport)" : "VR movement: teleport  (F8 for smooth walking)", FeedbackTone.Info, true);
         }
+        if (Input.GetKeyDown(KeyCode.F3)) XRGhostHand.ChangeOpacity(-0.1f);
+        if (Input.GetKeyDown(KeyCode.F4)) XRGhostHand.ChangeOpacity(0.1f);
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            XRComfortVignette.Enabled = !XRComfortVignette.Enabled;
+            DemoFeedback.Post(XRComfortVignette.Enabled ? "Comfort vignette on  (F7 turns it off)" : "Comfort vignette off  (F7 turns it on)", FeedbackTone.Info, true);
+        }
         if (Input.GetKeyDown(KeyCode.LeftBracket)) ChangeScale(-0.25f);
         if (Input.GetKeyDown(KeyCode.RightBracket)) ChangeScale(0.25f);
     }

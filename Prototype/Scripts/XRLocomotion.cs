@@ -29,7 +29,19 @@ public sealed class XRLocomotion : MonoBehaviour
     private void Awake()
     {
         if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
+        Vignette = GetComponent<XRComfortVignette>();
+        if (Vignette == null) Vignette = gameObject.AddComponent<XRComfortVignette>();
+        if (Vignette.Head == null) Vignette.Head = Head;
+        Holsters = GetComponent<XRHolsters>();
+        if (Holsters == null) Holsters = gameObject.AddComponent<XRHolsters>();
+        if (Holsters.Head == null) Holsters.Head = Head;
     }
+
+    // Flashlight, UV torch and camera at the hips and chest.
+    public XRHolsters Holsters { get; private set; }
+
+    // Edge darkening while the stick glides the rig (F7 switches it).
+    public XRComfortVignette Vignette { get; private set; }
 
     // Floor point the pointer ray lands on, or false when it is not a valid destination.
     public bool FindDestination(Ray pointer, out Vector3 floorPoint, Transform ignore = null)

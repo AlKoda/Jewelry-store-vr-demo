@@ -36,6 +36,7 @@ public sealed class XRControllerInput : MonoBehaviour
     public float MovedDistance { get; private set; }
     public bool SnapTurns;
     public float ArcSpeed = 6f;
+    public float ZoomPerSecond = 2f;
     public DemoToolKind SpawnKind = DemoToolKind.Cone;
     public TextMesh Label;
 
@@ -46,6 +47,11 @@ public sealed class XRControllerInput : MonoBehaviour
     public bool SecondaryHeld => secondary;
     public bool StickHeld => stickClick;
     public bool MenuHeld => menu;
+    // Analog grip and trigger (0..1) and whether the thumb rests on the face buttons or stick, for the ghost hand.
+    public float GripValue { get; private set; }
+    public float TriggerValue { get; private set; }
+    public bool ThumbDown { get; private set; }
+    public XRGhostHand GhostHand => ghost;
     public bool Left => Node == XRNode.LeftHand;
     public HandInteractor Hand => hand;
     // The left hand's radial tool menu (left trigger with an empty hand); null on the right.
@@ -60,6 +66,7 @@ public sealed class XRControllerInput : MonoBehaviour
     private HandInteractor hand;
     private XRHandHud hud;
     private XRToolWheel wheel;
+    private XRGhostHand ghost;
     private InputDevice device;
     private bool grip, trigger, primary, secondary, stickClick, menu, aiming, aimValid, turned;
     private Vector3 aimPoint;
@@ -73,6 +80,9 @@ public sealed class XRControllerInput : MonoBehaviour
         hud = GetComponent<XRHandHud>();
         if (hud == null) hud = gameObject.AddComponent<XRHandHud>();
         hud.Build(this);
+        ghost = GetComponent<XRGhostHand>();
+        if (ghost == null) ghost = gameObject.AddComponent<XRGhostHand>();
+        ghost.Build(this);
         if (Left)
         {
             wheel = GetComponent<XRToolWheel>();
@@ -115,9 +125,18 @@ public sealed class XRControllerInput : MonoBehaviour
         if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
         if (device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
 
+        GripValue = device.TryGetFeatureValue(CommonUsages.grip, out float gripAmount) ? gripAmount : grip ? 1 : 0;
+        TriggerValue = device.TryGetFeatureValue(CommonUsages.trigger, out float triggerAmount) ? triggerAmount : trigger ? 1 : 0;
+        ThumbDown = primary || secondary || stickClick || Touched(device, CommonUsages.primaryTouch)
+            || Touched(device, CommonUsages.secondaryTouch) || Touched(device, CommonUsages.primary2DAxisTouch);
         if (Changed(device, CommonUsages.gripButton, ref grip))
         {
-            if (grip) { if (hand.Grab()) Buzz(HandEvent.Grab); }
+            if (grip)
+            {
+                XRHolsters holsters = XRHolsters.Active;
+                if (holsters != null && holsters.TryUse(this)) Buzz(HandEvent.Grab);
+                else if (hand.Grab()) Buzz(HandEvent.Grab);
+            }
             else
             {
                 bool holding = hand.Held != null || hand.HoldingCamera;
@@ -133,15 +152,23 @@ public sealed class XRControllerInput : MonoBehaviour
             else if (held) Buzz(HandEvent.Select);
         }
         if (Changed(device, CommonUsages.primaryButton, ref primary) && primary)
-            Buzz(hand.SpawnIntoHand(SpawnKind) != null ? HandEvent.Spawn : HandEvent.Refused);
+        {
+            if (hand.HoldingCamera) { hand.EvidenceCamera.ToggleFlash(); Buzz(HandEvent.Select); }
+            else Buzz(hand.SpawnIntoHand(SpawnKind) != null ? HandEvent.Spawn : HandEvent.Refused);
+        }
         if (Changed(device, CommonUsages.secondaryButton, ref secondary) && secondary)
         {
-            if (hand.Held != null) { hand.RemoveHeld(); Buzz(HandEvent.Select); }
+            if (hand.HoldingCamera) { hand.EvidenceCamera.ReviewStep(); Buzz(HandEvent.Select); }
+            else if (hand.Held != null) { hand.RemoveHeld(); Buzz(HandEvent.Select); }
             else CycleKind();
         }
         if ((Lighting != null || UVLighting != null) && Changed(device, CommonUsages.primary2DAxisClick, ref stickClick) && stickClick)
         {
-            if (Lighting != null) Lighting.ToggleFlashlight();
+            // The torch riding this hand (a holster may have swapped them), else this hand's own.
+            DemoLighting torches = Lighting != null ? Lighting : UVLighting;
+            if (torches.FlashlightOn && torches.FlashlightHand == Node) torches.ToggleFlashlight();
+            else if (torches.UVTorchOn && torches.UVTorchHand == Node) torches.ToggleUVTorch();
+            else if (Lighting != null) Lighting.ToggleFlashlight();
             else UVLighting.ToggleUVTorch();
             Buzz(HandEvent.Select);
         }
@@ -272,12 +299,17 @@ public sealed class XRControllerInput : MonoBehaviour
     private void Stick(Vector2 stick)
     {
         MovedDistance = 0;
+        // While the wheel is open the left stick picks a slot instead of walking.
+        if (wheel != null && wheel.Open) { wheel.Stick = stick; if (aiming) CancelAim(); return; }
         if (SmoothMoves && SmoothMovement && Locomotion != null)
         {
             if (aiming) CancelAim();
             MovedDistance = Locomotion.SmoothMove(stick, Time.deltaTime);
         }
         else if (Teleports && Locomotion != null) Teleport(stick.y);
+        // Holding the camera, the stick's up and down zoom (twice as close per second at full push).
+        if (!Left && hand.HoldingCamera && Mathf.Abs(stick.y) > 0.3f && Mathf.Abs(stick.y) > Mathf.Abs(stick.x))
+            hand.EvidenceCamera.ZoomBy(Mathf.Pow(ZoomPerSecond, stick.y * Time.deltaTime));
         if (SnapTurns && Locomotion != null)
         {
             if (!turned && stick.x > 0.7f) { Locomotion.SnapRight(); turned = true; Buzz(HandEvent.Select); }
@@ -367,6 +399,8 @@ public sealed class XRControllerInput : MonoBehaviour
         arcLine.sharedMaterial = DemoUi.UnlitMaterial(Color.white);
         return arcLine;
     }
+
+    private static bool Touched(InputDevice device, InputFeatureUsage<bool> usage) => device.TryGetFeatureValue(usage, out bool on) && on;
 
     // True when the button state changed; state holds the new value.
     private static bool Changed(InputDevice device, InputFeatureUsage<bool> usage, ref bool state)

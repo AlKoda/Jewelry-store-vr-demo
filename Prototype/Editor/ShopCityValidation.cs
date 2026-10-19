@@ -111,6 +111,7 @@ public static class ShopCityValidation
                 PanelChecks();
                 HandChecks();
                 FreeHoldAndWheelChecks();
+                VRComfortChecks();
                 DemoValidation.InterfaceChecks();
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
@@ -529,6 +530,121 @@ public static class ShopCityValidation
             if (t.Kind == DemoToolKind.Marker && t.Holder == null && Vector3.Distance(t.transform.position, new Vector3(-3, 0, 5)) < 1.5f) desktop.Station.RemoveTool(t);
         hand.transform.SetPositionAndRotation(saved.position, saved.rotation);
         left.transform.SetPositionAndRotation(savedLeft.position, savedLeft.rotation);
+    }
+
+    // October 19 batch: comfort vignette, wheel stick picking, camera controls,
+    // distance grab, holsters and the see-through hands.
+    private static void VRComfortChecks()
+    {
+        DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
+        DemoValidation.Find<DemoModeSwitch>().Apply(true);
+        XRLocomotion rig = DemoValidation.Find<XRLocomotion>();
+        HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
+        HandInteractor left = desktop.transform.Find("LeftHand").GetComponent<HandInteractor>();
+        Pose savedRig = new Pose(rig.transform.position, rig.transform.rotation);
+        Pose saved = new Pose(hand.transform.position, hand.transform.rotation);
+
+        XRComfortVignette vignette = rig.Vignette;
+        bool vignetteFades = false, jumpIgnored = false, offWorks = false;
+        if (vignette != null)
+        {
+            vignette.Step(0.05f);
+            for (int i = 0; i < 10; i++) { rig.transform.position += new Vector3(0, 0, 0.07f); vignette.Step(0.05f); }
+            vignetteFades = vignette.Alpha > 0.2f && vignette.Alpha <= vignette.Strength + 1e-4f;
+            for (int i = 0; i < 20; i++) vignette.Step(0.05f);
+            float rest = vignette.Alpha;
+            rig.transform.position += new Vector3(0, 0, 2f);
+            vignette.Step(0.05f);
+            jumpIgnored = rest < 1e-3f && vignette.Alpha < 1e-3f;
+            XRComfortVignette.Enabled = false;
+            for (int i = 0; i < 10; i++) { rig.transform.position += new Vector3(0, 0, 0.07f); vignette.Step(0.05f); }
+            offWorks = vignette.Alpha < 1e-3f;
+            XRComfortVignette.Enabled = true;
+        }
+        rig.transform.SetPositionAndRotation(savedRig.position, savedRig.rotation);
+        DemoValidation.Check(vignetteFades, "Comfort vignette fades in during stick movement, no darker than its strength");
+        DemoValidation.Check(jumpIgnored, "Comfort vignette clears at rest and ignores teleport jumps");
+        DemoValidation.Check(offWorks, "Comfort vignette stays off when switched off (F7)");
+
+        DemoValidation.Check(XRToolWheel.SlotFromStick(Vector2.up) == 0 && XRToolWheel.SlotFromStick(Vector2.right) == 2
+            && XRToolWheel.SlotFromStick(new Vector2(-0.43f, 0.9f)) == XRToolWheel.CameraSlot,
+            "Left stick directions pick the matching wheel slots");
+
+        EvidenceCamera evidence = DemoValidation.Find<EvidenceCamera>();
+        hand.transform.SetPositionAndRotation(new Vector3(-3, 1.2f, 5), Quaternion.identity);
+        hand.ToggleCamera();
+        Camera lens = evidence.GetComponentInChildren<Camera>(true);
+        float fov = lens != null ? lens.fieldOfView : 0;
+        evidence.ZoomBy(2f);
+        bool zoomed = lens != null && Mathf.Abs(evidence.Zoom - 2) < 1e-3f && Mathf.Abs(lens.fieldOfView - fov / 2) < 0.01f;
+        evidence.ZoomBy(100f);
+        bool capped = Mathf.Abs(evidence.Zoom - evidence.MaxZoom) < 1e-3f;
+        bool flash = !evidence.FlashOn;
+        evidence.ToggleFlash();
+        flash &= evidence.FlashOn;
+        evidence.ToggleFlash();
+        evidence.ReviewStep(); // no photos this run: stays live
+        bool live = !evidence.Reviewing;
+        hand.ToggleCamera();
+        bool reset = Mathf.Abs(evidence.Zoom - 1) < 1e-3f && lens != null && Mathf.Abs(lens.fieldOfView - fov) < 0.01f;
+        DemoValidation.Check(zoomed && capped && reset, "Camera zooms up to MaxZoom and resets when returned to the rack");
+        DemoValidation.Check(flash && live, "Camera flash toggles, and review with no photos stays on the live view");
+
+        DeployedTool far = hand.SpawnIntoHand(DemoToolKind.Cone);
+        hand.Release();
+        hand.transform.SetPositionAndRotation(new Vector3(-3, 1.2f, 3.2f), Quaternion.LookRotation(far.transform.position + Vector3.up * 0.15f - new Vector3(-3, 1.2f, 3.2f)));
+        Physics.SyncTransforms();
+        bool pointed = hand.PointedTool() == far;
+        bool pulled = hand.Grab() && hand.Held == far;
+        HandInteractor.DistanceGrab = false;
+        hand.Release();
+        hand.transform.SetPositionAndRotation(new Vector3(-3, 1.2f, 3.2f), Quaternion.LookRotation(far.transform.position + Vector3.up * 0.15f - new Vector3(-3, 1.2f, 3.2f)));
+        Physics.SyncTransforms();
+        bool offRefuses = hand.PointedTool() == null;
+        HandInteractor.DistanceGrab = true;
+        hand.Remove(far);
+        DemoValidation.Check(pointed && pulled, "Pointing at a tool on the floor and gripping pulls it into the hand");
+        DemoValidation.Check(offRefuses, "Distance grab can be switched off");
+
+        XRHolsters holsters = rig.Holsters;
+        DemoLighting lighting = DemoValidation.Find<DemoLighting>();
+        bool holsterTorch = false, holsterBack = false, holsterCamera = false;
+        if (holsters != null)
+        {
+            lighting.Flashlight(false);
+            left.transform.position = holsters.Position(XRHolsters.Slot.Flashlight);
+            holsterTorch = holsters.TryUse(left, UnityEngine.XR.XRNode.LeftHand) && lighting.FlashlightOn
+                && lighting.FlashlightHand == UnityEngine.XR.XRNode.LeftHand && lighting.FlashlightLight.transform.parent == left.transform;
+            holsterBack = holsters.TryUse(left, UnityEngine.XR.XRNode.LeftHand) && !lighting.FlashlightOn;
+            lighting.MoveTorch(false, UnityEngine.XR.XRNode.RightHand);
+            hand.transform.position = holsters.Position(XRHolsters.Slot.Camera);
+            holsterCamera = holsters.TryUse(hand, UnityEngine.XR.XRNode.RightHand) && hand.HoldingCamera;
+            hand.ToggleCamera();
+        }
+        DemoValidation.Check(holsterTorch && holsterBack, "Hip holster hands the flashlight to the gripping hand and takes it back");
+        DemoValidation.Check(holsterCamera, "Chest holster puts the camera in the hand");
+
+        XRGhostHand ghost = hand.GetComponent<XRControllerInput>().GhostHand;
+        if (ghost != null && ghost.Root != null) ghost.Apply(false); // no frame loop in the validator
+        bool ghostShown = ghost != null && ghost.Root != null && ghost.Root.gameObject.activeSelf;
+        XRHandHud hud = hand.GetComponent<XRHandHud>();
+        bool controllerHidden = hud != null && hud.Model != null && !hud.Model.gameObject.activeSelf;
+        bool curls = false, opacity = false;
+        if (ghost != null)
+        {
+            ghost.SetPose(1, 1, 1, 0);
+            curls = ghost.Grip > 0.99f && ghost.Index > 0.99f;
+            float before = XRGhostHand.Opacity;
+            XRGhostHand.ChangeOpacity(0.2f);
+            ghost.Apply(false);
+            opacity = Mathf.Abs(ghost.Material.color.a - XRGhostHand.Opacity) < 1e-3f;
+            XRGhostHand.Opacity = before;
+            ghost.Apply(false);
+            ghost.SetPose(0, 0, 0, 0);
+        }
+        DemoValidation.Check(ghostShown && controllerHidden, "See-through hands show in VR in place of the controller models");
+        DemoValidation.Check(curls && opacity, "Hands curl with grip and trigger and take the presenter's opacity");
+        hand.transform.SetPositionAndRotation(saved.position, saved.rotation);
     }
 
     private static void HandChecks()

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Rear screen of the handheld camera: the live viewfinder while the body is held,
-// the photograph for a moment after it is saved, and black otherwise. The texture
+// the photograph for a moment after it is saved, a reviewed photo, and black otherwise. The texture
 // goes through a property block on an unlit material, so the screen reads as lit at
 // night without a light, and no material asset is modified at runtime. It runs in
 // Edit mode too so the screen is black (not the unlit material's white) in scene
@@ -50,7 +50,8 @@ public sealed class CameraScreen : MonoBehaviour
         if (Evidence != null)
         {
             // The mipmapped display copy: the few-centimetre screen minifies the photo 15-20x.
-            if (Evidence.LastPhoto != null && Time.unscaledTime < photoUntil) wanted = Evidence.LastPhotoDisplay;
+            if (Evidence.Reviewing) wanted = Evidence.ReviewPhoto;
+            else if (Evidence.LastPhoto != null && Time.unscaledTime < photoUntil) wanted = Evidence.LastPhotoDisplay;
             else if (Evidence.Holder != null) wanted = Evidence.Viewfinder;
         }
         if (wanted == null) wanted = Texture2D.blackTexture;

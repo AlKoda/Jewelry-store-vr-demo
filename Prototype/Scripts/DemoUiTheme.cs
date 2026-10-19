@@ -10,4 +10,6 @@ public sealed class DemoUiTheme : MonoBehaviour
     public Font Medium;
     public Font SemiBold;
     public Shader Shaded;
+    // See-through VR hands (XRGhostHand); referenced here so it stays in the build.
+    public Shader Ghost;
 }

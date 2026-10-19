@@ -69,6 +69,17 @@ public sealed class DemoLighting : MonoBehaviour
     public Light UVTorchLight => uv.Light;
     public GameObject UVTorchModel => uv.Model;
     public bool UVTorchOn => uv.On;
+    // Which controller each torch rides in VR (white right, UV left until a holster hands one over).
+    public XRNode FlashlightHand => white.Hand;
+    public XRNode UVTorchHand => uv.Hand;
+
+    // Puts a torch on the other controller (holsters); a lit torch moves at once.
+    public void MoveTorch(bool ultraviolet, XRNode hand)
+    {
+        Torch torch = ultraviolet ? uv : white;
+        torch.Hand = hand;
+        if (torch.On) Attach(torch);
+    }
     public bool UVExamplesVisible => UVExamples != null && UVExamples.activeSelf;
     public bool LightBarFlashing => LightBar != null && LightBar.Flashing;
 
@@ -129,6 +140,8 @@ public sealed class DemoLighting : MonoBehaviour
         if (Night != BakedNight) SetNight(BakedNight);
         Flashlight(false);
         UVTorch(false);
+        white.Hand = XRNode.RightHand;
+        uv.Hand = XRNode.LeftHand;
         SetUVExamples(false);
         if (LightBar != null && !LightBar.Flashing) LightBar.SetFlashing(true);
     }

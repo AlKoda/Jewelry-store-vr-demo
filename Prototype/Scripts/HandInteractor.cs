@@ -18,6 +18,12 @@ public sealed class HandInteractor : ToolHolder
     // Held tools turn with the controller in every axis (a lamp still hangs upright);
     // off, they keep only the hand's heading as before. Release always stands the tool upright.
     public static bool FreeRotation = true;
+    // Distance grab: with nothing within GrabRadius, a tool the controller points at within
+    // PullReach (a ray of PullRadius) is highlighted, and grip pulls it into the hand over PullSeconds.
+    public static bool DistanceGrab = true;
+    public float PullReach = 4f;
+    public float PullRadius = 0.08f;
+    public float PullSeconds = 0.18f;
 
     protected override Transform CameraAnchor => transform;
 
@@ -25,13 +31,20 @@ public sealed class HandInteractor : ToolHolder
     private Collider[] overlaps = new Collider[32];
     private ToolRackSample nearSample;
     private bool nearCamera;
+    private Vector3 pullFrom;
+    private Quaternion pullFromRotation;
+    private float pullStarted = -1;
 
     // Runs after XRControllerInput (execution order -100), so FollowHand uses this frame's
     // controller pose; ShopCityValidation invokes it by name.
     private void Update()
     {
         if (Held != null) FollowHand();
-        else Highlight(NearestTool());
+        else
+        {
+            DeployedTool near = NearestTool();
+            Highlight(near != null || nearSample != null || nearCamera ? near : PointedTool());
+        }
     }
 
     public void FollowHand()
@@ -42,8 +55,12 @@ public sealed class HandInteractor : ToolHolder
             ? transform.position + Vector3.down * Mathf.Abs(LampHeldOffset.y)
             : transform.TransformPoint(HeldOffset);
         if (Held.Kind == DemoToolKind.Lamp) p.y = Mathf.Max(p.y, Bounds != null ? Bounds.FloorAt(p) : FloorY);
-        if (Held.Kind != DemoToolKind.Lamp && FreeRotation) Held.transform.SetPositionAndRotation(p, transform.rotation);
-        else Held.PlaceAt(p, Heading(transform));
+        Quaternion r = Held.Kind != DemoToolKind.Lamp && FreeRotation ? transform.rotation : Quaternion.Euler(0, Heading(transform), 0);
+        // A pulled tool flies from where it lay to the hand, easing in.
+        float t = pullStarted < 0 || PullSeconds <= 0 ? 1 : Mathf.Clamp01((Time.time - pullStarted) / PullSeconds);
+        if (t < 1) { float e = 1 - (1 - t) * (1 - t); p = Vector3.Lerp(pullFrom, p, e); r = Quaternion.Slerp(pullFromRotation, r, e); }
+        else pullStarted = -1;
+        Held.transform.SetPositionAndRotation(p, r);
     }
 
     // Grab the closest available tool, rack sample or camera within reach.
@@ -54,7 +71,15 @@ public sealed class HandInteractor : ToolHolder
         if (tool != null) { Hold(tool); return true; }
         if (nearSample != null) return TakeSample(nearSample) != null;
         if (nearCamera) { ToggleCamera(); return true; }
-        return false;
+        DeployedTool far = PointedTool();
+        if (far == null) return false;
+        pullFrom = far.transform.position;
+        pullFromRotation = far.transform.rotation;
+        pullStarted = Time.time;
+        Hold(far);
+        if (Held != far) { pullStarted = -1; return false; }
+        DemoFeedback.Post(far.DisplayName + " in hand");
+        return true;
     }
 
     public void Release()
@@ -67,7 +92,8 @@ public sealed class HandInteractor : ToolHolder
     // switch a held scene lamp on or off.
     public void Trigger()
     {
-        if (HoldingCamera) EvidenceCamera.CapturePhoto();
+        if (HoldingCamera && EvidenceCamera.Reviewing) EvidenceCamera.EndReview();
+        else if (HoldingCamera) EvidenceCamera.CapturePhoto();
         else if (Held != null && Held.Lamp != null && Station != null) Station.ToggleLamp(Held);
         else if (Held != null && Held.TapeAnchor != null) SelectTapePost(Held);
     }
@@ -79,6 +105,28 @@ public sealed class HandInteractor : ToolHolder
         base.Hold(tool);
         Highlight(Held);
         FollowHand();
+    }
+
+    // The free tool the controller points at within PullReach, or null; anything solid in front of it blocks the pull.
+    public DeployedTool PointedTool()
+    {
+        if (!DistanceGrab || PullReach <= 0) return null;
+        Ray ray = new Ray(transform.position, transform.forward);
+        DeployedTool tool = null;
+        float distance = float.MaxValue;
+        foreach (RaycastHit h in Physics.SphereCastAll(ray, PullRadius, PullReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        {
+            if (h.distance >= distance || h.collider.transform.IsChildOf(transform)) continue;
+            DeployedTool candidate = h.collider.GetComponentInParent<DeployedTool>();
+            if (candidate == null || !candidate.Free) continue;
+            tool = candidate;
+            distance = h.distance;
+        }
+        if (tool == null) return null;
+        // Nothing but the tool between the hand and it (a case's glass, a wall).
+        if (DemoPhysics.Nearest(ray, Mathf.Max(0, distance - 0.05f), out RaycastHit first, transform) &&
+            first.collider.GetComponentInParent<DeployedTool>() != tool && first.distance > 0.02f) return null;
+        return tool;
     }
 
     // Compare all grabbable types by distance; a nearby rack sample must not mask the camera.

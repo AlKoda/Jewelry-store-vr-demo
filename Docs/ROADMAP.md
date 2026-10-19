@@ -1,3 +1,8 @@
+## VR comfort and hands — October 19, batch 2 (Claude, unverified)
+
+- [x] Vignette (F7), wheel stick picking, camera zoom/flash/review, distance grab, holsters, see-through hands (F3/F4); 13 checks.
+- [ ] Quest 3 test: vignette strength, holster positions, hand pose and opacity, zoom rate, torch aim.
+
 ## Quest 3 hand interaction — October 19 (Claude, unverified)
 
 - [x] Free rotation of held tools, upright on release; left-trigger tool wheel with right-hand pointer; camera on the wheel; 10 checks.

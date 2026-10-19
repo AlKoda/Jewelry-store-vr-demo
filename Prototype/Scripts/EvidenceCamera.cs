@@ -27,6 +27,78 @@ public sealed class EvidenceCamera : MonoBehaviour
     public Transform Holder { get; private set; }
     // Photographs saved this session; the sequence number of the last one.
     public int PhotoCount => sequence;
+
+    // Handheld controls (VR right hand, unverified in the headset): optical zoom, a flash
+    // that lights the frame for the capture, and reviewing this session's photos on the
+    // rear screen, newest first. Evidence photos are never deleted from the camera.
+    public float MaxZoom = 4f;
+    public float Zoom { get; private set; } = 1f;
+    public bool FlashOn { get; private set; }
+    public float FlashIntensity = 3f;
+    public float FlashRange = 7f;
+    public Light FlashLight => flash;
+    // -1 while showing the live view; otherwise the index into this session's photos (0 = oldest).
+    public int ReviewIndex { get; private set; } = -1;
+    public bool Reviewing => ReviewIndex >= 0 && ReviewPhoto != null;
+    public Texture2D ReviewPhoto { get; private set; }
+    public int SessionPhotoCount => sessionPhotos.Count;
+    private readonly System.Collections.Generic.List<string> sessionPhotos = new System.Collections.Generic.List<string>();
+    private float baseFov = -1;
+    private Light flash;
+
+    public void ZoomBy(float factor)
+    {
+        if (photoCamera == null) return;
+        if (baseFov < 0) baseFov = photoCamera.fieldOfView;
+        Zoom = Mathf.Clamp(Zoom * factor, 1f, MaxZoom);
+        photoCamera.fieldOfView = baseFov / Zoom;
+    }
+
+    public void ResetZoom() { if (baseFov > 0) ZoomBy(1f / Zoom); }
+
+    public void ToggleFlash()
+    {
+        FlashOn = !FlashOn;
+        DemoFeedback.Post(FlashOn ? "Camera flash on" : "Camera flash off");
+    }
+
+    // Steps back through this session's photos (newest first); past the oldest it returns to the live view.
+    public void ReviewStep()
+    {
+        if (sessionPhotos.Count == 0) { DemoFeedback.Post("No photos yet"); return; }
+        int next = ReviewIndex < 0 ? sessionPhotos.Count - 1 : ReviewIndex - 1;
+        if (next < 0) { EndReview(); DemoFeedback.Post("Live view"); return; }
+        try
+        {
+            if (ReviewPhoto == null) ReviewPhoto = new Texture2D(2, 2, TextureFormat.RGB24, true) { name = "ReviewedEvidencePhoto" };
+            if (!ReviewPhoto.LoadImage(File.ReadAllBytes(sessionPhotos[next]))) throw new IOException("unreadable PNG");
+            ReviewIndex = next;
+            DemoFeedback.Post("Photo " + (next + 1) + " of " + sessionPhotos.Count + "  (B: older, trigger: back to live)");
+        }
+        catch (Exception e) { EndReview(); DemoFeedback.Post("Could not show that photo: " + e.Message, FeedbackTone.Warning); }
+    }
+
+    public void EndReview() { ReviewIndex = -1; }
+
+    private void SetFlash(bool lit)
+    {
+        if (lit && flash == null && photoCamera != null)
+        {
+            GameObject go = new GameObject("CameraFlash");
+            go.transform.SetParent(photoCamera.transform, false);
+            flash = go.AddComponent<Light>();
+            flash.type = LightType.Spot;
+            flash.spotAngle = 75;
+            flash.color = new Color(1f, 0.97f, 0.92f);
+            flash.shadows = LightShadows.None;
+            flash.renderMode = LightRenderMode.ForcePixel;
+        }
+        if (flash == null) return;
+        flash.intensity = FlashIntensity;
+        flash.range = FlashRange;
+        flash.enabled = lit;
+        flash.gameObject.SetActive(lit);
+    }
     // Live view through the lens for the presenter panel, non-null only while the
     // body is held. The dedicated camera stays disabled and renders into this
     // texture about 15 times a second from a coroutine, so holding the camera
@@ -72,6 +144,8 @@ public sealed class EvidenceCamera : MonoBehaviour
         transform.localPosition=rackPosition;
         transform.localRotation=rackRotation;
         Holder=null;
+        ResetZoom();
+        EndReview();
         SetCollidersEnabled(true);
     }
 
@@ -215,6 +289,8 @@ public sealed class EvidenceCamera : MonoBehaviour
     {
         if(generatedClick!=null) Destroy(generatedClick);
         if(LastPhoto!=null) Destroy(LastPhoto);
+        if(ReviewPhoto!=null) Destroy(ReviewPhoto);
+        if(flash!=null) Destroy(flash.gameObject);
         if(display!=null) { display.Release(); Destroy(display); }
         if(scratch!=null) Destroy(scratch);
     }
@@ -239,6 +315,7 @@ public sealed class EvidenceCamera : MonoBehaviour
             photoCamera.stereoTargetEye=StereoTargetEyeMask.None;
             photoCamera.targetTexture=target;
             photoCamera.enabled=true;
+            SetFlash(FlashOn);
             prepared=true;
         }
         catch(Exception exception) { Fail(exception.Message); }
@@ -297,6 +374,7 @@ public sealed class EvidenceCamera : MonoBehaviour
         RenderTexture.active=previousActive;
         sequence=number;
         LastPhotoPath=path;
+        sessionPhotos.Add(path);
         Status="Saved photo "+sequence.ToString("D4");
         Debug.Log("Photo saved: "+path,this);
         DemoFeedback.Post("Photo "+sequence.ToString("D4")+" saved",FeedbackTone.Success);
@@ -380,6 +458,7 @@ public sealed class EvidenceCamera : MonoBehaviour
             photoCamera.enabled=previousEnabled;
             photoCamera.stereoTargetEye=previousStereo;
         }
+        SetFlash(false);
         if(target!=null) RenderTexture.ReleaseTemporary(target);
         target=null;
         RestorePhotoPose();
