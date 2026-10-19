@@ -17,9 +17,17 @@ public static class VRVisualValidation
             RenderTexture.active=rt;read=new Texture2D(32,32,TextureFormat.RGB24,false);read.ReadPixels(new Rect(0,0,32,32),0,0);read.Apply();var color=read.GetPixel(16,16);
             if(color.r<.5f||color.g>.2f)throw new Exception("VR icon panel texture failed rendered-pixel test: "+color);
             var head=new GameObject("Temporary head");head.transform.SetParent(root.transform);head.transform.localPosition=Vector3.up*1.6f;
-            var holsters=root.AddComponent<XRHolsters>();holsters.Head=head.transform;var before=holsters.Position(XRHolsters.Slot.Flashlight);head.transform.rotation=Quaternion.Euler(80,130,0);
-            if(Vector3.Distance(before,holsters.Position(XRHolsters.Slot.Flashlight))>.001f)throw new Exception("Holster swings with head rotation");
-            Debug.Log("VR_VISUAL_VALIDATION_PASS rendered icon texture and stable body holster anchors");
+            var holsters=root.AddComponent<XRHolsters>();holsters.Head=head.transform;holsters.UpdateHeading(.02f);
+            var before=holsters.Position(XRHolsters.Slot.Flashlight);head.transform.rotation=Quaternion.Euler(0,90,0);holsters.UpdateHeading(.02f);
+            if(Vector3.Distance(before,holsters.Position(XRHolsters.Slot.Flashlight))>.04f)throw new Exception("Belt yaw snaps instead of easing");
+            for(int i=0;i<40;i++)holsters.UpdateHeading(.02f);
+            var after=holsters.Position(XRHolsters.Slot.Flashlight);
+            if(Vector3.Distance(before,after)<.1f||Mathf.Abs(after.y-before.y)>.001f)throw new Exception("Belt does not follow head yaw at stable height");
+            foreach(string hand in new[]{"OpenXRLeftHand","OpenXRRightHand"}){
+                var model=Resources.Load<GameObject>("MetaHands/"+hand);
+                if(!model||model.GetComponentsInChildren<SkinnedMeshRenderer>().Length==0)throw new Exception("Official rigged Meta hand missing: "+hand);
+            }
+            Debug.Log("VR_VISUAL_VALIDATION_PASS rendered icon texture, smooth headset-following belt anchors and official rigged Meta hand assets");
         }finally{RenderTexture.active=previous;rt.Release();if(read)Object.DestroyImmediate(read);Object.DestroyImmediate(texture);Object.DestroyImmediate(mat);Object.DestroyImmediate(rt);Object.DestroyImmediate(cameraObject);Object.DestroyImmediate(root);}
     }
 }

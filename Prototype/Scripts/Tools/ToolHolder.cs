@@ -115,7 +115,7 @@ public abstract class ToolHolder : MonoBehaviour
     {
         if (EvidenceCamera == null || CameraAnchor == null) return;
         if (HoldingCamera) EvidenceCamera.ReturnToRack();
-        else if (Held == null) EvidenceCamera.HoldBy(CameraAnchor, CameraHoldOffset);
+        else if (Held == null) EvidenceCamera.HoldBy(CameraAnchor, this is HandInteractor ? new Vector3(-.045f,-.015f,.025f) : CameraHoldOffset);
     }
 
     // Quietly lets go of everything: before a reset, or when the holder is switched off.

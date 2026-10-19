@@ -212,6 +212,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             XRControllerInput.SmoothMovement = !XRControllerInput.SmoothMovement;
             DemoFeedback.Post(XRControllerInput.SmoothMovement ? "VR movement: smooth walking  (F8 for teleport)" : "VR movement: teleport  (F8 for smooth walking)", FeedbackTone.Info, true);
         }
+        if(Input.GetKeyDown(KeyCode.F11))XRHeadTracking.HeightOffset-=.05f;
+        if(Input.GetKeyDown(KeyCode.F12))XRHeadTracking.HeightOffset+=.05f;
         if (Input.GetKeyDown(KeyCode.F3)) XRGhostHand.ChangeOpacity(-0.1f);
         if (Input.GetKeyDown(KeyCode.F4)) XRGhostHand.ChangeOpacity(0.1f);
         if (Input.GetKeyDown(KeyCode.F6))

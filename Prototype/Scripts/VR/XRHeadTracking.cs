@@ -11,6 +11,7 @@ using UnityEngine.XR;
 [DefaultExecutionOrder(-110)]
 public sealed class XRHeadTracking : MonoBehaviour
 {
+    public static float HeightOffset {get=>PlayerPrefs.GetFloat("VRHeightOffset",.12f);set{PlayerPrefs.SetFloat("VRHeightOffset",Mathf.Clamp(value,-.2f,.4f));PlayerPrefs.Save();}}
     private void OnEnable() { Application.onBeforeRender += LatePose; }
     private void OnDisable() { Application.onBeforeRender -= LatePose; }
     private void Update() { ApplyPose(); }
@@ -21,7 +22,7 @@ public sealed class XRHeadTracking : MonoBehaviour
     {
         InputDevice head = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
         if (!head.isValid) return;
-        if (head.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
+        if (head.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*HeightOffset;
         if (head.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
     }
 }

@@ -21,13 +21,35 @@ public sealed class XRHolsters : MonoBehaviour
     public float TakeRadius = 0.16f;
     // Offsets from the head in its heading frame (x right, y up, z forward).
     public Vector3 HipOffset = new Vector3(0.2f, -0.62f, 0.04f);
-    public Vector3 ChestOffset = new Vector3(0, -0.36f, 0.13f);
+    public Vector3 ChestOffset = new Vector3(0, -0.62f, 0.20f);
     // Holsters never go lower than this above the rig's floor (a crouching trainee).
     public float MinHeight = 0.25f;
 
     private readonly Transform[] markers = new Transform[3];
     private readonly Material[] materials = new Material[3];
     private Transform root;
+    Transform belt;float beltYaw,yawVelocity;bool headingReady;
+    readonly GameObject[] displays=new GameObject[3];
+    public void UpdateHeading(float dt){
+        var head=Head?Head:transform;var forward=Vector3.ProjectOnPlane(head.forward,Vector3.up);
+        if(forward.sqrMagnitude<.04f)return;
+        float wanted=Mathf.Atan2(forward.x,forward.z)*Mathf.Rad2Deg;
+        if(!headingReady){beltYaw=wanted;headingReady=true;}else beltYaw=Mathf.SmoothDampAngle(beltYaw,wanted,ref yawVelocity,.2f,180,dt);
+    }
+    void BuildBelt(){
+        belt=new GameObject("Utility belt").transform;belt.SetParent(root,false);
+        var v=new Vector3[50];var uv=new Vector2[50];var triangles=new int[24*6];
+        for(int i=0;i<=24;i++){float a=i*Mathf.PI*2/24;for(int j=0;j<2;j++){int n=i*2+j;v[n]=new Vector3(Mathf.Cos(a)*.24f,(j-.5f)*.045f,Mathf.Sin(a)*.16f);uv[n]=new Vector2(i/24f,j);}}
+        for(int i=0;i<24;i++){int a=i*2,t=i*6;triangles[t]=a;triangles[t+1]=a+2;triangles[t+2]=a+1;triangles[t+3]=a+1;triangles[t+4]=a+2;triangles[t+5]=a+3;}
+        var mesh=new Mesh{name="Utility belt band",vertices=v,uv=uv,triangles=triangles};mesh.RecalculateNormals();belt.gameObject.AddComponent<MeshFilter>().sharedMesh=mesh;
+        belt.gameObject.AddComponent<MeshRenderer>().sharedMaterial=DemoUi.UnlitMaterial(new Color(.055f,.045f,.03f,.95f));
+        for(int i=0;i<3;i++){
+            var go=i<2?DemoToolGeometry.CreateFlashlight(i==1):new GameObject("Belt camera");if(i==2)DemoToolGeometry.CreateCameraBody(go.transform);
+            go.transform.SetParent(root,false);displays[i]=go;
+            foreach(var r in go.GetComponentsInChildren<Renderer>())r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;
+            foreach(var c in go.GetComponentsInChildren<Collider>())Destroy(c);
+        }
+    }
     private DemoModeSwitch mode;
 
     private void OnEnable() { Active = this; }
@@ -41,10 +63,7 @@ public sealed class XRHolsters : MonoBehaviour
     public Vector3 Position(Slot slot)
     {
         Transform head = Head != null ? Head : transform;
-        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-        if (forward.sqrMagnitude < 1e-4f) forward = Vector3.ProjectOnPlane(transform.up, Vector3.up);
-        if (forward.sqrMagnitude < 1e-4f) forward = transform.forward;
-        Quaternion heading = Quaternion.LookRotation(forward.normalized, Vector3.up);
+        Quaternion heading=Quaternion.Euler(0,headingReady?beltYaw:head.eulerAngles.y,0);
         Vector3 offset = slot == Slot.Camera ? ChestOffset
             : new Vector3(slot == Slot.Flashlight ? HipOffset.x : -HipOffset.x, HipOffset.y, HipOffset.z);
         Vector3 p = head.position + heading * offset;
@@ -111,10 +130,18 @@ public sealed class XRHolsters : MonoBehaviour
 
     private void LateUpdate()
     {
+        UpdateHeading(Time.deltaTime);
         bool show = VR;
         if (!show) { if (root != null) root.gameObject.SetActive(false); return; }
         if (root == null) Build();
         root.gameObject.SetActive(true);
+        var head=Head?Head:transform;
+        belt.position=head.position+Vector3.down*.62f;belt.rotation=Quaternion.Euler(0,beltYaw,0);
+        var lights=Lighting?Lighting:FindFirstObjectByType<DemoLighting>();var camera=Camera?Camera:FindFirstObjectByType<EvidenceCamera>();
+        for(int i=0;i<3;i++){
+            displays[i].SetActive(i<2?lights==null||!lights.TorchEquipped(i==1):camera==null||camera.Holder==null);
+            displays[i].transform.SetPositionAndRotation(Position((Slot)i)+(i<2?Vector3.up*.12f:Vector3.zero),Quaternion.Euler(i<2?-90:0,beltYaw,0));
+        }
         HandInteractor[] hands = FindObjectsByType<HandInteractor>(FindObjectsSortMode.None);
         for (int i = 0; i < 3; i++)
         {
@@ -156,6 +183,7 @@ public sealed class XRHolsters : MonoBehaviour
             ir.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
             markers[i] = marker.transform;
         }
+        BuildBelt();
         DemoUi.ToHeadsetUiLayer(root);
     }
 

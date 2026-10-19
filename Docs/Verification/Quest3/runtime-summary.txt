@@ -35,3 +35,5 @@ Actual Meta OpenXR session reached READY -> SYNCHRONIZED -> VISIBLE -> FOCUSED o
 Initial attempts failed with XR_ERROR_FORM_FACTOR_UNAVAILABLE before Link became available; successful session followed.
 Human both-eye, hands, controls and headset comfort review still required. Unfocused automated frame timings are not benchmarks.
 VR_VISUAL_VALIDATION_PASS: rendered icon texture and stable body holster anchors. Updated source compiled and rebuilt after initial human headset feedback. Human hand-orientation/comfort acceptance remains pending.
+
+Latest VR polish: VR_VISUAL_VALIDATION_PASS (rendered icons, smooth belt, Meta skinned assets); EXISTING_SCENE_DELIVERY_PASS. Human hand/grip/comfort acceptance pending.

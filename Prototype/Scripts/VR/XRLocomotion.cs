@@ -13,6 +13,16 @@ public sealed class XRLocomotion : MonoBehaviour
     public InteriorBounds Bounds;
     public XRComfortFade ComfortFade;
     public float SnapTurnDegrees = 45f;
+    public static bool SmoothTurning=true;
+    public float TurnSpeed=75f;
+    float turnVelocity;
+    public void SmoothTurn(float axis,float dt){
+        float target=Mathf.Abs(axis)>.2f?Mathf.Sign(axis)*Mathf.InverseLerp(.2f,1,Mathf.Abs(axis))*TurnSpeed:0;
+        turnVelocity=Mathf.MoveTowards(turnVelocity,target,300f*dt);
+        if(Mathf.Abs(turnVelocity)<.01f)return;
+        var pivot=HeadOrRoot.position;var q=Quaternion.AngleAxis(turnVelocity*dt,Vector3.up);
+        transform.rotation=q*transform.rotation;Relocate(transform,pivot+q*(transform.position-pivot));
+    }
     public float MaxTeleportDistance = 8f;
     public float MaxStepHeight = 0.35f;
     // Smooth movement: walking pace, the stick dead zone and the body radius kept clear of walls.

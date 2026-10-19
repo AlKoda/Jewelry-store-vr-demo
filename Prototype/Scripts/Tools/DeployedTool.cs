@@ -7,6 +7,14 @@ public enum DemoToolKind { Cone, Marker, TapePost, Scale, Measure, Lamp }
 public sealed class DeployedTool : MonoBehaviour
 {
     public DemoToolKind Kind;
+    void Start(){
+        var renderers=GetComponentsInChildren<MeshRenderer>();if(renderers.Length==0)return;
+        Bounds b=renderers[0].bounds;foreach(var r in renderers)b.Encapsulate(r.bounds);
+        var target=new GameObject("Tool selection volume");target.transform.SetParent(transform,false);
+        var box=target.AddComponent<BoxCollider>();box.isTrigger=true;
+        box.center=transform.InverseTransformPoint(b.center);
+        box.size=Vector3.Scale(b.size,new Vector3(1/Mathf.Abs(transform.lossyScale.x),1/Mathf.Abs(transform.lossyScale.y),1/Mathf.Abs(transform.lossyScale.z)))+Vector3.one*.035f;
+    }
     public Transform TapeAnchor;
     public TextMesh NumberLabel;
     public TextMesh BackNumberLabel;

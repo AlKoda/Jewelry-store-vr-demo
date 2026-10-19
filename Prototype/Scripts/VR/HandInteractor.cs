@@ -8,7 +8,7 @@ using UnityEngine;
 // highlighted while the hand is empty.
 public sealed class HandInteractor : ToolHolder
 {
-    public float GrabRadius = 0.25f;
+    public float GrabRadius = 0.18f;
     public Vector3 HeldOffset = new Vector3(0, -0.15f, 0);
     // A scene lamp is carried by its column, the feet just above the floor.
     public Vector3 LampHeldOffset = new Vector3(0, -0.9f, 0);
@@ -37,6 +37,7 @@ public sealed class HandInteractor : ToolHolder
 
     // Runs after XRControllerInput (execution order -100), so FollowHand uses this frame's
     // controller pose; ShopCityValidation invokes it by name.
+    void Start(){GrabRadius=Mathf.Min(GrabRadius,.18f);}
     private void Update()
     {
         var controller=GetComponent<XRControllerInput>();
@@ -52,12 +53,10 @@ public sealed class HandInteractor : ToolHolder
     public void FollowHand()
     {
         if (Held == null) return;
-        // The lamp column hangs straight down whatever the wrist pitch, and its feet never sink below the floor.
-        Vector3 p = Held.Kind == DemoToolKind.Lamp
-            ? transform.position + Vector3.down * Mathf.Abs(LampHeldOffset.y)
-            : transform.TransformPoint(HeldOffset);
-        if (Held.Kind == DemoToolKind.Lamp) p.y = Mathf.Max(p.y, Bounds != null ? Bounds.FloorAt(p) : FloorY);
-        Quaternion r = Held.Kind != DemoToolKind.Lamp && FreeRotation ? transform.rotation : Quaternion.Euler(0, Heading(transform), 0);
+        Vector3 grip=GripPoint(Held.Kind);
+        Quaternion r=Held.Kind!=DemoToolKind.Lamp&&FreeRotation?transform.rotation:Quaternion.Euler(0,Heading(transform),0);
+        Vector3 p=transform.TransformPoint(new Vector3(0,-.025f,.025f))-r*grip;
+        if(Held.Kind==DemoToolKind.Lamp)p.y=Mathf.Max(p.y,Bounds!=null?Bounds.FloorAt(p):FloorY);
         // A pulled tool flies from where it lay to the hand, easing in.
         float t = pullStarted < 0 || PullSeconds <= 0 ? 1 : Mathf.Clamp01((Time.time - pullStarted) / PullSeconds);
         if (t < 1) { float e = 1 - (1 - t) * (1 - t); p = Vector3.Lerp(pullFrom, p, e); r = Quaternion.Slerp(pullFromRotation, r, e); }
@@ -65,6 +64,14 @@ public sealed class HandInteractor : ToolHolder
         Held.transform.SetPositionAndRotation(p, r);
     }
 
+    public static Vector3 GripPoint(DemoToolKind kind){switch(kind){
+        case DemoToolKind.Cone:return new Vector3(0,.37f,0);
+        case DemoToolKind.Marker:return new Vector3(0,.18f,0);
+        case DemoToolKind.TapePost:return new Vector3(0,.78f,0);
+        case DemoToolKind.Scale:return new Vector3(.01f,.003f,.065f);
+        case DemoToolKind.Measure:return new Vector3(.025f,.015f,0);
+        default:return new Vector3(0,.9f,0);
+    }}
     // Grab the closest available tool, rack sample or camera within reach.
     public bool Grab()
     {
@@ -118,7 +125,7 @@ public sealed class HandInteractor : ToolHolder
         Ray ray = new Ray(transform.position, transform.forward);
         DeployedTool tool = null;
         float distance = float.MaxValue;
-        foreach (RaycastHit h in Physics.SphereCastAll(ray, PullRadius, PullReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+        foreach (RaycastHit h in Physics.SphereCastAll(ray, PullRadius, PullReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
         {
             if (h.distance >= distance || h.collider.transform.IsChildOf(transform)) continue;
             DeployedTool candidate = h.collider.GetComponentInParent<DeployedTool>();
@@ -141,7 +148,7 @@ public sealed class HandInteractor : ToolHolder
         DeployedTool best = null;
         float bestDistance = float.MaxValue;
         int count;
-        while ((count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius, overlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) == overlaps.Length)
+        while ((count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius, overlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide)) == overlaps.Length)
             overlaps = new Collider[overlaps.Length * 2];
         for (int i = 0; i < count; i++)
         {

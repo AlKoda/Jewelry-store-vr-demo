@@ -148,7 +148,7 @@ public sealed class XRControllerInput : MonoBehaviour
         device = InputDevices.GetDeviceAtXRNode(Node);
         if (!HasTrackedPose(device)) { LoseTracking(); return; }
         PoseTracked=true;
-        if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
+        if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*XRHeadTracking.HeightOffset;
         if (device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
         if(needsNeutral){if(!Neutral(device))return;needsNeutral=false;}
 
@@ -197,6 +197,7 @@ public sealed class XRControllerInput : MonoBehaviour
         {
             if (hand.HoldingCamera) { hand.EvidenceCamera.ReviewStep(); Buzz(HandEvent.Select); }
             else if (hand.Held != null) { hand.RemoveHeld(); Buzz(HandEvent.Select); }
+            else if(hand.PointedTool()!=null){hand.Remove(hand.PointedTool());Buzz(HandEvent.Select);}
             else CycleKind();
         }
         if ((Lighting != null || UVLighting != null) && Changed(device, CommonUsages.primary2DAxisClick, ref stickClick) && stickClick)
@@ -225,7 +226,7 @@ public sealed class XRControllerInput : MonoBehaviour
         InputDevice late = InputDevices.GetDeviceAtXRNode(Node);
         if (!HasTrackedPose(late)) { LoseTracking();return; }
         if(!PoseTracked)return;
-        if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
+        if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*XRHeadTracking.HeightOffset;
         if (late.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
         if (!needsNeutral && hand != null && hand.Held != null) hand.FollowHand();
     }
@@ -350,6 +351,7 @@ public sealed class XRControllerInput : MonoBehaviour
             hand.EvidenceCamera.ZoomBy(Mathf.Pow(ZoomPerSecond, stick.y * Time.deltaTime));
         if (SnapTurns && Locomotion != null)
         {
+            if(XRLocomotion.SmoothTurning){Locomotion.SmoothTurn(stick.x,Time.deltaTime);return;}
             if (!turned && stick.x > 0.7f) { Locomotion.SnapRight(); turned = true; Buzz(HandEvent.Select); }
             else if (!turned && stick.x < -0.7f) { Locomotion.SnapLeft(); turned = true; Buzz(HandEvent.Select); }
             else if (Mathf.Abs(stick.x) < 0.3f) turned = false;

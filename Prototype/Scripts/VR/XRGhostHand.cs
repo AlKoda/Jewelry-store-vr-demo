@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 // A see-through hand where the controller is (VR only). It is built from primitives
 // (palm, four three-joint fingers and a thumb) on the GhostHand material: the middle,
@@ -27,6 +28,30 @@ public sealed class XRGhostHand : MonoBehaviour
     public Transform Root => root;
     public Material Material => material;
 
+    struct NativeJoint {public Transform Bone;public Quaternion Rest;public Vector3 Axis;public int Finger;public float Angle;}
+    readonly List<NativeJoint> nativeJoints=new List<NativeJoint>();
+    bool native;
+    bool TryNative(){
+        var prefab=Resources.Load<GameObject>("MetaHands/"+(input.Left?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
+        root=new GameObject("Meta controller hand").transform;root.SetParent(transform,false);root.localPosition=new Vector3(PalmOffset.x*side,PalmOffset.y,PalmOffset.z);
+        var model=Instantiate(prefab,root,false);var bones=model.GetComponentsInChildren<Transform>();
+        Transform wrist=null,middle=null,index=null,little=null;
+        foreach(var b in bones){if(b.name=="XRHand_Wrist")wrist=b;if(b.name=="XRHand_MiddleTip")middle=b;if(b.name=="XRHand_IndexProximal")index=b;if(b.name=="XRHand_LittleProximal")little=b;}
+        if(!wrist||!middle||!index||!little){Destroy(root.gameObject);root=null;return false;}
+        var forward=root.InverseTransformDirection(middle.position-wrist.position).normalized;
+        var across=root.InverseTransformDirection(little.position-index.position).normalized;if(input.Left)across=-across;
+        var up=Vector3.Cross(forward,across).normalized;
+        model.transform.localRotation=Quaternion.Inverse(Quaternion.LookRotation(forward,up))*model.transform.localRotation;
+        model.transform.localPosition-=root.InverseTransformPoint(wrist.position)+Vector3.forward*.05f;
+        foreach(var b in bones){
+            if(!(b.name.Contains("Proximal")||b.name.Contains("Intermediate")||b.name.Contains("Distal")))continue;
+            int finger=b.name.Contains("Thumb")?4:b.name.Contains("Index")?0:1;
+            var axis=finger==4?root.up*(input.Left?-1:1):root.right;
+            nativeJoints.Add(new NativeJoint{Bone=b,Rest=b.localRotation,Axis=b.parent.InverseTransformDirection(axis),Finger=finger,Angle=finger==4?25:b.name.Contains("Proximal")?65:b.name.Contains("Intermediate")?85:55});
+        }
+        foreach(var r in model.GetComponentsInChildren<Renderer>()){r.sharedMaterial=material;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;}
+        DemoUi.ToHeadsetUiLayer(root);native=true;Apply(true);return true;
+    }
     private XRControllerInput input;
     private Transform root;
     private Material material;
@@ -45,7 +70,8 @@ public sealed class XRGhostHand : MonoBehaviour
         input = owner;
         side = owner.Left ? 1 : -1;
         material = DemoUi.GhostMaterial(DemoUi.WithAlpha(Tint, Opacity));
-        material.renderQueue = 3020; // after the scene's glass, before the interface panels
+        material.renderQueue = 3020;
+        if(TryNative())return; // after the scene's glass, before the interface panels
         GameObject probe = GameObject.CreatePrimitive(PrimitiveType.Capsule);
         capsule = probe.GetComponent<MeshFilter>().sharedMesh;
         Destroy(probe);
@@ -119,6 +145,7 @@ public sealed class XRGhostHand : MonoBehaviour
         Grip = Mathf.Lerp(Grip, Mathf.Clamp01(grip), k);
         Index = Mathf.Lerp(Index, Mathf.Clamp01(index), k);
         Thumb = Mathf.Lerp(Thumb, Mathf.Clamp01(thumb), k);
+        if(native){foreach(var joint in nativeJoints){float amount=joint.Finger==0?Mathf.Max(Index,Grip*.65f):joint.Finger==4?Mathf.Max(Thumb,Grip*.65f):Grip;joint.Bone.localRotation=Quaternion.AngleAxis(amount*joint.Angle,joint.Axis)*joint.Rest;}return;}
         for (int f = 0; f < 4; f++)
         {
             // A relaxed hand is slightly curled; a full grip wraps the handle.
@@ -138,7 +165,12 @@ public sealed class XRGhostHand : MonoBehaviour
         if (root == null) return;
         Apply(false);
         if (input != null && root.gameObject.activeSelf)
-            SetPose(input.GripValue, input.TriggerValue, input.ThumbDown ? 1 : 0, Time.deltaTime);
+        {
+            var lights=input.Lighting?input.Lighting:input.UVLighting;
+            bool occupied=input.Hand!=null&&(input.Hand.Held!=null||input.Hand.HoldingCamera);
+            occupied|=lights!=null&&((lights.TorchEquipped(false)&&lights.FlashlightLight.transform.parent==transform)||(lights.TorchEquipped(true)&&lights.UVTorchLight.transform.parent==transform));
+            SetPose(occupied?Mathf.Max(.8f,input.GripValue):input.GripValue,input.TriggerValue,input.ThumbDown?1:0,Time.deltaTime);
+        }
     }
 
     // Shows the hand only in VR, applies the shared opacity and hides or shows the controller model.
