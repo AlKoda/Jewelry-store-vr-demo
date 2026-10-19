@@ -1,0 +1,67 @@
+[
+  {
+    "file": "BezelRing.fbx",
+    "triangles_after_fbx_roundtrip": 1024,
+    "dimensions_blender_xyz": [
+      0.0224,
+      0.007,
+      0.0253
+    ],
+    "min_z": -2.642425445120722e-10,
+    "all_object_origins_at_zero": true,
+    "all_meshes_have_uv": true,
+    "sha256": "610b937973043bd25a8e1253d32666789bfaba516a9c46cc856c7a9e889b1333"
+  },
+  {
+    "file": "BezelRing_LOD1.fbx",
+    "triangles_after_fbx_roundtrip": 358,
+    "dimensions_blender_xyz": [
+      0.02233,
+      0.00701,
+      0.0253
+    ],
+    "min_z": 2.064911939214653e-07,
+    "all_object_origins_at_zero": true,
+    "all_meshes_have_uv": true,
+    "sha256": "43b9eecff2531687f29044d1a74cbd2604ca2d2d72a093c98aa25b1f704948d7"
+  },
+  {
+    "file": "BraceletStand_Hero.fbx",
+    "triangles_after_fbx_roundtrip": 1028,
+    "dimensions_blender_xyz": [
+      0.264,
+      0.12,
+      0.187
+    ],
+    "min_z": -9.775240172871236e-09,
+    "all_object_origins_at_zero": true,
+    "all_meshes_have_uv": true,
+    "sha256": "ccd4c094b9fc9faca8d98e58d9037855565beb1bffe6ca2cf0f43abd839269c5"
+  },
+  {
+    "file": "DisplayCase_Hero.fbx",
+    "triangles_after_fbx_roundtrip": 2916,
+    "dimensions_blender_xyz": [
+      1.8,
+      0.658,
+      1.05
+    ],
+    "min_z": -5.392674040649581e-08,
+    "all_object_origins_at_zero": true,
+    "all_meshes_have_uv": true,
+    "sha256": "ec6120fa40a551e538de4fb3492887fca77e305dbe1c883c9f6b28e6191fda24"
+  },
+  {
+    "file": "RingTray_Hero.fbx",
+    "triangles_after_fbx_roundtrip": 908,
+    "dimensions_blender_xyz": [
+      0.34,
+      0.232,
+      0.058
+    ],
+    "min_z": -1.88987971938559e-08,
+    "all_object_origins_at_zero": true,
+    "all_meshes_have_uv": true,
+    "sha256": "462ed3fab401a4f42104023542aa71c284803315beb7f62449c65d984b24689e"
+  }
+]

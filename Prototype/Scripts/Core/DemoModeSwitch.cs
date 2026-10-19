@@ -24,27 +24,12 @@ public sealed class DemoModeSwitch : MonoBehaviour
     private Vector3 recentrePoint;
     private float recentreYaw;
 
-    // Play-Keyboard.cmd and Play-VR.cmd start the build with -demo-mode desktop or -demo-mode vr.
-    // Desktop pins the keyboard controls. VR keeps the automatic choice (it can only drive a headset
-    // the XR runtime reports) and says on the monitor when none has come up after VRWaitSeconds.
-    public float VRWaitSeconds = 8f;
-    private bool vrRequested, vrWarned;
-
-    public static string CommandLineMode()
-    {
-        string[] args = System.Environment.GetCommandLineArgs();
-        for (int i = 0; i + 1 < args.Length; i++)
-            if (args[i] == "-demo-mode") return args[i + 1].ToLowerInvariant();
+    public static string CommandLineMode(){
+        var args=System.Environment.GetCommandLineArgs();
+        for(int i=0;i+1<args.Length;i++)if(args[i]=="-demo-mode")return args[i+1].ToLowerInvariant();
         return "";
     }
-
-    private void Start()
-    {
-        string requested = CommandLineMode();
-        if (requested == "desktop") Mode = DemoMode.Desktop;
-        else if (requested == "vr") { Mode = DemoMode.Auto; vrRequested = true; }
-        Sync();
-    }
+    private void Start() { if(DemoLaunchOptions.Requested!=DemoMode.Auto)Mode=DemoLaunchOptions.Requested;Sync(); }
 
     // Auto keeps following the runtime: Quest Link or Air Link may come up after Play
     // starts. F9 pins the mode by hand and stops the automatic choice. A build without
@@ -53,17 +38,12 @@ public sealed class DemoModeSwitch : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F9) && (Application.isEditor || XRSettings.isDeviceActive || VRActive)) { Mode = VRActive ? DemoMode.Desktop : DemoMode.VR; Apply(!VRActive); return; }
-        if (Mode == DemoMode.Auto) Sync();
-        if (vrRequested && !vrWarned && !VRActive && Time.unscaledTime > VRWaitSeconds)
-        {
-            vrWarned = true;
-            DemoFeedback.Post("No VR headset found. Start Quest Link or Air Link and put the headset on: the demo switches to VR by itself.", FeedbackTone.Warning, true);
-        }
+        if (Mode == DemoMode.Auto || Mode == DemoMode.VR) Sync();
     }
 
     private void Sync()
     {
-        bool vr = Mode == DemoMode.VR || (Mode == DemoMode.Auto && XRSettings.isDeviceActive);
+        bool vr = Mode != DemoMode.Desktop && XRSettings.isDeviceActive;
         if (!applied || vr != VRActive) Apply(vr);
     }
 
@@ -101,6 +81,7 @@ public sealed class DemoModeSwitch : MonoBehaviour
 
     public void Apply(bool vr)
     {
+        vr = vr && (Application.isEditor || XRSettings.isDeviceActive);
         // Release before disabling hand objects: Unity forbids reparenting a child
         // from inside its parent\'s SetActive/OnDisable traversal.
         foreach (ToolHolder holder in GetComponentsInChildren<ToolHolder>(true)) holder.ReleaseAll();

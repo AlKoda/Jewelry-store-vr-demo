@@ -44,6 +44,8 @@ public sealed class DesktopInteractor : ToolHolder
             else if (Hovered != null) Hold(Hovered);
             else if (HoveredSample != null) TakeSample(HoveredSample);
             else if (HoveringCamera) ToggleCamera();
+            else if (HoldingCamera) EvidenceCamera.CapturePhoto();
+            else if (Lighting != null) { if (Lighting.UVTorchModel != null && Lighting.UVTorchModel.activeSelf) Lighting.ToggleUVTorch(); else if (Lighting.FlashlightModel != null && Lighting.FlashlightModel.activeSelf) Lighting.ToggleFlashlight(); }
         }
         // 1-6 on the main row or the number pad, in the hotbar's order.
         for (int i = 0; i < 6; i++)

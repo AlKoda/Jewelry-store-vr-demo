@@ -1,35 +1,3 @@
-# Quest 3 / three-delivery checkpoint — 2026-10-19
-
-PC is disconnected. Source reviewed at fda16c80951a557f8bf447e349dcf36ade22e437.
-Review: [Claude code / model audit](CLAUDE_REVIEW_2026-10-19.md).
-Delivery: [keyboard, PCVR and editable project](DELIVERY_PLAN.md).
-
-## When the PC is available — assistant execution list
-1. Pull current main, inspect any newer changes and back up user edits before source synchronization.
-2. Use an isolated validation project. Compile in Unity 6000.6.2f1, retaining actual package versions and logs. The cloud Roslyn check against older Unity DLLs does not replace this.
-3. Fix/check GhostHand's depth pass for stereo, lost-controller handling and torch/tool conflicts. Keep a primitive-hand fallback. Profile hand renderer/mesh cost.
-4. Resolve Package Manager access; install/configure compatible OpenXR and XR Plug-in Management for Windows, active Meta runtime and Quest 3 controller profiles. Do not blindly pin an untested package version or treat -noUpm as a permanent XR setup.
-5. Run NightStoreValidation.RunNightQuick, StoreKitValidation.RunGallery and ShopCityValidation.RunGlass, then NightStoreValidation.RunNight for baked lighting. Record actual totals, first FAIL + preceding INFO, materials/submeshes and bake time; earlier estimated check totals are not pass evidence.
-6. Follow the review's shadow checklist: bake static headlights/shop; flashlight occlusion; portable lamp leaks; deployed-tool contact approximation; photo/flash consistency; both eyes. Tune against GPU timings.
-7. Integrate only selected newer pack assets with importer/material/audio rules, credits and validation. Six newer packs need attention: AmbientProps, AmbientProps2, CutoutDecals, RealFoley, RealFoley2 and RealismTextures.
-8. Prepare desktop/PCVR launch mode handling and a headset-usable entry menu/path. Use one source and preferably one tested binary; separate build profiles if needed.
-9. Create UnityProject_Editable and a user-owned scene. Implement build-existing-scene without regeneration. Test that manually moved objects survive reopening and building.
-10. Produce complete Desktop/PCVR player folders and an editable Assets+Packages+ProjectSettings project. Test on fresh extraction. Only then consider archive/cleanup.
-
-## Koda's headset checks
-- Quest 3 over Link/Air Link: hand pose, opacity (starts 35%, F3/F4), trigger/grip/thumb response, controller hints, both-eye transparency and loss/recovery of tracking.
-- Left-trigger wheel, right-hand selection, smooth move/teleport (F8), comfort vignette (F7), snap turns, holster positions seated/standing and grip conflicts.
-- Desktop/VR F9 and runtime reconnection. Do not equate rig switching with a configured XR loader.
-- Photographs, zoom, flash, review and saved folder; tape joins, markers upright, tool removal/reset.
-- Baked shadows and flashlight direction/contact, glass/shimmer, audio levels and comfort; measured FPS/frame time.
-- Confirm country/service, entry route, UV meaning, real dimension and optional evidence from the decisions below.
-
-No PC command, compile, bake, runtime fix or tested build was performed during this review. Transparent procedural hands already exist in Claude's code; they are not yet certified on Quest 3. No new model is required to begin testing them.
-
----
-
-## Earlier notes and decisions (preserved)
-
 # For Koda
 
 Updated October 16, 2026. Demo deadline: **October 27, 2026**.
@@ -113,7 +81,7 @@ New assets are under Prototype/ThirdParty:
   police-car assembly and furniture. Reuse their existing folders and shared atlases.
 
 Each folder has source/author/license documentation in LICENSE.txt. See
-[asset report and previews](History/ASSET_PREPARATION_2026-10-11.md).
+[asset report and previews](Docs/ASSET_PREPARATION_2026-10-11.md).
 Downloads/JewelryStore_NightAssets_20261011.zip is an **asset-only package**, not a Unity project or build.
 
 October 15 (unverified, never compiled): the twelve realism packs are now wired into the night
@@ -147,7 +115,7 @@ headset. None of this changes a decision above.
 1. Use an isolated project with the latest Prototype Scripts, Editor, Shaders and ThirdParty.
    Preserve all existing .meta files. Unity must generate/import new assets and their .meta files.
    The older extracted UnityProject_Glass is a historical baseline, not the latest night source,
-   unless it is opened with Open-In-Unity.cmd: since October 15 (unverified) that launcher
+   unless it is opened with Open-Unity-Glass.cmd: since October 15 (unverified) that launcher
    first mirrors the latest Scripts, Editor, Shaders and ThirdParty into it.
 2. Run StoreKitValidation.RunGallery and NightStoreValidation.RunNightQuick on current source
    before adopting these finishes. Then wire materials/sign PNGs/audio explicitly using each
@@ -178,4 +146,3 @@ headset. None of this changes a decision above.
 Suggested remaining milestones: October 12–16 integration/layout walkthrough; October 17–20
 story placement and lighting; October 21–23 headset profiling/readability; October 24–26 full
 rehearsal and tested backup. Keep exploration untimed and unscored throughout.
-

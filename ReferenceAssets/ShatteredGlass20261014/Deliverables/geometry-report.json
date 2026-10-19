@@ -1,0 +1,86 @@
+[
+  {
+    "name": "Window_Broken",
+    "triangles": 912,
+    "fragments": 76,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      1.9190568923950195,
+      0.00800000037997961,
+      2.128941774368286
+    ]
+  },
+  {
+    "name": "Window_Cracked",
+    "triangles": 2128,
+    "fragments": 190,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      1.9190568923950195,
+      0.00800000037997961,
+      2.128941774368286
+    ]
+  },
+  {
+    "name": "DoorGlass_Left_Broken",
+    "triangles": 912,
+    "fragments": 76,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      0.7746694087982178,
+      0.00800000037997961,
+      2.049028158187866
+    ]
+  },
+  {
+    "name": "DoorGlass_Right_Broken",
+    "triangles": 912,
+    "fragments": 76,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      0.7747077941894531,
+      0.00800000037997961,
+      2.049020528793335
+    ]
+  },
+  {
+    "name": "GroundGlass_Threshold",
+    "triangles": 2644,
+    "fragments": 190,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      2.263819694519043,
+      1.5353639125823975,
+      0.02967117913067341
+    ]
+  },
+  {
+    "name": "GroundGlass_WindowFall",
+    "triangles": 1916,
+    "fragments": 135,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      1.8498613834381104,
+      1.021432638168335,
+      0.025857189670205116
+    ]
+  },
+  {
+    "name": "GroundGlass_Sparse",
+    "triangles": 652,
+    "fragments": 45,
+    "mesh_objects": 1,
+    "material_slots": 2,
+    "dimensions_blender_xyz": [
+      1.7601683139801025,
+      1.375837802886963,
+      0.03545212745666504
+    ]
+  }
+]

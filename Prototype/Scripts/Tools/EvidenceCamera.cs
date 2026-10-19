@@ -90,7 +90,9 @@ public sealed class EvidenceCamera : MonoBehaviour
             flash.type = LightType.Spot;
             flash.spotAngle = 75;
             flash.color = new Color(1f, 0.97f, 0.92f);
-            flash.shadows = LightShadows.None;
+            flash.shadows = LightShadows.Soft;
+            flash.shadowCustomResolution=1024;
+            flash.shadowBias=.015f;flash.shadowNormalBias=.12f;
             flash.renderMode = LightRenderMode.ForcePixel;
         }
         if (flash == null) return;

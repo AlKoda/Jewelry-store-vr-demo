@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using Object=UnityEngine.Object;
 
 // Refined shop with city backdrop, optionally with the presentation expansion.
 // Adds walking, locomotion, pointer, hand, backdrop and expansion checks before
@@ -353,7 +354,7 @@ public static class ShopCityValidation
         Light spot = lighting.FlashlightLight;
         // Low-resolution hard shadows since the night-store batch: the one realtime shadow in the scene.
         bool lit = spot != null && spot.enabled && lighting.FlashlightOn && spot.type == LightType.Spot
-            && spot.transform.parent == Camera.main.transform && spot.shadows == LightShadows.Hard;
+            && spot.transform.parent == Camera.main.transform && spot.shadows == LightShadows.Soft;
         GameObject model = lighting.FlashlightModel;
         // Light and model both stay inside the player's 0.23 m capsule, so neither passes through a wall.
         bool shown = model != null && model.activeInHierarchy && model.transform.parent == Camera.main.transform
@@ -564,7 +565,7 @@ public static class ShopCityValidation
         rig.transform.SetPositionAndRotation(savedRig.position, savedRig.rotation);
         DemoValidation.Check(vignetteFades, "Comfort vignette fades in during stick movement, no darker than its strength");
         DemoValidation.Check(jumpIgnored, "Comfort vignette clears at rest and ignores teleport jumps");
-        DemoValidation.Check(offWorks, "Comfort vignette stays off when switched off (F7)");
+        DemoValidation.Check(offWorks, "Comfort vignette stays off when switched off (F6)");
 
         // Play-Keyboard/Play-VR pass -demo-mode; a validator run has none, so the mode stays automatic.
         DemoValidation.Check(DemoModeSwitch.CommandLineMode() == "" && DemoValidation.Find<DemoModeSwitch>().Mode != DemoModeSwitch.DemoMode.Desktop,
@@ -627,7 +628,9 @@ public static class ShopCityValidation
         DemoValidation.Check(holsterTorch && holsterBack, "Hip holster hands the flashlight to the gripping hand and takes it back");
         DemoValidation.Check(holsterCamera, "Chest holster puts the camera in the hand");
 
-        XRGhostHand ghost = hand.GetComponent<XRControllerInput>().GhostHand;
+        var controllerInput=hand.GetComponent<XRControllerInput>();
+        controllerInput.SetValidationTracking(true);
+        XRGhostHand ghost = controllerInput.GhostHand;
         if (ghost != null && ghost.Root != null) ghost.Apply(false); // no frame loop in the validator
         bool ghostShown = ghost != null && ghost.Root != null && ghost.Root.gameObject.activeSelf;
         XRHandHud hud = hand.GetComponent<XRHandHud>();
@@ -645,6 +648,10 @@ public static class ShopCityValidation
             ghost.Apply(false);
             ghost.SetPose(0, 0, 0, 0);
         }
+        controllerInput.SetValidationTracking(false);
+        if(ghost!=null)ghost.Apply(false);
+        DemoValidation.Check(ghost!=null&&!ghost.Root.gameObject.activeSelf&&!controllerInput.PoseTracked
+            && !XRControllerInput.HasTrackedPose(default(UnityEngine.XR.InputDevice)),"Untracked controllers hide hands and reject invalid device poses");
         DemoValidation.Check(ghostShown && controllerHidden, "See-through hands show in VR in place of the controller models");
         DemoValidation.Check(curls && opacity, "Hands curl with grip and trigger and take the presenter's opacity");
         hand.transform.SetPositionAndRotation(saved.position, saved.rotation);

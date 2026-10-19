@@ -4,7 +4,7 @@ Verified October 8, 2026 in Unity 6000.6.2f1, Built-in pipeline.
 
 ## Latest project
 
-Download the complete expanded Unity project (zip removed October 19, still in git history).
+[Download the complete expanded Unity project](../Downloads/JewelryStore_Expanded_Unity6000.6.2f1.zip).
 
 Extract into UnityProject next to the repository README, run Open-Unity-Blockout.cmd, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreExpanded.unity**. Press Play.
 
@@ -22,7 +22,7 @@ These are lightweight procedural geometry and shared materials. No paid assets, 
 
 ## Desktop tool workflow
 
-*Superseded, unverified:* batch 05 replaced DesktopToolPlacement with DesktopInteractor (left click picks up and places; see CONTROLS.md). The workflow below describes the verified batch-04 source.
+*Superseded, unverified:* batch 05 replaced DesktopToolPlacement with DesktopInteractor (left click picks up and places; see CONTROLS_AND_INTEGRATION.md). The workflow below describes the verified batch-04 source.
 
 1. Spawn a cone, marker or tape post from the panel.
 2. Choose **Place selected with mouse**.
@@ -43,9 +43,9 @@ WASD/arrows walk; hold right mouse to look; Home returns to the inside starting 
 
 ## Real Unity captures
 
-![Expanded showroom](../Verification/Expanded/showroom.png)
-![Display details](../Verification/Expanded/display-details.png)
-![Street view](../Verification/Expanded/street-from-inside.png)
+![Expanded showroom](VerificationExpanded/showroom.png)
+![Display details](VerificationExpanded/display-details.png)
+![Street view](VerificationExpanded/street-from-inside.png)
 
 ## Verification
 
@@ -58,7 +58,7 @@ All scripts compiled and **33 assertions passed in Editor Play mode**. The previ
 - Street-detail renderer budget and absence of exterior physics colliders.
 - Current-view photo capture and restoration of the dedicated camera pose.
 
-[Raw results](../Verification/Expanded/runtime-results.txt).
+[Raw results](VerificationExpanded/runtime-results.txt).
 The generated runtime photograph is at VerificationExpanded/runtime-photo.png.
 
 The base city remains 4,740 mesh triangles and 18 renderers; new street props are combined into no more than six additional renderers. Three shadowless interior lights and a small number of transparent panes add rendering cost. Actual Quest performance is not yet measured.

@@ -102,8 +102,7 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 
 | Controller | Action |
 |---|---|
-| Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; the held tool turns freely with the controller, and release stands it upright on the surface beneath |
-| Left trigger, hold (empty left hand; October 19, unverified) | Open the tool wheel: point the right controller at a tool or the camera, then release the left trigger or press the right trigger to take it in the right hand |
+| Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; release puts it down on the surface beneath |
 | Trigger | Photograph while holding the camera; switch a held scene lamp on/off (at most two lit, the oldest goes out); select a held tape post or measuring reel |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
 | B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape → scene lamp) |
@@ -111,11 +110,6 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Left thumbstick forward, release (after F8) | Teleport along a ballistic arc (blue with a ring marker when the landing is valid, red otherwise; refused outside the shop, with a strong vibration on an invalid release); a comfort fade blinks on arrival |
 | Right thumbstick left / right | Snap turn 45° (with comfort fade) |
 | F8 (desktop presenter key) | Switch VR movement between smooth walking and teleport |
-| Grip at a hip or the chest (October 19, unverified) | Holsters: right hip flashlight, left hip UV torch, chest camera; grip there again with the torch in hand to put it away |
-| Grip while pointing at a tool up to 4 m away | Pull it into the hand (distance grab), including tools on the floor |
-| Left thumbstick while the tool wheel is open | Pick the slot it points to (instead of walking) |
-| Holding the camera: right stick up/down, A, B, trigger | Zoom 1-4x; flash on/off; review photos on the rear screen (newest first); shoot or leave review |
-| F7 / F3 / F4 (desktop presenter keys) | Comfort vignette on/off; hand opacity down / up |
 | Right thumbstick click | Flashlight on the right hand |
 | Left menu button | Show / hide the controller hints on both hands |
 | Left thumbstick click | UV torch in the left hand |

@@ -1,0 +1,4 @@
+User-supplied police car, provided by the project owner on October 12, 2026.
+Original: C:/Users/MOBPC/Downloads/police car 3d model.glb
+Prepared October 17: scale to 4.7 m length, floor-centred pivot, material separation, three LODs.
+No third-party ownership or licence inferred. Preserve the original user-provided asset.

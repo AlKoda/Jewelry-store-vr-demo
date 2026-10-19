@@ -1,0 +1,43 @@
+PASS: Supplied car has measured metre-scale collision bounds
+PASS: Dielectric glass shader supported
+PASS: Open display drawer has a real clear cabinet aperture; hit=NaN point=(NaN, NaN, NaN)
+PASS: Drawer extension matches its visible tray depth
+PASS: Four physical entrance and staff door leaves
+PASS: Door has a constrained dynamic hinge: DoorLeft
+PASS: Moving leaf excluded from static lighting: DoorLeft
+PASS: Door has a constrained dynamic hinge: DoorRight
+PASS: Moving leaf excluded from static lighting: DoorRight
+PASS: Door has a constrained dynamic hinge: Door
+PASS: Moving leaf excluded from static lighting: Door
+PASS: Door has a constrained dynamic hinge: Door
+PASS: Moving leaf excluded from static lighting: Door
+PASS: Desktop body contact has a door adapter
+PASS: Tracked VR torso sweep has head and mode references
+PASS: Photographic night sky assigned
+PASS: Distance haze enabled
+PASS: Textured city continuation wraps the street
+PASS: Six local baked case reflection probes
+PASS: Low-energy headlight highlights remain realtime
+PASS: All visible model materials resolve to supported shaders
+PASS: Glass has correct metre-scale bounds: Window_Cracked (1.92, 2.13, 0.01)
+PASS: Glass has correct metre-scale bounds: Window_Broken (0.92, 2.13, 0.01)
+PASS: Glass has correct metre-scale bounds: DoorGlass_Left_Broken (0.77, 2.05, 0.01)
+PASS: Glass has correct metre-scale bounds: DoorGlass_Right_Broken (0.77, 2.05, 0.01)
+PASS: Glass has correct metre-scale bounds: GroundGlass_Sparse (1.61, 0.05, 0.43)
+PASS: Glass has correct metre-scale bounds: GroundGlass_WindowFall (1.44, 0.06, 0.53)
+PASS: Glass has correct metre-scale bounds: Window_Broken (1.69, 0.29, 0.01)
+PASS: Glass has correct metre-scale bounds: GroundGlass_Sparse (1.61, 0.05, 0.43)
+PASS: Glass has correct metre-scale bounds: GroundGlass_WindowFall (1.44, 0.06, 0.53)
+PASS: Glass has correct metre-scale bounds: Window_Broken (1.69, 0.29, 0.01)
+PASS: Glass has correct metre-scale bounds: GroundGlass_Sparse (0.43, 0.05, 1.61)
+PASS: Glass has correct metre-scale bounds: GroundGlass_WindowFall (0.53, 0.06, 1.44)
+PASS: Glass has correct metre-scale bounds: Window_Broken (0.01, 0.29, 1.69)
+PASS: Glass has correct metre-scale bounds: Window_Broken (0.01, 0.29, 1.69)
+PASS: Glass has correct metre-scale bounds: Window_Broken (0.54, 0.29, 0.01)
+PASS: Glass has correct metre-scale bounds: Window_Broken (0.54, 0.29, 0.01)
+PASS: Glass has correct metre-scale bounds: GroundGlass_Threshold (2.36, 0.05, 1.52)
+PASS: Glass has correct metre-scale bounds: GroundGlass_Sparse (1.61, 0.04, 1.08)
+PASS: Glass has correct metre-scale bounds: GroundGlass_WindowFall (1.17, 0.06, 0.85)
+PASS: Malformed floating stationery removed
+PASS: Entrance glass has a local 256px reflection probe
+INFO: all-LOD mesh triangles=373748 (not the selected-LOD frame budget)

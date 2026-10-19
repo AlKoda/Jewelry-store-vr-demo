@@ -1,43 +1,21 @@
-# Jewelry Store VR Demo
+# Jewelry store crime-scene demo
 
-An instructor-led VR crime-scene demo for police training: a jewellery store at night after a break-in, with the police just arrived. The trainee walks the scene, places cones, evidence markers, tape, scales and scene lamps, photographs evidence and uses white and UV torches. A presenter guides it from the PC. There are no scores, timers or forced sequence. Demo date: **October 27, 2026**.
+Unity **6000.6.2f1**, Built-in renderer. One saved night-store scene and one Windows player for keyboard/mouse or **Meta Quest 3 over Quest Link/Air Link**. This is not a standalone Quest APK.
 
-Unity 6000.6.2f1 (Built-in pipeline) on a Windows PC, with keyboard and mouse or a Meta Quest 3 over Quest Link / Air Link.
+## Three entry points
 
-## Start here (Windows PC)
+- **Play-Keyboard.cmd**: keyboard/mouse, full screen.
+- **Play-VR.cmd**: starts OpenXR and enters the night scene when Link is available.
+- **Open-In-Unity.cmd**: opens the same project and saved scene for moving/editing objects.
 
-| Double-click | For |
-|---|---|
-| **Play-Keyboard.cmd** | The demo with keyboard and mouse. The first run builds it (5–15 minutes); after that it rebuilds only when the source changed. `Play-Keyboard.cmd bake` gives the final baked lighting. |
-| **Play-VR.cmd** | The same demo in the Quest 3. Start Quest Link or Air Link first. *Needs OpenXR set up in the project on the PC first: see Docs/ROADMAP.md, section 1.* |
-| **Open-In-Unity.cmd** | Opens the project in the Unity editor for your own adjustments. |
+Unity's default Hub installation is detected; set JEWELRY_UNITY to a different Unity.exe path if necessary. A fresh checkout unpacks the single Downloads/JewelryStore_Unity6000.6.2f1.zip snapshot into UnityProject_Demo and syncs source/large asset packs. Keep the complete repository checkout; the compact ZIP deliberately omits large packs. Package Manager must be enabled to resolve the included pinned packages.
 
-If Unity is not at the Unity Hub default path, set `JEWELRY_UNITY` to the full path of Unity.exe. To show the demo on another PC, copy the whole `Builds\Windows` folder; that PC needs no Unity.
+Both play launchers accept **run** to use the existing player, **rebuild** to compile the saved scene, or **bake** for explicit scene regeneration and lighting. **Normal rebuild preserves manual object positions. bake regenerates the scene and can replace manual layout edits.** Build output is the complete Builds/Windows folder, not just its EXE. Copy that whole folder to another PC with the appropriate Meta runtime to test without Unity.
 
-## Controls
+Source is authoritative in Prototype's grouped Scripts/Editor folders; preserve every .meta GUID. UnityProject_Demo and Builds are local generated output. The snapshot includes the saved scene, baked data, XR settings and package locks. Library/caches and captured photos are not in Git.
 
-Full table: [Docs/CONTROLS.md](Docs/CONTROLS.md). In short:
-- **Keyboard:** WASD to walk, right click for mouse look, click to pick up or place, 1–6 for the tools, F to take the camera and P to photograph, L flashlight, U UV torch, Tab presenter panel, F1 help.
-- **Quest 3:**
-  - Left stick walks; right stick turns.
-  - Grip holds; trigger uses.
-  - Hold the left trigger for the tool wheel.
-  - Grip at your hips or chest takes the torches or the camera.
-- **Presenter keys:** F7 comfort vignette, F8 smooth walking or teleport, F3/F4 hand opacity, F9 desktop/VR, F10 back to the start menu.
+## Current state
 
-## For developers and AI assistants
+October 19: reorganization reconciled with local glass, lighting, Arabic/English UI, audio and scene fixes. OpenXR setup, C# compilation, strict Windows build, existing-scene rebuild and actual-player desktop regression passed. A real Meta OpenXR session reached VISIBLE and FOCUSED. Human Quest 3 hand/comfort/control acceptance and headset profiling are still required.
 
-- **Rules:** [AGENTS.md](AGENTS.md), shared by Claude and ChatGPT. It covers one project edited in place (never a new version per batch), where each kind of file goes, and who is working on what.
-- **Current state and source map:** [Docs/HANDOFF.md](Docs/HANDOFF.md).
-- **Open work:** [Docs/ROADMAP.md](Docs/ROADMAP.md).
-- **Testing on the PC:** [Docs/PC_VERIFICATION.md](Docs/PC_VERIFICATION.md).
-- **Open decisions for Koda:** [Docs/DECISIONS.md](Docs/DECISIONS.md).
-- **Assets and licences:** [Docs/ASSET_REGISTER.md](Docs/ASSET_REGISTER.md).
-- **Delivery plan:** [Docs/DELIVERY_PLAN.md](Docs/DELIVERY_PLAN.md).
-
-```
-Prototype/   all source: Scripts, Editor, Shaders, ThirdParty (edit only here)
-Tools/       build, sync and zip helpers; asset preparation scripts
-Downloads/   the one Unity project snapshot (unpacked by the launchers)
-Docs/        live documents; References, Verification results and History
-```
+Start with [VR testing and controls](Docs/VR_TESTING.md), [current handoff](Docs/HANDOFF.md), [open work](Docs/ROADMAP.md) and [assistant rules](AGENTS.md). Licences and source attributions live beside retained packs and are copied beside the player.

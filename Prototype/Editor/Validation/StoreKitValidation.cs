@@ -545,7 +545,7 @@ public static class StoreKitValidation
                 continue;
             }
             bool overlap = DemoValidation.CoplanarOverlap(new List<Vector3>(mesh.vertices), new List<int>(mesh.triangles), 0.00005f, 0.0002f, out int a, out int b);
-            ok &= !overlap;
+            if(overlap) {var v=mesh.vertices;var t=mesh.triangles;DemoValidation.Info("Overlap coordinates "+name+" A="+v[t[a*3]]+","+v[t[a*3+1]]+","+v[t[a*3+2]]+" B="+v[t[b*3]]+","+v[t[b*3+1]]+","+v[t[b*3+2]]);} ok &= !overlap;
             lines.Add(name + (overlap ? ": triangles " + a + " / " + b : ": none"));
         }
         DemoValidation.Info("Frame joints (coplanar overlaps): " + string.Join("; ", lines));

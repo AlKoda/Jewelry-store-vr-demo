@@ -1,0 +1,89 @@
+PBRExterior - exterior PBR materials for the night jewellery-store scene
+Prepared October 14, 2026. Not yet imported or checked in Unity.
+
+Everything in this folder is CC0 1.0 or project-owned. No attribution is required, but
+the credits below are given as a courtesy. Commercial use, modification and
+redistribution are allowed. Exact source paths, commits and SHA-256 hashes of every
+source and shipped file are in sources.json.
+
+CC0 1.0 Universal (public domain dedication):
+https://creativecommons.org/publicdomain/zero/1.0/
+
+-------------------------------------------------------------------------------
+1. Poly Haven textures (CC0 1.0)
+   Publisher license: https://polyhaven.com/license (read from the site source,
+   github.com/Poly-Haven/polyhaven.com @ b1a6aa13, public/locales/en/license.json):
+   "Our assets are all licensed as CC0 ... You can use our assets for any purpose,
+   including commercial work. You do not need to give credit ... You can
+   redistribute them ... even in a product you sell."
+
+   AsphaltDry_*, AsphaltWet_*  <- "Asphalt 02" by Rob Tuytel
+        https://polyhaven.com/a/asphalt_02             (3 x 3 m)
+   BrickFacade_*               <- "Brick Wall 006" by Jan Burghardt
+        https://polyhaven.com/a/brick_wall_006         (3 x 3 m)
+   Render_*                    <- "Plastered Wall" by Amal Kumar
+        https://polyhaven.com/a/plastered_wall         (2 x 2 m)
+
+   Downloaded as the 2K JPG maps (diffuse, arm, nor_gl, displacement) from the
+   GitHub mirror github.com/ConcordDev/concord-cognitive-engine
+   @ a9e29c84d175189ca890f013ed47ed8887e78a7d,
+   apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/
+   (Git LFS objects through media.githubusercontent.com). The mirror's own
+   licence covers that project's code only; these files are unmodified Poly Haven
+   CC0 originals. Byte-identical copies were found in independent repositories
+   (asphalt_02 normal: hicancan/njupt-map; brick diffuse: Michael115/ggj2024;
+   plaster diffuse: PIC123/EMC-Passthrough-Online-MRTK).
+
+   Voluntary credit: "Textures by Rob Tuytel, Jan Burghardt and Amal Kumar, Poly Haven (CC0)."
+
+-------------------------------------------------------------------------------
+2. ambientCG materials (CC0 1.0), created by Lennart Demes / ambientCG
+   Publisher license: https://docs.ambientcg.com/license/ - all ambientCG assets
+   are released under CC0 1.0 Universal; redistribution, modification and
+   commercial use are permitted and attribution is not required (as already
+   recorded for NightMaterials; the mercurypitch manifest below records the same
+   terms, checked 2026-09-15).
+
+   PavementSlab_*, PavementSlabWet_* <- PavingStones136  https://ambientcg.com/view?id=PavingStones136
+   Concrete_*                        <- Concrete034      https://ambientcg.com/view?id=Concrete034
+   Granite_*                         <- Granite002A      https://ambientcg.com/view?id=Granite002A
+   LeakStain_ColorAlpha.png          <- Leaking006       https://ambientcg.com/view?id=Leaking006
+        2K-JPG maps from the GitHub mirror github.com/achrefelouafi/ProceduralBuildingsThreeJS
+        @ 6c19f1b1f14408353989ad26cda27f1e1ede5e91, blender/textures/<ID>/ (MIT-licensed
+        code repository; the texture files are the unmodified ambientCG CC0 originals;
+        the Concrete034 Color and NormalGL hashes match the copy in Terryoc2/Kinemind).
+   FacadeStone_*                     <- Travertine001    https://ambientcg.com/view?id=Travertine001
+        2K-JPG maps from github.com/mercurypitch/mercurypitch
+        @ afdf5e3d84cdfe02458480505677724565b4c7b6,
+        art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/ (the folder's
+        manifest.json records the ambientCG download and the same SHA-256 values).
+   RustyMetal_*                      <- Metal053C        https://ambientcg.com/view?id=Metal053C
+        2K-JPG maps from github.com/KaanAres10/VR-Musicians
+        @ fb97c8f628d7061b3ee18e0a1928348ca957028c, Assets/alley/rust-shading/.
+
+   Voluntary credit: "Created using PavingStones136, Concrete034, Granite002A,
+   Travertine001, Metal053C and Leaking006 from ambientCG.com, licensed under the
+   Creative Commons CC0 1.0 Universal License."
+
+-------------------------------------------------------------------------------
+3. Changes made (all by this project, October 14, 2026)
+   - All maps resized with Lanczos to the sizes in README.md; normal maps
+     renormalised and kept in the OpenGL (+Y) convention; roughness packed into
+     <Name>_MetallicSmoothness.png as A = 1 - roughness, R = metallic, G = B = 0.
+   - Poly Haven ARM maps split: R -> <Name>_AO.jpg, G -> roughness.
+   - AsphaltWet and PavementSlabWet are derived wet versions (darker albedo, lower
+     roughness, water in cracks and joints, flatter normals in water).
+   - PavementSlab: saturation halved and a slight cool tint (grey concrete slabs).
+   - Concrete: albedo lowered by 20 % in linear space.
+   - FacadeStone and Granite: the polished source finishes were re-authored
+     (travertine roughness ~0.12; granite as a flamed kerb finish ~0.62 with glints);
+     faint relief derived from the albedo was added to their normals.
+   - LeakStain: Color and Opacity merged into one RGBA PNG.
+
+-------------------------------------------------------------------------------
+4. Project-owned original work (no third-party content)
+   MetalShutter_* (procedural galvanised roller shutter) and PuddleMask.png
+   (procedural tileable puddle mask) were generated from scratch by
+   Source~/build_pbr_exterior.py (numpy and Pillow, fixed seeds), written for this
+   project with Claude on October 14, 2026. The project owns them and offers them
+   under CC0 1.0 as well. No attribution is required.

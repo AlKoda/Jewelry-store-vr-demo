@@ -1,0 +1,47 @@
+[
+  {
+    "file": "crime scene props 3d model 1.fbx",
+    "objects": [
+      {
+        "name": "tripo_007b2a55_647e_46ba_874e_e8421effb7c8",
+        "vertices": 22445,
+        "polygons": 23390,
+        "dimensions": [
+          0.94677734375,
+          0.56982421875,
+          0.99951171875
+        ]
+      }
+    ]
+  },
+  {
+    "file": "crime scene props 3d model 2.fbx",
+    "objects": [
+      {
+        "name": "f6dcffdc_21bf_4a10_a416_c28e1ae3e3f1",
+        "vertices": 21730,
+        "polygons": 22111,
+        "dimensions": [
+          0.99951171875,
+          0.89794921875,
+          0.42626944184303284
+        ]
+      }
+    ]
+  },
+  {
+    "file": "crime scene props 3d model.fbx",
+    "objects": [
+      {
+        "name": "tripo_9b195dc7_c538_48bc_babf_2b2c4ef6bc56",
+        "vertices": 21737,
+        "polygons": 22830,
+        "dimensions": [
+          0.99951171875,
+          0.95849609375,
+          0.7016602754592896
+        ]
+      }
+    ]
+  }
+]

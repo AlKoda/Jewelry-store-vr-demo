@@ -1,0 +1,90 @@
+NightSky - night environment lighting, sky, moon, light cookies and glow sprites
+Fetched and generated October 14, 2026. Machine-readable details (sha256, mirrors, commits): sources.json.
+
+Poly Haven and NASA hosts were not reachable from the build container, so every downloaded file
+came from a pinned GitHub mirror (git or media.githubusercontent.com for Git LFS) and was checked
+against the official size or hash where one was available (see "Verified" below).
+
+==============================================================================================
+1. Poly Haven HDRIs - CC0 1.0 Universal (public domain dedication), no attribution required
+==============================================================================================
+Licence text: https://creativecommons.org/publicdomain/zero/1.0/legalcode
+Licence evidence read for this pack: the official Poly Haven repository
+https://github.com/Poly-Haven/Public-API (commit 2fd1796dc3506dfa8269439aac8e6f5c65876bd1):
+  - ToS.md: "While our 3D assets themselves are published under the CC0 license ..." and
+    "CC0 assets carry no attribution requirement whatsoever, now or ever."
+  - constants/legacy/hdris.json: "license": "CC0" for hansaplatz, zwinger_night, rooftop_night
+    (with author "Greg Zaal" and the official 1k/2k file sizes).
+  - bl_repo/_v1/assets-00000.json: "license": "CC0 - Public Domain" for cobblestone_street_night
+    (authors "Greg Zaal, Jenelle van Heerden") and modern_evening_street (author "Grzegorz Wronkowski").
+Credit given voluntarily: "HDRIs by Poly Haven (polyhaven.com), CC0".
+
+cobblestone_street_night_2k.hdr
+  Title: Cobblestone Street Night. Authors: Greg Zaal, Jenelle van Heerden. https://polyhaven.com/a/cobblestone_street_night
+  Mirror: https://github.com/auraoneai/aura3d @ 897359c4a19ec1cf99a3c88c82e4d0b46da4b5fe,
+          fixtures/environment-corpus/hdri/cobblestone_street_night_2k.hdr (Git LFS)
+  Verified: md5 739ade89e23a42a52e1ffb051eef8dcd, 7,064,424 bytes = Poly Haven API values
+            (as recorded in github.com/blue45f/toonstudio). Changes: none.
+hansaplatz_1k.hdr
+  Title: Hansaplatz. Author: Greg Zaal. https://polyhaven.com/a/hansaplatz
+  Mirror: https://github.com/acltabontabon/sev-1 @ cc500f9aeeb6d5e8fbc911ec1c0839b855d6002a,
+          assets/environment/hdri/hansaplatz_2k.hdr (Git LFS, sha256 d9258973...a5d20)
+  Verified: 6,850,384 bytes = official 2k size. Changes: 2x2 linear box downsample to 1024x512, RLE re-encode.
+zwinger_night_1k.hdr
+  Title: Zwinger Night. Author: Greg Zaal. https://polyhaven.com/a/zwinger_night
+  Mirror: https://github.com/theomniautomobil/theomniautomobil.github.io @ 354557204f54a7da6098df7812798b2b60f692a3,
+          data/textures/zwinger_night_2k.hdr
+  Verified: 6,618,647 bytes = official 2k size. Changes: 2x2 linear box downsample to 1024x512, RLE re-encode.
+rooftop_night_1k.hdr
+  Title: Rooftop Night. Author: Greg Zaal. https://polyhaven.com/a/rooftop_night
+  Mirror: https://github.com/LePro10/japanMap @ cfe7b071b76bc44e8e4706b60f7deaf4f5e7fd34, assets/hdri/rooftop_night_2k.hdr
+  Verified: sha256 8ace3b81...de82e = the hash github.com/auraoneai/aura3d records for its dl.polyhaven.org
+            download; 6,509,158 bytes = official 2k size. Changes: 2x2 linear box downsample to 1024x512.
+modern_evening_street_1k.hdr
+  Title: Modern Evening Street. Author: Grzegorz Wronkowski. https://polyhaven.com/a/modern_evening_street
+  Mirror: https://github.com/joeholloway445-maker/Periliminal.Space @ cb2b295895a9f7d09e7db353abfa1dd606b6d394,
+          godot/assets/environments/modern_evening_street.hdr
+  Verified: licence/author from official metadata; byte hash not checkable here (Poly Haven API unreachable).
+  Changes: renamed only.
+
+==============================================================================================
+2. NASA imagery - public domain (U.S. Government work); credit requested
+==============================================================================================
+moon.jpg   (byte-identical copy of lroc_color_poles_2k.jpg)
+  Title: CGI Moon Kit, colour map "lroc_color_poles" (2k equirectangular).
+  Creator: NASA's Scientific Visualization Studio (Ernie Wright, USRA), NASA Goddard Space Flight Center;
+           imagery from the Lunar Reconnaissance Orbiter Camera (LROC) WAC, NASA/GSFC/Arizona State University.
+  Original: https://svs.gsfc.nasa.gov/4720
+  Mirror: https://github.com/nasa/virgo (NASA's own repository) @ a9d88e68af30cbe2075e05b083cff49681014a0f,
+          images/moon/lroc_color_poles_2k.jpg (Git LFS); the folder README says "Images in this dir came
+          from https://svs.gsfc.nasa.gov/4720".
+  Licence: NASA imagery is not protected by copyright in the United States (NASA Images and Media Usage
+  Guidelines, https://www.nasa.gov/nasa-brand-center/images-and-media/); do not use NASA logos or imply
+  endorsement. Attribution to show in credits: "Moon imagery: NASA's Scientific Visualization Studio (CGI Moon Kit)".
+moon_disc_512.png
+  Derived by the project from lroc_color_poles_4k.jpg (same mirror and commit, sha256 cbefba7d...c2df4):
+  orthographic near-side projection, 40% desaturation, slight limb darkening, alpha disc.
+  Same NASA credit applies; the project's own changes are dedicated CC0.
+
+==============================================================================================
+3. Project-generated assets - project-owned, dedicated CC0 1.0 (no third-party material)
+==============================================================================================
+city_night_sky_clear_2k.hdr, city_night_sky_overcast_1k.hdr  (Generators~/gen_skies.py)
+cookie_flashlight_led_512.png, cookie_uv_torch_512.png, cookie_streetlight_512.png,
+cookie_scene_floodlight_512.png, glow_soft_256.png, glow_starburst_512.png, flare_streak_512x128.png,
+flare_halo_ring_256.png, lens_dirt_1024.png  (Generators~/gen_sprites.py)
+Generators~/*.py (hdrio.py, gen_skies.py, gen_sprites.py, make_moon_disc.py, downsample_hdr.py)
+  Original procedural work made for AlKoda's Jewelry-store-vr-demo with numpy and Pillow. No downloaded
+  images. Free to use, modify and redistribute.
+  The star field in city_night_sky_clear_2k.hdr is drawn from factual catalogue data (positions,
+  magnitudes, colour temperatures) of the Yale Bright Star Catalogue, 5th Revised Ed. (Hoffleit D.,
+  Warren Jr W.H., NSSDC/ADC 1991), read from the JSON conversion bsc5-short.json in
+  https://github.com/brettonw/YaleBrightStarCatalog @ abffb3b7223ae37e879b0a3ff5b49ad06aed5576.
+  That conversion is "MIT License, Copyright (c) 2016 Bretton Wade"; the JSON file itself is NOT
+  redistributed in this pack (it is only an input to the generator).
+
+==============================================================================================
+Rejected or not used (see README.md): three.js lensflare textures (CC BY-NC-SA 3.0), three.js
+lensdirt.png (no licence statement), NASA Deep Star Maps 2020 (includes ESA Gaia DR2 data with its
+own credit terms), Solar System Scope textures (CC BY 4.0, not needed), Shanghai Bund and
+Potsdamer Platz HDRIs (identifiable skylines/brand signage), @pmndrs/assets HDRIs (CC0 but 512x256 only).

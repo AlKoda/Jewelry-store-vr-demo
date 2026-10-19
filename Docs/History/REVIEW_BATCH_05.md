@@ -12,7 +12,7 @@ Restored the player factory referenced by the validators and corrected build set
 
 ## Verification
 
-All source compiled and 40 automated Editor Play mode assertions passed. See [raw results](../Verification/Review/runtime-results.txt). Five scene captures and one runtime photograph were generated. [Showroom capture](../Verification/Review/showroom.png) is an actual Unity render.
+All source compiled and 40 automated Editor Play mode assertions passed. See [raw results](VerificationReview/runtime-results.txt). Five scene captures and one runtime photograph were generated. [Showroom capture](VerificationReview/showroom.png) is an actual Unity render.
 
 The checks cover inside spawn/movement/bounds, safe-room access, backdrop budgets, marker numbering/font, pointer placement/occlusion/cancellation, tape lifecycle, photo capture/pose restoration, reset, review photo copies/HTML references, tool records and before-reset persistence.
 
@@ -22,7 +22,7 @@ Normal Unity startup was retried: Package Manager could not connect to its IPC s
 
 ## Use
 
-Download the snapshot (zip removed October 19, still in git history), extract in a separate folder, and open Unity 6000.6.2f1 with -noUpm. Open Assets/CrimeSceneDemo/Scenes/JewelryStoreReview.unity and press Play. The panel provides tool deployment, placement, photos, review snapshots, review access and reset.
+[Download the snapshot](../Downloads/JewelryStore_Review_Unity6000.6.2f1.zip), extract in a separate folder, and open Unity 6000.6.2f1 with -noUpm. Open Assets/CrimeSceneDemo/Scenes/JewelryStoreReview.unity and press Play. The panel provides tool deployment, placement, photos, review snapshots, review access and reset.
 
 On the PC this is UnityProject_Next under the existing repository directory. The prior UnityProject was preserved. Snapshot includes Assets, .meta files and ProjectSettings, excluding caches and private review data.
 

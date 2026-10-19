@@ -1,0 +1,3 @@
+DISPLAY_PLAYER_PASS DisplayCaseMaterialReview
+DISPLAY_PLAYER_PASS UserPropsReview
+DISPLAY_PLAYER_PASS JewelryStoreNight

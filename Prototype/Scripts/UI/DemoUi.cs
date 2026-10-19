@@ -82,9 +82,9 @@ public static class DemoUi
         }
     }
 
-    public static Font Regular => Theme != null && Theme.Regular != null ? Theme.Regular : Builtin;
-    public static Font Medium => Theme != null && Theme.Medium != null ? Theme.Medium : Regular;
-    public static Font SemiBold => Theme != null && Theme.SemiBold != null ? Theme.SemiBold : Medium;
+    public static Font Regular => DemoLanguage.Font ? DemoLanguage.Font : Theme != null && Theme.Regular != null ? Theme.Regular : Builtin;
+    public static Font Medium => DemoLanguage.Font ? DemoLanguage.Font : Theme != null && Theme.Medium != null ? Theme.Medium : Regular;
+    public static Font SemiBold => DemoLanguage.Font ? DemoLanguage.Font : Theme != null && Theme.SemiBold != null ? Theme.SemiBold : Medium;
 
     // ---------------------------------------------------------------- textures
     // Keyed by value: Color is IEquatable<Color>, so lookups neither box nor allocate
@@ -366,7 +366,7 @@ public static class DemoUi
         s.TabActive.padding = s.Tab.padding;
         s.Keycap = new GUIStyle(GUI.skin.label)
         {
-            font = SemiBold, fontSize = 13, alignment = TextAnchor.MiddleCenter,
+            font = SemiBold, fontSize = 13, alignment = TextAnchor.MiddleCenter, wordWrap = false,
             border = new RectOffset(5, 5, 5, 5), padding = new RectOffset(7, 7, 3, 4), margin = new RectOffset(2, 2, 0, 0),
         };
         s.Keycap.normal.background = Rounded(5, new Color(0.22f, 0.24f, 0.29f, 0.98f), new Color(1, 1, 1, 0.28f));
@@ -374,7 +374,7 @@ public static class DemoUi
         s.HintText = Text(Regular, 14, InkDim);
         s.Chip = new GUIStyle(GUI.skin.label)
         {
-            font = Medium, fontSize = 13, alignment = TextAnchor.MiddleCenter, richText = true,
+            font = Medium, fontSize = 13, alignment = TextAnchor.MiddleCenter, richText = true, wordWrap = false,
             border = new RectOffset(10, 10, 10, 10), padding = new RectOffset(11, 11, 5, 6), margin = new RectOffset(0, 6, 0, 0),
         };
         s.Chip.normal.background = Rounded(10, new Color(0.05f, 0.06f, 0.08f, 0.78f), Line);
@@ -442,6 +442,7 @@ public static class DemoUi
     public static GUIContent Content(string text)
     {
         if (text == null) text = string.Empty;
+        text = DemoLanguage.Text(text);
         if (contents.TryGetValue(text, out GUIContent content)) return content;
         if (contents.Count >= 512) contents.Clear(); // toasts and counters stay few; bounded anyway
         contents[text] = content = new GUIContent(text);
@@ -483,12 +484,12 @@ public static class DemoUi
                 GUIContent key = Content(keys[k]);
                 Vector2 size = s.Keycap.CalcSize(key);
                 size.x = Mathf.Max(size.x, 24);
-                GUI.Label(new Rect(x, rect.y + (rect.height - size.y) / 2, size.x, size.y), key, s.Keycap);
+                DemoI18n.Label(new Rect(x, rect.y + (rect.height - size.y) / 2, size.x, size.y), key, s.Keycap);
                 x += size.x + 4;
             }
             GUIContent action = Content(pairs[i + 1]);
             Vector2 label = s.HintText.CalcSize(action);
-            GUI.Label(new Rect(x + 2, rect.y, label.x, rect.height), action, s.HintText);
+            DemoI18n.Label(new Rect(x + 2, rect.y, label.x, rect.height), action, s.HintText);
             x += label.x + 18;
         }
     }
@@ -499,10 +500,10 @@ public static class DemoUi
         Skin s = Styles;
         GUILayout.BeginHorizontal();
         GUILayout.BeginHorizontal(GUILayout.Width(keyColumn));
-        foreach (string key in KeyParts(keys)) GUILayout.Label(Content(key), s.Keycap, GUILayout.MinWidth(24));
+        foreach (string key in KeyParts(keys)) DemoI18n.LayoutLabel(Content(key), s.Keycap, GUILayout.MinWidth(24));
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
-        GUILayout.Label(Content(action), s.Body);
+        DemoI18n.LayoutLabel(Content(action), s.Body);
         GUILayout.EndHorizontal();
     }
 
@@ -511,9 +512,8 @@ public static class DemoUi
     {
         Skin s = Styles;
         GUILayout.BeginHorizontal();
-        GUILayout.Label(label, s.Body);
-        GUILayout.FlexibleSpace();
-        if (GUILayout.Button(value ? "ON" : "OFF", value ? s.ButtonAccent : s.Button, GUILayout.Width(64))) value = !value;
+        DemoI18n.LayoutLabel(label, s.Body, GUILayout.ExpandWidth(true));
+        if (DemoI18n.LayoutButton(value ? "ON" : "OFF", value ? s.ButtonAccent : s.Button, GUILayout.Width(64))) value = !value;
         GUILayout.EndHorizontal();
         return value;
     }
@@ -555,7 +555,9 @@ public static class DemoUi
             triangles[i * 3 + 1] = i + 1;
             triangles[i * 3 + 2] = (i + 1) % outline.Count + 1;
         }
-        Mesh mesh = new Mesh { name = "UiRoundedQuad", vertices = vertices, triangles = triangles, hideFlags = HideFlags.DontSave };
+        Vector2[] uv=new Vector2[vertices.Length];
+        for(int i=0;i<vertices.Length;i++)uv[i]=new Vector2(vertices[i].x/width+.5f,vertices[i].y/height+.5f);
+        Mesh mesh = new Mesh { name = "UiRoundedQuad", vertices = vertices, uv=uv, triangles = triangles, hideFlags = HideFlags.DontSave };
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
         meshes[key] = mesh;
@@ -628,6 +630,7 @@ public static class DemoUi
         TextMesh mesh = go.AddComponent<TextMesh>();
         Configure(mesh, font != null ? font : Medium, lineHeight, color, anchor);
         mesh.text = text;
+        go.AddComponent<LocalizedWorldLabel>();
         return mesh;
     }
 
@@ -654,7 +657,7 @@ public static class DemoUi
         label.Refresh();
     }
 
-    private static Material TextMaterial(Font font)
+    public static Material TextMaterial(Font font)
     {
         if (font == null) return null;
         if (textMaterials.TryGetValue(font, out Material cached) && cached != null) return cached;
@@ -671,7 +674,7 @@ public static class DemoUi
     public static float TextWidth(Font font, string text, float lineHeight)
     {
         if (font == null || string.IsNullOrEmpty(text)) return 0;
-        string plain = StripTags(text);
+        string plain = StripTags(DemoLanguage.Text(text));
         font.RequestCharactersInTexture(plain, 64);
         float widest = 0, line = 0;
         foreach (char c in plain)

@@ -66,6 +66,8 @@ public static class PoliceLook
         LightBarCentre = 0.2f, LightBarHalf = V(0.19f, 0.035f, 0.08f), LensSize = new Vector2(0.3f, 0.12f)
     };
 
+    public static readonly Car UserSuppliedCar = new Car { Pack = "UserPoliceCar", Model = "UserPoliceCar", Scale = 1, ModelEuler = Vector3.zero, HeadlightLeft = V(-.74f,.77f,2.13f), HeadlightRight = V(.74f,.77f,2.13f), LightBar = V(0,1.65f,-.35f), LightBarCentre = .29f, LightBarHalf = V(.27f,.045f,.09f), LensSize = new Vector2(.25f,.09f) };
+
     private static readonly Color BarRed = new Color(1f, 0.06f, 0.04f) * 4f, BarBlue = new Color(0.08f, 0.25f, 1f) * 4f;
 
     // The default. Its one addition to today's look is CarIdle: a generic V8 petrol idle
@@ -76,7 +78,7 @@ public static class PoliceLook
         Name = "Provisional (today's look)",
         TapeText = DemoToolsBuilder.DefaultTapeText,
         CarIdle = "PoliceCarIdle_Loop.wav", RadioLoop = null, GuardFigure = null,
-        Cars = new[] { KayKitCar },
+        Cars = new[] { UserSuppliedCar, KayKitCar },
         LightBarLeft = BarRed, LightBarRight = BarBlue, LightBarHertz = 1.5f,
         Sirens = new string[0], Radio = new string[0],
         GuardPosition = Vector3.zero, GuardYaw = 0

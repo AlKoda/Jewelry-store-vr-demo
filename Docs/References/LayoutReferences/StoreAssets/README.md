@@ -33,4 +33,4 @@ Glass is intentionally absent. Build glass as separate lightweight panes in Unit
 - For the robbery, reuse empty trays and busts as separate movable props. Tip selected stands and leave some empty, rather than baking a fully stocked cabinet.
 - No scene geometry or runtime code was changed by this reference batch.
 
-See the [store layout plan](../../../REFERENCE_LAYOUT_PLAN.md) and [environment reference gallery](../NightStore/README.md).
+See the [store layout plan](../../REFERENCE_LAYOUT_PLAN.md) and [environment reference gallery](../NightStore/README.md).

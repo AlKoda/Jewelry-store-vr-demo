@@ -41,8 +41,8 @@ public sealed class XRHolsters : MonoBehaviour
     public Vector3 Position(Slot slot)
     {
         Transform head = Head != null ? Head : transform;
-        Vector3 forward = Vector3.ProjectOnPlane(head.forward, Vector3.up);
-        if (forward.sqrMagnitude < 1e-4f) forward = Vector3.ProjectOnPlane(head.up, Vector3.up);
+        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        if (forward.sqrMagnitude < 1e-4f) forward = Vector3.ProjectOnPlane(transform.up, Vector3.up);
         if (forward.sqrMagnitude < 1e-4f) forward = transform.forward;
         Quaternion heading = Quaternion.LookRotation(forward.normalized, Vector3.up);
         Vector3 offset = slot == Slot.Camera ? ChestOffset
@@ -76,16 +76,17 @@ public sealed class XRHolsters : MonoBehaviour
         {
             case Slot.Flashlight:
             case Slot.UVTorch:
-                if (lights == null) return false;
+                if (lights == null || hand.Held != null || hand.HoldingCamera) return false;
                 bool uv = slot == Slot.UVTorch;
                 bool on = uv ? lights.UVTorchOn : lights.FlashlightOn;
                 XRNode at = uv ? lights.UVTorchHand : lights.FlashlightHand;
-                if (on && at == node)
+                if (lights.TorchEquipped(uv) && at == node)
                 {
-                    if (uv) lights.ToggleUVTorch(); else lights.ToggleFlashlight();
+                    lights.HolsterTorch(uv);
                     DemoFeedback.Post(uv ? "UV torch holstered" : "Flashlight holstered");
                     return true;
                 }
+                if(lights.TorchEquipped(!uv) && (uv?lights.FlashlightHand:lights.UVTorchHand)==node)return false;
                 lights.MoveTorch(uv, node);
                 if (!on) { if (uv) lights.ToggleUVTorch(); else lights.ToggleFlashlight(); }
                 return true;
@@ -110,7 +111,7 @@ public sealed class XRHolsters : MonoBehaviour
 
     private void LateUpdate()
     {
-        bool show = VR && XRControllerInput.HintsVisible;
+        bool show = VR;
         if (!show) { if (root != null) root.gameObject.SetActive(false); return; }
         if (root == null) Build();
         root.gameObject.SetActive(true);
@@ -122,6 +123,9 @@ public sealed class XRHolsters : MonoBehaviour
             if (Head != null) DemoUi.FaceViewer(markers[i], Head.position);
             bool near = false;
             foreach (HandInteractor h in hands) near |= Vector3.Distance(h.transform.position, p) <= TakeRadius;
+            float proximity=float.PositiveInfinity;
+            foreach(var h in hands)if(h.GetComponent<XRControllerInput>()?.PoseTracked==true)proximity=Mathf.Min(proximity,Vector3.Distance(h.transform.position,p));
+            markers[i].gameObject.SetActive(proximity<.45f || XRControllerInput.HintsVisible);
             materials[i].color = DemoUi.WithAlpha(near ? DemoUi.Accent : DemoUi.Info, near ? 0.85f : 0.22f);
         }
     }

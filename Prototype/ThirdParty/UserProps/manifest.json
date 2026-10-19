@@ -1,0 +1,169 @@
+[
+  {
+    "name": "camera",
+    "source_set": 0,
+    "components": [
+      "set0_part06",
+      "set0_part02",
+      "set0_part128",
+      "set0_part133",
+      "set0_part134",
+      "set0_part102",
+      "set0_part110",
+      "set0_part129",
+      "set0_part137",
+      "set0_part43",
+      "set0_part40",
+      "set0_part50",
+      "set0_part54",
+      "set0_part157",
+      "set0_part126"
+    ],
+    "target_axis": "X",
+    "target_metres": 0.15,
+    "triangles": 4329,
+    "dimensions_metres": [
+      0.15000000596046448,
+      0.14252334833145142,
+      0.10280372947454453
+    ]
+  },
+  {
+    "name": "flashlight",
+    "source_set": 0,
+    "components": [
+      "set0_part05",
+      "set0_part39",
+      "set0_part44"
+    ],
+    "target_axis": "Z",
+    "target_metres": 0.24,
+    "triangles": 1872,
+    "dimensions_metres": [
+      0.0944681242108345,
+      0.09531915932893753,
+      0.24000000953674316
+    ]
+  },
+  {
+    "name": "gloves",
+    "source_set": 2,
+    "components": [
+      "set2_part61",
+      "set2_part00",
+      "set2_part23"
+    ],
+    "target_axis": "Y",
+    "target_metres": 0.25,
+    "triangles": 4933,
+    "dimensions_metres": [
+      0.20379747450351715,
+      0.25,
+      0.20063292980194092
+    ]
+  },
+  {
+    "name": "cone",
+    "source_set": 1,
+    "components": [
+      "set1_part32",
+      "set1_part186"
+    ],
+    "target_axis": "Z",
+    "target_metres": 0.45,
+    "triangles": 402,
+    "dimensions_metres": [
+      0.27898091077804565,
+      0.27229300141334534,
+      0.44999998807907104
+    ]
+  },
+  {
+    "name": "evidence_marker",
+    "source_set": 2,
+    "components": [
+      "set2_part48"
+    ],
+    "target_axis": "Z",
+    "target_metres": 0.12,
+    "triangles": 200,
+    "dimensions_metres": [
+      0.10129277408123016,
+      0.09809885919094086,
+      0.11999999731779099
+    ]
+  },
+  {
+    "name": "equipment_case",
+    "source_set": 0,
+    "components": [
+      "set0_part10",
+      "set0_part23",
+      "set0_part69",
+      "set0_part16",
+      "set0_part15",
+      "set0_part26",
+      "set0_part70",
+      "set0_part41",
+      "set0_part25",
+      "set0_part144",
+      "set0_part31",
+      "set0_part13",
+      "set0_part33",
+      "set0_part22",
+      "set0_part65",
+      "set0_part27",
+      "set0_part32",
+      "set0_part17",
+      "set0_part71"
+    ],
+    "target_axis": "X",
+    "target_metres": 0.34,
+    "triangles": 5451,
+    "dimensions_metres": [
+      0.3399999737739563,
+      0.3299010396003723,
+      0.2098349630832672
+    ]
+  },
+  {
+    "name": "canister",
+    "source_set": 0,
+    "components": [
+      "set0_part09",
+      "set0_part19",
+      "set0_part154",
+      "set0_part42",
+      "set0_part97",
+      "set0_part45",
+      "set0_part98",
+      "set0_part20",
+      "set0_part99",
+      "set0_part100"
+    ],
+    "target_axis": "Z",
+    "target_metres": 0.42,
+    "triangles": 2376,
+    "dimensions_metres": [
+      0.3365217447280884,
+      0.3365217447280884,
+      0.42000001668930054
+    ]
+  },
+  {
+    "name": "sofa",
+    "source_set": 1,
+    "components": [
+      "set1_part04",
+      "set1_part53"
+    ],
+    "target_axis": "X",
+    "target_metres": 1.8,
+    "triangles": 1298,
+    "dimensions_metres": [
+      1.7999999523162842,
+      0.9412399530410767,
+      0.681671142578125
+    ]
+  }
+]

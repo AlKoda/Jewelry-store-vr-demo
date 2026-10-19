@@ -22,6 +22,7 @@ public sealed class DemoStatusBoard : MonoBehaviour
         text = GetComponent<TextMesh>();
         DeployedTool.EnsureFont(text);
         DemoUi.Configure(text, DemoUi.Medium, LineHeight, DemoUi.Ink, TextAnchor.MiddleCenter);
+        if(!GetComponent<LocalizedWorldLabel>())gameObject.AddComponent<LocalizedWorldLabel>();
         MeshRenderer panelRenderer = DemoUi.WorldPanel("BoardPanel", transform, new Vector3(0, 0, 0.01f), 1f, 0.4f, 0.05f,
             new Color(0.05f, 0.06f, 0.08f, 0.9f));
         panel = panelRenderer.GetComponent<MeshFilter>();
@@ -36,6 +37,7 @@ public sealed class DemoStatusBoard : MonoBehaviour
 
     private void OnEnable()
     {
+        DemoLanguage.Changed+=Refresh;
         if (Station != null) Station.ToolsChanged.AddListener(Refresh);
         if (Session != null) Session.SessionReset.AddListener(Refresh);
         if (EvidenceCamera != null)
@@ -48,6 +50,7 @@ public sealed class DemoStatusBoard : MonoBehaviour
 
     private void OnDisable()
     {
+        DemoLanguage.Changed-=Refresh;
         if (Station != null) Station.ToolsChanged.RemoveListener(Refresh);
         if (Session != null) Session.SessionReset.RemoveListener(Refresh);
         if (EvidenceCamera != null)

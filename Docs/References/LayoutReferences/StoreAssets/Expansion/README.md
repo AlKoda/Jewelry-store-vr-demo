@@ -47,6 +47,6 @@ Download the original PNG using GitHub's raw-file download. Crop a single object
 - Keep drawers separate where they need to move. Retain existing interaction scripts when replacing visuals.
 - Track lights and screens are off in the nighttime scenario; materials shown under studio lighting are not the final scene lighting.
 - Start with simple colliders and shared materials. Inspect generated meshes for unnecessary subdivisions, inverted normals, fused parts and baked shadows. Rendering quality does not establish mesh triangle count or VR performance.
-- For initial low-poly targets and the earlier tools, see the [original asset pack](../README.md). For room placement, follow the [layout plan](../../../../REFERENCE_LAYOUT_PLAN.md).
+- For initial low-poly targets and the earlier tools, see the [original asset pack](../README.md). For room placement, follow the [layout plan](../../../REFERENCE_LAYOUT_PLAN.md).
 
 No Unity scene, runtime behavior or existing assets were replaced by this image batch.

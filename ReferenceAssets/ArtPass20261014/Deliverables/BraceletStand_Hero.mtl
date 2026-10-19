@@ -1,0 +1,35 @@
+# Blender 5.2.2 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl ChampagneBrushed
+Ns 490.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 3
+map_Kd BronzeBrushed_Color.jpg
+map_Bump -bm 0.250000 BronzeBrushed_Normal.png
+
+newmtl CharcoalVelvet
+Ns 22.499992
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd VelvetCharcoal_Color.jpg
+map_Bump -bm 0.250000 VelvetCharcoal_Normal.png
+
+newmtl DarkStone
+Ns 360.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd StoneTopDark_Color.jpg
+map_Bump -bm 0.250000 StoneTopDark_Normal.png

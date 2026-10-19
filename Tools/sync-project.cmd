@@ -33,6 +33,10 @@ if not exist "%PROJECT%\ProjectSettings\" (
   echo Not a Unity project, the ProjectSettings folder is missing: "%PROJECT%\ProjectSettings"
   exit /b 1
 )
+if exist "%PROJECT%\.user-editable-project" (
+ echo Refusing to mirror over protected manual edits.
+ exit /b 1
+)
 rem Scripts, Editor and Shaders carry their committed .meta files (the GUIDs scenes refer to), so a
 rem script moved between subfolders keeps its GUID. ThirdParty has no committed metas: Unity's own stay.
 call :mirror Scripts || exit /b 1

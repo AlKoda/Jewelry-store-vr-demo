@@ -24,7 +24,7 @@ BASE = 'Assets/CrimeSceneDemo/'
 CODE = ('Scripts', 'Editor', 'Shaders')
 LARGE = {'PBRInterior', 'PBRExterior', 'NightSky', 'JewelryModels', 'ForensicModels', 'StreetModels',
          'InteriorModels', 'WallGraphics', 'SurfaceDecals', 'NightSoundscape', 'Music', 'PeopleModels',
-         'AmbientProps', 'AmbientProps2', 'CutoutDecals', 'RealismTextures', 'RealFoley', 'RealFoley2'}
+         'AmbientProps', 'AmbientProps2', 'CutoutDecals', 'RealismTextures', 'RealFoley', 'RealFoley2', 'Environments', 'ReferenceTextures', 'CgbookcaseTextures'}
 LIMIT_MB = 95
 
 MONO = ("fileFormatVersion: 2\nguid: {g}\nMonoImporter:\n  externalObjects: {{}}\n  serializedVersion: 2\n"
@@ -55,6 +55,18 @@ def ensure_metas(root):
 def main():
     with zipfile.ZipFile(ZIP) as z:
         entries = {i.filename: z.read(i.filename) for i in z.infolist() if not i.is_dir()}
+    # Carry the actual single project's saved scene/bakes, XR configuration and
+    # resolved package setup. Code is replaced from authoritative Prototype below.
+    project = os.path.join(REPO, 'UnityProject_Demo')
+    if os.path.isdir(os.path.join(project, 'Assets')):
+        for folder in ('Assets', 'Packages', 'ProjectSettings'):
+            for directory, _, names in os.walk(os.path.join(project, folder)):
+                for name in names:
+                    path=os.path.join(directory,name)
+                    rel=os.path.relpath(path,project).replace(os.sep,'/')
+                    if rel.startswith(BASE+'ThirdParty/') or any(rel.startswith(BASE+c+'/') for c in CODE): continue
+                    entries[rel]=open(path,'rb').read()
+        entries['READ_ME_LATEST.txt']=b'Quest 3 PCVR + keyboard, Unity 6000.6.2f1. One project and saved night scene. See repository Docs/VR_TESTING.md. Large packs must be synced from the repository. Do not regenerate a manually edited scene unintentionally.\n'
     before = set(entries)
     written = []
     for code in CODE:

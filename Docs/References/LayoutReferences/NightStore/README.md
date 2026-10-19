@@ -1,5 +1,5 @@
 # Expanded jewelry store — eight modeling references
-Generated October 11, 2026 from the user's store reference and [layout plan](../../../REFERENCE_LAYOUT_PLAN.md).
+Generated October 11, 2026 from the user's store reference and [layout plan](../../REFERENCE_LAYOUT_PLAN.md).
 
 These are AI-generated concept images, not screenshots of a built Unity/Blender model. Eight separate original PNG files are stored here. No scene/code/build was changed by this image-generation pass.
 

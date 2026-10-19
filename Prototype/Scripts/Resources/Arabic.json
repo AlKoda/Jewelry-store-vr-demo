@@ -1,0 +1,1394 @@
+{
+  "entries": [
+    {
+      "en": "Cone",
+      "ar": "مخروط"
+    },
+    {
+      "en": "Marker",
+      "ar": "علامة دليل"
+    },
+    {
+      "en": "Tape",
+      "ar": "شريط"
+    },
+    {
+      "en": "Scale",
+      "ar": "مقياس"
+    },
+    {
+      "en": "Reel",
+      "ar": "بكرة قياس"
+    },
+    {
+      "en": "Lamp",
+      "ar": "مصباح موقع"
+    },
+    {
+      "en": "Camera",
+      "ar": "كاميرا"
+    },
+    {
+      "en": "Light",
+      "ar": "مصباح يدوي"
+    },
+    {
+      "en": "UV",
+      "ar": "أشعة فوق بنفسجية"
+    },
+    {
+      "en": "Trigger",
+      "ar": "الزناد"
+    },
+    {
+      "en": "Photograph",
+      "ar": "التقاط صورة"
+    },
+    {
+      "en": "Photo",
+      "ar": "صورة"
+    },
+    {
+      "en": "Return",
+      "ar": "إرجاع"
+    },
+    {
+      "en": "Presenter panel",
+      "ar": "لوحة التحكم"
+    },
+    {
+      "en": "Controls",
+      "ar": "التحكم"
+    },
+    {
+      "en": "Desktop",
+      "ar": "حاسوب"
+    },
+    {
+      "en": "Panel",
+      "ar": "اللوحة"
+    },
+    {
+      "en": "Close",
+      "ar": "إغلاق"
+    },
+    {
+      "en": "Size",
+      "ar": "الحجم"
+    },
+    {
+      "en": "Tools",
+      "ar": "الأدوات"
+    },
+    {
+      "en": "Map",
+      "ar": "الخريطة"
+    },
+    {
+      "en": "Scene",
+      "ar": "المشهد"
+    },
+    {
+      "en": "Settings",
+      "ar": "الإعدادات"
+    },
+    {
+      "en": "HUD on  (F2 hides it)",
+      "ar": "تم إظهار الواجهة (F2 للإخفاء)"
+    },
+    {
+      "en": "VR movement: smooth walking  (F8 for teleport)",
+      "ar": "الحركة في الواقع الافتراضي: مشي مستمر (F8 للانتقال)"
+    },
+    {
+      "en": "VR movement: teleport  (F8 for smooth walking)",
+      "ar": "الحركة في الواقع الافتراضي: انتقال فوري (F8 للمشي)"
+    },
+    {
+      "en": "Interface size x",
+      "ar": "حجم الواجهة ×"
+    },
+    {
+      "en": "VR",
+      "ar": "الواقع الافتراضي"
+    },
+    {
+      "en": "DESKTOP",
+      "ar": "الحاسوب"
+    },
+    {
+      "en": "NIGHT",
+      "ar": "ليل"
+    },
+    {
+      "en": "FLASHLIGHT",
+      "ar": "مصباح يدوي"
+    },
+    {
+      "en": "UV TORCH",
+      "ar": "مصباح فوق بنفسجي"
+    },
+    {
+      "en": "CROUCHING",
+      "ar": "انحناء"
+    },
+    {
+      "en": "ZOOM",
+      "ar": "تقريب"
+    },
+    {
+      "en": "Evidence camera",
+      "ar": "كاميرا توثيق الأدلة"
+    },
+    {
+      "en": "Place",
+      "ar": "وضع"
+    },
+    {
+      "en": "Return camera",
+      "ar": "إرجاع الكاميرا"
+    },
+    {
+      "en": "Rotate",
+      "ar": "تدوير"
+    },
+    {
+      "en": "Lamp on/off",
+      "ar": "تشغيل / إطفاء المصباح"
+    },
+    {
+      "en": "Select end",
+      "ar": "اختيار طرف الشريط"
+    },
+    {
+      "en": "Remove",
+      "ar": "إزالة"
+    },
+    {
+      "en": "Pick up",
+      "ar": "التقاط"
+    },
+    {
+      "en": "Take camera",
+      "ar": "حمل الكاميرا"
+    },
+    {
+      "en": "Photo from here",
+      "ar": "تصوير من هنا"
+    },
+    {
+      "en": "Walk",
+      "ar": "مشي"
+    },
+    {
+      "en": "Free cursor",
+      "ar": "تحرير المؤشر"
+    },
+    {
+      "en": "Mouse look",
+      "ar": "النظر بالفأرة"
+    },
+    {
+      "en": "Help",
+      "ar": "مساعدة"
+    },
+    {
+      "en": "LIVE",
+      "ar": "مباشر"
+    },
+    {
+      "en": "Reset armed: press Reset again within 4 seconds to clear every placed tool",
+      "ar": "اضغط إعادة الضبط مرة أخرى خلال ٤ ثوان لإزالة الأدوات الموضوعة"
+    },
+    {
+      "en": "Confirm reset",
+      "ar": "تأكيد إعادة الضبط"
+    },
+    {
+      "en": "Reset",
+      "ar": "إعادة ضبط"
+    },
+    {
+      "en": "Show robbed",
+      "ar": "عرض حالة الاقتحام"
+    },
+    {
+      "en": "Show intact",
+      "ar": "عرض المحل السليم"
+    },
+    {
+      "en": "CRIME SCENE",
+      "ar": "مسرح الجريمة"
+    },
+    {
+      "en": "Night",
+      "ar": "ليل"
+    },
+    {
+      "en": "Flashlight",
+      "ar": "مصباح يدوي"
+    },
+    {
+      "en": "UV torch",
+      "ar": "مصباح فوق بنفسجي"
+    },
+    {
+      "en": "Crime Scene Demo",
+      "ar": "محاكاة مسرح الجريمة"
+    },
+    {
+      "en": "NEW TOOL  (appears at the rack)",
+      "ar": "أداة جديدة عند الحامل"
+    },
+    {
+      "en": "NEW TOOL  (straight into your hand)",
+      "ar": "أداة جديدة في يدك"
+    },
+    {
+      "en": "TAPE AND MEASURING",
+      "ar": "الشريط والقياس"
+    },
+    {
+      "en": "Join new posts and reels automatically",
+      "ar": "ربط الأعمدة والبكرات الجديدة تلقائيا"
+    },
+    {
+      "en": "Start a separate run",
+      "ar": "بدء مسار مستقل"
+    },
+    {
+      "en": "Cancel selection  (X)",
+      "ar": "إلغاء التحديد (X)"
+    },
+    {
+      "en": "PLACED",
+      "ar": "الأدوات الموضوعة"
+    },
+    {
+      "en": "Nothing placed yet. Press 1-6 or click a tile above.",
+      "ar": "لم توضع أدوات بعد. اضغط 1-6 أو اختر أداة أعلاه."
+    },
+    {
+      "en": "No evidence camera in this scene.",
+      "ar": "لا توجد كاميرا أدلة في هذا المشهد."
+    },
+    {
+      "en": "EVIDENCE CAMERA",
+      "ar": "كاميرا توثيق الأدلة"
+    },
+    {
+      "en": "Take photo  (P)",
+      "ar": "التقاط صورة (P)"
+    },
+    {
+      "en": "Return camera  (F)",
+      "ar": "إرجاع الكاميرا (F)"
+    },
+    {
+      "en": "Hold camera  (F)",
+      "ar": "حمل الكاميرا (F)"
+    },
+    {
+      "en": "Open photo folder",
+      "ar": "فتح مجلد الصور"
+    },
+    {
+      "en": "LIVE VIEW",
+      "ar": "عرض مباشر"
+    },
+    {
+      "en": "LAST PHOTO",
+      "ar": "آخر صورة"
+    },
+    {
+      "en": "INSTRUCTOR REVIEW",
+      "ar": "مراجعة المشرف"
+    },
+    {
+      "en": "Save snapshot",
+      "ar": "حفظ لقطة"
+    },
+    {
+      "en": "Open review",
+      "ar": "فتح المراجعة"
+    },
+    {
+      "en": "No overview map in this scene.",
+      "ar": "لا توجد خريطة عامة في هذا المشهد."
+    },
+    {
+      "en": "OVERVIEW",
+      "ar": "نظرة عامة"
+    },
+    {
+      "en": "Beacon placed. Click the map to move it.",
+      "ar": "وضعت نقطة الإرشاد. اضغط الخريطة لنقلها."
+    },
+    {
+      "en": "Click the map to place the beacon (B at the pointer).",
+      "ar": "اضغط الخريطة لوضع نقطة إرشاد (B عند المؤشر)."
+    },
+    {
+      "en": "Clear",
+      "ar": "مسح"
+    },
+    {
+      "en": "LEGEND",
+      "ar": "مفتاح الخريطة"
+    },
+    {
+      "en": "Visitor",
+      "ar": "المستخدم"
+    },
+    {
+      "en": "Cones",
+      "ar": "المخاريط"
+    },
+    {
+      "en": "Markers",
+      "ar": "علامات الأدلة"
+    },
+    {
+      "en": "Tape posts",
+      "ar": "أعمدة الشريط"
+    },
+    {
+      "en": "Scales",
+      "ar": "مقاييس"
+    },
+    {
+      "en": "Measuring reels",
+      "ar": "بكرات القياس"
+    },
+    {
+      "en": "Scene lamps",
+      "ar": "مصابيح الموقع"
+    },
+    {
+      "en": "Camera in hand",
+      "ar": "الكاميرا في اليد"
+    },
+    {
+      "en": "Beacon",
+      "ar": "نقطة إرشاد"
+    },
+    {
+      "en": "STORE",
+      "ar": "المحل"
+    },
+    {
+      "en": "Robbed",
+      "ar": "بعد الاقتحام"
+    },
+    {
+      "en": "Intact",
+      "ar": "سليم"
+    },
+    {
+      "en": "I switches between them.",
+      "ar": "اضغط I للتبديل بين الحالتين."
+    },
+    {
+      "en": "LIGHTING",
+      "ar": "الإضاءة"
+    },
+    {
+      "en": "Diagnostic day",
+      "ar": "إضاءة نهارية للفحص"
+    },
+    {
+      "en": "Day",
+      "ar": "نهار"
+    },
+    {
+      "en": "N switches between them.",
+      "ar": "اضغط N للتبديل بينهما."
+    },
+    {
+      "en": "Flashlight  (L)",
+      "ar": "المصباح اليدوي (L)"
+    },
+    {
+      "en": "UV torch  (U)",
+      "ar": "المصباح فوق البنفسجي (U)"
+    },
+    {
+      "en": "UV example traces",
+      "ar": "آثار تدريبية إضافية"
+    },
+    {
+      "en": "Placeholder traces: what they represent is the instructor's choice.",
+      "ar": "آثار تدريبية يحدد المشرف ما تمثله."
+    },
+    {
+      "en": "Light bar flashing",
+      "ar": "وميض أضواء سيارة الشرطة"
+    },
+    {
+      "en": "Switch it off to hold the bar steady for visitors sensitive to flashing light. A reset makes it flash again.",
+      "ar": "أوقف الوميض لتثبيت الأضواء. تعيد إعادة الضبط تشغيل الوميض."
+    },
+    {
+      "en": "BEACON",
+      "ar": "نقطة الإرشاد"
+    },
+    {
+      "en": "Showing on the floor.",
+      "ar": "ظاهرة على الأرض."
+    },
+    {
+      "en": "Not placed. Use the Map tab or B.",
+      "ar": "لم توضع بعد. استخدم الخريطة أو B."
+    },
+    {
+      "en": "SESSION",
+      "ar": "الجلسة"
+    },
+    {
+      "en": "Removes every placed tool and restores the store. Photos are kept.",
+      "ar": "يزيل الأدوات الموضوعة ويعيد المحل إلى حالته الأصلية، مع الاحتفاظ بالصور."
+    },
+    {
+      "en": "Click again to confirm the reset",
+      "ar": "اضغط مرة أخرى لتأكيد إعادة الضبط"
+    },
+    {
+      "en": "Reset placed tools and scene",
+      "ar": "إعادة ضبط الأدوات والمشهد"
+    },
+    {
+      "en": "SCENE DRESSING",
+      "ar": "تفاصيل المشهد"
+    },
+    {
+      "en": "MUSIC",
+      "ar": "الموسيقى"
+    },
+    {
+      "en": "Underscore music",
+      "ar": "موسيقى خلفية"
+    },
+    {
+      "en": "Off at arrival. It sets a mood only and never answers what the visitor does.",
+      "ar": "متوقفة عند البدء؛ تضيف أجواء فقط ولا تستجيب لتصرفات المستخدم."
+    },
+    {
+      "en": "INTERFACE SIZE  ([ ])",
+      "ar": "حجم الواجهة ([ ])"
+    },
+    {
+      "en": "HEADS-UP DISPLAY",
+      "ar": "واجهة العرض"
+    },
+    {
+      "en": "Show the HUD  (F2)",
+      "ar": "إظهار واجهة العرض (F2)"
+    },
+    {
+      "en": "Key prompts above the hotbar",
+      "ar": "إرشادات المفاتيح فوق شريط الأدوات"
+    },
+    {
+      "en": "MOUSE AND VIEW",
+      "ar": "الفأرة ومجال الرؤية"
+    },
+    {
+      "en": "Look sensitivity",
+      "ar": "حساسية النظر"
+    },
+    {
+      "en": "Field of view",
+      "ar": "مجال الرؤية"
+    },
+    {
+      "en": "Invert mouse Y",
+      "ar": "عكس الاتجاه الرأسي للفأرة"
+    },
+    {
+      "en": "C crouches, hold Z to zoom, Shift to walk faster.",
+      "ar": "C للانحناء، اضغط Z للتقريب، وShift للمشي أسرع."
+    },
+    {
+      "en": "Controls  (F1)",
+      "ar": "التحكم (F1)"
+    },
+    {
+      "en": "Restore defaults",
+      "ar": "استعادة الإعدادات الافتراضية"
+    },
+    {
+      "en": "Settings restored to their defaults",
+      "ar": "تمت استعادة الإعدادات الافتراضية"
+    },
+    {
+      "en": "MOVE AND LOOK",
+      "ar": "الحركة والنظر"
+    },
+    {
+      "en": "Walk (arrows too)",
+      "ar": "المشي (الأسهم أيضا)"
+    },
+    {
+      "en": "Walk faster",
+      "ar": "مشي أسرع"
+    },
+    {
+      "en": "Mouse look on / off",
+      "ar": "تفعيل / تعطيل النظر بالفأرة"
+    },
+    {
+      "en": "Free the cursor",
+      "ar": "تحرير المؤشر"
+    },
+    {
+      "en": "Crouch",
+      "ar": "انحناء"
+    },
+    {
+      "en": "Zoom while held",
+      "ar": "تقريب أثناء الضغط"
+    },
+    {
+      "en": "Back to the start",
+      "ar": "العودة إلى نقطة البداية"
+    },
+    {
+      "en": "TOOLS",
+      "ar": "الأدوات"
+    },
+    {
+      "en": "New tool into your hand",
+      "ar": "أداة جديدة في يدك"
+    },
+    {
+      "en": "Pick up, place, take from the rack",
+      "ar": "التقاط ووضع وأخذ أداة من الحامل"
+    },
+    {
+      "en": "Rotate (or the wheel)",
+      "ar": "تدوير (أو عجلة الفأرة)"
+    },
+    {
+      "en": "Remove (Delete too)",
+      "ar": "إزالة (أو Delete)"
+    },
+    {
+      "en": "Select tape end, switch a lamp",
+      "ar": "اختيار طرف الشريط أو تشغيل مصباح"
+    },
+    {
+      "en": "Cancel the tape selection",
+      "ar": "إلغاء تحديد الشريط"
+    },
+    {
+      "en": "CAMERA AND LIGHT",
+      "ar": "الكاميرا والإضاءة"
+    },
+    {
+      "en": "Hold / return the camera",
+      "ar": "حمل / إرجاع الكاميرا"
+    },
+    {
+      "en": "Flashlight beam (click while held)",
+      "ar": "تشغيل شعاع المصباح بالنقر أثناء حمله"
+    },
+    {
+      "en": "UV beam",
+      "ar": "شعاع فوق بنفسجي"
+    },
+    {
+      "en": "Night / day",
+      "ar": "ليل / نهار"
+    },
+    {
+      "en": "Robbed / intact store",
+      "ar": "المحل المقتحم / السليم"
+    },
+    {
+      "en": "Beacon where you point",
+      "ar": "نقطة إرشاد عند المؤشر"
+    },
+    {
+      "en": "INTERFACE",
+      "ar": "الواجهة"
+    },
+    {
+      "en": "Panel: none, strip, drawer",
+      "ar": "اللوحة: مخفية، شريط، كاملة"
+    },
+    {
+      "en": "Interface size",
+      "ar": "حجم الواجهة"
+    },
+    {
+      "en": "This overlay",
+      "ar": "شاشة المساعدة"
+    },
+    {
+      "en": "Hide the HUD",
+      "ar": "إخفاء الواجهة"
+    },
+    {
+      "en": "Desktop / VR",
+      "ar": "الحاسوب / الواقع الافتراضي"
+    },
+    {
+      "en": "Start menu",
+      "ar": "القائمة الرئيسية"
+    },
+    {
+      "en": "BOTH CONTROLLERS",
+      "ar": "وحدتا التحكم"
+    },
+    {
+      "en": "Grip",
+      "ar": "زر القبض"
+    },
+    {
+      "en": "Grab, hold, drop (rack, camera)",
+      "ar": "التقاط وحمل وإفلات (الأدوات والكاميرا)"
+    },
+    {
+      "en": "Use: photo, torch, tape, lamp",
+      "ar": "استخدام: صورة، مصباح، شريط"
+    },
+    {
+      "en": "New tool into the hand",
+      "ar": "أداة جديدة في اليد"
+    },
+    {
+      "en": "Remove held tool, else next tool",
+      "ar": "إزالة الأداة المحمولة أو اختيار التالية"
+    },
+    {
+      "en": "STICKS",
+      "ar": "عصي التحكم"
+    },
+    {
+      "en": "Left",
+      "ar": "اليسرى"
+    },
+    {
+      "en": "Push to aim, release to teleport",
+      "ar": "ادفع للتصويب وأفلت للانتقال"
+    },
+    {
+      "en": "Left click",
+      "ar": "نقر العصا اليسرى"
+    },
+    {
+      "en": "Right",
+      "ar": "اليمنى"
+    },
+    {
+      "en": "Snap turn",
+      "ar": "دوران متدرج"
+    },
+    {
+      "en": "Right click",
+      "ar": "نقر العصا اليمنى"
+    },
+    {
+      "en": "Menu",
+      "ar": "القائمة"
+    },
+    {
+      "en": "Hide or show the hints",
+      "ar": "إظهار / إخفاء الإرشادات"
+    },
+    {
+      "en": "IN THE HEADSET",
+      "ar": "داخل النظارة"
+    },
+    {
+      "en": "Look",
+      "ar": "النظر"
+    },
+    {
+      "en": "At a controller to see its hints",
+      "ar": "انظر إلى وحدة التحكم لرؤية إرشاداتها"
+    },
+    {
+      "en": "Wrist",
+      "ar": "المعصم"
+    },
+    {
+      "en": "Left wrist shows the scene status",
+      "ar": "يعرض المعصم الأيسر حالة المشهد"
+    },
+    {
+      "en": "Toasts",
+      "ar": "التنبيهات"
+    },
+    {
+      "en": "Below your view after each action",
+      "ar": "تظهر أسفل مجال الرؤية بعد كل إجراء"
+    },
+    {
+      "en": "AT THE PC",
+      "ar": "على الحاسوب"
+    },
+    {
+      "en": "Mouse and keyboard",
+      "ar": "الفأرة ولوحة المفاتيح"
+    },
+    {
+      "en": "Quest 2 controllers",
+      "ar": "وحدتا تحكم Quest 2"
+    },
+    {
+      "en": "Night store — latest",
+      "ar": "المحل الليلي — أحدث نسخة"
+    },
+    {
+      "en": "Expanded 16 × 12 m store at night: police car, broken frontage, two open safes, flashlight and UV torch.",
+      "ar": "محل ليلي بمساحة ١٦ × ١٢ م: سيارة شرطة، واجهة محطمة، خزنتان مفتوحتان، ومصباحان عادي وفوق بنفسجي."
+    },
+    {
+      "en": "Daytime shop — October 10 milestone",
+      "ar": "المحل النهاري — نسخة ١٠ أكتوبر"
+    },
+    {
+      "en": "The first verified shop with glass, robbed stock and the forensic tools (137 checks).",
+      "ar": "النسخة الأولى من المحل مع الزجاج وآثار الاقتحام وأدوات التحقيق."
+    },
+    {
+      "en": "Newest map",
+      "ar": "أحدث مشهد"
+    },
+    {
+      "en": "Choose",
+      "ar": "اختيار"
+    },
+    {
+      "en": "Back here from a map",
+      "ar": "العودة إلى هذه القائمة من المشهد"
+    },
+    {
+      "en": "Quit",
+      "ar": "خروج"
+    },
+    {
+      "en": "POLICE TRAINING  ·  CRIME SCENE DEMONSTRATION",
+      "ar": "تدريب الشرطة · محاكاة مسرح الجريمة"
+    },
+    {
+      "en": "Jewelry Store Crime Scene",
+      "ar": "مسرح جريمة في محل مجوهرات"
+    },
+    {
+      "en": "Desktop build. VR needs the OpenXR plug-in, which is not in this build yet.",
+      "ar": "نسخة الحاسوب. يتطلب الواقع الافتراضي إضافة OpenXR غير المثبتة في هذه النسخة."
+    },
+    {
+      "en": "No maps in this build. Run Start-Demo.cmd again to rebuild.",
+      "ar": "لا توجد مشاهد في هذه النسخة. شغل Start-Demo.cmd لإعادة البناء."
+    },
+    {
+      "en": "LATEST",
+      "ar": "الأحدث"
+    },
+    {
+      "en": "Teleport",
+      "ar": "انتقال فوري"
+    },
+    {
+      "en": "Turn",
+      "ar": "دوران"
+    },
+    {
+      "en": "Stick",
+      "ar": "العصا"
+    },
+    {
+      "en": "Remove / next tool",
+      "ar": "إزالة / الأداة التالية"
+    },
+    {
+      "en": "Use: photo, lamp, tape end",
+      "ar": "استخدام: صورة أو مصباح أو طرف الشريط"
+    },
+    {
+      "en": "Hide hints",
+      "ar": "إخفاء الإرشادات"
+    },
+    {
+      "en": "Grab / drop",
+      "ar": "التقاط / إفلات"
+    },
+    {
+      "en": "SCENE STATUS",
+      "ar": "حالة المشهد"
+    },
+    {
+      "en": "Scene status",
+      "ar": "حالة المشهد"
+    },
+    {
+      "en": "Ready",
+      "ar": "جاهز"
+    },
+    {
+      "en": "Saving photo…",
+      "ar": "جار حفظ الصورة…"
+    },
+    {
+      "en": "Photo saved",
+      "ar": "تم حفظ الصورة"
+    },
+    {
+      "en": "Capture failed",
+      "ar": "تعذر التصوير"
+    },
+    {
+      "en": "Camera on rack",
+      "ar": "الكاميرا على الحامل"
+    },
+    {
+      "en": "Flashlight on",
+      "ar": "المصباح مضاء"
+    },
+    {
+      "en": "Flashlight off",
+      "ar": "المصباح مطفأ"
+    },
+    {
+      "en": "UV torch on",
+      "ar": "المصباح فوق البنفسجي مضاء"
+    },
+    {
+      "en": "UV torch off",
+      "ar": "المصباح فوق البنفسجي مطفأ"
+    },
+    {
+      "en": "Light bar flashing",
+      "ar": "وميض أضواء السيارة"
+    },
+    {
+      "en": "Light bar steady",
+      "ar": "أضواء السيارة ثابتة"
+    },
+    {
+      "en": "Night lighting",
+      "ar": "إضاءة ليلية"
+    },
+    {
+      "en": "Day lighting",
+      "ar": "إضاءة نهارية"
+    },
+    {
+      "en": "Baked night lighting",
+      "ar": "إضاءة ليلية مخبوزة"
+    },
+    {
+      "en": "Diagnostic daylight",
+      "ar": "إضاءة نهارية للفحص"
+    },
+    {
+      "en": "Put the camera back before taking a tool",
+      "ar": "أعد الكاميرا قبل أخذ أداة"
+    },
+    {
+      "en": "Tool rack",
+      "ar": "حامل الأدوات"
+    },
+    {
+      "en": "Evidence marker",
+      "ar": "علامة دليل"
+    },
+    {
+      "en": "Scene cone",
+      "ar": "مخروط تحديد"
+    },
+    {
+      "en": "Tape post",
+      "ar": "عمود شريط"
+    },
+    {
+      "en": "Tape reel",
+      "ar": "بكرة شريط"
+    },
+    {
+      "en": "Scene lamp",
+      "ar": "مصباح الموقع"
+    },
+    {
+      "en": "Measuring scale",
+      "ar": "مقياس أدلة"
+    },
+    {
+      "en": "Measuring reel",
+      "ar": "بكرة قياس"
+    },
+    {
+      "en": "Measurement",
+      "ar": "القياس"
+    },
+    {
+      "en": "Length",
+      "ar": "الطول"
+    },
+    {
+      "en": "Start",
+      "ar": "بدء"
+    },
+    {
+      "en": "End",
+      "ar": "نهاية"
+    },
+    {
+      "en": "ON",
+      "ar": "تشغيل"
+    },
+    {
+      "en": "OFF",
+      "ar": "إيقاف"
+    },
+    {
+      "en": "On",
+      "ar": "تشغيل"
+    },
+    {
+      "en": "Off",
+      "ar": "إيقاف"
+    },
+    {
+      "en": "Ambient wear",
+      "ar": "آثار الاستخدام"
+    },
+    {
+      "en": "EVIDENCE",
+      "ar": "الأدلة"
+    },
+    {
+      "en": "Elapsed",
+      "ar": "الوقت المنقضي"
+    },
+    {
+      "en": "Elapsed time",
+      "ar": "الوقت المنقضي"
+    },
+    {
+      "en": "Author",
+      "ar": "المؤلف"
+    },
+    {
+      "en": "Credits",
+      "ar": "حقوق ومصادر"
+    },
+    {
+      "en": "LANGUAGE",
+      "ar": "اللغة"
+    },
+    {
+      "en": "Language",
+      "ar": "اللغة"
+    },
+    {
+      "en": "Arabic",
+      "ar": "العربية"
+    },
+    {
+      "en": "English",
+      "ar": "English"
+    },
+    {
+      "en": "Store signs stay Arabic in both UI languages.",
+      "ar": "تبقى لافتات المحل بالعربية في اللغتين."
+    },
+    {
+      "en": "Smooth walking",
+      "ar": "مشي مستمر"
+    },
+    {
+      "en": "Teleport movement",
+      "ar": "انتقال فوري"
+    },
+    {
+      "en": "forbidden",
+      "ar": "ممنوع"
+    },
+    {
+      "en": "Exit",
+      "ar": "خروج"
+    },
+    {
+      "en": "Exit sign",
+      "ar": "لافتة خروج"
+    },
+    {
+      "en": "Tool",
+      "ar": "الأداة"
+    },
+    {
+      "en": "Marker number",
+      "ar": "رقم الدليل"
+    },
+    {
+      "en": "Reset complete",
+      "ar": "اكتملت إعادة الضبط"
+    },
+    {
+      "en": "Session reset",
+      "ar": "أعيد ضبط الجلسة"
+    },
+    {
+      "en": "No photo yet",
+      "ar": "لا توجد صورة بعد"
+    },
+    {
+      "en": "No photo yet.",
+      "ar": "لا توجد صورة بعد."
+    },
+    {
+      "en": "Photo failed",
+      "ar": "تعذر التصوير"
+    },
+    {
+      "en": "Review saved",
+      "ar": "حفظت المراجعة"
+    },
+    {
+      "en": "Tape selected",
+      "ar": "تم تحديد الشريط"
+    },
+    {
+      "en": "Tape cancelled",
+      "ar": "ألغي الشريط"
+    },
+    {
+      "en": "Beacon cleared",
+      "ar": "مسحت نقطة الإرشاد"
+    },
+    {
+      "en": "Controller hints shown",
+      "ar": "أظهرت إرشادات التحكم"
+    },
+    {
+      "en": "Controller hints hidden",
+      "ar": "أخفيت إرشادات التحكم"
+    },
+    {
+      "en": "UV example traces shown",
+      "ar": "أظهرت الآثار التدريبية"
+    },
+    {
+      "en": "UV example traces hidden",
+      "ar": "أخفيت الآثار التدريبية"
+    },
+    {
+      "en": "Alarm bell",
+      "ar": "جرس الإنذار"
+    },
+    {
+      "en": "measuring tape",
+      "ar": "شريط قياس"
+    },
+    {
+      "en": "Measure: choose the second reel",
+      "ar": "القياس: اختر البكرة الثانية"
+    },
+    {
+      "en": "Tape: choose the second post",
+      "ar": "الشريط: اختر العمود الثاني"
+    },
+    {
+      "en": "Scene lamp ",
+      "ar": "مصباح الموقع "
+    },
+    {
+      "en": "Two scene lamps at most: the first one went off",
+      "ar": "الحد الأقصى مصباحان للموقع: أطفئ المصباح الأول"
+    },
+    {
+      "en": "Those two are already connected",
+      "ar": "الطرفان موصولان بالفعل"
+    },
+    {
+      "en": "Measured ",
+      "ar": "تم قياس "
+    },
+    {
+      "en": "Tape connected",
+      "ar": "تم وصل الشريط"
+    },
+    {
+      "en": "Capturing...",
+      "ar": "جار التقاط الصورة..."
+    },
+    {
+      "en": "Saving...",
+      "ar": "جار الحفظ..."
+    },
+    {
+      "en": "Saved photo ",
+      "ar": "حفظت الصورة "
+    },
+    {
+      "en": "Photo saved: ",
+      "ar": "حفظت الصورة: "
+    },
+    {
+      "en": " saved",
+      "ar": " حفظت"
+    },
+    {
+      "en": "Photo failed: ",
+      "ar": "تعذر التقاط الصورة: "
+    },
+    {
+      "en": "Photo folder: ",
+      "ar": "مجلد الصور: "
+    },
+    {
+      "en": "Cannot open photo folder: ",
+      "ar": "تعذر فتح مجلد الصور: "
+    },
+    {
+      "en": "Review ready",
+      "ar": "المراجعة جاهزة"
+    },
+    {
+      "en": "Manual snapshot",
+      "ar": "توثيق يدوي"
+    },
+    {
+      "en": "Before scene reset",
+      "ar": "قبل إعادة ضبط المشهد"
+    },
+    {
+      "en": "Review saved: ",
+      "ar": "حفظت المراجعة: "
+    },
+    {
+      "en": " entries",
+      "ar": " سجلات"
+    },
+    {
+      "en": "Review save failed: ",
+      "ar": "تعذر حفظ المراجعة: "
+    },
+    {
+      "en": "Review folder: ",
+      "ar": "مجلد المراجعة: "
+    },
+    {
+      "en": "Cannot open review: ",
+      "ar": "تعذر فتح المراجعة: "
+    },
+    {
+      "en": "Jewelry store — instructor review",
+      "ar": "محل المجوهرات — مراجعة المشرف"
+    },
+    {
+      "en": "Scene: ",
+      "ar": "المشهد: "
+    },
+    {
+      "en": "Started: ",
+      "ar": "بدأت الجلسة: "
+    },
+    {
+      "en": "Contact sheet",
+      "ar": "لوحة الصور"
+    },
+    {
+      "en": "Shot list",
+      "ar": "قائمة اللقطات"
+    },
+    {
+      "en": "Entry",
+      "ar": "السجل"
+    },
+    {
+      "en": "Time",
+      "ar": "الوقت"
+    },
+    {
+      "en": "Reason",
+      "ar": "السبب"
+    },
+    {
+      "en": "Entries",
+      "ar": "السجلات"
+    },
+    {
+      "en": "No photographs yet.",
+      "ar": "لم تلتقط صور بعد."
+    },
+    {
+      "en": "Position (x, y, z)",
+      "ar": "الموضع (x, y, z)"
+    },
+    {
+      "en": "camera ",
+      "ar": "الكاميرا "
+    },
+    {
+      "en": " m · yaw ",
+      "ar": " م · الاتجاه "
+    },
+    {
+      "en": " local · ",
+      "ar": " بالتوقيت المحلي · "
+    },
+    {
+      "en": " (UTC). Times below are local. Positions are Unity world metres; sketches look down on the shop with the street at the bottom. Instructor interpretation is required.",
+      "ar": " (UTC). الأوقات التالية محلية. المواضع بالمتر في المشهد. المخططات تنظر إلى المحل من الأعلى والطريق في الأسفل. تفسير المشرف مطلوب."
+    },
+    {
+      "en": "Camera flash on",
+      "ar": "فلاش الكاميرا يعمل"
+    },
+    {
+      "en": "Camera flash off",
+      "ar": "فلاش الكاميرا متوقف"
+    },
+    {
+      "en": "No photos yet",
+      "ar": "لا توجد صور بعد"
+    },
+    {
+      "en": "Live view",
+      "ar": "العرض المباشر"
+    },
+    {
+      "en": "Flashlight holstered",
+      "ar": "أُعيد المصباح إلى الحامل"
+    },
+    {
+      "en": "UV torch holstered",
+      "ar": "أُعيد مصباح الأشعة إلى الحامل"
+    },
+    {
+      "en": "Comfort vignette on  (F6 turns it off)",
+      "ar": "تضييق الرؤية للحركة يعمل (F6 للإيقاف)"
+    },
+    {
+      "en": "Comfort vignette off  (F6 turns it on)",
+      "ar": "تضييق الرؤية للحركة متوقف (F6 للتشغيل)"
+    },
+    {
+      "en": "Hold: tool wheel (empty hand)",
+      "ar": "اضغط مطولاً: قائمة الأدوات (يد فارغة)"
+    },
+    {
+      "en": "Hold Menu + Y for two seconds to quit VR",
+      "ar": "اضغط على القائمة و Y لمدة ثانيتين للخروج من الواقع الافتراضي"
+    }
+  ],
+  "fragments": [
+    {
+      "en": "Take a ",
+      "ar": "خذ "
+    },
+    {
+      "en": "Rack: new ",
+      "ar": "الحامل: أداة جديدة "
+    },
+    {
+      "en": "Aim at the floor or a counter to place the ",
+      "ar": "وجه إلى الأرض أو المنضدة لوضع "
+    },
+    {
+      "en": " in hand",
+      "ar": " في اليد"
+    },
+    {
+      "en": " placed",
+      "ar": " وضعت"
+    },
+    {
+      "en": " removed",
+      "ar": " أزيلت"
+    },
+    {
+      "en": " earlier",
+      "ar": " سابقا"
+    },
+    {
+      "en": " waiting at the rack",
+      "ar": " بانتظارك عند الحامل"
+    },
+    {
+      "en": " this session",
+      "ar": " في هذه الجلسة"
+    },
+    {
+      "en": "camera in hand",
+      "ar": "الكاميرا في اليد"
+    },
+    {
+      "en": "camera on its rack",
+      "ar": "الكاميرا على الحامل"
+    },
+    {
+      "en": "Next marker ",
+      "ar": "الدليل التالي "
+    },
+    {
+      "en": " next",
+      "ar": " التالي"
+    },
+    {
+      "en": "Scene lamps lit: ",
+      "ar": "مصابيح الموقع المضاءة: "
+    },
+    {
+      "en": " of ",
+      "ar": " من "
+    },
+    {
+      "en": "tool",
+      "ar": "أداة"
+    },
+    {
+      "en": "tools",
+      "ar": "أدوات"
+    },
+    {
+      "en": "marker",
+      "ar": "دليل"
+    },
+    {
+      "en": "photos",
+      "ar": "صور"
+    },
+    {
+      "en": "photo",
+      "ar": "صورة"
+    },
+    {
+      "en": " in the scene",
+      "ar": " في المشهد"
+    },
+    {
+      "en": "Next",
+      "ar": "التالي"
+    },
+    {
+      "en": "click: flashlight",
+      "ar": "نقر: المصباح"
+    },
+    {
+      "en": "click: UV torch",
+      "ar": "نقر: الأشعة فوق البنفسجية"
+    },
+    {
+      "en": ": take one",
+      "ar": ": خذ أداة"
+    },
+    {
+      "en": ": next",
+      "ar": ": التالية"
+    },
+    {
+      "en": "T, X cancels",
+      "ar": "T، وX للإلغاء"
+    },
+    {
+      "en": "Ready",
+      "ar": "جاهز"
+    }
+  ]
+}

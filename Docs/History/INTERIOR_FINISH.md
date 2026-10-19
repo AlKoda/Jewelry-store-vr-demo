@@ -1,8 +1,8 @@
 # Store interior — first finish pass
 
-Verified October 10, 2026 on the user's Windows PC in Unity 6000.6.2f1, Built-in pipeline. **81 automated Editor Play mode checks passed.** [Raw results](../Verification/Interior/runtime-results.txt).
+Verified October 10, 2026 on the user's Windows PC in Unity 6000.6.2f1, Built-in pipeline. **81 automated Editor Play mode checks passed.** [Raw results](VerificationInterior/runtime-results.txt).
 
-Download the Interior project (zip removed October 19, still in git history). Extract into UnityProject_Interior beside README, launch Open-Unity-Interior.cmd, and open Assets/CrimeSceneDemo/Scenes/JewelryStoreInterior.unity.
+[Download the Interior project](../Downloads/JewelryStore_Interior_Unity6000.6.2f1.zip). Extract into UnityProject_Interior beside README, launch Open-Unity-Interior.cmd, and open Assets/CrimeSceneDemo/Scenes/JewelryStoreInterior.unity.
 
 ## Work completed in the requested order
 
@@ -14,13 +14,13 @@ This is a restrained material pass without texture maps, normal maps, reflection
 
 ## Actual Unity renders
 
-![Showroom: walls, floor, lights and cabinets](../Verification/Interior/showroom.png)
+![Showroom: walls, floor, lights and cabinets](VerificationInterior/showroom.png)
 
-![Glass, jewelry and damaged display](../Verification/Interior/display-details.png)
+![Glass, jewelry and damaged display](VerificationInterior/display-details.png)
 
-![Entrance hardware and broken window](../Verification/Interior/entrance.png)
+![Entrance hardware and broken window](VerificationInterior/entrance.png)
 
-![Staff door and safe room](../Verification/Interior/safe-room.png)
+![Staff door and safe room](VerificationInterior/safe-room.png)
 
 ## Cost
 
@@ -47,6 +47,6 @@ The existing Unity Editor SearchDatabase indexing exception still appeared witho
 
 ShopInteriorFinish handles the shell and lighting. ShopDisplayFinish handles cases, glass, jewelry and world labels. DepthTestedLabel keeps world labels on the current font atlas. WorldText.shader is under Prototype/Shaders: copy that directory into Assets/CrimeSceneDemo/Shaders along with the Editor and Scripts source.
 
-Run ShopCityValidation.RunInterior with -executeMethod in an isolated project. It creates JewelryStoreInterior.unity, registers it for builds, writes six scene captures and a runtime photograph under Docs/Verification/Interior, runs the checks, then exits. Do not add -quit.
+Run ShopCityValidation.RunInterior with -executeMethod in an isolated project. It creates JewelryStoreInterior.unity, registers it for builds, writes six scene captures and a runtime photograph under Docs/VerificationInterior, runs the checks, then exits. Do not add -quit.
 
 The PC project is UnityProject_Interior. Prior Forms/Review projects and ZIPs remain available.

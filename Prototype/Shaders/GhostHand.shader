@@ -15,6 +15,22 @@ Shader "CrimeScene/GhostHand"
         {
             ZWrite On
             ColorMask 0
+            CGPROGRAM
+            #pragma vertex depthVert
+            #pragma fragment depthFrag
+            #pragma multi_compile_instancing
+            #include "UnityCG.cginc"
+            struct appdataDepth { float4 vertex:POSITION; UNITY_VERTEX_INPUT_INSTANCE_ID };
+            struct v2fDepth { float4 pos:SV_POSITION; UNITY_VERTEX_OUTPUT_STEREO };
+            v2fDepth depthVert(appdataDepth v) {
+                v2fDepth o;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_INITIALIZE_OUTPUT(v2fDepth,o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+                o.pos=UnityObjectToClipPos(v.vertex);return o;
+            }
+            fixed4 depthFrag(v2fDepth i):SV_Target { UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);return 0; }
+            ENDCG
         }
         Pass
         {
@@ -43,6 +59,7 @@ Shader "CrimeScene/GhostHand"
             }
             fixed4 frag (v2f i) : SV_Target
             {
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
                 fixed4 c = _Color;
                 half rim = i.rim * i.rim * _Rim;
                 c.rgb += rim * 0.35;

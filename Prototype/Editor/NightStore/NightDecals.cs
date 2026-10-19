@@ -177,6 +177,7 @@ public static class NightDecals
     private static Material DecalMaterial(string folder, string name, int queue, Texture2D color, Texture2D normal, Texture2D packed, float smoothness)
     {
         Material m = Mat(folder, name, Color.white, smoothness);
+        m.shader = Shader.Find("CrimeScene/SurfaceDecal");
         m.mainTexture = color;
         m.mainTextureScale = Vector2.one;
         m.mainTextureOffset = Vector2.zero;

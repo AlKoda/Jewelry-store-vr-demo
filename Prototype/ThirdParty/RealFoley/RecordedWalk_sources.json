@@ -1,0 +1,29 @@
+{
+  "glass": {
+    "title": "Walking on Broken Glass: Crunching on tiny pieces of glass, medium paced walking, stepping on glass with shoes. Recorded with ZoomH6, with rifle microphone, EQ used to reduce background noise.",
+    "author": "RileyB711",
+    "page": "https://freesound.org/people/RileyB711/sounds/708199/",
+    "download": "https://cdn.freesound.org/previews/708/708199_15366380-hq.mp3",
+    "license": "CC0-1.0",
+    "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "sha256": "5009b5b514c3ffb4cceb32875100d1fe6c747ab20fefaede22f9c6789f1e5575",
+    "cut_centres_seconds": [
+      9.02,
+      10.2,
+      12.24,
+      14.72,
+      16.2,
+      18.78,
+      19.52,
+      21.52
+    ],
+    "processing": "Mono; 65Hz highpass, gentle 6.5kHz rolloff; RMS 0.045, peak capped .68; 6ms in/45ms out; each cut from t-.12 to t+.40. Actual recorded glass footsteps, no synthesis."
+  },
+  "hard": {
+    "source": "NightSoundscape/FootstepHard_01..06.wav",
+    "author": "florianreichelt",
+    "page": "https://freesound.org/s/459964/",
+    "license": "CC0-1.0",
+    "processing": "Existing recorded steps remastered with same filtering and loudness as glass; see NightSoundscape/sources.json for original provenance."
+  }
+}

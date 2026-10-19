@@ -1,0 +1,11 @@
+User-supplied models — October 12, 2026
+
+The user supplied three FBX prop collections, stated that they made these props,
+and authorized separation, editing, resizing and use in this jewelry-store project.
+No public-domain or Creative Commons license was asserted.
+These files remain subject to the creator's rights; this notice does not grant
+an independent license for unrelated redistribution.
+
+Prepared in Blender 5.2 with Tools/prepare_user_props.py. Original FBX files and
+editable Blender intermediates are preserved in ReferenceAssets/UserProps.
+Eight exports use metre units, floor pivots and intentionally plain materials.

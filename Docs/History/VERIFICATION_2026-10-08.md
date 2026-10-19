@@ -28,10 +28,10 @@ This is Editor runtime verification, not a standalone Windows build or Quest tes
 
 These are rendered by Unity, not concept art.
 
-![Showroom](../Verification/Original/showroom.png)
-![Safe room](../Verification/Original/safe-room.png)
-![Layout overview](../Verification/Original/layout-overview.png)
-![Photograph saved by the runtime camera](../Verification/Original/runtime-photo.png)
+![Showroom](Verification/showroom.png)
+![Safe room](Verification/safe-room.png)
+![Layout overview](Verification/layout-overview.png)
+![Photograph saved by the runtime camera](Verification/runtime-photo.png)
 
 Ceilings were temporarily hidden for the layout capture, then restored in the saved scene. Gray geometry and default materials are intentional.
 
@@ -49,7 +49,7 @@ The parent folder contains create/validation logs. Captures and assertion result
 
 ## Downloadable project
 
-Verified project snapshot (historical zip, replaced by the current snapshot; in git history) contains Assets, generated meshes/prefabs, scene, source and .meta files, plus ProjectSettings. It excludes Library, caches and user settings. It has no XR packages.
+[Verified project snapshot](../Downloads/JewelryStore_Unity6000.6.2f1.zip) contains Assets, generated meshes/prefabs, scene, source and .meta files, plus ProjectSettings. It excludes Library, caches and user settings. It has no XR packages.
 
 Extract into a folder named UnityProject alongside the repository's README. Use Open-Unity-Blockout.cmd from the repository root, or the command below with your own project path.
 

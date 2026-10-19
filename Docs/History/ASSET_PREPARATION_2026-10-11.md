@@ -3,7 +3,7 @@
 Asset preparation on baseline `8dbbb49fa05d33152ec5bf23e3659b8be1e29cdb`.
 Read README, project brief, night arrival/layout plans, roadmap, handoff, asset register
 and current StoreKit/NightStore import paths first. No AGENTS.md found in the checkout.
-Root `Docs/DECISIONS.md` was absent and has now been created. Current source was cloned from
+Root `for Koda.md` was absent and has now been created. Current source was cloned from
 GitHub because the PC's extracted Unity projects predate the night-store source.
 
 ## Deliverables
@@ -74,4 +74,4 @@ explicit integration needed and inexpensive defaults for the Built-in pipeline.
 
 No Unity compilation/import, lighting bake, Play-mode checks, new Unity snapshot,
 Quest comfort/FPS test or standalone executable was produced. User decisions and
-remaining manual work are in [Docs/DECISIONS.md](../DECISIONS.md).
+remaining manual work are in [for Koda.md](../for%20Koda.md).

@@ -1,0 +1,72 @@
+[
+  {
+    "file": "DoorGlass_Left_Broken.fbx",
+    "triangles": 912,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.00042346800910308957,
+    "sha256": "e45d464c3b4f1400754686ffdc142deeff2697aae020e4aa01afe587861875e7"
+  },
+  {
+    "file": "DoorGlass_Right_Broken.fbx",
+    "triangles": 912,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.0005240135942585766,
+    "sha256": "eafad52acc2a1335c30a8885cbf6cc4a1f0343140350d1cd4fe2381515793a73"
+  },
+  {
+    "file": "GroundGlass_Sparse.fbx",
+    "triangles": 652,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.0011998985428363085,
+    "sha256": "e6f0451f2f99585f91ce70abd88d9812ad3aebd9571ee74117da7767162326e4"
+  },
+  {
+    "file": "GroundGlass_Threshold.fbx",
+    "triangles": 2644,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.0011998655973002315,
+    "sha256": "41872542fe9f98eb035143260ed17bf803c42dbc7b4f7ec3492db02b4043047d"
+  },
+  {
+    "file": "GroundGlass_WindowFall.fbx",
+    "triangles": 1916,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.0011999167036265135,
+    "sha256": "e919882300b1563cd3b90db994d8b195c0aa347b57b7bb7169db1751488f3b54"
+  },
+  {
+    "file": "Window_Broken.fbx",
+    "triangles": 912,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.0005411350284703076,
+    "sha256": "f9d49915b9b986375a4566be491413c3442924a9c23c83a52d3ec2c02f1d8f11"
+  },
+  {
+    "file": "Window_Cracked.fbx",
+    "triangles": 2128,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "has_uv": true,
+    "origin_zero": true,
+    "min_z": 0.0005411350284703076,
+    "sha256": "1adb619c1ccd75198509cc794fcdb9197f1fd86df2f1fc61b71db5c87b06e975"
+  }
+]

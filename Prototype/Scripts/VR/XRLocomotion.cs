@@ -134,7 +134,7 @@ public sealed class XRLocomotion : MonoBehaviour
         foreach (float height in new[] { 0.45f, 1.1f })
         {
             Vector3 origin = new Vector3(head.x, floorY + height, head.z);
-            if (DemoPhysics.Nearest(new Ray(origin, direction), length + BodyRadius, out RaycastHit _, transform)) return false;
+            if (DemoPhysics.Nearest(new Ray(origin, direction), length + BodyRadius, out RaycastHit obstruction, transform)) { var door=obstruction.collider.GetComponentInParent<PushDoorLeaf>();if(door)door.Push(obstruction.point,direction);return false; }
         }
         Vector3 target = new Vector3(head.x, floorY, head.z) + step;
         if (!DemoPhysics.Nearest(new Ray(target + Vector3.up * (MaxStepHeight + 0.2f), Vector3.down), MaxStepHeight * 2 + 0.4f,

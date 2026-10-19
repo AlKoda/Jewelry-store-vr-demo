@@ -17,8 +17,8 @@ public sealed class XRGhostHand : MonoBehaviour
     public static readonly Color Tint = new Color(0.86f, 0.9f, 1f);
 
     // Palm centre and turn relative to the controller (right hand; mirrored on the left).
-    public Vector3 PalmOffset = new Vector3(0.012f, -0.03f, -0.065f);
-    public Vector3 PalmEuler = new Vector3(-50f, 0f, -75f);
+    public Vector3 PalmOffset = new Vector3(0.012f, -0.025f, -0.02f);
+    public Vector3 PalmEuler = Vector3.zero;
     public float CurlSpeed = 14f;
 
     public float Grip { get; private set; }
@@ -43,7 +43,7 @@ public sealed class XRGhostHand : MonoBehaviour
     {
         if (root != null) return;
         input = owner;
-        side = owner.Left ? -1 : 1;
+        side = owner.Left ? 1 : -1;
         material = DemoUi.GhostMaterial(DemoUi.WithAlpha(Tint, Opacity));
         material.renderQueue = 3020; // after the scene's glass, before the interface panels
         GameObject probe = GameObject.CreatePrimitive(PrimitiveType.Capsule);
@@ -145,7 +145,7 @@ public sealed class XRGhostHand : MonoBehaviour
     public void Apply(bool force)
     {
         if (mode == null) mode = FindFirstObjectByType<DemoModeSwitch>();
-        bool show = Visible && (mode == null || mode.VRActive);
+        bool show = Visible && input != null && input.PoseTracked && (mode == null || mode.VRActive);
         if (force || root.gameObject.activeSelf != show) root.gameObject.SetActive(show);
         Color c = DemoUi.WithAlpha(Tint, Mathf.Clamp01(Opacity));
         if (material.color != c) material.color = c;

@@ -4,7 +4,7 @@ Verified October 8, 2026 on the Windows PC in Unity 6000.6.2f1, Built-in pipelin
 
 ## Open the latest project
 
-Download the complete generated project snapshot (zip removed October 19, still in git history). Extract into UnityProject next to the repository README, then run Open-Unity-Blockout.cmd.
+Download [the complete generated project snapshot](../Downloads/JewelryStore_City_Unity6000.6.2f1.zip). Extract into UnityProject next to the repository README, then run Open-Unity-Blockout.cmd.
 
 Open **Assets/CrimeSceneDemo/Scenes/JewelryStoreCity.unity** and press Play.
 
@@ -35,9 +35,9 @@ These counts constrain the added complexity; they are not a headset frame-rate g
 
 ## Actual Unity captures
 
-![Refined shop](../Verification/City/showroom.png)
-![Street seen from inside](../Verification/City/street-from-inside.png)
-![Overall layout](../Verification/City/layout-overview.png)
+![Refined shop](VerificationCity/showroom.png)
+![Street seen from inside](VerificationCity/street-from-inside.png)
+![Overall layout](VerificationCity/layout-overview.png)
 
 ## Verification
 

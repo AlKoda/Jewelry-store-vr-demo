@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Repository reorganisation (done); next: fixes from the Quest 3 test | — | 2026-10-19 | idle, waiting for Koda's test notes |
-| ChatGPT | (fill in) | | | |
+| ChatGPT | Reorganization reconciliation and Quest 3 OpenXR setup | Prototype, Tools, launchers, Docs, snapshot | 2026-10-19 | setup/build complete; waiting for human headset retest |
 
 ## One project: edit it, never fork it
 
@@ -28,7 +28,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 
 ## Working rules
 
-- Unity 6000.6.2f1, Built-in pipeline, no packages (Package Manager is broken on the PC; launchers use `-noUpm`). Do not hard-code an XR toolkit API until the package versions are known; bind controller actions to HandInteractor/XRLocomotion methods.
+- Unity 6000.6.2f1, Built-in pipeline. Package Manager now works: keep it enabled. Pinned OpenXR/XR Management/Input System setup is documented in Docs/VR_TESTING.md. Do not hard-code an XR toolkit API until the package versions are known; bind controller actions to HandInteractor/XRLocomotion methods.
 - Shared code, do not duplicate: ToolHolder, InteriorBounds, DemoGeometry, DemoAssetLibrary (always with a primitive fallback), DemoValidation, DemoUi.
 - Add a validator check (DemoValidation, ShopCityValidation, NightStoreValidation or StoreKitValidation) for every new behaviour.
 - Work directly on `main`. Pull before editing and again before pushing. Small commits with clear messages.

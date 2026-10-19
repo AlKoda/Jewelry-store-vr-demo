@@ -39,6 +39,8 @@ public sealed class HandInteractor : ToolHolder
     // controller pose; ShopCityValidation invokes it by name.
     private void Update()
     {
+        var controller=GetComponent<XRControllerInput>();
+        if(controller!=null&&Application.isPlaying&&!controller.PoseTracked){Highlight(null);return;}
         if (Held != null) FollowHand();
         else
         {
@@ -96,12 +98,14 @@ public sealed class HandInteractor : ToolHolder
         else if (HoldingCamera) EvidenceCamera.CapturePhoto();
         else if (Held != null && Held.Lamp != null && Station != null) Station.ToggleLamp(Held);
         else if (Held != null && Held.TapeAnchor != null) SelectTapePost(Held);
+        else { var lighting = FindFirstObjectByType<DemoLighting>(); if (lighting != null) lighting.UseTorch(transform); }
     }
 
     public void RemoveHeld() { Remove(Held); }
 
     public override void Hold(DeployedTool tool)
     {
+        if(tool!=null&&!HoldingCamera){var lighting=FindFirstObjectByType<DemoLighting>();if(lighting)lighting.ClearHandTorch(transform);}
         base.Hold(tool);
         Highlight(Held);
         FollowHand();

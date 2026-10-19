@@ -153,8 +153,8 @@ public static class UVTraceBuilder
                 float u = (x + 0.5f) / Size, v = (y + 0.5f) / Size;
                 float width = Mathf.Lerp(0.36f, 0.18f, v) + 0.05f * (Mathf.PerlinNoise(seed + v * 9, 1.3f) - 0.5f);
                 float centre = 0.5f + 0.06f * Mathf.Sin(v * 4.5f);
-                float across = 1 - Mathf.SmoothStep(0.75f, 1f, Mathf.Abs(u - centre) / width);
-                float along = Mathf.SmoothStep(0.06f, 0.16f, v) * (1 - Mathf.SmoothStep(0.62f, 0.94f, v + 0.1f * Mathf.PerlinNoise(u * 12, seed)));
+                float across = 1 - SmoothEdge(0.75f, 1f, Mathf.Abs(u - centre) / width);
+                float along = SmoothEdge(0.06f, 0.16f, v) * (1 - SmoothEdge(0.62f, 0.94f, v + 0.1f * Mathf.PerlinNoise(u * 12, seed)));
                 a[y * Size + x] = across * along * Mathf.Lerp(streak[x], 1, 0.3f);
             }
         return a;
@@ -175,8 +175,8 @@ public static class UVTraceBuilder
                     : v > 0.35f ? 0.27f : 0.33f * Mathf.Sqrt(Mathf.Max(0, 1 - Mathf.Pow((v - 0.2f) / 0.16f, 2)));
                 if (Mathf.Abs(u) > half) continue;
                 bool tread = Mathf.Repeat(v * 30 + Mathf.Abs(u) * 6, 1) < 0.55f;
-                float edge = 1 - Mathf.SmoothStep(0.8f, 1f, Mathf.Abs(u) / Mathf.Max(half, 1e-3f));
-                float transfer = Mathf.SmoothStep(0.25f, 0.6f, Mathf.PerlinNoise(seed + x * 0.035f, y * 0.035f) + v * 0.35f);
+                float edge = 1 - SmoothEdge(0.8f, 1f, Mathf.Abs(u) / Mathf.Max(half, 1e-3f));
+                float transfer = SmoothEdge(0.25f, 0.6f, Mathf.PerlinNoise(seed + x * 0.035f, y * 0.035f) + v * 0.35f);
                 a[y * Size + x] = (tread ? 1f : 0.25f) * edge * transfer;
             }
         return a;
@@ -193,12 +193,14 @@ public static class UVTraceBuilder
                 float dx = ((x + 0.5f) / Size - cx) / rx, dy = ((y + 0.5f) / Size - cy) / ry;
                 float r = Mathf.Sqrt(dx * dx + dy * dy);
                 if (r >= 1) continue;
-                float value = strength * (1 - Mathf.SmoothStep(0.85f, 1f, r)) * (0.75f + 0.25f * Mathf.SmoothStep(0.55f, 0.9f, r));
+                float value = strength * (1 - SmoothEdge(0.85f, 1f, r)) * (0.75f + 0.25f * SmoothEdge(0.55f, 0.9f, r));
                 int i = y * Size + x;
                 a[i] = Mathf.Max(a[i], value);
             }
     }
 
+    // Mathf.SmoothStep interpolates FROM/TO; a mask needs an edge threshold instead.
+    private static float SmoothEdge(float low,float high,float value) {float t=Mathf.InverseLerp(low,high,value);return t*t*(3-2*t);}
     private static float Range(System.Random rng, float min, float max) => min + (float)rng.NextDouble() * (max - min);
 }
 #endif

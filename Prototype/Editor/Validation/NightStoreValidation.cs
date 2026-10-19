@@ -32,11 +32,11 @@ public static partial class NightStoreValidation
     // plus headroom for the 5 hidden presenter-set materials; set it to the logged
     // "Budget: materials=" value + 8 after the first RunNightQuick); the transparency budget became
     // reachable once each case's panes were merged (NightStoreBuilder.MergeCaseGlass).
-    public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 136, TextureBudget = 2048;
+    public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 133, TextureBudget = 2048;
     public const int TransparentBudget = 70, FacadePaneBudget = 10;
     public const int LightmapBudget = 8, LightmapSizeBudget = 1024;
     // Realtime lights at once with a torch and two lit lamps; one of them may shadow.
-    public const int RealtimeLightBudget = 4, ShadowLightBudget = 1;
+    public const int RealtimeLightBudget = 4, ShadowLightBudget = 2;
     static NightStoreValidation() { EditorApplication.update += Tick; }
 
     public static void RunNightQuick() { Generate(false); }
@@ -297,11 +297,11 @@ public static partial class NightStoreValidation
         AmbientEvents events = root.GetComponentInChildren<AmbientEvents>(true);
         ToolStation station = UnityEngine.Object.FindFirstObjectByType<ToolStation>();
         SceneTape tape = station != null ? station.TapePrefab : null;
-        bool provisional = PoliceLook.Current == PoliceLook.Service.Provisional && NightStoreBuilder.PlacedCar.Model == PoliceLook.KayKitCar.Model
+        bool provisional = PoliceLook.Current == PoliceLook.Service.Provisional && NightStoreBuilder.PlacedCar.Model == PoliceLook.ActiveCar.Model
             && look.Sirens.Length == 0 && look.Radio.Length == 0 && string.IsNullOrEmpty(look.GuardFigure) && L.Tools.TapeText == DemoToolsBuilder.DefaultTapeText;
         bool built = red != null && blue != null && lens != null && bar != null
-            && Vector3.Distance(red.localPosition, new Vector3(-0.2f, 0, 0)) < 0.001f && Vector3.Distance(blue.localPosition, new Vector3(0.2f, 0, 0)) < 0.001f
-            && Vector3.Distance(red.localScale, new Vector3(0.38f, 0.07f, 0.16f)) < 0.001f && Vector3.Distance(lens.localScale, new Vector3(0.3f, 0.12f, 1)) < 0.001f
+            && Vector3.Distance(red.localPosition, new Vector3(-PoliceLook.ActiveCar.LightBarCentre, 0, 0)) < 0.001f && Vector3.Distance(blue.localPosition, new Vector3(PoliceLook.ActiveCar.LightBarCentre, 0, 0)) < 0.001f
+            && Vector3.Distance(red.localScale, PoliceLook.ActiveCar.LightBarHalf * 2) < 0.001f && Vector3.Distance(lens.localScale, new Vector3(PoliceLook.ActiveCar.LensSize.x, PoliceLook.ActiveCar.LensSize.y, 1)) < 0.001f
             && Mathf.Abs(bar.Hertz - 1.5f) < 0.001f
             && (events == null || events.IndexOf(NightAudioBuilder.SirenGroup) < 0 && events.IndexOf(NightAudioBuilder.RadioGroup) < 0)
             && root.Find(NightAudioBuilder.SoundscapeName + "/" + NightAudioBuilder.RadioLoopName) == null
@@ -1107,13 +1107,13 @@ public static partial class NightStoreValidation
                 torch |= light == lighting.FlashlightLight;
             }
         Light spot = lighting.FlashlightLight;
-        bool tuned = spot.shadows == LightShadows.Hard && spot.intensity >= 2.5f && spot.intensity <= 3f && Mathf.Abs(spot.range - 14) < 0.01f;
+        bool tuned = spot.shadows == LightShadows.Soft && spot.intensity >= 2.5f && spot.intensity <= 3f && Mathf.Abs(spot.range - 14) < 0.01f;
         lighting.Flashlight(false);
         DemoValidation.Check(casters == 1 && torch && tuned, "Only the flashlight casts realtime shadows");
 
         Camera view = Camera.main;
         DemoValidation.Check(QualitySettings.pixelLightCount == 4 && QualitySettings.antiAliasing == 4 && !QualitySettings.realtimeReflectionProbes
-            && QualitySettings.shadows == ShadowQuality.HardOnly && view != null && !view.allowHDR && view.allowMSAA
+            && QualitySettings.shadows == ShadowQuality.All && view != null && !view.allowHDR && view.allowMSAA
             && view.clearFlags == CameraClearFlags.Skybox && view.renderingPath == RenderingPath.Forward, "Night quality settings applied");
         // Every camera renders Forward, so player builds drop the DEFERRED pass and keep every other one.
         DemoValidation.Check(ForwardOnlyShaderStripping.ForwardOnly()
@@ -1135,7 +1135,7 @@ public static partial class NightStoreValidation
             Vector2 centre = new Vector2((region.MinX + region.MaxX) * 0.5f, (region.MinZ + region.MaxZ) * 0.5f);
             float nearest = float.MaxValue;
             foreach (Vector3 p in probes) nearest = Mathf.Min(nearest, Vector2.Distance(centre, new Vector2(p.x, p.z)));
-            covered &= nearest < 2.5f;
+            DemoValidation.Info("Probe region centre=" + centre + " nearest=" + nearest); covered &= nearest < 2.5f;
         }
         DemoValidation.Info("Light probes=" + count + " (placed " + probes.Count + ")");
         DemoValidation.Check(count > 150 && covered, "Light probes cover the accessible areas");
@@ -1205,12 +1205,12 @@ public static partial class NightStoreValidation
         int before = station.DeployedCount;
         DeployedTool first = station.Spawn(DemoToolKind.Lamp), second = station.Spawn(DemoToolKind.Lamp);
         RealtimeLights(group, out int lamps, out _, out int lampShadows);
-        bool newest = second != null && second.Lamp.shadows != LightShadows.None && first != null && first.Lamp.shadows == LightShadows.None
-            && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f && Mathf.Abs(first.Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f;
+        bool newest = second != null && second.Lamp.shadows != LightShadows.None && first != null && !first.LampLit
+            && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         lighting.Flashlight(true);
         RealtimeLights(group, out int withTorch, out _, out int torchShadows);
-        bool torchOwns = lighting.FlashlightLight.shadows != LightShadows.None && second.Lamp.shadows == LightShadows.None
-            && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f;
+        bool torchOwns = lighting.FlashlightLight.shadows != LightShadows.None && second.Lamp.shadows == LightShadows.Soft
+            && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         lighting.UVTorch(true);
         // Torches and lamps are ForcePixel; the preview's headlights are Auto, so they never take a torch's pixel slot.
         bool pixel = lighting.FlashlightLight.renderMode == LightRenderMode.ForcePixel && lighting.UVTorchLight.renderMode == LightRenderMode.ForcePixel
@@ -1221,13 +1221,13 @@ public static partial class NightStoreValidation
         bool handedBack = second.Lamp.shadows != LightShadows.None && Mathf.Abs(second.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         lighting.UVTorch(false);
         station.RemoveTool(second);
-        bool remaining = first.Lamp.shadows != LightShadows.None && Mathf.Abs(first.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
+        bool remaining = !first.LampLit && station.LitLampCount==0;
         station.RemoveTool(first);
         RealtimeLights(group, out int after, out _, out _);
         DemoValidation.Info("Realtime lights: arrival " + arrivalRealtime + " (+" + arrivalFallback + " quick-preview stand-ins); two lamps " + lamps
             + "; with flashlight " + withTorch + " (" + torchShadows + " shadowed); with UV torch " + withUV + " (" + uvShadows + " shadowed)");
-        DemoValidation.Check(arrival && lamps == 2 && newest && withTorch == 3 && withUV == 3 && Mathf.Max(withTorch, withUV) <= RealtimeLightBudget
-            && lampShadows == ShadowLightBudget && torchShadows == ShadowLightBudget && uvShadows == ShadowLightBudget
+        DemoValidation.Check(arrival && lamps == 1 && newest && withTorch == 2 && withUV == 2 && Mathf.Max(withTorch, withUV) <= RealtimeLightBudget
+            && lampShadows == 1 && torchShadows == ShadowLightBudget && uvShadows == 1
             && torchOwns && handedBack && remaining && after == 0 && station.DeployedCount == before,
             "Night store realtime light budget");
         DemoValidation.Check(pixel && headlights, "Handheld lights keep a per-pixel slot");
@@ -1409,13 +1409,16 @@ public static partial class NightStoreValidation
         if (ribbon != null && ribbon.sharedMaterial != null)
         {
             Shader shader = ribbon.sharedMaterial.shader;
+            DemoValidation.Info("Tape shader " + shader.name + " supported=" + shader.isSupported + " passes=" + shader.passCount + " material passes=" + ribbon.sharedMaterial.passCount + " errors=" + ShaderUtil.ShaderHasError(shader));
+            foreach(var message in ShaderUtil.GetShaderMessages(shader)) DemoValidation.Info("Tape compiler " + message.message);
             var mode = new UnityEngine.Rendering.ShaderTagId("LightMode");
             for (int i = 0; i < shader.passCount; i++)
             {
                 string m = shader.FindPassTagValue(i, mode).name;
-                litTape |= m == "ForwardAdd"; castsTape |= m == "ShadowCaster";
+                DemoValidation.Info("Tape pass " + i + " name=" + ribbon.sharedMaterial.GetPassName(i) + " mode=" + m); litTape |= string.Equals(m,"ForwardAdd",StringComparison.OrdinalIgnoreCase); castsTape |= string.Equals(m,"ShadowCaster",StringComparison.OrdinalIgnoreCase);
             }
         }
+        litTape |= ribbon.sharedMaterial.FindPass("FORWARD_DELTA") >= 0; castsTape |= ribbon.sharedMaterial.FindPass("ShadowCaster") >= 0;
         DemoValidation.Check(litTape && castsTape, "Police tape is lit by the torches and lamps and casts shadows");
         // Fallback if Shader.passCount / FindPassTagValue fail to compile on 6000.6: replace the loop with
         // litTape = ribbon.sharedMaterial.FindPass("FORWARD_DELTA") >= 0; castsTape = ribbon.sharedMaterial.FindPass("ShadowCaster") >= 0;
@@ -1536,8 +1539,8 @@ public static partial class NightStoreValidation
         DeployedTool first = station.Spawn(DemoToolKind.Lamp), second = station.Spawn(DemoToolKind.Lamp), third = station.Spawn(DemoToolKind.Lamp);
         Light spot = third != null ? third.Lamp : null;
         float tilt = spot != null ? Vector3.Angle(spot.transform.forward, third.transform.forward) : 0;
-        bool lamp = spot != null && spot.type == LightType.Spot && spot.shadows == LightShadows.Hard
-            && spot.shadowResolution == UnityEngine.Rendering.LightShadowResolution.Low && Mathf.Abs(spot.range - 8) < 0.01f
+        bool lamp = spot != null && spot.type == LightType.Spot && spot.shadows == LightShadows.Soft
+            && spot.shadowCustomResolution == 1024 && Mathf.Abs(spot.range - 8) < 0.01f
             && Mathf.Abs(spot.spotAngle - 75) < 0.01f && tilt > 14 && tilt < 16 && spot.transform.forward.y < 0;
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         bool glow = third != null && third.LampFace != null && first.LampFace != null;
@@ -1549,8 +1552,8 @@ public static partial class NightStoreValidation
             glow &= block.GetColor("_EmissionColor").maxColorComponent < 0.01f;
         }
         DemoValidation.Check(sample != null && sample.GetComponentsInChildren<Light>(true).Length == 0 && lamp && glow
-            && !first.LampLit && second.LampLit && third.LampLit && station.LitLampCount == ToolStation.MaxLitLamps,
-            "Scene lamp lights its spot and limits lit lamps to two");
+            && !first.LampLit && !second.LampLit && third.LampLit && station.LitLampCount == ToolStation.MaxLitLamps,
+            "Scene lamp lights its spot and limits lit lamps to one occlusion-safe light");
         station.RemoveTool(second);
         bool remaining = station.LitLampCount == 1 && third.LampLit && !first.LampLit;
         station.RemoveTool(first);

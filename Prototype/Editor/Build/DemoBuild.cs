@@ -70,28 +70,15 @@ public static class DemoBuild
         EditorApplication.Exit(success ? 0 : 1);
     }
 
+    // The standard launcher and menu use the same tested integration as the review build.
+    // It always bakes: the temporary realtime fallback does not represent the night lighting.
     private static BuildReport BuildLatestReport(bool bake)
-    {
-        bool baked = NightStoreBuilder.BuildScene(bake, false);
-        string night = DemoValidation.ScenesFolder + "/" + NightStoreLayout.SceneName + ".unity";
-        if (!File.Exists(night)) { Debug.LogError("Night store scene was not generated: " + night); return null; }
-        CreateLauncherScene();
-        WriteBuildInfo(bake, baked);
-        List<EditorBuildSettingsScene> scenes = new List<EditorBuildSettingsScene>
-        {
-            new EditorBuildSettingsScene(LauncherScene, true),
-            new EditorBuildSettingsScene(night, true),
-        };
-        string glass = DemoValidation.ScenesFolder + "/JewelryStoreGlass.unity";
-        if (File.Exists(glass)) scenes.Add(new EditorBuildSettingsScene(glass, true));
-        EditorBuildSettings.scenes = scenes.ToArray();
-        return Build();
-    }
+        => CombinedBuild.GenerateAndBuild(Path.Combine(OutputFolder, Executable));
 
     // An empty scene with a dark camera, the DemoLauncher menu and, when the Music pack is
     // present, the menu theme: a DemoMusic bed faded in over 2.5 s at start and out before a
     // map loads (DemoLauncher.Open). Without the pack the menu is silent.
-    private static void CreateLauncherScene()
+    internal static void CreateLauncherScene()
     {
         UnityEngine.SceneManagement.Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
         GameObject view = new GameObject("LauncherCamera");
@@ -172,11 +159,11 @@ public static class DemoBuild
     // CC BY attribution must travel with the distributed demo: every notice LicenseFiles
     // lists goes to ThirdPartyLicenses beside the executable. Notices an earlier build left
     // there that no longer match a pack are removed, so the folder lists only what ships.
-    private static void CopyLicenses()
+    public static void CopyLicenses(string outputDirectory=null)
     {
         string thirdParty = ThirdPartyFolder;
         if (!Directory.Exists(thirdParty)) return;
-        string target = Path.Combine(OutputFolder, "ThirdPartyLicenses");
+        string target = Path.Combine(outputDirectory??OutputFolder, "ThirdPartyLicenses");
         Directory.CreateDirectory(target);
         HashSet<string> copied = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (KeyValuePair<string, string> notice in LicenseFiles(thirdParty))
@@ -222,6 +209,8 @@ public static class DemoBuild
                     published = pack + "_" + name;
                 else if (string.Equals(name, "LICENSE.txt", StringComparison.OrdinalIgnoreCase))
                     published = parts.Length == 1 ? pack + ".txt" : pack + "_" + string.Join("_", parts);
+                else if (string.Equals(name,"OFL.txt",StringComparison.OrdinalIgnoreCase)||name.EndsWith("_LICENSE.txt",StringComparison.OrdinalIgnoreCase))
+                    published=pack+"_"+string.Join("_",parts);
                 if (published == null) continue;
                 if (byName.TryGetValue(published, out string first))
                 {

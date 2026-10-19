@@ -414,9 +414,9 @@ public static partial class NightStoreValidation
                         && surface != null && Mathf.Abs(r.scaleInLightmap - surface.scaleInLightmap) < 0.001f;
                 else ok &= (flags & StaticEditorFlags.ContributeGI) == 0 && r.receiveGI == ReceiveGI.LightProbes;
                 foreach (Material m in r.sharedMaterials)
-                    ok &= m != null && m.name == material && DecalQueued(m) && m.IsKeywordEnabled("_ALPHABLEND_ON")
+                    ok &= m != null && m.name == material && DecalQueued(m) && (m.shader.name == "CrimeScene/SurfaceDecal" || m.IsKeywordEnabled("_ALPHABLEND_ON"))
                         && m.GetFloat("_ZWrite") == 0 && !m.IsKeywordEnabled("_EMISSION");
-                if (!ok) DressingWrong(wrong, DressingPath(r.transform));
+                if (!ok) { DemoValidation.Info("Decal detail " + DressingPath(r.transform) + " flags=" + flags + " GI=" + r.receiveGI + " shadow=" + r.shadowCastingMode + " uv2=" + (mesh != null && mesh.HasVertexAttribute(UnityEngine.Rendering.VertexAttribute.TexCoord1)) + " mats=" + string.Join(",", System.Array.ConvertAll(r.sharedMaterials, m => m.name + ":" + m.renderQueue + ":blend=" + (m.shader.name == "CrimeScene/SurfaceDecal" || m.IsKeywordEnabled("_ALPHABLEND_ON")) + ":z=" + m.GetFloat("_ZWrite") + ":em=" + m.IsKeywordEnabled("_EMISSION")))); DressingWrong(wrong, DressingPath(r.transform)); }
             }
             found.Add(path.Substring(path.LastIndexOf('/') + 1) + (NightDecals.DecalsLightmapped
                 ? " x" + scale.ToString("0.00") + " on " + pair[1] + (surface != null ? " x" + surface.scaleInLightmap.ToString("0.00") : " (missing)") : ""));
@@ -621,7 +621,7 @@ public static partial class NightStoreValidation
             else marks++;
             foreach (Material m in r.sharedMaterials)
             {
-                bool ok = m != null && m.IsKeywordEnabled("_ALPHABLEND_ON") && m.GetFloat("_ZWrite") == 0 && !m.IsKeywordEnabled("_EMISSION")
+                bool ok = m != null && (m.shader.name == "CrimeScene/SurfaceDecal" || m.IsKeywordEnabled("_ALPHABLEND_ON")) && m.GetFloat("_ZWrite") == 0 && !m.IsKeywordEnabled("_EMISSION")
                     && (onGlass ? glassQueue > 0 && m.renderQueue > glassQueue : DecalQueued(m));
                 if (!ok) DressingWrong(wrong, DressingPath(f.transform) + (m != null ? " (" + m.name + " queue " + m.renderQueue + ")" : " (no material)"));
             }

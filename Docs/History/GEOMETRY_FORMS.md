@@ -1,8 +1,8 @@
 # Geometry forms — verified October 10, 2026
 
-Unity 6000.6.2f1, Built-in pipeline, Windows PC. **72 automated Editor Play mode assertions passed**. [Raw results](../Verification/Forms/runtime-results.txt).
+Unity 6000.6.2f1, Built-in pipeline, Windows PC. **72 automated Editor Play mode assertions passed**. [Raw results](VerificationForms/runtime-results.txt).
 
-Download the generated project (zip removed October 19, still in git history). Extract into UnityProject_Forms beside the repository README and run Open-Unity-Forms.cmd. Open Assets/CrimeSceneDemo/Scenes/JewelryStoreForms.unity.
+[Download the generated project](../Downloads/JewelryStore_Forms_Unity6000.6.2f1.zip). Extract into UnityProject_Forms beside the repository README and run Open-Unity-Forms.cmd. Open Assets/CrimeSceneDemo/Scenes/JewelryStoreForms.unity.
 
 ## Scene changes
 
@@ -14,11 +14,11 @@ The Forms scene uses procedural city, lamp, tool and shop geometry. It skips the
 
 ## Actual Unity captures
 
-![Showroom](../Verification/Forms/showroom.png)
+![Showroom](VerificationForms/showroom.png)
 
-![Display detail](../Verification/Forms/display-details.png)
+![Display detail](VerificationForms/display-details.png)
 
-![Street seen from inside](../Verification/Forms/street-from-inside.png)
+![Street seen from inside](VerificationForms/street-from-inside.png)
 
 ## Measured budgets
 
@@ -47,6 +47,6 @@ Use all current Prototype source together in an isolated Unity project, preservi
 Unity.exe -batchmode -noUpm -projectPath "<isolated project>" -executeMethod ShopCityValidation.RunForms -logFile "<log path>"
 ```
 
-Do not add -quit: the validator exits after its Play mode checks. It generates the scene, registers it for builds and writes captures/results into Docs/Verification/Forms alongside the project.
+Do not add -quit: the validator exits after its Play mode checks. It generates the scene, registers it for builds and writes captures/results into Docs/VerificationForms alongside the project.
 
 Crime Scene Demo > Refine Store Forms can apply the shop pass once to an expanded scene; it does not remove imported assets already present. Use RunForms for the complete procedural environment. Historical downloads remain available.

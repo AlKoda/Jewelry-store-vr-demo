@@ -23,7 +23,7 @@ public sealed class ToolStation : MonoBehaviour
     public bool AutoConnectTape = true;
     // Each lit lamp is a realtime spot light; two keep the night scene within its
     // pixel-light budget beside the flashlight. Lit lamps in the order they were lit.
-    public const int MaxLitLamps = 2;
+    public const int MaxLitLamps = 1;
     // Spot cookie a lamp projects once lit (the night store's NightSky LED floodlight);
     // null keeps the plain spot (the shop).
     public Texture LampCookie;
@@ -120,24 +120,21 @@ public sealed class ToolStation : MonoBehaviour
         UpdateLampShadows();
     }
 
-    // One realtime shadow map at a time keeps the night within its VR budget: the
-    // white flashlight's while it is on (DemoLighting calls this when it switches),
-    // otherwise the lamp lit last. Other lit lamps light without shadows, so their
-    // beams are cut to DemoToolGeometry.LampUnshadowedRange so they light the lamp's own
-    // surroundings rather than passing walls; the shadowed one keeps its full range and
-    // is the lamp the visitor just set up.
+    // One portable lamp remains shadowed alongside the white torch; no short-range
+    // unshadowed substitute is permitted to illuminate through solid walls.
     public void UpdateLampShadows()
     {
         PruneLamps();
-        DemoLighting lighting = GetComponent<DemoLighting>();
-        bool torch = lighting != null && lighting.FlashlightOn;
         for (int i = 0; i < litLamps.Count; i++)
         {
             Light lamp = litLamps[i].Lamp;
             if (lamp == null) continue;
-            bool shadowed = !torch && i == litLamps.Count - 1;
-            lamp.shadows = shadowed ? LightShadows.Hard : LightShadows.None;
-            lamp.range = shadowed ? DemoToolGeometry.LampRange : DemoToolGeometry.LampUnshadowedRange;
+            // One portable lamp plus the torch: bounded cost, no unshadowed lamp
+            // beams crossing walls. Profile the two shadow maps in actual PCVR.
+            lamp.shadows = LightShadows.Soft;
+            lamp.shadowCustomResolution=1024;
+            lamp.shadowBias=.015f;lamp.shadowNormalBias=.12f;
+            lamp.range=DemoToolGeometry.LampRange;
         }
     }
 

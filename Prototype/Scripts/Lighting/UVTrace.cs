@@ -21,8 +21,8 @@ public sealed class UVTrace : MonoBehaviour
     // The sight line ends this far short of the trace, towards the torch, so the surface
     // under a trace at a grazing angle does not block it.
     public const float EndOffset = 0.02f;
-    // Budget: traces beyond this many are never lit (the examples use three).
-    public const int MaxTraces = 30;
+    // The authored store has 44 traces; cone/range culling precedes occlusion rays.
+    public const int MaxTraces = 48;
 
     private static readonly List<UVTrace> traces = new List<UVTrace>();
     private static readonly RaycastHit[] hits = new RaycastHit[32];

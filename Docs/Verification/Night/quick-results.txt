@@ -1,0 +1,224 @@
+Unity 6000.6.2f1; Built-in pipeline
+Night store generation (no bake, realtime fallback) and 11 actual Unity rendered captures passed.
+PASS: Store kit builds every fixture
+PASS: Store kit meshes carry metric UVs, normals and lightmap UVs
+PASS: Store kit UVs are metric (a 2 x 1 face spans 2 x 1 UV units)
+PASS: Store kit lightmap UVs lie inside [0,1] and are unwrapped
+INFO: Store kit textured palette: KitWalnut=Walnut_Color, KitSuede=SuedeCream_Color, KitVelvet=VelvetCharcoal_Color, KitBronze=BronzeBrushed_Color, KitStone=StoneTop_Color, KitSafeSteel=SafeSteel_Color
+INFO: display_case triangles=1080 budget=1800
+INFO: wall_case triangles=1080 budget=1800
+INFO: wall_display triangles=222 budget=400
+INFO: counter triangles=226 budget=400
+INFO: drawer_unit triangles=310 budget=450
+INFO: office_desk triangles=184 budget=400
+INFO: office_chair triangles=444 budget=700
+INFO: shelving_unit triangles=232 budget=400
+INFO: locker_cabinet triangles=106 budget=200
+INFO: safe_large triangles=656 budget=900
+INFO: safe_tall triangles=544 budget=800
+INFO: waiting_sofa triangles=240 budget=400
+INFO: side_table triangles=188 budget=300
+INFO: planter triangles=100 budget=300
+INFO: sign_frame triangles=80 budget=200
+INFO: storefront_doors triangles=310 budget=500
+INFO: office_door triangles=204 budget=300
+INFO: service_door triangles=132 budget=300
+INFO: window_module triangles=118 budget=300
+INFO: bollard triangles=168 budget=250
+INFO: exit_sign triangles=32 budget=100
+INFO: security_camera triangles=104 budget=250
+INFO: track_light triangles=252 budget=300
+INFO: downlight triangles=110 budget=200
+INFO: pos_terminal triangles=36 budget=100
+INFO: alarm_keypad triangles=134 budget=200
+INFO: display_case__FrontBroken triangles=1228 budget=1800
+INFO: display_case__AllBroken triangles=1308 budget=1800
+INFO: display_case__Drawer triangles=1164 budget=1800
+INFO: wall_case__AllBroken triangles=1288 budget=1800
+INFO: office_chair__Toppled triangles=444 budget=700
+INFO: safe_large__Closed triangles=656 budget=900
+INFO: storefront_doors__BrokenOpen triangles=392 budget=700
+INFO: window_module__Cracked triangles=358 budget=500
+INFO: window_module__Broken triangles=210 budget=500
+INFO: Store kit gallery triangles=14340; renderers=80
+PASS: Store kit fixtures stay within their triangle budgets
+PASS: Safe and door leaves pivot at their hinges
+PASS: Display case glass panes are separate children
+PASS: Intact display case retains five independent panes
+PASS: All panes use dielectric glass and polished cut edges
+PASS: Clear panes do not cast opaque shadows
+PASS: Display glass shader compiles on this graphics device
+PASS: Bevelled case stays within its triangle budget
+INFO: Intact case triangles=1080; GPU=NVIDIA GeForce RTX 5060 Ti
+PASS: Case decks and the open safe's interior are reachable; intact glass blocks
+PASS: Facade bays and door frames carry colliders; intact window glass blocks rays
+PASS: Ceiling lights stay at or below the ceiling plane
+PASS: Store kit emitters are baked and fixture lights start off
+INFO: necklace_bust triangles=386 budget=400
+INFO: bracelet_stand triangles=90 budget=150
+INFO: earring_stand triangles=24 budget=60
+INFO: ring_tray triangles=146 budget=200
+INFO: display_riser triangles=20 budget=40
+INFO: jewelry_box triangles=128 budget=200
+INFO: transport_tray triangles=28 budget=60
+INFO: shopping_bag triangles=84 budget=120
+INFO: dropped_ring triangles=144 budget=200
+INFO: dropped_bangle triangles=192 budget=200
+INFO: necklace_bust__Bare triangles=274 budget=400
+INFO: ring_tray__Stocked triangles=578 budget=600
+INFO: display_riser__Small triangles=20 budget=40
+INFO: display_riser__Tall triangles=20 budget=40
+INFO: jewelry_box__Bracelet triangles=92 budget=200
+INFO: jewelry_box__Necklace triangles=92 budget=200
+INFO: jewelry_box__Closed triangles=128 budget=200
+INFO: shopping_bag__Tipped triangles=84 budget=120
+INFO: Store kit props triangles=2530; renderers=24
+PASS: Store kit jewelry props build and stay within budgets
+PASS: Jewelry box lids hinge at the rear
+INFO: DSLR camera body triangles=806; size=(0.149, 0.133, 0.175)
+PASS: DSLR camera body replaces the box and keeps the photo camera pose
+PASS: Merged case retains polished glass edges: CentralCase_Left
+PASS: Merged case retains pane collision: CentralCase_Left
+PASS: Merged case retains polished glass edges: CentralCase_Middle
+PASS: Merged case retains pane collision: CentralCase_Middle
+PASS: Merged case retains polished glass edges: CentralCase_Right
+PASS: Merged case retains pane collision: CentralCase_Right
+PASS: Merged case retains polished glass edges: LeftIsland_Front
+PASS: Merged case retains pane collision: LeftIsland_Front
+PASS: Merged case retains polished glass edges: LeftIsland_Rear
+PASS: Merged case retains pane collision: LeftIsland_Rear
+PASS: Merged case retains polished glass edges: KnockedCase
+PASS: Merged case retains pane collision: KnockedCase
+PASS: Merged case retains polished glass edges: RightIsland_Rear
+PASS: Merged case retains pane collision: RightIsland_Rear
+PASS: Merged case retains polished glass edges: WallCase_Left0
+PASS: Merged case retains pane collision: WallCase_Left0
+PASS: Merged case retains polished glass edges: WallCase_Left1
+PASS: Merged case retains pane collision: WallCase_Left1
+PASS: Merged case retains polished glass edges: WallCase_Left2
+PASS: Merged case retains pane collision: WallCase_Left2
+PASS: Merged case retains polished glass edges: WallCase_Right0
+PASS: Merged case retains pane collision: WallCase_Right0
+PASS: Merged case retains polished glass edges: WallCase_Right1
+PASS: Merged case retains pane collision: WallCase_Right1
+PASS: Merged case retains polished glass edges: WallCase_Rear
+PASS: Merged case retains pane collision: WallCase_Rear
+PASS: Start menu lists the night store first and leaves itself out
+INFO: Static policy: small probe-lit props=127; violations=0; textured shell=True/True/True
+PASS: Night store static flags follow the bake policy
+INFO: Dressing groups=23; combined renderers=118; unbatched static-zone renderers=0
+PASS: Night dressing is combined by material
+INFO: Night materials with packed metallic-smoothness maps: 12 of 12 staged
+PASS: Night materials use packed metallic-smoothness maps
+PASS: Night ceiling and facade use the staged plaster and marble
+PASS: Fascia shows the shop sign
+PASS: Closed sign on the entrance door and Staff Only on the side-room doors
+PASS: Collection signs sit in the wall sign frames
+PASS: Staged floor decals stay unplaced
+PASS: User props have the intended metre dimensions
+PASS: User prop pivots rest on their support surfaces
+PASS: Interior equipment table blocks the walker
+PASS: Interior glass has a saved box-projected HDR reflection without realtime capture
+INFO: Lightmaps=0 (largest 0 px; max size 1024)
+PASS: Night store lightmap budget
+INFO: Budget: triangles=82663 (store 27318, exterior 7206, dressing 37535, tools and player 10604) of 220000
+PASS: Night store triangle budget
+INFO: Budget: renderers before static batching=392 of 900
+PASS: Night store renderer budget
+INFO: Budget: materials=75 of 96; textures=44, largest 1024 px of 2048
+PASS: Night store material budget
+INFO: Budget: transparent renderers=35 of 70; facade panes of 1 m2 or more=10 of 10
+PASS: Night store transparency budget
+INFO: Night store triangles=82909; renderers=396; static=331; lightmapped=108; lights baked=0, realtime=8 (diagnostic sun, off; the flashlight is created at runtime); light probes placed=596
+INFO: Night lighting not baked: realtime shadowless fallback (RunNightQuick)
+PASS: Night scene renders in linear colour space
+PASS: Store fixtures are off at arrival
+PASS: Headlights are baked spots aimed at the entrance
+PASS: Streetlights and moonlight are baked
+PASS: Only the flashlight casts realtime shadows
+PASS: Night quality settings applied
+INFO: Light probes=596 (placed 596)
+PASS: Light probes cover the accessible areas
+PASS: Reflection probes are baked for showroom, office and street
+PASS: Diagnostic daylight toggles and restores the night
+PASS: Light bar blinks without realtime lights
+PASS: Night store builds every zone
+PASS: Office holds exactly two open safes
+PASS: Entrance is open between the forced door leaves
+INFO: Spawn (1.60, -0.12, -5.40); car body 0.86 m away
+PASS: Visitor starts beside the police car facing the shop
+PASS: Player spawns beside the police car
+INFO: Walk route complete
+PASS: Visitor walks from the car to the safe
+PASS: Street beyond the staging bay stays out of reach
+PASS: Teleport accepts the pavement and refuses the far street
+PASS: Tools can be placed on the pavement
+PASS: Tools can be placed in the staging bay
+PASS: Night tool prefabs are styled (scale bands, depth-tested numbers, police tape)
+PASS: Night tool prefabs live in the night store's own folder
+PASS: Carried lamp rests on the street in the staging bay
+INFO: Entrance glass vertices=720; flush=720
+PASS: Loose glass sits flush on its surfaces
+PASS: Overview map frames the store and the staging bay
+PASS: Beacon clamps to the night store regions
+PASS: Review sketch frames the night store
+PASS: UV example traces start hidden
+PASS: UV torch and white flashlight are exclusive
+PASS: UV drops lie in the office in front of the large safe
+PASS: UV trace glow keeps its mask detail below the LDR clip
+PASS: UV trace glows inside the beam
+PASS: UV trace stays dark outside the cone
+PASS: UV trace stays dark behind a wall
+PASS: Scene lamp lights its spot and limits lit lamps to two
+PASS: Scene lamp removes cleanly
+INFO: Realtime lights: arrival 0 (+7 quick-preview stand-ins); two lamps 2; with flashlight 3 (1 shadowed); with UV torch 3 (1 shadowed)
+PASS: Night store realtime light budget
+INFO: Staged sounds: shutter=True, switch=True, set-down=True, panel=True, ambience=True
+PASS: Staged sounds replace generated clips
+PASS: Interface theme carries the Barlow fonts and the controller shader
+PASS: Feedback feed keeps the newest four messages and expires them
+PASS: Hotbar maps keys 1-6 to the tool kinds in order
+PASS: Help overlay pauses desktop input
+PASS: Context prompt follows what the desktop visitor holds
+PASS: Crouch lowers the desktop eye height
+PASS: Zoom narrows the view
+PASS: Controller tooltips and status card build on both hands
+PASS: Tool carousel shows the newly selected kind
+PASS: Controller interface updates a frame and counts a new tool
+PASS: Haptic pulses rank refusal above placement above grab
+PASS: Tool station exists
+PASS: Sequential marker numbers
+PASS: Marker label and font assigned
+PASS: Tool placement
+PASS: Status board shows the pending tape selection
+PASS: Tape connection
+PASS: Tape length
+PASS: Tape follows moved post
+PASS: Measuring tape connects two reels and reads the distance
+PASS: Measuring tape label follows the moved reel
+PASS: Status board asks for the second reel
+PASS: Measuring reels and barrier posts never cross-connect
+PASS: Tape removed after endpoint removal
+PASS: Runtime photograph saved
+PASS: Photo count follows saved photographs
+PASS: Photo frame shows the saved photograph
+PASS: View photograph restores dedicated camera pose
+PASS: Review session JSON written
+PASS: Photograph records deployed tools in the review
+PASS: Review contains the copied photograph
+PASS: HTML review references the photograph
+PASS: HTML review contact sheet tile and shot list row carry the shot, entry, camera, tools and markers
+PASS: HTML review sketches the scene with tool glyphs and the camera
+PASS: Sketch maps a shop position inside the drawing
+PASS: Reset clears deployed objects
+PASS: Reset restarts marker numbering
+PASS: Reset preserves photographs
+PASS: Reset restores handheld camera
+PASS: Review session JSON written
+PASS: Snapshot and reset append review entries with the tools
+PASS: Snapshot records the tape connection and the sketch draws it in the panel's colour
+PASS: Camera glyph and caption appear only on the photograph entry
+PASS: Reset restores the night arrival
+PASS: Night quality settings restored after the run
+INFO: Night store summary: checks passed=146; bake=0.0 s (not baked); lightmaps=0; triangles=82663; renderers=392
+PASS: Validation completed

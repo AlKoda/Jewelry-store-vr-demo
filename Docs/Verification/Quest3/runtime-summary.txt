@@ -1,0 +1,37 @@
+TORCH_BEAM_AND_CAMERA_HAND_PASS
+RECORDED_FOLEY_AND_QUIET_MIX_PASS
+COMBINED_TORCH_PASS
+COMBINED_MUSIC_PASS
+DOOR_PHYSICS_PASS DoorRight angle=8.215057
+DOOR_PHYSICS_PASS Door angle=8.572113
+DOOR_PHYSICS_PASS Door angle=8.572113
+DOOR_PHYSICS_PASS DoorLeft angle=8.215057
+DOOR_RESET_PASS
+DESKTOP_BODY_DOOR_PASS EntranceDoors/DoorRight angle=74.17696 bodyZ=0.8612088
+DESKTOP_BODY_DOOR_PASS OfficeDoor/Door angle=73.00464 bodyZ=9.364923
+DESKTOP_BODY_DOOR_PASS ServiceDoor/Door angle=73.00458 bodyZ=9.364921
+DESKTOP_BODY_DOOR_PASS EntranceDoors/DoorLeft angle=70.96295 bodyZ=0.7884476
+VR_BODY_DOOR_PASS DoorRight angle=32.46246
+VR_BODY_DOOR_PASS Door angle=92.534
+VR_BODY_DOOR_PASS Door angle=34.13734
+VR_BODY_DOOR_PASS DoorLeft angle=31.63235
+HAND_DOOR_PASS EntranceDoors/DoorRight angle=31.74084
+HAND_DOOR_PASS OfficeDoor/Door angle=49.54144
+HAND_DOOR_PASS ServiceDoor/Door angle=13.8773
+HAND_DOOR_PASS EntranceDoors/DoorLeft angle=28.26248
+STAFF_PLAYER_LAYOUT_PASS outdoor equipment hidden, indoor tools, furnished rooms and rough materials
+EXPANDED_SMOOTH_VR_DOOR_PASS
+UV_RENDER_PIXEL_CHECK green pixels=777 globals=(0.96, 6.00, 1.00, 0.00) position=(-0.16, 0.84, -0.01) local=(0.76, 0.84, -0.04)
+EXPANDED_UV_GATING_PASS 44 marks, white-light hidden, UV reveals, occlusion hides, traces follow door
+STAFF_UV_RENDER_PASS EvidenceUV_BackgroundPrint_0 green pixels=197
+STAFF_UV_RENDER_PASS EvidenceUV_FloorDrops_0 green pixels=591
+EXPANDED_PRINTED_TAPE_PASS no floating labels, Arabic ink texture, two lit faces
+EXPANDED_LANGUAGE_PASS Arabic shaping/font, Arabic-English roundtrip, permanent Arabic map
+SOFT_2K_TORCH_SHADOW_PASS
+COMBINED_PLAYER_PASS
+QUEST3_SETUP_PASS: OpenXR 1.16.1; XR Management 4.5.3; Input System 1.20.1; Unity 6000.6.2f1; DX11; single-pass instanced.
+Windows strict integrated build and existing-scene rebuild passed.
+Actual Meta OpenXR session reached READY -> SYNCHRONIZED -> VISIBLE -> FOCUSED on October 19, 2026.
+Initial attempts failed with XR_ERROR_FORM_FACTOR_UNAVAILABLE before Link became available; successful session followed.
+Human both-eye, hands, controls and headset comfort review still required. Unfocused automated frame timings are not benchmarks.
+VR_VISUAL_VALIDATION_PASS: rendered icon texture and stable body holster anchors. Updated source compiled and rebuilt after initial human headset feedback. Human hand-orientation/comfort acceptance remains pending.

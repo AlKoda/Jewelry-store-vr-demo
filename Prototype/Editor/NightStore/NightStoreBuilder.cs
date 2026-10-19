@@ -592,7 +592,7 @@ public static class NightStoreBuilder
         car.localPosition = L.CarPosition;
         car.localRotation = Quaternion.Euler(0, L.CarYaw, 0);
         PoliceLook.Car c = PoliceLook.ActiveCar;
-        GameObject placed = imported && c.Pack == NightStreet.StreetPack
+        GameObject placed = imported && c.Pack != PoliceLook.KayKitCar.Pack
             ? DemoAssetLibrary.PlacePack(c.Pack, c.Model, car, Vector3.zero, 0, new DemoAssetLibrary.PackOptions
             {
                 Scale = c.Scale, ModelEuler = c.ModelEuler, Shadows = true, Lod = DemoAssetLibrary.LodClass.Large
@@ -690,7 +690,7 @@ public static class NightStoreBuilder
 
     // Ground-floor shop: dark glass band, a half-closed roller shutter and a fascia board.
     // facing is the facade normal's z (-1 towards the near street side, +1 across).
-    private static void Shopfront(KitMesh k, float x0, float x1, float z, float facing)
+    internal static void Shopfront(KitMesh k, float x0, float x1, float z, float facing)
     {
         float f = z + facing * 0.01f, mid = (x0 + x1) * 0.5f;
         Vector3 n = V(0, 0, facing);
@@ -701,15 +701,34 @@ public static class NightStoreBuilder
     }
 
     // Upper-floor window grid on a facade, about litChance of the rooms lit.
-    private static void Windows(KitMesh k, System.Random rng, float x0, float x1, float z, float facing, float height, float litChance)
+    internal static void Windows(KitMesh k, System.Random rng, float x0, float x1, float z, float facing, float height, float litChance)
     {
         float f = z + facing * 0.01f;
         for (float y = 4.2f; y + 1.5f <= height - 0.8f; y += 3.0f)
             for (float x = x0 + 1.0f; x + 1.2f <= x1 - 0.8f; x += 2.4f)
             {
-                Material m = rng.NextDouble() < litChance ? StoreKit.WindowLit : StoreKit.WindowDark;
-                k.Face(m, V(0, 0, facing), V(x, y, f), V(x + 1.2f, y, f), V(x + 1.2f, y + 1.5f, f), V(x, y + 1.5f, f));
+                bool lit=rng.NextDouble()<litChance;
+                Material m=WindowRoomMaterial(lit);
+                int cell=rng.Next(20);Rect uv=new Rect((cell%5)/5f+.003f,(cell/5)/4f+.003f,.194f,.244f);
+                k.Quad(m,V(0,0,facing),V(x,y,f),V(x+1.2f,y,f),V(x+1.2f,y+1.5f,f),V(x,y+1.5f,f),uv);
+                float frameZ=f+facing*.045f;
+                for(int side=-1;side<=1;side+=2) k.Box(StoreKit.FrameMetal,V(x+.6f+side*.63f,y+.75f,frameZ),V(.06f,1.62f,.09f));
+                foreach(float wy in new[]{y-.03f,y+1.53f}) k.Box(StoreKit.FrameMetal,V(x+.6f,wy,frameZ),V(1.2f,.06f,.09f));
+                k.Box(StoreKit.FrameMetal,V(x+.6f,y+.75f,frameZ+facing*.015f),V(.035f,1.5f,.04f));
+                k.Box(StoreKit.FrameMetal,V(x+.6f,y+.78f,frameZ+facing*.015f),V(1.2f,.035f,.04f));
+                k.Box(StoreKit.Concrete,V(x+.6f,y-.09f,f+facing*.09f),V(1.38f,.10f,.23f));
             }
+    }
+
+    private static Material WindowRoomMaterial(bool lit)
+    {
+        string name=lit?"NeighbourRoomsLit":"NeighbourRoomsDark";
+        Material m=Mat(Folder,name,Color.white,lit?.25f:.45f);
+        m.mainTexture=DemoAssetLibrary.Texture("StreetModels","ApartmentBlock_Interior_Color.jpg");
+        m.mainTextureScale=Vector2.one;m.color=lit?new Color(.7f,.65f,.55f):new Color(.12f,.15f,.20f);
+        if(lit){m.EnableKeyword("_EMISSION");m.SetTexture("_EmissionMap",m.mainTexture);m.SetColor("_EmissionColor",new Color(.10f,.085f,.065f));m.globalIlluminationFlags=MaterialGlobalIlluminationFlags.BakedEmissive;}
+        else{m.DisableKeyword("_EMISSION");m.SetColor("_EmissionColor",Color.black);}
+        return m;
     }
 
     // ---------------------------------------------------------------- fixtures

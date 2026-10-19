@@ -1,0 +1,62 @@
+[
+  {
+    "File": "BronzeBrushed_Color.jpg",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "BronzeBrushed_MetallicSmoothness.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "BronzeBrushed_Normal.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "StoneTopDark_Color.jpg",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "StoneTopDark_MetallicSmoothness.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "StoneTopDark_Normal.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "SuedeCream_Color.jpg",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "SuedeCream_MetallicSmoothness.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "SuedeCream_Normal.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "VelvetCharcoal_Color.jpg",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "VelvetCharcoal_MetallicSmoothness.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "VelvetCharcoal_Normal.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "Walnut_Color.jpg",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "Walnut_MetallicSmoothness.png",
+    "MatchesSourceHash": true
+  },
+  {
+    "File": "Walnut_Normal.png",
+    "MatchesSourceHash": true
+  }
+]

@@ -1,0 +1,75 @@
+Unity 6000.6.2f1; Built-in pipeline
+Store kit gallery generation and Edit mode checks; 3 actual Unity rendered captures.
+PASS: Store kit builds every fixture
+PASS: Store kit meshes carry metric UVs, normals and lightmap UVs
+PASS: Store kit UVs are metric (a 2 x 1 face spans 2 x 1 UV units)
+PASS: Store kit lightmap UVs lie inside [0,1] and are unwrapped
+INFO: Store kit textured palette: KitWalnut=Walnut_Color, KitSuede=SuedeCream_Color, KitVelvet=VelvetCharcoal_Color, KitBronze=BronzeBrushed_Color, KitStone=StoneTop_Color, KitSafeSteel=SafeSteel_Color
+INFO: display_case triangles=428 budget=900
+INFO: wall_case triangles=380 budget=900
+INFO: wall_display triangles=222 budget=400
+INFO: counter triangles=226 budget=400
+INFO: drawer_unit triangles=310 budget=450
+INFO: office_desk triangles=184 budget=400
+INFO: office_chair triangles=444 budget=700
+INFO: shelving_unit triangles=232 budget=400
+INFO: locker_cabinet triangles=106 budget=200
+INFO: safe_large triangles=656 budget=900
+INFO: safe_tall triangles=544 budget=800
+INFO: waiting_sofa triangles=240 budget=400
+INFO: side_table triangles=188 budget=300
+INFO: planter triangles=100 budget=300
+INFO: sign_frame triangles=80 budget=200
+INFO: storefront_doors triangles=310 budget=500
+INFO: office_door triangles=204 budget=300
+INFO: service_door triangles=132 budget=300
+INFO: window_module triangles=118 budget=300
+INFO: bollard triangles=168 budget=250
+INFO: exit_sign triangles=32 budget=100
+INFO: security_camera triangles=104 budget=250
+INFO: track_light triangles=252 budget=300
+INFO: downlight triangles=110 budget=200
+INFO: pos_terminal triangles=36 budget=100
+INFO: alarm_keypad triangles=134 budget=200
+INFO: display_case__FrontBroken triangles=448 budget=900
+INFO: display_case__AllBroken triangles=458 budget=900
+INFO: display_case__Drawer triangles=512 budget=900
+INFO: wall_case__AllBroken triangles=406 budget=900
+INFO: office_chair__Toppled triangles=444 budget=700
+INFO: safe_large__Closed triangles=656 budget=900
+INFO: storefront_doors__BrokenOpen triangles=392 budget=700
+INFO: window_module__Cracked triangles=358 budget=500
+INFO: window_module__Broken triangles=210 budget=500
+INFO: Store kit gallery triangles=9824; renderers=80
+PASS: Store kit fixtures stay within their triangle budgets
+PASS: Safe and door leaves pivot at their hinges
+PASS: Display case glass panes are separate children
+PASS: Case decks and the open safe's interior are reachable; intact glass blocks
+PASS: Facade bays and door frames carry colliders; intact window glass blocks rays
+PASS: Ceiling lights stay at or below the ceiling plane
+PASS: Store kit emitters are baked and fixture lights start off
+INFO: necklace_bust triangles=386 budget=400
+INFO: bracelet_stand triangles=90 budget=150
+INFO: earring_stand triangles=24 budget=60
+INFO: ring_tray triangles=146 budget=200
+INFO: display_riser triangles=20 budget=40
+INFO: jewelry_box triangles=128 budget=200
+INFO: transport_tray triangles=28 budget=60
+INFO: shopping_bag triangles=84 budget=120
+INFO: dropped_ring triangles=144 budget=200
+INFO: dropped_bangle triangles=192 budget=200
+INFO: necklace_bust__Bare triangles=274 budget=400
+INFO: ring_tray__Stocked triangles=578 budget=600
+INFO: display_riser__Small triangles=20 budget=40
+INFO: display_riser__Tall triangles=20 budget=40
+INFO: jewelry_box__Bracelet triangles=92 budget=200
+INFO: jewelry_box__Necklace triangles=92 budget=200
+INFO: jewelry_box__Closed triangles=128 budget=200
+INFO: shopping_bag__Tipped triangles=84 budget=120
+INFO: Store kit props triangles=2530; renderers=24
+PASS: Store kit jewelry props build and stay within budgets
+PASS: Jewelry box lids hinge at the rear
+INFO: DSLR camera body triangles=806; size=(0.149, 0.133, 0.175)
+PASS: DSLR camera body replaces the box and keeps the photo camera pose
+INFO: Store kit meshes not used by the gallery=0
+PASS: Validation completed

@@ -1,0 +1,50 @@
+[
+  {
+    "asset": "DisplayCase_Hero",
+    "triangles": 2916,
+    "mesh_objects": 6,
+    "materials": [
+      "ChampagneBrushed",
+      "GraphiteGasket",
+      "IvoryMicrosuede",
+      "LowIronGlass",
+      "WalnutVeneer"
+    ],
+    "units": "metres",
+    "pivot": "floor centre; Blender Z up / export Y up"
+  },
+  {
+    "asset": "RingTray_Hero",
+    "triangles": 908,
+    "mesh_objects": 1,
+    "materials": [
+      "IvoryMicrosuede",
+      "WalnutVeneer"
+    ],
+    "units": "metres",
+    "pivot": "floor centre; Blender Z up / export Y up"
+  },
+  {
+    "asset": "BraceletStand_Hero",
+    "triangles": 1028,
+    "mesh_objects": 1,
+    "materials": [
+      "ChampagneBrushed",
+      "CharcoalVelvet",
+      "DarkStone"
+    ],
+    "units": "metres",
+    "pivot": "floor centre; Blender Z up / export Y up"
+  },
+  {
+    "asset": "BezelRing",
+    "triangles": 1024,
+    "mesh_objects": 1,
+    "materials": [
+      "Gemstone",
+      "JewelryGold"
+    ],
+    "units": "metres",
+    "pivot": "floor centre; Blender Z up / export Y up"
+  }
+]

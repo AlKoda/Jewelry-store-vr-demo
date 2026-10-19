@@ -1,0 +1,483 @@
+Unity 6000.6.2f1; Built-in pipeline
+Night store generation (no bake, realtime fallback) and 11 actual Unity rendered captures passed.
+INFO: Launchers not found beside this project: launcher checks skipped
+INFO: Realism packs present: 18 of 18
+PASS: All twelve realism packs are mirrored together, each with its LICENSE.txt
+INFO: Licence copy: the probe publishes A.txt, A_Dog.txt, B_Originals_License.txt; this project ships 43 notices
+PASS: The licence copy ships every pack LICENSE.txt and Licenses/*.txt and skips ignored folders
+PASS: Store kit builds every fixture
+PASS: Store kit meshes carry metric UVs, normals and lightmap UVs
+PASS: Store kit UVs are metric (a 2 x 1 face spans 2 x 1 UV units)
+PASS: Store kit lightmap UVs lie inside [0,1] and are unwrapped
+INFO: Store kit textured palette: KitWalnut=PBRInterior/Walnut, KitSuede=PBRInterior/SuedeCream, KitVelvet=PBRInterior/VelvetCharcoal, KitBronze=PBRInterior/BronzeBrushed, KitStone=PBRInterior/StoneTop, KitSafeSteel=PBRInterior/SafeSteel, KitStainless=PBRInterior/BrushedSteel, KitFloorTile=PBRInterior/FloorTile, KitPlaster=PBRInterior/PlasterWarm, KitCeiling=PBRInterior/CeilingPaint, KitCladding=NightMaterials/FacadeStone, KitPavement=PBRExterior/PavementSlabWet, KitAsphalt=PBRExterior/AsphaltWet, KitConcrete=PBRExterior/Concrete, KitRender=PBRExterior/Render, KitBrick=PBRExterior/BrickFacade, KitShutter=PBRExterior/MetalShutter, KitLeather=PBRInterior/Leather
+INFO: display_case triangles=1112 budget=1300 submeshes=12
+INFO: wall_case triangles=984 budget=1150 submeshes=11
+INFO: wall_display triangles=228 budget=400 submeshes=3
+INFO: counter triangles=500 budget=600 submeshes=3
+INFO: drawer_unit triangles=420 budget=450 submeshes=12
+INFO: office_desk triangles=232 budget=400 submeshes=4
+INFO: office_chair triangles=444 budget=700 submeshes=3
+INFO: shelving_unit triangles=264 budget=400 submeshes=2
+INFO: locker_cabinet triangles=108 budget=200 submeshes=3
+INFO: safe_large triangles=939 budget=1150 submeshes=8
+INFO: safe_tall triangles=782 budget=1000 submeshes=10
+INFO: waiting_sofa triangles=244 budget=400 submeshes=2
+INFO: side_table triangles=204 budget=300 submeshes=3
+INFO: planter triangles=100 budget=300 submeshes=3
+INFO: sign_frame triangles=80 budget=200 submeshes=3
+INFO: storefront_doors triangles=1008 budget=1200 submeshes=13
+INFO: office_door triangles=352 budget=420 submeshes=7
+INFO: service_door triangles=218 budget=300 submeshes=8
+INFO: window_module triangles=288 budget=400 submeshes=3
+INFO: bollard triangles=168 budget=250 submeshes=1
+INFO: exit_sign triangles=32 budget=100 submeshes=3
+INFO: security_camera triangles=104 budget=250 submeshes=2
+INFO: track_light triangles=252 budget=300 submeshes=3
+INFO: downlight triangles=110 budget=200 submeshes=2
+INFO: pos_terminal triangles=38 budget=100 submeshes=2
+INFO: alarm_keypad triangles=134 budget=200 submeshes=4
+INFO: cctv_dome triangles=206 budget=250 submeshes=2
+INFO: smoke_detector triangles=86 budget=120 submeshes=2
+INFO: pir_detector triangles=44 budget=80 submeshes=3
+INFO: light_switch triangles=40 budget=60 submeshes=1
+INFO: socket_outlet triangles=30 budget=50 submeshes=2
+INFO: display_case__FrontBroken triangles=1130 budget=1300 submeshes=12
+INFO: display_case__AllBroken triangles=1048 budget=1300 submeshes=7
+INFO: display_case__Drawer triangles=1330 budget=1450 submeshes=18
+INFO: wall_case__AllBroken triangles=918 budget=1150 submeshes=7
+INFO: office_chair__Toppled triangles=444 budget=700 submeshes=3
+INFO: safe_large__Closed triangles=939 budget=1150 submeshes=8
+INFO: storefront_doors__BrokenOpen triangles=1090 budget=1300 submeshes=14
+INFO: window_module__Cracked triangles=528 budget=650 submeshes=4
+INFO: window_module__Broken triangles=380 budget=500 submeshes=4
+INFO: Store kit gallery triangles=17558; renderers=85
+PASS: Store kit fixtures stay within their triangle budgets
+INFO: Palette materials with a texture set: 18 of 18
+PASS: Palette sets come from one pack each, in the documented priority
+INFO: Palette tile sizes spot-checked: 5 of 5 (the rest need PBRInterior/PBRExterior)
+PASS: Palette tiling follows each set's real-world tile size
+INFO: Brick/shutter/stainless sets: PBRExterior/BrickFacade, PBRExterior/MetalShutter, PBRInterior/BrushedSteel
+PASS: Brick, shutter and stainless use their PBR sets and keep a scalar fallback
+PASS: Safe and door leaves pivot at their hinges
+PASS: Display case glass panes are separate children
+PASS: Case decks and the open safe's interior are reachable; intact glass blocks
+PASS: Facade bays and door frames carry colliders; intact window glass blocks rays
+PASS: Ceiling lights stay at or below the ceiling plane
+PASS: Store kit emitters are baked and fixture lights start off
+INFO: Case glass: display_case: front 0.0100, side 0.0100, top 0.0100 to 1.0500, bronze up to 1.0395, band 0.30-0.30 mm outside; wall_case: front 0.0100, side 0.0100, top 0.0100 to 1.0500, bronze up to 1.0395, band 0.30-0.30 mm outside
+PASS: Case panes are 10 mm and the top pane rests on the rails, its green edge band opaque on all four sides
+INFO: Frame joints (coplanar overlaps): display_case: none; display_case__FrontBroken: none; display_case__AllBroken: none; display_case__Drawer: none; wall_case: none; wall_case__AllBroken: none; counter: none
+PASS: Case and counter bodies have no coplanar overlapping faces, so their frame joints cannot z-fight
+INFO: Fixture parts: every entry as listed
+PASS: Fixture detail stays merged: cases, safes, doors, bays and the counter keep their renderers and part names
+INFO: Safe bolts: safe_large: receivers 0.396/0.775/1.154, bolts 0.396/0.775/1.154; safe_large__Closed: receivers 0.396/0.775/1.154, bolts 0.396/0.775/1.154; safe_tall: receivers 0.416/0.825/1.234, bolts 0.416/0.825/1.234
+PASS: Safe bolt receivers on the jamb line up with the door's three bolts
+INFO: Case hardware: display_case: 8 staff-side lock triangles, 4 diffuser triangles at (0.277, 1.017, -0.271) (-0.277, 1.017, -0.269) (0.277, 1.017, 0.269) (-0.277, 1.017, 0.271); wall_case: 8 staff-side lock triangles, 2 diffuser triangles at (0.277, 1.017, -0.246) (-0.277, 1.017, -0.244)
+PASS: Case locks face the staff side and the LED diffusers face down inside the glass
+INFO: Glazing: window_module/Glass: inside 0, shop side 96, street side 16; window_module__Cracked/Glass: inside 0, shop side 96, street side 16; storefront_doors/DoorLeft/Glass: inside 0, shop side 96, street side 96; storefront_doors/DoorRight/Glass: inside 0, shop side 96, street side 96; storefront_doors__BrokenOpen/DoorRight/Glass: inside 0, shop side 96, street side 96
+PASS: Glazing beads, caps and gaskets frame the door and window glass without entering it
+INFO: Door contacts (magnet to nearest frame contact): office_door/Door 0.020 m, service_door/Door 0.020 m, storefront_doors/DoorLeft 0.026 m, storefront_doors/DoorRight 0.026 m, storefront_doors__BrokenOpen/DoorLeft 0.452 m, storefront_doors__BrokenOpen/DoorRight 0.026 m
+PASS: Door contacts pair up on closed leaves and part when a leaf is forced open
+INFO: pir_detector bounds min=(-0.0310, 0.0000, -0.0463) max=(0.0310, 0.1075, 0.0000) triangles=44
+INFO: light_switch bounds min=(-0.0410, 0.0000, -0.0120) max=(0.0410, 0.0820, 0.0000) triangles=40
+INFO: socket_outlet bounds min=(-0.0410, 0.0000, -0.0093) max=(0.0410, 0.0820, 0.0000) triangles=30
+INFO: cctv_dome bounds min=(-0.0700, -0.0630, -0.0700) max=(0.0700, 0.0000, 0.0700) triangles=206
+INFO: smoke_detector bounds min=(-0.0580, -0.0460, -0.0580) max=(0.0580, 0.0000, 0.0580) triangles=86
+PASS: Wall devices pivot at the bottom centre of their back, at most 6 cm proud; ceiling devices hang at or below the ceiling plane
+INFO: necklace_bust triangles=386 budget=400
+INFO: bracelet_stand triangles=90 budget=150
+INFO: earring_stand triangles=24 budget=60
+INFO: ring_tray triangles=146 budget=200
+INFO: display_riser triangles=20 budget=40
+INFO: jewelry_box triangles=128 budget=200
+INFO: transport_tray triangles=28 budget=60
+INFO: shopping_bag triangles=84 budget=120
+INFO: dropped_ring triangles=144 budget=200
+INFO: dropped_bangle triangles=192 budget=200
+INFO: necklace_bust__Bare triangles=274 budget=400
+INFO: ring_tray__Stocked triangles=578 budget=600
+INFO: display_riser__Small triangles=20 budget=40
+INFO: display_riser__Tall triangles=20 budget=40
+INFO: jewelry_box__Bracelet triangles=92 budget=200
+INFO: jewelry_box__Necklace triangles=92 budget=200
+INFO: jewelry_box__Closed triangles=128 budget=200
+INFO: shopping_bag__Tipped triangles=84 budget=120
+INFO: Store kit props triangles=2530; renderers=24
+PASS: Store kit jewelry props build and stay within budgets
+PASS: Jewelry box lids hinge at the rear
+INFO: DSLR camera body triangles=806; size=(0.149, 0.133, 0.175)
+PASS: DSLR camera body replaces the box and keeps the photo camera pose
+PASS: Pack placement shares one material per pack, colour map, tint and role across instances and LOD levels
+PASS: LOD groups use the prep variants with the class transitions
+PASS: Shared colour maps with different tints or roles stay separate
+PASS: Transparency comes from the MTL alpha, finishes from the pack data
+INFO: Imported MTL alpha of GemParcel Diamond (d 0.35): 0.35
+PASS: The OBJ import carries the MTL d as colour alpha (a glass material without a finish entry)
+PASS: Pack material convention wires Normal and MetallicSmoothness by the colour map stem
+PASS: Cut-out colour maps alpha-test at the import rules' cutoff
+PASS: Missing pack models return null
+PASS: Atlas cells load as UV rects inside [0,1] (SurfaceDecals/Atlas/Ambient.json)
+PASS: Atlas cells load as UV rects inside [0,1] (WallGraphics/Atlas/NightStoreInterior.json)
+PASS: Fade and Cutout helpers set the Standard blend state
+PASS: ProceduralMesh.Quad maps the UV rect to its corners, faces outward and skips degenerate quads
+PASS: Seat rests a prop's lowest renderer point on the surface
+PASS: Placing an attributable model records its credit
+PASS: Start menu lists the night store first and leaves itself out
+INFO: Static policy: small probe-lit props=199; violations=0; textured shell=True/True/True
+PASS: Night store static flags follow the bake policy
+INFO: Pack import PBRInterior/FloorTile_Normal.png: NormalMap, sRGB False, wrap Repeat/Repeat, max 2048, Compressed
+INFO: Pack import PBRInterior/FloorTile_MetallicSmoothness.png: Default, sRGB False, wrap Repeat/Repeat, max 1024, Compressed
+INFO: Pack import PBRExterior/AsphaltWet_AO.jpg: Default, sRGB False, wrap Repeat/Repeat, max 512, Compressed
+INFO: Pack import WallGraphics/Store/Sheet_StaffRota.jpg: Default, sRGB True, wrap Clamp/Clamp, max 2048, CompressedHQ
+INFO: Pack import NightSky/cookie_streetlight_512.png: Cookie, sRGB True, wrap Clamp/Clamp, max 512, Uncompressed
+INFO: Pack import StreetModels/DT_MaskedDetails_Color.png: Default, sRGB True, wrap Repeat/Repeat, max 1024, Compressed
+INFO: Pack import SurfaceDecals/GlassShards_Scatter.png: Default, sRGB True, wrap Clamp/Clamp, max 1024, Compressed
+INFO: Pack import NightSky/city_night_sky_overcast_1k.hdr: Default, sRGB True, wrap Repeat/Clamp, max 1024, CompressedHQ
+PASS: Pack textures follow the folder and suffix import rules
+PASS: PackImport.Apply leaves nothing to reimport on a second run
+PASS: Import rules leave the older packs alone
+INFO: Model import StreetModels/PoliceCar.obj: uv2 False, margin Calculate at 40 texels per unit
+INFO: Model import StreetModels/StreetLamp.obj: uv2 False, margin Calculate at 40 texels per unit
+INFO: Model import StreetModels/ApartmentBlock.obj: uv2 True, margin Calculate at 6 texels per unit
+INFO: Model import InteriorModels/Rug.obj: uv2 True, margin Calculate at 16 texels per unit
+INFO: Model import KayKitCity/car_police.obj: uv2 True, margin Calculate at 40 texels per unit
+PASS: Prop packs import without lightmap UVs; buildings, the rug and KayKit keep them with their planned chart margins
+INFO: Pack import NightSoundscape/NightCity_Loop.ogg: CompressedInMemory, Vorbis 0.6, background True
+INFO: Pack import NightSoundscape/FootstepHard_01.wav: DecompressOnLoad, PCM 1, background False
+INFO: Pack import Music/MenuTheme.ogg: Streaming, Vorbis 0.7, background True
+PASS: Pack audio imports: loops compressed in memory, one-shots PCM, music streaming
+INFO: Dressing groups=23; combined renderers=90; unbatched static-zone renderers=0
+PASS: Night dressing is combined by material
+INFO: Night palette materials with a texture set: 18; with the set's packed metallic-smoothness map: 18
+PASS: Night palette maps all come from the selected set
+INFO: Ceiling set=PBRInterior/CeilingPaint; facade set=NightMaterials/FacadeStone
+PASS: Ceiling and facade use the selected sets
+PASS: Fascia shows the shop sign
+PASS: Closed sign on the entrance door and Staff Only on the side-room doors
+PASS: Collection signs sit in the wall sign frames
+PASS: Staged floor decals stay unplaced
+INFO: Police look: Provisional (today's look); car placed UserPoliceCar
+PASS: Police choices come from the PoliceLook setting, Provisional by default
+INFO: Street packs: StreetModels present, ForensicModels present, PeopleModels present
+INFO: Street furniture base y on its surface: StormDrainGrate_0 -0.120 on -0.120; StormDrainGrate_1 -0.120 on -0.120; UtilityBox 0.000 on 0.000; BusShelter 0.000 on 0.000; BikeRack_0 -0.120 on 0.000; BikeRack_1 -0.120 on 0.000; ForensicCase 0.000 on 0.000; NitrileGloveBox 0.740 on 0.740
+PASS: Street furniture rests on the pavement, the street or the table under it
+INFO: Street props reaching the play area, one bounds collider each: StormDrainGrate_0, ForensicCase, NitrileGloveBox
+PASS: Street props that reach the play area carry one bounds collider; the rest carry none
+INFO: Street props and figures: 9 placed, 22 renderers casting, 1 blended (no shadow); LOD groups: UtilityBox 3, ForensicCase 3
+PASS: Street props cast shadows as listed, their glass never, and keep their LOD levels
+INFO: Street figures, gap to the play area: PasserBy_Phone 2.80 m
+PASS: Figures stand at least 2.5 m outside the play area with no collider
+INFO: Bollards: StreetModels Bollard with shadows; narrowest gap 2.31 m
+PASS: Bollards stand in the anti-ram row, solid and grounded, the pack's casting shadows
+INFO: Row across the street: 0 vertices inside the apartment block's slot; block placed
+PASS: The row across the street leaves the apartment block's slot free exactly when the block stands in it
+INFO: Apartment block x -3.80..11.91, z -26.00..-16.58; front slab facing the street 226 m2, facing away 12 m2
+PASS: The apartment block stands in its slot across the street, its facade to the shop
+INFO: Apartment block renderers: 5 lightmapped and shadowing (terrace scale 0.3), 1 glass
+PASS: The apartment block bakes into the lightmaps at the terrace's density and casts shadows
+INFO: Exterior drawn back to z -27.00 (far pavement ends at -27.00)
+PASS: The KayKit skyline towers are gone; nothing stands beyond the far pavement
+INFO: Street facades: brick PBRExterior/BrickFacade, render PBRExterior/Render, shutters PBRExterior/MetalShutter
+PASS: Brick on the left, render on the right and half-closed shutters on both neighbours and across the street
+INFO: Baked street emitters: lit windows across the street, apartment rooms, bus shelter lightbox; Light components under the exterior: 0
+PASS: Lit windows, the apartment's rooms and the bus shelter's lightbox are baked emitters, and the street adds no light
+INFO: Alarm bell box at x 5.50, y 3.12..3.48; cladding 0.000 m behind its back
+PASS: The alarm bell box sits on the fascia cladding, clear of the shop sign and the coping
+PASS: No hydrant, parking machine, traffic light, road sign or name plate stands outside the shop (country left open)
+INFO: Interior props placed: Showroom/Planter_Front/SnakePlant, Showroom/Planter_RearLeft/SnakePlant, Showroom/Planter_Office/SnakePlant, Showroom/Rug, Showroom/FireExtinguisher, Showroom/WallClock, Office/ComputerMonitor, Office/Keyboard, Architecture/Ceiling/CeilingDiffuser_0, Architecture/Ceiling/CeilingDiffuser_1, Architecture/Ceiling/CeilingDiffuser_2, Architecture/Ceiling/CeilingDiffuser_3
+PASS: NightInterior.Props names the props this build placed
+INFO: Planter Planter_Front: snake plant 0.260 x 1.079 x 0.260 m, 0.0 mm above the floor, collider 0.260 x 1.079 x 0.260 m, shadow casters 3
+INFO: Planter Planter_RearLeft: snake plant 0.260 x 1.079 x 0.260 m, 0.0 mm above the floor, collider 0.260 x 1.079 x 0.260 m, shadow casters 3
+INFO: Planter Planter_Office: snake plant 0.260 x 1.079 x 0.260 m, 0.0 mm above the floor, collider 0.260 x 1.079 x 0.260 m, shadow casters 3
+PASS: Snake plants fill the three planters, each solid with one bounds collider
+INFO: Rug: 2.000 x 0.012 x 1.400 m, 2.0 mm above the floor, x 5.20..7.20, z 0.50..1.90, lightmap scale 0.80 (sofa 0.80)
+PASS: The rug lies flat under the sofa and side table, lightmapped, with no collider or shadow
+INFO: Desk top 0.750 m; monitor base 0.0 mm, keyboard base 0.0 mm; monitor-keyboard gap 79.4 mm; tray gap to monitor 110.6 mm, to keyboard 156.6 mm; loupe gap to keyboard 135.8 mm, to monitor 239.1 mm
+PASS: Monitor and keyboard stand on the desk, clear of the transport tray, the loupe and each other
+INFO: Monitor: emissive materials 1, others 1; Light components in the showroom and office 0
+PASS: The monitor screen glows without a light and stays out of the bake; monitor and keyboard are solid
+INFO: Extinguisher: back 6.0 mm off the skirting, base 0.0 mm, x 0.910..1.190 (opening half-width 0.80), 3 LOD levels
+PASS: The extinguisher stands on the floor a few millimetres off the skirting, clear of the office opening
+INFO: Wall clock: back 1.0 mm off the partition, y 2.460..2.780 (opening 2.40, ceiling 3.00), top level WallClock_LOD1
+PASS: The wall clock hangs flat on the lintel above the office opening, its top level the LOD1 file
+INFO: Ceiling diffusers: largest offset from the slab underside 0.0 mm; nearest downlight 1.22 m, nearest track rail 2.61 m
+PASS: Ceiling diffusers sit flush under the ceiling between the downlights and cast no shadow
+INFO: Showroom wall graphics: 8 pictures, 1.0 mm to 60.0 mm off their surfaces
+INFO: Office wall graphics: 3 pictures, 3.0 mm to 3.0 mm off their surfaces
+INFO: Exterior/Street wall graphics: 3 pictures, 2.0 mm to 12.0 mm off their surfaces
+PASS: Wall graphics lie flat 0.5 to 70 mm in front of their surfaces, facing out and unmirrored
+INFO: Lost-cat flyer: 0.230 x 0.307 x 0.000 m centred at x 8.300, y 1.500, z -0.203; 5 of 5 rays on the facade cladding, 3.0 mm to 3.0 mm behind; nearest lamp post axis 2.50 m
+PASS: The lost-cat flyer lies flat on the right pier's stone, clear of the lamp posts
+INFO: Wall graphics: largest U/V pixel-density mismatch 0.00 %
+PASS: Wall graphics sample only their own atlas cell at its aspect
+INFO: Sign_Rear: Body removed, nearest picture triangle on the partition 0.21 m from the frame
+INFO: Sign_Counter: Body removed, nearest picture triangle on the partition 0.34 m from the frame
+PASS: The still life and the lightbox take the rear and counter frames' place
+INFO: Wall graphics placed: Showroom: Art_Heda_BreakfastWithLobster (Gilt), Showroom: Lightbox_AurelFinchWide (Box), Showroom: FireEvacuationPlan (Clip), Showroom: Art_Pissarro_BoulevardMontmartre (Gilt), Showroom: Sign_CCTV (None), Office: NoticeBoard_StaffCork (None), Office: Calendar_October2026 (None), Office: Certificate_GemmologyDiplomaFramed (None), Showroom: Sticker_AlarmMonitored (Sticker), Showroom: Sticker_InsurerApproved (Sticker), Showroom: Sticker_CardsAccepted (Sticker), Exterior/Street: Graffiti_Tags (None), Exterior/Street: StreetPosters_Weathered (None), Exterior/Street: Flyer_LostCat (None)
+INFO: Gilt moulding: 32 face triangles, 30.0 mm to 30.0 mm off the wall
+PASS: Wall graphics use the two atlas pages and the gilt moulding, alpha-tested, unlit and shadowless
+INFO: Country-neutral interior: 14 wall graphics, 0 police-specific; 0 call points
+PASS: Interior graphics and fittings stay country-neutral: no police notice, no pull-station call point
+INFO: Closing procedure (StockInSafes=True): case groups=14, merged renderers=62, intact cases=10
+PASS: Cases hold display furniture only under the closing procedure
+INFO: Left-behind jewellery in the safes: SafeLarge 7, SafeTall 1; largest support gap 0.7 mm
+PASS: Left-behind jewellery lies on the open safes' lining and shelves
+INFO: Left-behind jewellery: desk=1, floor=3; nearest walk route 0.38 m; nearest UV trace 0.64 m of 3 traces
+PASS: Jewellery on the desk and the floor rests on its surface, clear of the walk route and the UV traces
+INFO: Left-behind pack jewellery: pieces=12, LOD groups=11, glass lens renderers=2, stand-ins=0
+PASS: Left-behind jewellery keeps its LOD levels, casts no shadow and stays opaque and probe-lit (glass lenses aside)
+INFO: Glass zones=5: fan vertices outside 0 of 720; broken cases=3, floor spill outside 0 of 54; scatter impact points outside 0 of 3; Facade/EntranceDoors/Shards floor vertices outside every zone 2 of 72; Facade/Sidelight_Right/Shards floor vertices outside every zone 15 of 54 (known gap: footsteps stay hard there)
+PASS: Glass zones cover the entrance fans, the broken cases' floor spill and the shard scatter's impact points
+INFO: Shard scatters=3 for broken cases=3, impact points (-1.90, 4.55) (1.91, 4.55) (5.25, 4.19)
+PASS: Glass shards lie in front of the broken cases only
+INFO: Always-on decals (lightmapped): FloorDecals x1.00 on Architecture/Floor x1.00, StreetDecals x0.30 on Exterior/Ground/Street x0.30, PavementDecals x0.75 on Exterior/Ground/Pavement x0.75, FarPavementDecals x0.10 on Exterior/Ground/FarPavement x0.10, NeighboursDecals x0.30 on Exterior/Buildings/Neighbours x0.30; renderers=5, quads=17
+PASS: Always-on decals cast no shadow, are never occluders or probe-static, and bake at their surface's density
+INFO: Decal triangles=98 in 21 meshes over 21 cells; outside a cell=0, off aspect=0; worst aspect 0.0 % (Fingerprints_Atlas)
+PASS: Decal quads sample only their own atlas cells at the cells' aspect
+INFO: Decal lift over its surface (triangles 98): Architecture/FloorDecals 1.5 mm to 1.5 mm; Exterior/Ground/StreetDecals 3.0 mm to 3.0 mm; Exterior/Ground/PavementDecals 3.0 mm to 3.0 mm; Exterior/Ground/FarPavementDecals 3.0 mm to 3.0 mm; Exterior/Buildings/NeighboursDecals 2.0 mm to 2.0 mm; Dressing/PresenterSets 1.5 mm to 1.6 mm
+PASS: Decals lie 1 to 4.5 mm above the surface beneath them, parallel to it
+INFO: Presenter sets under Dressing/PresenterSets: AmbientWear, CaseEvidence; renderers=26; tools from ForensicModels=3, stand-ins=0, largest support gap 0.0 mm
+PASS: Hidden decal sets stay out of the bake and the discarded tools rest on the floor or pavement
+INFO: Hidden decal renderers: marks=14, glass prints=2 over case glass at queue 3000
+PASS: Hidden floor marks draw before every transparent and the latent prints after the case glass
+INFO: Case-evidence trail: mud prints=3, dust prints=15 (furthest centroid 0.14 m off the route), tracked dirt=1 (0.69 m from the entrance); nearest dropped piece 0.19 m from a shoe print
+PASS: The case-evidence trail runs from the pavement through the forced doors along the walk route
+INFO: Lighting packs: NightSky present, StreetModels present
+INFO: Glow cards: 6 halos for 6 lenses, 2 washes, 16 triangles, 1 material(s); lights under the store 8
+PASS: Glow halos and washes add no light: additive cards without collider, shadow or probes
+PASS: Each glow halo is saved on its lens, facing the arrival view
+INFO: Light-bar washes over their surface: street 4.0-4.0 mm, shop floor 4.0-4.0 mm
+PASS: The light bar's washes lie flat just over the street at the car and over the shop floor inside the entrance
+INFO: Night sky: NightStorePanorama (Skybox/Panoramic); default reflection Skybox
+PASS: The night sky is the overcast panorama; reflections come from the sky and the baked probes
+INFO: Across-street probe box (-26.00, -0.50, -17.50)..(28.00, 14.00, -12.00) covers row x -26.0..28.0 to 13.5 m, ApartmentBlock, BusShelter, BikeRack_0, BikeRack_1
+PASS: The across-street reflection probe encloses the far facades and the far pavement
+INFO: Streetlight spots: 0 shop side up z 1.00; 1 shop side up z 1.00; 2 far side up z -1.00; 3 far side up z -1.00; cookie reaches 63 px towards its top edge, 147 px towards its bottom
+PASS: Streetlight cookies throw their short sharp edge towards the nearer facade
+INFO: Lantern 0: glass y 3.138-3.510 (half-width 0.174), bulb y 3.227-3.302, lens y 3.210-3.330 (half-width 0.080), light y 3.270
+PASS: Each lantern holds its light and one lens at the bulb inside its glass, and casts no shadow
+INFO: Presenter sets built: Alarm bell (Soundscape/AlarmBell), Ambient wear (Dressing/PresenterSets/AmbientWear), Case evidence (Dressing/PresenterSets/CaseEvidence); expected Alarm bell, Ambient wear, Case evidence (SurfaceDecals Ambient page with wear cells, NightSoundscape AlarmBell_Close_Loop.wav present)
+PASS: Every presenter set is built hidden, its content a child of the set
+INFO: Credits: 2 attribution lines after the built-in one; needed by 13 scene meshes, 0 clips and 1 parts of 8 referenced prefabs, from KhronosSamples, PeopleModels
+PASS: The credits file names every placed CC BY and MIT asset and nothing else
+INFO: Licence notices a player build ships: 43 from 37 pack folders (7 from Licenses folders); credited packs KhronosSamples, PeopleModels
+PASS: The player build ships every pack's licence notice, the credited packs' among them
+INFO: Geometry helpers: coplanar overlap found in 10 mm overlap (triangles 0 and 2)
+PASS: Shared triangle-ray, footprint and coplanar helpers measure known shapes exactly
+INFO: Dressing finishes (smoothness): GemParcel_GemPaper_O 0.20, GoldBar1kg_GoldBar1kg_O 0.72, GoldCoin_GoldCoin_O 0.72, KitCord 0.10, KitDeviceBlack 0.40, KitFelt 0.05, KitGem 0.85, KitGold 0.72, KitKraft 0.15, KitLeatherette 0.30, KitPearl 0.70, KitSilver 0.72, KitVelvetNavy 0.18; mapped, skipped: KitBronze (_GlossMapScale 1.00), KitLeather (_GlossMapScale 1.00), KitSuede (_GlossMapScale 1.00), KitVelvet (_GlossMapScale 1.00), KitWalnut (_GlossMapScale 1.00)
+PASS: Dressing and jewellery finishes stay at or below 0.72 smoothness (gems 0.85), glass and mapped surfaces aside
+INFO: Case edges: band on CentralCase_Left, CentralCase_Middle, CentralCase_Right, LeftIsland_Front, LeftIsland_Rear, KnockedCase, RightIsland_Rear, WallCase_Left0, WallCase_Left1, WallCase_Left2, WallCase_Right0, WallCase_Right1, WallCase_Rear; none on RightIsland_Front
+PASS: Case tops show their green glass edge exactly where the top pane is intact, at the cases' 1.05 m height
+INFO: Architraves: showroom face z 8.4220..8.4400, office face z 8.5600..8.5780, top 2.445, 0 vertices in the opening, 0 outside the frame; skirting by the opening from |x| 0.845, office run present; clock 14.8 mm above the head; extinguisher 65.0 mm beside the leg
+PASS: Walnut architraves frame the office opening on both faces and the skirting butts into them, with no coplanar overlap
+INFO: Shadow gap: 28 vertices, bounds x -7.997..7.997, y 2.985..3.000, z 0.060..11.997; off the walls 0
+PASS: A dark shadow gap runs round the showroom and office walls under the ceiling, probe-lit and shadowless
+INFO: Wall devices: back gaps PIR_FrontLeft 0.0 mm, PIR_FrontRight 0.0 mm, PIR_Office 0.0 mm, AlarmKeypad_Office 0.0 mm, Switch_Showroom 0.0 mm, Switch_Office 0.0 mm, Socket_LeftWall 0.0 mm, Socket_RightWall 0.0 mm, Socket_Counter 0.0 mm, Socket_Desk 0.0 mm, Socket_Drawers 0.0 mm; 14 wall graphics placed (WallGraphics)
+PASS: Switches, sockets, PIR detectors and the office keypad sit on their walls, above the skirting and clear of the wall graphics and fixtures
+INFO: Ceiling devices: CctvDome_0 nearest Downlight_6 1.55 m, CctvDome_1 nearest Downlight_19 1.23 m, SmokeDetector_0 nearest Downlight_8 1.11 m, SmokeDetector_1 nearest Downlight_18 0.81 m (4 diffusers placed)
+PASS: CCTV domes and smoke detectors hang flush under the ceiling, clear of the downlights, tracks and diffusers
+INFO: PIR detectors: PIR_FrontLeft room 0.90, street 0.00, PIR_FrontRight room 0.90, street 0.00, PIR_Office room 0.57, street 1.00
+PASS: PIR detectors face into the showroom and the office, and the showroom ones never towards the shop windows
+INFO: Security camera: yaw 0.0, deepest Body vertex 0.0 mm past the partition face, lens 0.277 m out, aim dot 1.000
+PASS: The corner camera's plate sits flat on the partition and only its housing turns towards the entrance
+INFO: Cut cable: 1 found, 2.6 mm off the partition, top 12.7 mm from the camera's pivot
+PASS: The only cut cable hangs under the security camera in the hidden Case evidence set, in front of the wall
+INFO: Street trees: Tree_0 x -14.94..-13.12, y 0.000..6.09, z -16.05..-14.24, 592 triangles, nearest BusShelter 1.67 m; Tree_1 x 1.18..3.04, y 0.000..6.05, z -16.08..-14.43, 592 triangles, nearest Streetlight_3 3.60 m; Tree_2 x 16.96..18.88, y 0.000..6.16, z -16.08..-14.21, 592 triangles, nearest Streetlight_3 9.61 m
+PASS: Street trees stand on the far pavement clear of the lamps, the shelter, the racks and the facades, probe-lit, shadowless and without colliders
+INFO: Lightmaps=0 (largest 0 px; max size 1024)
+PASS: Night store lightmap budget
+PASS: Night lightmaps are directional (normal maps respond to baked light)
+PASS: Lightmap density by zone
+INFO: Lightmap density 20 texels/m; imported kit renderers 0
+PASS: No lightmapped renderer outgrows one lightmap
+PASS: Kit models beside the spawn bake at their import margin density
+PASS: Light lenses are captured by the baked reflection probes
+PASS: Buildings across the street are lightmapped at the far density
+PASS: Glass reflection probes bake at 256 px, the night sky at 128 px
+INFO: Budget: LOD groups=21; all levels drawn at once: triangles=211454, renderers=526, transparent=64; hidden presenter sets (all levels): triangles=9749, renderers=26
+PASS: Budgets count the LOD level selected from the worst eye
+INFO: Budget: triangles=132787 (store 48044, exterior 58265, dressing 15874, tools and player 10604) of 220000, worst eye route 4
+PASS: Night store triangle budget
+INFO: Budget: renderers before static batching=453 of 900, worst eye spawn
+PASS: Night store renderer budget
+INFO: Budget: submeshes (draw calls before static batching, all active renderers)=788
+INFO: Budget: materials=126 of 133; textures=144, largest 2048 px of 2048
+PASS: Night store material budget
+INFO: Budget: transparent renderers=52 of 70, worst eye spawn; facade panes of 1 m2 or more=10 of 10
+PASS: Night store transparency budget
+INFO: Night store triangles=221209; renderers=555; static=462; lightmapped=94; lights baked=0, realtime=8 (diagnostic sun, off; the flashlight is created at runtime); light probes placed=676
+INFO: Night lighting not baked: realtime shadowless fallback (RunNightQuick)
+PASS: Night scene renders in linear colour space
+PASS: Store fixtures are off at arrival
+PASS: Headlights are baked spots aimed at the entrance
+PASS: Streetlights and moonlight are baked
+PASS: Only the flashlight casts realtime shadows
+PASS: Night quality settings applied
+PASS: Forward-only player builds strip the deferred shader pass
+INFO: Probe region centre=(0.00, 4.25) nearest=0
+INFO: Probe region centre=(0.00, 10.00) nearest=0
+INFO: Probe region centre=(0.00, 0.00) nearest=0
+INFO: Probe region centre=(0.00, -1.63) nearest=0
+INFO: Probe region centre=(3.50, -5.45) nearest=0
+INFO: Light probes=676 (placed 676)
+PASS: Light probes cover the accessible areas
+PASS: Reflection probes are baked for showroom, office and street
+PASS: Diagnostic daylight toggles and restores the night
+PASS: Light bar blinks without realtime lights
+INFO: Print-like textures at arrival: drawn=0, hidden=9; ShoePrint_GeometryPlaceholder (untextured footwear treads the texture scan cannot see): absent
+PASS: No print-like or footwear-like mark is drawn at arrival
+INFO: Presenter sets at arrival: Alarm bell, Ambient wear, Case evidence; listed for the Scene tab=3; underscore off
+PASS: Presenter sets are hidden at arrival and each listed once for the Scene tab; the underscore is off
+INFO: Presenter-set switches tried: 3
+PASS: Each presenter-set switch shows and hides its set and confirms on the monitor only
+PASS: Night store builds every zone
+PASS: Office holds exactly two open safes
+PASS: Entrance is open between the forced door leaves
+INFO: Spawn (1.60, -0.12, -5.40); car body 0.69 m away
+PASS: Visitor starts beside the police car facing the shop
+PASS: VR recentre blinks through the comfort fade
+PASS: Player spawns beside the police car
+INFO: Walk route complete
+PASS: Visitor walks from the car to the safe
+PASS: Street beyond the staging bay stays out of reach
+PASS: Teleport accepts the pavement and refuses the far street
+PASS: Tools can be placed on the pavement
+PASS: Tools can be placed in the staging bay
+INFO: Walk route clearance: nearest street collider Bollard_2 at 1.68 m of 12 measured (needs 0.28 m)
+PASS: Street furniture and bollards keep the walk route and the spawn clear
+INFO: Rack samples: every click and grab reaches its sample; glove box 0.038 m from the nearest sample
+PASS: Rack samples on the equipment table stay clickable from both sides, clear of the glove box
+PASS: Rack samples on the equipment table stay grabbable beside the glove box and under the camera
+PASS: Night tool prefabs are styled (scale bands, depth-tested numbers, police tape)
+INFO: Tape shader CrimeScene/Tape supported=True passes=3 material passes=3 errors=False
+INFO: Tape pass 0 name=FORWARD mode=FORWARDBASE
+INFO: Tape pass 1 name=FORWARD mode=FORWARDADD
+INFO: Tape pass 2 name=ShadowCaster mode=SHADOWCASTER
+PASS: Police tape is lit by the torches and lamps and casts shadows
+PASS: Night tool prefabs live in the night store's own folder
+PASS: Carried lamp rests on the street in the staging bay
+PASS: Tool released overhead in the staging bay drops to the street
+INFO: Entrance glass vertices=720; flush=720
+PASS: Loose glass sits flush on its surfaces
+PASS: Overview map frames the store and the staging bay
+PASS: Overview renders only on the drawer's Map tab
+PASS: Overview map draws albedo through its replacement shader
+PASS: Beacon clamps to the night store regions
+PASS: Review sketch frames the night store
+PASS: UV example traces start hidden
+PASS: UV torch and white flashlight are exclusive
+PASS: UV drops lie in the office in front of the large safe
+PASS: UV trace glow keeps its mask detail below the LDR clip
+PASS: UV trace glows inside the beam
+PASS: UV trace stays dark outside the cone
+PASS: UV trace stays dark behind a wall
+PASS: Scene lamp lights its spot and limits lit lamps to two
+PASS: Scene lamp removes cleanly
+INFO: Realtime lights: arrival 0 (+7 quick-preview stand-ins); two lamps 2; with flashlight 3 (1 shadowed); with UV torch 3 (1 shadowed)
+PASS: Night store realtime light budget
+PASS: Handheld lights keep a per-pixel slot
+INFO: Cookies: flashlight Assets/CrimeSceneDemo/ThirdParty/NightSky/cookie_flashlight_led_512.png, UV torch Assets/CrimeSceneDemo/ThirdParty/NightSky/cookie_uv_torch_512.png, scene lamp Assets/CrimeSceneDemo/ThirdParty/NightSky/cookie_scene_floodlight_512.png
+PASS: Torches and lit scene lamps project the NightSky cookies
+INFO: Light bar: 1.50 Hz, largest step of the red share 0.031 per 1/400 cycle, 2 washes
+PASS: The light bar crossfades between red and blue without a jump, and its washes follow
+PASS: Light bar steady switch holds both halves dimmed with the washes off (desktop-only toast); a reset flashes it again
+INFO: Glow halos per camera: ahead faced, beside faced, behind faced; main camera faced
+PASS: Glow halos turn to whichever camera renders them; a headlamp's halo shows only ahead of the car
+INFO: Quick-preview streetlights (StreetLamp): 0 Auto at 1.00; 1 Auto at 1.00; 2 ForceVertex at 1.00; 3 ForceVertex at 1.00
+PASS: Quick-preview streetlights follow the lamp profile: shadowless, near ones per-pixel, far ones vertex-lit
+INFO: Staged sounds: shutter=True, switch=True, set-down=True, panel=True, ambience=True
+PASS: Staged sounds replace generated clips
+INFO: Sound packs: NightSoundscape present, Music present, NightAudio present
+PASS: Night store soundscape and its street bed are built
+INFO: Zones: 6 exterior and 1 interior sources; street bed 0.12 outside, inside at 55 % below 1500 Hz; half-way 5745 Hz at blend 0.50 after 0.75 s; street bed low-pass custom cutoff curve 1 keys, 1.00 at the source, 1.00 at maxDistance
+PASS: The street is muffled inside the shop and full range on the pavement
+PASS: Walking through the door fades the street (half the smoothing time gives half the blend at the log-frequency midpoint)
+INFO: Soundscape sources: StreetWind (exterior), CarIdle (exterior), RoomTone (interior), DoorGap (neither), CarPass (exterior), Dog (exterior), Bell (exterior), StreetAmbience (exterior); kept out of the zones: 4
+PASS: Exterior beds, street events and the alarm bell blend with the zones; the door whistle, the music, the interface and the footsteps stay out
+INFO: Bank takes: shutter CameraShutterDSLR_01, torch FlashlightClick_01; street bed NightCity_Loop at spatial blend 0.0
+PASS: The bank plays NightSoundscape's shutter, torch click and city bed, the bed in 2D
+INFO: Bed start offsets: StreetAmbience 6.0 of 60.0 s, StreetWind 4.8 of 48.0 s, CarIdle 5.9 of 14.4 s, RoomTone 32.3 of 45.0 s; door whistle from its start
+PASS: Looped beds start at random points; the door whistle starts at its beginning
+INFO: Street events: CarPass in 59.0 s (every 20-60 s), Dog in 189.6 s (every 60-240 s); a car fired now schedules the next in 38.2 s (24.6..66.7)
+PASS: Cars pass and the CC0 dog barks now and then, each through its own 2D source and after the last has ended
+INFO: Car idle: car space (0.00, 0.77, 1.63), 0.50 m behind the headlamps, 2.0 m from the spawn eye, maxDistance 25; low-pass custom cutoff curve 1 keys, 1.00 at the source, 1.00 at maxDistance
+PASS: The V8 idle plays 3D at the police car's bonnet, heard at the spawn and muffled inside with the street
+INFO: Alarm bell: 0.010 m from the bell box's centre, 6.7 m from the spawn eye and 16.3 m from the far pavement (maxDistance 60)
+PASS: The alarm bell rings from the bell box only while its set is shown
+INFO: Reverb: 4 zones; estimated wet share on the pavement outside the door 0.00, at the showroom's front corners 0.00, at its side-wall cases 1.00, least across mid-depth 1.00, most along the pavement's inner edge 0.00 (1 full, 0 dry)
+PASS: Room reverb fills the showroom wall to wall and the office, and stops before the pavement; music and interface sounds stay dry
+INFO: Footsteps: 6 hard and 8 glass takes, 5 glass zones; pavement walk stepped at 0.75 m (hard) and 1.40 m (hard), glass walk at 0.70 m (glass) and 1.40 m (glass)
+PASS: Desktop footsteps step every 0.7 m, crunch in the glass zones and skip jumps
+INFO: VR footsteps: head walked 1 m, the teleport moved the rig 5.31 m, two snap turns turned it 90 degrees; steps played 0
+PASS: Room-scale walking, teleports and snap turns make no footsteps in VR
+INFO: Set-downs on the pavement: cone ConePlace_03 at 0.55, scale ToolSetDown; markers have 3 takes
+PASS: Cones and markers set down with their own takes; other tools keep the thud
+PASS: The underscore and the reset sting play from NightStore/Music, 2D, wired to the session
+INFO: Underscore: bed 0.180 after 8446 frames, 0.090 under the sting
+PASS: The underscore is off at arrival and its switch turns it on and off with a monitor-only toast; a sting ducks it
+INFO: Menu theme (DemoBuild.AddMenuMusic): bed 0.25 over 2.5 s; frame 0.0003 s; 0.000 after one frame, 0.125 half-way (0.125 expected), 0.250 after 8446 frames; fade-out 0.125 half-way, 0.000 after 2029 frames (0.6 s)
+PASS: The start menu plays its theme, fading in, then to silence over DemoLauncher.MusicFadeSeconds before a map loads
+PASS: Interface theme carries the Barlow fonts and the controller shader
+PASS: UI uses the Arabic glyph font, with the replacement theme as its fallback
+PASS: Panel credits come from DemoUi.Credits
+PASS: Credits fall back to the built-in line without a credits file
+PASS: The start menu's credits summary is the first credits line
+PASS: Feedback feed keeps the newest four messages and expires them
+PASS: Headset toast skips presenter-only messages; the monitor still shows them
+PASS: Hotbar maps keys 1-6 to the tool kinds in order
+PASS: Help overlay pauses desktop input
+PASS: Context prompt follows what the desktop visitor holds
+PASS: Crouch lowers the desktop eye height
+PASS: Zoom narrows the view
+PASS: Controller tooltips and status card build on both hands
+PASS: Tool carousel shows the newly selected kind
+PASS: Controller interface updates a frame and counts a new tool
+PASS: Faded controller hints stop rendering
+PASS: Before-render pose refresh leaves the controllers alone without a headset
+PASS: Headset interface stays out of evidence photos, the viewfinder and the map
+PASS: Haptic pulses rank refusal above placement above grab
+PASS: Head and controller poses are applied before HandInteractor places the held tool
+PASS: Tool station exists
+PASS: Sequential marker numbers
+PASS: Marker label and font assigned
+PASS: Tool placement
+PASS: Status board shows the pending tape selection
+PASS: Tape connection
+PASS: Tape length
+PASS: Tape follows moved post
+PASS: Measuring tape connects two reels and reads the distance
+PASS: Measuring tape label follows the moved reel
+PASS: Status board asks for the second reel
+PASS: Measuring reels and barrier posts never cross-connect
+PASS: Status board frees its panel material when destroyed
+PASS: Tape removed after endpoint removal
+PASS: Runtime photograph saved
+PASS: Photo count follows saved photographs
+PASS: Photo frame shows the saved photograph
+PASS: Photo frame samples a mipmapped copy of the photograph
+PASS: Saved photograph matches the in-memory photo
+PASS: View photograph restores dedicated camera pose
+PASS: Photo camera renders LDR with anti-aliasing
+PASS: Review session JSON written
+PASS: Photograph records deployed tools in the review
+PASS: Review contains the copied photograph
+PASS: HTML review references the photograph
+PASS: HTML review contact sheet tile and shot list row carry the shot, entry, camera, tools and markers
+PASS: HTML review sketches the scene with tool glyphs and the camera
+PASS: Sketch maps a shop position inside the drawing
+PASS: Reset clears deployed objects
+PASS: Reset restarts marker numbering
+PASS: Reset preserves photographs
+PASS: Reset restores handheld camera
+PASS: Review session JSON written
+PASS: Snapshot and reset append review entries with the tools
+PASS: Snapshot records the tape connection and the sketch draws it in the panel's colour
+PASS: Camera glyph and caption appear only on the photograph entry
+PASS: Reset restores the night arrival
+INFO: Reset: presenter sets shown before 3, back at their arrival state after 3 of 3; light bar held steady before, flashing after; underscore on before, still on after
+PASS: A session reset hides every presenter set and makes the light bar flash again; the underscore keeps its setting
+INFO: Reset sting: played 1 time(s) by the reset; bed ducked until 3.00 s after it (DuckSeconds 3)
+PASS: A session reset plays the sting and ducks the underscore
+PASS: Night quality settings restored after the run
+INFO: Night store summary: checks passed=261; bake=0.0 s (not baked); lightmaps=0; triangles=132787; renderers=453
+PASS: Validation completed

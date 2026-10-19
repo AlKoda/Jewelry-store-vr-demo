@@ -5,7 +5,7 @@ using UnityEngine;
 // the room, which does not move the rig. The middle of the view always stays fully clear;
 // at full stick speed the very edge darkens to Strength (0.35 by default, so the room
 // stays visible through it). Teleports (a jump of more than JumpDistance in one frame)
-// are ignored: they have their own blink. F7 on the desktop switches it on or off.
+// are ignored: they have their own blink. F6 on the desktop switches it on or off.
 // Lives on the XR rig; the ring is a child of the head on the headset interface layer,
 // so evidence photos never show it.
 public sealed class XRComfortVignette : MonoBehaviour

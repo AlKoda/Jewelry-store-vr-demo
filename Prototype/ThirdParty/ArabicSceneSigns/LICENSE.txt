@@ -1,0 +1,2 @@
+Project-authored Arabic sign layouts and text. Noto Sans Arabic font: SIL Open Font License 1.1; see ../Fonts/Arabic/OFL.txt.
+Atlas derivatives preserve the original artwork cells from WallGraphics; original attribution remains in WallGraphics/LICENSE.txt and the in-app credits. Text-bearing cells replaced with project-authored Arabic graphics.

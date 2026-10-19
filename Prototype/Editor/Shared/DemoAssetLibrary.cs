@@ -335,18 +335,44 @@ public static class DemoAssetLibrary
     // otherwise Opaque. A material with a finish is keyed model_material_role; any other
     // by colour map (or material name without one), RGBA tint and role, so a shared map
     // tinted two ways stays two materials.
+    // Unity 6's OBJ importer drops Kd when map_Kd exists. Recover the authored
+    // tint and opacity before deduplicating materials, keeping shared atlases coloured.
+    private static readonly Dictionary<string, Color> authoredColors = new Dictionary<string, Color>();
+    private static Color AuthoredColor(string pack, string model, Material imported)
+    {
+        string path = Root + "/" + pack + "/" + model + ".mtl";
+        string key = path + "/" + imported.name;
+        if (authoredColors.TryGetValue(key, out Color cached)) return cached;
+        Color color = imported.color;
+        bool active = false;
+        if (System.IO.File.Exists(path)) foreach (string line in System.IO.File.ReadLines(path))
+        {
+            string[] fields = line.Trim().Split((char[])null, System.StringSplitOptions.RemoveEmptyEntries);
+            if (fields.Length == 0) continue;
+            if (fields[0] == "newmtl") { active = line.Trim().Substring(7).Trim() == imported.name; continue; }
+            if (!active) continue;
+            float Value(int i) => float.Parse(fields[i], System.Globalization.CultureInfo.InvariantCulture);
+            if (fields[0] == "Kd" && fields.Length >= 4) { color.r = Value(1); color.g = Value(2); color.b = Value(3); }
+            if (fields[0] == "d" && fields.Length >= 2) color.a = Value(1);
+            if (fields[0] == "Tr" && fields.Length >= 2) color.a = 1 - Value(1);
+        }
+        authoredColors[key] = color;
+        return color;
+    }
+
     public static Material PackMaterial(string pack, string model, Material imported)
     {
         if (imported == null) return null;
         model = BaseModel(model);
+        Color sourceColor = AuthoredColor(pack, model, imported);
         bool finished = Finishes.TryGetValue(pack + "/" + model + "/" + imported.name, out Finish finish);
         Texture albedo = imported.mainTexture;
         string albedoName = albedo != null ? albedo.name : null;
         float mask = albedo != null ? PackImport.CutoffOf(AssetDatabase.GetAssetPath(albedo)) : 0;
         float cutoff = mask > 0 ? mask : finish.Cutoff;
-        char role = imported.color.a < 0.99f || finish.Glass > 0 ? GlassRole : cutoff > 0 ? CutoutRole : finish.Emission > 0 ? EmissiveRole : OpaqueRole;
+        char role = sourceColor.a < 0.99f || finish.Glass > 0 ? GlassRole : cutoff > 0 ? CutoutRole : finish.Emission > 0 ? EmissiveRole : OpaqueRole;
         string key = finished ? model + "_" + imported.name + "_" + role
-            : (albedoName ?? imported.name) + "_" + ColorUtility.ToHtmlStringRGBA(imported.color) + "_" + role;
+            : (albedoName ?? imported.name) + "_" + ColorUtility.ToHtmlStringRGBA(sourceColor) + "_" + role;
         string path = PackMaterialFolder + "/" + pack + "/" + key + ".mat";
         if (packMaterials.TryGetValue(path, out Material cached) && cached != null) return cached;
         Material m = AssetDatabase.LoadAssetAtPath<Material>(path);
@@ -358,15 +384,14 @@ public static class DemoAssetLibrary
             builtMaterials.Remove(path);
         }
         // Built once per domain, so a regenerated scene picks up changes to the tables.
-        if (builtMaterials.Add(path)) BuildPackMaterial(m, pack, imported, finished, finish, role, cutoff);
+        if (builtMaterials.Add(path)) BuildPackMaterial(m, pack, imported, sourceColor, finished, finish, role, cutoff);
         packMaterials[path] = m;
         return m;
     }
 
-    private static void BuildPackMaterial(Material m, string pack, Material imported, bool finished, Finish finish, char role, float cutoff)
+    private static void BuildPackMaterial(Material m, string pack, Material imported, Color color, bool finished, Finish finish, char role, float cutoff)
     {
         Texture albedo = imported.mainTexture;
-        Color color = imported.color;
         color.a = role != GlassRole ? 1 : color.a < 0.99f ? color.a : finish.Glass;
         m.color = color;
         m.mainTexture = albedo;
@@ -417,6 +442,10 @@ public static class DemoAssetLibrary
     private static Vector2 NamedSurface(string material)
     {
         string n = material.ToLowerInvariant();
+        if (n.StartsWith("carpaint")) return new Vector2(.35f,.66f);
+        if (n == "carwindow") return new Vector2(.05f,.88f);
+        if (n == "carheadlamp") return new Vector2(.55f,.72f);
+        if (n == "cartaillens") return new Vector2(.1f,.65f);
         if (n.Contains("chrome")) return new Vector2(1, 0.92f);
         if (n.Contains("gold") || n.Contains("platinum")) return new Vector2(1, 0.9f);
         if (n.Contains("steel") || n.Contains("metal") || n.Contains("aluminium") || n.Contains("handle")) return new Vector2(1, 0.6f);
@@ -623,6 +652,8 @@ public static class DemoAssetLibrary
         const string barks = "\"Dog Barking in Neighborhood\" by Kinoton (https://freesound.org/s/516904/), licensed CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/); trimmed, filtered and normalised.";
         return new Dictionary<string, string>
         {
+            ["Fonts/Arabic"] = "Noto Sans Arabic — Copyright 2022 The Noto Project Authors (https://github.com/notofonts/arabic). SIL Open Font License 1.1; font and OFL.txt in ThirdParty/Fonts/Arabic. Project-authored Arabic sign artwork uses this font.",
+            ["AmbientProps/NetworkServerRackRow"] = "Network Server Rack by Khoa Nguyen (https://sketchfab.com/ngdkh), https://sketchfab.com/3d-models/network-server-rack-3b15fb8779274844b54e63a40194d450, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Converted to OBJ/metres by the asset pack; materials roughened for the store's security room.",
             ["KhronosSamples/TrafficCone"] = "TrafficCone — © 2024 hinndia. Creative Commons Attribution 4.0 International (CC BY 4.0). https://creativecommons.org/licenses/by/4.0/ — ground plane removed; used as the scene-cone visual.",
             ["KhronosSamples/GlamVelvetSofa"] = "GlamVelvetSofa — © 2021 Wayfair, LLC. CC BY 4.0.",
             ["KhronosSamples/SunglassesKhronos"] = "SunglassesKhronos — © 2024 Darmstadt Graphics Group GmbH. CC BY 4.0.",

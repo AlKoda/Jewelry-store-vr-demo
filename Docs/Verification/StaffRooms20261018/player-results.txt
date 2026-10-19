@@ -1,0 +1,82 @@
+Mono path[0] = 'C:/Users/MOBPC/Documents/ChatGPT/Jewelry store/repository/Builds/StaffRooms20261018/JewelryStoreDemo_Data/Managed'
+Mono config path = 'C:/Users/MOBPC/Documents/ChatGPT/Jewelry store/repository/Builds/StaffRooms20261018/MonoBleedingEdge/etc'
+CodeReloadManager initialized
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Initialize engine version: 6000.6.2f1 (770e33f6875c)
+[EntityIdStore] init: VM path (explicit commit), pageSize=4096, blockCount=1048576, entitiesPerBlock=256, slots reserved=4294967296 bytes
+[Subsystems] Discovering subsystems at path C:/Users/MOBPC/Documents/ChatGPT/Jewelry store/repository/Builds/StaffRooms20261018/JewelryStoreDemo_Data/UnitySubsystems
+[D3D12 Device Filter] Vendor Name: NVIDIA
+[D3D12 Device Filter] Device Name: NVIDIA GeForce RTX 5060 Ti
+[D3D12 Device Filter] Driver Version: 32.0.16.1088
+[D3D12 Device Filter] Feature Level: 12.2
+[D3D12 Device Filter] Graphics Memory: 7891 MB
+[D3D12 Device Filter] Processor Count: 12
+[D3D12 Device Filter] Device Type: Discrete
+GfxDevice: creating device client; kGfxThreadingModeSplitJobs
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        NVIDIA GeForce RTX 5060 Ti (ID=0x2d04)
+    Vendor:          NVIDIA
+    VRAM:            7891 MB
+    App VRAM Budget: 7123 MB
+    Driver:          32.0.16.1088
+Begin MonoManager ReloadAssembly
+- Finished resetting the current domain, in  0.007 seconds
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+<RI> Initializing input.
+
+<RI> Input initialized.
+
+UnloadTime: 0.594200 ms
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 2.184800 ms
+Unloading 9 unused Assets to reduce memory usage. Loaded Objects now: 5216.
+Total: 0.840000 ms (FindLiveObjects: 0.210400 ms CreateObjectMapping: 0.028000 ms MarkObjects: 0.531600 ms  DeleteObjects: 0.041700 ms)
+
+TORCH_BEAM_AND_CAMERA_HAND_PASS
+RECORDED_FOLEY_AND_QUIET_MIX_PASS
+CHECK_CAMERA DesktopPreviewCamera enabled=True focus=False
+COMBINED_TORCH_PASS
+COMBINED_MUSIC_PASS
+DOOR_PHYSICS_PASS Door angle=8.572113
+DOOR_PHYSICS_PASS Door angle=8.572113
+DOOR_PHYSICS_PASS DoorRight angle=8.215057
+DOOR_PHYSICS_PASS DoorLeft angle=8.215057
+DOOR_RESET_PASS
+DESKTOP_BODY_DOOR_PASS ServiceDoor/Door angle=73.00458 bodyZ=9.364921
+DESKTOP_BODY_DOOR_PASS OfficeDoor/Door angle=73.00464 bodyZ=9.364923
+DESKTOP_BODY_DOOR_PASS EntranceDoors/DoorRight angle=74.17696 bodyZ=0.8612088
+DESKTOP_BODY_DOOR_PASS EntranceDoors/DoorLeft angle=70.96295 bodyZ=0.7884476
+VR_BODY_DOOR_PASS Door angle=34.13734
+VR_BODY_DOOR_PASS Door angle=92.534
+VR_BODY_DOOR_PASS DoorRight angle=31.63235
+VR_BODY_DOOR_PASS DoorLeft angle=31.63235
+HAND_DOOR_PASS ServiceDoor/Door angle=13.8773
+HAND_DOOR_PASS OfficeDoor/Door angle=49.54144
+HAND_DOOR_PASS EntranceDoors/DoorRight angle=30.84114
+HAND_DOOR_PASS EntranceDoors/DoorLeft angle=28.26248
+STAFF_PLAYER_LAYOUT_PASS outdoor equipment hidden, indoor tools, furnished rooms and rough materials
+EXPANDED_SMOOTH_VR_DOOR_PASS
+UV_RENDER_PIXEL_CHECK green pixels=777 globals=(0.96, 6.00, 1.00, 0.00) position=(-0.16, 0.84, -0.01) local=(0.76, 0.84, -0.04)
+EXPANDED_UV_GATING_PASS 44 marks, white-light hidden, UV reveals, occlusion hides, traces follow door
+STAFF_UV_RENDER_PASS EvidenceUV_BackgroundPrint_0 green pixels=197
+STAFF_UV_RENDER_PASS EvidenceUV_FloorDrops_0 green pixels=591
+EXPANDED_PRINTED_TAPE_PASS no floating labels, Arabic ink texture, two lit faces
+EXPANDED_LANGUAGE_PASS Arabic shaping/font, Arabic-English roundtrip, permanent Arabic map
+SOFT_2K_TORCH_SHADOW_PASS
+COMBINED_FRAME_SAMPLE median_ms=0.03530329 p95_ms=0.0918013 GPU=NVIDIA GeForce RTX 5060 Ti focused=False cameraEnabled=True
+COMBINED_PLAYER_PASS
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input Polling Thread exited.
+Input System module state changed to: Shutdown.
+CodeReloadManager destroyed

@@ -45,7 +45,7 @@ public static class NightAudioBuilder
     public static readonly string[] ShowroomReverbNames = { "Reverb_ShowroomLeft", "Reverb_Showroom", "Reverb_ShowroomRight" };
     public static readonly Vector3 OfficeReverb = V(0, 1.5f, 10.25f);
     public const float ShowroomReverbMin = 3, ShowroomReverbMax = 4.5f, OfficeReverbMin = 1.5f, OfficeReverbMax = 3;
-    public const float FootstepVolume = 0.35f, FootstepGlassVolume = 0.3f;
+    public const float FootstepVolume = 0.22f, FootstepGlassVolume = 0.15f;
 
     public static void Apply(Transform root)
     {
@@ -68,6 +68,7 @@ public static class NightAudioBuilder
         steps.GlassZones = NightStoreDressing.GlassZones();
         steps.Volume = FootstepVolume;
         steps.GlassVolume = FootstepGlassVolume;
+        steps.PitchJitter = .018f;
         return steps;
     }
 
@@ -89,7 +90,7 @@ public static class NightAudioBuilder
         bank.Ambience = DemoAssetLibrary.Audio(SoundPack, "NightCity_Loop.ogg");
         if (bank.Ambience != null)
         {
-            bank.AmbienceVolume = 0.45f;
+            bank.AmbienceVolume = 0.12f;
             bank.AmbienceSpatialBlend = 0;
         }
         else
@@ -100,8 +101,8 @@ public static class NightAudioBuilder
         }
         bank.ConeSetDown = Series("ConePlace_", 3);
         bank.MarkerSetDown = Series("EvidenceMarkerPlace_", 3);
-        bank.FootstepsHard = Series("FootstepHard_", 6);
-        bank.FootstepsGlass = Series("FootstepGlass_", 5);
+        bank.FootstepsHard = RecordedSeries("HardWalk_", 6);
+        bank.FootstepsGlass = RecordedSeries("GlassWalk_", 8);
         if (bank.Any) return bank;
         UnityEngine.Object.DestroyImmediate(holder);
         return null;
@@ -128,6 +129,12 @@ public static class NightAudioBuilder
         return clips.ToArray();
     }
 
+    private static AudioClip[] RecordedSeries(string stem,int count)
+    {
+        var clips=new List<AudioClip>();for(int i=1;i<=count;i++){var clip=DemoAssetLibrary.Audio("RealFoley",stem+i.ToString("00")+".wav");if(clip)clips.Add(clip);}
+        return clips.ToArray();
+    }
+
     // ---------------------------------------------------------------- soundscape
 
     private static void Soundscape(Transform root, AmbientSound ambience)
@@ -135,7 +142,7 @@ public static class NightAudioBuilder
         Transform scape = Group(SoundscapeName, root);
         List<AudioSource> exterior = new List<AudioSource>(), interior = new List<AudioSource>();
         if (ambience != null) Add(exterior, ambience.GetComponent<AudioSource>());
-        Add(exterior, Loop(scape, "StreetWind", "StreetWind_Loop.ogg", Vector3.zero, 0.35f, 0, 0));
+        Add(exterior, Loop(scape, "StreetWind", "StreetWind_Loop.ogg", Vector3.zero, 0.075f, 0, 0));
 
         // The car a build placed (its anchors), in the soundscape's space: the idle at the
         // bonnet, half a metre behind the headlamps; any radio at the dash, half a metre
@@ -148,14 +155,14 @@ public static class NightAudioBuilder
         Vector3 lamps = (car.HeadlightLeft + car.HeadlightRight) * 0.5f;
         Vector3 bonnet = carSpace.MultiplyPoint3x4(V(0, lamps.y, lamps.z - 0.5f));
         Vector3 dash = carSpace.MultiplyPoint3x4(V(0, 1.0f, car.LightBar.z + 0.5f));
-        if (!string.IsNullOrEmpty(look.CarIdle)) Add(exterior, Loop(scape, CarIdleName, look.CarIdle, bonnet, 0.5f, 1, 25));
+        if (!string.IsNullOrEmpty(look.CarIdle)) Add(exterior, Loop(scape, CarIdleName, look.CarIdle, bonnet, 0.18f, 1, 25));
         if (!string.IsNullOrEmpty(look.RadioLoop)) Add(exterior, Loop(scape, RadioLoopName, look.RadioLoop, dash, 0.35f, 1, 20));
 
-        Add(interior, Loop(scape, "RoomTone", "HVACRoomTone_Loop.ogg", Vector3.zero, 0.25f, 0, 0));
+        Add(interior, Loop(scape, "RoomTone", "HVACRoomTone_Loop.ogg", Vector3.zero, 0.065f, 0, 0));
 
         // Wind through the forced doors: heard by distance alone, so in neither list; it
         // starts by itself (Unity folds the stereo loop to mono for 3D, PackImport).
-        AudioSource gap = Loop(scape, DoorGapName, "WindWhistleGap_Loop.ogg", V(0, 1.2f, 0), 0.2f, 0.5f, 6);
+        AudioSource gap = Loop(scape, DoorGapName, "WindWhistleGap_Loop.ogg", V(0, 1.2f, 0), 0.045f, 0.5f, 6);
         if (gap != null) gap.playOnAwake = true;
 
         Events(scape, look, dash, exterior);

@@ -1,0 +1,15 @@
+Unity 6000.6.2f1; Built-in pipeline
+Display case material review; actual Unity renders, controlled interior lighting.
+PASS: Intact display case retains five independent panes
+PASS: All panes use dielectric glass and polished cut edges
+PASS: Clear panes do not cast opaque shadows
+PASS: Display glass shader compiles on this graphics device
+PASS: Bevelled case stays within its triangle budget
+INFO: Intact case triangles=1080; GPU=NVIDIA GeForce RTX 5060 Ti
+PASS: Broken front leaves the opening accessible
+PASS: Fragments have clear faces and separate cut-edge material
+PASS: User props have the intended metre dimensions
+PASS: User prop pivots rest on their support surfaces
+PASS: Interior equipment table blocks the walker
+PASS: Prepared user props instantiate in Unity
+PASS: Validation completed

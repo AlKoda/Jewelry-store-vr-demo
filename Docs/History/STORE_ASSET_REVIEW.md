@@ -44,15 +44,15 @@ The asset register records these as CC0. Use a small consistent selection rather
 
 Earlier interior finish, before the robbed-stock and glass corrections:
 
-![Earlier interior](../Verification/Interior/showroom.png)
+![Earlier interior](VerificationInterior/showroom.png)
 
 Latest previously verified Glass milestone, with disturbed stock and clearer glazing:
 
-![Verified glass milestone](../Verification/Glass/showroom.png)
+![Verified glass milestone](VerificationGlass/showroom.png)
 
 Additional close-up from that verified milestone:
 
-![Glass and display close-up](../Verification/Glass/glass-closeup.png)
+![Glass and display close-up](VerificationGlass/glass-closeup.png)
 
 ## Next connected-PC pass
 

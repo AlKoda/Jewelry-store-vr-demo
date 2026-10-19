@@ -77,7 +77,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         if (!isActiveAndEnabled || Station == null || Looking) return false;
         if (HelpOpen) return true;
-        Vector2 p = new Vector2(screenPoint.x, Screen.height - screenPoint.y) / scale;
+        Vector2 p = new Vector2(screenPoint.x, Screen.height - screenPoint.y) / EffectiveScale;
         if (Layout != PanelLayout.Hidden && Area.Contains(p)) return true;
         if (!HotbarShown) return false;
         Rect bar = HotbarRect;
@@ -94,8 +94,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private ShopWalkController Walker => Interactor != null ? Interactor.Walker : null;
 
     // Layout rectangles in GUI units (screen pixels divided by Scale).
-    private float GuiWidth => Screen.width / scale;
-    private float GuiHeight => Screen.height / scale;
+    private float EffectiveScale => Mathf.Min(scale, Mathf.Min(Screen.width / 960f, Screen.height / 640f));
+    private float GuiWidth => Screen.width / EffectiveScale;
+    private float GuiHeight => Screen.height / EffectiveScale;
     private Rect Area
     {
         get
@@ -106,11 +107,13 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         }
     }
 
-    private const float DrawerWidth = 420;
+    private const float DrawerWidth = 510;
     private const float StripHeight = 56;
     private const int RecentTools = 8;
     private const int HotbarTools = 6, HotbarSlots = 9;
-    private const float SlotSize = 58, SlotGap = 6, SlotGroupGap = 18;
+    private const float SlotGap = 6, SlotGroupGap = 18;
+    private float SlotWidth=>90;
+    private float SlotHeight=>94;
     private const float FlashSeconds = 0.25f;
     private const string ScaleKey = "DemoPanelScale", HudKey = "DemoHudVisible", PromptsKey = "DemoShowPrompts", TabKey = "DemoPanelTab";
     private static readonly string[] SlotNames = { "Cone", "Marker", "Tape", "Scale", "Reel", "Lamp", "Camera", "Light", "UV" };
@@ -211,10 +214,10 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.F3)) XRGhostHand.ChangeOpacity(-0.1f);
         if (Input.GetKeyDown(KeyCode.F4)) XRGhostHand.ChangeOpacity(0.1f);
-        if (Input.GetKeyDown(KeyCode.F7))
+        if (Input.GetKeyDown(KeyCode.F6))
         {
             XRComfortVignette.Enabled = !XRComfortVignette.Enabled;
-            DemoFeedback.Post(XRComfortVignette.Enabled ? "Comfort vignette on  (F7 turns it off)" : "Comfort vignette off  (F7 turns it on)", FeedbackTone.Info, true);
+            DemoFeedback.Post(XRComfortVignette.Enabled ? "Comfort vignette on  (F6 turns it off)" : "Comfort vignette off  (F6 turns it on)", FeedbackTone.Info, true);
         }
         if (Input.GetKeyDown(KeyCode.LeftBracket)) ChangeScale(-0.25f);
         if (Input.GetKeyDown(KeyCode.RightBracket)) ChangeScale(0.25f);
@@ -239,7 +242,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         // recorded panel click (DemoSoundBank; silent without one).
         bool release = Event.current.type == EventType.MouseUp;
         float now = DemoFeedback.Now;
-        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(scale, scale, 1));
+        GUI.matrix = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, new Vector3(EffectiveScale, EffectiveScale, 1));
         bool vr = Interactor != null && !Interactor.isActiveAndEnabled;
         if (Station != null)
         {
@@ -286,7 +289,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     // Mode, light and tool state top left, wrapping before the toast column.
     private void DrawChips(DemoUi.Skin s, bool vr)
     {
-        float x = 14, y = 14, limit = GuiWidth * 0.62f;
+        float x = 14, y = Layout == PanelLayout.Strip ? StripHeight + 12 : 14, limit = Layout == PanelLayout.Full ? Mathf.Min(GuiWidth * 0.62f, Area.x - 20) : GuiWidth * 0.62f;
         Chip(s, ref x, ref y, limit, vr ? "VR" : "DESKTOP", s.ChipAccent);
         if (Lighting != null && Lighting.Night) Chip(s, ref x, ref y, limit, "NIGHT", s.Chip);
         if (Lighting != null && Lighting.FlashlightOn) Chip(s, ref x, ref y, limit, "FLASHLIGHT", s.Chip);
@@ -310,9 +313,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private static void Chip(DemoUi.Skin s, ref float x, ref float y, float limit, string text, GUIStyle style)
     {
         GUIContent content = DemoUi.Content(text);
-        Vector2 size = style.CalcSize(content);
+        Vector2 size = style.CalcSize(content);if(DemoLanguage.Arabic)size.x+=10;
         if (x > 14 && x + size.x > limit) { x = 14; y += 34; }
-        GUI.Label(new Rect(x, y, size.x, size.y), content, style);
+        DemoI18n.Label(new Rect(x, y, size.x, size.y), content, style);
         x += size.x + 6;
     }
 
@@ -342,7 +345,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (target == null) return;
         GUIContent content = DemoUi.Content(target);
         Vector2 size = s.Chip.CalcSize(content);
-        GUI.Label(new Rect(c.x - size.x / 2, c.y + r + 10, size.x, size.y), content, s.Chip);
+        DemoI18n.Label(new Rect(c.x - size.x / 2, c.y + r + 10, size.x, size.y), content, s.Chip);
     }
 
     // With a free cursor: the name of what is under it, beside the pointer.
@@ -350,11 +353,11 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         string target = TargetName();
         if (target == null) return;
-        Vector2 mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y) / scale;
+        Vector2 mouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y) / EffectiveScale;
         GUIContent content = DemoUi.Content(target);
         Vector2 size = s.Chip.CalcSize(content);
         float x = Mathf.Min(mouse.x + 18, GuiWidth - size.x - 6), y = Mathf.Min(mouse.y + 16, GuiHeight - size.y - 6);
-        GUI.Label(new Rect(x, y, size.x, size.y), content, s.Chip);
+        DemoI18n.Label(new Rect(x, y, size.x, size.y), content, s.Chip);
     }
 
     // What the keys do right now, as key-and-action pairs ("LMB", "Place", ...).
@@ -415,20 +418,20 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (message == null) return;
         GUIContent content = DemoUi.Content(message);
         Vector2 size = s.Chip.CalcSize(content);
-        GUI.Label(new Rect((GuiWidth - size.x) / 2, bottom - size.y, size.x, size.y), content, s.ChipAccent);
+        DemoI18n.Label(new Rect((GuiWidth - size.x) / 2, bottom - size.y, size.x, size.y), content, s.ChipAccent);
     }
 
     // ---------------------------------------------------------------- hotbar
 
     private bool HotbarShown => DesktopActive && hudVisible && Layout != PanelLayout.Full && !HelpOpen;
-    private float HotbarNaturalWidth => HotbarSlots * SlotSize + (HotbarSlots - 1) * SlotGap + SlotGroupGap;
+    private float HotbarNaturalWidth => HotbarSlots * SlotWidth + (HotbarSlots - 1) * SlotGap + SlotGroupGap;
     private float SlotScale => Mathf.Min(1, (GuiWidth - 40) / HotbarNaturalWidth);
 
     private Rect HotbarRect
     {
         get
         {
-            float k = SlotScale, w = HotbarNaturalWidth * k, h = SlotSize * k;
+            float k = SlotScale, w = HotbarNaturalWidth * k, h = SlotHeight * k;
             return new Rect((GuiWidth - w) / 2, GuiHeight - h - 18, w, h);
         }
     }
@@ -437,8 +440,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         Rect bar = HotbarRect;
         float k = SlotScale;
-        float x = bar.x + (i * (SlotSize + SlotGap) + (i >= HotbarTools ? SlotGroupGap : 0)) * k;
-        return new Rect(x, bar.y, SlotSize * k, SlotSize * k);
+        float x = bar.x + (i * (SlotWidth + SlotGap) + (i >= HotbarTools ? SlotGroupGap : 0)) * k;
+        return new Rect(x, bar.y, SlotWidth * k, SlotHeight * k);
     }
 
     private void DrawHotbar(DemoUi.Skin s)
@@ -450,22 +453,22 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             Rect slot = SlotRect(i);
             bool available = SlotAvailable(i);
-            if (GUI.Button(slot, GUIContent.none, SlotOn(i) ? s.SlotSelected : s.Slot) && available)
+            if (DemoI18n.Button(slot, GUIContent.none, SlotOn(i) ? s.SlotSelected : s.Slot) && available)
             {
                 int index = i;
                 Defer(() => UseSlot(index));
             }
             Color tint = SlotColor(i);
             if (!available) tint.a = 0.25f;
-            float icon = slot.height * 0.5f;
+            float icon = Mathf.Min(slot.width*.45f,slot.height*.42f);
             Color previous = GUI.color;
             GUI.color = tint;
             GUI.DrawTexture(new Rect(slot.center.x - icon / 2, slot.y + slot.height * 0.14f, icon, icon), DemoUi.Icon(SlotIcon(i)));
             GUI.color = previous;
-            if (k > 0.7f) GUI.Label(new Rect(slot.x + 6, slot.y + 3, 20, 16), DemoUi.Content(SlotKeys[i]), s.SlotKey);
-            if (k > 0.85f) GUI.Label(new Rect(slot.x, slot.yMax - 19, slot.width, 16), DemoUi.Content(SlotNames[i]), s.SlotName);
+            if (k > 0.7f) DemoI18n.Label(new Rect(slot.x + 6, slot.y + 3, 20, 28), DemoUi.Content(SlotKeys[i]), s.SlotKey);
+            if (k > 0.70f) DemoI18n.Label(new Rect(slot.x+3, slot.yMax-43, slot.width-6, 40), DemoUi.Content(SlotNames[i]), s.SlotName);
             if (i < HotbarTools && kindCounts[i] > 0 && k > 0.7f)
-                GUI.Label(new Rect(slot.xMax - 24, slot.y + 3, 18, 16), DemoUi.Content(Count(kindCounts[i])), s.SlotCount);
+                DemoI18n.Label(new Rect(slot.xMax - 24, slot.y + 3, 18, 28), DemoUi.Content(Count(kindCounts[i])), s.SlotCount);
         }
     }
 
@@ -519,7 +522,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             DemoUi.Fill(new Rect(rect.x + rect.width * i / 3f, rect.y, 1, rect.height), guide);
             DemoUi.Fill(new Rect(rect.x, rect.y + rect.height * i / 3f, rect.width, 1), guide);
         }
-        GUI.Label(new Rect(rect.x + 8, rect.y + 8, 40, 18), DemoUi.Content("LIVE"), s.Badge);
+        DemoI18n.Label(new Rect(rect.x + 8, rect.y + 8, 40, 18), DemoUi.Content("LIVE"), s.Badge);
         if (keys != null) DemoUi.DrawHints(new Rect(rect.x + 2, rect.yMax + 4, rect.width, 28), keys);
     }
 
@@ -545,7 +548,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             DemoUi.Box(r, 10, new Color(0.06f, 0.07f, 0.09f, 0.94f), DemoUi.Line);
             Color tone = DemoFeedback.ToneColor(message.Tone);
             DemoUi.Box(new Rect(r.x + 10, r.y + 10, 4, h - 20), 2, tone, tone);
-            GUI.Label(new Rect(r.x + 24, r.y + 9, textWidth + 4, h - 18), content, s.Body);
+            DemoI18n.Label(new Rect(r.x + 24, r.y + 9, textWidth + 4, h - 18), content, s.Body);
             GUI.color = previous;
             y += h + 8;
         }
@@ -559,7 +562,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         float y = Layout == PanelLayout.Strip ? StripHeight + 10 : GuiHeight * 0.18f;
         Rect r = new Rect((GuiWidth - w) / 2, y, w, 42);
         DemoUi.Box(r, 12, new Color(0.32f, 0.08f, 0.07f, 0.96f), DemoUi.WithAlpha(DemoUi.Warning, 0.7f));
-        GUI.Label(r, text, s.Center);
+        DemoI18n.Label(r, text, s.Center);
     }
 
     private void OnShutter() { flashUntil = Time.unscaledTime + FlashSeconds; }
@@ -600,7 +603,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         float x = 16;
         GUIContent title = DemoUi.Content("CRIME SCENE");
         float titleWidth = s.Heading.CalcSize(title).x;
-        GUI.Label(new Rect(x, 0, titleWidth, StripHeight), title, s.Heading);
+        DemoI18n.Label(new Rect(x, 0, titleWidth, StripHeight), title, s.Heading);
         x += titleWidth + 14;
         StripChip(s, ref x, right, vr ? "VR" : "DESKTOP", s.ChipAccent);
         if (Station.PendingPrompt != null) StripChip(s, ref x, right, Station.PendingPrompt + (vr ? "" : "  (T)"), s.ChipAccent);
@@ -617,7 +620,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUIContent content = DemoUi.Content(text);
         Vector2 size = style.CalcSize(content);
         if (x + size.x > right - 10) return;
-        GUI.Label(new Rect(x, (StripHeight - size.y) / 2, size.x, size.y), content, style);
+        DemoI18n.Label(new Rect(x, (StripHeight - size.y) / 2, size.x, size.y), content, style);
         x += size.x + 6;
     }
 
@@ -626,7 +629,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUIContent content = DemoUi.Content(label);
         float w = style.CalcSize(content).x;
         Rect r = new Rect(right - w, (StripHeight - 36) / 2, w, 36);
-        if (GUI.Button(r, content, style)) Defer(action);
+        if (DemoI18n.Button(r, content, style)) Defer(action);
         return r.x - 6;
     }
 
@@ -642,18 +645,18 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     {
         GUILayout.BeginArea(Area, s.Panel);
         GUILayout.BeginHorizontal();
-        GUILayout.Label(DemoUi.Content("Crime Scene Demo"), s.Title);
+        DemoI18n.LayoutLabel(DemoUi.Content("Crime Scene Demo"), s.Title,GUILayout.ExpandWidth(true));
         GUILayout.FlexibleSpace();
-        GUILayout.Label(DemoUi.Content(vr ? "VR" : "DESKTOP"), s.ChipAccent);
+        DemoI18n.LayoutLabel(DemoUi.Content(vr ? "VR" : "DESKTOP"), s.ChipAccent);
         GUILayout.Space(6);
-        if (GUILayout.Button("x", s.ButtonGhost, GUILayout.Width(38))) Defer(() => Layout = PanelLayout.Hidden);
+        if (DemoI18n.LayoutButton("x", s.ButtonGhost, GUILayout.Width(38))) Defer(() => Layout = PanelLayout.Hidden);
         GUILayout.EndHorizontal();
-        GUILayout.Label(DemoUi.Content(StatusLine()), s.Dim);
+        DemoI18n.LayoutLabel(DemoUi.Content(StatusLine()), s.Dim);
         GUILayout.Space(8);
         GUILayout.BeginHorizontal();
         // The loop variable is captured only inside the click branch, so no closure per tab and event.
         for (int i = 0; i < TabNames.Length; i++)
-            if (GUILayout.Button(DemoUi.Content(TabNames[i]), Tab == (PanelTab)i ? s.TabActive : s.Tab)) { PanelTab chosen = (PanelTab)i; Defer(() => SelectTab(chosen)); }
+            if (DemoI18n.LayoutButton(DemoUi.Content(TabNames[i]), Tab == (PanelTab)i ? s.TabActive : s.Tab)) { PanelTab chosen = (PanelTab)i; Defer(() => SelectTab(chosen)); }
         GUILayout.EndHorizontal();
         GUILayout.Space(6);
         DemoUi.Fill(GUILayoutUtility.GetRect(1, 1, GUILayout.ExpandWidth(true)), DemoUi.Line);
@@ -683,7 +686,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private static void Heading(DemoUi.Skin s, string text)
     {
         GUILayout.Space(6);
-        GUILayout.Label(text, s.Heading);
+        DemoI18n.LayoutLabel(text, s.Heading);
     }
 
     private string StatusLine() => statusLine;
@@ -697,10 +700,10 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         shownMarker = marker;
         shownPhotos = photos;
         toolsText = deployed + (deployed == 1 ? " tool" : " tools");
-        toolChip = toolsText + "   ·   marker " + marker + " next";
+        toolChip = toolsText + "   Â·   marker " + marker + " next";
         markerText = "Marker " + marker + " next";
         photoText = photos < 0 ? null : photos + (photos == 1 ? " photo" : " photos");
-        statusLine = toolsText + " in the scene   ·   marker " + marker + " next" + (photoText != null ? "   ·   " + photoText : "");
+        statusLine = toolsText + " in the scene   Â·   marker " + marker + " next" + (photoText != null ? "   Â·   " + photoText : "");
     }
 
     private void ToolsTab(DemoUi.Skin s, bool vr)
@@ -724,11 +727,11 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         bool auto = DemoUi.Switch("Join new posts and reels automatically", Station.AutoConnectTape);
         if (auto != Station.AutoConnectTape) { bool chosen = auto; Defer(() => Station.AutoConnectTape = chosen); }
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Start a separate run", s.Button)) Defer(Station.StartNewTapeRun);
-        if (Station.PendingPost != null && GUILayout.Button("Cancel selection  (X)", s.Button)) Defer(Station.CancelTapeSelection);
+        if (DemoI18n.LayoutButton("Start a separate run", s.Button)) Defer(Station.StartNewTapeRun);
+        if (Station.PendingPost != null && DemoI18n.LayoutButton("Cancel selection  (X)", s.Button)) Defer(Station.CancelTapeSelection);
         GUILayout.EndHorizontal();
-        if (Station.PendingPrompt != null) GUILayout.Label("<color=" + DemoUi.Hex(DemoUi.Accent) + ">" + Station.PendingPrompt + "</color>", s.Body);
-        if (Station.LitLampCount > 0) GUILayout.Label("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
+        if (Station.PendingPrompt != null) DemoI18n.LayoutLabel("<color=" + DemoUi.Hex(DemoUi.Accent) + ">" + Station.PendingPrompt + "</color>", s.Body);
+        if (Station.LitLampCount > 0) DemoI18n.LayoutLabel("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
 
         Heading(s, "PLACED");
         PlacedTools(s);
@@ -737,14 +740,14 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private void ToolTile(DemoUi.Skin s, Rect tile, DemoToolKind kind, int index)
     {
         // A captured parameter would allocate the closure on every call: copy it inside the click branch.
-        if (GUI.Button(tile, GUIContent.none, s.Slot)) { DemoToolKind chosen = kind; Defer(() => SpawnFromPanel(chosen)); }
+        if (DemoI18n.Button(tile, GUIContent.none, s.Slot)) { DemoToolKind chosen = kind; Defer(() => SpawnFromPanel(chosen)); }
         Color previous = GUI.color;
         GUI.color = KindColor(kind);
         GUI.DrawTexture(new Rect(tile.center.x - 17, tile.y + 10, 34, 34), DemoUi.Icon(DemoUi.IconFor(kind)));
         GUI.color = previous;
-        GUI.Label(new Rect(tile.x, tile.yMax - 26, tile.width, 20), DemoUi.Content(DeployedTool.Title(kind)), s.SlotName);
-        GUI.Label(new Rect(tile.x + 7, tile.y + 4, 20, 16), DemoUi.Content(SlotKeys[index]), s.SlotKey);
-        if (kindCounts[(int)kind] > 0) GUI.Label(new Rect(tile.xMax - 26, tile.y + 4, 20, 16), DemoUi.Content(Count(kindCounts[(int)kind])), s.SlotCount);
+        DemoI18n.Label(new Rect(tile.x, tile.yMax - 32, tile.width, 28), DemoUi.Content(DeployedTool.Title(kind)), s.SlotName);
+        DemoI18n.Label(new Rect(tile.x + 7, tile.y + 4, 20, 28), DemoUi.Content(SlotKeys[index]), s.SlotKey);
+        if (kindCounts[(int)kind] > 0) DemoI18n.Label(new Rect(tile.xMax - 26, tile.y + 4, 20, 28), DemoUi.Content(Count(kindCounts[(int)kind])), s.SlotCount);
     }
 
     // Desktop: into the visitor's hand, and the drawer closes so it can be placed at once.
@@ -767,14 +770,14 @@ public sealed class DemoDesktopPanel : MonoBehaviour
     private void PlacedTools(DemoUi.Skin s)
     {
         // `placed` and the chips come from Recount (ToolsChanged), not a hierarchy walk per event.
-        if (placed.Count == 0) { GUILayout.Label("Nothing placed yet. Press 1-6 or click a tile above.", s.Dim); return; }
+        if (placed.Count == 0) { DemoI18n.LayoutLabel("Nothing placed yet. Press 1-6 or click a tile above.", s.Dim); return; }
         GUILayout.BeginHorizontal();
         for (int i = 0; i < KindCount; i++)
-            if (kindChips[i] != null) GUILayout.Label(DemoUi.Content(kindChips[i]), s.Chip);
+            if (kindChips[i] != null) DemoI18n.LayoutLabel(DemoUi.Content(kindChips[i]), s.Chip);
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
         int first = Mathf.Max(0, placed.Count - RecentTools);
-        if (first > 0) GUILayout.Label("+" + first + " earlier", s.Small);
+        if (first > 0) DemoI18n.LayoutLabel("+" + first + " earlier", s.Small);
         for (int i = placed.Count - 1; i >= first; i--)
         {
             DeployedTool tool = placed[i];
@@ -785,9 +788,9 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             GUI.color = KindColor(tool.Kind);
             GUI.DrawTexture(new Rect(dot.x, dot.center.y - 5, 10, 10), DemoUi.Disc(5, Color.white));
             GUI.color = previous;
-            GUILayout.Label(tool.DisplayName + (tool.Holder != null ? "  ·  in hand" : ""), s.Body);
+            DemoI18n.LayoutLabel(tool.DisplayName + (tool.Holder != null ? "  Â·  in hand" : ""), s.Body);
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Remove", s.ButtonGhost, GUILayout.Width(84))) { DeployedTool target = tool; Defer(() => RemoveTool(target)); }
+            if (DemoI18n.LayoutButton("Remove", s.ButtonGhost, GUILayout.Width(84))) { DeployedTool target = tool; Defer(() => RemoveTool(target)); }
             GUILayout.EndHorizontal();
         }
     }
@@ -808,19 +811,19 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private void CameraTab(DemoUi.Skin s, bool vr)
     {
-        if (EvidenceCamera == null) { GUILayout.Label("No evidence camera in this scene.", s.Dim); return; }
+        if (EvidenceCamera == null) { DemoI18n.LayoutLabel("No evidence camera in this scene.", s.Dim); return; }
         Heading(s, "EVIDENCE CAMERA");
         GUILayout.BeginVertical(s.Card);
-        GUILayout.Label(EvidenceCamera.Status, s.Body);
-        GUILayout.Label(EvidenceCamera.PhotoCount + (EvidenceCamera.PhotoCount == 1 ? " photo" : " photos") + " this session"
-            + (EvidenceCamera.Holder != null ? "   ·   camera in hand" : "   ·   camera on its rack"), s.Dim);
+        DemoI18n.LayoutLabel(EvidenceCamera.Status, s.Body);
+        DemoI18n.LayoutLabel(EvidenceCamera.PhotoCount + (EvidenceCamera.PhotoCount == 1 ? " photo" : " photos") + " this session"
+            + (EvidenceCamera.Holder != null ? "   Â·   camera in hand" : "   Â·   camera on its rack"), s.Dim);
         GUILayout.EndVertical();
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Take photo  (P)", s.ButtonAccent)) Defer(Photograph);
-        if (DesktopActive && GUILayout.Button(Interactor.HoldingCamera ? "Return camera  (F)" : "Hold camera  (F)", s.Button))
+        if (DemoI18n.LayoutButton("Take photo  (P)", s.ButtonAccent)) Defer(Photograph);
+        if (DesktopActive && DemoI18n.LayoutButton(Interactor.HoldingCamera ? "Return camera  (F)" : "Hold camera  (F)", s.Button))
             Defer(Interactor.ToggleCamera);
         GUILayout.EndHorizontal();
-        if (GUILayout.Button("Open photo folder", s.ButtonGhost)) Defer(EvidenceCamera.OpenPhotoFolder);
+        if (DemoI18n.LayoutButton("Open photo folder", s.ButtonGhost)) Defer(EvidenceCamera.OpenPhotoFolder);
         // Panel padding, the scrollbar and its margin.
         float width = Area.width - 52;
         if (EvidenceCamera.Viewfinder != null)
@@ -840,16 +843,16 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             Heading(s, "INSTRUCTOR REVIEW");
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Save snapshot", s.Button)) Defer(Review.SaveSnapshot);
-            if (GUILayout.Button("Open review", s.Button)) Defer(Review.OpenReview);
+            if (DemoI18n.LayoutButton("Save snapshot", s.Button)) Defer(Review.SaveSnapshot);
+            if (DemoI18n.LayoutButton("Open review", s.Button)) Defer(Review.OpenReview);
             GUILayout.EndHorizontal();
-            GUILayout.Label(Review.Status, s.Dim);
+            DemoI18n.LayoutLabel(Review.Status, s.Dim);
         }
     }
 
     private void MapTab(DemoUi.Skin s)
     {
-        if (Map == null || Map.Texture == null) { GUILayout.Label("No overview map in this scene.", s.Dim); return; }
+        if (Map == null || Map.Texture == null) { DemoI18n.LayoutLabel("No overview map in this scene.", s.Dim); return; }
         Heading(s, "OVERVIEW");
         float size = Area.width - 52;
         Rect frame = GUILayoutUtility.GetRect(size, size);
@@ -878,8 +881,8 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             if (Beacon.Active) Glyph(mapRect, Map.ToMap(Beacon.Position), new Color(1f, 0.65f, 0.15f), 12);
             GUILayout.Space(4);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(Beacon.Active ? "Beacon placed. Click the map to move it." : "Click the map to place the beacon (B at the pointer).", s.Dim);
-            if (Beacon.Active && GUILayout.Button("Clear", s.ButtonGhost, GUILayout.Width(70))) Defer(Beacon.Clear);
+            DemoI18n.LayoutLabel(Beacon.Active ? "Beacon placed. Click the map to move it." : "Click the map to place the beacon (B at the pointer).", s.Dim);
+            if (Beacon.Active && DemoI18n.LayoutButton("Clear", s.ButtonGhost, GUILayout.Width(70))) Defer(Beacon.Clear);
             GUILayout.EndHorizontal();
         }
         Heading(s, "LEGEND");
@@ -908,7 +911,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         GUI.color = color;
         GUI.DrawTexture(new Rect(dot.x + 2, dot.center.y - 5, 10, 10), DemoUi.Disc(5, Color.white));
         GUI.color = previous;
-        GUILayout.Label(label, s.Dim);
+        DemoI18n.LayoutLabel(label, s.Dim);
         GUILayout.EndHorizontal();
     }
 
@@ -931,20 +934,20 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             Heading(s, "STORE");
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Robbed", SceneState.Intact ? s.Tab : s.TabActive) && SceneState.Intact) Defer(SceneState.Toggle);
-            if (GUILayout.Button("Intact", SceneState.Intact ? s.TabActive : s.Tab) && !SceneState.Intact) Defer(SceneState.Toggle);
+            if (DemoI18n.LayoutButton("Robbed", SceneState.Intact ? s.Tab : s.TabActive) && SceneState.Intact) Defer(SceneState.Toggle);
+            if (DemoI18n.LayoutButton("Intact", SceneState.Intact ? s.TabActive : s.Tab) && !SceneState.Intact) Defer(SceneState.Toggle);
             GUILayout.EndHorizontal();
-            GUILayout.Label("I switches between them.", s.Small);
+            DemoI18n.LayoutLabel("I switches between them.", s.Small);
         }
         if (Lighting != null)
         {
             Heading(s, "LIGHTING");
             // A baked night scene's day is the diagnostic daylight for comparing the layout.
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Night", Lighting.Night ? s.TabActive : s.Tab) && !Lighting.Night) Defer(Lighting.ToggleNight);
-            if (GUILayout.Button(Lighting.BakedNight ? "Diagnostic day" : "Day", Lighting.Night ? s.Tab : s.TabActive) && Lighting.Night) Defer(Lighting.ToggleNight);
+            if (DemoI18n.LayoutButton("Night", Lighting.Night ? s.TabActive : s.Tab) && !Lighting.Night) Defer(Lighting.ToggleNight);
+            if (DemoI18n.LayoutButton(Lighting.BakedNight ? "Diagnostic day" : "Day", Lighting.Night ? s.Tab : s.TabActive) && Lighting.Night) Defer(Lighting.ToggleNight);
             GUILayout.EndHorizontal();
-            GUILayout.Label("N switches between them.", s.Small);
+            DemoI18n.LayoutLabel("N switches between them.", s.Small);
             bool torch = DemoUi.Switch("Flashlight  (L)", Lighting.FlashlightOn);
             if (torch != Lighting.FlashlightOn) Defer(Lighting.ToggleFlashlight);
             bool uv = DemoUi.Switch("UV torch  (U)", Lighting.UVTorchOn);
@@ -953,15 +956,15 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             {
                 bool examples = DemoUi.Switch("UV example traces", Lighting.UVExamplesVisible);
                 if (examples != Lighting.UVExamplesVisible) Defer(Lighting.ToggleUVExamples);
-                GUILayout.Label("Placeholder traces: what they represent is the instructor's choice.", s.Small);
+                DemoI18n.LayoutLabel("Placeholder traces: what they represent is the instructor's choice.", s.Small);
             }
             if (Lighting.LightBar != null)
             {
                 bool flashing = DemoUi.Switch("Light bar flashing", Lighting.LightBarFlashing);
                 if (flashing != Lighting.LightBarFlashing) Defer(Lighting.ToggleLightBarFlashing);
-                GUILayout.Label("Switch it off to hold the bar steady for visitors sensitive to flashing light. A reset makes it flash again.", s.Small);
+                DemoI18n.LayoutLabel("Switch it off to hold the bar steady for visitors sensitive to flashing light. A reset makes it flash again.", s.Small);
             }
-            if (Station.LitLampCount > 0) GUILayout.Label("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
+            if (Station.LitLampCount > 0) DemoI18n.LayoutLabel("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
         }
         DressingSection(s);
         MusicSection(s);
@@ -969,16 +972,16 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         {
             Heading(s, "BEACON");
             GUILayout.BeginHorizontal();
-            GUILayout.Label(Beacon.Active ? "Showing on the floor." : "Not placed. Use the Map tab or B.", s.Dim);
+            DemoI18n.LayoutLabel(Beacon.Active ? "Showing on the floor." : "Not placed. Use the Map tab or B.", s.Dim);
             GUILayout.FlexibleSpace();
-            if (Beacon.Active && GUILayout.Button("Clear", s.ButtonGhost, GUILayout.Width(70))) Defer(Beacon.Clear);
+            if (Beacon.Active && DemoI18n.LayoutButton("Clear", s.ButtonGhost, GUILayout.Width(70))) Defer(Beacon.Clear);
             GUILayout.EndHorizontal();
         }
         if (Session != null)
         {
             Heading(s, "SESSION");
-            GUILayout.Label("Removes every placed tool and restores the store. Photos are kept.", s.Dim);
-            if (GUILayout.Button(ResetArmed ? "Click again to confirm the reset" : "Reset placed tools and scene", ResetArmed ? s.ButtonDanger : s.Button))
+            DemoI18n.LayoutLabel("Removes every placed tool and restores the store. Photos are kept.", s.Dim);
+            if (DemoI18n.LayoutButton(ResetArmed ? "Click again to confirm the reset" : "Reset placed tools and scene", ResetArmed ? s.ButtonDanger : s.Button))
                 Defer(() => RequestReset());
         }
     }
@@ -1017,7 +1020,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 // The delegate is made only inside the click branch.
                 if (DemoUi.Switch(dressingLabels[i], shown) != shown) Defer(set.Toggle);
             }
-            if (!string.IsNullOrEmpty(dressingNotes[i])) GUILayout.Label(dressingNotes[i], s.Small);
+            if (!string.IsNullOrEmpty(dressingNotes[i])) DemoI18n.LayoutLabel(dressingNotes[i], s.Small);
         }
     }
 
@@ -1029,16 +1032,21 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         Heading(s, "MUSIC");
         bool on = DemoUi.Switch("Underscore music", music.BedOn);
         if (on != music.BedOn) Defer(music.ToggleBed);
-        GUILayout.Label("Off at arrival. It sets a mood only and never answers what the visitor does.", s.Small);
+        DemoI18n.LayoutLabel("Off at arrival. It sets a mood only and never answers what the visitor does.", s.Small);
     }
 
     private void SettingsTab(DemoUi.Skin s)
     {
+        Heading(s,"LANGUAGE");
+        GUILayout.BeginHorizontal();
+        if(DemoI18n.LayoutButton(DemoLanguage.Shape("Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"),DemoLanguage.Arabic?s.TabActive:s.Tab))Defer(()=>DemoLanguage.Arabic=true);
+        if(DemoI18n.LayoutButton("English",!DemoLanguage.Arabic?s.TabActive:s.Tab))Defer(()=>DemoLanguage.Arabic=false);
+        GUILayout.EndHorizontal();DemoI18n.LayoutLabel("Store signs stay Arabic in both UI languages.",s.Small);
         Heading(s, "INTERFACE SIZE  ([ ])");
         GUILayout.BeginHorizontal();
         // Captured values are copied inside the click branches, so no closure is made per event.
         for (int i = 0; i < ScalePresets.Length; i++)
-            if (GUILayout.Button(DemoUi.Content(ScaleLabels[i]), Mathf.Abs(scale - ScalePresets[i]) < 0.01f ? s.TabActive : s.Tab))
+            if (DemoI18n.LayoutButton(DemoUi.Content(ScaleLabels[i]), Mathf.Abs(scale - ScalePresets[i]) < 0.01f ? s.TabActive : s.Tab))
             {
                 float value = ScalePresets[i];
                 Defer(() => Scale = value);
@@ -1064,27 +1072,27 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 bool chosen = invert;
                 Defer(() => { target.InvertY = chosen; target.SaveSettings(); });
             }
-            GUILayout.Label("C crouches, hold Z to zoom, Shift to walk faster.", s.Small);
+            DemoI18n.LayoutLabel("C crouches, hold Z to zoom, Shift to walk faster.", s.Small);
         }
         GUILayout.Space(10);
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Controls  (F1)", s.Button)) Defer(ToggleHelp);
-        if (GUILayout.Button("Restore defaults", s.ButtonGhost)) Defer(RestoreDefaults);
+        if (DemoI18n.LayoutButton("Controls  (F1)", s.Button)) Defer(ToggleHelp);
+        if (DemoI18n.LayoutButton("Restore defaults", s.ButtonGhost)) Defer(RestoreDefaults);
         GUILayout.EndHorizontal();
         GUILayout.Space(10);
         // The one credits text, kept by DemoUi (no copy here to drift from the licences).
-        GUILayout.Label(DemoUi.Credits, s.Small);
+        DemoI18n.LayoutLabel(DemoUi.Credits, s.Small);
     }
 
     private static float SliderRow(DemoUi.Skin s, string label, float value, float min, float max, string format)
     {
         GUILayout.BeginHorizontal();
-        GUILayout.Label(label, s.Body, GUILayout.Width(140));
+        DemoI18n.LayoutLabel(label, s.Body, GUILayout.Width(140));
         GUILayout.BeginVertical();
         GUILayout.Space(7);
         float result = GUILayout.HorizontalSlider(value, min, max, GUILayout.ExpandWidth(true));
         GUILayout.EndVertical();
-        GUILayout.Label(result.ToString(format), s.Dim, GUILayout.Width(40));
+        DemoI18n.LayoutLabel(result.ToString(format), s.Dim, GUILayout.Width(40));
         GUILayout.EndHorizontal();
         return result;
     }
@@ -1106,7 +1114,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
             "C", "Crouch", "Z", "Zoom while held", "Home", "Back to the start" },
         new[] { "TOOLS", "1-6", "New tool into your hand", "LMB", "Pick up, place, take from the rack", "Q/E", "Rotate (or the wheel)",
             "R", "Remove (Delete too)", "T", "Select tape end, switch a lamp", "X", "Cancel the tape selection" },
-        new[] { "CAMERA AND LIGHT", "F", "Hold / return the camera", "P", "Photograph", "L", "Flashlight", "U", "UV torch",
+        new[] { "CAMERA AND LIGHT", "F", "Hold / return the camera", "P", "Photograph", "L", "Flashlight beam (click while held)", "U", "UV beam",
             "N", "Night / day", "I", "Robbed / intact store", "B", "Beacon where you point" },
         new[] { "INTERFACE", "Tab", "Panel: none, strip, drawer", "[/]", "Interface size", "F1/H", "This overlay", "F2", "Hide the HUD",
             "F9", "Desktop / VR", "F10", "Start menu" },
@@ -1114,7 +1122,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
 
     private static readonly string[][] VRHelp =
     {
-        new[] { "BOTH CONTROLLERS", "Grip", "Grab, hold, drop (rack, camera)", "Trigger", "Use: photo, tape end, lamp",
+        new[] { "BOTH CONTROLLERS", "Grip", "Grab, hold, drop (rack, camera)", "Trigger", "Use: photo, torch, tape, lamp",
             "A/X", "New tool into the hand", "B/Y", "Remove held tool, else next tool" },
         new[] { "STICKS", "Left", "Push to aim, release to teleport", "Left click", "UV torch", "Right", "Snap turn",
             "Right click", "Flashlight", "Menu", "Hide or show the hints" },
@@ -1129,18 +1137,20 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         float w = Mathf.Min(860, GuiWidth - 32), h = Mathf.Min(600, GuiHeight - 32);
         GUILayout.BeginArea(new Rect((GuiWidth - w) / 2, (GuiHeight - h) / 2, w, h), s.Panel);
         GUILayout.BeginHorizontal();
-        GUILayout.Label("Controls", s.Title);
+        DemoI18n.LayoutLabel("Controls", s.Title);
         GUILayout.FlexibleSpace();
-        if (GUILayout.Button("Mouse and keyboard", helpForVR ? s.Tab : s.TabActive)) Defer(() => helpForVR = false);
-        if (GUILayout.Button("Quest 2 controllers", helpForVR ? s.TabActive : s.Tab)) Defer(() => helpForVR = true);
+        if (DemoI18n.LayoutButton("Mouse and keyboard", helpForVR ? s.Tab : s.TabActive)) Defer(() => helpForVR = false);
+        if (DemoI18n.LayoutButton("Quest 2 controllers", helpForVR ? s.TabActive : s.Tab)) Defer(() => helpForVR = true);
         GUILayout.Space(6);
-        if (GUILayout.Button("x", s.ButtonGhost, GUILayout.Width(38))) Defer(() => HelpOpen = false);
+        if (DemoI18n.LayoutButton("x", s.ButtonGhost, GUILayout.Width(38))) Defer(() => HelpOpen = false);
         GUILayout.EndHorizontal();
         GUILayout.Space(6);
         DemoUi.Fill(GUILayoutUtility.GetRect(1, 1, GUILayout.ExpandWidth(true)), DemoUi.Line);
         helpScroll = GUILayout.BeginScrollView(helpScroll, false, false, GUIStyle.none, GUI.skin.verticalScrollbar, GUIStyle.none);
         string[][] groups = helpForVR ? VRHelp : DesktopHelp;
-        float column = (w - 36 - 28) / 2;
+        // Reserve the scroll bar before splitting into two columns. RTL labels
+        // align to the right edge, making a clipped column especially apparent.
+        float column = (w - s.Panel.padding.horizontal - 28 - 20) / 2;
         GUILayout.BeginHorizontal();
         for (int c = 0; c < 2; c++)
         {

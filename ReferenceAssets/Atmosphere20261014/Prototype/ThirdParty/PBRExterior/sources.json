@@ -1,0 +1,1776 @@
+{
+  "pack": "PBRExterior",
+  "prepared": "2026-10-14",
+  "convention": {
+    "Color": "sRGB JPG",
+    "Normal": "OpenGL +Y PNG, renormalised",
+    "MetallicSmoothness": "PNG RGBA, R = metallic, G = B = 0, A = 1 - roughness (linear)",
+    "AO": "grayscale JPG (linear)"
+  },
+  "unverified_in_unity": true,
+  "files": [
+    {
+      "file": "AsphaltDry_AO.jpg",
+      "material": "AsphaltDry",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal/MetallicSmoothness 1024, AO 512); normal renormalised; ARM G -> roughness -> A = 1 - roughness; ARM R -> AO.",
+      "sha256": "4abd8eaee32d9f6e28afc02d50a4cfdcc9a16807afbe85b19ae793a8c5daf808",
+      "bytes": 107179
+    },
+    {
+      "file": "AsphaltDry_Color.jpg",
+      "material": "AsphaltDry",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal/MetallicSmoothness 1024, AO 512); normal renormalised; ARM G -> roughness -> A = 1 - roughness; ARM R -> AO.",
+      "sha256": "c71fdf9d3f3090ea2a551fbf29229352bbff51e01756931f72c72f2cfea1eece",
+      "bytes": 1802474
+    },
+    {
+      "file": "AsphaltDry_MetallicSmoothness.png",
+      "material": "AsphaltDry",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal/MetallicSmoothness 1024, AO 512); normal renormalised; ARM G -> roughness -> A = 1 - roughness; ARM R -> AO.",
+      "sha256": "88912b3da7506adc25afb7ba2a0d3289a2fbef4a566bfa946c32f531d46c1de9",
+      "bytes": 1062913
+    },
+    {
+      "file": "AsphaltDry_Normal.png",
+      "material": "AsphaltDry",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal/MetallicSmoothness 1024, AO 512); normal renormalised; ARM G -> roughness -> A = 1 - roughness; ARM R -> AO.",
+      "sha256": "cb8fd031102cdc59d625fe4ba91b669215bb4c8b786060b137dad72148fe6dc9",
+      "bytes": 2320976
+    },
+    {
+      "file": "AsphaltWet_AO.jpg",
+      "material": "AsphaltWet",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Derived wet variant: linear albedo x0.60 (x0.42 in water-filled cavities) and saturation x1.12; roughness 0.30 +/- source variation, 0.04 where water fills cracks/pits (high-pass of the scanned displacement); normals flattened 18 % (film) to 95 % (pools).",
+      "sha256": "23578235c2af65b529a1c2dc489cf63896c762c0d27566aab2dacff699aac85c",
+      "bytes": 92394
+    },
+    {
+      "file": "AsphaltWet_Color.jpg",
+      "material": "AsphaltWet",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Derived wet variant: linear albedo x0.60 (x0.42 in water-filled cavities) and saturation x1.12; roughness 0.30 +/- source variation, 0.04 where water fills cracks/pits (high-pass of the scanned displacement); normals flattened 18 % (film) to 95 % (pools).",
+      "sha256": "ed1563b4c30860f5084e46441b32060813e4f7c00d1935b697d06b16a7169de5",
+      "bytes": 1676481
+    },
+    {
+      "file": "AsphaltWet_MetallicSmoothness.png",
+      "material": "AsphaltWet",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Derived wet variant: linear albedo x0.60 (x0.42 in water-filled cavities) and saturation x1.12; roughness 0.30 +/- source variation, 0.04 where water fills cracks/pits (high-pass of the scanned displacement); normals flattened 18 % (film) to 95 % (pools).",
+      "sha256": "020953723383af78041ecd6c603725521711e9fe97fac2b19a673a07e12a35e7",
+      "bytes": 954817
+    },
+    {
+      "file": "AsphaltWet_Normal.png",
+      "material": "AsphaltWet",
+      "source": {
+        "asset": "Asphalt 02",
+        "asset_id": "asphalt_02",
+        "original_source": "https://polyhaven.com/a/asphalt_02",
+        "author": "Rob Tuytel / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "asphalt_02_nor_gl_2k.jpg identical (sha256) to the copy in github.com/hicancan/njupt-map",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm",
+        "source_files": [
+          {
+            "file": "asphalt_02_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_diffuse_2k.jpg",
+            "sha256": "28f5ba8690553f192c0e5e1a5ff40f34765b4b93f4cc7059b1a3e9c795b6c28c"
+          },
+          {
+            "file": "asphalt_02_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_arm_2k.jpg",
+            "sha256": "ed70e88640e4ed51cf1c3e57cb20db26983599b20b867c2526439e3a2c849fea"
+          },
+          {
+            "file": "asphalt_02_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_nor_gl_2k.jpg",
+            "sha256": "ffe49db71a0fd34c1e259625df66a302a237597d6ef655307987ec4e45bc6f21"
+          },
+          {
+            "file": "asphalt_02_displacement_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/asphalt_02/asphalt_02_displacement_2k.jpg",
+            "sha256": "943f254ed5e1504131547b35afe3798771cdda33842b7fdc6c0288b8312a44b0"
+          }
+        ]
+      },
+      "changes": "Derived wet variant: linear albedo x0.60 (x0.42 in water-filled cavities) and saturation x1.12; roughness 0.30 +/- source variation, 0.04 where water fills cracks/pits (high-pass of the scanned displacement); normals flattened 18 % (film) to 95 % (pools).",
+      "sha256": "ddb58c8eb60124e937d744159a360bd829de862a494910f0ac9b6b10aa3cc62e",
+      "bytes": 2132982
+    },
+    {
+      "file": "PavementSlab_AO.jpg",
+      "material": "PavementSlab",
+      "source": {
+        "asset": "Paving Stones 136",
+        "asset_id": "PavingStones136",
+        "original_source": "https://ambientcg.com/view?id=PavingStones136",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "estimated: 4 x 4 slabs of 0.5 m (ambientCG lists no dimensions)",
+        "source_files": [
+          {
+            "file": "PavingStones136_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "sha256": "6f5e2f36547f15c0f24250f2752ed3571f778ad42b57b531fcd822c43a1347cb"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "sha256": "fb9bbc9c0696eeb5ca76819956ecf129b6c20c691298a2131c7c5323acadb9b6"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "sha256": "e44e495e3d8d338378a5e210e68e7875e652df49722ad5b4b3474a147dd7c943"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "sha256": "b7e598a7598e9ac149bf04bd8d848ab813208643756b61a800568f8c92ef2dac"
+          }
+        ]
+      },
+      "changes": "Saturation x0.5 and slight cool tint (olive slabs -> grey concrete); resized; normal renormalised; A = 1 - roughness.",
+      "sha256": "09abcf5481400f0602b539ce331c87e7e9cc215f8d302bfbf6f175588fa11e44",
+      "bytes": 150933
+    },
+    {
+      "file": "PavementSlab_Color.jpg",
+      "material": "PavementSlab",
+      "source": {
+        "asset": "Paving Stones 136",
+        "asset_id": "PavingStones136",
+        "original_source": "https://ambientcg.com/view?id=PavingStones136",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "estimated: 4 x 4 slabs of 0.5 m (ambientCG lists no dimensions)",
+        "source_files": [
+          {
+            "file": "PavingStones136_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "sha256": "6f5e2f36547f15c0f24250f2752ed3571f778ad42b57b531fcd822c43a1347cb"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "sha256": "fb9bbc9c0696eeb5ca76819956ecf129b6c20c691298a2131c7c5323acadb9b6"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "sha256": "e44e495e3d8d338378a5e210e68e7875e652df49722ad5b4b3474a147dd7c943"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "sha256": "b7e598a7598e9ac149bf04bd8d848ab813208643756b61a800568f8c92ef2dac"
+          }
+        ]
+      },
+      "changes": "Saturation x0.5 and slight cool tint (olive slabs -> grey concrete); resized; normal renormalised; A = 1 - roughness.",
+      "sha256": "b36c0a41aa22d4175ff1bca06275457c0084374f9c78baba61db1b7f292d66a6",
+      "bytes": 1010800
+    },
+    {
+      "file": "PavementSlab_MetallicSmoothness.png",
+      "material": "PavementSlab",
+      "source": {
+        "asset": "Paving Stones 136",
+        "asset_id": "PavingStones136",
+        "original_source": "https://ambientcg.com/view?id=PavingStones136",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "estimated: 4 x 4 slabs of 0.5 m (ambientCG lists no dimensions)",
+        "source_files": [
+          {
+            "file": "PavingStones136_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "sha256": "6f5e2f36547f15c0f24250f2752ed3571f778ad42b57b531fcd822c43a1347cb"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "sha256": "fb9bbc9c0696eeb5ca76819956ecf129b6c20c691298a2131c7c5323acadb9b6"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "sha256": "e44e495e3d8d338378a5e210e68e7875e652df49722ad5b4b3474a147dd7c943"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "sha256": "b7e598a7598e9ac149bf04bd8d848ab813208643756b61a800568f8c92ef2dac"
+          }
+        ]
+      },
+      "changes": "Saturation x0.5 and slight cool tint (olive slabs -> grey concrete); resized; normal renormalised; A = 1 - roughness.",
+      "sha256": "52ae6b462efe9bdf2937a0213ce2d14fbb253f31d98cf2cd9dce6d79ef3c2ac6",
+      "bytes": 936859
+    },
+    {
+      "file": "PavementSlab_Normal.png",
+      "material": "PavementSlab",
+      "source": {
+        "asset": "Paving Stones 136",
+        "asset_id": "PavingStones136",
+        "original_source": "https://ambientcg.com/view?id=PavingStones136",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "estimated: 4 x 4 slabs of 0.5 m (ambientCG lists no dimensions)",
+        "source_files": [
+          {
+            "file": "PavingStones136_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "sha256": "6f5e2f36547f15c0f24250f2752ed3571f778ad42b57b531fcd822c43a1347cb"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "sha256": "fb9bbc9c0696eeb5ca76819956ecf129b6c20c691298a2131c7c5323acadb9b6"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "sha256": "e44e495e3d8d338378a5e210e68e7875e652df49722ad5b4b3474a147dd7c943"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "sha256": "b7e598a7598e9ac149bf04bd8d848ab813208643756b61a800568f8c92ef2dac"
+          }
+        ]
+      },
+      "changes": "Saturation x0.5 and slight cool tint (olive slabs -> grey concrete); resized; normal renormalised; A = 1 - roughness.",
+      "sha256": "42a1fb33a11457430b70f286b3425d7a0f1c7ff949c1bd5f16d68f13b4ca5f0c",
+      "bytes": 1392489
+    },
+    {
+      "file": "PavementSlabWet_Color.jpg",
+      "material": "PavementSlabWet",
+      "source": {
+        "asset": "Paving Stones 136",
+        "asset_id": "PavingStones136",
+        "original_source": "https://ambientcg.com/view?id=PavingStones136",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "estimated: 4 x 4 slabs of 0.5 m (ambientCG lists no dimensions)",
+        "source_files": [
+          {
+            "file": "PavingStones136_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "sha256": "6f5e2f36547f15c0f24250f2752ed3571f778ad42b57b531fcd822c43a1347cb"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "sha256": "fb9bbc9c0696eeb5ca76819956ecf129b6c20c691298a2131c7c5323acadb9b6"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "sha256": "e44e495e3d8d338378a5e210e68e7875e652df49722ad5b4b3474a147dd7c943"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "sha256": "b7e598a7598e9ac149bf04bd8d848ab813208643756b61a800568f8c92ef2dac"
+          }
+        ]
+      },
+      "changes": "Derived rain-soaked variant of PavementSlab: linear albedo x0.70 (x0.55 in joints), roughness 0.36 +/- variation, 0.08 in joints. Uses PavementSlab_Normal.png and PavementSlab_AO.jpg.",
+      "sha256": "77fbbc3d88997c621e16b84437be8131b5a813482a02066edd7d0fd2b63cc41b",
+      "bytes": 899308
+    },
+    {
+      "file": "PavementSlabWet_MetallicSmoothness.png",
+      "material": "PavementSlabWet",
+      "source": {
+        "asset": "Paving Stones 136",
+        "asset_id": "PavingStones136",
+        "original_source": "https://ambientcg.com/view?id=PavingStones136",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "estimated: 4 x 4 slabs of 0.5 m (ambientCG lists no dimensions)",
+        "source_files": [
+          {
+            "file": "PavingStones136_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Color.jpg",
+            "sha256": "6f5e2f36547f15c0f24250f2752ed3571f778ad42b57b531fcd822c43a1347cb"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_AmbientOcclusion.jpg",
+            "sha256": "fb9bbc9c0696eeb5ca76819956ecf129b6c20c691298a2131c7c5323acadb9b6"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_NormalGL.jpg",
+            "sha256": "e44e495e3d8d338378a5e210e68e7875e652df49722ad5b4b3474a147dd7c943"
+          },
+          {
+            "file": "PavingStones136_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/PavingStones136/PavingStones136_2K-JPG_Roughness.jpg",
+            "sha256": "b7e598a7598e9ac149bf04bd8d848ab813208643756b61a800568f8c92ef2dac"
+          }
+        ]
+      },
+      "changes": "Derived rain-soaked variant of PavementSlab: linear albedo x0.70 (x0.55 in joints), roughness 0.36 +/- variation, 0.08 in joints. Uses PavementSlab_Normal.png and PavementSlab_AO.jpg.",
+      "sha256": "1a1c39a6c020eddaf228249bf1a7d314c653d6426cd93554b3b83c1bcd2760d4",
+      "bytes": 773940
+    },
+    {
+      "file": "Concrete_Color.jpg",
+      "material": "Concrete",
+      "source": {
+        "asset": "Concrete 034",
+        "asset_id": "Concrete034",
+        "original_source": "https://ambientcg.com/view?id=Concrete034",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "Color and NormalGL identical (LFS sha256) to the copies in github.com/Terryoc2/Kinemind",
+        "real_size_m": [
+          2.0,
+          1.0
+        ],
+        "size_note": "estimated from the 2:1 map and formwork marks",
+        "source_files": [
+          {
+            "file": "Concrete034_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_Color.jpg",
+            "sha256": "fa27982687596d7aa080db1e9b88c30f48a3c32eb3e50b27a2ea27c431e4cde9"
+          },
+          {
+            "file": "Concrete034_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_NormalGL.jpg",
+            "sha256": "b077dfe6b3b8fbe794d82b9014d030fa01984a25ab67d2e21310995e6ea5b881"
+          },
+          {
+            "file": "Concrete034_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_Roughness.jpg",
+            "sha256": "fd39973b8ef8212d1c99d18b6665595db3ab96f1c124e062fea52b9bda4ffa63"
+          }
+        ]
+      },
+      "changes": "Linear albedo x0.80 (source is near-white); resized 2048x1024 / 1024x512; normal renormalised; A = 1 - roughness.",
+      "sha256": "f9505e258f69b9da870e47e25de2b8449304e3a5dc39a5f10eb2b82815a6ec1d",
+      "bytes": 301330
+    },
+    {
+      "file": "Concrete_MetallicSmoothness.png",
+      "material": "Concrete",
+      "source": {
+        "asset": "Concrete 034",
+        "asset_id": "Concrete034",
+        "original_source": "https://ambientcg.com/view?id=Concrete034",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "Color and NormalGL identical (LFS sha256) to the copies in github.com/Terryoc2/Kinemind",
+        "real_size_m": [
+          2.0,
+          1.0
+        ],
+        "size_note": "estimated from the 2:1 map and formwork marks",
+        "source_files": [
+          {
+            "file": "Concrete034_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_Color.jpg",
+            "sha256": "fa27982687596d7aa080db1e9b88c30f48a3c32eb3e50b27a2ea27c431e4cde9"
+          },
+          {
+            "file": "Concrete034_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_NormalGL.jpg",
+            "sha256": "b077dfe6b3b8fbe794d82b9014d030fa01984a25ab67d2e21310995e6ea5b881"
+          },
+          {
+            "file": "Concrete034_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_Roughness.jpg",
+            "sha256": "fd39973b8ef8212d1c99d18b6665595db3ab96f1c124e062fea52b9bda4ffa63"
+          }
+        ]
+      },
+      "changes": "Linear albedo x0.80 (source is near-white); resized 2048x1024 / 1024x512; normal renormalised; A = 1 - roughness.",
+      "sha256": "093024ccf891eae55759c8203ef0d95ce8eaeffc3ce1589900b1ab28b12e9a1a",
+      "bytes": 315089
+    },
+    {
+      "file": "Concrete_Normal.png",
+      "material": "Concrete",
+      "source": {
+        "asset": "Concrete 034",
+        "asset_id": "Concrete034",
+        "original_source": "https://ambientcg.com/view?id=Concrete034",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "Color and NormalGL identical (LFS sha256) to the copies in github.com/Terryoc2/Kinemind",
+        "real_size_m": [
+          2.0,
+          1.0
+        ],
+        "size_note": "estimated from the 2:1 map and formwork marks",
+        "source_files": [
+          {
+            "file": "Concrete034_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_Color.jpg",
+            "sha256": "fa27982687596d7aa080db1e9b88c30f48a3c32eb3e50b27a2ea27c431e4cde9"
+          },
+          {
+            "file": "Concrete034_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_NormalGL.jpg",
+            "sha256": "b077dfe6b3b8fbe794d82b9014d030fa01984a25ab67d2e21310995e6ea5b881"
+          },
+          {
+            "file": "Concrete034_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/Concrete034/Concrete034_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Concrete034/Concrete034_2K-JPG_Roughness.jpg",
+            "sha256": "fd39973b8ef8212d1c99d18b6665595db3ab96f1c124e062fea52b9bda4ffa63"
+          }
+        ]
+      },
+      "changes": "Linear albedo x0.80 (source is near-white); resized 2048x1024 / 1024x512; normal renormalised; A = 1 - roughness.",
+      "sha256": "0e9d8afe5c3c9c7cac3e489fb2a8504b652639f91bf477b765fb058fb5d468a1",
+      "bytes": 846908
+    },
+    {
+      "file": "FacadeStone_Color.jpg",
+      "material": "FacadeStone",
+      "source": {
+        "asset": "Travertine 001",
+        "asset_id": "Travertine001",
+        "original_source": "https://ambientcg.com/view?id=Travertine001",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/mercurypitch/mercurypitch",
+        "mirror_commit": "afdf5e3d84cdfe02458480505677724565b4c7b6",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "sha256 of all three maps match the mirror's manifest.json, which records the ambientCG download (Travertine001_2K-JPG.zip) of 2026-09-15",
+        "real_size_m": [
+          1.2,
+          1.2
+        ],
+        "size_note": "ambientCG page reports about 1.2 x 1.2 m (recorded in the mirror's manifest.json)",
+        "source_files": [
+          {
+            "file": "Travertine001_2K-JPG_Color.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Color.jpg",
+            "sha256": "a0724b7e885e9bf91f5424d44d693ba32e77968db54b2f873f07b9a2ef401eb7"
+          },
+          {
+            "file": "Travertine001_2K-JPG_NormalGL.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_NormalGL.jpg",
+            "sha256": "b70acbbd8def7825ec3c7ec339240e777dd1e31e70059e93e8f3560ebf94166b"
+          },
+          {
+            "file": "Travertine001_2K-JPG_Roughness.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Roughness.jpg",
+            "sha256": "7cadf976abeae9be87304eb21fbb378c20d96b330a28bc7d6e8c64fbff7051d5"
+          }
+        ]
+      },
+      "changes": "Colour unchanged; source is mirror-polished (roughness ~0.02, flat normal): roughness remapped to 0.12 +/- variation, faint vein/pore relief derived from the albedo added to the normal.",
+      "sha256": "78dd437340eae053310810603fbfc2e558ea15929ee0bed15c6ecb530e224b49",
+      "bytes": 744389
+    },
+    {
+      "file": "FacadeStone_MetallicSmoothness.png",
+      "material": "FacadeStone",
+      "source": {
+        "asset": "Travertine 001",
+        "asset_id": "Travertine001",
+        "original_source": "https://ambientcg.com/view?id=Travertine001",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/mercurypitch/mercurypitch",
+        "mirror_commit": "afdf5e3d84cdfe02458480505677724565b4c7b6",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "sha256 of all three maps match the mirror's manifest.json, which records the ambientCG download (Travertine001_2K-JPG.zip) of 2026-09-15",
+        "real_size_m": [
+          1.2,
+          1.2
+        ],
+        "size_note": "ambientCG page reports about 1.2 x 1.2 m (recorded in the mirror's manifest.json)",
+        "source_files": [
+          {
+            "file": "Travertine001_2K-JPG_Color.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Color.jpg",
+            "sha256": "a0724b7e885e9bf91f5424d44d693ba32e77968db54b2f873f07b9a2ef401eb7"
+          },
+          {
+            "file": "Travertine001_2K-JPG_NormalGL.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_NormalGL.jpg",
+            "sha256": "b70acbbd8def7825ec3c7ec339240e777dd1e31e70059e93e8f3560ebf94166b"
+          },
+          {
+            "file": "Travertine001_2K-JPG_Roughness.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Roughness.jpg",
+            "sha256": "7cadf976abeae9be87304eb21fbb378c20d96b330a28bc7d6e8c64fbff7051d5"
+          }
+        ]
+      },
+      "changes": "Colour unchanged; source is mirror-polished (roughness ~0.02, flat normal): roughness remapped to 0.12 +/- variation, faint vein/pore relief derived from the albedo added to the normal.",
+      "sha256": "6f73de1cdac48e4ec245630c462af4515017271241ca6f4d0fae1904eafefcdb",
+      "bytes": 600626
+    },
+    {
+      "file": "FacadeStone_Normal.png",
+      "material": "FacadeStone",
+      "source": {
+        "asset": "Travertine 001",
+        "asset_id": "Travertine001",
+        "original_source": "https://ambientcg.com/view?id=Travertine001",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/mercurypitch/mercurypitch",
+        "mirror_commit": "afdf5e3d84cdfe02458480505677724565b4c7b6",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "sha256 of all three maps match the mirror's manifest.json, which records the ambientCG download (Travertine001_2K-JPG.zip) of 2026-09-15",
+        "real_size_m": [
+          1.2,
+          1.2
+        ],
+        "size_note": "ambientCG page reports about 1.2 x 1.2 m (recorded in the mirror's manifest.json)",
+        "source_files": [
+          {
+            "file": "Travertine001_2K-JPG_Color.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Color.jpg",
+            "sha256": "a0724b7e885e9bf91f5424d44d693ba32e77968db54b2f873f07b9a2ef401eb7"
+          },
+          {
+            "file": "Travertine001_2K-JPG_NormalGL.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_NormalGL.jpg",
+            "sha256": "b70acbbd8def7825ec3c7ec339240e777dd1e31e70059e93e8f3560ebf94166b"
+          },
+          {
+            "file": "Travertine001_2K-JPG_Roughness.jpg",
+            "mirror_path": "art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/mercurypitch/mercurypitch/afdf5e3d84cdfe02458480505677724565b4c7b6/art/glass-adventure/v2/source-pbr/Travertine001/2K-JPG/Travertine001_2K-JPG_Roughness.jpg",
+            "sha256": "7cadf976abeae9be87304eb21fbb378c20d96b330a28bc7d6e8c64fbff7051d5"
+          }
+        ]
+      },
+      "changes": "Colour unchanged; source is mirror-polished (roughness ~0.02, flat normal): roughness remapped to 0.12 +/- variation, faint vein/pore relief derived from the albedo added to the normal.",
+      "sha256": "5031921aef3675660a046069ea85e546b6ba24325b7c19ff3042888f3a2842f5",
+      "bytes": 814868
+    },
+    {
+      "file": "BrickFacade_AO.jpg",
+      "material": "BrickFacade",
+      "source": {
+        "asset": "Brick Wall 006",
+        "asset_id": "brick_wall_006",
+        "original_source": "https://polyhaven.com/a/brick_wall_006",
+        "author": "Jan Burghardt / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to brick_wall_006_diff_2k.jpg in github.com/Michael115/ggj2024",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm; 39 brick courses per tile = 77 mm per course",
+        "source_files": [
+          {
+            "file": "brick_wall_006_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "sha256": "6b5e1102e30d38c8b7c9885013bbb063817575567487fbdcf2671ebba5256a4b"
+          },
+          {
+            "file": "brick_wall_006_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "sha256": "dc313e13bd12687bd8827b5e439c1ea2b56fbc883d935f26132b44781a21be14"
+          },
+          {
+            "file": "brick_wall_006_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "sha256": "229b2263753614807f5acd72370e00c47b411088c2bd100a65d62ed17ba67be9"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal 1024, AO 1024, MetallicSmoothness 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "54b4f2fb7bd04a778f795489e39ad9cf53b0893760a6d4007c5280ded0f77bcd",
+      "bytes": 275700
+    },
+    {
+      "file": "BrickFacade_Color.jpg",
+      "material": "BrickFacade",
+      "source": {
+        "asset": "Brick Wall 006",
+        "asset_id": "brick_wall_006",
+        "original_source": "https://polyhaven.com/a/brick_wall_006",
+        "author": "Jan Burghardt / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to brick_wall_006_diff_2k.jpg in github.com/Michael115/ggj2024",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm; 39 brick courses per tile = 77 mm per course",
+        "source_files": [
+          {
+            "file": "brick_wall_006_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "sha256": "6b5e1102e30d38c8b7c9885013bbb063817575567487fbdcf2671ebba5256a4b"
+          },
+          {
+            "file": "brick_wall_006_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "sha256": "dc313e13bd12687bd8827b5e439c1ea2b56fbc883d935f26132b44781a21be14"
+          },
+          {
+            "file": "brick_wall_006_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "sha256": "229b2263753614807f5acd72370e00c47b411088c2bd100a65d62ed17ba67be9"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal 1024, AO 1024, MetallicSmoothness 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "2da12eb34c59012a9043f4700017346df210d1c1d48e72a847ce4aecb539c7c6",
+      "bytes": 1439920
+    },
+    {
+      "file": "BrickFacade_MetallicSmoothness.png",
+      "material": "BrickFacade",
+      "source": {
+        "asset": "Brick Wall 006",
+        "asset_id": "brick_wall_006",
+        "original_source": "https://polyhaven.com/a/brick_wall_006",
+        "author": "Jan Burghardt / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to brick_wall_006_diff_2k.jpg in github.com/Michael115/ggj2024",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm; 39 brick courses per tile = 77 mm per course",
+        "source_files": [
+          {
+            "file": "brick_wall_006_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "sha256": "6b5e1102e30d38c8b7c9885013bbb063817575567487fbdcf2671ebba5256a4b"
+          },
+          {
+            "file": "brick_wall_006_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "sha256": "dc313e13bd12687bd8827b5e439c1ea2b56fbc883d935f26132b44781a21be14"
+          },
+          {
+            "file": "brick_wall_006_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "sha256": "229b2263753614807f5acd72370e00c47b411088c2bd100a65d62ed17ba67be9"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal 1024, AO 1024, MetallicSmoothness 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "651714a42c39bb6e0e77e17e1ac33836050cf4324f99735a9ccd19fdea0bb561",
+      "bytes": 144036
+    },
+    {
+      "file": "BrickFacade_Normal.png",
+      "material": "BrickFacade",
+      "source": {
+        "asset": "Brick Wall 006",
+        "asset_id": "brick_wall_006",
+        "original_source": "https://polyhaven.com/a/brick_wall_006",
+        "author": "Jan Burghardt / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to brick_wall_006_diff_2k.jpg in github.com/Michael115/ggj2024",
+        "real_size_m": [
+          3.0,
+          3.0
+        ],
+        "size_note": "Poly Haven metadata: 3000 x 3000 mm; 39 brick courses per tile = 77 mm per course",
+        "source_files": [
+          {
+            "file": "brick_wall_006_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_diffuse_2k.jpg",
+            "sha256": "6b5e1102e30d38c8b7c9885013bbb063817575567487fbdcf2671ebba5256a4b"
+          },
+          {
+            "file": "brick_wall_006_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_arm_2k.jpg",
+            "sha256": "dc313e13bd12687bd8827b5e439c1ea2b56fbc883d935f26132b44781a21be14"
+          },
+          {
+            "file": "brick_wall_006_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/brick_wall_006/brick_wall_006_nor_gl_2k.jpg",
+            "sha256": "229b2263753614807f5acd72370e00c47b411088c2bd100a65d62ed17ba67be9"
+          }
+        ]
+      },
+      "changes": "Resized (Color 2048, Normal 1024, AO 1024, MetallicSmoothness 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "09f3fb46db6ef4fc99d6a92ab0f6eaa9a1bfcf71229633ccb01c75df292bb67b",
+      "bytes": 1882814
+    },
+    {
+      "file": "Render_AO.jpg",
+      "material": "Render",
+      "source": {
+        "asset": "Plastered Wall",
+        "asset_id": "plastered_wall",
+        "original_source": "https://polyhaven.com/a/plastered_wall",
+        "author": "Amal Kumar / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to plastered_wall_diff_2k.jpg in github.com/PIC123/EMC-Passthrough-Online-MRTK",
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "Poly Haven metadata: 2000 x 2000 mm",
+        "source_files": [
+          {
+            "file": "plastered_wall_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "sha256": "c9f3235d6b28b249dd3c7e6346483f1f6ae11e62b4a81d0397936ff756dfcb1f"
+          },
+          {
+            "file": "plastered_wall_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "sha256": "f262032055ac921349344c1f2c922cdad1cede7af3b6a65ebdd77cdcff78b989"
+          },
+          {
+            "file": "plastered_wall_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "sha256": "de20f536b1ec428c6de32267b317bbf538ecfa5c42398743f1b702a0f8434071"
+          }
+        ]
+      },
+      "changes": "Resized (Color 1024, Normal/MetallicSmoothness/AO 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "c36015de9eb544a306f2823cc095bae9d8a5b4b8e71d199bf73e0e9dd3dc64dc",
+      "bytes": 72595
+    },
+    {
+      "file": "Render_Color.jpg",
+      "material": "Render",
+      "source": {
+        "asset": "Plastered Wall",
+        "asset_id": "plastered_wall",
+        "original_source": "https://polyhaven.com/a/plastered_wall",
+        "author": "Amal Kumar / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to plastered_wall_diff_2k.jpg in github.com/PIC123/EMC-Passthrough-Online-MRTK",
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "Poly Haven metadata: 2000 x 2000 mm",
+        "source_files": [
+          {
+            "file": "plastered_wall_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "sha256": "c9f3235d6b28b249dd3c7e6346483f1f6ae11e62b4a81d0397936ff756dfcb1f"
+          },
+          {
+            "file": "plastered_wall_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "sha256": "f262032055ac921349344c1f2c922cdad1cede7af3b6a65ebdd77cdcff78b989"
+          },
+          {
+            "file": "plastered_wall_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "sha256": "de20f536b1ec428c6de32267b317bbf538ecfa5c42398743f1b702a0f8434071"
+          }
+        ]
+      },
+      "changes": "Resized (Color 1024, Normal/MetallicSmoothness/AO 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "01896c46611e6052a506605019af486bfbfaf3e9d397dc50671480dc5bd70915",
+      "bytes": 169233
+    },
+    {
+      "file": "Render_MetallicSmoothness.png",
+      "material": "Render",
+      "source": {
+        "asset": "Plastered Wall",
+        "asset_id": "plastered_wall",
+        "original_source": "https://polyhaven.com/a/plastered_wall",
+        "author": "Amal Kumar / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to plastered_wall_diff_2k.jpg in github.com/PIC123/EMC-Passthrough-Online-MRTK",
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "Poly Haven metadata: 2000 x 2000 mm",
+        "source_files": [
+          {
+            "file": "plastered_wall_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "sha256": "c9f3235d6b28b249dd3c7e6346483f1f6ae11e62b4a81d0397936ff756dfcb1f"
+          },
+          {
+            "file": "plastered_wall_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "sha256": "f262032055ac921349344c1f2c922cdad1cede7af3b6a65ebdd77cdcff78b989"
+          },
+          {
+            "file": "plastered_wall_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "sha256": "de20f536b1ec428c6de32267b317bbf538ecfa5c42398743f1b702a0f8434071"
+          }
+        ]
+      },
+      "changes": "Resized (Color 1024, Normal/MetallicSmoothness/AO 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "bf4c8da04ed0e96e32b90eded70b5e52cd3ea7294dd178fe9169122006c57054",
+      "bytes": 116058
+    },
+    {
+      "file": "Render_Normal.png",
+      "material": "Render",
+      "source": {
+        "asset": "Plastered Wall",
+        "asset_id": "plastered_wall",
+        "original_source": "https://polyhaven.com/a/plastered_wall",
+        "author": "Amal Kumar / Poly Haven",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://polyhaven.com/license",
+        "mirror_repository": "https://github.com/ConcordDev/concord-cognitive-engine",
+        "mirror_commit": "a9e29c84d175189ca890f013ed47ed8887e78a7d",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": "diffuse identical (sha256) to plastered_wall_diff_2k.jpg in github.com/PIC123/EMC-Passthrough-Online-MRTK",
+        "real_size_m": [
+          2.0,
+          2.0
+        ],
+        "size_note": "Poly Haven metadata: 2000 x 2000 mm",
+        "source_files": [
+          {
+            "file": "plastered_wall_diffuse_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_diffuse_2k.jpg",
+            "sha256": "c9f3235d6b28b249dd3c7e6346483f1f6ae11e62b4a81d0397936ff756dfcb1f"
+          },
+          {
+            "file": "plastered_wall_arm_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_arm_2k.jpg",
+            "sha256": "f262032055ac921349344c1f2c922cdad1cede7af3b6a65ebdd77cdcff78b989"
+          },
+          {
+            "file": "plastered_wall_nor_gl_2k.jpg",
+            "mirror_path": "apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "download_url": "https://media.githubusercontent.com/media/ConcordDev/concord-cognitive-engine/a9e29c84d175189ca890f013ed47ed8887e78a7d/apps/concordia-living-world/unity-client/Assets/Concordia/PolyHaven/Textures/plastered_wall/plastered_wall_nor_gl_2k.jpg",
+            "sha256": "de20f536b1ec428c6de32267b317bbf538ecfa5c42398743f1b702a0f8434071"
+          }
+        ]
+      },
+      "changes": "Resized (Color 1024, Normal/MetallicSmoothness/AO 512); ARM G -> roughness, ARM R -> AO.",
+      "sha256": "b819ba9723a3e03837aba11c8887f556c63aee58e017a3be3516649a9eccc76c",
+      "bytes": 471904
+    },
+    {
+      "file": "Granite_Color.jpg",
+      "material": "Granite",
+      "source": {
+        "asset": "Granite 002 A",
+        "asset_id": "Granite002A",
+        "original_source": "https://ambientcg.com/view?id=Granite002A",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          0.6,
+          0.6
+        ],
+        "size_note": "estimated: 6-12 mm mineral grains",
+        "source_files": [
+          {
+            "file": "Granite002A_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_Color.jpg",
+            "sha256": "20830cc40b04ef173e5ff176204711aa31d20f9503d9c04bed8758e9a1c90018"
+          },
+          {
+            "file": "Granite002A_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_NormalGL.jpg",
+            "sha256": "cc96084c589c6b477af0c4b8ba4c502abb74a0a4922667535ac3d58dc61b996f"
+          },
+          {
+            "file": "Granite002A_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_Roughness.jpg",
+            "sha256": "5b8c10d159fa5dc9ae29198728e13e013eab917788e8fee1bad5f761945d24ac"
+          }
+        ]
+      },
+      "changes": "Colour unchanged (1024). Source is polished; converted to a flamed kerb finish: roughness 0.62 +/- relief, 1.5 % glint pixels at 0.22, crystal-scale relief derived from the albedo plus periodic pitting noise added to the normal.",
+      "sha256": "cc7a0c14993a4ac029461f36e37bac530fdbb7cbfc0b76e592f5bdbc70412942",
+      "bytes": 457967
+    },
+    {
+      "file": "Granite_MetallicSmoothness.png",
+      "material": "Granite",
+      "source": {
+        "asset": "Granite 002 A",
+        "asset_id": "Granite002A",
+        "original_source": "https://ambientcg.com/view?id=Granite002A",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          0.6,
+          0.6
+        ],
+        "size_note": "estimated: 6-12 mm mineral grains",
+        "source_files": [
+          {
+            "file": "Granite002A_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_Color.jpg",
+            "sha256": "20830cc40b04ef173e5ff176204711aa31d20f9503d9c04bed8758e9a1c90018"
+          },
+          {
+            "file": "Granite002A_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_NormalGL.jpg",
+            "sha256": "cc96084c589c6b477af0c4b8ba4c502abb74a0a4922667535ac3d58dc61b996f"
+          },
+          {
+            "file": "Granite002A_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_Roughness.jpg",
+            "sha256": "5b8c10d159fa5dc9ae29198728e13e013eab917788e8fee1bad5f761945d24ac"
+          }
+        ]
+      },
+      "changes": "Colour unchanged (1024). Source is polished; converted to a flamed kerb finish: roughness 0.62 +/- relief, 1.5 % glint pixels at 0.22, crystal-scale relief derived from the albedo plus periodic pitting noise added to the normal.",
+      "sha256": "dbf4241955a0f2c39c38116bb640b81f3b90d09b842c7918296b450c06c56b5f",
+      "bytes": 200650
+    },
+    {
+      "file": "Granite_Normal.png",
+      "material": "Granite",
+      "source": {
+        "asset": "Granite 002 A",
+        "asset_id": "Granite002A",
+        "original_source": "https://ambientcg.com/view?id=Granite002A",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          0.6,
+          0.6
+        ],
+        "size_note": "estimated: 6-12 mm mineral grains",
+        "source_files": [
+          {
+            "file": "Granite002A_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_Color.jpg",
+            "sha256": "20830cc40b04ef173e5ff176204711aa31d20f9503d9c04bed8758e9a1c90018"
+          },
+          {
+            "file": "Granite002A_2K-JPG_NormalGL.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_NormalGL.jpg",
+            "sha256": "cc96084c589c6b477af0c4b8ba4c502abb74a0a4922667535ac3d58dc61b996f"
+          },
+          {
+            "file": "Granite002A_2K-JPG_Roughness.jpg",
+            "mirror_path": "blender/textures/Granite002A/Granite002A_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Granite002A/Granite002A_2K-JPG_Roughness.jpg",
+            "sha256": "5b8c10d159fa5dc9ae29198728e13e013eab917788e8fee1bad5f761945d24ac"
+          }
+        ]
+      },
+      "changes": "Colour unchanged (1024). Source is polished; converted to a flamed kerb finish: roughness 0.62 +/- relief, 1.5 % glint pixels at 0.22, crystal-scale relief derived from the albedo plus periodic pitting noise added to the normal.",
+      "sha256": "fc3fdc670e45b00411a7007f880900f1c3c48f383c606d893c9a96b2e16fad06",
+      "bytes": 2193485
+    },
+    {
+      "file": "RustyMetal_Color.jpg",
+      "material": "RustyMetal",
+      "source": {
+        "asset": "Metal 053 C",
+        "asset_id": "Metal053C",
+        "original_source": "https://ambientcg.com/view?id=Metal053C",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/KaanAres10/VR-Musicians",
+        "mirror_commit": "fb97c8f628d7061b3ee18e0a1928348ca957028c",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          1.0,
+          1.0
+        ],
+        "size_note": "estimated",
+        "source_files": [
+          {
+            "file": "Metal053C_2K-JPG_Color.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Color.jpg",
+            "sha256": "68b432232f0e155a91ec76a7d6138b70be5eb8620de9139d3b6f9e28f67285a5"
+          },
+          {
+            "file": "Metal053C_2K-JPG_Metalness.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Metalness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Metalness.jpg",
+            "sha256": "d884ebbbf66dd2a714ac68adfa33a30d6ee76df3a375ef5c0fd43325ccc9429f"
+          },
+          {
+            "file": "Metal053C_2K-JPG_NormalGL.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_NormalGL.jpg",
+            "sha256": "44887aacee54d70fd13b851a4b35e2b9dca2db0e8a60a11178168e3b7e6edb46"
+          },
+          {
+            "file": "Metal053C_2K-JPG_Roughness.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Roughness.jpg",
+            "sha256": "d1afc00d87d9636bc9fcce0dcd0f005cfdc71e489b490b5acb6f69993030594b"
+          }
+        ]
+      },
+      "changes": "Resized (Color/Normal 1024, MetallicSmoothness 512); Metalness -> R, A = 1 - roughness.",
+      "sha256": "8fdff035e987e7f6e91be55e484df1f3bf10cb78569195e293d940c84f7e73d7",
+      "bytes": 327132
+    },
+    {
+      "file": "RustyMetal_MetallicSmoothness.png",
+      "material": "RustyMetal",
+      "source": {
+        "asset": "Metal 053 C",
+        "asset_id": "Metal053C",
+        "original_source": "https://ambientcg.com/view?id=Metal053C",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/KaanAres10/VR-Musicians",
+        "mirror_commit": "fb97c8f628d7061b3ee18e0a1928348ca957028c",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          1.0,
+          1.0
+        ],
+        "size_note": "estimated",
+        "source_files": [
+          {
+            "file": "Metal053C_2K-JPG_Color.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Color.jpg",
+            "sha256": "68b432232f0e155a91ec76a7d6138b70be5eb8620de9139d3b6f9e28f67285a5"
+          },
+          {
+            "file": "Metal053C_2K-JPG_Metalness.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Metalness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Metalness.jpg",
+            "sha256": "d884ebbbf66dd2a714ac68adfa33a30d6ee76df3a375ef5c0fd43325ccc9429f"
+          },
+          {
+            "file": "Metal053C_2K-JPG_NormalGL.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_NormalGL.jpg",
+            "sha256": "44887aacee54d70fd13b851a4b35e2b9dca2db0e8a60a11178168e3b7e6edb46"
+          },
+          {
+            "file": "Metal053C_2K-JPG_Roughness.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Roughness.jpg",
+            "sha256": "d1afc00d87d9636bc9fcce0dcd0f005cfdc71e489b490b5acb6f69993030594b"
+          }
+        ]
+      },
+      "changes": "Resized (Color/Normal 1024, MetallicSmoothness 512); Metalness -> R, A = 1 - roughness.",
+      "sha256": "e4ea2fd5daa5c9645684e6a3e949c3a2f33889e3776c09c3b25d543d12a766cb",
+      "bytes": 510234
+    },
+    {
+      "file": "RustyMetal_Normal.png",
+      "material": "RustyMetal",
+      "source": {
+        "asset": "Metal 053 C",
+        "asset_id": "Metal053C",
+        "original_source": "https://ambientcg.com/view?id=Metal053C",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/KaanAres10/VR-Musicians",
+        "mirror_commit": "fb97c8f628d7061b3ee18e0a1928348ca957028c",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          1.0,
+          1.0
+        ],
+        "size_note": "estimated",
+        "source_files": [
+          {
+            "file": "Metal053C_2K-JPG_Color.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Color.jpg",
+            "sha256": "68b432232f0e155a91ec76a7d6138b70be5eb8620de9139d3b6f9e28f67285a5"
+          },
+          {
+            "file": "Metal053C_2K-JPG_Metalness.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Metalness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Metalness.jpg",
+            "sha256": "d884ebbbf66dd2a714ac68adfa33a30d6ee76df3a375ef5c0fd43325ccc9429f"
+          },
+          {
+            "file": "Metal053C_2K-JPG_NormalGL.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_NormalGL.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_NormalGL.jpg",
+            "sha256": "44887aacee54d70fd13b851a4b35e2b9dca2db0e8a60a11178168e3b7e6edb46"
+          },
+          {
+            "file": "Metal053C_2K-JPG_Roughness.jpg",
+            "mirror_path": "Assets/alley/rust-shading/Metal053C_2K-JPG_Roughness.jpg",
+            "download_url": "https://media.githubusercontent.com/media/KaanAres10/VR-Musicians/fb97c8f628d7061b3ee18e0a1928348ca957028c/Assets/alley/rust-shading/Metal053C_2K-JPG_Roughness.jpg",
+            "sha256": "d1afc00d87d9636bc9fcce0dcd0f005cfdc71e489b490b5acb6f69993030594b"
+          }
+        ]
+      },
+      "changes": "Resized (Color/Normal 1024, MetallicSmoothness 512); Metalness -> R, A = 1 - roughness.",
+      "sha256": "a661894238093012b890c4e10f7401d9064a107557667a95075a4dc70f62f082",
+      "bytes": 748261
+    },
+    {
+      "file": "MetalShutter_AO.jpg",
+      "material": "MetalShutter",
+      "source": {
+        "author": "Jewelry-store-vr-demo project (generated with Claude, October 14, 2026)",
+        "license": "Project-owned original work (CC0-1.0 dedication offered)",
+        "generator": "Source~/build_pbr_exterior.py",
+        "real_size_m": [
+          1.0,
+          1.0
+        ]
+      },
+      "changes": "Procedural galvanised roller shutter: 13 slats of 77 mm per 1 m tile (height profile -> normal), zinc spangle, grime in seams and rain runs; metallic 0.9 clean / 0.15 grime.",
+      "sha256": "5675c4270eea37213319c8f17a2002d83a690545858b4bca258e3fe07d7e4d59",
+      "bytes": 8397
+    },
+    {
+      "file": "MetalShutter_Color.jpg",
+      "material": "MetalShutter",
+      "source": {
+        "author": "Jewelry-store-vr-demo project (generated with Claude, October 14, 2026)",
+        "license": "Project-owned original work (CC0-1.0 dedication offered)",
+        "generator": "Source~/build_pbr_exterior.py",
+        "real_size_m": [
+          1.0,
+          1.0
+        ]
+      },
+      "changes": "Procedural galvanised roller shutter: 13 slats of 77 mm per 1 m tile (height profile -> normal), zinc spangle, grime in seams and rain runs; metallic 0.9 clean / 0.15 grime.",
+      "sha256": "625cf0bd5ab103bc7de08ce9658e093eb0282d36ca44a0d0a49dd2a88e4cbfcc",
+      "bytes": 125589
+    },
+    {
+      "file": "MetalShutter_MetallicSmoothness.png",
+      "material": "MetalShutter",
+      "source": {
+        "author": "Jewelry-store-vr-demo project (generated with Claude, October 14, 2026)",
+        "license": "Project-owned original work (CC0-1.0 dedication offered)",
+        "generator": "Source~/build_pbr_exterior.py",
+        "real_size_m": [
+          1.0,
+          1.0
+        ]
+      },
+      "changes": "Procedural galvanised roller shutter: 13 slats of 77 mm per 1 m tile (height profile -> normal), zinc spangle, grime in seams and rain runs; metallic 0.9 clean / 0.15 grime.",
+      "sha256": "57d38bc02fa0770dea6c95db450785b36c74be3a0b0be13d89872e18625b8c25",
+      "bytes": 316284
+    },
+    {
+      "file": "MetalShutter_Normal.png",
+      "material": "MetalShutter",
+      "source": {
+        "author": "Jewelry-store-vr-demo project (generated with Claude, October 14, 2026)",
+        "license": "Project-owned original work (CC0-1.0 dedication offered)",
+        "generator": "Source~/build_pbr_exterior.py",
+        "real_size_m": [
+          1.0,
+          1.0
+        ]
+      },
+      "changes": "Procedural galvanised roller shutter: 13 slats of 77 mm per 1 m tile (height profile -> normal), zinc spangle, grime in seams and rain runs; metallic 0.9 clean / 0.15 grime.",
+      "sha256": "0a05cc609855eb65bae47ab7338a71d174199fbd47382fcc98218ab486ae8a92",
+      "bytes": 393216
+    },
+    {
+      "file": "PuddleMask.png",
+      "material": "PuddleMask",
+      "source": {
+        "author": "Jewelry-store-vr-demo project (generated with Claude, October 14, 2026)",
+        "license": "Project-owned original work (CC0-1.0 dedication offered)",
+        "generator": "Source~/build_pbr_exterior.py",
+        "real_size_m": [
+          8.0,
+          8.0
+        ]
+      },
+      "changes": "Procedural tileable puddle mask, 8 x 8 m: 1 = standing water (~14 %), 0.45 -> 0 = wet rim fading over 0.2-0.6 m, 0 = road baseline.",
+      "sha256": "ebbfb2b7a39c24b460bbc6d4cd2e3d7d41de0d5dc88b738852979be40f4bef0f",
+      "bytes": 170338
+    },
+    {
+      "file": "LeakStain_ColorAlpha.png",
+      "material": "LeakStain",
+      "source": {
+        "asset": "Leaking 006",
+        "asset_id": "Leaking006",
+        "original_source": "https://ambientcg.com/view?id=Leaking006",
+        "author": "Lennart Demes / ambientCG",
+        "license": "CC0-1.0",
+        "license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+        "publisher_license": "https://docs.ambientcg.com/license/",
+        "mirror_repository": "https://github.com/achrefelouafi/ProceduralBuildingsThreeJS",
+        "mirror_commit": "6c19f1b1f14408353989ad26cda27f1e1ede5e91",
+        "mirror_note": "GitHub mirror holding the unmodified 2K JPG provider files (Git LFS); the mirror repository's own licence covers its code, not these CC0 files",
+        "integrity_check": null,
+        "real_size_m": [
+          0.5,
+          2.0
+        ],
+        "size_note": "estimated decal size",
+        "source_files": [
+          {
+            "file": "Leaking006_2K-JPG_Color.jpg",
+            "mirror_path": "blender/textures/Leaking006/Leaking006_2K-JPG_Color.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Leaking006/Leaking006_2K-JPG_Color.jpg",
+            "sha256": "32bf274f44032f596dc6ff62a832f3ab9744457815199e6083f128c4d37d9765"
+          },
+          {
+            "file": "Leaking006_2K-JPG_Opacity.jpg",
+            "mirror_path": "blender/textures/Leaking006/Leaking006_2K-JPG_Opacity.jpg",
+            "download_url": "https://media.githubusercontent.com/media/achrefelouafi/ProceduralBuildingsThreeJS/6c19f1b1f14408353989ad26cda27f1e1ede5e91/blender/textures/Leaking006/Leaking006_2K-JPG_Opacity.jpg",
+            "sha256": "a2fa71834368457de219ebc9e1272fee71ccc31062d8c4ef1369ca16feb1e37c"
+          }
+        ]
+      },
+      "changes": "Color (RGB) and Opacity (A) merged into one RGBA PNG, resized to 256 x 1024.",
+      "sha256": "f02ef4046e91057b593c07cb348ba32373b4bb00e037898e0137455e0aca60b2",
+      "bytes": 406841
+    },
+    {
+      "file": "Source~/build_pbr_exterior.py",
+      "material": null,
+      "source": {
+        "author": "Jewelry-store-vr-demo project (generated with Claude, October 14, 2026)",
+        "license": "Project-owned original work (CC0-1.0 dedication offered)",
+        "generator": "Source~/build_pbr_exterior.py"
+      },
+      "changes": "Build script (Unity ignores folders ending in ~).",
+      "sha256": "beebb666f99a67e992717598cddce98bc268f48b655199ab7b70cb08e3f8150f",
+      "bytes": 16074
+    }
+  ]
+}

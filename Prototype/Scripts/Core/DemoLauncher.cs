@@ -126,15 +126,15 @@ public sealed class DemoLauncher : MonoBehaviour
         DemoUi.Fill(new Rect(0, 0, width, 3), DemoUi.Accent);
         float w = Mathf.Min(780, width - 64), x = (width - w) / 2, y = Mathf.Max(40, height * 0.09f);
 
-        GUI.Label(new Rect(x, y, w, 20), "POLICE TRAINING  ·  CRIME SCENE DEMONSTRATION", s.Heading);
-        GUI.Label(new Rect(x, y + 22, w, 52), "Jewelry Store Crime Scene", title);
-        GUI.Label(new Rect(x, y + 76, w, 22), "Desktop build. VR needs the OpenXR plug-in, which is not in this build yet.", s.Dim);
+        DemoI18n.Label(new Rect(x, y, w, 20), "POLICE TRAINING  ·  CRIME SCENE DEMONSTRATION", s.Heading);
+        DemoI18n.Label(new Rect(x, y + 22, w, 52), "Jewelry Store Crime Scene", title);
+        DemoI18n.Label(new Rect(x, y + 76, w, 22), "Desktop build. VR needs the OpenXR plug-in, which is not in this build yet.", s.Dim);
         y += 122;
 
         if (entries.Count == 0)
         {
             DemoUi.Box(new Rect(x, y, w, 70), 14, DemoUi.Card, DemoUi.Line);
-            GUI.Label(new Rect(x + 24, y, w - 48, 70), "No maps in this build. Run Play-Keyboard.cmd again to rebuild.", s.Body);
+            DemoI18n.Label(new Rect(x + 24, y, w - 48, 70), "No maps in this build. Run Start-Demo.cmd again to rebuild.", s.Body);
         }
         for (int i = 0; i < entries.Count; i++)
         {
@@ -142,23 +142,23 @@ public sealed class DemoLauncher : MonoBehaviour
             bool latest = i == 0;
             float h = latest ? 104 : 84;
             Rect r = new Rect(x, y, w, h);
-            if (GUI.Button(r, GUIContent.none, latest ? cardLatest : card)) Open(e);
-            if (i < 9) GUI.Label(new Rect(r.x + 20, r.y + (h - 30) / 2, 30, 30), DemoUi.Content(Numbers[i]), s.Keycap);
-            GUI.Label(new Rect(r.x + 66, r.y + 14, w - 220, 30), e.Title, cardTitle);
-            if (e.Description.Length > 0) GUI.Label(new Rect(r.x + 66, r.y + 44, w - 100, h - 52), e.Description, s.Dim);
+            if (DemoI18n.Button(r, GUIContent.none, latest ? cardLatest : card)) Open(e);
+            if (i < 9) DemoI18n.Label(new Rect(r.x + 20, r.y + (h - 30) / 2, 30, 30), DemoUi.Content(Numbers[i]), s.Keycap);
+            DemoI18n.Label(new Rect(r.x + 66, r.y + 14, w - 220, 30), e.Title, cardTitle);
+            if (e.Description.Length > 0) DemoI18n.Label(new Rect(r.x + 66, r.y + 44, w - 100, h - 52), e.Description, s.Dim);
             if (latest)
             {
                 GUIContent tag = DemoUi.Content("LATEST");
                 Vector2 chip = s.ChipAccent.CalcSize(tag);
-                GUI.Label(new Rect(r.xMax - chip.x - 18, r.y + 16, chip.x, chip.y), tag, s.ChipAccent);
+                DemoI18n.Label(new Rect(r.xMax - chip.x - 18, r.y + 16, chip.x, chip.y), tag, s.ChipAccent);
             }
             y += h + 12;
         }
 
         // Bottom up: build stamp, a two-line word-wrapped credits summary, the key hints.
         DemoUi.DrawHints(new Rect(x, height - 114, w, 28), Hints);
-        if (credits.Length > 0) GUI.Label(new Rect(x, height - 78, w, 34), credits, s.Small);
-        if (buildInfo.Length > 0) GUI.Label(new Rect(x, height - 40, w, 20), buildInfo, s.Small);
+        if (credits.Length > 0) DemoI18n.Label(new Rect(x, height - 78, w, 34), credits, s.Small);
+        if (buildInfo.Length > 0) DemoI18n.Label(new Rect(x, height - 40, w, 24), DemoLanguage.Arabic?"إصدار العرض • ١٨ أكتوبر ٢٠٢٦":"Review build • 18 October 2026", s.Small);
         GUI.matrix = Matrix4x4.identity;
     }
 

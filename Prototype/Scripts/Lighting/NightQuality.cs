@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Runtime quality for the baked night scene in VR. All scene lighting is baked, so
 // the only realtime light is the flashlight: four pixel lights leave room for it and
-// the diagnostic sun, hard low-cost shadows over the flashlight's 14 m reach, 4x
+// the diagnostic sun, filtered 2K flashlight shadows over its 14 m reach, 4x
 // MSAA instead of post-process anti-aliasing, and no realtime reflection probes (the
 // three box-projected probes are baked). Applied in Awake; the previous values are
 // saved first and restored when the component is destroyed: in a build when another
@@ -67,8 +67,8 @@ public sealed class NightQuality : MonoBehaviour
     public void Apply()
     {
         QualitySettings.pixelLightCount = PixelLights;
-        QualitySettings.shadows = ShadowQuality.HardOnly;
-        QualitySettings.shadowResolution = ShadowResolution.Medium;
+        QualitySettings.shadows = ShadowQuality.All;
+        QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
         QualitySettings.shadowDistance = ShadowDistance;
         QualitySettings.antiAliasing = AntiAliasing;
         QualitySettings.realtimeReflectionProbes = false;

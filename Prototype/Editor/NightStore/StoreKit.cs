@@ -679,17 +679,32 @@ public static partial class StoreKit
         float paneY0 = deck + 0.01f, paneH = h - post - paneY0, paneCy = paneY0 + paneH * 0.5f;
         GameObject root = Root(kind, parent);
         KitMesh body = new KitMesh();
-        body.Box(FrameMetal, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), false);
-        body.Box(Walnut, V(0, (0.08f + deck) * 0.5f, 0), V(w - 0.02f, deck - 0.08f, d - 0.02f));
+        body.Box(FrameMetal, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), true);
+        if (!drawer) body.Box(Walnut, V(0, (0.08f + deck) * 0.5f, 0), V(w - 0.02f, deck - 0.08f, d - 0.02f));
+        else
+        {
+            // A real cabinet aperture around the 110 mm drawer front, with an
+            // interior floor, back and runners. The tray no longer intersects a solid slab.
+            const float low = .52f, high = .66f;
+            body.Box(Walnut,V(0,(.08f+low)*.5f,0),V(w-.02f,low-.08f,d-.02f));
+            body.Box(Walnut,V(0,(high+deck)*.5f,0),V(w-.02f,deck-high,d-.02f));
+            foreach(int side in new[]{-1,1})
+            {
+                body.Box(Walnut,V(side*(w*.5f-.035f),(low+high)*.5f,0),V(.05f,high-low,d-.02f));
+                body.Box(Stainless,V(side*(w*.5f-.075f),.555f,-.02f),V(.012f,.018f,.48f));
+            }
+            body.Box(Walnut,V(0,(low+high)*.5f,d*.5f-.025f),V(w-.12f,high-low,.03f));
+            body.Box(Velvet,V(0,low+.002f,0),V(w-.14f,.004f,d-.08f));
+        }
         FramedPanels(body, Walnut, w - 0.02f, d - 0.02f, 0.08f, deck, !backPanel);
-        body.Box(Suede, V(0, deck + 0.005f, 0), V(w - 0.08f, 0.01f, d - 0.08f), false);
+        body.Box(Suede, V(0, deck + 0.005f, 0), V(w - 0.08f, 0.01f, d - 0.08f), true);
         // Piping 5 mm wide and 3 mm high, 12.5 mm inside the panes; the pieces butt at the corners.
         const float inset = 0.0125f;
         float px = paneX - half - inset, pz = paneZ - half - inset;
         for (int s = -1; s <= 1; s += 2)
         {
-            body.Box(Suede, V(0, deck + 0.0115f, s * pz), V(2 * px + 0.005f, 0.003f, 0.005f), false);
-            body.Box(Suede, V(s * px, deck + 0.0115f, 0), V(0.005f, 0.003f, 2 * pz - 0.005f), false);
+            body.Box(Suede, V(0, deck + 0.0115f, s * pz), V(2 * px + 0.005f, 0.003f, 0.005f), true);
+            body.Box(Suede, V(s * px, deck + 0.0115f, 0), V(0.005f, 0.003f, 2 * pz - 0.005f), true);
         }
         for (int s = -1; s <= 1; s += 2)
         {
@@ -705,7 +720,7 @@ public static partial class StoreKit
             body.Bar(Bronze, V(s * paneX, railTop - railH * 0.5f, 0), V(post, railH, pd), bevel);
         }
         if (backPanel) body.Box(Walnut, V(0, paneCy, paneZ), V(w - 0.11f, paneH, 0.012f));
-        if (drawer) body.Box(Fabric, V(0, 0.59f, -(d * 0.5f - 0.01f) - 0.001f), V(w - 0.14f, 0.11f, 0.002f));
+        // The drawer aperture stays open; no painted black plate covers it.
         if (!allBroken)
         {
             // The top pane's edge band: 0.3 mm outside its sides, 0.1 mm inside its faces.
@@ -812,11 +827,11 @@ public static partial class StoreKit
         KitMesh k = new KitMesh();
         for (int s = -1; s <= 1; s += 2)
         {
-            k.Box(Walnut, V(s * (w * 0.5f - t * 0.5f), h * 0.5f, 0), V(t, h, d), false);
+            k.Box(Walnut, V(s * (w * 0.5f - t * 0.5f), h * 0.5f, 0), V(t, h, d), true);
             k.Box(Bronze, V(s * (w * 0.5f - t * 0.5f), h * 0.5f, -(d * 0.5f + 0.004f)), V(t, h, 0.008f));
         }
         k.Box(Walnut, V(0, h - t * 0.5f, 0), V(w - 2 * t, t, d));
-        k.Box(Walnut, V(0, 0.04f, 0), V(w - 2 * t, 0.08f, d), false);
+        k.Box(Walnut, V(0, 0.04f, 0), V(w - 2 * t, 0.08f, d), true);
         k.Box(Walnut, V(0, (0.08f + h - t) * 0.5f, d * 0.5f - 0.01f), V(w - 2 * t, h - t - 0.08f, 0.02f));
         k.Box(Bronze, V(0, h - t * 0.5f, -(d * 0.5f + 0.004f)), V(w, t, 0.008f));
         k.Box(Bronze, V(0, 0.04f, -(d * 0.5f + 0.004f)), V(w - 2 * t, 0.08f, 0.008f));
@@ -839,7 +854,7 @@ public static partial class StoreKit
         const float w = 1.8f, d = 0.6f, h = 0.95f;
         GameObject root = Root("counter", parent);
         KitMesh k = new KitMesh();
-        k.Box(FrameMetal, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), false);
+        k.Box(FrameMetal, V(0, 0.04f, 0), V(w - 0.06f, 0.08f, d - 0.06f), true);
         k.Box(Walnut, V(0, (0.08f + h - 0.04f) * 0.5f, 0), V(w - 0.02f, h - 0.12f, d - 0.02f));
         FramedPanels(k, Walnut, w - 0.02f, d - 0.02f, 0.08f, h - 0.04f, true);
         k.Bar(Stone, V(0, h - 0.02f, 0), V(w + 0.04f, 0.04f, d + 0.04f), 0.004f);
@@ -854,10 +869,14 @@ public static partial class StoreKit
         const float w = 0.9f, d = 0.5f, h = 0.75f, dh = 0.21f;
         GameObject root = Root("drawer_unit", parent);
         KitMesh k = new KitMesh();
-        k.Box(Bronze, V(0, 0.025f, 0), V(w - 0.04f, 0.05f, d - 0.04f), false);
-        k.Box(Walnut, V(0, (0.05f + h) * 0.5f, 0), V(w, h - 0.05f, d));
+        k.Box(Bronze, V(0, 0.025f, 0), V(w - 0.04f, 0.05f, d - 0.04f), true);
+        // Closed carcass panels around three open drawer bays.
+        for(int side=-1;side<=1;side+=2) k.Box(Walnut,V(side*(w*.5f-.01f),.4f,0),V(.02f,.7f,d));
+        k.Box(Walnut,V(0,.735f,0),V(w-.04f,.03f,d));
+        k.Box(Walnut,V(0,.39f,d*.5f-.01f),V(w-.04f,.66f,.02f));
+        foreach(float y in new[]{.06f,.2875f,.5125f}) k.Box(Walnut,V(0,y,0),V(w-.04f,.015f,d-.02f));
         float[] centres = { 0.175f, 0.4f, 0.625f };
-        foreach (float y in centres) k.Box(Fabric, V(0, y, -d * 0.5f - 0.001f), V(w - 0.04f, dh, 0.002f));
+        foreach(float y in centres) for(int side=-1;side<=1;side+=2) k.Box(Stainless,V(side*.417f,y-.07f,0),V(.012f,.016f,.42f));
         Part(k, "Body", root, Vector3.zero, "drawer_unit");
         for (int i = 0; i < 3; i++)
         {
@@ -884,10 +903,18 @@ public static partial class StoreKit
                 TaperedLeg(k, Walnut, V(sx * 0.65f, 0, sz * 0.30f), 0.02f, 0.032f, h - 0.03f);
         for (int s = -1; s <= 1; s += 2)
         {
-            k.Box(Walnut, V(0, 0.66f, s * 0.31f), V(1.236f, 0.12f, 0.02f));
+            if(s>0) k.Box(Walnut, V(0, 0.66f, s * 0.31f), V(1.236f, 0.12f, 0.02f));
+            else
+            {
+                k.Box(Walnut,V(-.327f,.66f,-.31f),V(.582f,.12f,.02f));
+                k.Box(Walnut,V(.56f,.66f,-.31f),V(.116f,.12f,.02f));
+                k.Box(Walnut,V(.25f,.7125f,-.31f),V(.52f,.015f,.02f));
+                k.Box(Walnut,V(.25f,.6075f,-.31f),V(.52f,.015f,.02f));
+            }
             k.Box(Walnut, V(s * 0.63f, 0.66f, 0), V(0.02f, 0.12f, 0.536f));
         }
-        k.Box(Fabric, V(0.25f, 0.66f, -0.321f), V(0.5f, 0.1f, 0.002f));
+        k.Box(Walnut,V(.25f,.608f,-.05f),V(.52f,.016f,.52f));
+        k.Box(Fabric,V(.25f,.66f,.205f),V(.52f,.1f,.012f));
         Part(k, "Body", root, Vector3.zero, "office_desk");
         KitMesh drawer = new KitMesh();
         Drawer(drawer, 0.5f, 0.1f, 0.5f, Walnut, Walnut);
@@ -939,7 +966,7 @@ public static partial class StoreKit
         KitMesh k = new KitMesh();
         for (int sx = -1; sx <= 1; sx += 2)
             for (int sz = -1; sz <= 1; sz += 2)
-                k.Box(FrameMetal, V(sx * (w * 0.5f - 0.015f), h * 0.5f, sz * (d * 0.5f - 0.015f)), V(0.03f, h, 0.03f), false);
+                k.Box(FrameMetal, V(sx * (w * 0.5f - 0.015f), h * 0.5f, sz * (d * 0.5f - 0.015f)), V(0.03f, h, 0.03f), true);
         float brace = Mathf.Atan2(1.74f, w - 0.03f) * Mathf.Rad2Deg, length = new Vector2(w - 0.03f, 1.74f).magnitude;
         for (int s = -1; s <= 1; s += 2)
             k.Box(FrameMetal, V(0, 0.95f, d * 0.5f - 0.01f), V(length, 0.015f, 0.006f), Quaternion.Euler(0, 0, s * brace));
@@ -950,7 +977,7 @@ public static partial class StoreKit
             for (int j = 0; j < 3; j++)
             {
                 float bh = 0.12f + 0.03f * ((i + j) % 2);
-                k.Box(Lacquer, V(-0.31f + j * 0.31f, shelves[i] + 0.01f + bh * 0.5f, 0), V(0.26f, bh, 0.30f), false);
+                k.Box(Lacquer, V(-0.31f + j * 0.31f, shelves[i] + 0.01f + bh * 0.5f, 0), V(0.26f, bh, 0.30f), true);
             }
         }
         Part(k, "Body", root, Vector3.zero, "shelving_unit");
@@ -964,7 +991,7 @@ public static partial class StoreKit
         const float w = 0.6f, d = 0.5f, h = 1.8f;
         GameObject root = Root("locker_cabinet", parent);
         KitMesh k = new KitMesh();
-        k.Box(FrameMetal, V(0, 0.03f, 0), V(w - 0.04f, 0.06f, d - 0.04f), false);
+        k.Box(FrameMetal, V(0, 0.03f, 0), V(w - 0.04f, 0.06f, d - 0.04f), true);
         k.Box(Lacquer, V(0, (0.06f + h) * 0.5f, 0), V(w, h - 0.06f, d));
         k.Box(Lacquer, V(0, (0.06f + h) * 0.5f, -d * 0.5f - 0.004f), V(w - 0.04f, h - 0.1f, 0.008f));
         k.Box(Stainless, V(0.2f, 1.0f, -d * 0.5f - 0.03f), V(0.02f, 0.16f, 0.02f));
@@ -998,7 +1025,7 @@ public static partial class StoreKit
         KitMesh k = new KitMesh();
         for (int sx = -1; sx <= 1; sx += 2)
             for (int sz = -1; sz <= 1; sz += 2)
-                k.Box(SafeSteel, V(sx * (w * 0.5f - 0.08f), foot * 0.5f, sz * (d * 0.5f - 0.08f)), V(0.09f, foot, 0.09f), false);
+                k.Box(SafeSteel, V(sx * (w * 0.5f - 0.08f), foot * 0.5f, sz * (d * 0.5f - 0.08f)), V(0.09f, foot, 0.09f), true);
         k.Bar(SafeSteel, V(0, h - wall * 0.5f, 0), V(w, wall, d), 0.008f);
         k.Bar(SafeSteel, V(0, foot + wall * 0.5f, 0), V(w, wall, d), 0.008f);
         k.Box(SafeSteel, V(-(w * 0.5f - wall * 0.5f), cy, 0), V(wall, hb - 2 * wall, d));
@@ -1105,8 +1132,8 @@ public static partial class StoreKit
             for (int sz = -1; sz <= 1; sz += 2)
                 TaperedLeg(k, Walnut, V(sx * (w * 0.5f - 0.08f), 0, sz * (d * 0.5f - 0.08f)), 0.02f, 0.03f, 0.10f);
         k.Box(Walnut, V(0, 0.125f, 0), V(w - 0.04f, 0.05f, d - 0.04f));
-        k.Box(Fabric, V(0, 0.275f, 0), V(w, 0.25f, d), false);
-        k.Box(Fabric, V(0, 0.6f, d * 0.5f - 0.08f), V(w, 0.4f, 0.16f), false);
+        k.Box(Fabric, V(0, 0.275f, 0), V(w, 0.25f, d), true);
+        k.Box(Fabric, V(0, 0.6f, d * 0.5f - 0.08f), V(w, 0.4f, 0.16f), true);
         for (int s = -1; s <= 1; s += 2)
         {
             k.ChamferBox(Fabric, V(s * (w * 0.5f - 0.08f), 0.52f, 0), V(d, 0.24f, 0.16f), 0.04f, Quaternion.Euler(0, 90, 0));
@@ -1133,8 +1160,8 @@ public static partial class StoreKit
             k.Box(Bronze, V(0, 0.07f, s * 0.235f), V(0.86f, 0.015f, 0.015f));
             for (int t = -1; t <= 1; t += 2)
             {
-                k.Box(Walnut, V(s * 0.46f, 0.215f, t * 0.235f), V(0.06f, 0.37f, 0.06f), false);
-                k.Box(Bronze, V(s * 0.46f, 0.015f, t * 0.235f), V(0.064f, 0.03f, 0.064f), false);
+                k.Box(Walnut, V(s * 0.46f, 0.215f, t * 0.235f), V(0.06f, 0.37f, 0.06f), true);
+                k.Box(Bronze, V(s * 0.46f, 0.015f, t * 0.235f), V(0.064f, 0.03f, 0.064f), true);
             }
         }
         k.Box(Bronze, V(0, 0.07f, 0), V(0.015f, 0.015f, 0.41f));
@@ -1208,7 +1235,7 @@ public static partial class StoreKit
         KitMesh frame = new KitMesh();
         for (int s = -1; s <= 1; s += 2) frame.Bar(FrameMetal, V(s * 0.96f, 1.2f, 0), V(0.08f, 2.4f, 0.12f), 0.004f);
         frame.Bar(FrameMetal, V(0, 2.36f, 0), V(2 * half, 0.08f, 0.12f), 0.004f);
-        frame.Box(Stainless, V(0, 0.005f, 0), V(2 * half, 0.01f, 0.14f), false);
+        frame.Box(Stainless, V(0, 0.005f, 0), V(2 * half, 0.01f, 0.14f), true);
         for (int s = -1; s <= 1; s += 2) frame.Box(DeviceGrey, V(s * 0.1525f, 2.314f, 0.04f), V(0.06f, 0.012f, 0.012f));
         Part(frame, "Frame", root, Vector3.zero, "storefront_frame");
         for (int s = -1; s <= 1; s += 2) Collide(root, V(s * 0.96f, 1.2f, 0), V(0.08f, 2.4f, 0.12f));
@@ -1327,7 +1354,7 @@ public static partial class StoreKit
         GameObject root = Root("window_module", parent);
         KitMesh k = new KitMesh();
         for (int s = -1; s <= 1; s += 2) k.Box(FrameMetal, V(s * mullion, 1.5f, 0), V(0.04f, 3.0f, 0.12f));
-        k.Box(FrameMetal, V(0, 0.175f, 0), V(gw, 0.35f, 0.10f), false);
+        k.Box(FrameMetal, V(0, 0.175f, 0), V(gw, 0.35f, 0.10f), true);
         k.Box(FrameMetal, V(0, 0.39f, 0), V(gw, 0.08f, 0.14f));
         k.Box(FrameMetal, V(0, 2.6f, 0), V(gw, 0.08f, 0.12f));
         k.Box(FrameMetal, V(0, 2.78f, 0), V(gw, 0.28f, 0.10f));
@@ -1513,7 +1540,7 @@ public static partial class StoreKit
     {
         GameObject root = Root("pos_terminal", parent);
         KitMesh k = new KitMesh();
-        k.Box(DeviceBlack, V(0, 0.006f, 0), V(0.18f, 0.012f, 0.16f), false);
+        k.Box(DeviceBlack, V(0, 0.006f, 0), V(0.18f, 0.012f, 0.16f), true);
         k.Box(DeviceBlack, V(0, 0.07f, 0.02f), V(0.05f, 0.12f, 0.03f));
         Vector3 c = V(0, 0.2f, 0.03f);
         Quaternion q = Quaternion.Euler(15, 0, 0);

@@ -78,7 +78,12 @@ public sealed class DemoLighting : MonoBehaviour
     {
         Torch torch = ultraviolet ? uv : white;
         torch.Hand = hand;
-        if (torch.On) Attach(torch);
+        if (torch.Equipped) Attach(torch);
+    }
+    public bool TorchEquipped(bool ultraviolet)=>(ultraviolet?uv:white).Equipped;
+    public void HolsterTorch(bool ultraviolet){if(ultraviolet)UVTorch(false);else Flashlight(false);SwitchSound(ultraviolet?uv:white);}
+    public void ClearHandTorch(Transform hand){
+        foreach(var torch in new[]{white,uv})if(torch.Equipped && torch.Light.transform.parent==hand)HolsterTorch(torch.Ultraviolet);
     }
     public bool UVExamplesVisible => UVExamples != null && UVExamples.activeSelf;
     public bool LightBarFlashing => LightBar != null && LightBar.Flashing;
@@ -113,7 +118,8 @@ public sealed class DemoLighting : MonoBehaviour
         public Light Light;
         public GameObject Model;
         public Renderer[] Parts = new Renderer[0];
-        public bool InVR, Hidden, Ultraviolet;
+        public bool InVR, Hidden, Ultraviolet, CameraInUse;
+        public bool Equipped => Model != null && Model.activeSelf;
         public XRNode Hand;
         public bool On => Light != null && Light.enabled && Light.gameObject.activeSelf;
     }
@@ -151,8 +157,8 @@ public sealed class DemoLighting : MonoBehaviour
     private void Update()
     {
         bool vr = mode != null && mode.VRActive;
-        if (white.On && mode != null && vr != white.InVR) Attach(white);
-        if (uv.On && mode != null && vr != uv.InVR) Attach(uv);
+        if (white.Equipped && (vr != white.InVR || CameraInUse() != white.CameraInUse)) Attach(white);
+        if (uv.Equipped && (vr != uv.InVR || CameraInUse() != uv.CameraInUse)) Attach(uv);
         if (uv.On) UpdateUV(Time.deltaTime);
     }
 
@@ -270,14 +276,14 @@ public sealed class DemoLighting : MonoBehaviour
     // without one); Flashlight/UVTorch themselves stay silent for resets and scripts.
     public void ToggleFlashlight()
     {
-        Flashlight(!FlashlightOn);
+        ToggleBeam(white);
         SwitchSound(white);
         DemoFeedback.Post(FlashlightOn ? "Flashlight on" : "Flashlight off");
     }
 
     // Warm spot light at the lens of a visible torch model, created on first use and
     // re-attached whenever it is switched on, since the holder depends on the mode at
-    // that moment. Low-resolution hard shadows: the one realtime shadow in the night
+    // that moment. Filtered 2K shadows: the one realtime shadow in the night
     // scene, so objects in the beam occlude it and the beam reads as handheld.
     public void Flashlight(bool on)
     {
@@ -289,9 +295,26 @@ public sealed class DemoLighting : MonoBehaviour
 
     public void ToggleUVTorch()
     {
-        UVTorch(!UVTorchOn);
+        ToggleBeam(uv);
         SwitchSound(uv);
         DemoFeedback.Post(UVTorchOn ? "UV torch on" : "UV torch off");
+    }
+
+    private bool CameraInUse() { var camera = FindFirstObjectByType<EvidenceCamera>(); return camera != null && camera.Holder != null; }
+
+    private void ToggleBeam(Torch torch)
+    {
+        if (!torch.Equipped) { if (torch.Ultraviolet) UVTorch(true); else Flashlight(true); return; }
+        torch.Light.enabled = !torch.Light.enabled;
+        if (torch.Ultraviolet && !torch.On) { Shader.SetGlobalVector(UVParamsId, Vector4.zero); UVTrace.HideAll(); }
+        if (Session != null && Session.Station != null) Session.Station.UpdateLampShadows();
+    }
+
+    // Controller trigger uses the torch currently carried by this hand.
+    public bool UseTorch(Transform hand)
+    {
+        foreach (var torch in new[] { white, uv }) if (torch.Equipped && torch.Light.transform.parent == hand) { if(torch.Ultraviolet) ToggleUVTorch(); else ToggleFlashlight(); return true; }
+        return false;
     }
 
     private void SwitchSound(Torch torch)
@@ -388,8 +411,12 @@ public sealed class DemoLighting : MonoBehaviour
             light.spotAngle = 42;
             light.intensity = FlashlightIntensity;
             light.color = FlashlightColor;
-            light.shadows = LightShadows.Hard;
-            light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.Low;
+            light.shadows = LightShadows.Soft;
+            light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.VeryHigh;
+            light.shadowCustomResolution = 2048;
+            light.shadowBias = .015f;
+            light.shadowNormalBias = .12f;
+            light.shadowNearPlane = .06f;
         }
         torch.Light = light;
         torch.Model = DemoToolGeometry.CreateFlashlight(torch.Ultraviolet);
@@ -439,10 +466,18 @@ public sealed class DemoLighting : MonoBehaviour
     {
         if (mode == null) mode = FindFirstObjectByType<DemoModeSwitch>();
         torch.InVR = mode != null && mode.VRActive;
+        torch.CameraInUse = CameraInUse();
+        XRNode wanted = torch.Hand;
+        var camera = FindFirstObjectByType<EvidenceCamera>();
+        if (torch.InVR && camera != null && camera.Holder != null) { var carrying = camera.Holder.GetComponent<XRControllerInput>(); if(carrying != null && carrying.Node == wanted) wanted = wanted == XRNode.LeftHand ? XRNode.RightHand : XRNode.LeftHand; }
         Transform holder = null;
         if (torch.InVR)
             foreach (XRControllerInput hand in FindObjectsByType<XRControllerInput>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                if (hand.Node == torch.Hand) holder = hand.transform;
+                if (hand.Node == wanted) holder = hand.transform;
+        if(holder!=null){
+            var occupied=holder.GetComponent<HandInteractor>();
+            if(occupied!=null&&occupied.Held!=null){torch.Light.enabled=false;torch.Model.SetActive(false);return;}
+        }
         bool onView = holder == null;
         if (onView) holder = Camera.main != null ? Camera.main.transform : transform;
         Light light = torch.Light;
@@ -461,7 +496,7 @@ public sealed class DemoLighting : MonoBehaviour
     }
 
     // The UV torch mirrors the white torch's desktop offsets to the left of the view.
-    private static Vector3 Side(Vector3 offset, Torch torch) => torch.Ultraviolet ? new Vector3(-offset.x, offset.y, offset.z) : offset;
+    private static Vector3 Side(Vector3 offset, Torch torch) => (torch.Ultraviolet || torch.CameraInUse) ? new Vector3(-offset.x, offset.y, offset.z) : offset;
 
     private void OnDestroy()
     {

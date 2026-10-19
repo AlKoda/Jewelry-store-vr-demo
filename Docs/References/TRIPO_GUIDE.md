@@ -6,7 +6,7 @@ Researched October 12, 2026 (official help pages, the Tripo API/SDK source, the 
 
 **You upload the picture and type nothing.** Image-to-3D has no text box that matters: the picture is the prompt. The text prompts further down are only for the few items without a picture, or as a second try if a picture fails.
 
-All pictures are in [`Docs/References/TripoInputs/`](TripoInputs/) and in one download, [`Downloads/TripoInputs.zip`](TripoInputs/). **The file name tells you the settings:** `03_P2_3000f_tape_stanchion.jpg` means item 3, route **P2**, **3,000 faces**, save the result as `tape_stanchion`.
+All pictures are in [`Docs/TripoInputs/`](TripoInputs/) and in one download, [`Downloads/TripoInputs.zip`](../Downloads/TripoInputs.zip). **The file name tells you the settings:** `03_P2_3000f_tape_stanchion.jpg` means item 3, route **P2**, **3,000 faces**, save the result as `tape_stanchion`.
 
 **Route P2 (Smart Mesh P2.0)** — files with `_P2_`:
 1. Tripo Studio → **3D Workspace** → **Smart Topology Mesh** (Smart Mesh) → version **P2.0**.
@@ -33,7 +33,7 @@ If Studio's labels differ slightly (Tripo renames things often), the choices to 
 
 1. **One object per generation** for everything you will see up close or touch (tools, cases, safes, busts, furniture). Tripo's "4 in one run" (P2.0 multi-version) gives **four versions of the same object** at different polycounts, not four different objects. A sheet of 4–5 different tools tends to fuse them, and they then share one face budget and one texture.
 2. **Exception — clutter sets:** four inputs are deliberately groups of small background items (`display_risers`, `shopping_bags`, `transport_trays`, `dropped_jewelry`). Generate each as one model and split it afterwards (Blender: *Mesh → Separate → By Loose Parts*, or Tripo *Segmentation*). That is where several objects per generation pays off.
-3. **Use the input images, not text, wherever one exists.** Image-to-3D follows your reference designs; text-to-3D invents its own. Ready-made inputs (one centred object, 1024 px, labels removed, light objects on grey because white-on-white causes holes) are in [`Docs/References/TripoInputs/`](TripoInputs/). Text prompts below are for items without an image, or as a fallback when an image result fails.
+3. **Use the input images, not text, wherever one exists.** Image-to-3D follows your reference designs; text-to-3D invents its own. Ready-made inputs (one centred object, 1024 px, labels removed, light objects on grey because white-on-white causes holes) are in [`Docs/TripoInputs/`](TripoInputs/). Text prompts below are for items without an image, or as a fallback when an image result fails.
 4. **Two model tiers to stay inside a Pro month (3,000 credits):**
    - **P2.0** (newest, Sept 2026; ~100 credits per run, up to 4 polycount versions in that run on Pro/Max) for hard-surface hero props: camera, safes, display/wall case, counter, drawer unit, desk, flashlights, tape stanchion, scene lamp, security camera.
    - **H3.1 + Smart Low-poly** (~25 + 10 texture + 20 low-poly ≈ 55 credits) for simple or small items: marker, cone, busts, trays, boxes, stands, sofa, side table, terminal, keypad, track light, clutter sets.
@@ -45,7 +45,7 @@ If Studio's labels differ slightly (Tripo renames things often), the choices to 
 
 | Setting | Value | Why |
 |---|---|---|
-| Mode | **Image to 3D** with the input from `Docs/References/TripoInputs/` | follows the agreed design |
+| Mode | **Image to 3D** with the input from `Docs/TripoInputs/` | follows the agreed design |
 | Model | **P2.0** for hero props, **H3.1** (v3.1) with **Smart Low-poly** for small/simple props | quality where it shows, credits saved elsewhere |
 | Polygons / face target | as given per item (triangles) | VR budget; P2 treats it as a target, H3.1 without a limit makes 1–2 million faces |
 | Topology | **Triangles** (Quad off) | Unity uses triangles; quads only help if you will edit in Blender (quad output is FBX, max 25k) |
@@ -73,7 +73,7 @@ Image inputs need no prompt (image-to-3D has no prompt or negative prompt). For 
 
 ## Prompts and settings
 
-Face targets are triangles. "Input" names the picture; in `Docs/References/TripoInputs/` it carries its number and settings as a prefix (e.g. `evidence_marker.jpg` is `01_LP_1500f_evidence_marker.jpg`). "Text" is for text-to-3D or as a fallback.
+Face targets are triangles. "Input" names the picture; in `Docs/TripoInputs/` it carries its number and settings as a prefix (e.g. `evidence_marker.jpg` is `01_LP_1500f_evidence_marker.jpg`). "Text" is for text-to-3D or as a fallback.
 
 ### Batch 1 — scene tools (seen in the hand, highest priority)
 
@@ -210,7 +210,7 @@ Text: `Wall-mounted alarm keypad, brushed grey metal box, small dark display at 
 **35. `planter`** — H3.1 + Smart Low-poly text-to-3D, target **3,000** — **auto**
 `Square cream ceramic planter with a lush green indoor plant, broad glossy leaves, 1 m tall overall`
 
-**36. `police_car`** — **wait** for the country and livery decision (see Docs/DECISIONS.md). Then P2.0 text-to-3D, target **15,000**, Detailed: `Modern [country] police patrol sedan, [livery colours and markings in words, no readable text], light bar on the roof, separate wheels`. Text and badges go on as decals in Unity.
+**36. `police_car`** — **wait** for the country and livery decision (see "for Koda.md"). Then P2.0 text-to-3D, target **15,000**, Detailed: `Modern [country] police patrol sedan, [livery colours and markings in words, no readable text], light bar on the roof, separate wheels`. Text and badges go on as decals in Unity.
 
 Skip for now (procedural versions are good enough and Tripo is weak at them): doors and window modules (glass, hinges), exit sign (text), downlight, bollard, L-scale, measuring reel.
 

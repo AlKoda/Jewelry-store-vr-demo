@@ -417,7 +417,8 @@ public static partial class NightStoreValidation
             shutterFront &= p.z >= L.MinZ - 0.03f && p.z < L.MinZ;
         }
         List<Vector3> farShutter = Of(far, StoreKit.Shutter);
-        bool row = Of(far, StoreKit.Render).Count > 0 && Of(far, StoreKit.WindowLit).Count > 0 && farShutter.Count > 0;
+        bool texturedRooms=false;foreach(var item in far) texturedRooms |= item.Key != null && item.Key.name == "NeighbourRoomsLit" && item.Key.mainTexture != null && item.Value.Count > 0;
+        bool row = Of(far, StoreKit.Render).Count > 0 && (Of(far, StoreKit.WindowLit).Count > 0 || texturedRooms) && farShutter.Count > 0;
         foreach (Vector3 p in farShutter) row &= p.z > L.FarPavementZ && p.z <= L.FarPavementZ + 0.03f;
         DemoValidation.Info("Street facades: brick " + (StoreKit.PaletteSource(StoreKit.Brick) ?? "scalar finish") + ", render "
             + (StoreKit.PaletteSource(StoreKit.Render) ?? "scalar finish") + ", shutters " + (StoreKit.PaletteSource(StoreKit.Shutter) ?? "scalar finish"));
@@ -443,7 +444,7 @@ public static partial class NightStoreValidation
         Transform across = root.Find("Exterior/Buildings/AcrossStreet"), block = root.Find(NightStreet.ApartmentPath);
         Transform shelter = root.Find("Exterior/" + NightStreet.GroupName + "/BusShelter"), exterior = root.Find("Exterior");
         MeshRenderer row = across != null ? across.GetComponent<MeshRenderer>() : null;
-        bool windows = Glows(StoreKit.WindowLit) && row != null && Array.IndexOf(row.sharedMaterials, StoreKit.WindowLit) >= 0 && Contributes(row);
+        bool windows = row != null && Array.Exists(row.sharedMaterials,m=>Glows(m)&&(m==StoreKit.WindowLit||m.name=="NeighbourRoomsLit")) && Contributes(row);
         bool rooms = block == null || Bakes(block, false), lightbox = shelter == null || Bakes(shelter, true);
         int lights = exterior != null ? exterior.GetComponentsInChildren<Light>(true).Length : -1;
         DemoValidation.Info("Baked street emitters: lit windows across the street" + (block != null ? ", apartment rooms" : " (no apartment block)")

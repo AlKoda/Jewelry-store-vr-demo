@@ -25,6 +25,7 @@ public sealed class ThirdPartyModelImport : AssetPostprocessor
     // StreetModels buildings and the InteriorModels rug, _LOD files included.
     public static bool WantsLightmapUVs(string path)
     {
+        if (path.Contains("/UserPoliceCar/")) return false;
         string pack = PackImport.PackOf(path);
         if (pack == null) return true;
         string stem = Path.GetFileNameWithoutExtension(path);
@@ -58,6 +59,7 @@ public sealed class ThirdPartyModelImport : AssetPostprocessor
 
     public static float SmoothingAngle(string path)
     {
+        if (path.Contains("/UserPoliceCar/")) return 0;
         string pack = PackImport.PackOf(path);
         string[] names = pack == "StreetModels" ? HardEdged : pack == "JewelryModels" ? SmoothJewellery : pack == "ForensicModels" ? SmoothTools : null;
         if (names == null) return 0;

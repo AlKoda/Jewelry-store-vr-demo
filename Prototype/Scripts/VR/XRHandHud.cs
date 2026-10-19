@@ -88,6 +88,7 @@ public sealed class XRHandHud : MonoBehaviour
     public void Build(XRControllerInput owner)
     {
         if (model != null) return;
+        DemoLanguage.Changed+=Refresh;
         input = owner;
         left = owner.Left;
         side = left ? -1 : 1;
@@ -217,7 +218,7 @@ public sealed class XRHandHud : MonoBehaviour
     {
         string face = left ? "X" : "A", back = left ? "Y" : "B";
         string stick = (input.Teleports ? "Teleport" : input.SnapTurns ? "Turn" : "Stick")
-            + (input.Lighting != null ? "  ·  click: flashlight" : input.UVLighting != null ? "  ·  click: UV torch" : "");
+            + (input.Lighting != null ? "  Â·  click: flashlight" : input.UVLighting != null ? "  Â·  click: UV torch" : "");
         // Face buttons and trigger in a column on the outer side, stick, menu and grip on the inner side.
         float outer = side, innerSide = -side;
         AddTip(Control.Secondary, back, "Remove / next tool", new Vector3(outer * 0.085f, 0.07f, 0.01f), outer > 0, null);
@@ -245,6 +246,7 @@ public sealed class XRHandHud : MonoBehaviour
             existing.transform.localRotation = Quaternion.identity;
             existing.transform.localScale = Vector3.one;
             DemoUi.Configure(existing, DemoUi.Medium, TextHeight, DemoUi.Ink, TextAnchor.MiddleLeft);
+            if(!existing.GetComponent<LocalizedWorldLabel>())existing.gameObject.AddComponent<LocalizedWorldLabel>();
             tip.Action = existing;
         }
         else tip.Action = DemoUi.WorldText("Action", tip.Root, Vector3.zero, action ?? "", TextHeight, DemoUi.Ink, TextAnchor.MiddleLeft);
@@ -284,13 +286,14 @@ public sealed class XRHandHud : MonoBehaviour
     // The A/X hint changed (XRControllerInput writes the Label): re-fit its panel.
     public void Refresh()
     {
-        foreach (Tip tip in tips) if (tip.Control == Control.Primary) LayoutTip(tip);
+        foreach (Tip tip in tips) LayoutTip(tip);
     }
 
     // The menu button's switch for both hands; renderers follow it at once.
     public void ShowHints(bool visible)
     {
         hintsShown = visible;
+        if(statusRoot!=null)statusRoot.gameObject.SetActive(visible);
         appliedTipAlpha = -1;        // the next LateUpdate re-applies alpha and visibility
         tipsRendering = !visible;    // force the write
         SetTipsRendering(visible);
@@ -411,12 +414,12 @@ public sealed class XRHandHud : MonoBehaviour
         if (station != null)
         {
             int tools = station.DeployedCount;
-            text += "\n" + tools + (tools == 1 ? " tool" : " tools") + "   ·   Next marker " + station.NextMarkerNumber;
+            text += "\n" + tools + (tools == 1 ? " tool" : " tools") + "   Â·   Next marker " + station.NextMarkerNumber;
         }
         string lights = lighting == null ? "" : lighting.FlashlightOn ? "Flashlight on" : lighting.UVTorchOn ? "UV torch on" : "Torches off";
         if (camera != null || lights.Length > 0)
             text += "\n" + (camera != null ? camera.PhotoCount + (camera.PhotoCount == 1 ? " photo" : " photos") : "")
-                + (camera != null && lights.Length > 0 ? "   ·   " : "") + lights;
+                + (camera != null && lights.Length > 0 ? "   Â·   " : "") + lights;
         if (station != null && station.PendingPrompt != null) text += "\n<color=" + accent + ">" + station.PendingPrompt + "</color>";
         if (statusText.text == text) return;
         statusText.text = text;
@@ -547,6 +550,7 @@ public sealed class XRHandHud : MonoBehaviour
 
     private void OnDestroy()
     {
+        DemoLanguage.Changed-=Refresh;
         if (toastRoot != null) Destroy(toastRoot.gameObject);
         foreach (Material material in owned) if (material != null) Destroy(material);
         owned.Clear();

@@ -61,7 +61,7 @@ public sealed class XRControllerInput : MonoBehaviour
 
     private const int ArcPositions = 24;
     private static readonly int KindCount = Enum.GetValues(typeof(DemoToolKind)).Length;
-    private static bool hintsVisible = true;
+    private static bool hintsVisible = false;
 
     private HandInteractor hand;
     private XRHandHud hud;
@@ -94,7 +94,7 @@ public sealed class XRControllerInput : MonoBehaviour
 
     private void OnEnable() { Application.onBeforeRender += LatePose; }
 
-    private void OnDisable() { Application.onBeforeRender -= LatePose; CancelAim(); if (wheel != null) wheel.Hide(); }
+    private void OnDisable() { Application.onBeforeRender -= LatePose; LoseTracking(); }
 
     // Forget any destination shown so far, e.g. when tracking drops or the hand is disabled.
     private void CancelAim()
@@ -118,13 +118,50 @@ public sealed class XRControllerInput : MonoBehaviour
         }
     }
 
+    public bool PoseTracked { get; private set; }
+    bool needsNeutral=true;
+    float quitChordSince=-1;
+    public static bool HasTrackedPose(InputDevice d) {
+        const InputTrackingState required=InputTrackingState.Position|InputTrackingState.Rotation;
+        return d.isValid && d.TryGetFeatureValue(CommonUsages.isTracked,out bool tracked) && tracked
+            && d.TryGetFeatureValue(CommonUsages.trackingState,out InputTrackingState state) && (state&required)==required
+            && d.TryGetFeatureValue(CommonUsages.devicePosition,out Vector3 _) && d.TryGetFeatureValue(CommonUsages.deviceRotation,out Quaternion _);
+    }
+    private void LoseTracking() {
+        PoseTracked=false;CancelAim();if(wheel!=null)wheel.Hide();if(XRToolWheel.Active!=null)XRToolWheel.Active.Hide();
+        grip=trigger=primary=secondary=stickClick=menu=turned=false;
+        GripValue=TriggerValue=MovedDistance=0;ThumbDown=false;needsNeutral=true;quitChordSince=-1;
+        // Keep a held object frozen; require neutral controls before re-arming so a
+        // reconnect with grip pressed cannot drop/place/spawn anything unexpectedly.
+    }
+#if UNITY_EDITOR
+    // Only the editor validator can inject tracking; player builds use device data.
+    public void SetValidationTracking(bool tracked){if(tracked)PoseTracked=true;else LoseTracking();}
+#endif
+    private bool Neutral(InputDevice d) {
+        foreach(var usage in new[]{CommonUsages.gripButton,CommonUsages.triggerButton,CommonUsages.primaryButton,CommonUsages.secondaryButton,CommonUsages.primary2DAxisClick,CommonUsages.menuButton})
+            if(d.TryGetFeatureValue(usage,out bool down)&&down)return false;
+        return !d.TryGetFeatureValue(CommonUsages.primary2DAxis,out Vector2 axis)||axis.sqrMagnitude<.04f;
+    }
     private void Update()
     {
         device = InputDevices.GetDeviceAtXRNode(Node);
-        if (!device.isValid) { CancelAim(); return; }
+        if (!HasTrackedPose(device)) { LoseTracking(); return; }
+        PoseTracked=true;
         if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
         if (device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
+        if(needsNeutral){if(!Neutral(device))return;needsNeutral=false;}
 
+        // A held left-menu + Y chord quits without executing either button's normal
+        // action. Photos are already saved. Keep this separate from tool removal.
+        bool quitChord=Left && device.TryGetFeatureValue(CommonUsages.menuButton,out bool quitMenu)&&quitMenu
+            && device.TryGetFeatureValue(CommonUsages.secondaryButton,out bool quitY)&&quitY;
+        if(quitChord){
+            if(quitChordSince<0){quitChordSince=Time.unscaledTime;DemoFeedback.Post("Hold Menu + Y for two seconds to quit VR");}
+            if(Time.unscaledTime-quitChordSince>=2)Application.Quit();
+            return;
+        }
+        quitChordSince=-1;
         GripValue = device.TryGetFeatureValue(CommonUsages.grip, out float gripAmount) ? gripAmount : grip ? 1 : 0;
         TriggerValue = device.TryGetFeatureValue(CommonUsages.trigger, out float triggerAmount) ? triggerAmount : trigger ? 1 : 0;
         ThumbDown = primary || secondary || stickClick || Touched(device, CommonUsages.primaryTouch)
@@ -186,10 +223,11 @@ public sealed class XRControllerInput : MonoBehaviour
     private void LatePose()
     {
         InputDevice late = InputDevices.GetDeviceAtXRNode(Node);
-        if (!late.isValid) return;
+        if (!HasTrackedPose(late)) { LoseTracking();return; }
+        if(!PoseTracked)return;
         if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position;
         if (late.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
-        if (hand != null && hand.Held != null) hand.FollowHand();
+        if (!needsNeutral && hand != null && hand.Held != null) hand.FollowHand();
     }
 
     // The tool wheel takes the trigger first: the left trigger opens it with an empty left hand and,

@@ -35,7 +35,7 @@ public static class NightLighting
     public static readonly Vector3 HeadlightTarget = L.CarAim + Vector3.up * 1.0f;
     public static readonly Color MoonColour = new Color(0.55f, 0.65f, 1.0f);
     public static readonly Color StreetColour = new Color(1.0f, 0.82f, 0.6f);
-    public static readonly Color HeadlightColour = new Color(1.0f, 0.97f, 0.9f);
+    public static readonly Color HeadlightColour = new Color(1.0f, 0.83f, 0.63f);
     // Linear values; RenderSettings take gamma-space colours, hence .gamma where applied.
     public static readonly Color NightAmbient = new Color(0.015f, 0.018f, 0.028f);
     public static readonly Color FallbackAmbient = new Color(0.045f, 0.05f, 0.065f);
@@ -44,7 +44,7 @@ public static class NightLighting
     // ~0.08 at the central cases. A streetlight's intensities and spot angles come from
     // the lamp profile (NightStoreLayout.Lamp): ~0.28 on the ground under the KayKit
     // head, the lower lantern scaled to the same pool.
-    public const float MoonIntensity = 0.05f, HeadlightIntensity = 14f;
+    public const float MoonIntensity = 0.05f, HeadlightIntensity = 2.5f;
     // Realtime legacy falloff at the same distances needs far less.
     public const float HeadlightRealtime = 1.2f;
     public const float FlashlightIntensity = 2.8f;
@@ -211,7 +211,7 @@ public static class NightLighting
             beam.range = HeadlightRange;
             beam.shadowRadius = 0.05f;
             // Lens quad on the car's nose (a quad faces -z; the nose is the anchor's +z).
-            GameObject lens = Primitive("Lens", PrimitiveType.Quad, anchor, V(0, 0, 0.01f), V(lensSize.x, lensSize.y, 1), Emitter("NightHeadlampLens", HeadlightColour, HeadlightColour * 3f));
+            GameObject lens = Primitive("Lens", PrimitiveType.Quad, anchor, V(0, 0, 0.01f), V(lensSize.x, lensSize.y, 1), Emitter("NightHeadlampLens", HeadlightColour, HeadlightColour * .7f));
             lens.transform.localRotation = Quaternion.Euler(0, 180, 0);
             ProbeLens(lens);
         }
@@ -432,9 +432,9 @@ public static class NightLighting
         RenderSettings.reflectionIntensity = 1;
         RenderSettings.reflectionBounces = 1;
         RenderSettings.fog = true;
-        RenderSettings.fogMode = FogMode.Exponential;
+        RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fogColor = new Color(0.10f, 0.11f, 0.14f);
-        RenderSettings.fogDensity = 0.01f;
+        RenderSettings.fogDensity = 0.038f;
     }
 
     // The generated overcast night panorama when NightSky has it (a stratocumulus deck lit
@@ -525,7 +525,15 @@ public static class NightLighting
                 }
             }
         }
+        // Add standing and overhead samples near each accessible region centre;
+        // larger imported props can remove the old grid samples during collision filtering.
+        foreach (InteriorBounds.Region region in L.Regions())
+        {
+            float cx=(region.MinX+region.MaxX)*.5f, cz=(region.MinZ+region.MaxZ)*.5f;
+            ProbeGrid(points,cx-1,cx+1,cz-1,cz+1,1,new[]{1.6f,2.4f});
+        }
         Physics.SyncTransforms();
+        foreach(var hit in Physics.OverlapSphere(new Vector3(0,1.6f,0),.08f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore)) Debug.Log("PROBE_THRESHOLD_BLOCKER " + PathUnder(hit.transform,group.root) + " " + hit.bounds);
         Vector3[] local = new Vector3[points.Count];
         int kept = 0;
         Transform holder = Group("LightProbes", group);
@@ -663,7 +671,7 @@ public static class NightLighting
         L.LampProfile lamp = L.Lamp;
         foreach (Light light in group.GetComponentsInChildren<Light>(true))
         {
-            if (light.name == "DiagnosticSun") continue;
+            if (light.name == "DiagnosticSun" || light.name.EndsWith("_Specular")) continue;
             light.lightmapBakeType = LightmapBakeType.Realtime;
             light.shadows = LightShadows.None;
             if (light.name.StartsWith("Headlight_"))
@@ -691,7 +699,7 @@ public static class NightLighting
         L.LampProfile lamp = L.Lamp;
         foreach (Light light in group.GetComponentsInChildren<Light>(true))
         {
-            if (light.name == "DiagnosticSun") continue;
+            if (light.name == "DiagnosticSun" || light.name.EndsWith("_Specular")) continue;
             light.lightmapBakeType = LightmapBakeType.Baked;
             light.shadows = LightShadows.Soft;
             light.renderMode = LightRenderMode.Auto;

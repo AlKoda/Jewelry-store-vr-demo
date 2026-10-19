@@ -227,7 +227,7 @@ public static class DemoValidation
         typeof(DemoUi).GetField("theme", uiStatics).SetValue(null, stale);
         typeof(DemoUi).GetField("themeSearchFrame", uiStatics).SetValue(null, Time.frameCount);
         UnityEngine.Object.DestroyImmediate(staleTheme);
-        Check(theme != null && DemoUi.Medium == theme.Medium, "UI fonts re-resolve at once after the theme object is replaced");
+        Check(theme != null && DemoUi.Medium == (DemoLanguage.Font?DemoLanguage.Font:theme.Medium), "UI uses the Arabic glyph font, with the replacement theme as its fallback");
         // The drawer's Settings tab draws DemoUi.Credits; the panel keeps no copy of its own to drift from the licences.
         Check(!string.IsNullOrEmpty(DemoUi.Credits) && typeof(DemoDesktopPanel).GetField("Credits",
             System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static) == null,

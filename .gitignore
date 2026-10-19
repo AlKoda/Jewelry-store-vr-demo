@@ -40,3 +40,6 @@ InstructorReviews/
 UnityProject/
 UnityProject_*/
 build-latest.log
+
+# Blender automatic backups
+*.blend1

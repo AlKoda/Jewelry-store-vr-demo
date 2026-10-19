@@ -20,6 +20,7 @@ public sealed class PackImport : AssetPostprocessor
     {
         "PBRInterior", "PBRExterior", "NightSky", "JewelryModels", "ForensicModels", "StreetModels",
         "InteriorModels", "WallGraphics", "SurfaceDecals", "NightSoundscape", "Music", "PeopleModels",
+        "AmbientProps", "AmbientProps2", "CutoutDecals", "RealFoley", "RealFoley2", "RealismTextures",
     };
 
     // The pack whose folder holds the path; null outside the twelve and under a trailing-~ folder.
@@ -133,10 +134,10 @@ public sealed class PackImport : AssetPostprocessor
             Want(t.sRGBTexture, false, x => t.sRGBTexture = x);
             Want(t.alphaSource, TextureImporterAlphaSource.FromInput, x => t.alphaSource = x);
         }
-        else if (stem.EndsWith("_AO", StringComparison.Ordinal) || pack == "PBRExterior" && file == "PuddleMask.png"
+        else if ((stem.EndsWith("_AO", StringComparison.Ordinal) || stem.EndsWith("_Occlusion", StringComparison.Ordinal) || stem.EndsWith("_PaintMask", StringComparison.Ordinal)) || pack == "PBRExterior" && file == "PuddleMask.png"
             || pack == "SurfaceDecals" && file == "Caustics_Tile.png")
         {
-            map = stem.EndsWith("_AO", StringComparison.Ordinal) ? Map.Occlusion : Map.Mask;
+            map = stem.EndsWith("_AO", StringComparison.Ordinal) || stem.EndsWith("_Occlusion", StringComparison.Ordinal) ? Map.Occlusion : Map.Mask;
             Want(t.textureType, TextureImporterType.Default, x => t.textureType = x);
             Want(t.sRGBTexture, false, x => t.sRGBTexture = x);
         }
@@ -163,7 +164,7 @@ public sealed class PackImport : AssetPostprocessor
             wrapU = Starts(stem, "FrameMoulding_Gilt_") ? TextureWrapMode.Repeat : TextureWrapMode.Clamp;
             wrapV = TextureWrapMode.Clamp;
         }
-        else if (pack == "SurfaceDecals" && file != "Caustics_Tile.png") wrapU = wrapV = TextureWrapMode.Clamp;
+        else if (pack == "CutoutDecals" || pack == "RealismTextures" && Starts(sub,"Decals/") || pack == "SurfaceDecals" && file != "Caustics_Tile.png") wrapU = wrapV = TextureWrapMode.Clamp;
         Want(t.wrapModeU, wrapU, x => t.wrapModeU = x);
         Want(t.wrapModeV, wrapV, x => t.wrapModeV = x);
 
@@ -204,7 +205,7 @@ public sealed class PackImport : AssetPostprocessor
     private static bool Blended(string pack, string sub, string file)
     {
         if (!file.EndsWith(".png", StringComparison.OrdinalIgnoreCase)) return false;
-        if (pack == "SurfaceDecals") return true;
+        if (pack == "SurfaceDecals" || pack == "CutoutDecals" || pack == "RealismTextures" && Starts(sub,"Decals/")) return true;
         if (pack == "WallGraphics") return Starts(sub, "Store/") || Starts(sub, "Street/") || Starts(sub, "Brand/");
         return Overlays.Contains(pack + "/" + sub);
     }
@@ -278,7 +279,7 @@ public sealed class PackImport : AssetPostprocessor
             if (write) set(wanted);
         }
 
-        if (pack == "NightSoundscape")
+        if (pack == "NightSoundscape" || pack == "RealFoley" || pack == "RealFoley2")
         {
             if (stem.EndsWith("_Loop", StringComparison.Ordinal))
             {
