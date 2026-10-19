@@ -1,1 +1,3 @@
 Meta OpenXR hand meshes from com.meta.xr.sdk.interaction 207.0.1, unmodified FBX assets. Copyright Meta Platforms, Inc. and affiliates; Oculus SDK License, not CC0. Used as part of this Meta Quest application. Controller-driven poses; not system UI injection or optical bare-hand tracking. Source: https://npm.developer.oculus.com/com.meta.xr.sdk.interaction/-/com.meta.xr.sdk.interaction-207.0.1.tgz
+
+Includes unmodified OpenXR animation controllers, clips and masks from the same SDK. Controller inputs drive the authored Flex/Pinch/Point animation layers; no guessed joint-axis rotation is used for these meshes.

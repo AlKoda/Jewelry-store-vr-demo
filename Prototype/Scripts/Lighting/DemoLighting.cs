@@ -484,7 +484,7 @@ public sealed class DemoLighting : MonoBehaviour
         light.transform.SetParent(holder, false);
         // On the view the light and the model both aim at the view axis 4 m ahead, so
         // the beam lands where the presenter looks; in the hand it points along the hand.
-        Vector3 lens = onView ? Side(ViewLightOffset, torch) : HandLensOffset;
+        Vector3 lens = onView ? Side(ViewLightOffset, torch) : new Vector3(0,-.045f,.105f);
         light.transform.localPosition = lens;
         light.transform.localRotation = onView ? Quaternion.LookRotation(new Vector3(0, 0, 4) - lens) : Quaternion.identity;
         Transform model = torch.Model.transform;

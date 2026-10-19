@@ -27,6 +27,22 @@ public static class VRVisualValidation
                 var model=Resources.Load<GameObject>("MetaHands/"+hand);
                 if(!model||model.GetComponentsInChildren<SkinnedMeshRenderer>().Length==0)throw new Exception("Official rigged Meta hand missing: "+hand);
             }
+            foreach(string side in new[]{"Left","Right"}){
+                var controller=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+side);
+                if(!controller||controller.animationClips.Length<4)throw new Exception("Meta authored controller animations missing: "+side);
+                var instance=Object.Instantiate(Resources.Load<GameObject>("MetaHands/OpenXR"+side+"Hand"));
+                instance.transform.SetParent(root.transform);
+                Transform wrist=null,tip=null;
+                foreach(var bone in instance.GetComponentsInChildren<Transform>()){
+                    if(bone.name=="XRHand_Wrist")wrist=bone;
+                    if(bone.name=="XRHand_MiddleTip")tip=bone;
+                }
+                var animator=wrist.parent.GetComponent<Animator>();if(!animator)animator=wrist.parent.gameObject.AddComponent<Animator>();
+                animator.runtimeAnimatorController=controller;animator.Rebind();animator.Update(0);
+                animator.SetFloat("Flex",0);animator.Update(.1f);var open=tip.position;
+                animator.SetFloat("Flex",1);animator.SetFloat("Pinch",1);animator.Update(.1f);
+                if(Vector3.Distance(open,tip.position)<.025f)throw new Exception("Meta hand animation does not deform fingers: "+side);
+            }
             Debug.Log("VR_VISUAL_VALIDATION_PASS rendered icon texture, smooth headset-following belt anchors and official rigged Meta hand assets");
         }finally{RenderTexture.active=previous;rt.Release();if(read)Object.DestroyImmediate(read);Object.DestroyImmediate(texture);Object.DestroyImmediate(mat);Object.DestroyImmediate(rt);Object.DestroyImmediate(cameraObject);Object.DestroyImmediate(root);}
     }

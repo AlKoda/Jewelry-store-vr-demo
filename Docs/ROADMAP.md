@@ -14,3 +14,5 @@ October 19, 2026. Source, local Unity project and GitHub must remain aligned.
 - [ ] Replace car only when Koda supplies the new model.
 
 See VR_TESTING.md for the actual setup, controls, build behavior and connection troubleshooting.
+
+- [ ] Accept authored Meta hand poses in the headset: finger curl, palm facing, tool/torch grip fit and shaded transparency. Animation deformation and strict build passed; human fit pending.

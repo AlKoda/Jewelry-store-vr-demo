@@ -37,3 +37,5 @@ Human both-eye, hands, controls and headset comfort review still required. Unfoc
 VR_VISUAL_VALIDATION_PASS: rendered icon texture and stable body holster anchors. Updated source compiled and rebuilt after initial human headset feedback. Human hand-orientation/comfort acceptance remains pending.
 
 Latest VR polish: VR_VISUAL_VALIDATION_PASS (rendered icons, smooth belt, Meta skinned assets); EXISTING_SCENE_DELIVERY_PASS. Human hand/grip/comfort acceptance pending.
+
+Authored hand follow-up: both Meta animation controllers loaded; left/right middle fingertip open-to-closed movement >2.5 cm; VR_VISUAL_VALIDATION_PASS and EXISTING_SCENE_DELIVERY_PASS. Human fit pending.

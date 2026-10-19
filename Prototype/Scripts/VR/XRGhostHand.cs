@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-// A see-through hand where the controller is (VR only). It is built from primitives
+// Controller hands use Meta authored animation controllers and poses; primitives are a fallback.
+// A see-through hand where the controller is (VR only). The fallback is built from primitives
 // (palm, four three-joint fingers and a thumb) on the GhostHand material: the middle,
 // ring and little fingers close with the grip, the index finger with the trigger and the
 // thumb rests on the face buttons when one is touched or pressed. Opacity is shared by
@@ -28,8 +29,7 @@ public sealed class XRGhostHand : MonoBehaviour
     public Transform Root => root;
     public Material Material => material;
 
-    struct NativeJoint {public Transform Bone;public Quaternion Rest;public Vector3 Axis;public int Finger;public float Angle;}
-    readonly List<NativeJoint> nativeJoints=new List<NativeJoint>();
+    Animator nativeAnimator;
     bool native;
     bool TryNative(){
         var prefab=Resources.Load<GameObject>("MetaHands/"+(input.Left?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
@@ -43,12 +43,14 @@ public sealed class XRGhostHand : MonoBehaviour
         var up=Vector3.Cross(forward,across).normalized;
         model.transform.localRotation=Quaternion.Inverse(Quaternion.LookRotation(forward,up))*model.transform.localRotation;
         model.transform.localPosition-=root.InverseTransformPoint(wrist.position)+Vector3.forward*.05f;
-        foreach(var b in bones){
-            if(!(b.name.Contains("Proximal")||b.name.Contains("Intermediate")||b.name.Contains("Distal")))continue;
-            int finger=b.name.Contains("Thumb")?4:b.name.Contains("Index")?0:1;
-            var axis=finger==4?root.up*(input.Left?-1:1):root.right;
-            nativeJoints.Add(new NativeJoint{Bone=b,Rest=b.localRotation,Axis=b.parent.InverseTransformDirection(axis),Finger=finger,Angle=finger==4?25:b.name.Contains("Proximal")?65:b.name.Contains("Intermediate")?85:55});
-        }
+        var controller=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+(input.Left?"Left":"Right"));
+        if(!controller){Destroy(root.gameObject);root=null;return false;}
+        nativeAnimator=wrist.parent.GetComponent<Animator>();
+        if(!nativeAnimator)nativeAnimator=wrist.parent.gameObject.AddComponent<Animator>();
+        nativeAnimator.runtimeAnimatorController=controller;
+        nativeAnimator.applyRootMotion=false;
+        nativeAnimator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
+        nativeAnimator.Rebind();nativeAnimator.Update(0);
         foreach(var r in model.GetComponentsInChildren<Renderer>()){r.sharedMaterial=material;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;}
         DemoUi.ToHeadsetUiLayer(root);native=true;Apply(true);return true;
     }
@@ -145,7 +147,16 @@ public sealed class XRGhostHand : MonoBehaviour
         Grip = Mathf.Lerp(Grip, Mathf.Clamp01(grip), k);
         Index = Mathf.Lerp(Index, Mathf.Clamp01(index), k);
         Thumb = Mathf.Lerp(Thumb, Mathf.Clamp01(thumb), k);
-        if(native){foreach(var joint in nativeJoints){float amount=joint.Finger==0?Mathf.Max(Index,Grip*.65f):joint.Finger==4?Mathf.Max(Thumb,Grip*.65f):Grip;joint.Bone.localRotation=Quaternion.AngleAxis(amount*joint.Angle,joint.Axis)*joint.Rest;}return;}
+        if(native){
+            nativeAnimator.SetFloat("Flex",Mathf.Lerp(.25f,.82f,Grip));
+            nativeAnimator.SetFloat("Pinch",Mathf.Max(Index,Grip*.85f));
+            nativeAnimator.SetFloat("IndexSlide",0);
+            int point=nativeAnimator.GetLayerIndex("Point Layer");
+            if(point>=0)nativeAnimator.SetLayerWeight(point,(1-Index)*(1-Grip));
+            int thumbLayer=nativeAnimator.GetLayerIndex("Thumb Layer");
+            if(thumbLayer>=0)nativeAnimator.SetLayerWeight(thumbLayer,0);
+            return;
+        }
         for (int f = 0; f < 4; f++)
         {
             // A relaxed hand is slightly curled; a full grip wraps the handle.

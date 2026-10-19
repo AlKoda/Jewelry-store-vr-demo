@@ -43,6 +43,9 @@ call :mirror Scripts || exit /b 1
 call :mirror Editor || exit /b 1
 call :mirror Shaders || exit /b 1
 call :mirror ThirdParty /XF *.meta || exit /b 1
+rem Meta animation controllers reference their supplied clip/mask GUIDs.
+robocopy "%ROOT%\Prototype\ThirdParty\MetaHands" "%PROJECT%\Assets\CrimeSceneDemo\ThirdParty\MetaHands" *.meta /S /R:2 /W:2 /NFL /NDL /NJH /NJS /NP >nul
+if errorlevel 8 exit /b 1
 exit /b 0
 
 :mirror

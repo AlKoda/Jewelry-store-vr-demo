@@ -55,7 +55,7 @@ public sealed class HandInteractor : ToolHolder
         if (Held == null) return;
         Vector3 grip=GripPoint(Held.Kind);
         Quaternion r=Held.Kind!=DemoToolKind.Lamp&&FreeRotation?transform.rotation:Quaternion.Euler(0,Heading(transform),0);
-        Vector3 p=transform.TransformPoint(new Vector3(0,-.025f,.025f))-r*grip;
+        Vector3 p=transform.TransformPoint(new Vector3(0,-.045f,.005f))-r*grip;
         if(Held.Kind==DemoToolKind.Lamp)p.y=Mathf.Max(p.y,Bounds!=null?Bounds.FloorAt(p):FloorY);
         // A pulled tool flies from where it lay to the hand, easing in.
         float t = pullStarted < 0 || PullSeconds <= 0 ? 1 : Mathf.Clamp01((Time.time - pullStarted) / PullSeconds);

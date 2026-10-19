@@ -45,7 +45,7 @@ Shader "CrimeScene/GhostHand"
             fixed4 _Color;
             half _Rim;
             struct appdata { float4 vertex : POSITION; float3 normal : NORMAL; UNITY_VERTEX_INPUT_INSTANCE_ID };
-            struct v2f { float4 pos : SV_POSITION; half rim : TEXCOORD0; UNITY_VERTEX_OUTPUT_STEREO };
+            struct v2f { float4 pos : SV_POSITION; half rim : TEXCOORD0; half shade : TEXCOORD1; UNITY_VERTEX_OUTPUT_STEREO };
             v2f vert (appdata v)
             {
                 v2f o;
@@ -55,12 +55,14 @@ Shader "CrimeScene/GhostHand"
                 float3 n = normalize(UnityObjectToWorldNormal(v.normal));
                 float3 view = normalize(WorldSpaceViewDir(v.vertex));
                 o.rim = 1 - saturate(dot(n, view));
+                o.shade = .42 + .58 * saturate(dot(n, normalize(float3(.3,.8,.5))));
                 return o;
             }
             fixed4 frag (v2f i) : SV_Target
             {
                 UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
                 fixed4 c = _Color;
+                c.rgb *= i.shade;
                 half rim = i.rim * i.rim * _Rim;
                 c.rgb += rim * 0.35;
                 c.a = saturate(c.a * (0.55 + rim));

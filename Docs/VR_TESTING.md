@@ -46,3 +46,7 @@ The latest follow-up replaces primitive hands with Meta's official rigged OpenXR
 
 Strict saved-scene build and VRVisualValidation passed, including rendered icon pixels, smooth belt anchors and both skinned Meta hand assets. Human checks of orientation, finger curl, grip fit, height and comfort are still required. The latest test launch recovered from an initial STOPPING state and reached VISIBLE/FOCUSED. This confirms runtime startup; human acceptance is still pending.
 
+
+## Authored hand animation follow-up
+
+The current build uses Meta SDK 207.0.1 OpenXR animation controllers, clips and masks on the official mesh skeleton. Flex/Pinch/Point inputs replace manual bone-axis rotations. A Unity validator confirms both middle fingertips move more than 2.5 cm between open and closed poses. Surface shading and lower tool/torch grip placement address flat appearance and tools resting above the hand. This is controller-driven animation, not optical hand tracking or the full Interaction SDK grab stack. Human visual acceptance remains required.
