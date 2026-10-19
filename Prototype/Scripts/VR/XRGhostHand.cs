@@ -15,6 +15,12 @@ public sealed class XRGhostHand : MonoBehaviour
 {
     public static float Opacity = 0.35f;
     public static bool Visible = true;
+    public static readonly Quaternion GripPitch = Quaternion.Euler(12f,0,0);
+    public static Pose TorchPose(bool left){
+        // The lens is 9.5 cm ahead of the handle contact, between thumb and fingers.
+        var contact=new Vector3(left?-.002f:.002f,-.022f,.04f);
+        return new Pose(contact+GripPitch*Vector3.forward*.095f,GripPitch);
+    }
     public static bool HideControllers = true;
     public static readonly Color Tint = new Color(0.86f, 0.9f, 1f);
 
@@ -31,6 +37,7 @@ public sealed class XRGhostHand : MonoBehaviour
 
     Animator nativeAnimator;
     bool native;
+    bool torchGrip;
     bool TryNative(){
         var prefab=Resources.Load<GameObject>("MetaHands/"+(input.Left?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
         root=new GameObject("Meta controller hand").transform;root.SetParent(transform,false);root.localPosition=Vector3.zero;
@@ -62,12 +69,23 @@ public sealed class XRGhostHand : MonoBehaviour
         if(input.Left)across=-across;
         var meshFrame=Quaternion.LookRotation(forward,Vector3.Cross(forward,across));
         var controllerFrame=Quaternion.LookRotation(Vector3.forward,input.Left?-Vector3.right:Vector3.right);
-        model.transform.localRotation=controllerFrame*Quaternion.Inverse(meshFrame);
+        model.transform.localRotation=GripPitch*controllerFrame*Quaternion.Inverse(meshFrame);
         var wristAnchor=new Vector3(input.Left?-.012f:.012f,-.025f,-.07f);
         model.transform.localPosition+=wristAnchor-root.InverseTransformPoint(wrist.position);
 
         foreach(var r in model.GetComponentsInChildren<Renderer>()){r.sharedMaterial=material;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;}
         DemoUi.ToHeadsetUiLayer(root);native=true;Apply(true);return true;
+    }
+    public void SetTorchGrip(bool held){
+        torchGrip=held;
+        if(!native||root==null)return;
+        if(!held){root.localPosition=Vector3.zero;root.localRotation=Quaternion.identity;return;}
+        // A cylindrical flashlight needs the fingers around its barrel, rather
+        // than the controller's vertical grip. Preserve the controller beam axis.
+        var rotation=GripPitch*Quaternion.AngleAxis(180,Vector3.forward)*Quaternion.Euler(90,0,0)*Quaternion.Inverse(GripPitch);
+        var fingerRingCentre=new Vector3(input.Left?-.012f:.012f,-.039f,.025f);
+        root.localRotation=rotation;
+        root.localPosition=new Vector3(0,-.025f,.015f)-rotation*fingerRingCentre;
     }
     private XRControllerInput input;
     private Transform root;
@@ -163,11 +181,11 @@ public sealed class XRGhostHand : MonoBehaviour
         Index = Mathf.Lerp(Index, Mathf.Clamp01(index), k);
         Thumb = Mathf.Lerp(Thumb, Mathf.Clamp01(thumb), k);
         if(native){
-            nativeAnimator.SetFloat("Flex",Mathf.Lerp(.25f,.82f,Grip));
-            nativeAnimator.SetFloat("Pinch",Mathf.Max(Index,Grip*.85f));
+            nativeAnimator.SetFloat("Flex",torchGrip?.55f:Mathf.Lerp(.25f,.82f,Grip));
+            nativeAnimator.SetFloat("Pinch",torchGrip?.55f:Mathf.Max(Index,Grip*.85f));
             nativeAnimator.SetFloat("IndexSlide",0);
             int point=nativeAnimator.GetLayerIndex("Point Layer");
-            if(point>=0)nativeAnimator.SetLayerWeight(point,(1-Index)*(1-Grip));
+            if(point>=0)nativeAnimator.SetLayerWeight(point,torchGrip?0:(1-Index)*(1-Grip));
             int thumbLayer=nativeAnimator.GetLayerIndex("Thumb Layer");
             if(thumbLayer>=0)nativeAnimator.SetLayerWeight(thumbLayer,0);
             return;
@@ -194,7 +212,9 @@ public sealed class XRGhostHand : MonoBehaviour
         {
             var lights=input.Lighting?input.Lighting:input.UVLighting;
             bool occupied=input.Hand!=null&&(input.Hand.Held!=null||input.Hand.HoldingCamera);
-            occupied|=lights!=null&&((lights.TorchEquipped(false)&&lights.FlashlightLight.transform.parent==transform)||(lights.TorchEquipped(true)&&lights.UVTorchLight.transform.parent==transform));
+            bool torchHeld=lights!=null&&((lights.TorchEquipped(false)&&lights.FlashlightLight.transform.parent==transform)||(lights.TorchEquipped(true)&&lights.UVTorchLight.transform.parent==transform));
+            occupied|=torchHeld;
+            SetTorchGrip(torchHeld);
             SetPose(occupied?Mathf.Max(.8f,input.GripValue):input.GripValue,input.TriggerValue,input.ThumbDown?1:0,Time.deltaTime);
         }
     }

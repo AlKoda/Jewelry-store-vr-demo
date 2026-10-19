@@ -43,3 +43,5 @@ Authored hand follow-up: both Meta animation controllers loaded; left/right midd
 Hand repair: actual XRGhostHand skinned mesh size/thickness passed in four left/right open/closed cases (12x7x19 cm open, 11x8x15 cm curled). Render preview inspected. VR_VISUAL_VALIDATION_PASS and EXISTING_SCENE_DELIVERY_PASS. Human headset acceptance pending.
 
 Controller-frame repair: HAND_CONTROLLER_FORWARD_PASS left/right; HAND_MESH_SHAPE_PASS all four open/closed cases; VR_VISUAL_VALIDATION_PASS; EXISTING_SCENE_DELIVERY_PASS. Rendered preview visually inspected. Latest headset orientation acceptance pending.
+
+Pitch/torch fit: HAND_CONTROLLER_FORWARD_PASS both sides; TORCH_GRIP_CLEARANCE_PASS four held-input cases, max penetration 0.001128437 m within 0.0015 m contact tolerance (sampled mesh vertices/triangle centres). Six open/held rendered mesh cases inspected; EXISTING_SCENE_DELIVERY_PASS. Human retest pending.

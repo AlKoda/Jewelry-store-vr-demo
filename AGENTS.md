@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Repository reorganisation (done); next: fixes from the Quest 3 test | — | 2026-10-19 | idle, waiting for Koda's test notes |
-| ChatGPT | Reorganization reconciliation and Quest 3 OpenXR setup | Prototype, Tools, launchers, Docs, snapshot | 2026-10-19 | controller-forward hand checks/build passed; latest headset acceptance pending |
+| ChatGPT | Reorganization reconciliation and Quest 3 OpenXR setup | Prototype, Tools, launchers, Docs, snapshot | 2026-10-19 | hand pitch/torch fit build and render checks passed; headset acceptance pending |
 
 ## One project: edit it, never fork it
 

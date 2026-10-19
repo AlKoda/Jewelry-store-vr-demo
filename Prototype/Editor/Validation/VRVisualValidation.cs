@@ -10,16 +10,18 @@ public static class VRVisualValidation
     public static void CheckHands(){
         var stage=new GameObject("Hand render validation");
         var cameraObject=new GameObject("Hand validation camera");
-        var rt=new RenderTexture(960,640,24);var previous=RenderTexture.active;
+        var rt=new RenderTexture(960,900,24);var previous=RenderTexture.active;
+        var previewLight=new GameObject("Grip preview light").AddComponent<Light>();previewLight.transform.SetParent(stage.transform);previewLight.type=LightType.Directional;previewLight.transform.rotation=Quaternion.Euler(45,-30,0);previewLight.intensity=1.5f;previewLight.cullingMask=1<<31;
         var camera=cameraObject.AddComponent<Camera>();camera.targetTexture=rt;camera.stereoTargetEye=StereoTargetEyeMask.None;camera.cullingMask=1<<31;
-        camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.07f,.09f,.12f);camera.orthographic=true;camera.orthographicSize=.2f;camera.nearClipPlane=.01f;
+        camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.07f,.09f,.12f);camera.orthographic=true;camera.orthographicSize=.29f;camera.nearClipPlane=.01f;
+        string gripFailure=null;
         try{
-            for(int side=0;side<2;side++)for(int pose=0;pose<2;pose++){
+            for(int side=0;side<2;side++)for(int pose=0;pose<3;pose++){
                 var owner=new GameObject("Hand validation owner");owner.transform.SetParent(stage.transform,false);
-                owner.transform.localPosition=new Vector3(side*.24f-.12f,0,pose*.22f-.11f);
+                owner.transform.localPosition=new Vector3(side*.24f-.12f,0,pose*.21f-.21f);
                 var input=owner.AddComponent<XRControllerInput>();input.Node=side==0?UnityEngine.XR.XRNode.LeftHand:UnityEngine.XR.XRNode.RightHand;
                 var ghost=owner.AddComponent<XRGhostHand>();ghost.Build(input);ghost.Root.gameObject.SetActive(true);
-                ghost.SetPose(pose==0?0:1,pose==0?0:1,1,0);
+                ghost.SetTorchGrip(pose>0);ghost.SetPose(pose==0?0:pose==1?.8f:1,pose==2?1:0,1,0);
                 var animator=ghost.Root.GetComponentInChildren<Animator>();
                 if(!animator)throw new Exception("Official hand animator missing");animator.Update(.1f);
                 if(pose==0){
@@ -28,19 +30,41 @@ public static class VRVisualValidation
                         if(bone.name=="XRHand_Wrist")wrist=bone;
                         if(bone.name=="XRHand_MiddleTip")middle=bone;
                     }
-                    if(Vector3.Dot((middle.position-wrist.position).normalized,owner.transform.forward)<.85f)throw new Exception("Hand fingers do not align with controller forward: "+side);
+                    if(Vector3.Dot((middle.position-wrist.position).normalized,owner.transform.TransformDirection(XRGhostHand.GripPitch*Vector3.forward))<.85f)throw new Exception("Hand fingers do not align with controller forward: "+side);
                     Debug.Log("HAND_CONTROLLER_FORWARD_PASS side="+side);
                 }
                 foreach(var t in owner.GetComponentsInChildren<Transform>())t.gameObject.layer=31;
+                if(pose>0){
+                    var torch=DemoToolGeometry.CreateFlashlight(side==0);torch.transform.SetParent(owner.transform,false);
+                    var torchPose=XRGhostHand.TorchPose(side==0);torch.transform.localPosition=torchPose.position;torch.transform.localRotation=torchPose.rotation;
+                    foreach(var t in torch.GetComponentsInChildren<Transform>())t.gameObject.layer=31;
+                }
                 var renderer=ghost.Root.GetComponentInChildren<SkinnedMeshRenderer>();
                 var baked=new Mesh();renderer.BakeMesh(baked);var bounds=new Bounds(renderer.transform.TransformPoint(baked.vertices[0]),Vector3.zero);
                 foreach(var v in baked.vertices)bounds.Encapsulate(renderer.transform.TransformPoint(v));Object.DestroyImmediate(baked);
                 if(bounds.size.magnitude<.08f||bounds.size.magnitude>.35f||Mathf.Min(bounds.size.x,bounds.size.y,bounds.size.z)<.012f)throw new Exception("Hand has invalid scale or collapsed mesh: "+bounds.size);
+                if(pose>0){
+                    var bakedGrip=new Mesh();renderer.BakeMesh(bakedGrip);
+                    var torchPose=XRGhostHand.TorchPose(side==0);var inverse=Quaternion.Inverse(torchPose.rotation);
+                    var points=bakedGrip.vertices;var triangles=bakedGrip.triangles;float penetration=0;
+                    Action<Vector3> inspect=v=>{
+                        var local=inverse*(owner.transform.InverseTransformPoint(renderer.transform.TransformPoint(v))-torchPose.position);
+                        if(local.z<=-.154f||local.z>=0)return;
+                        float radius=local.z>-.012f?.0185f:local.z>-.034f?.0175f:.0135f;
+                        penetration=Mathf.Max(penetration,radius-new Vector2(local.x,local.y).magnitude);
+                    };
+                    foreach(var v in points)inspect(v);
+                    for(int t=0;t<triangles.Length;t+=3)inspect((points[triangles[t]]+points[triangles[t+1]]+points[triangles[t+2]])/3);
+                    Object.DestroyImmediate(bakedGrip);
+                    if(penetration>.0015f)gripFailure="Flashlight penetrates hand by "+penetration+" side="+side+" pose="+pose;
+                    if(penetration<=.0015f)Debug.Log("TORCH_GRIP_CLEARANCE_PASS side="+side+" pose="+pose+" maximumPenetration="+penetration);
+                }
                 Debug.Log("HAND_MESH_SHAPE_PASS side="+side+" pose="+pose+" size="+bounds.size);
             }
             camera.transform.position=new Vector3(.12f,.65f,-.38f);camera.transform.LookAt(Vector3.zero);camera.Render();
-            RenderTexture.active=rt;var read=new Texture2D(960,640,TextureFormat.RGB24,false);read.ReadPixels(new Rect(0,0,960,640),0,0);read.Apply();
+            RenderTexture.active=rt;var read=new Texture2D(960,900,TextureFormat.RGB24,false);read.ReadPixels(new Rect(0,0,960,900),0,0);read.Apply();
             System.IO.Directory.CreateDirectory("Builds");System.IO.File.WriteAllBytes("Builds/hand-rig-validation.png",read.EncodeToPNG());Object.DestroyImmediate(read);
+            if(gripFailure!=null)throw new Exception(gripFailure);
         }finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(stage);Object.DestroyImmediate(cameraObject);}
     }
     public static void Check(){

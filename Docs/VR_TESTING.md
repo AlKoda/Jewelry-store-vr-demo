@@ -60,3 +60,7 @@ Previous headset feedback rejected the hand result. Finger movement alone had mi
 The latest build no longer copies the extra frame from Meta's controller-hand prefab. It explicitly maps the hand's wrist-to-finger direction to this application's controller forward axis, with palms inward and thumbs up. The runtime component is rendered in open/closed poses and checked for physical size, thickness and both forward directions. Headset acceptance remains pending. The belt, camera holster and torch holsters are 12 cm lower together.
 
 The native shader startup crash is mitigated with keepLoadedShadersAlive in EditableDelivery. The next player remained running according to Koda. This is not a long-duration stability certification.
+
+## Pitch and torch fit
+
+Empty hands are pitched down 12 degrees following headset feedback that they appeared raised. Equipped white/UV torches use a dedicated cylindrical grip pose with fixed finger closure, so pressing grip/trigger does not squeeze fingers through the barrel. The torch lens uses the same fitted pose. Returning the torch restores the regular controller hand. Check both hands, camera/torch transfer, and toggling the beam while holding. Rendered previews and sampled clearance checks passed; final headset fit is pending.

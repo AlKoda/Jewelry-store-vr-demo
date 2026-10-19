@@ -23,3 +23,5 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [x] Lower belt and holstered tool positions 12 cm.
 - [x] Symbolicate native shader crash and enable shader lifetime mitigation; Koda confirmed next player stays running.
 - [ ] Accept latest controller-frame mapping in the headset. Sideways fingers were corrected by mapping the anatomical forward axis to the controller forward axis; both editor axis checks pass.
+
+- [ ] Accept 12-degree downward hand adjustment and dedicated white/UV flashlight grip in the headset; combined renders and sampled grip-clearance checks pass.
