@@ -26,4 +26,4 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [ ] Accept 12-degree downward hand adjustment and dedicated white/UV flashlight grip in the headset; combined renders and sampled grip-clearance checks pass.
 
-- [ ] Retest left/right visual grab model swap requested by Koda; earlier positive headset reply was withdrawn.
+- [ ] Retest corrected flashlight-only palm orientation; original empty-hand models restored after misunderstanding. Build and grip checks pass.

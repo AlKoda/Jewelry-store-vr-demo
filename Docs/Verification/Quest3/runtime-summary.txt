@@ -46,3 +46,4 @@ Controller-frame repair: HAND_CONTROLLER_FORWARD_PASS left/right; HAND_MESH_SHAP
 
 Pitch/torch fit: HAND_CONTROLLER_FORWARD_PASS both sides; TORCH_GRIP_CLEARANCE_PASS four held-input cases, max penetration 0.001128437 m within 0.0015 m contact tolerance (sampled mesh vertices/triangle centres). Six open/held rendered mesh cases inspected; EXISTING_SCENE_DELIVERY_PASS. Human retest pending.
 Left/right visual grab models exchanged at user request. Previous positive reply was withdrawn. Strict saved-scene build, swapped animation pairing, forward-axis, skinned shape and torch clearance passed; headset retest pending.
+Clarification: original empty hands were good; opposite-hand appearance was during grabbing. Global model swap reverted; flashlight-only extra 180-degree palm roll removed and matching lens anchor transformed. Correct-side animation/palm check, physical mesh bounds, torch contact tolerance and strict build pass. Headset confirmation pending.

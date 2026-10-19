@@ -18,8 +18,11 @@ public sealed class XRGhostHand : MonoBehaviour
     public static readonly Quaternion GripPitch = Quaternion.Euler(12f,0,0);
     public static Pose TorchPose(bool left){
         // The lens is 9.5 cm ahead of the handle contact, between thumb and fingers.
-        var contact=new Vector3(left?.002f:-.002f,-.022f,.04f);
-        return new Pose(contact+GripPitch*Vector3.forward*.095f,GripPitch);
+        var contact=new Vector3(left?-.002f:.002f,-.022f,.04f);
+        var centre=new Vector3(0,-.025f,.015f);
+        var unroll=GripPitch*Quaternion.AngleAxis(180,Vector3.forward)*Quaternion.Inverse(GripPitch);
+        var lens=contact+GripPitch*Vector3.forward*.095f;
+        return new Pose(centre+unroll*(lens-centre),GripPitch);
     }
     public static bool HideControllers = true;
     public static readonly Color Tint = new Color(0.86f, 0.9f, 1f);
@@ -38,8 +41,7 @@ public sealed class XRGhostHand : MonoBehaviour
     Animator nativeAnimator;
     bool native;
     bool torchGrip;
-    // Swap visuals only; controller input and tool ownership keep their physical side.
-    bool ModelLeft => !input.Left;
+    bool ModelLeft => input.Left;
     bool TryNative(){
         var prefab=Resources.Load<GameObject>("MetaHands/"+(ModelLeft?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
         root=new GameObject("Meta controller hand").transform;root.SetParent(transform,false);root.localPosition=Vector3.zero;
@@ -84,7 +86,9 @@ public sealed class XRGhostHand : MonoBehaviour
         if(!held){root.localPosition=Vector3.zero;root.localRotation=Quaternion.identity;return;}
         // A cylindrical flashlight needs the fingers around its barrel, rather
         // than the controller's vertical grip. Preserve the controller beam axis.
-        var rotation=GripPitch*Quaternion.AngleAxis(180,Vector3.forward)*Quaternion.Euler(90,0,0)*Quaternion.Inverse(GripPitch);
+        // Keep the palm on its own side: the former extra half-turn made a
+        // correctly sided hand look like the opposite hand when gripping.
+        var rotation=GripPitch*Quaternion.Euler(90,0,0)*Quaternion.Inverse(GripPitch);
         var fingerRingCentre=new Vector3(ModelLeft?-.012f:.012f,-.039f,.025f);
         root.localRotation=rotation;
         root.localPosition=new Vector3(0,-.025f,.015f)-rotation*fingerRingCentre;
