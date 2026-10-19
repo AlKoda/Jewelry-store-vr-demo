@@ -54,3 +54,9 @@ The current build uses Meta SDK 207.0.1 OpenXR animation controllers, clips and 
 ## Hand import repair
 
 Previous headset feedback rejected the hand result. Finger movement alone had missed the FBX armature/unit mismatch. The repaired setup preserves Meta bake-axis/hierarchy settings, compensates the retained 100x conversion at the model wrapper, and aligns after Animator reset. CheckHands now instantiates the actual controller-hand component, bakes both skinned meshes in open/closed poses, checks physical dimensions and thickness, and renders a preview for inspection. The preview shows intact hands; headset grip fit still requires a human check.
+
+## Controller-frame correction
+
+The latest build no longer copies the extra frame from Meta's controller-hand prefab. It explicitly maps the hand's wrist-to-finger direction to this application's controller forward axis, with palms inward and thumbs up. The runtime component is rendered in open/closed poses and checked for physical size, thickness and both forward directions. Headset acceptance remains pending. The belt, camera holster and torch holsters are 12 cm lower together.
+
+The native shader startup crash is mitigated with keepLoadedShadersAlive in EditableDelivery. The next player remained running according to Koda. This is not a long-duration stability certification.

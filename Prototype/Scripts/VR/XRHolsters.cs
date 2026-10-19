@@ -128,6 +128,7 @@ public sealed class XRHolsters : MonoBehaviour
         }
     }
 
+    private void Start(){HipOffset.y-=.12f;ChestOffset.y-=.12f;}
     private void LateUpdate()
     {
         UpdateHeading(Time.deltaTime);
@@ -136,7 +137,7 @@ public sealed class XRHolsters : MonoBehaviour
         if (root == null) Build();
         root.gameObject.SetActive(true);
         var head=Head?Head:transform;
-        belt.position=head.position+Vector3.down*.62f;belt.rotation=Quaternion.Euler(0,beltYaw,0);
+        belt.position=head.position+Vector3.up*HipOffset.y;belt.rotation=Quaternion.Euler(0,beltYaw,0);
         var lights=Lighting?Lighting:FindFirstObjectByType<DemoLighting>();var camera=Camera?Camera:FindFirstObjectByType<EvidenceCamera>();
         for(int i=0;i<3;i++){
             displays[i].SetActive(i<2?lights==null||!lights.TorchEquipped(i==1):camera==null||camera.Holder==null);

@@ -19,3 +19,7 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [x] Repair hand mesh import/unit conversion and post-animation alignment; inspect rendered open/closed meshes from the actual runtime component.
 - [ ] Retest repaired hands in headset; previous hand implementation was rejected by Koda.
+
+- [x] Lower belt and holstered tool positions 12 cm.
+- [x] Symbolicate native shader crash and enable shader lifetime mitigation; Koda confirmed next player stays running.
+- [ ] Accept latest controller-frame mapping in the headset. Sideways fingers were corrected by mapping the anatomical forward axis to the controller forward axis; both editor axis checks pass.

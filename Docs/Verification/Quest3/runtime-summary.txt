@@ -41,3 +41,5 @@ Latest VR polish: VR_VISUAL_VALIDATION_PASS (rendered icons, smooth belt, Meta s
 Authored hand follow-up: both Meta animation controllers loaded; left/right middle fingertip open-to-closed movement >2.5 cm; VR_VISUAL_VALIDATION_PASS and EXISTING_SCENE_DELIVERY_PASS. Human fit pending.
 
 Hand repair: actual XRGhostHand skinned mesh size/thickness passed in four left/right open/closed cases (12x7x19 cm open, 11x8x15 cm curled). Render preview inspected. VR_VISUAL_VALIDATION_PASS and EXISTING_SCENE_DELIVERY_PASS. Human headset acceptance pending.
+
+Controller-frame repair: HAND_CONTROLLER_FORWARD_PASS left/right; HAND_MESH_SHAPE_PASS all four open/closed cases; VR_VISUAL_VALIDATION_PASS; EXISTING_SCENE_DELIVERY_PASS. Rendered preview visually inspected. Latest headset orientation acceptance pending.

@@ -22,6 +22,15 @@ public static class VRVisualValidation
                 ghost.SetPose(pose==0?0:1,pose==0?0:1,1,0);
                 var animator=ghost.Root.GetComponentInChildren<Animator>();
                 if(!animator)throw new Exception("Official hand animator missing");animator.Update(.1f);
+                if(pose==0){
+                    Transform wrist=null,middle=null;
+                    foreach(var bone in ghost.Root.GetComponentsInChildren<Transform>()){
+                        if(bone.name=="XRHand_Wrist")wrist=bone;
+                        if(bone.name=="XRHand_MiddleTip")middle=bone;
+                    }
+                    if(Vector3.Dot((middle.position-wrist.position).normalized,owner.transform.forward)<.85f)throw new Exception("Hand fingers do not align with controller forward: "+side);
+                    Debug.Log("HAND_CONTROLLER_FORWARD_PASS side="+side);
+                }
                 foreach(var t in owner.GetComponentsInChildren<Transform>())t.gameObject.layer=31;
                 var renderer=ghost.Root.GetComponentInChildren<SkinnedMeshRenderer>();
                 var baked=new Mesh();renderer.BakeMesh(baked);var bounds=new Bounds(renderer.transform.TransformPoint(baked.vertices[0]),Vector3.zero);

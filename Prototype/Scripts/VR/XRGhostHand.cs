@@ -33,27 +33,38 @@ public sealed class XRGhostHand : MonoBehaviour
     bool native;
     bool TryNative(){
         var prefab=Resources.Load<GameObject>("MetaHands/"+(input.Left?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
-        root=new GameObject("Meta controller hand").transform;root.SetParent(transform,false);root.localPosition=new Vector3(PalmOffset.x*side,PalmOffset.y,PalmOffset.z);
+        root=new GameObject("Meta controller hand").transform;root.SetParent(transform,false);root.localPosition=Vector3.zero;
         var model=Instantiate(prefab,root,false);var bones=model.GetComponentsInChildren<Transform>();
         Transform wrist=null,middle=null,index=null,little=null;
         foreach(var b in bones){if(b.name=="XRHand_Wrist")wrist=b;if(b.name=="XRHand_MiddleTip")middle=b;if(b.name=="XRHand_IndexProximal")index=b;if(b.name=="XRHand_LittleProximal")little=b;}
         if(!wrist||!middle||!index||!little){Destroy(root.gameObject);root=null;return false;}
         var controller=Resources.Load<RuntimeAnimatorController>("MetaHands/Animations/OpenXR_HandController_"+(input.Left?"Left":"Right"));
         if(!controller){Destroy(root.gameObject);root=null;return false;}
-        // This FBX retains a 100x armature conversion. Authored clips use metre translations.
-        // Compensate on the model wrapper, leaving every animated bone and bind pose intact.
-        model.transform.localScale *= .01f;
+        // Match Meta's UnityXRControllerHands prefab overrides: remove the FBX
+        // conversion from the armature and mesh, then apply the authored grip pose.
+        wrist.parent.localScale=Vector3.one;
+        wrist.parent.localRotation=Quaternion.identity;
+        foreach(var meshRenderer in model.GetComponentsInChildren<SkinnedMeshRenderer>()){
+            meshRenderer.transform.localScale=Vector3.one;
+            meshRenderer.transform.localRotation=Quaternion.identity;
+        }
         nativeAnimator=wrist.parent.GetComponent<Animator>();
         if(!nativeAnimator)nativeAnimator=wrist.parent.gameObject.AddComponent<Animator>();
         nativeAnimator.runtimeAnimatorController=controller;
         nativeAnimator.applyRootMotion=false;
         nativeAnimator.cullingMode=AnimatorCullingMode.AlwaysAnimate;
         nativeAnimator.Rebind();nativeAnimator.Update(0);
+        // The app consumes Unity XR's controller frame directly, rather than the
+        // extra data-source frame in Meta's prefab. Map anatomical axes explicitly.
+        model.transform.localRotation=Quaternion.identity;
         var forward=root.InverseTransformDirection(middle.position-wrist.position).normalized;
-        var across=root.InverseTransformDirection(little.position-index.position).normalized;if(input.Left)across=-across;
-        var up=Vector3.Cross(forward,across).normalized;
-        model.transform.localRotation=Quaternion.Inverse(Quaternion.LookRotation(forward,up))*model.transform.localRotation;
-        model.transform.localPosition-=root.InverseTransformPoint(wrist.position)+Vector3.forward*.05f;
+        var across=root.InverseTransformDirection(little.position-index.position).normalized;
+        if(input.Left)across=-across;
+        var meshFrame=Quaternion.LookRotation(forward,Vector3.Cross(forward,across));
+        var controllerFrame=Quaternion.LookRotation(Vector3.forward,input.Left?-Vector3.right:Vector3.right);
+        model.transform.localRotation=controllerFrame*Quaternion.Inverse(meshFrame);
+        var wristAnchor=new Vector3(input.Left?-.012f:.012f,-.025f,-.07f);
+        model.transform.localPosition+=wristAnchor-root.InverseTransformPoint(wrist.position);
 
         foreach(var r in model.GetComponentsInChildren<Renderer>()){r.sharedMaterial=material;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;}
         DemoUi.ToHeadsetUiLayer(root);native=true;Apply(true);return true;
