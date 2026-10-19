@@ -1,12 +1,9 @@
-# Working notes for assistants
+# Working notes for Claude
 
-Read Docs/HANDOFF.md first: current state, source map, what is verified and what is not. Then Docs/ROADMAP.md.
+**Read [AGENTS.md](AGENTS.md) first.** It holds the rules shared with ChatGPT, including "one project: edit it, never fork it", where every kind of file goes, and the who-is-working-on-what table to update before starting. Then read Docs/HANDOFF.md (current state, source map) and Docs/ROADMAP.md (open work).
 
-- Unity 6000.6.2f1, Built-in pipeline, no packages (Package Manager is broken on the PC; launchers use -noUpm). Nothing here can be compiled outside Unity; the user runs the validators on their PC and reports results.
-- Runtime code lives in Prototype/Scripts, Editor code in Prototype/Editor. The Unity project is generated from them; Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip (the current snapshot; older zips are historical) must be updated whenever scripts or ThirdParty assets change (copy scripts in, add a minimal .meta with a fresh guid for new files, keep existing .meta files).
-- Validate with ShopCityValidation.RunGlass for the old shop and NightStoreValidation.RunNightQuick / RunNight plus StoreKitValidation.RunGallery for the night store (-executeMethod, isolated project beside the README so results land in Docs). Add a check in DemoValidation or ShopCityValidation for every new behavior.
-- Shared code: ToolHolder for interaction adapters, InteriorBounds for the interior, DemoGeometry for generators, DemoAssetLibrary for third-party models (always with a primitive fallback), DemoValidation for validators. Do not duplicate these.
-- Third-party assets go under Prototype/ThirdParty/<pack>/ with a LICENSE.txt and a row in Docs/ASSET_REGISTER.md; CC0 preferred, CC BY with attribution accepted. Convert glTF/GLB with Tools/glb_to_obj.py (OBJ is what the package-free project imports). From this cloud environment HTTP reaches only raw.githubusercontent.com, but `git clone --filter=blob:none --depth 1 --no-checkout https://github.com/<owner>/<repo>` followed by `git sparse-checkout set --no-cone <paths>` and `git checkout HEAD` fetches any GitHub repository (used for KayKit and google/filament).
-- Do not hard-code an XR toolkit API until the package versions are known; bind controller actions to HandInteractor/XRLocomotion methods instead.
-- All work goes directly to `main`; pull it before editing, because another assistant (ChatGPT) works on the same repository. Update HANDOFF.md and ROADMAP.md with every batch and mark anything not yet run in Unity as unverified.
-- Commit .meta files, Assets, ProjectSettings; never Library, Builds, logs or photos.
+Claude-specific notes:
+- Cloud compile check: Roslyn C# 9 against Unity 2021.1 reference DLLs. The two known errors are NightLighting.cs `lightmapCompression` (a Unity 6 API). It is not a Unity compile; say so in reports.
+- Refresh the zip with `python3 -I Tools/zip_snapshot.py`. It writes any missing `.meta` into Prototype; commit those.
+- From this cloud environment HTTP reaches only raw.githubusercontent.com, but `git clone --filter=blob:none --depth 1 --no-checkout https://github.com/<owner>/<repo>` followed by `git sparse-checkout set --no-cone <paths>` and `git checkout HEAD` fetches any GitHub repository (used for KayKit and google/filament).
+- Pull `main` before editing and before pushing; ChatGPT commits to the same branch.

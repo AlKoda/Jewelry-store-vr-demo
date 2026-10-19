@@ -7,7 +7,7 @@ One shared source project is recommended. DemoModeSwitch already selects desktop
 2. **Play-VR.cmd** — launch a tested Windows OpenXR PCVR player for Quest Link/Air Link, with readable missing-runtime feedback and a headset-usable scene entry.
 3. **Open-In-Unity.cmd** — open a self-contained editable Unity project at the user-owned night scene, without automatic source mirroring or store regeneration.
 
-These entry points are a delivery specification, not existing tested binaries. Current Start-Demo.cmd and Open-Unity-Glass.cmd remain the existing utilities. Desktop/VR launch argument parsing and XR initialization policy still need implementation and PC validation. F9 switches rig controls; it is not evidence that XR runtime startup/shutdown is seamless.
+These entry points are a delivery specification, not existing tested binaries. Current Play-Keyboard.cmd and Open-In-Unity.cmd remain the existing utilities. Desktop/VR launch argument parsing and XR initialization policy still need implementation and PC validation. F9 switches rig controls; it is not evidence that XR runtime startup/shutdown is seamless.
 
 ## Shared binary or separate builds?
 Prefer one XR-enabled Windows player supporting both modes once it is tested. If forced-desktop startup or XR runtime availability causes issues, ship separate Desktop and PCVR build profiles from the SAME source/project and scenes. Do not maintain diverging copies of game logic.
@@ -17,7 +17,7 @@ Prefer one XR-enabled Windows player supporting both modes once it is tested. If
 - Initial target is Quest 3 connected to the Windows PC. An Android standalone APK is a separate target with different memory/render budgets; it is not promised by this delivery plan.
 
 ## Protect manual editing
-DemoBuild.BuildLatestReport regenerates JewelryStoreNight through NightStoreBuilder.BuildScene. Tools/sync-project.cmd mirrors source directories with /MIR. Open-Unity-Glass.cmd performs that sync before opening.
+DemoBuild.BuildLatestReport regenerates JewelryStoreNight through NightStoreBuilder.BuildScene. Tools/sync-project.cmd mirrors source directories with /MIR. Open-In-Unity.cmd performs that sync before opening.
 - Create the editable project separately after integration.
 - Save a user-owned scene, e.g. JewelryStoreNight_Editable.unity, with manual positions preserved.
 - Add a build-existing-scene command/profile which NEVER calls NightStoreBuilder.BuildScene.
@@ -32,4 +32,4 @@ Resolve XR packages/runtime and input profiles; compile C# and shaders; run exis
 Keep main as source of truth. After verification, use an archive branch/tag for historical milestones and a release branch/package containing the tested deliverables. Identify dependencies before removing packs. Never delete license files or GUID metadata for retained assets. No cleanup/deletion has been performed by the offline review.
 
 ## Coordination with Claude
-Docs/REORGANIZATION_PLAN.md (ee794d0) proposes the same three entry points. Use its names, but defer its physical moves until the Quest 3 test. Correct its .meta migration assumptions before execution: /XF *.meta does not carry old GUID files along with moved scripts. Proposed -demo-mode desktop/vr arguments are not implemented yet and must include safe missing-runtime behavior, not merely force VR controls with no headset.
+Docs/History/REORGANIZATION_PLAN.md (ee794d0) proposes the same three entry points. Use its names, but defer its physical moves until the Quest 3 test. Correct its .meta migration assumptions before execution: /XF *.meta does not carry old GUID files along with moved scripts. Proposed -demo-mode desktop/vr arguments are not implemented yet and must include safe missing-runtime behavior, not merely force VR controls with no headset.

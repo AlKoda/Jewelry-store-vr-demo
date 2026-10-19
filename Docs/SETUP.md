@@ -56,7 +56,7 @@ Until this is resolved the launchers use -noUpm, which blocks installing any pac
 
 ## XR package plan (after Package Manager works)
 
-Install through Package Manager, Unity Registry, with the versions the Editor offers for 6000.x: XR Plug-in Management and the OpenXR Plugin are enough for this project; XR Interaction Toolkit and Input System are optional (only needed for the TrackedPoseDriver fallback noted in CONTROLS_AND_INTEGRATION.md). Enable OpenXR for the Windows build target and add the Meta Quest Touch controller interaction profile. Quest 2 connects by Link cable or Air Link with the Meta runtime set as the active OpenXR runtime.
+Install through Package Manager, Unity Registry, with the versions the Editor offers for 6000.x: XR Plug-in Management and the OpenXR Plugin are enough for this project; XR Interaction Toolkit and Input System are optional (only needed for the TrackedPoseDriver fallback noted in CONTROLS.md). Enable OpenXR for the Windows build target and add the Meta Quest Touch controller interaction profile. Quest 2 connects by Link cable or Air Link with the Meta runtime set as the active OpenXR runtime.
 
 The scene's Player already contains everything for VR: XRHeadTracking on the camera, two hands with HandInteractor + XRControllerInput, XRLocomotion, and DemoModeSwitch choosing VR or desktop at start (F9 flips). After enabling OpenXR, press Play with the headset connected; no scene changes are expected. Record the exact package versions here when installed.
 

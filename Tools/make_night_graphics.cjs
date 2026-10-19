@@ -60,7 +60,7 @@ async function main(){
  await save('DustSmear_Generic',512,256,'<g fill="#978777" opacity=".20"><ellipse cx="254" cy="132" rx="176" ry="47"/><ellipse cx="224" cy="115" rx="142" ry="34"/><ellipse cx="290" cy="148" rx="115" ry="20"/></g>');
  fs.writeFileSync(path.join(out,'graphics.json'),JSON.stringify({author:'Original project vector artwork generated with Codex',fictionalShop:'Aurel & Finch',files,markerAtlas:{columns:4,rows:2,order:'1–4 top, 5–8 bottom',cellPixels:128,paddingPixels:16},decals:'Straight alpha; no emission or UV interpretation'},null,2)+'\n');
  const tiles=await Promise.all(files.map(async(f,i)=>({input:await sharp(path.join(out,f.name+'.png')).resize(480,210,{fit:'contain',background:'#ddd9d0'}).png().toBuffer(),left:(i%2)*500+10,top:Math.floor(i/2)*230+10})));
- const preview=path.join(root,'Docs/AssetPreparation');fs.mkdirSync(preview,{recursive:true});
+ const preview=path.join(root,'Docs/History/AssetPreparation');fs.mkdirSync(preview,{recursive:true});
  await sharp({create:{width:1000,height:Math.ceil(files.length/2)*230,channels:3,background:'#ddd9d0'}}).composite(tiles).png().toFile(path.join(preview,'graphics-preview.png'));
  console.log(`Prepared ${files.length} SVG/PNG pairs.`);
 }

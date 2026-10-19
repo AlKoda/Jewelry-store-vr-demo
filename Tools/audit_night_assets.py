@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[1]
 TP = ROOT / "Prototype/ThirdParty"
-DOC = ROOT / "Docs/AssetPreparation"
+DOC = ROOT / "Docs/History/AssetPreparation"
 MODELS = {
     "KayKitCity": ["car_police", "car_police_wheel_front_left", "car_police_wheel_front_right",
                    "car_police_wheel_rear_left", "car_police_wheel_rear_right", "streetlight", "bench"],

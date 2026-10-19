@@ -65,7 +65,7 @@ Keep the static shop, car and stationary architecture on baked direct lighting w
 No assets were removed. Do cleanup only after dependency/build usage checks, license/credit checks and successful desktop/VR rehearsals. Archive historical source/reference packs separately if useful; do not blindly remove fallbacks, shader references, Resources, generated bake data or .meta files.
 
 ## Follow-up: Claude reorganization proposal at ee794d0
-Read Docs/REORGANIZATION_PLAN.md; it is a proposal only, with no runtime changes since fda16c8. Its three launcher names are adopted in DELIVERY_PLAN.md. Keep reorganization deferred until Quest 3 verification, as that proposal requests.
+Read Docs/History/REORGANIZATION_PLAN.md; it is a proposal only, with no runtime changes since fda16c8. Its three launcher names are adopted in DELIVERY_PLAN.md. Keep reorganization deferred until Quest 3 verification, as that proposal requests.
 Two corrections are needed before carrying it out:
 - Moving source scripts while sync-project.cmd excludes *.meta does NOT move existing project-side .meta files into their new subfolders. Unity can create new GUIDs and lose serialized references. Build an explicit source-to-project metadata migration (preserve each old GUID with its moved script), or commit authoritative .meta files and change synchronization deliberately. Test serialized scene/prefab references and the rebuilt snapshot before deleting old copies.
 - Do not use an automatic mirroring/regeneration editor path as the only user-editable delivery. Preserve a user-owned scene and existing-scene build route; keep edits outside mirrored folders. Merely opening a .unity scene cannot supply the entire project.

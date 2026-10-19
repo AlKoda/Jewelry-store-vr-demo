@@ -1,51 +1,43 @@
 # Jewelry Store VR Demo
 
-## Run it — double-click Start-Demo.cmd
+An instructor-led VR crime-scene demo for police training: a jewellery store at night after a break-in, with the police just arrived. The trainee walks the scene, places cones, evidence markers, tape, scales and scene lamps, photographs evidence and uses white and UV torches. A presenter guides it from the PC. There are no scores, timers or forced sequence. Demo date: **October 27, 2026**.
 
-On the Windows PC with Unity 6000.6.2f1 installed, double-click **Start-Demo.cmd** in this folder. The first time it unpacks the project into UnityProject_Demo and builds **Builds\Windows\JewelryStoreDemo.exe** (5–15 minutes, no Unity window); after that it only rebuilds when the source changed (git checkout), with the lighting last chosen, and otherwise starts the existing build at once. The program opens on a start menu listing the maps, newest first, with the build date, source commit and lighting (baked, or preview when no bake ran or the bake failed): Enter starts the night store, F10 in a map returns to the menu. `Start-Demo.cmd bake` rebuilds with baked lighting (slower, final look) and keeps baking on later updates; `Start-Demo.cmd rebuild` forces a rebuild with preview lighting (for example after downloading a newer ZIP) and stops baking; `Start-Demo.cmd run` just starts it. Judge frame rate only on a baked build; the preview lighting is for quick checks. The first unpack switches UnityProject_Demo to linear colour space before Unity opens it. If a build fails, the window lists the errors from build-latest.log. Copy the whole Builds\Windows folder to show the demo on another PC; that PC needs no Unity. *Not yet run on the PC (unverified).*
+Unity 6000.6.2f1 (Built-in pipeline) on a Windows PC, with keyboard and mouse or a Meta Quest 3 over Quest Link / Air Link.
 
-Instructor-led jewelry-store crime-scene demo for October 27, 2026. No scores, timers or forced sequence.
+## Start here (Windows PC)
 
-## Apply the October 14–16 realism work — start here
+| Double-click | For |
+|---|---|
+| **Play-Keyboard.cmd** | The demo with keyboard and mouse. The first run builds it (5–15 minutes); after that it rebuilds only when the source changed. `Play-Keyboard.cmd bake` gives the final baked lighting. |
+| **Play-VR.cmd** | The same demo in the Quest 3. Start Quest Link or Air Link first. *Needs OpenXR set up in the project on the PC first: see Docs/ROADMAP.md, section 1.* |
+| **Open-In-Unity.cmd** | Opens the project in the Unity editor for your own adjustments. |
 
-Pull main and follow [Docs/PC_VERIFICATION.md](Docs/PC_VERIFICATION.md): launcher, compile, the four validator runs with their expected PASS counts, then the desktop and headset checks. A ready-to-paste prompt for the next assistant is at the end. Nothing from October 14–16 has run in Unity yet (unverified).
-
-## Night store source — October 11 (unverified)
-
-The expanded night store is now in source: run NightStoreValidation.RunNightQuick (no bake) or RunNight (bake) after syncing Scripts, Editor, Shaders and ThirdParty (Open-Unity-Glass.cmd and Start-Demo.cmd do this). The October 15 wiring batch (unverified) brings the realism packs into it. See the top of [HANDOFF](Docs/HANDOFF.md).
-
-## Current plan — October 11
-
-The next scene is an **expanded store with a nighttime police arrival**, reusing existing tools and low-poly assets. See the [scenario and migration plan](Docs/NIGHT_ARRIVAL_PLAN.md). The reference is now received: see the [reference-based layout plan](Docs/REFERENCE_LAYOUT_PLAN.md), with proposed dimensions and asset reuse. This is planning work, not a new build.
-
-## Glass project (now contains unverified night-store sources)
-
-[Download the Glass and Tools Unity project](Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip) and [view the screenshots/report](Docs/GLASS_AND_TOOLS.md).
-
-Extract into **UnityProject_Glass** beside this README, run **Open-Unity-Glass.cmd**, and open **Assets/CrimeSceneDemo/Scenes/JewelryStoreGlass.unity**. Unity 6000.6.2f1, Built-in pipeline; launcher uses the current -noUpm workaround. Since October 15 (unverified), Open-Unity-Glass.cmd first runs Tools\sync-project.cmd. It mirrors the latest Prototype Scripts, Editor, Shaders and ThirdParty into Assets/CrimeSceneDemo (robocopy /MIR, .meta files left alone), so the project also gets the realism packs the zip leaves out. The first run copies about 262 MB, and Unity then imports them for several minutes. The mirror overwrites changes made directly in those four project folders, so edit Prototype instead. Because the launcher always brings in the newest, never-compiled sources, a compile error in them now also stops JewelryStoreGlass; to open the zip's own snapshot unchanged, start Unity 6000.6.2f1 on UnityProject_Glass with -noUpm without this launcher. The historical Blockout, Forms, Interior and Robbery launchers do not sync.
-
-October 10: all source and the world-text shader compiled; **137 automated Editor Play mode assertions passed**. That result applies to the October 10 snapshot (`git show d5e9cc8:Downloads/JewelryStore_Glass_Unity6000.6.2f1.zip`). The current zip (October 11) also carries the later textured-finish, panel, measuring-tape, lighting, lamp, UV, StoreKit and NightStore sources; the newest of these have **not been compiled**; a compile error in them would stop JewelryStoreGlass from entering Play mode. Its Shaders folder also lacks UVFluorescence.shader.meta (Unity generates one on import). Glass fragments now rest on surfaces, marker numbers no longer show through, and tape posts connect automatically when placed. Robbed stock includes empty pads, overturned stands and dropped jewelry. The menu starts closed; Tab opens it. First finishes for walls, stone flooring, lights, doors, glass and display cases use simple geometry and flat materials. Four shadowless lights; one static room reflection cubemap. Quest performance/tracking and standalone build remain pending.
-
-Historical Forms, Expanded and Review projects remain available. This download is a Unity project, not an executable.
+If Unity is not at the Unity Hub default path, set `JEWELRY_UNITY` to the full path of Unity.exe. To show the demo on another PC, copy the whole `Builds\Windows` folder; that PC needs no Unity.
 
 ## Controls
 
-Tested Glass build (October 10):
+Full table: [Docs/CONTROLS.md](Docs/CONTROLS.md). In short:
+- **Keyboard:** WASD to walk, right click for mouse look, click to pick up or place, 1–6 for the tools, F to take the camera and P to photograph, L flashlight, U UV torch, Tab presenter panel, F1 help.
+- **Quest 3:**
+  - Left stick walks; right stick turns.
+  - Grip holds; trigger uses.
+  - Hold the left trigger for the tool wheel.
+  - Grip at your hips or chest takes the torches or the camera.
+- **Presenter keys:** F7 comfort vignette, F8 smooth walking or teleport, F3/F4 hand opacity, F9 desktop/VR, F10 back to the start menu.
 
-- WASD/arrows: walk; right click: toggle mouse look; Escape: release cursor; Home: return inside.
-- Click: pick up/place; 1/2/3/4: cone, marker, tape post or L-scale (photo size reference).
-- Q/E or wheel: rotate; R/Delete/Backspace: remove pointed tool; T/X: manually connect/cancel tape.
-- F: hold/return camera; P: photograph.
-- I: intact/robbed shop; Tab: presenter panel; F9: desktop/VR mode.
-- Place tape posts to connect automatically; panel can start a separate run.
-- Panel: placed-tool Remove buttons, reset, photographs and instructor review.
+## For developers and AI assistants
 
-New interface, October 13 (unverified): a hotbar, crosshair, key prompts and toasts on the monitor; Tab opens a tabbed drawer; **F1 or H: controls overlay**; F2: hide the HUD; C: crouch; hold Z: zoom; settings for size, mouse sensitivity, invert Y and field of view. In the headset: Quest 2 controller models with hints that appear when you look at them, a tool carousel, a wrist status card, floating messages and vibrations.
+- **Rules:** [AGENTS.md](AGENTS.md), shared by Claude and ChatGPT. It covers one project edited in place (never a new version per batch), where each kind of file goes, and who is working on what.
+- **Current state and source map:** [Docs/HANDOFF.md](Docs/HANDOFF.md).
+- **Open work:** [Docs/ROADMAP.md](Docs/ROADMAP.md).
+- **Testing on the PC:** [Docs/PC_VERIFICATION.md](Docs/PC_VERIFICATION.md).
+- **Open decisions for Koda:** [Docs/DECISIONS.md](Docs/DECISIONS.md).
+- **Assets and licences:** [Docs/ASSET_REGISTER.md](Docs/ASSET_REGISTER.md).
+- **Delivery plan:** [Docs/DELIVERY_PLAN.md](Docs/DELIVERY_PLAN.md).
 
-Added in the current source (unverified): 5/6: measuring tape or scene lamp; T also switches a held or pointed scene lamp (at most two lit); L: flashlight; U: UV torch; N: night/day; B: instructor beacon at the pointer; Tab cycles the presenter panel hidden/strip/full; [ / ]: panel scale; Shift: walk faster. Full table: [controls](Docs/CONTROLS_AND_INTEGRATION.md).
-
-## Development
-
-Prototype contains editable source; Downloads contains generated projects with Assets, .meta files and ProjectSettings. Keep current source and snapshots together. ShopCityValidation.RunGlass regenerates the finished procedural variant and its verification report; RunTextured adds the generated/scanned textures, imported CC0 kits and HDR sky (unverified); copy Prototype/Shaders alongside Editor and Scripts when syncing source; RunExpanded retains the imported-assets variant.
-
-VR adapters pass programmatic checks, but actual tracking requires OpenXR setup and Quest testing. Package Manager startup remains unresolved. See [setup](Docs/SETUP.md), [controls](Docs/CONTROLS_AND_INTEGRATION.md), [handoff](Docs/HANDOFF.md), [roadmap](Docs/ROADMAP.md), [brief](Docs/PROJECT_BRIEF.md), [rehearsal](Docs/REHEARSAL.md) and [asset register](Docs/ASSET_REGISTER.md).
+```
+Prototype/   all source: Scripts, Editor, Shaders, ThirdParty (edit only here)
+Tools/       build, sync and zip helpers; asset preparation scripts
+Downloads/   the one Unity project snapshot (unpacked by the launchers)
+Docs/        live documents; References, Verification results and History
+```

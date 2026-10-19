@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Tileable textures taken from the project's own reference renders.
 
-The user's reference sheets (Docs/LayoutReferences) show the store palette on clean,
+The user's reference sheets (Docs/References/LayoutReferences) show the store palette on clean,
 evenly lit surfaces. Woven and grained materials (walnut, velvet, suede, safe steel)
 are cut from those images, flattened (the render's lighting gradient is
 divided out) and made seamless with a variance-preserving blend so the tile keeps its
@@ -21,8 +21,8 @@ from PIL import Image, ImageFilter
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from make_textures import periodic_noise, stretch, speckle, to_image, mix, normal_map  # noqa: E402
 
-SHEETS = 'Docs/LayoutReferences/StoreAssets/'
-VIEWS = 'Docs/LayoutReferences/NightStore/'
+SHEETS = 'Docs/References/LayoutReferences/StoreAssets/'
+VIEWS = 'Docs/References/LayoutReferences/NightStore/'
 
 # name: (image, crop box x0 y0 x1 y1, metres per repeat (documentation), normal strength)
 RECIPES = {

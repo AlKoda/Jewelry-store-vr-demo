@@ -36,6 +36,7 @@ InstructorReviews/
 # Local asset downloads and temporary processing dependencies
 .asset-cache/
 
-# Local project made by Start-Demo.cmd
-UnityProject_Demo/
+# Local Unity projects made by the launchers (copies of Prototype; never commit them)
+UnityProject/
+UnityProject_*/
 build-latest.log

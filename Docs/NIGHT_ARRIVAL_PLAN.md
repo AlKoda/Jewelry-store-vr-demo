@@ -1,6 +1,6 @@
 # Expanded store: nighttime first-response scenario
 
-**Eight generated modeling references are now available:** [gallery and original PNGs](LayoutReferences/NightStore/README.md). These are concept images, not a tested build; use the written layout for dimensions and read the gallery's consistency notes.
+**Eight generated modeling references are now available:** [gallery and original PNGs](References/LayoutReferences/NightStore/README.md). These are concept images, not a tested build; use the written layout for dimensions and read the gallery's consistency notes.
 October 11, 2026 — planning only; no scene, code or asset changes made.
 
 ## Direction and scenario
@@ -8,7 +8,7 @@ A nearby resident hears a disturbance during the night and calls police. The res
 
 This remains a freely explorable, instructor-led demonstration: no forced action order, scoring, countdown, automatic evidence identification or mandatory tutorial. The instructor supplies operational procedure. No suspects, casualties or active confrontation are assumed for this version.
 
-The expanded store should closely follow the user's visual reference. **The reference has now been received and inspected: [store-reference.jpg](../store-reference.jpg).** See [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md) for observed features, proposed dimensions and the migration order. Dimensions and obscured rooms remain estimates; do not scale up the entire old scene uniformly.
+The expanded store should closely follow the user's visual reference. **The reference has now been received and inspected: [Docs/References/store-reference.jpg](../Docs/References/store-reference.jpg).** See [REFERENCE_LAYOUT_PLAN.md](REFERENCE_LAYOUT_PLAN.md) for observed features, proposed dimensions and the migration order. Dimensions and obscured rooms remain estimates; do not scale up the entire old scene uniformly.
 
 Store lighting is off at arrival. Nighttime and lights being off are confirmed; deliberate power sabotage is not established by the story. Do not add a cut cable or electrical clue without a case decision.
 
