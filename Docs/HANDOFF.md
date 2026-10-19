@@ -1,3 +1,11 @@
+# ChatGPT review — Quest 3 and deliverables, October 19 (static review)
+
+Reviewed runtime source at fda16c8 and Claude's later reorganization-only proposal at ee794d0 while the PC is disconnected. See [CLAUDE_REVIEW_2026-10-19.md](CLAUDE_REVIEW_2026-10-19.md) for prioritized findings, model needs, transparent controller hands and shadows. See [DELIVERY_PLAN.md](DELIVERY_PLAN.md) for shared source with Play-Keyboard.cmd, Play-VR.cmd and Open-In-Unity.cmd delivery.
+
+Hands already exist; their stereo depth pass and tracking handling need attention. OpenXR configuration remains a PC task. Six newer packs remain outside the current twelve-pack importer. Rebuilding regenerates the store, so user edits need a protected scene/build route. Correct the reorganization proposal's .meta migration assumptions before any moves.
+
+No runtime code, scene, assets or ZIP changed; no Unity/shader compile, bake or headset test was run. Root [for Koda.md](../for%20Koda.md) contains the ordered checklist. Older entries below remain historical status.
+
 # VR comfort and hands round — October 19, batch 2 (Claude, unverified, never run in Unity)
 
 Built in order of difficulty, as Koda asked. Each item's settings are first guesses to tune from the Quest 3 test.

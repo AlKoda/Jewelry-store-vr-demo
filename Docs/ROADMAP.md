@@ -1,3 +1,15 @@
+## October 19 review: Quest 3, shadows and three deliveries
+
+- [x] Static code and model review: [findings](CLAUDE_REVIEW_2026-10-19.md).
+- [x] [Shared-source delivery plan](DELIVERY_PLAN.md): keyboard + Quest 3 PCVR + protected editable Unity project.
+- [ ] PC: OpenXR/runtime/packages; compile C# and shaders; stereo hands, tracking loss and torch/tool conflicts.
+- [ ] PC: baked final shadows, portable-lamp occlusion and deployed-tool contacts, with profiling.
+- [ ] PC: selectively integrate six newer packs with import rules and attribution.
+- [ ] PC: build-existing-scene route that preserves manual layout changes.
+- [ ] PC/headset: validators, both-eye hands, mode transitions, photos/audio and performance.
+- [ ] Tested delivery folders, then metadata-safe reorganization and dependency-based cleanup.
+- Ordered tasks: root [for Koda.md](../for%20Koda.md). This review changed documentation only.
+
 ## VR comfort and hands — October 19, batch 2 (Claude, unverified)
 
 - [x] Vignette (F7), wheel stick picking, camera zoom/flash/review, distance grab, holsters, see-through hands (F3/F4); 13 checks.
