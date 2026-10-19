@@ -4,6 +4,29 @@ Updated October 19, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Shadows, UV torch and reflections — October 19 (Claude, unverified in Unity)
+
+Koda asked for the shadow bugs, the UV light passing through objects, and texturing/reflection quality.
+- **UV torch:** the violet spot casts soft 1024 shadows, so it stops at walls, the counter and closed cases. Clear glass casts no shadow, so it still lights into a case. Fluorescent traces test five points (centre and corners): a half-covered trace glows at half strength, and a tool standing on a trace hides it. The glow edge and falloff follow the light's inner/outer cone. The torches stay exclusive (one torch shadow at most).
+- **Shadows:**
+  - The headlights' realtime `_Specular` companions (SceneReviewPass), unshadowed 18 m spots that lit the store through its walls, now cast hard 512 shadows.
+  - The camera viewfinder no longer disables all shadows while the flashlight is on.
+  - Shadow bias on the flashlight, UV torch, lamps and flash moves from 0.015/0.12 to 0.04/0.3 (stripe acne on grazing surfaces).
+  - The quick-preview fallback's near lights get hard low shadows.
+  - Street trees cast in the bake; the ceiling shadow-gap faces cast two-sided.
+- **Materials:**
+  - AmbientProps take their RealismTextures/PropMaps set per material via `DemoAssetLibrary.ApplyPropMaps` (pipes group 1/2, cable boxes, dirty spray cans were wrong or bare).
+  - Estimated sets get a 0.6 gloss scale.
+  - Pack AO maps are wired.
+  - A finish's smoothness scales a packed map.
+  - Rust and painted-metal tileables get aniso 8.
+- **Reflections:**
+  - Probe blend distances are set (cases 0.1 m, 256 px; entrance 0.5; showroom/office 0.75/0.5; display-case bakes 0.25). The 1 m default kept small case probes from reaching full weight.
+  - ReflectionCapture adds a second pass with the probes on, so metals seen in reflections are not black.
+- **What applies when:** runtime changes (UV, bias, viewfinder) apply on the next normal build. Builder changes (probes, trees, ceiling gap, headlight companions, prop materials, reflection capture) reach the saved scene only through the regenerating bake build (CombinedBuild), which replaces manual scene edits.
+- **Checks:** NightStoreValidation gains UV visibility (partial, glass-like, tool on trace), probe blend and prop-map checks, and is updated for the shadowed UV torch, two-sided gap and preview shadows.
+- **Not compiled in Unity.** The cloud Roslyn check shows only the XR-package references it cannot resolve. Shadow cost (up to torch + lamp + two hard 512 headlight maps) needs a PCVR profile.
+
 ## Current verified state
 
 Local repairs from October 18 preserved: neutral/broken glass, clean static reflection captures, bilingual UI fit, Arabic physical signs/tape, supplied car, quieter recorded sounds, staff furnishings and 44 authored UV cues. Outdoor glove box/case remnants are now inactive in the regenerated scene. Raw assets are retained, not bulk-enabled.

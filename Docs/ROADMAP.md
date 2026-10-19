@@ -27,3 +27,4 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [ ] Accept 12-degree downward hand adjustment and dedicated white/UV flashlight grip in the headset; combined renders and sampled grip-clearance checks pass.
 
 - [ ] Retest corrected flashlight-only palm orientation; original empty-hand models restored after misunderstanding. Build and grip checks pass.
+- [ ] Headset check of Claude's October 19 shadow/UV/reflection round: UV stops at walls, no stripe acne, case reflections, ambient prop materials; profile the shadow maps (needs a bake build for the builder changes).
