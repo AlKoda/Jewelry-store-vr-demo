@@ -43,3 +43,6 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [x] Repair prop finishes/rear-room reflections, metric street surfaces, photographic tree sprays, legacy car light effects and transparent shard/contact shading.
 - [x] Retreat belt on measured bending (not head pitch); align camera handle and aiming axis with torch.
 - [ ] Headset acceptance of new belt retreat, floor pickups, camera handle fit and latest glass; Quest performance remains unmeasured.
+
+- [x] Restore the simple authored camera holding grip; remove saved preview torch duplicates and prevent render checks from saving them.
+- [ ] Confirm the restored normal camera grip in the headset; no further finger changes requested.

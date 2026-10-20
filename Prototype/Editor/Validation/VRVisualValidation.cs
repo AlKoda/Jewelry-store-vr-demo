@@ -4,6 +4,33 @@ using UnityEngine;
 using Object=UnityEngine.Object;
 public static class VRVisualValidation
 {
+    // Runtime torch models must never be authored into a saved player camera.
+    // Their DemoLighting owner recreates them when equipped and attaches them to a hand.
+    public static int PruneCameraPreviewTorches(){
+        if(Application.isPlaying)return 0;int removed=0;
+        foreach(var camera in Object.FindObjectsByType<Camera>(FindObjectsInactive.Include,FindObjectsSortMode.None)){
+            if(camera.transform.root.name!="Player")continue;
+            var children=new System.Collections.Generic.List<GameObject>();
+            foreach(Transform t in camera.transform)if(t.name=="Flashlight"||t.name=="UVTorch"||t.name=="FlashlightModel"||t.name=="UVFlashlightModel")children.Add(t.gameObject);
+            foreach(var child in children){Object.DestroyImmediate(child);removed++;}
+        }
+        if(removed>0)Debug.Log("SAVED_PREVIEW_TORCH_CLEANUP removed="+removed);return removed;
+    }
+    public static void CheckPreviewTorchOwnership(){
+        var owner=new GameObject("Temporary torch ownership validation");owner.hideFlags=HideFlags.DontSave;
+        var lighting=owner.AddComponent<DemoLighting>();lighting.TorchesExclusive=false;
+        try{
+            lighting.Flashlight(true);lighting.UVTorch(true);
+            var white=lighting.FlashlightLight;var uv=lighting.UVTorchLight;
+            foreach(var light in new[]{white,uv})if((light.gameObject.hideFlags&HideFlags.DontSave)!=HideFlags.DontSave)throw new Exception("Editor torch light can be saved");
+            foreach(var camera in Object.FindObjectsByType<Camera>(FindObjectsInactive.Include,FindObjectsSortMode.None))foreach(Transform t in camera.transform)
+                if((t.name=="FlashlightModel"||t.name=="UVFlashlightModel")&&(t.gameObject.hideFlags&HideFlags.DontSave)!=HideFlags.DontSave)throw new Exception("Editor torch model can be saved");
+            lighting.ReleaseTorchResources();
+            if(white||uv||lighting.TorchEquipped(false)||lighting.TorchEquipped(true))throw new Exception("Preview torch resource cleanup failed");
+            if(PruneCameraPreviewTorches()!=0)throw new Exception("Preview destruction left orphaned camera models");
+            Debug.Log("PREVIEW_TORCH_OWNERSHIP_PASS both torches excluded from saves and explicitly destroyed");
+        }finally{lighting.ReleaseTorchResources();Object.DestroyImmediate(owner);}
+    }
     public static void HandsRun(){
         try{CheckHands();UnityEditor.EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);UnityEditor.EditorApplication.Exit(1);}
     }
@@ -114,5 +141,10 @@ public static class VRVisualValidation
             Debug.Log("VR_VISUAL_VALIDATION_PASS rendered icon texture, smooth headset-following belt anchors and official rigged Meta hand assets");
         }finally{RenderTexture.active=previous;rt.Release();if(read)Object.DestroyImmediate(read);Object.DestroyImmediate(texture);Object.DestroyImmediate(mat);Object.DestroyImmediate(rt);Object.DestroyImmediate(cameraObject);Object.DestroyImmediate(root);}
     }
+}
+[UnityEditor.InitializeOnLoad]
+static class PreventSavedTorchPreviews
+{
+    static PreventSavedTorchPreviews(){UnityEditor.SceneManagement.EditorSceneManager.sceneSaving+=(scene,path)=>VRVisualValidation.PruneCameraPreviewTorches();}
 }
 #endif

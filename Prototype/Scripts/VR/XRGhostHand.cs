@@ -41,6 +41,7 @@ public sealed class XRGhostHand : MonoBehaviour
     Animator nativeAnimator;
     bool native;
     bool torchGrip;
+    bool cameraGrip;
     bool ModelLeft => input.Left;
     bool TryNative(){
         var prefab=Resources.Load<GameObject>("MetaHands/"+(ModelLeft?"OpenXRLeftHand":"OpenXRRightHand"));if(!prefab)return false;
@@ -81,6 +82,8 @@ public sealed class XRGhostHand : MonoBehaviour
         DemoUi.ToHeadsetUiLayer(root);native=true;Apply(true);return true;
     }
     public void SetTorchGrip(bool held){
+        bool leavingCamera=cameraGrip;cameraGrip=false;
+        if(leavingCamera&&nativeAnimator)nativeAnimator.Update(0);
         torchGrip=held;
         if(!native||root==null)return;
         if(!held){root.localPosition=Vector3.zero;root.localRotation=Quaternion.identity;return;}
@@ -92,6 +95,12 @@ public sealed class XRGhostHand : MonoBehaviour
         var fingerRingCentre=new Vector3(ModelLeft?-.012f:.012f,-.039f,.025f);
         root.localRotation=rotation;
         root.localPosition=new Vector3(0,-.025f,.015f)-rotation*fingerRingCentre;
+    }
+    public void SetCameraGrip(bool held){
+        if(!held){SetTorchGrip(false);return;}
+        cameraGrip=true;torchGrip=false;
+        if(!held||!native||root==null)return;
+        root.localPosition=Vector3.zero;root.localRotation=Quaternion.identity;
     }
     private XRControllerInput input;
     private Transform root;
@@ -187,13 +196,14 @@ public sealed class XRGhostHand : MonoBehaviour
         Index = Mathf.Lerp(Index, Mathf.Clamp01(index), k);
         Thumb = Mathf.Lerp(Thumb, Mathf.Clamp01(thumb), k);
         if(native){
-            nativeAnimator.SetFloat("Flex",torchGrip?.55f:Mathf.Lerp(.25f,.82f,Grip));
-            nativeAnimator.SetFloat("Pinch",torchGrip?.55f:Mathf.Max(Index,Grip*.85f));
+            nativeAnimator.SetFloat("Flex",(torchGrip||cameraGrip)?.55f:Mathf.Lerp(.25f,.82f,Grip));
+            nativeAnimator.SetFloat("Pinch",(torchGrip||cameraGrip)?.55f:Mathf.Max(Index,Grip*.85f));
             nativeAnimator.SetFloat("IndexSlide",0);
             int point=nativeAnimator.GetLayerIndex("Point Layer");
-            if(point>=0)nativeAnimator.SetLayerWeight(point,torchGrip?0:(1-Index)*(1-Grip));
+            if(point>=0)nativeAnimator.SetLayerWeight(point,(torchGrip||cameraGrip)?0:(1-Index)*(1-Grip));
             int thumbLayer=nativeAnimator.GetLayerIndex("Thumb Layer");
             if(thumbLayer>=0)nativeAnimator.SetLayerWeight(thumbLayer,0);
+            if(cameraGrip)nativeAnimator.Update(0);
             return;
         }
         for (int f = 0; f < 4; f++)
@@ -220,7 +230,8 @@ public sealed class XRGhostHand : MonoBehaviour
             bool occupied=input.Hand!=null&&(input.Hand.Held!=null||input.Hand.HoldingCamera);
             bool torchHeld=lights!=null&&((lights.TorchEquipped(false)&&lights.FlashlightLight.transform.parent==transform)||(lights.TorchEquipped(true)&&lights.UVTorchLight.transform.parent==transform));
             occupied|=torchHeld;
-            SetTorchGrip(torchHeld||(input.Hand!=null&&input.Hand.HoldingCamera));
+            if(input.Hand!=null&&input.Hand.HoldingCamera)SetCameraGrip(true);
+            else SetTorchGrip(torchHeld);
             SetPose(occupied?Mathf.Max(.8f,input.GripValue):input.GripValue,input.TriggerValue,input.ThumbDown?1:0,Time.deltaTime);
         }
     }

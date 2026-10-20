@@ -76,7 +76,7 @@ public static class PresentationValidation
                 Require(darkened>80,"Torch produced no visible rendered occlusion: tier="+tier+" uv="+uv+" pixels="+darkened);
                 Debug.Log("TORCH_RENDERED_SHADOW_PASS tier="+tier+" uv="+uv+" shadowPixels="+darkened+" map="+light.shadowCustomResolution);
                 Directory.CreateDirectory("Builds");var previous=RenderTexture.active;RenderTexture.active=target;var image=new Texture2D(384,384,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,384,384),0,0);image.Apply();File.WriteAllBytes("Builds/torch-shadow-"+tier+"-"+uv+".png",image.EncodeToPNG());Object.DestroyImmediate(image);RenderTexture.active=previous;
-                Object.DestroyImmediate(owner);
+                setup.ReleaseTorchResources();Object.DestroyImmediate(owner);
             }
         }finally{RenderSettings.fog=fog;RenderSettings.ambientLight=ambient;QualitySettings.shadows=quality;QualitySettings.shadowDistance=distance;QualitySettings.pixelLightCount=pixels;DemoPlatform.ForceStandalone=standalone;Object.DestroyImmediate(group);Object.DestroyImmediate(mat);target.Release();Object.DestroyImmediate(target);}
     }

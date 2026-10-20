@@ -379,7 +379,7 @@ public static partial class PresentationPolish
         try{Directory.CreateDirectory("Builds");for(int i=0;i<views.Length;i++){
             camera.transform.position=views[i].Item1;camera.transform.LookAt(views[i].Item2);torch.transform.SetPositionAndRotation(camera.transform.position+camera.transform.right*.08f,camera.transform.rotation);camera.Render();RenderTexture.active=rt;
             var image=new Texture2D(1280,720,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();File.WriteAllBytes("Builds/sign-"+i+".png",image.EncodeToPNG());Object.DestroyImmediate(image);
-        }}finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(go);}
+        }}finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);lighting.ReleaseTorchResources();Object.DestroyImmediate(go);}
     }
     static void TextureBudget(Texture texture){
         if(!texture)return;var importer=AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) as TextureImporter;if(importer==null)return;
@@ -468,7 +468,7 @@ public static partial class PresentationPolish
                 camera.transform.position=positions[i].Item1;camera.transform.LookAt(positions[i].Item2);torch.enabled=i>=3;torch.transform.SetPositionAndRotation(camera.transform.position+camera.transform.right*.06f-camera.transform.up*.08f,camera.transform.rotation);camera.Render();RenderTexture.active=rt;
                 var image=new Texture2D(1280,720,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();File.WriteAllBytes("Builds/presentation-"+i+".png",image.EncodeToPNG());Object.DestroyImmediate(image);
             }
-        }finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(go);}
+        }finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);lighting.ReleaseTorchResources();Object.DestroyImmediate(go);}
     }
     public static void Inspect(){try{
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");

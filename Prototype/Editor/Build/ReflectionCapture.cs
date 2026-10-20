@@ -10,6 +10,7 @@ public static class ReflectionCapture
 {
     public static void Refresh()
     {
+        VRVisualValidation.PruneCameraPreviewTorches();
         if(SystemInfo.graphicsDeviceType==GraphicsDeviceType.Null)throw new Exception("Reflection capture requires an enabled graphics device; omit -nographics.");
         const string folder="Assets/CrimeSceneDemo/CombinedArt/Reflections";
         Directory.CreateDirectory(folder);AssetDatabase.Refresh();

@@ -4,6 +4,11 @@ Updated October 20, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Camera-hand and floating-torch follow-up
+
+The earlier simple Meta holding grip is restored, as Koda requested after rejecting further finger adjustments. Camera holding uses the normal authored grip animation; there is no individual finger posing/IK. The camera is seated to that hand with its aiming axis unchanged. Empty hands and the accepted flashlight poses remain unchanged. Do not continue changing the fingers without a new request. Camera-body box overlap is recorded as a diagnostic, not a claimed clearance pass.
+
+Thirty-six saved temporary torch light/model roots were removed from Player/DesktopPreviewCamera. Editor torches are now DontSave, explicitly released by render checks, pruned before reflection capture and guarded on scene save. Runtime equipped torches and holster equipment are retained. The cleaned saved scene contains zero preauthored runtime torch names. Unity ownership/authored-pose checks and strict Windows build pass; headset fit remains for human acceptance.
 ## October 20 reported-build repairs
 
 Current saved scene and Windows player include the material/street/glass/VR fixes. Rear-room and selected prop materials use restrained Standard finishes; accidental emission is disabled, dielectric props no longer use metallic maps, and actual screens remain dim. Three localized storage/office/break-room reflection captures avoid showroom/sky reflections leaking into those rooms.

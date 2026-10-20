@@ -143,12 +143,18 @@ public sealed class DemoLighting : MonoBehaviour
 
     private void OnDestroy()
     {
+        ReleaseTorchResources();
+    }
+    // Editor validators call this explicitly: edit-time MonoBehaviour destruction
+    // need not invoke OnDestroy, and the models are parented outside their owner.
+    public void ReleaseTorchResources(){
         Camera.onPreCull -= HideModelFrom;
         Camera.onPostRender -= ShowModelAfter;
         // The desktop model/light can be reparented to the view, outside this object's hierarchy.
         foreach(var torch in new[]{white,uv}){
             if(torch.Model)Release(torch.Model);
             if(torch.Light)Release(torch.Light.gameObject);
+            torch.Model=null;torch.Light=null;torch.Parts=new Renderer[0];torch.Hidden=false;
         }
         Shader.SetGlobalVector(UVParamsId, Vector4.zero);
     }
@@ -410,6 +416,7 @@ public sealed class DemoLighting : MonoBehaviour
     private void Create(Torch torch)
     {
         GameObject holder = new GameObject(torch.Ultraviolet ? "UVTorch" : "Flashlight");
+        if(!Application.isPlaying)holder.hideFlags=HideFlags.DontSave;
         Light light = holder.AddComponent<Light>();
         light.type = LightType.Spot;
         light.renderMode = LightRenderMode.ForcePixel; // a handheld light always keeps a pixel slot (pixelLightCount 4)
@@ -448,6 +455,7 @@ public sealed class DemoLighting : MonoBehaviour
         }
         torch.Light = light;
         torch.Model = DemoToolGeometry.CreateFlashlight(torch.Ultraviolet);
+        if(!Application.isPlaying)foreach(var part in torch.Model.GetComponentsInChildren<Transform>(true))part.gameObject.hideFlags=HideFlags.DontSave;
         torch.Model.transform.SetParent(holder.transform, false);
         torch.Parts = torch.Model.GetComponentsInChildren<Renderer>(true);
         Camera.onPreCull -= HideModelFrom;

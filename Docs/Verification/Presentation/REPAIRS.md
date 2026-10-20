@@ -17,3 +17,11 @@ Verified in Unity:
 Images: repair-0 office, repair-1 staff room, repair-2 storage, repair-3 threshold, repair-4 car/rear street, repair-5 foliage, repair-6 low glass angle, repair-7 car/front; glass-close.png and camera-grips.png show targeted reviews. Cameras use the actual scene/torch and do not change its lights permanently.
 
 Remaining human checks: Quest belt location while bending, floor tool selection versus holsters, camera wrist comfort/handle fit, glass legibility in stereo, frame time and standalone build. Android Build Support is still unavailable here. No headset acceptance is claimed.
+
+## Camera-hand / floating-torch follow-up
+
+Restored the earlier simple Meta holding animation at Koda's request. No procedural finger IK or custom finger twisting remains. The camera mount follows that grasp while preserving the controller/torch aiming axis. Native bone rotations are compared against a fresh animation evaluation to verify no individual pose overrides. Empty-hand and torch regressions are retained. Camera bounds overlap remains diagnostic (conservative box depth is logged); a collision-free physical camera grasp is not claimed.
+
+The floating white/UV torch pair came from saved editor validation objects: 36 orphan light/model roots were found under Player/DesktopPreviewCamera and removed. Preview lights and every model child now use DontSave; validators release models/lights and rendering callbacks explicitly. Scene-save and reflection-capture guards remove camera preview remnants. The cleaned saved scene contains zero preauthored runtime torch names; runtime-equipped torches and belt props are retained. Ownership checks exercise both torches, no-save flags and destruction without leftovers. No lightmap rebake was needed; reflection captures were refreshed after removal.
+
+Updated camera render, authored-animation integrity, existing hand/torch alignment and strict Windows build checks passed. Human headset acceptance remains pending. Further finger adjustment was stopped at the user's request.

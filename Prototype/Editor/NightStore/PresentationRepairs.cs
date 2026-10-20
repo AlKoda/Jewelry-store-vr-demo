@@ -128,6 +128,14 @@ public static partial class PresentationPolish
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;
         NightStoreValidation.RepairChecks();NightStoreValidation.PresentationChecks();NightStoreValidation.CameraGripRender();NightStoreValidation.GlassRenderCheck();RepairPreview();EditableDelivery.Build();Debug.Log("REPAIR_REVIEW_DELIVERY_PASS");EditorApplication.Exit(0);
     }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
+    public static void HandAndPreviewFixRun(){try{
+        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");
+        int removed=VRVisualValidation.PruneCameraPreviewTorches();VRVisualValidation.CheckPreviewTorchOwnership();NightStoreValidation.CameraGripRender();NightStoreValidation.RepairChecks();
+        EditorSceneManager.SaveOpenScenes();if(removed>0)ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();
+        EditableDelivery.Build();
+        if(VRVisualValidation.PruneCameraPreviewTorches()!=0)throw new Exception("Build validation leaked torch models");
+        Debug.Log("CAMERA_HAND_AND_PREVIEW_FIX_PASS saved scene cleaned, normal authored camera grip, strict Windows build");EditorApplication.Exit(0);
+    }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
     public static void RepairsRun(){try{
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;StoreKit.Palette();
         ConsistentPropMaterials();StreetSurfaceRepair();NaturalTrees();CarLightingRepair();ClearShardMaterials();Physics.SyncTransforms();
@@ -141,7 +149,7 @@ public static partial class PresentationPolish
         var views=new[]{(new Vector3(0,1.5f,10.8f),new Vector3(-1.9f,.8f,9.3f)),(new Vector3(4,1.5f,9),new Vector3(7,1,10.7f)),(new Vector3(-4.3f,1.5f,9.5f),new Vector3(-6.8f,1,11.2f)),(new Vector3(-1,.48f,-1.5f),new Vector3(0,.03f,-.65f)),(new Vector3(9,1.4f,-1.4f),new Vector3(6,.6f,-4.65f)),(new Vector3(0,1.65f,-10),new Vector3(2,3.9f,-15.2f)),(new Vector3(0,.22f,-1.15f),new Vector3(0,.035f,-.65f)),(new Vector3(.4f,1.1f,-3.7f),new Vector3(3,.5f,-4.65f))};
         try{for(int i=0;i<views.Length;i++){camera.transform.position=views[i].Item1;camera.transform.LookAt(views[i].Item2);torch.enabled=i<4||i==6;torch.transform.SetPositionAndRotation(camera.transform.position+camera.transform.right*.06f,camera.transform.rotation);camera.Render();RenderTexture.active=rt;
             var image=new Texture2D(1280,720,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();File.WriteAllBytes("Builds/repair-"+i+".png",image.EncodeToPNG());Object.DestroyImmediate(image);
-        }}finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(go);}
+        }}finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);lighting.ReleaseTorchResources();Object.DestroyImmediate(go);}
     }
 }
 #endif

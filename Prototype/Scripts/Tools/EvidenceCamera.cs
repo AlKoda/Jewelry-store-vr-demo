@@ -143,10 +143,12 @@ public sealed class EvidenceCamera : MonoBehaviour
         StartViewfinder();
     }
     public static Pose ControllerGrip(bool left){
-        var torch=XRGhostHand.TorchPose(left);
-        var contact=torch.position-torch.rotation*Vector3.forward*.095f;
-        var handle=new Vector3(left?-.05f:.05f,-.003f,-.0075f);
-        return new Pose(contact-torch.rotation*handle,torch.rotation);
+        var rotation=XRGhostHand.GripPitch;
+        // Seat the camera against the normal Meta controller-grasp palm.
+        // Move the camera to the hand; leave the authored finger animation alone.
+        var palm=new Vector3(left?-.029f:.029f,-.0287f,-.0255f);
+        var seat=new Vector3(left?-.095f:.095f,.004f,-.060f);
+        return new Pose(palm-rotation*seat,rotation);
     }
 
     public void ReturnToRack()

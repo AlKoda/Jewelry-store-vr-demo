@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Quest 3 standalone app (Koda's request): Android build, headset quality tier, in-headset presenter menu, install scripts | new: Scripts/Core/DemoPlatform, Scripts/VR/XRPresenterMenu, Editor/Build/QuestBuild, Build-Quest-App.cmd, Tools/build-quest.cmd; small hooks in DemoLaunchOptions, NightQuality, DemoLighting, ToolStation, EvidenceCamera, XRControllerInput, PackImport, Tools/build-demo.cmd | 2026-10-20 | done, pushed; waiting for Koda's first Android build |
-| ChatGPT | Visual consistency, glass/car lighting and VR belt/camera grip repairs | PresentationPolish/Repairs, RecordingGlass, StoreKit, glass shaders, XRHolsters, EvidenceCamera/XRGhostHand, validation, Docs, snapshot | 2026-10-20 | done; repaired and rendered in Unity, strict Windows build passed; Quest fit/performance pending |
+| ChatGPT | Restore normal camera grip and remove floating torch models | PresentationPolish/Repairs, RecordingGlass, StoreKit, glass shaders, XRHolsters, EvidenceCamera/XRGhostHand, validation, Docs, snapshot | 2026-10-20 | done; earlier authored grip restored, no custom finger fitting; torch duplicates removed, Windows build passed |
 
 ## One project: edit it, never fork it
 
