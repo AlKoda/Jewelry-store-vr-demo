@@ -9,4 +9,4 @@ if not exist "%PROJECT%\Assets" (
 call "%~dp0Tools\sync-project.cmd" "%PROJECT%" || exit /b 1
 set "UNITY=%JEWELRY_UNITY%"
 if not defined UNITY set "UNITY=C:\Program Files\Unity\Hub\Editor\6000.6.2f1\Editor\Unity.exe"
-start "" "%UNITY%" -projectPath "%PROJECT%"
+start "" "%UNITY%" -buildTarget Win64 -projectPath "%PROJECT%"

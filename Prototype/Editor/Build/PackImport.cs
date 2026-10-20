@@ -38,6 +38,9 @@ public sealed class PackImport : AssetPostprocessor
     // project once (it cannot tell which files a postprocessor governs).
     public override uint GetVersion() => 1;
 
+    // Largest pack texture in the Quest standalone build (Android platform override).
+    public const int QuestMaxTextureSize = 1024;
+
     private void OnPreprocessTexture()
     {
         if (Governs(assetPath)) Expected(assetImporter as TextureImporter, assetPath, true);
@@ -184,6 +187,22 @@ public sealed class PackImport : AssetPostprocessor
         Want(t.textureCompression, compression, x => t.textureCompression = x);
         int max = cookie ? 512 : sky ? SkySize(stem) : MaxSize(pack, sub, stem, map);
         Want(t.maxTextureSize, max, x => t.maxTextureSize = x);
+        // Quest 3 standalone (Android): every pack texture at most 1024, ASTC chosen by the build's
+        // texture subtarget (QuestBuild sets ASTC). The Windows import above is untouched; the
+        // platform's own cache keeps both, so switching targets does not reimport them again.
+        TextureImporterPlatformSettings android = t.GetPlatformTextureSettings("Android");
+        int questMax = Math.Min(max, QuestMaxTextureSize);
+        if (!android.overridden || android.maxTextureSize != questMax || android.format != TextureImporterFormat.Automatic)
+        {
+            ok = false;
+            if (write)
+            {
+                android.overridden = true;
+                android.maxTextureSize = questMax;
+                android.format = TextureImporterFormat.Automatic;
+                t.SetPlatformTextureSettings(android);
+            }
+        }
         return ok;
     }
 

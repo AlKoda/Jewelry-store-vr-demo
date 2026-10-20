@@ -22,12 +22,12 @@ goto launch
 :regenerate
 rem Explicit bake regenerates the scene: save intentional layout edits before using it.
 set "JEWELRY_COMBINED_OUTPUT=%PLAYER%"
-"%UNITY%" -batchmode -force-d3d11 -projectPath "%PROJECT%" -executeMethod CombinedBuild.Run -logFile "%ROOT%\Builds\build-latest.log"
+"%UNITY%" -batchmode -force-d3d11 -buildTarget Win64 -projectPath "%PROJECT%" -executeMethod CombinedBuild.Run -logFile "%ROOT%\Builds\build-latest.log"
 if errorlevel 1 goto fail
 goto launch
 :build
 rem Rebuild existing scene without resetting manual object positions.
-"%UNITY%" -batchmode -projectPath "%PROJECT%" -executeMethod EditableDelivery.Run -logFile "%ROOT%\Builds\build-latest.log"
+"%UNITY%" -batchmode -buildTarget Win64 -projectPath "%PROJECT%" -executeMethod EditableDelivery.Run -logFile "%ROOT%\Builds\build-latest.log"
 if errorlevel 1 goto fail
 :launch
 if not exist "%PLAYER%" goto fail

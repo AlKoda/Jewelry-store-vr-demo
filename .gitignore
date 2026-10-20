@@ -28,6 +28,7 @@ Thumbs.db
 
 # Captured photos and local logs
 EvidencePhotos/
+Photos-From-Quest/
 *.log
 
 # Keep Unity .meta files, Assets, Packages and ProjectSettings tracked.

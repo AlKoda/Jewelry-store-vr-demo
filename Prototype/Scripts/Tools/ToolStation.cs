@@ -135,6 +135,7 @@ public sealed class ToolStation : MonoBehaviour
             lamp.shadows = LightShadows.Soft;
             lamp.shadowCustomResolution=1024;
             lamp.shadowBias=.04f;lamp.shadowNormalBias=.3f;
+            DemoPlatform.TuneShadows(lamp, 1024); // hard 512 on the Quest alone
             lamp.range=DemoToolGeometry.LampRange;
         }
     }

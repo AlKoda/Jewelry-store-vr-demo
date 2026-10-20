@@ -64,16 +64,23 @@ public sealed class NightQuality : MonoBehaviour
             && QualitySettings.shadows == s.Shadows;
     }
 
+    // Quest 3 standalone tier (DemoPlatform.Standalone): two per-pixel lights (a torch and a lamp),
+    // hard shadows only, out to 8 m, 4x MSAA kept (cheap on the tiled mobile GPU), nearer LOD switches.
+    public int QuestPixelLights = 2;
+    public float QuestShadowDistance = 8;
+    public float QuestLodBias = 0.7f;
+
     public void Apply()
     {
-        QualitySettings.pixelLightCount = PixelLights;
-        QualitySettings.shadows = ShadowQuality.All;
-        QualitySettings.shadowResolution = ShadowResolution.VeryHigh;
-        QualitySettings.shadowDistance = ShadowDistance;
+        bool quest = DemoPlatform.Standalone;
+        QualitySettings.pixelLightCount = quest ? QuestPixelLights : PixelLights;
+        QualitySettings.shadows = quest ? ShadowQuality.HardOnly : ShadowQuality.All;
+        QualitySettings.shadowResolution = quest ? ShadowResolution.Medium : ShadowResolution.VeryHigh;
+        QualitySettings.shadowDistance = quest ? QuestShadowDistance : ShadowDistance;
         QualitySettings.antiAliasing = AntiAliasing;
         QualitySettings.realtimeReflectionProbes = false;
         QualitySettings.softParticles = false;
-        QualitySettings.lodBias = 1;
+        QualitySettings.lodBias = quest ? QuestLodBias : 1;
         if (Camera.main != null) Configure(Camera.main);
     }
 

@@ -28,3 +28,4 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [ ] Retest corrected flashlight-only palm orientation; original empty-hand models restored after misunderstanding. Build and grip checks pass.
 - [ ] Headset check of Claude's October 19 shadow/UV/reflection round: UV stops at walls, no stripe acne, case reflections, ambient prop materials; profile the shadow maps (needs a bake build for the builder changes).
+- [ ] Quest 3 standalone app: install Android Build Support, run Build-Quest-App.cmd, check frame rate (72 Hz) in the showroom with the flashlight, presenter menu size, glass/reflections; then fixed foveation if needed (Docs/QUEST_STANDALONE.md).

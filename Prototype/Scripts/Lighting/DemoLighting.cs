@@ -416,6 +416,7 @@ public sealed class DemoLighting : MonoBehaviour
             light.shadowBias = .04f;
             light.shadowNormalBias = .3f;
             light.shadowNearPlane = .06f;
+            DemoPlatform.TuneShadows(light, 1024); // hard 512 on the Quest alone
         }
         else
         {
@@ -430,6 +431,7 @@ public sealed class DemoLighting : MonoBehaviour
             light.shadowBias = .04f;
             light.shadowNormalBias = .3f;
             light.shadowNearPlane = .06f;
+            DemoPlatform.TuneShadows(light, 2048); // hard 1024 on the Quest alone
         }
         torch.Light = light;
         torch.Model = DemoToolGeometry.CreateFlashlight(torch.Ultraviolet);

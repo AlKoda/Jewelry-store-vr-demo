@@ -66,6 +66,9 @@ public sealed class XRControllerInput : MonoBehaviour
     private HandInteractor hand;
     private XRHandHud hud;
     private XRToolWheel wheel;
+    private XRPresenterMenu presenter;
+    private float menuSince = -1;
+    private bool menuOpenedThisPress;
     private XRGhostHand ghost;
     private InputDevice device;
     private bool grip, trigger, primary, secondary, stickClick, menu, aiming, aimValid, turned;
@@ -87,6 +90,8 @@ public sealed class XRControllerInput : MonoBehaviour
         {
             wheel = GetComponent<XRToolWheel>();
             if (wheel == null) wheel = gameObject.AddComponent<XRToolWheel>();
+            presenter = GetComponent<XRPresenterMenu>();
+            if (presenter == null) presenter = gameObject.AddComponent<XRPresenterMenu>();
         }
         RefreshLabel();
         ApplyHints();
@@ -210,12 +215,7 @@ public sealed class XRControllerInput : MonoBehaviour
             else UVLighting.ToggleUVTorch();
             Buzz(HandEvent.Select);
         }
-        if (Left && Changed(device, CommonUsages.menuButton, ref menu) && menu)
-        {
-            ToggleHints();
-            DemoFeedback.Post(hintsVisible ? "Controller hints shown" : "Controller hints hidden");
-            Buzz(HandEvent.Select);
-        }
+        if (Left) MenuButton(device);
         if (device.TryGetFeatureValue(CommonUsages.primary2DAxis, out Vector2 stick)) Stick(stick);
     }
 
@@ -236,6 +236,14 @@ public sealed class XRControllerInput : MonoBehaviour
     // True when the wheel used this press or release.
     public bool WheelTrigger(bool pressed)
     {
+        // The presenter menu takes the right trigger first while it is open.
+        XRPresenterMenu menuOpen = XRPresenterMenu.Active;
+        if (!Left && menuOpen != null && menuOpen.Open)
+        {
+            if (pressed && menuOpen.Confirm()) Buzz(HandEvent.Select);
+            return true;
+        }
+        if (Left && presenter != null && presenter.Open) return true; // no tool wheel over the menu
         if (Left && wheel != null)
         {
             if (pressed && hand.Held == null && !hand.HoldingCamera)
@@ -262,6 +270,44 @@ public sealed class XRControllerInput : MonoBehaviour
             return true; // a right trigger never photographs or selects while the wheel is up
         }
         return false;
+    }
+
+    // Left menu button: a short press shows or hides the hints (or closes the presenter menu when
+    // it is open); holding it for XRPresenterMenu.HoldSeconds opens the presenter menu.
+    private void MenuButton(InputDevice d)
+    {
+        bool was = menu;
+        Changed(d, CommonUsages.menuButton, ref menu);
+        if (menu && !was) { menuSince = Time.unscaledTime; menuOpenedThisPress = false; }
+        if (menu && !menuOpenedThisPress && presenter != null && !presenter.Open && Time.unscaledTime - menuSince >= XRPresenterMenu.HoldSeconds)
+        {
+            OpenPresenter();
+            menuOpenedThisPress = true;
+            Buzz(HandEvent.Select);
+        }
+        if (!menu && was && !menuOpenedThisPress)
+        {
+            if (presenter != null && presenter.Open) presenter.Hide();
+            else
+            {
+                ToggleHints();
+                DemoFeedback.Post(hintsVisible ? "Controller hints shown" : "Controller hints hidden");
+            }
+            Buzz(HandEvent.Select);
+        }
+    }
+
+    // The presenter menu on this (left) hand, pointed at by the right controller.
+    public XRPresenterMenu Presenter => presenter;
+
+    public void OpenPresenter()
+    {
+        if (presenter == null) return;
+        foreach (XRControllerInput other in FindObjectsByType<XRControllerInput>(FindObjectsInactive.Exclude, FindObjectsSortMode.None))
+            if (other != this && !other.Left) presenter.Pointer = other.transform;
+        if (Locomotion != null) presenter.Head = Locomotion.Head;
+        if (wheel != null) wheel.Hide();
+        presenter.Show();
     }
 
     // Points the wheel at the other (right) controller, which receives the chosen item.

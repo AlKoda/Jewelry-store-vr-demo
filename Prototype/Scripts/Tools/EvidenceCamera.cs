@@ -93,6 +93,7 @@ public sealed class EvidenceCamera : MonoBehaviour
             flash.shadows = LightShadows.Soft;
             flash.shadowCustomResolution=1024;
             flash.shadowBias=.04f;flash.shadowNormalBias=.3f;
+            DemoPlatform.TuneShadows(flash, 1024);
             flash.renderMode = LightRenderMode.ForcePixel;
         }
         if (flash == null) return;
@@ -107,6 +108,8 @@ public sealed class EvidenceCamera : MonoBehaviour
     // costs a fraction of a second camera instead of one per frame.
     public Texture Viewfinder => viewfinder;
     public float ViewfinderInterval = 1f/15;
+    // The rear screen redraws the scene a second time; on the Quest alone it refreshes at 8 per second.
+    private float Interval => DemoPlatform.Standalone ? Mathf.Max(ViewfinderInterval, 1f/8) : ViewfinderInterval;
 
     private Transform rack;
     private Vector3 rackPosition;
@@ -173,12 +176,12 @@ public sealed class EvidenceCamera : MonoBehaviour
 
     private IEnumerator RenderViewfinder()
     {
-        float next=Time.unscaledTime+ViewfinderInterval;
+        float next=Time.unscaledTime+Interval;
         while(viewfinder!=null)
         {
             yield return null;
             if(Time.unscaledTime<next) continue;
-            next=Time.unscaledTime+ViewfinderInterval;
+            next=Time.unscaledTime+Interval;
             TickViewfinder();
         }
     }

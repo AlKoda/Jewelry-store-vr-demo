@@ -113,6 +113,7 @@ public static class ShopCityValidation
                 HandChecks();
                 FreeHoldAndWheelChecks();
                 VRComfortChecks();
+                QuestStandaloneChecks();
                 DemoValidation.InterfaceChecks();
                 BackdropChecks();
                 if (SessionState.GetBool(FormsKey, false)) ShopFormRefinement.CheckBudget();
@@ -535,6 +536,62 @@ public static class ShopCityValidation
 
     // October 19 batch: comfort vignette, wheel stick picking, camera controls,
     // distance grab, holsters and the see-through hands.
+    // Quest 3 standalone app: the headset tier (DemoPlatform), the in-headset presenter menu and the
+    // Android build settings, all exercised on the PC with DemoPlatform.ForceStandalone.
+    private static void QuestStandaloneChecks()
+    {
+        DemoPlatform.ForceStandalone = true;
+        bool tier = DemoPlatform.ShadowResolution(2048) == 1024 && DemoPlatform.ShadowResolution(300) == 256
+            && DemoPlatform.ShadowType(LightShadows.Soft) == LightShadows.Hard && DemoPlatform.ShadowType(LightShadows.None) == LightShadows.None;
+        NightQuality quality = DemoValidation.Find<NightQuality>();
+        bool qualityTier = true;
+        if (quality != null)
+        {
+            quality.Apply();
+            qualityTier = QualitySettings.pixelLightCount == quality.QuestPixelLights && QualitySettings.shadows == ShadowQuality.HardOnly
+                && Mathf.Abs(QualitySettings.shadowDistance - quality.QuestShadowDistance) < 0.001f;
+        }
+        DemoPlatform.ForceStandalone = false;
+        if (quality != null) quality.Apply();
+        bool pcBack = DemoPlatform.ShadowResolution(2048) == 2048 && DemoPlatform.ShadowType(LightShadows.Soft) == LightShadows.Soft
+            && (quality == null || QualitySettings.shadows == ShadowQuality.All);
+        DemoValidation.Check(tier && qualityTier && pcBack, "Quest standalone tier halves shadow maps, uses hard shadows and two pixel lights; the PC keeps its own");
+
+        DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
+        DemoValidation.Find<DemoModeSwitch>().Apply(true);
+        HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
+        HandInteractor left = desktop.transform.Find("LeftHand").GetComponent<HandInteractor>();
+        XRControllerInput leftInput = left.GetComponent<XRControllerInput>();
+        XRPresenterMenu menu = leftInput != null ? leftInput.Presenter : null;
+        DemoValidation.Check(menu != null && hand.GetComponent<XRControllerInput>().Presenter == null, "Only the left controller carries the presenter menu");
+        if (menu == null) return;
+        Pose savedHand = new Pose(hand.transform.position, hand.transform.rotation);
+        left.transform.SetPositionAndRotation(new Vector3(-3, 1.1f, 5), Quaternion.identity);
+        leftInput.OpenPresenter();
+        bool opened = menu.Open && XRPresenterMenu.Active == menu && menu.Count >= 8;
+        Vector3 n = menu.Face.forward;
+        bool rows = true;
+        for (int i = 0; i < menu.Count; i++) rows &= menu.ButtonAt(new Ray(menu.ButtonPosition(i) - n * 0.4f, n)) == i;
+        DemoValidation.Check(opened && rows, "Presenter menu opens on the left hand and each button is picked by a ray through it");
+        bool smooth = XRControllerInput.SmoothMovement, vignette = XRComfortVignette.Enabled;
+        float height = XRHeadTracking.HeightOffset;
+        int move = menu.IndexOf("Movement");
+        hand.transform.SetPositionAndRotation(menu.ButtonPosition(move) - n * 0.4f, Quaternion.LookRotation(n));
+        menu.Refresh();
+        bool picked = menu.Hovered == move && hand.GetComponent<XRControllerInput>().WheelTrigger(true) && XRControllerInput.SmoothMovement != smooth;
+        menu.Choose(menu.IndexOf("Comfort vignette"));
+        menu.Choose(menu.IndexOf("Height +5 cm"));
+        bool toggled = XRComfortVignette.Enabled != vignette && Mathf.Abs(XRHeadTracking.HeightOffset - Mathf.Clamp(height + 0.05f, -.2f, .4f)) < 0.001f;
+        XRControllerInput.SmoothMovement = smooth; XRComfortVignette.Enabled = vignette; XRHeadTracking.HeightOffset = height;
+        menu.Choose(menu.IndexOf("Close"));
+        DemoValidation.Check(picked && toggled && !menu.Open && XRPresenterMenu.Active == null,
+            "Right trigger on a presenter button runs it (movement, vignette, height), and Close shuts the menu");
+        hand.transform.SetPositionAndRotation(savedHand.position, savedHand.rotation);
+
+        DemoValidation.Check(QuestBuild.PackageName == "com.alkoda.jewelrystorecrimescene" && PackImport.QuestMaxTextureSize == 1024,
+            "Quest app identity and texture cap are defined (the Android build itself runs only through Build-Quest-App.cmd)");
+    }
+
     private static void VRComfortChecks()
     {
         DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();

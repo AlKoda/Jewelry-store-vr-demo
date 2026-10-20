@@ -1,6 +1,6 @@
 # Jewelry store crime-scene demo
 
-Unity **6000.6.2f1**, Built-in renderer. One saved night-store scene and one Windows player for keyboard/mouse or **Meta Quest 3 over Quest Link/Air Link**. This is not a standalone Quest APK.
+Unity **6000.6.2f1**, Built-in renderer. One saved night-store scene and one Windows player for keyboard/mouse or **Meta Quest 3 over Quest Link/Air Link**. Since October 20 the same project also builds a **standalone Quest 3 app**: double-click **Build-Quest-App.cmd** (see [Docs/QUEST_STANDALONE.md](Docs/QUEST_STANDALONE.md); not yet built).
 
 ## Three entry points
 

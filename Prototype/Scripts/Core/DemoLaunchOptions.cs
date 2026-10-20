@@ -14,6 +14,8 @@ public sealed class DemoLaunchOptions:MonoBehaviour
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     static void Init(){
         Requested=DemoModeSwitch.DemoMode.Auto;failure=null;
+        // The Quest 3 app (Android build) is VR only: straight into the night scene, no monitor menu.
+        if(Application.platform==RuntimePlatform.Android)Requested=DemoModeSwitch.DemoMode.VR;
         var args=Environment.GetCommandLineArgs();
         for(int i=0;i<args.Length-1;i++)if(args[i]=="-demo-mode"){
             if(args[i+1].Equals("desktop",StringComparison.OrdinalIgnoreCase))Requested=DemoModeSwitch.DemoMode.Desktop;

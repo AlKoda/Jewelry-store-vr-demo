@@ -4,6 +4,23 @@ Updated October 19, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Quest 3 standalone app — October 20 (Claude, unverified: never built)
+
+Koda needs to show the demo on the Quest 3 without the PC. The same project and saved scene now also build as an Android app; see [QUEST_STANDALONE.md](QUEST_STANDALONE.md) for setup and use.
+- **Build-Quest-App.cmd** (→ Tools/build-quest.cmd) syncs, runs `QuestBuild.Run` with `-buildTarget Android` (no scene regeneration), and installs `Builds/Quest/JewelryStoreDemo.apk` over USB with `adb install -r`. Tools/pull-quest-photos.cmd copies the headset's photos.
+- **QuestBuild:** IL2CPP, ARM64, Vulkan, ASTC, API 32. OpenXR Android loader with Meta Quest Support and the Touch / Touch Plus profiles, multiview, XR started with the app. The version code grows with every build. Windows XR settings are untouched.
+- **DemoPlatform.Standalone** (Android):
+  - DemoLaunchOptions goes straight to VR and the night scene.
+  - Shadow maps are halved and hard (DemoLighting, ToolStation lamps, camera flash).
+  - NightQuality's Quest tier: 2 pixel lights, HardOnly, 8 m shadows, LOD bias 0.7.
+  - The headlight `_Specular` lights, DemoDesktopPanel, DemoOverviewMap and LanguageSwitcher are disabled on scene load.
+  - The camera viewfinder refreshes at 8 Hz.
+- **PackImport:** an Android platform override caps every pack texture at 1024 (Automatic format, so ASTC).
+- **XRPresenterMenu** (left controller, PC and Quest): hold the left menu button 0.8 s. The right controller points and the right trigger chooses: reset, movement, vignette, language, height ±5 cm, light bar, hints, close. A short press keeps toggling hints.
+- **Tools/build-demo.cmd and Open-In-Unity.cmd** pass `-buildTarget Win64`, so the project returns to Windows after a Quest build.
+- **Checks:** ShopCityValidation.QuestStandaloneChecks covers the tier, the menu (open, ray picking, right trigger, actions, close) and the app identity.
+- **Compile:** the cloud Roslyn check with package stand-ins shows only Unity 6 APIs missing from its 2021.1 references. Not compiled in Unity and never built for Android. First PC run: install the Android module, then Build-Quest-App.cmd.
+
 ## Shadows, UV torch and reflections — October 19 (Claude, unverified in Unity)
 
 Koda asked for the shadow bugs, the UV light passing through objects, and texturing/reflection quality.
