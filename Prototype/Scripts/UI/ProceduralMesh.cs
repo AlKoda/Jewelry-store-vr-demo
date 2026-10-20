@@ -53,7 +53,7 @@ public class ProceduralMesh
         for (int i = 1; i < points.Length - 1; i++) area += Vector3.Cross(points[i] - points[0], points[i + 1] - points[0]);
         if (area.sqrMagnitude < 1e-14f) return; // Degenerate: nothing visible to draw.
         bool flip = Vector3.Dot(area, outward) < 0;
-        Vector3 n = flip ? -area.normalized : area.normalized;
+        Vector3 n = flip ? -area / Mathf.Sqrt(area.sqrMagnitude) : area / Mathf.Sqrt(area.sqrMagnitude);
         int start = vertices.Count;
         foreach (Vector3 p in points)
         {
@@ -79,7 +79,7 @@ public class ProceduralMesh
         if (area.sqrMagnitude < 1e-14f) return;
         explicitUVs = true;
         bool flip = Vector3.Dot(area, outward) < 0;
-        Vector3 n = flip ? -area.normalized : area.normalized;
+        Vector3 n = flip ? -area / Mathf.Sqrt(area.sqrMagnitude) : area / Mathf.Sqrt(area.sqrMagnitude);
         int start = vertices.Count;
         vertices.Add(a); vertices.Add(b); vertices.Add(c); vertices.Add(d);
         for (int i = 0; i < 4; i++) normals.Add(n);
@@ -115,6 +115,28 @@ public class ProceduralMesh
         if (bottom) Face(material, -y, c - y - x - z, c - y + x - z, c - y + x + z, c - y - x + z);
         Face(material, z, c + z - x - y, c + z + x - y, c + z + x + y, c + z - x + y);
         Face(material, -z, c - z - x - y, c - z - x + y, c - z + x + y, c - z + x - y);
+    }
+
+    // Six closed faces with rounded edges/corners and continuous analytic normals.
+    // Used only by close-up display accessories; existing cheap box callers are unchanged.
+    public void RoundedBox(Material material,Vector3 centre,Vector3 size,float radius,Quaternion rotation){
+        Vector3 half=size*.5f;radius=Mathf.Min(radius,Mathf.Min(half.x,Mathf.Min(half.y,half.z))*.95f);
+        if(radius<=0){Box(material,centre,size,rotation);return;}
+        Vector3 inner=half-Vector3.one*radius;
+        float[] Steps(float h)=>new[]{-h,-h+radius*.45f,-h+radius,h-radius,h-radius*.45f,h};
+        foreach(var n in new[]{Vector3.right,Vector3.left,Vector3.up,Vector3.down,Vector3.forward,Vector3.back}){
+            Vector3 u=Mathf.Abs(n.y)>.5f?Vector3.right:Vector3.Cross(Vector3.up,n);Vector3 v=Vector3.Cross(n,u);
+            float Extent(Vector3 a)=>Mathf.Abs(a.x)*half.x+Mathf.Abs(a.y)*half.y+Mathf.Abs(a.z)*half.z;
+            var xs=Steps(Extent(u));var ys=Steps(Extent(v));int start=vertices.Count;
+            foreach(float y in ys)foreach(float x in xs){
+                Vector3 p=n*Extent(n)+u*x+v*y;
+                Vector3 c=new Vector3(Mathf.Clamp(p.x,-inner.x,inner.x),Mathf.Clamp(p.y,-inner.y,inner.y),Mathf.Clamp(p.z,-inner.z,inner.z));
+                Vector3 normal=(p-c).normalized;vertices.Add(centre+rotation*(c+normal*radius));normals.Add(rotation*normal);uvs.Add(new Vector2(x,y));
+            }
+            var tris=Sub(material);int columns=xs.Length;for(int y=0;y<ys.Length-1;y++)for(int x=0;x<columns-1;x++){
+                int a=start+y*columns+x;tris.Add(a);tris.Add(a+1);tris.Add(a+columns+1);tris.Add(a);tris.Add(a+columns+1);tris.Add(a+columns);
+            }
+        }
     }
 
     // Box with its four edges along local x bevelled: soft cushions, rounded tops (28 triangles).
@@ -220,7 +242,8 @@ public class ProceduralMesh
                 float a = i * step, c = Mathf.Cos(a), s = Mathf.Sin(a);
                 Vector3 along = new Vector3((halfX[next] - halfX[prev]) * c, heights[next] - heights[prev], (halfZ[next] - halfZ[prev]) * s);
                 Vector3 around = new Vector3(-halfX[k] * s, 0, halfZ[k] * c);
-                Vector3 n = Vector3.Cross(along, around).normalized;
+                Vector3 cross = Vector3.Cross(along, around);
+                Vector3 n = cross.sqrMagnitude > 1e-20f ? cross / Mathf.Sqrt(cross.sqrMagnitude) : Vector3.up;
                 vertices.Add(origin + rotation * new Vector3(halfX[k] * c, heights[k], halfZ[k] * s));
                 normals.Add(rotation * n);
                 uvs.Add(new Vector2(a * (halfX[k] + halfZ[k]) * 0.5f, heights[k]));

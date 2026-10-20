@@ -260,3 +260,6 @@ Each new pack has LICENSE.txt with source, author, license and modification deta
 
 | Shop collection prints, two-sided door card and kraft substrate | Original project graphics, October 20; Tools/shop_detail_art.py, Noto Sans Arabic OFL | ArabicSceneSigns/*_Print.png and KraftFiber_Color.png; provenance in SHOP_PRINTS.md. Five distinct permanent Arabic collection motifs. |
 | Bespoke showcase inserts | Original project geometry, October 20; ShopModelReview.cs | Eight closed-base designs in existing case footprints; no downloads or new external licences. |
+
+| Photographic earrings/necklaces/craft signs and showcase construction concept | Project artwork, built-in image_gen, October 20 | ArabicSceneSigns/*_Photographic.png; construction reference in Docs/References/ShowcaseConstructionConcept.png; exact prompt set SHOWCASE_REFINEMENT_PROMPTS.json. Concept is not a game screenshot. |
+| Fine suede/leather and stitch maps | Original periodic procedural textures, October 20 | Tools/refine_showcase_textures.py; six 512 px maps, no baked lighting; repeating normal maps, mipmaps and Android ASTC overrides. |

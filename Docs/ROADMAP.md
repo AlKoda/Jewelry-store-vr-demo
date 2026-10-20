@@ -53,3 +53,6 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [x] Add eight original showcase insert designs and cabinet finish variations; halve evidence marker dimensions.
 - [x] Preserve placed-tool grip/pointer offsets and full orientation through pickup, movement and release (VR and desktop); Unity regression checks and strict Windows build pass.
 - [ ] Headset retest of residual flicker, dark-material response, office clearances and offset-preserving tool repositioning; measure standalone GPU performance.
+
+- [x] Refine all eight showcase inserts using generated construction reference: rounded edges, lined roll case, recessed jewelry boxes, hinge/lid fittings, curved ramps, piping and finer material maps. Integrate three photographic Arabic collection signs.
+- [ ] Headset acceptance/performance check of refined inserts and photographic signs; desktop validation does not measure Quest GPU cost.

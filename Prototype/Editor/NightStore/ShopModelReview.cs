@@ -94,6 +94,7 @@ public static partial class PresentationPolish {
             r.sharedMaterial=m;var p=r.transform.localPosition;p.z=front?-.032f:.032f;r.transform.localPosition=p;
             r.transform.localRotation=Quaternion.Euler(0,back?180:0,0);
         }
+        PhotographicCollectionSigns();
     }
     static void SmallMarkers(){
         var done=new HashSet<string>();
@@ -110,67 +111,17 @@ public static partial class PresentationPolish {
         var cream=new Material(StoreKit.Suede){name="ShowcaseChampagneSuede"};cream.color=new Color(.75f,.68f,.53f);cream=Save(cream,cream.name);
         var smoke=new Material(StoreKit.Walnut){name="ShowcaseSmokedWalnut"};smoke.color=new Color(.50f,.47f,.43f);smoke.SetFloat("_Glossiness",.24f);smoke=Save(smoke,smoke.name);
         var nickel=new Material(StoreKit.Bronze){name="ShowcaseSatinNickel"};nickel.color=new Color(.46f,.48f,.47f);nickel.SetFloat("_Glossiness",.32f);nickel=Save(nickel,nickel.name);
+        RefinedPalette(jade,cream);
         string[] cases={"CentralCase_Middle","RightIsland_Front","RightIsland_Rear","WallCase_Left0","WallCase_Left1","WallCase_Left2","WallCase_Right0","WallCase_Right1"};
         string[] designs={"WatchRollTravelCase","GraduatedEarringArches","OvalRingCabinet","TieredGemPedestals","NecklacePresentationRamp","BraceletPillows","OctagonalDisplayPlinths","HingedPresentationBoxes"};
         for(int index=0;index<cases.Length;index++){
             var fixture=root.Find("Showroom/"+cases[index]);var old=root.Find("Dressing/Displays/"+cases[index]);if(old)old.gameObject.SetActive(false);
             var parent=new GameObject(designs[index]).transform;parent.SetParent(group,false);parent.SetPositionAndRotation(fixture.position,fixture.rotation);
-            var soft=index%2==0?jade:cream;var wood=index%3==0?smoke:StoreKit.Walnut;var metal=index%2==0?nickel:StoreKit.Bronze;
+            var soft=index==0||index==4?cream:index%2==0?jade:cream;var wood=index%3==0?smoke:StoreKit.Walnut;var metal=index%2==0?nickel:StoreKit.Bronze;
             var k=new KitMesh{Lightmapped=false};float deck=.712f;
             // Every insert is contained inside the existing case's usable 1.69 x .54 m deck.
             k.Bar(wood,new Vector3(0,deck+.01f,0),new Vector3(1.48f,.02f,.40f),.008f);
-            if(index==0){
-                for(int j=0;j<3;j++){
-                    float x=(j-1)*.38f;k.Box(wood,new Vector3(x,deck+.07f,0),new Vector3(.30f,.10f,.28f));
-                    k.Cylinder(soft,new Vector3(x-.12f,deck+.115f,0),new Vector3(x+.12f,deck+.115f,0),.055f,20,true);
-                    for(int side=-1;side<=1;side+=2)k.Box(metal,new Vector3(x+side*.143f,deck+.105f,0),new Vector3(.008f,.12f,.16f));
-                }
-            }else if(index==1){
-                for(int j=0;j<4;j++){
-                    float x=(j-1.5f)*.32f,h=.12f+j*.025f;
-                    k.Bar(soft,new Vector3(x,deck+.036f,0),new Vector3(.20f,.03f,.19f),.009f);
-                    foreach(float side in new[]{-1f,1f})k.Cylinder(metal,new Vector3(x+side*.07f,deck+.05f,0),new Vector3(x+side*.07f,deck+h,0),.004f,8);
-                    k.Cylinder(metal,new Vector3(x-.07f,deck+h,0),new Vector3(x+.07f,deck+h,0),.005f,8);
-                    foreach(float side in new[]{-1f,1f})k.Cylinder(metal,new Vector3(x+side*.045f,deck+h,0),new Vector3(x+side*.045f,deck+h-.025f,-.004f),.0025f,6);
-                }
-            }else if(index==2){
-                for(int j=0;j<3;j++){
-                    float x=(j-1)*.43f;k.Lathe(wood,new Vector3(x,deck+.02f,0),Quaternion.identity,new[]{.17f,.17f},new[]{0f,.028f},24,true,true,true);
-                    for(int roll=0;roll<5;roll++)k.Cylinder(soft,new Vector3(x-.12f,deck+.064f,(roll-2)*.045f),new Vector3(x+.12f,deck+.064f,(roll-2)*.045f),.021f,12,true);
-                }
-            }else if(index==3){
-                for(int j=0;j<5;j++){
-                    float x=(j-2)*.27f,h=.055f+.028f*(2-Mathf.Abs(j-2));
-                    k.Bar(wood,new Vector3(x,deck+h*.5f,0),new Vector3(.23f,h,.25f),.006f);
-                    k.Bar(soft,new Vector3(x,deck+h+.009f,0),new Vector3(.21f,.018f,.23f),.008f);
-                }
-            }else if(index==4){
-                for(int j=0;j<3;j++){
-                    float x=(j-1)*.42f;var q=Quaternion.Euler(-22,0,0);
-                    k.Box(wood,new Vector3(x,deck+.068f,.055f),new Vector3(.26f,.10f,.12f));
-                    k.ChamferBox(soft,new Vector3(x,deck+.10f,0),new Vector3(.30f,.022f,.33f),.009f,q);
-                    foreach(float side in new[]{-1f,1f})k.Box(metal,new Vector3(x+side*.10f,deck+.167f,.135f),new Vector3(.018f,.006f,.018f));
-                }
-            }else if(index==5){
-                for(int j=0;j<4;j++){
-                    float x=(j-1.5f)*.33f;k.Bar(wood,new Vector3(x,deck+.035f,0),new Vector3(.26f,.03f,.25f),.008f);
-                    k.Loft(soft,new Vector3(x,deck+.05f,0),Quaternion.identity,new[]{.085f,.105f,.115f,.115f,.105f,.08f},new[]{.048f,.068f,.075f,.075f,.068f,.048f},new[]{0f,.01f,.025f,.045f,.06f,.07f},24,true,true);
-                }
-            }else if(index==6){
-                for(int j=0;j<3;j++){
-                    float x=(j-1)*.43f,h=.07f+j*.045f;
-                    k.Lathe(wood,new Vector3(x,deck+.02f,0),Quaternion.identity,new[]{.155f,.155f},new[]{0f,h},8,true,true,true);
-                    k.Lathe(soft,new Vector3(x,deck+h+.02f,0),Quaternion.identity,new[]{.15f,.15f},new[]{0f,.012f},8,true,true,true);
-                }
-            }else{
-                for(int j=0;j<3;j++){
-                    float x=(j-1)*.43f;k.Box(wood,new Vector3(x,deck+.047f,-.02f),new Vector3(.29f,.055f,.23f));
-                    k.Box(soft,new Vector3(x,deck+.079f,-.02f),new Vector3(.26f,.009f,.20f));
-                    k.Box(wood,new Vector3(x,deck+.125f,.10f),new Vector3(.29f,.16f,.018f));
-                    k.Box(soft,new Vector3(x,deck+.125f,.088f),new Vector3(.26f,.13f,.008f));
-                    for(int side=-1;side<=1;side+=2)k.Cylinder(metal,new Vector3(x+side*.09f-.02f,deck+.068f,.10f),new Vector3(x+side*.09f+.02f,deck+.068f,.10f),.009f,10,true);
-                }
-            }
+            RefinedInsert(k,index,deck,soft,wood,metal);
             k.Emit(designs[index],parent,Vector3.zero,Quaternion.identity,Folder,"bespoke_insert_"+designs[index]);
             // Cabinet finishes vary with their collection; hardware, glass and drawers keep their operation.
             foreach(var r in fixture.GetComponentsInChildren<MeshRenderer>()){

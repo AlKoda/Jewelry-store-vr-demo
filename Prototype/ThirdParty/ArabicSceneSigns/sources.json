@@ -15,5 +15,18 @@
     ],
     "font": "Noto Sans Arabic, SIL OFL 1.1; ../Fonts/Arabic/OFL.txt",
     "external_artwork": false
+  },
+  "showcase_refinement": {
+    "date": "2026-10-20",
+    "mode": "Built-in image_gen",
+    "generated_prints": [
+      "CollectionEarrings_Photographic.png",
+      "CollectionNecklaces_Photographic.png",
+      "Craftsmanship_Photographic.png"
+    ],
+    "concept": "Docs/References/ShowcaseConstructionConcept.png (reference only, not in-game geometry)",
+    "prompts": "SHOWCASE_REFINEMENT_PROMPTS.json",
+    "procedural_microtextures": "Tools/refine_showcase_textures.py (six original periodic maps; no edits to generated art)",
+    "model_source": "Prototype/Editor/NightStore/ShowcaseRefinement.cs"
   }
 }
