@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Quest 3 standalone app (Koda's request): Android build, headset quality tier, in-headset presenter menu, install scripts | new: Scripts/Core/DemoPlatform, Scripts/VR/XRPresenterMenu, Editor/Build/QuestBuild, Build-Quest-App.cmd, Tools/build-quest.cmd; small hooks in DemoLaunchOptions, NightQuality, DemoLighting, ToolStation, EvidenceCamera, XRControllerInput, PackImport, Tools/build-demo.cmd | 2026-10-20 | done, pushed; waiting for Koda's first Android build |
-| ChatGPT | Raise belt 3 cm and restore fog/city backdrop | XRHolsters, PresentationPolish/Repairs, validation, Docs, snapshot | 2026-10-20 | done; belt +3 cm, photographic city/fog restored; Unity checks and Windows build passed |
+| ChatGPT | Shop model/material audit, signs/display variety, smaller markers and offset-preserving pickup | ShopModelReview, PresentationPolish, HandInteractor/DesktopInteractor/ToolHolder, DemoToolGeometry, validation, Docs, snapshot | 2026-10-20 | done; shop checks, fresh bake and strict Windows build passed; headset retest pending |
 
 ## One project: edit it, never fork it
 

@@ -53,6 +53,7 @@ public static class DemoToolGeometry
             tool.NumberLabel = Label(front.transform, false);
             tool.BackNumberLabel = Label(back.transform, true);
             tool.SetMarkerNumber(1);
+            foreach(Transform child in root.transform){child.localPosition*=.5f;child.localScale*=.5f;}
         }
         else if (kind == DemoToolKind.Scale)
         {

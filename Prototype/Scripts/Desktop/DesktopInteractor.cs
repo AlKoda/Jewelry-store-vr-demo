@@ -26,6 +26,10 @@ public sealed class DesktopInteractor : ToolHolder
     protected override Transform CameraAnchor => View != null ? View.transform : null;
 
     private float heldYaw;
+    private bool preservePlaced, surfaceOffsetReady;
+    private Vector3 surfaceOffset;
+    private Quaternion placedOrientation;
+    protected override bool PreserveReleasePose => preservePlaced;
     public bool HasPlacementTarget { get; private set; }
 
     private void Update()
@@ -114,15 +118,19 @@ public sealed class DesktopInteractor : ToolHolder
 
     public override void Hold(DeployedTool tool)
     {
+        if(tool==null||tool==Held||HoldingCamera||!tool.Free)return;
+        bool keepPose=tool.HasBeenPlaced;
         base.Hold(tool);
         if (Held == null) return;
+        preservePlaced=keepPose;surfaceOffsetReady=false;placedOrientation=Held.transform.rotation;
+        if(preservePlaced&&View!=null&&Point(PointerRay(),Held.transform,out var support)&&support.normal.y>=.7f){surfaceOffset=Held.transform.position-support.point;surfaceOffsetReady=true;}
         Hovered = null;
         Highlight(Held);
         heldYaw = Held.transform.eulerAngles.y;
         HasPlacementTarget = false;
         // A tool taken from the full panel waits at the rack until the sidebar closes.
         bool panelOpen = Panel != null && Panel.CapturesInput;
-        if (ReadDesktopInput && View != null && !panelOpen) Carry(PointerRay());
+        if (!preservePlaced && ReadDesktopInput && View != null && !panelOpen) Carry(PointerRay());
     }
 
     // Move the held tool to the pointed surface. Only upward-facing surfaces
@@ -131,7 +139,10 @@ public sealed class DesktopInteractor : ToolHolder
     {
         HasPlacementTarget = false;
         if (Held == null || !Point(ray, Held.transform, out RaycastHit hit) || hit.normal.y < 0.7f) return;
-        Held.PlaceAt(Confine(hit.point), heldYaw);
+        if(preservePlaced){
+            if(!surfaceOffsetReady){surfaceOffset=Held.transform.position-hit.point;surfaceOffsetReady=true;}
+            Held.transform.SetPositionAndRotation(Confine(hit.point+surfaceOffset),placedOrientation);
+        }else Held.PlaceAt(Confine(hit.point), heldYaw);
         HasPlacementTarget = true;
     }
 
@@ -155,7 +166,8 @@ public sealed class DesktopInteractor : ToolHolder
     {
         if (Held == null) return;
         heldYaw += degrees;
-        Held.PlaceAt(Held.transform.position, heldYaw);
+        if(preservePlaced){placedOrientation=Quaternion.AngleAxis(degrees,Vector3.up)*placedOrientation;Held.transform.rotation=placedOrientation;}
+        else Held.PlaceAt(Held.transform.position, heldYaw);
     }
 
     public override void Remove(DeployedTool tool)

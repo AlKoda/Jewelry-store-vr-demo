@@ -257,3 +257,6 @@ Each new pack has LICENSE.txt with source, author, license and modification deta
 | Arabic designed fascia/rings/necklaces plaques | Project artwork generated with built-in image_gen, October 20 | Prototype/ThirdParty/ArabicSceneSigns/*_Designed.png; exact prompts and spellings in DESIGNED_BRANDING.md; permanent Arabic environment signs. |
 | Arabic closed/staff/CCTV/evacuation/reminder signs | Project artwork generated with built-in imagegen, October 20 | ArabicSceneSigns/*_Designed.png; exact prompts in ENVIRONMENT_SIGNS.md; evacuation diagram based on actual scene layout. |
 | Photographic elm twig cutout | Project artwork generated with built-in imagegen, October 20 | GeneratedTextures/ElmTwig_Designed.png; transparent alpha retained, exact prompt/original path in ELM_TWIG.md; used on small wind-animated tree sprays. |
+
+| Shop collection prints, two-sided door card and kraft substrate | Original project graphics, October 20; Tools/shop_detail_art.py, Noto Sans Arabic OFL | ArabicSceneSigns/*_Print.png and KraftFiber_Color.png; provenance in SHOP_PRINTS.md. Five distinct permanent Arabic collection motifs. |
+| Bespoke showcase inserts | Original project geometry, October 20; ShopModelReview.cs | Eight closed-base designs in existing case footprints; no downloads or new external licences. |

@@ -3,8 +3,8 @@ using UnityEngine;
 // Tracked-hand adapter without any toolkit dependency. Something else moves this
 // transform (XRControllerInput now, a TrackedPoseDriver if ever needed) and
 // input bindings call Grab, Release, Trigger, SpawnIntoHand and RemoveHeld.
-// Held tools hang below the hand and turn freely with it (FreeRotation); releasing drops them
-// onto the surface beneath (ToolHolder.Place). The nearest grabbable tool is
+// New tools use their authored hand grip; placed tools retain their pickup offset and
+// full rotation through pickup, movement and release. The nearest grabbable tool is
 // highlighted while the hand is empty.
 public sealed class HandInteractor : ToolHolder
 {
@@ -16,14 +16,14 @@ public sealed class HandInteractor : ToolHolder
     // the region under it (Bounds.FloorAt: the night staging bay's street is lower).
     public float FloorY = 0f;
     // Held tools turn with the controller in every axis (a lamp still hangs upright);
-    // off, they keep only the hand's heading as before. Release always stands the tool upright.
+    // off, fresh tools keep only the hand's heading. Repositioned tools always retain their full grip offset.
     public static bool FreeRotation = true;
     // Distance grab: with nothing within GrabRadius, a tool the controller points at within
-    // PullReach (a ray of PullRadius) is highlighted, and grip pulls it into the hand over PullSeconds.
+    // PullReach (a ray of PullRadius) is highlighted; gripping preserves its existing offset too.
     public static bool DistanceGrab = true;
     public float PullReach = 4f;
     public float PullRadius = 0.08f;
-    public float PullSeconds = 0.18f;
+    [HideInInspector] public float PullSeconds = 0.18f; // Legacy serialized setting; placed items no longer snap/pull.
 
     protected override Transform CameraAnchor => transform;
 
@@ -31,9 +31,10 @@ public sealed class HandInteractor : ToolHolder
     private Collider[] overlaps = new Collider[32];
     private ToolRackSample nearSample;
     private bool nearCamera;
-    private Vector3 pullFrom;
-    private Quaternion pullFromRotation;
-    private float pullStarted = -1;
+    private bool preserveGrip, takingPlaced;
+    private Vector3 placedOffset;
+    private Quaternion placedRotation;
+    protected override bool PreserveReleasePose => preserveGrip;
 
     // Runs after XRControllerInput (execution order -100), so FollowHand uses this frame's
     // controller pose; ShopCityValidation invokes it by name.
@@ -53,20 +54,20 @@ public sealed class HandInteractor : ToolHolder
     public void FollowHand()
     {
         if (Held == null) return;
+        if(preserveGrip){
+            Held.transform.SetPositionAndRotation(transform.TransformPoint(placedOffset),transform.rotation*placedRotation);
+            return;
+        }
         Vector3 grip=GripPoint(Held.Kind);
         Quaternion r=Held.Kind!=DemoToolKind.Lamp&&FreeRotation?transform.rotation:Quaternion.Euler(0,Heading(transform),0);
         Vector3 p=transform.TransformPoint(new Vector3(0,-.045f,.005f))-r*grip;
         if(Held.Kind==DemoToolKind.Lamp)p.y=Mathf.Max(p.y,Bounds!=null?Bounds.FloorAt(p):FloorY);
-        // A pulled tool flies from where it lay to the hand, easing in.
-        float t = pullStarted < 0 || PullSeconds <= 0 ? 1 : Mathf.Clamp01((Time.time - pullStarted) / PullSeconds);
-        if (t < 1) { float e = 1 - (1 - t) * (1 - t); p = Vector3.Lerp(pullFrom, p, e); r = Quaternion.Slerp(pullFromRotation, r, e); }
-        else pullStarted = -1;
         Held.transform.SetPositionAndRotation(p, r);
     }
 
     public static Vector3 GripPoint(DemoToolKind kind){switch(kind){
         case DemoToolKind.Cone:return new Vector3(0,.37f,0);
-        case DemoToolKind.Marker:return new Vector3(0,.18f,0);
+        case DemoToolKind.Marker:return new Vector3(0,.09f,0);
         case DemoToolKind.TapePost:return new Vector3(0,.78f,0);
         case DemoToolKind.Scale:return new Vector3(.01f,.003f,.065f);
         case DemoToolKind.Measure:return new Vector3(.025f,.015f,0);
@@ -77,16 +78,13 @@ public sealed class HandInteractor : ToolHolder
     {
         if (Held != null || HoldingCamera) return false;
         DeployedTool tool = NearestTool();
-        if (tool != null) { Hold(tool); return true; }
+        if (tool != null) { takingPlaced=true;Hold(tool);takingPlaced=false;return Held==tool; }
         if (nearSample != null) return TakeSample(nearSample) != null;
         if (nearCamera) { ToggleCamera(); return true; }
         DeployedTool far = PointedTool();
         if (far == null) return false;
-        pullFrom = far.transform.position;
-        pullFromRotation = far.transform.rotation;
-        pullStarted = Time.time;
-        Hold(far);
-        if (Held != far) { pullStarted = -1; return false; }
+        takingPlaced=true;Hold(far);takingPlaced=false;
+        if (Held != far) return false;
         DemoFeedback.Post(far.DisplayName + " in hand");
         return true;
     }
@@ -112,8 +110,13 @@ public sealed class HandInteractor : ToolHolder
 
     public override void Hold(DeployedTool tool)
     {
+        if(tool==null||tool==Held||HoldingCamera||!tool.Free)return;
+        var offset=transform.InverseTransformPoint(tool.transform.position);
+        var rotation=Quaternion.Inverse(transform.rotation)*tool.transform.rotation;
         if(tool!=null&&!HoldingCamera){var lighting=FindFirstObjectByType<DemoLighting>();if(lighting)lighting.ClearHandTorch(transform);}
         base.Hold(tool);
+        preserveGrip=takingPlaced||tool.HasBeenPlaced;
+        placedOffset=offset;placedRotation=rotation;
         Highlight(Held);
         FollowHand();
     }

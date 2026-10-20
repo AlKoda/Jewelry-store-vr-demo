@@ -1,0 +1,19 @@
+{
+  "shop_refresh": {
+    "author": "Project-authored",
+    "date": "2026-10-20",
+    "generator": "Tools/shop_detail_art.py",
+    "assets": [
+      "CollectionRings_Print.png",
+      "CollectionEarrings_Print.png",
+      "Craftsmanship_Print.png",
+      "CollectionNecklaces_Print.png",
+      "CollectionWatches_Print.png",
+      "Open_Print.png",
+      "Closed_Print.png",
+      "KraftFiber_Color.png"
+    ],
+    "font": "Noto Sans Arabic, SIL OFL 1.1; ../Fonts/Arabic/OFL.txt",
+    "external_artwork": false
+  }
+}

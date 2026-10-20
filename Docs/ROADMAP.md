@@ -48,3 +48,8 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [ ] Confirm the restored normal camera grip in the headset; no further finger changes requested.
 
 - [x] Raise belt/holsters 3 cm and restore earlier photographic city backdrop with its fog. Headset comfort acceptance remains pending.
+
+- [x] Audit active shop meshes/materials, remove exact duplicate opaque faces, clean office overlap, repair wordmark frames/clearance and give five collection signs unique Arabic artwork; door card closed/open on opposite sides.
+- [x] Add eight original showcase insert designs and cabinet finish variations; halve evidence marker dimensions.
+- [x] Preserve placed-tool grip/pointer offsets and full orientation through pickup, movement and release (VR and desktop); Unity regression checks and strict Windows build pass.
+- [ ] Headset retest of residual flicker, dark-material response, office clearances and offset-preserving tool repositioning; measure standalone GPU performance.

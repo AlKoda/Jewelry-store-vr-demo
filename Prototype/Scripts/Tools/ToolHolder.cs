@@ -23,6 +23,7 @@ public abstract class ToolHolder : MonoBehaviour
 
     // Where the camera sits while this holder has it.
     protected abstract Transform CameraAnchor { get; }
+    protected virtual bool PreserveReleasePose => false;
 
     private DeployedTool highlighted;
 
@@ -83,6 +84,11 @@ public abstract class ToolHolder : MonoBehaviour
         Held = null;
         if (tool == null) return;
         tool.Holder = null;
+        if (PreserveReleasePose) {
+            tool.HasBeenPlaced=true;
+            if(audible)DemoSounds.PlaySetDown(tool.Kind,tool.transform.position,.5f);
+            return;
+        }
         Vector3 p = Confine(tool.transform.position);
         float floor = Bounds != null ? Bounds.FloorAt(p) : 0;
         // Cast from 1 m above the tool, which clears any case it is inside, but never from inside or above the
