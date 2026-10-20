@@ -183,7 +183,7 @@ public static partial class PresentationPolish
                 l.transform.SetPositionAndRotation(lens.position,car.rotation);l.intensity=.65f;l.range=13;l.spotAngle=52;l.color=new Color(1,.88f,.68f);
             }
         }
-        StoreKit.MarkStatic(model,true);
+        StoreKit.MarkStatic(model,true);ApplyRawCarMaterialOnly(model.transform);
         Debug.Log("SUPPLIED_CAR_PASS source FBX mesh unchanged; uniform scale="+model.transform.localScale.x+" triangles="+filters.Sum(f=>f.sharedMesh.triangles.Length/3));
     }
     static void Buildings(){

@@ -56,3 +56,5 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [x] Refine all eight showcase inserts using generated construction reference: rounded edges, lined roll case, recessed jewelry boxes, hinge/lid fittings, curved ramps, piping and finer material maps. Integrate three photographic Arabic collection signs.
 - [ ] Headset acceptance/performance check of refined inserts and photographic signs; desktop validation does not measure Quest GPU cost.
+
+- [x] Review current scene references/materials/normals/duplicate renderers; leave accepted middle display unchanged. Use the supplied car mesh with untextured gray faceted shading, preserving original source/importer/geometry; GPU shading test and Windows build pass.

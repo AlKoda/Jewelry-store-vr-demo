@@ -2,7 +2,11 @@
   "supplier": "Koda",
   "received": "2026-10-20",
   "archive": "police car 3d model.zip",
-  "files": ["police+car+3d+model.fbx", "police+car+3d+model.fbm/police+car+3d+model_basecolor.jpg"],
+  "files": [
+    "police+car+3d+model.fbx",
+    "police+car+3d+model.fbm/police+car+3d+model_basecolor.jpg"
+  ],
   "fbx_sha256": "BEF2445C622AC69BAFB734D90BE5F7173EC9046F03790B48DD18D6761CE1445A",
-  "mesh_changes": "none; placement rotation and uniform instance scale only"
+  "mesh_changes": "none; placement rotation and uniform instance scale only",
+  "current_surface": "Untextured neutral gray, flat geometry-normal shader; original FBX import settings, source bytes, mesh, scale and collision retained"
 }

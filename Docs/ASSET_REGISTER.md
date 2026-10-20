@@ -263,3 +263,5 @@ Each new pack has LICENSE.txt with source, author, license and modification deta
 
 | Photographic earrings/necklaces/craft signs and showcase construction concept | Project artwork, built-in image_gen, October 20 | ArabicSceneSigns/*_Photographic.png; construction reference in Docs/References/ShowcaseConstructionConcept.png; exact prompt set SHOWCASE_REFINEMENT_PROMPTS.json. Concept is not a game screenshot. |
 | Fine suede/leather and stitch maps | Original periodic procedural textures, October 20 | Tools/refine_showcase_textures.py; six 512 px maps, no baked lighting; repeating normal maps, mipmaps and Android ASTC overrides. |
+
+| Supplied car plain surface mode | Original supplied FBX geometry unchanged; project-authored RawCarClay shader | Texture maps disabled for the active car material; derivative face normals provide unsmoothed shading. Source/importer/triangle positions preserved and validated. Original texture retained. |

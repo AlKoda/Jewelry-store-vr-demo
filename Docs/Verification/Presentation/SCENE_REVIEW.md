@@ -1,0 +1,14 @@
+# Current scene and untextured car review — October 20, 2026
+
+Current JewelryStoreNight scene, Unity 6000.6.2f1 / Built-in / DX11. RAW_CAR_REVIEW_DELIVERY_PASS / EXISTING_SCENE_DELIVERY_PASS.
+
+- Reviewed 640 enabled renderer components in active scene objects and 1,008 material slots. No missing meshes, materials, unsupported/error shaders or missing scripts. Zero invalid normals in Standard-lit meshes. Zero exact duplicate mesh/material/transform renderer candidates (alternative LODs excluded from duplicate matching). These are reference/component checks, not GPU draw counts or an exhaustive geometric-overlap solver.
+- Saved scene renders reviewed for office layout, store props, current displays and car. Accepted middle display kept unchanged; explicit transform check passes. No additional broad layout or cosmetic edits were justified by this review. Shop checks still find zero exact duplicate opaque triangles.
+- The car archive contains one FBX and one JPEG, with no separate unsmoothed source. Read-only Blender inspection: 3,889 vertices; 4,176 polygons (1,035 triangles, 3,141 quads); no subdivision modifiers. Original polygon smoothing is in the asset; source geometry is already baked.
+- Car now uses a uniform neutral-gray, nonmetallic, nonemissive material with no texture maps. Project shader RawCarClay derives world-space face normals per triangle while using Standard lighting, GI, shadows and fog. This changes appearance only. Original FBX mesh references, importer metadata/GUID, source bytes, 3D shape, uniform scale, parked transform and collision remain. Original texture/material retained. Other legacy car renderers remain hidden; dim warm baked lamps retained.
+- Geometry-position signature before/after: 310B35C73973D2651191190446DBA687F068DE308E177FB9E56A4DCC221E3E29; all 7,317 rendered triangles retained. Original FBX SHA-256 remains BEF2445C622AC69BAFB734D90BE5F7173EC9046F03790B48DD18D6761CE1445A.
+- GPU regression uses a cube with intentionally smoothed vertex normals. Debug face-normal rendering is constant at separated sample points on each face and differs across faces. Debug mode is zero on the actual car material. Actual default car render inspected separately; no compiler errors/pink fallback shader. [GPU check](raw-car-normal-check.png), [plain car](plain-car.png).
+- Existing scene/fog, interior fixtures off, car preservation, white/UV shadow, tool safety, offset pickup/release, marker size, five distinct plaques, showcase geometry bounds/budget, belt/camera/hand checks and strict Windows build pass.
+- Fresh ProgressiveGPU bake: 35.6 s, seven 1024 lightmaps, 676 light probes; fourteen reflection captures refreshed.
+
+Remaining: human headset acceptance, motion-related flicker, stereo glass/reflections and Quest GPU/frame-rate profiling. This review did not identify further concrete structural faults requiring edits; it does not claim every possible overlap or alias has been eliminated.
