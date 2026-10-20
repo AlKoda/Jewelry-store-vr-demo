@@ -20,7 +20,7 @@ public static class PresentationPolish
         foreach(string file in new[]{"ShopFascia_Designed.png","CollectionRings_Designed.png","CollectionNecklaces_Designed.png"})TextureBudget(DemoAssetLibrary.Texture("ArabicSceneSigns",file));
         TextureBudget(DemoAssetLibrary.Texture("SuppliedPoliceCar","police+car+3d+model.fbm/police+car+3d+model_basecolor.jpg"));
         root=GameObject.Find("NightStore").transform;StoreKit.Palette();
-        Lighting();Jewelry();Traces();Street();Buildings();FacadeCharacter();Trees();Branding();EnvironmentSigns();InteriorDetails();
+        Lighting();Jewelry();Traces();Street();Buildings();FacadeCharacter();Trees();Branding();EnvironmentSigns();InteriorDetails();LivedInDetails();
         Physics.SyncTransforms();AssetDatabase.SaveAssets();
         Debug.Log("PRESENTATION_POLISH_APPLIED saved scene preserved, shadow casters, closed display bases, subtle evidence, full street, supplied car, leafy canopy and Arabic branding");
     }
@@ -401,6 +401,49 @@ public static class PresentationPolish
         }
         StoreKit.MarkStatic(group.gameObject,true);
     }
+    static void LivedInDetails(){
+        var group=Fresh("LivedInDetails",root);int accepted=0;var report=new List<string>();
+        var items=new[]{
+            ("InteriorModels","DeskPhone",new Vector3(-2.32f,.75f,9.28f),20f,.9f),
+            ("InteriorModels","Mouse",new Vector3(-1.38f,.75f,9.5f),0f,1f),
+            ("InteriorModels","LeverArchFiles",new Vector3(1.9f,0,11.25f),180f,1f),
+            ("InteriorModels","FilingCabinet",new Vector3(2.45f,0,10.65f),-90f,1f),
+            ("InteriorModels","CardboardBox",new Vector3(-7.3f,0,11.3f),13f,.85f),
+            ("InteriorModels","CardboardBox",new Vector3(-6.5f,0,11.45f),-8f,.65f),
+            ("InteriorModels","PottedSucculent",new Vector3(5.78f,.74f,10.4f),0f,.7f),
+            ("InteriorModels","VaseCeramicBottle",new Vector3(7f,.55f,1.1f),0f,.7f),
+            ("InteriorModels","PottedPlantArrowhead",new Vector3(3.6f,0,1.2f),24f,.85f),
+            ("InteriorModels","PottedPlantTall",new Vector3(-2.5f,0,7.75f),-17f,.8f),
+            ("StreetModels","StreetBench",new Vector3(-19f,0,-1.15f),180f,1f),
+            ("StreetModels","MetalTrashCan",new Vector3(-21f,0,-.85f),10f,1f),
+            ("StreetModels","PottedPlant",new Vector3(-24f,0,-.9f),0f,1f),
+            ("StreetModels","StreetBench",new Vector3(20f,0,-15.75f),0f,1f),
+            ("StreetModels","MetalTrashCan",new Vector3(22f,0,-16f),0f,1f),
+            ("StreetModels","PottedPlant",new Vector3(25f,0,-15.9f),17f,1f),
+            ("StreetModels","BikeRack",new Vector3(14f,0,-15.8f),90f,1f),
+            ("StreetModels","BikeRack",new Vector3(15f,0,-15.8f),90f,1f)
+        };
+        foreach(var item in items){
+            var go=DemoAssetLibrary.PlacePack(item.Item1,item.Item2,group,item.Item3,item.Item4,new DemoAssetLibrary.PackOptions{Shadows=true,Lod=DemoAssetLibrary.LodClass.Prop});
+            if(!go){report.Add("missing "+item.Item2);continue;}go.transform.localScale*=item.Item5;DemoAssetLibrary.Seat(go,item.Item3.y);Physics.SyncTransforms();
+            if(!DemoAssetLibrary.WorldBounds(go,out var box,false)){Object.DestroyImmediate(go);continue;}
+            var inset=box;inset.Expand(-.025f);bool overlap=false;
+            foreach(var collider in root.GetComponentsInChildren<Collider>()){
+                if(collider.isTrigger||collider.transform.IsChildOf(go.transform)||collider.bounds.max.y<=box.min.y+.015f)continue;
+                if(inset.Intersects(collider.bounds)){overlap=true;break;}
+            }
+            // Preserve the entrance and the plan's central evacuation aisle.
+            if(box.center.z>0&&box.center.z<8.5f&&Mathf.Abs(box.center.x)<1.25f)overlap=true;
+            if(overlap){report.Add("rejected overlap "+item.Item2+" "+item.Item3);Object.DestroyImmediate(go);continue;}
+            DemoAssetLibrary.AddBoundsCollider(go);go.name=item.Item2+"_Detail_"+accepted;accepted++;report.Add("placed "+go.name+" "+box);
+        }
+        StoreKit.MarkStatic(group.gameObject,true);Directory.CreateDirectory("Builds");File.WriteAllLines("Builds/prop-dressing.txt",report);
+        if(accepted<8)throw new Exception("Too few safe detail props: "+accepted);Debug.Log("LIVED_IN_DETAILS_PASS accepted="+accepted+"; rejected overlaps excluded, entrance aisle clear");
+    }
+    public static void PropsRun(){try{
+        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;StoreKit.Palette();LivedInDetails();
+        EditorSceneManager.SaveOpenScenes();ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();Preview();EditableDelivery.Build();Debug.Log("PROP_DRESSING_DELIVERY_PASS");EditorApplication.Exit(0);
+    }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
     public static void Run(){try{
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");Apply();
         NightStoreValidation.PresentationChecks();

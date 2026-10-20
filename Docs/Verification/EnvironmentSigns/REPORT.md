@@ -11,3 +11,5 @@ October 20, 2026. Unity 6000.6.2f1, saved JewelryStoreNight scene, DX11 Windows 
 - Quest standalone and in-headset legibility/performance have not been tested.
 
 sign-0.png: evacuation; sign-1.png: staff paper; sign-2.png: CCTV; sign-3.png: closed card.
+
+Additional prop dressing: LIVED_IN_DETAILS_PASS accepted=15, with three overlapping candidates rejected. Desktop previews inspected and existing import LODs retained. Quest GPU cost unmeasured.

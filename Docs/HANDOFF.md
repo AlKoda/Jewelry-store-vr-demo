@@ -6,6 +6,8 @@ One authoritative source tree: Prototype, using Claude's organized runtime/edito
 
 ## Generated environment signs — October 20
 
+Additional dressing: `PresentationPolish.PropsRun` adds 15 selected existing-pack props in the saved scene: phone/mouse, filing cabinet, succulent, ceramic vase, two indoor plants, two street benches, bins, planted pots and bike racks. Three intersecting candidates were rejected. Floor placement is seated to its support, bounds checked against solid fixtures, and the front/central exit aisle excluded. Imported materials/LODs are retained; reflection captures refreshed. Existing furniture/layout and interior light state are preserved. Quest hardware performance remains unverified.
+
 Five generated Arabic designs now replace the closed card (both readable sides), staff-only plaques, CCTV notice and evacuation diagram, with a paper reminder on a corkboard in the office. The plan follows the actual rooms/cases and front exit. Original artwork and exact prompts retained in ArabicSceneSigns/ENVIRONMENT_SIGNS.md. Desktop textures use mipmaps and 2048 maximum; Android overrides cap at 1024 ASTC. Signs are non-emissive; interior lights remain off. PresentationPolish.SignsRun updates the existing scene without layout regeneration.
 
 ## October 20 art and interaction repairs (Codex)

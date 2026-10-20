@@ -38,3 +38,4 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [ ] Human Quest retest: both torch shadows, picking/deleting tools, both street kerbs, dark interior, hand grips and frame rate. Desktop/editor tests do not replace headset testing.
 
 - [x] Generate and integrate Arabic closed/staff/CCTV notices, workplace reminder and a store-layout evacuation plan; keep original artwork and prompts.
+- [x] Add selected shop/staff-room and pavement props with overlap rejection and a clear central aisle.
