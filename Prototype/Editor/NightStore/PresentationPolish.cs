@@ -20,7 +20,7 @@ public static class PresentationPolish
         foreach(string file in new[]{"ShopFascia_Designed.png","CollectionRings_Designed.png","CollectionNecklaces_Designed.png"})TextureBudget(DemoAssetLibrary.Texture("ArabicSceneSigns",file));
         TextureBudget(DemoAssetLibrary.Texture("SuppliedPoliceCar","police+car+3d+model.fbm/police+car+3d+model_basecolor.jpg"));
         root=GameObject.Find("NightStore").transform;StoreKit.Palette();
-        Lighting();Jewelry();Traces();Street();Buildings();FacadeCharacter();Trees();Branding();InteriorDetails();
+        Lighting();Jewelry();Traces();Street();Buildings();FacadeCharacter();Trees();Branding();EnvironmentSigns();InteriorDetails();
         Physics.SyncTransforms();AssetDatabase.SaveAssets();
         Debug.Log("PRESENTATION_POLISH_APPLIED saved scene preserved, shadow casters, closed display bases, subtle evidence, full street, supplied car, leafy canopy and Arabic branding");
     }
@@ -328,6 +328,57 @@ public static class PresentationPolish
         var face=Mat(Folder,"DesignedCounterBrand",Color.white,.28f);face.mainTexture=DemoAssetLibrary.Texture("ArabicSceneSigns","ShopFascia_Designed.png");
         panel.Quad(face,Vector3.back,new Vector3(4.5f,1.9167f,8.371f),new Vector3(6.5f,1.9167f,8.371f),new Vector3(6.5f,2.5833f,8.371f),new Vector3(4.5f,2.5833f,8.371f),new Rect(0,0,1,1));
         panel.Emit("PhysicalWordmark",counter,Vector3.zero,Quaternion.identity,Folder,"designed_counter_brand");StoreKit.MarkStatic(counter.gameObject,true);
+    }
+    static readonly string[] SignFiles={"Closed_Designed.png","StaffOnly_Designed.png","CCTV_Designed.png","StaffNotice_Designed.png","FireEvacuationPlan_Designed.png"};
+    static void EnvironmentSigns(){
+        foreach(var file in SignFiles){var t=DemoAssetLibrary.Texture("ArabicSceneSigns",file);if(!t)throw new Exception("Missing sign "+file);TextureBudget(t);}
+        var closed=Mat(Folder,"DesignedClosedPlaque",Color.white,.24f);closed.mainTexture=DemoAssetLibrary.Texture("ArabicSceneSigns",SignFiles[0]);
+        var staff=Mat(Folder,"DesignedStaffPlaque",Color.white,.24f);staff.mainTexture=DemoAssetLibrary.Texture("ArabicSceneSigns",SignFiles[1]);
+        int plaques=0;
+        foreach(var r in root.GetComponentsInChildren<MeshRenderer>()){
+            if(r.name=="ClosedSign"||r.name=="ClosedSignBack"){r.sharedMaterial=closed;plaques++;}
+            if(r.name=="StaffOnlySign"){r.sharedMaterial=staff;plaques++;}
+        }
+        if(plaques<4)throw new Exception("Expected both closed faces and staff door plaques: "+plaques);
+        var atlas=DemoAssetLibrary.Atlas("WallGraphics","Atlas/NightStoreInterior.json");
+        foreach(var filter in root.GetComponentsInChildren<MeshFilter>().Where(f=>f.name=="WallGraphics")){
+            var renderer=filter.GetComponent<MeshRenderer>();var source=filter.sharedMesh;var mesh=Object.Instantiate(source);var uv=mesh.uv;
+            for(int sub=0;sub<mesh.subMeshCount;sub++){
+                var material=renderer.sharedMaterials[sub];if(!material||!material.mainTexture||material.mainTexture.name!="NightStoreInterior_Color")continue;
+                var triangles=mesh.GetTriangles(sub);var keep=new List<int>();
+                for(int i=0;i<triangles.Length;i+=3){bool remove=false;
+                    foreach(var key in new[]{"FireEvacuationPlan","Sign_CCTV","NoticeBoard_StaffCork"}){var rect=atlas[key];rect.xMin-=.00001f;rect.yMin-=.00001f;rect.xMax+=.00001f;rect.yMax+=.00001f;if(rect.Contains(uv[triangles[i]])&&rect.Contains(uv[triangles[i+1]])&&rect.Contains(uv[triangles[i+2]]))remove=true;}
+                    if(!remove){keep.Add(triangles[i]);keep.Add(triangles[i+1]);keep.Add(triangles[i+2]);}
+                }mesh.SetTriangles(keep,sub);
+            }
+            filter.sharedMesh=Save(mesh,"DesignedSigns_"+filter.transform.parent.name+"_WallGraphics");
+        }
+        var group=Fresh("DesignedEnvironmentSigns",root);
+        SignFace(group,"EvacuationPlan",SignFiles[4],new Vector3(1.6f,1.5f,8.431f),Vector3.back,.42f,.42f*724/1024);
+        SignFace(group,"CCTVNotice",SignFiles[2],new Vector3(-8.3f,1.6f,-.204f),Vector3.back,.34f,.17f);
+        var cork=Mat(Folder,"StaffBoardCork",new Color(.25f,.14f,.065f),.02f);var board=new KitMesh{Lightmapped=false};board.Box(cork,new Vector3(1.9f,1.5f,8.560f),new Vector3(.9f,.6f,.012f));board.Emit("StaffCorkBacking",group,Vector3.zero,Quaternion.identity,Folder,"designed_staff_cork");
+        SignFace(group,"StaffReminder",SignFiles[3],new Vector3(1.9f,1.5f,8.567f),Vector3.forward,.35f,.525f);
+        StoreKit.MarkStatic(group.gameObject,true);EditorUtility.SetDirty(closed);EditorUtility.SetDirty(staff);AssetDatabase.SaveAssets();
+        Debug.Log("ENVIRONMENT_SIGNS_PASS plaques="+plaques+" plan/CCTV/reminder=3; lights unchanged");
+    }
+    static void SignFace(Transform parent,string name,string file,Vector3 centre,Vector3 normal,float width,float height){
+        var m=Mat(Folder,"DesignedSign_"+name,Color.white,.14f);m.mainTexture=DemoAssetLibrary.Texture("ArabicSceneSigns",file);m.DisableKeyword("_EMISSION");
+        var k=new KitMesh{Lightmapped=false};var r=Vector3.Cross(Vector3.up,-normal)*width*.5f;var u=Vector3.up*height*.5f;
+        k.Quad(m,normal,centre-r-u,centre+r-u,centre+r+u,centre-r+u,new Rect(0,0,1,1));
+        k.Emit(name,parent,Vector3.zero,Quaternion.identity,Folder,"designed_sign_"+name);EditorUtility.SetDirty(m);
+    }
+    public static void SignsRun(){try{
+        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;StoreKit.Palette();EnvironmentSigns();
+        EditorSceneManager.SaveOpenScenes();ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();SignPreview();EditableDelivery.Build();Debug.Log("ENVIRONMENT_SIGNS_DELIVERY_PASS");EditorApplication.Exit(0);
+    }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
+    static void SignPreview(){
+        var go=new GameObject("Sign review camera");var camera=go.AddComponent<Camera>();NightQuality.Configure(camera);camera.stereoTargetEye=StereoTargetEyeMask.None;camera.fieldOfView=45;
+        var rt=new RenderTexture(1280,720,24);camera.targetTexture=rt;var previous=RenderTexture.active;var lighting=go.AddComponent<DemoLighting>();lighting.Flashlight(true);var torch=lighting.FlashlightLight;
+        var views=new[]{(new Vector3(1.6f,1.5f,7.75f),new Vector3(1.6f,1.5f,8.431f)),(new Vector3(1.9f,1.5f,9.3f),new Vector3(1.9f,1.5f,8.567f)),(new Vector3(-8.3f,1.6f,-.9f),new Vector3(-8.3f,1.6f,-.204f)),(new Vector3(-.5f,2.02f,-.7f),new Vector3(-.5f,2.02f,0))};
+        try{Directory.CreateDirectory("Builds");for(int i=0;i<views.Length;i++){
+            camera.transform.position=views[i].Item1;camera.transform.LookAt(views[i].Item2);torch.transform.SetPositionAndRotation(camera.transform.position+camera.transform.right*.08f,camera.transform.rotation);camera.Render();RenderTexture.active=rt;
+            var image=new Texture2D(1280,720,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();File.WriteAllBytes("Builds/sign-"+i+".png",image.EncodeToPNG());Object.DestroyImmediate(image);
+        }}finally{RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(go);}
     }
     static void TextureBudget(Texture texture){
         if(!texture)return;var importer=AssetImporter.GetAtPath(AssetDatabase.GetAssetPath(texture)) as TextureImporter;if(importer==null)return;

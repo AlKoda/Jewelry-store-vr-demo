@@ -4,6 +4,10 @@ Updated October 20, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Generated environment signs — October 20
+
+Five generated Arabic designs now replace the closed card (both readable sides), staff-only plaques, CCTV notice and evacuation diagram, with a paper reminder on a corkboard in the office. The plan follows the actual rooms/cases and front exit. Original artwork and exact prompts retained in ArabicSceneSigns/ENVIRONMENT_SIGNS.md. Desktop textures use mipmaps and 2048 maximum; Android overrides cap at 1024 ASTC. Signs are non-emissive; interior lights remain off. PresentationPolish.SignsRun updates the existing scene without layout regeneration.
+
 ## October 20 art and interaction repairs (Codex)
 
 The store's interior fixtures remain **off**, as Koda clarified. Exterior sign lamps/street spill and handheld lights provide illumination. `PresentationPolish` updates the saved scene in place, preserving its interior layout: varied exterior upper storeys, cornices, stepped/arched parapets, awnings, painted window surrounds, gutters, rails, deeper terrace rows, a 360-degree geometry skyline, lighter fog and five leafy canopies with modest shader wind. The old photographic horizon cards are inactive. Road surfaces extend beyond the fogged camera range, and continuous movement regions allow both pavements and the road (x -29..29); outer safety barriers remain.

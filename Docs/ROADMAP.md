@@ -36,3 +36,5 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [x] Add generated Arabic brand/section plaques, exterior-only upper storeys, varied cornices/parapets, awnings, rails, leafy wind canopies and deeper street rows.
 - [x] Replace disconnected horizon cards with a geometry skyline; reduce fog and extend ground beyond the view range.
 - [ ] Human Quest retest: both torch shadows, picking/deleting tools, both street kerbs, dark interior, hand grips and frame rate. Desktop/editor tests do not replace headset testing.
+
+- [x] Generate and integrate Arabic closed/staff/CCTV notices, workplace reminder and a store-layout evacuation plan; keep original artwork and prompts.
