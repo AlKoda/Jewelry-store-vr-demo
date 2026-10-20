@@ -38,11 +38,15 @@ if exist "%PROJECT%\.user-editable-project" (
  exit /b 1
 )
 rem Scripts, Editor and Shaders carry their committed .meta files (the GUIDs scenes refer to), so a
-rem script moved between subfolders keeps its GUID. ThirdParty has no committed metas: Unity's own stay.
+rem script moved between subfolders keeps its GUID. ThirdParty payloads are mirrored separately; committed metadata is copied below.
 call :mirror Scripts || exit /b 1
 call :mirror Editor || exit /b 1
 call :mirror Shaders || exit /b 1
 call :mirror ThirdParty /XF *.meta || exit /b 1
+rem Preserve scene GUIDs for all current packs on a fresh checkout. The legacy UserProps
+rem metas differ from its saved scene; those are carried in the snapshot, never replaced here.
+robocopy "%ROOT%\Prototype\ThirdParty" "%PROJECT%\Assets\CrimeSceneDemo\ThirdParty" *.meta /S /XD "%ROOT%\Prototype\ThirdParty\UserProps" /XF UserProps.meta /R:2 /W:2 /NFL /NDL /NJH /NJS /NP >nul
+if errorlevel 8 exit /b 1
 rem Meta animation controllers reference their supplied clip/mask GUIDs.
 robocopy "%ROOT%\Prototype\ThirdParty\MetaHands" "%PROJECT%\Assets\CrimeSceneDemo\ThirdParty\MetaHands" *.meta /S /R:2 /W:2 /NFL /NDL /NJH /NJS /NP >nul
 if errorlevel 8 exit /b 1

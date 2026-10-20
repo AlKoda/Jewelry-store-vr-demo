@@ -114,10 +114,12 @@ public sealed class UVTrace : MonoBehaviour
     private bool Clear(Vector3 from, Vector3 ray, float length)
     {
         if (length <= 0) return true;
-        int count = Physics.RaycastNonAlloc(new Ray(from, ray), hits, length, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore);
+        int count = Physics.RaycastNonAlloc(new Ray(from, ray), hits, length, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
         for (int i = 0; i < count; i++)
         {
             Collider c = hits[i].collider;
+            // Non-solid evidence tools still occlude UV light; selection-only volumes do not.
+            if(c.isTrigger && (c.name=="Tool selection volume" || c.GetComponentInParent<DeployedTool>()==null))continue;
             if (c == Surface || c is CharacterController || Held(c) || SeeThrough(c)
                 || c.GetComponentInParent<ToolRackSample>() != null || c.GetComponentInParent<EvidenceCamera>() != null
                 || c.GetComponentInParent<XRControllerInput>() != null) continue;

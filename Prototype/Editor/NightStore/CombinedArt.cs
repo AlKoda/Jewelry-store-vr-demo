@@ -52,7 +52,7 @@ public static class CombinedBuild {
  public static UnityEditor.Build.Reporting.BuildReport GenerateAndBuild(string output){
  if(File.Exists(Path.Combine(Application.dataPath,"../.user-editable-project")))throw new Exception("Use EditableDelivery.Build to preserve manual scene edits.");
  NightStoreBuilder.BuildScene(false,false);CombinedArt.Apply();var root=GameObject.Find("NightStore").transform;
- NightLighting.UseBaked(root);SceneReviewPass.Apply();CombinedArt.ImproveCaseShards();UrbanDetailPass.Apply();StaffRoomPolish.Apply();ArabicScenePass.Apply();SceneReviewValidation.Check();DemoAssetLibrary.Credit("NightSky","rooftop_night_1k");DemoAssetLibrary.WriteCredits("Jewelry store combined review — third-party credits; user-supplied car and project-owned city backdrop.");
+ NightLighting.UseBaked(root);SceneReviewPass.Apply();CombinedArt.ImproveCaseShards();UrbanDetailPass.Apply();StaffRoomPolish.Apply();ArabicScenePass.Apply();SceneReviewValidation.Check();PresentationPolish.Apply();DemoAssetLibrary.Credit("NightSky","rooftop_night_1k");DemoAssetLibrary.WriteCredits("Jewelry store combined review — third-party credits; user-supplied car and project-owned city backdrop.");
  EditorSceneManager.SaveOpenScenes();if(!NightLighting.Bake(out string report))throw new Exception(report);Debug.Log(report);ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();
  DemoBuild.CreateLauncherScene();
  File.WriteAllText(DemoBuild.BuildInfoAsset,"October 18 | Arabic store signs, worn printed tape, fitted bilingual UI, expanded buildings, UV evidence | baked");AssetDatabase.Refresh();AssetDatabase.SaveAssets();

@@ -1,8 +1,20 @@
 # Current project handoff
 
-Updated October 19, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md.
+Updated October 20, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md.
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
+
+## October 20 art and interaction repairs (Codex)
+
+The store's interior fixtures remain **off**, as Koda clarified. Exterior sign lamps/street spill and handheld lights provide illumination. `PresentationPolish` updates the saved scene in place, preserving its interior layout: varied exterior upper storeys, cornices, stepped/arched parapets, awnings, painted window surrounds, gutters, rails, deeper terrace rows, a 360-degree geometry skyline, lighter fog and five leafy canopies with modest shader wind. The old photographic horizon cards are inactive. Road surfaces extend beyond the fogged camera range, and continuous movement regions allow both pavements and the road (x -29..29); outer safety barriers remain.
+
+Koda's October 20 FBX car is imported directly, with its original texture and **no mesh edits/flattening**. Uniform instance scale fits 4.6 m; rotation parks it along the road. Source SHA-256 and provenance are in ThirdParty/SuppliedPoliceCar. New Arabic wordmark/section artwork is in ArabicSceneSigns/*_Designed.png; original signs remain. Both facade and counter branding use the new artwork. Prompt records: ArabicSceneSigns/DESIGNED_BRANDING.md.
+
+Small deployed tools are kinematic trigger targets: selectable/grabbable, UV-occluding, and unable to displace the player. A placed scene lamp stays solid; a held lamp becomes non-solid. Shared pointer rays explicitly include tool triggers; locomotion/floor rays ignore them. Display furniture has closed, UV-mapped undersides (268 open rims repaired in existing combined meshes); future builders also close the bases. Door fingerprints sit on the actual pull bars. Six floor transfers now use varied, sparse masks at 2.5–5.4 cm quad sizes (individual drops smaller), with faint UV response.
+
+Claude's shadow hooks are integrated: both torches use 2048 soft maps on PC / 1024 hard maps in the Quest tier, with restrained bias; opaque ceiling shadow faces cast both sides. Extra headlight specular passes are disabled for the parked car. A torch cleanup callback bug found during render validation is fixed. Fresh bake: seven 1024 lightmaps, 676 light probes, eleven refreshed reflection captures. PC/editor checks and hardware limits are recorded in Docs/Verification/Presentation/REPORT.md. Quest standalone performance and headset acceptance remain unverified; this PC currently lacks Unity Android Build Support.
+
+Portability: sync copies current pack metadata as well as payloads; the snapshot carries all active ThirdParty metadata, including legacy UserProps GUIDs. Large packs (now also designed Arabic signs and supplied car) mirror from the checkout. Existing GUIDs were preserved. Do not replace the legacy UserProps metadata with its differing source GUIDs.
 
 ## Quest 3 standalone app — October 20 (Claude, unverified: never built)
 

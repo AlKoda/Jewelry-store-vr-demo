@@ -252,3 +252,6 @@ Each new pack has LICENSE.txt with source, author, license and modification deta
 | RugRound (Kenney Furniture Kit: rugRound) | https://kenney.nl/assets/furniture-kit (via https://github.com/RetroDECK/RetroQUEST) | Kenney (www.kenney.nl) (Kenney) | mirror @ dfa19a5602; fetched 2026-10-17 | CC0 1.0 | None required (courtesy in LICENSE.txt) | Yes | Prototype/ThirdParty/AmbientProps2/RugRound.* | Fetched October 17, 188 tris, not yet wired; unverified in Unity |
 
 | MetaHands OpenXRLeftHand/OpenXRRightHand | Meta Platforms, Inc. and affiliates; Oculus SDK License, not CC0; Interaction SDK 207.0.1 official registry | Unmodified official FBX assets, controller-driven translucent hands in this Quest application; original notice preserved. |
+
+| SuppliedPoliceCar (October 20) | Koda's police car 3d model.zip; user-authorized project use; no additional licence in archive | Direct FBX and base-colour JPEG, source bytes unchanged; no remesh/decimation/flattening. Uniform instance scale and parking rotation only. Prototype/ThirdParty/SuppliedPoliceCar/README.md records SHA-256. |
+| Arabic designed fascia/rings/necklaces plaques | Project artwork generated with built-in image_gen, October 20 | Prototype/ThirdParty/ArabicSceneSigns/*_Designed.png; exact prompts and spellings in DESIGNED_BRANDING.md; permanent Arabic environment signs. |

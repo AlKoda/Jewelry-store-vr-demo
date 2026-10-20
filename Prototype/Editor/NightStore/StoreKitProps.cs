@@ -102,11 +102,11 @@ public static partial class StoreKit
     {
         GameObject root = Root("necklace_bust", parent);
         KitMesh k = new KitMesh();
-        k.Box(Velvet, V(0, 0.0125f, 0), V(0.15f, 0.025f, 0.10f), false);
+        k.Box(Velvet, V(0, 0.0125f, 0), V(0.15f, 0.025f, 0.10f), true);
         k.Loft(Velvet, V(0, 0.025f, 0.005f), Quaternion.identity,
             new[] { 0.05f, 0.06f, 0.078f, 0.09f, 0.082f, 0.06f, 0.03f, 0.024f, 0.026f, 0.02f },
             new[] { 0.03f, 0.032f, 0.036f, 0.04f, 0.038f, 0.032f, 0.026f, 0.022f, 0.024f, 0.018f },
-            new[] { 0f, 0.07f, 0.13f, 0.17f, 0.195f, 0.21f, 0.225f, 0.255f, 0.268f, 0.275f }, 14, false, true);
+            new[] { 0f, 0.07f, 0.13f, 0.17f, 0.195f, 0.21f, 0.225f, 0.255f, 0.268f, 0.275f }, 14, true, true);
         Part(k, "Body", root, Vector3.zero, "necklace_bust");
         if (chain)
         {
@@ -123,7 +123,7 @@ public static partial class StoreKit
     {
         GameObject root = Root("bracelet_stand", parent);
         KitMesh k = new KitMesh();
-        k.Box(Walnut, V(0, 0.011f, 0), V(0.20f, 0.022f, 0.09f), false);
+        k.Box(Walnut, V(0, 0.011f, 0), V(0.20f, 0.022f, 0.09f), true);
         k.Cylinder(Bronze, V(0, 0.022f, 0), V(0, 0.102f, 0), 0.008f, 10, false);
         k.Cylinder(Velvet, V(-0.12f, 0.13f, 0), V(0.12f, 0.13f, 0), 0.03f, 16);
         Part(k, "Body", root, Vector3.zero, "bracelet_stand");
@@ -145,9 +145,10 @@ public static partial class StoreKit
         k.Face(Walnut, Vector3.forward, bl, br, br + bh, bl + bh);
         k.Face(Walnut, Vector3.left, fl, bl, bl + bh, fl + fh);
         k.Face(Walnut, Vector3.right, fr, br, br + bh, fr + fh);
+        k.Face(Walnut, Vector3.down, fl, bl, br, fr);
         Quaternion lean = Quaternion.Euler(8, 0, 0);
         Vector3 foot = V(0, (front + back) * 0.5f, 0.005f);
-        k.Box(Velvet, foot + lean * V(0, 0.065f, 0), V(0.09f, 0.13f, 0.01f), lean, false);
+        k.Box(Velvet, foot + lean * V(0, 0.065f, 0), V(0.09f, 0.13f, 0.01f), lean, true);
         for (int s = -1; s <= 1; s += 2)
             k.Face(DeviceBlack, lean * Vector3.back, foot + lean * V(s * 0.02f - 0.0015f, 0.105f, -0.0051f), foot + lean * V(s * 0.02f + 0.0015f, 0.105f, -0.0051f),
                 foot + lean * V(s * 0.02f + 0.0015f, 0.108f, -0.0051f), foot + lean * V(s * 0.02f - 0.0015f, 0.108f, -0.0051f));
@@ -163,11 +164,11 @@ public static partial class StoreKit
         const float w = 0.30f, d = 0.22f, h = 0.045f, t = 0.012f, floor = 0.008f, roll = 0.0235f, pitch = 0.049f;
         GameObject root = Root("ring_tray", parent);
         KitMesh k = new KitMesh();
-        k.Box(Walnut, V(0, floor * 0.5f, 0), V(w, floor, d), false);
+        k.Box(Walnut, V(0, floor * 0.5f, 0), V(w, floor, d), true);
         for (int s = -1; s <= 1; s += 2)
         {
-            k.Box(Walnut, V(0, h * 0.5f, s * (d * 0.5f - t * 0.5f)), V(w, h, t), false);
-            k.Box(Walnut, V(s * (w * 0.5f - t * 0.5f), h * 0.5f, 0), V(t, h, d - 2 * t), false);
+            k.Box(Walnut, V(0, h * 0.5f, s * (d * 0.5f - t * 0.5f)), V(w, h, t), true);
+            k.Box(Walnut, V(s * (w * 0.5f - t * 0.5f), h * 0.5f, 0), V(t, h, d - 2 * t), true);
         }
         // Open-ended rolls: their ends meet the side walls.
         for (int i = 0; i < 4; i++)
@@ -197,8 +198,8 @@ public static partial class StoreKit
         float h = size == Riser.Small ? 0.08f : size == Riser.Medium ? 0.12f : 0.18f;
         GameObject root = Root("display_riser", parent);
         KitMesh k = new KitMesh();
-        k.Box(Walnut, V(0, band * 0.5f, 0), V(w, band, w), false);
-        k.Box(Suede, V(0, (band + h) * 0.5f, 0), V(w, h - band, w), false);
+        k.Box(Walnut, V(0, band * 0.5f, 0), V(w, band, w), true);
+        k.Box(Suede, V(0, (band + h) * 0.5f, 0), V(w, h - band, w), true);
         Part(k, "Body", root, Vector3.zero, "display_riser_" + size);
         Collide(root, V(0, h * 0.5f, 0), V(w, h, w));
         return root;
@@ -226,10 +227,10 @@ public static partial class StoreKit
                 k.ChamferBox(Suede, V(0, insert + 0.0055f, s * 0.0128f), V(w - 2 * t - 0.001f, 0.011f, 0.025f), 0.005f, Quaternion.identity);
         else if (kind == JewelryBoxKind.Bracelet)
             for (int s = -1; s <= 1; s += 2)
-                k.Box(Suede, V(s * (w * 0.5f - 0.035f), insert + 0.004f, 0), V(0.012f, 0.008f, 0.03f), false);
+                k.Box(Suede, V(s * (w * 0.5f - 0.035f), insert + 0.004f, 0), V(0.012f, 0.008f, 0.03f), true);
         else
             for (int s = -1; s <= 1; s += 2)
-                k.Box(Suede, V(s * 0.03f, insert + 0.003f, d * 0.5f - 0.045f), V(0.008f, 0.006f, 0.022f), Quaternion.Euler(0, s * 20, 0), false);
+                k.Box(Suede, V(s * 0.03f, insert + 0.003f, d * 0.5f - 0.045f), V(0.008f, 0.006f, 0.022f), Quaternion.Euler(0, s * 20, 0), true);
         Part(k, "Body", root, Vector3.zero, "jewelry_box_" + kind);
         KitMesh lid = Probed();
         Tray(lid, V(0, 0, -d * 0.5f), w, d, lidH, t, 0.003f, trim, false, Leather, Bronze, Suede, Suede);

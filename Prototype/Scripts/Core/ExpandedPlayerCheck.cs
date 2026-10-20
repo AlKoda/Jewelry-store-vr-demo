@@ -28,6 +28,13 @@ public static class ExpandedPlayerCheck
         door.Close();XRLocomotion.Relocate(walker.transform,new Vector3(0,0,-2));yield return new WaitForFixedUpdate();
         Debug.Log("EXPANDED_SMOOTH_VR_DOOR_PASS");
 
+        var savedPosition=walker.transform.position;var savedRotation=walker.transform.rotation;var savedView=camera.transform.localRotation;
+        walker.transform.rotation=Quaternion.identity;camera.transform.localRotation=Quaternion.Euler(0,180,0);XRLocomotion.Relocate(walker.transform,new Vector3(-23,0,-2));
+        for(int i=0;i<500;i++){locomotion.SmoothMove(Vector2.up,.02f);if(i%30==0)yield return new WaitForFixedUpdate();}
+        if(walker.transform.position.z> -14.4f||Mathf.Abs(walker.transform.position.y)>.03f)throw new Exception("Expanded road cannot be crossed between both pavements");
+        walker.transform.rotation=savedRotation;camera.transform.localRotation=savedView;XRLocomotion.Relocate(walker.transform,savedPosition);
+        Debug.Log("PLAYABLE_ROAD_CROSSING_PASS continuous bounds and both kerb heights");
+
         var traces=UnityEngine.Object.FindObjectsByType<UVTrace>(FindObjectsSortMode.None).Where(t=>t.name.StartsWith("EvidenceUV_")).ToArray();
         if(traces.Length!=44)throw new Exception("Expected 44 attached evidence traces");
         var trace=traces.First(t=>t.name=="EvidenceUV_WipedGlassSmear");
@@ -81,7 +88,7 @@ public static class ExpandedPlayerCheck
 
         DemoLanguage.Arabic=true;
         if(!DemoLanguage.Font||!DemoLanguage.HasArabic(DemoLanguage.Text("Settings"))||DemoLanguage.Shape("العربية")=="العربية")throw new Exception("Arabic UI resource/shaping missing");
-        var printed=GameObject.Find("NightStore").GetComponentsInChildren<Renderer>().SelectMany(r=>r.sharedMaterials).First(m=>m&&m.HasProperty("_MainTex")&&m.mainTexture&&m.mainTexture.name=="ShopFascia").mainTexture;
+        var printed=GameObject.Find("NightStore").GetComponentsInChildren<Renderer>().SelectMany(r=>r.sharedMaterials).First(m=>m&&m.HasProperty("_MainTex")&&m.mainTexture&&m.mainTexture.name=="ShopFascia_Designed").mainTexture;
         panel.HudVisible=true;panel.Layout=PanelLayout.Full;panel.Tab=PanelTab.Settings;panel.Scale=1.25f;
         yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(directory,"ui-arabic-settings.png"));yield return null;
         panel.HelpOpen=true;yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(directory,"ui-arabic-help.png"));yield return null;panel.HelpOpen=false;
@@ -92,7 +99,7 @@ public static class ExpandedPlayerCheck
             yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(directory,"ui-arabic-tools-"+scale.ToString("0.##",System.Globalization.CultureInfo.InvariantCulture)+".png"));yield return null;
         }
         panel.Scale=1.25f;panel.Tab=PanelTab.Settings;
-        DemoLanguage.Arabic=false;if(DemoLanguage.Text("Settings")!="Settings"||printed.name!="ShopFascia")throw new Exception("UI language switch changed map signs");
+        DemoLanguage.Arabic=false;if(DemoLanguage.Text("Settings")!="Settings"||printed.name!="ShopFascia_Designed")throw new Exception("UI language switch changed map signs");
         yield return new WaitForEndOfFrame();ScreenCapture.CaptureScreenshot(Path.Combine(directory,"ui-english-settings.png"));yield return null;
         foreach(float scale in new[]{1f,1.25f,2f}){
             panel.Scale=scale;panel.Layout=PanelLayout.Hidden;

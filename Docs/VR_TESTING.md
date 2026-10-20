@@ -64,3 +64,7 @@ The native shader startup crash is mitigated with keepLoadedShadersAlive in Edit
 ## Pitch and torch fit
 
 Empty hands are pitched down 12 degrees following headset feedback that they appeared raised. Equipped white/UV torches use a dedicated cylindrical grip pose with fixed finger closure, so pressing grip/trigger does not squeeze fingers through the barrel. The torch lens uses the same fitted pose. Returning the torch restores the regular controller hand. Check both hands, camera/torch transfer, and toggling the beam while holding. Rendered previews and sampled clearance checks passed; final headset fit is pending.
+
+## October 20 presentation checks
+
+The saved scene includes the supplied unchanged FBX car, expanded street/pavement access, varied exterior architecture, foliage wind, smaller evidence transfers and generated Arabic physical signs. The store's interior lights remain off. Both torches cast shadows: PC soft 2048, standalone tier hard 1024. Small tools allow player pass-through and remain selectable/UV-occluding; a placed scene lamp is still solid. Editor rendered-shadow and player collision/road/UV regressions are recorded in Verification/Presentation. These are not Quest standalone performance or human headset acceptance.

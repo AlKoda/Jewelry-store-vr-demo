@@ -7,6 +7,15 @@ public enum DemoToolKind { Cone, Marker, TapePost, Scale, Measure, Lamp }
 public sealed class DeployedTool : MonoBehaviour
 {
     public DemoToolKind Kind;
+    void Awake(){ApplyCollisionPolicy();}
+    // Tools are positioned by the presenter, never thrown by a physics solver.
+    // Small evidence tools remain ray/grab targets but cannot displace the player.
+    public void ApplyCollisionPolicy(){
+        var body=GetComponent<Rigidbody>();
+        if(body){body.isKinematic=true;body.useGravity=false;}
+        foreach(var collider in GetComponentsInChildren<Collider>(true))
+            collider.isTrigger=Kind!=DemoToolKind.Lamp || Holder!=null || collider.name=="Tool selection volume";
+    }
     void Start(){
         var renderers=GetComponentsInChildren<MeshRenderer>();if(renderers.Length==0)return;
         Bounds b=renderers[0].bounds;foreach(var r in renderers)b.Encapsulate(r.bounds);
@@ -24,7 +33,8 @@ public sealed class DeployedTool : MonoBehaviour
     public MeshRenderer LampFace;
     public int MarkerNumber { get; private set; }
     // The adapter currently carrying this tool; null when it rests in the scene.
-    public ToolHolder Holder { get; set; }
+    private ToolHolder holder;
+    public ToolHolder Holder { get=>holder; set{holder=value;ApplyCollisionPolicy();} }
     public bool HasBeenPlaced { get; set; }
     public bool Free => Holder == null;
 

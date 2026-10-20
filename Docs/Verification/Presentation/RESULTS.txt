@@ -1,0 +1,45 @@
+October 20, 2026 | final saved scene, interior fixtures OFF
+Editor/PC GPU tests; standalone performance and headset acceptance NOT VERIFIED
+
+TOOL_PLAYER_SAFETY_PASS all six kinds: kinematic, pass-through, ray selectable; placed lamp solid and held lamp non-solid
+TOOL_UV_OCCLUSION_AND_WALL_PASS trigger tools still hide UV evidence, held tools do not, solid wall still stops the player
+TORCH_RENDERED_SHADOW_PASS tier=0 uv=0 shadowPixels=3943 map=2048
+TORCH_RENDERED_SHADOW_PASS tier=0 uv=1 shadowPixels=3866 map=2048
+TORCH_RENDERED_SHADOW_PASS tier=1 uv=0 shadowPixels=3937 map=1024
+TORCH_RENDERED_SHADOW_PASS tier=1 uv=1 shadowPixels=3865 map=1024
+PRESENTATION_SCENE_CHECKS_PASS road bounds, 360 skyline, foliage, sparse blood, handle prints, preserved non-flattened supplied FBX
+EXISTING_SCENE_DELIVERY_PASS C:\Users\MOBPC\Documents\ChatGPT\Jewelry store\repository\Builds\Windows\JewelryStoreDemo.exe
+PRESENTATION_FINAL_CHECK_PASS
+Night bake completed in 26.4 s; lightmaps=7 (largest 1024 px); light probes=676; lightmapper=ProgressiveGPU
+CLEAN_REFLECTION_CAPTURE_PASS probes=11
+TORCH_BEAM_AND_CAMERA_HAND_PASS
+RECORDED_FOLEY_AND_QUIET_MIX_PASS
+COMBINED_TORCH_PASS
+COMBINED_MUSIC_PASS
+DOOR_PHYSICS_PASS DoorLeft angle=8.215057
+DOOR_PHYSICS_PASS Door angle=8.572113
+DOOR_PHYSICS_PASS DoorRight angle=8.215057
+DOOR_PHYSICS_PASS Door angle=8.572113
+DOOR_RESET_PASS
+DESKTOP_BODY_DOOR_PASS EntranceDoors/DoorLeft angle=74.17694 bodyZ=0.8612088
+DESKTOP_BODY_DOOR_PASS ServiceDoor/Door angle=73.00458 bodyZ=9.364921
+DESKTOP_BODY_DOOR_PASS EntranceDoors/DoorRight angle=74.17696 bodyZ=0.8612088
+DESKTOP_BODY_DOOR_PASS OfficeDoor/Door angle=71.35901 bodyZ=9.294804
+VR_BODY_DOOR_PASS DoorLeft angle=30.8056
+VR_BODY_DOOR_PASS Door angle=35.19279
+VR_BODY_DOOR_PASS DoorRight angle=29.25127
+VR_BODY_DOOR_PASS Door angle=88.57355
+HAND_DOOR_PASS EntranceDoors/DoorLeft angle=29.9462
+HAND_DOOR_PASS ServiceDoor/Door angle=12.75733
+HAND_DOOR_PASS EntranceDoors/DoorRight angle=28.26247
+HAND_DOOR_PASS OfficeDoor/Door angle=49.52094
+STAFF_PLAYER_LAYOUT_PASS outdoor equipment hidden, indoor tools, furnished rooms and rough materials
+EXPANDED_SMOOTH_VR_DOOR_PASS
+PLAYABLE_ROAD_CROSSING_PASS continuous bounds and both kerb heights
+EXPANDED_UV_GATING_PASS 44 marks, white-light hidden, UV reveals, occlusion hides, traces follow door
+STAFF_UV_RENDER_PASS EvidenceUV_BackgroundPrint_0 green pixels=227
+STAFF_UV_RENDER_PASS EvidenceUV_FloorDrops_0 green pixels=6
+EXPANDED_PRINTED_TAPE_PASS no floating labels, Arabic ink texture, two lit faces
+EXPANDED_LANGUAGE_PASS Arabic shaping/font, Arabic-English roundtrip, permanent Arabic map
+COMBINED_PLAYER_PASS
+SNAPSHOT_SOURCE_SCENE_GUID_PASS 143 code/shader files match Prototype, local project and snapshot; 2338 active ThirdParty GUIDs retained; source/staged FBX SHA-256 unchanged. Snapshot 84.7 MiB.

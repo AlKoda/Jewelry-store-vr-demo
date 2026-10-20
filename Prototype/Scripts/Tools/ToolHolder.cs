@@ -147,5 +147,5 @@ public abstract class ToolHolder : MonoBehaviour
     protected Vector3 Confine(Vector3 point) => Bounds != null ? Bounds.Clamp(point) : point;
 
     protected static bool Raycast(Ray ray, float distance, out RaycastHit nearest, Transform ignore = null, Transform alsoIgnore = null)
-        => DemoPhysics.Nearest(ray, distance, out nearest, ignore, alsoIgnore);
+        => DemoPhysics.Nearest(ray, distance, out nearest, ignore, alsoIgnore, false, QueryTriggerInteraction.Collide);
 }

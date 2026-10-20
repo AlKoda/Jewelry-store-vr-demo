@@ -27,7 +27,7 @@ public sealed class DemoLighting : MonoBehaviour
     public float NightFogFactor = 0.35f;
     public Color FlashlightColor = new Color(1f, 0.95f, 0.85f);
     public float FlashlightIntensity = 2.2f;
-    // UV torch: a narrow violet spot without shadows; UVTrace and the UVFluorescence
+    // UV torch: a narrow shadowed violet spot; UVTrace and the UVFluorescence
     // shader read its cone and range, so the glow follows the beam it is seen in.
     public Color UVColor = new Color(0.38f, 0.12f, 1f);
     public float UVIntensity = 0.8f;
@@ -140,6 +140,19 @@ public sealed class DemoLighting : MonoBehaviour
     {
         if (Session != null) Session.SessionReset.RemoveListener(OnReset);
     }
+
+    private void OnDestroy()
+    {
+        Camera.onPreCull -= HideModelFrom;
+        Camera.onPostRender -= ShowModelAfter;
+        // The desktop model/light can be reparented to the view, outside this object's hierarchy.
+        foreach(var torch in new[]{white,uv}){
+            if(torch.Model)Release(torch.Model);
+            if(torch.Light)Release(torch.Light.gameObject);
+        }
+        Shader.SetGlobalVector(UVParamsId, Vector4.zero);
+    }
+    static void Release(GameObject go){if(Application.isPlaying)Destroy(go);else DestroyImmediate(go);}
 
     private void OnReset()
     {
@@ -412,11 +425,11 @@ public sealed class DemoLighting : MonoBehaviour
             // are ShadowCastingMode.Off), so the beam still reaches into a case.
             light.shadows = LightShadows.Soft;
             light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.High;
-            light.shadowCustomResolution = 1024;
-            light.shadowBias = .04f;
-            light.shadowNormalBias = .3f;
+            light.shadowCustomResolution = 2048;
+            light.shadowBias = .025f;
+            light.shadowNormalBias = .16f;
             light.shadowNearPlane = .06f;
-            DemoPlatform.TuneShadows(light, 1024); // hard 512 on the Quest alone
+            DemoPlatform.TuneShadows(light, 2048); // one hard 1024 map on the Quest alone
         }
         else
         {
@@ -428,8 +441,8 @@ public sealed class DemoLighting : MonoBehaviour
             light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.VeryHigh;
             light.shadowCustomResolution = 2048;
             // Near Unity's defaults (0.05 / 0.4): the earlier 0.015 / 0.12 striped grazing floors and walls.
-            light.shadowBias = .04f;
-            light.shadowNormalBias = .3f;
+            light.shadowBias = .025f;
+            light.shadowNormalBias = .16f;
             light.shadowNearPlane = .06f;
             DemoPlatform.TuneShadows(light, 2048); // hard 1024 on the Quest alone
         }
@@ -454,7 +467,7 @@ public sealed class DemoLighting : MonoBehaviour
 
     private static void Hide(Torch torch, Camera cam)
     {
-        if (torch.Hidden || torch.Model == null || !torch.Model.activeInHierarchy || cam == Camera.main
+        if (torch.Hidden || torch.Light == null || torch.Model == null || !torch.Model.activeInHierarchy || cam == Camera.main
             || torch.Model.transform.parent == torch.Light.transform) return;
         torch.Hidden = true;
         foreach (Renderer r in torch.Parts)
@@ -514,15 +527,4 @@ public sealed class DemoLighting : MonoBehaviour
     // The UV torch mirrors the white torch's desktop offsets to the left of the view.
     private static Vector3 Side(Vector3 offset, Torch torch) => (torch.Ultraviolet || torch.CameraInUse) ? new Vector3(-offset.x, offset.y, offset.z) : offset;
 
-    private void OnDestroy()
-    {
-        Camera.onPreCull -= HideModelFrom;
-        Camera.onPostRender -= ShowModelAfter;
-        foreach (Torch torch in new[] { white, uv })
-        {
-            if (torch.Model != null) Destroy(torch.Model);
-            if (torch.Light != null) Destroy(torch.Light.gameObject);
-        }
-        Shader.SetGlobalVector(UVParamsId, Vector4.zero);
-    }
 }

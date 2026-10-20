@@ -1,0 +1,3 @@
+User-supplied asset, provided by Koda for this project on October 20, 2026.
+No additional third-party licence was present in the supplied archive. No broader redistribution licence is asserted.
+Use in this project is explicitly authorised by its supplier. Preserve the source mesh unchanged.

@@ -24,7 +24,7 @@ BASE = 'Assets/CrimeSceneDemo/'
 CODE = ('Scripts', 'Editor', 'Shaders')
 LARGE = {'PBRInterior', 'PBRExterior', 'NightSky', 'JewelryModels', 'ForensicModels', 'StreetModels',
          'InteriorModels', 'WallGraphics', 'SurfaceDecals', 'NightSoundscape', 'Music', 'PeopleModels',
-         'AmbientProps', 'AmbientProps2', 'CutoutDecals', 'RealismTextures', 'RealFoley', 'RealFoley2', 'Environments', 'ReferenceTextures', 'CgbookcaseTextures'}
+         'AmbientProps', 'AmbientProps2', 'CutoutDecals', 'RealismTextures', 'RealFoley', 'RealFoley2', 'Environments', 'ReferenceTextures', 'CgbookcaseTextures', 'ArabicSceneSigns', 'SuppliedPoliceCar'}
 LIMIT_MB = 95
 
 MONO = ("fileFormatVersion: 2\nguid: {g}\nMonoImporter:\n  externalObjects: {{}}\n  serializedVersion: 2\n"
@@ -55,6 +55,12 @@ def ensure_metas(root):
 def main():
     with zipfile.ZipFile(ZIP) as z:
         entries = {i.filename: z.read(i.filename) for i in z.infolist() if not i.is_dir()}
+    # Payloads are mirrored from the checkout, but their GUID metadata must travel
+    # with the saved scene, or a fresh machine cannot resolve its material/mesh references.
+    for key in list(entries):
+        if key.startswith(BASE+'ThirdParty/') and not key.endswith('.meta'):
+            pack=key[len(BASE+'ThirdParty/'):].split('/')[0]
+            if pack in LARGE: del entries[key]
     # Carry the actual single project's saved scene/bakes, XR configuration and
     # resolved package setup. Code is replaced from authoritative Prototype below.
     project = os.path.join(REPO, 'UnityProject_Demo')
@@ -64,7 +70,8 @@ def main():
                 for name in names:
                     path=os.path.join(directory,name)
                     rel=os.path.relpath(path,project).replace(os.sep,'/')
-                    if rel.startswith(BASE+'ThirdParty/') or any(rel.startswith(BASE+c+'/') for c in CODE): continue
+                    if rel.startswith(BASE+'ThirdParty/') and not rel.endswith('.meta'): continue
+                    if any(rel.startswith(BASE+c+'/') for c in CODE): continue
                     entries[rel]=open(path,'rb').read()
         entries['READ_ME_LATEST.txt']=b'Quest 3 PCVR + keyboard, Unity 6000.6.2f1. One project and saved night scene. See repository Docs/VR_TESTING.md. Large packs must be synced from the repository. Do not regenerate a manually edited scene unintentionally.\n'
     before = set(entries)
@@ -85,7 +92,10 @@ def main():
         inner = rel[len('Prototype/ThirdParty/'):]
         if inner.split('/')[0] in LARGE or not os.path.isfile(os.path.join(REPO, rel)):
             continue
-        entries[BASE + 'ThirdParty/' + inner] = open(os.path.join(REPO, rel), 'rb').read()
+        key=BASE+'ThirdParty/'+inner
+        # Retain the active scene's legacy UserProps GUIDs; do not rewrite existing metadata.
+        if (inner=='UserProps.meta' or inner.startswith('UserProps/')) and inner.endswith('.meta') and key in entries: continue
+        entries[key] = open(os.path.join(REPO, rel), 'rb').read()
     tmp = ZIP + '.tmp'
     with zipfile.ZipFile(tmp, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as out:
         for key in sorted(entries):
