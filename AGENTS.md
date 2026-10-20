@@ -8,7 +8,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
-| Claude | Shadows, UV torch occlusion, materials and reflections (Koda's request) | Prototype/Scripts/Lighting, Prototype/Shaders (not GhostHand), lighting/material parts of Prototype/Editor (NightLighting, DemoAssetLibrary, PackImport, reflection builders), ToolStation lamp shadows | 2026-10-19 | done, pushed; waiting for Koda's headset check |
+| Claude | Quest 3 standalone app (Koda's request): Android build, headset quality tier, in-headset presenter menu, install scripts | new: Scripts/Core/DemoPlatform, Scripts/VR/XRPresenterMenu, Editor/Build/QuestBuild, Build-Quest-App.cmd, Tools/build-quest.cmd; small hooks in DemoLaunchOptions, NightQuality, DemoLighting, ToolStation, EvidenceCamera, XRControllerInput, PackImport, Tools/build-demo.cmd | 2026-10-20 | working |
 | ChatGPT | Reorganization reconciliation and Quest 3 OpenXR setup | Prototype, Tools, launchers, Docs, snapshot | 2026-10-19 | correct hand models restored; held flashlight palm half-turn removed; build passed; headset retest pending |
 
 ## One project: edit it, never fork it
