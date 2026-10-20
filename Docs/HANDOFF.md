@@ -4,6 +4,10 @@ Updated October 20, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Belt and atmosphere follow-up
+
+Belt band and all three holsters are raised 3 cm relative to the previous build (71 cm below headset after startup adjustment). Backward/bending retreat is unchanged. The saved photographic DistantCityBackdrop is active again; replacement CitySkyline360 is retained but inactive. Earlier exponential-squared fog density .033 and blue-gray color are restored; current night sky and foreground street architecture remain. Hand/camera poses are untouched. Targeted entrypoint: PresentationPolish.BeltAtmosphereRun.
+
 ## Camera-hand and floating-torch follow-up
 
 The earlier simple Meta holding grip is restored, as Koda requested after rejecting further finger adjustments. Camera holding uses the normal authored grip animation; there is no individual finger posing/IK. The camera is seated to that hand with its aiming axis unchanged. Empty hands and the accepted flashlight poses remain unchanged. Do not continue changing the fingers without a new request. Camera-body box overlap is recorded as a diagnostic, not a claimed clearance pass.

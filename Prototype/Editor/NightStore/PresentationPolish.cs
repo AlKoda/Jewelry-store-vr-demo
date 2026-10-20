@@ -225,7 +225,7 @@ public static partial class PresentationPolish
         skyline.Emit("ContinuousDistantBuildings",distant,Vector3.zero,Quaternion.identity,Folder,"city_skyline_360");
         var sky=RenderSettings.skybox;
         if(sky){sky.mainTexture=DemoAssetLibrary.Texture("NightSky","city_night_sky_overcast_1k.hdr");sky.SetFloat("_Mapping",1);sky.DisableKeyword("_MAPPING_6_FRAMES_LAYOUT");sky.EnableKeyword("_MAPPING_LATITUDE_LONGITUDE_LAYOUT");sky.SetFloat("_ImageType",0);sky.SetFloat("_Layout",0);sky.SetFloat("_Exposure",1.1f);sky.SetColor("_Tint",new Color(.65f,.72f,.85f));EditorUtility.SetDirty(sky);}
-        RenderSettings.fogDensity=.0165f;RenderSettings.fogColor=new Color(.045f,.055f,.072f);
+        RestoreCityAtmosphere();
         foreach(var c in Object.FindObjectsByType<Camera>(FindObjectsInactive.Include,FindObjectsSortMode.None))c.farClipPlane=Mathf.Max(c.farClipPlane,220);
     }
     static void Trees(){

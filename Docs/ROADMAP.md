@@ -46,3 +46,5 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [x] Restore the simple authored camera holding grip; remove saved preview torch duplicates and prevent render checks from saving them.
 - [ ] Confirm the restored normal camera grip in the headset; no further finger changes requested.
+
+- [x] Raise belt/holsters 3 cm and restore earlier photographic city backdrop with its fog. Headset comfort acceptance remains pending.

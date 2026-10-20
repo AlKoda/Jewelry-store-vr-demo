@@ -128,6 +128,20 @@ public static partial class PresentationPolish
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;
         NightStoreValidation.RepairChecks();NightStoreValidation.PresentationChecks();NightStoreValidation.CameraGripRender();NightStoreValidation.GlassRenderCheck();RepairPreview();EditableDelivery.Build();Debug.Log("REPAIR_REVIEW_DELIVERY_PASS");EditorApplication.Exit(0);
     }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
+    static void RestoreCityAtmosphere(){
+        var backdrop=root.Find("DistantCityBackdrop");
+        if(!backdrop)throw new Exception("Saved photographic city backdrop missing");
+        backdrop.gameObject.SetActive(true);
+        var skyline=root.Find("CitySkyline360");if(skyline)skyline.gameObject.SetActive(false);
+        RenderSettings.fog=true;RenderSettings.fogMode=FogMode.ExponentialSquared;
+        RenderSettings.fogDensity=.033f;RenderSettings.fogColor=new Color(.095f,.115f,.145f);
+    }
+    public static void BeltAtmosphereRun(){try{
+        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;
+        RestoreCityAtmosphere();NightStoreValidation.RepairChecks();NightStoreValidation.PresentationChecks();
+        AssetDatabase.SaveAssets();EditorSceneManager.SaveOpenScenes();ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();Preview();
+        EditableDelivery.Build();Debug.Log("BELT_ATMOSPHERE_PASS belt raised 3 cm, earlier photographic city and fog restored");EditorApplication.Exit(0);
+    }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
     public static void HandAndPreviewFixRun(){try{
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");
         int removed=VRVisualValidation.PruneCameraPreviewTorches();VRVisualValidation.CheckPreviewTorchOwnership();NightStoreValidation.CameraGripRender();NightStoreValidation.RepairChecks();

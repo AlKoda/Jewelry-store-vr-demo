@@ -86,7 +86,8 @@ public static class PresentationValidation
         Require(root.Find("CitySkyline360/ContinuousDistantBuildings"),"360 degree city missing");
         Require(root.Find("Exterior/LivingStreetCanopy").childCount>=10,"Leafy street trees missing");
         Require(root.Find("Exterior/MainStreetArchitecture/TerracedShopFrontDetails"),"Reference-based exterior architecture missing");
-        Require(RenderSettings.fogDensity<.02f,"Fog still hides the distant city");
+        Require(RenderSettings.fog&&RenderSettings.fogMode==FogMode.ExponentialSquared&&Mathf.Abs(RenderSettings.fogDensity-.033f)<.0001f,"Restored city fog settings missing");
+        Require(root.Find("DistantCityBackdrop").gameObject.activeInHierarchy&&!root.Find("CitySkyline360").gameObject.activeSelf,"Photographic city backdrop not restored");
         foreach(var l in root.Find("Lighting").GetComponentsInChildren<Light>()){
             var p=root.InverseTransformPoint(l.transform.position);
             Require(!(l.enabled&&l.type!=LightType.Directional&&p.z>.25f&&p.z<8.25f&&Mathf.Abs(p.x)<7.7f),"Store interior fixture is powered on: "+l.name);

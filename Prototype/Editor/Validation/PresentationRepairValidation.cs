@@ -79,7 +79,9 @@ public static partial class NightStoreValidation
         var group=new GameObject("Temporary belt/grip repair test");
         try{
             var head=new GameObject("Head").transform;head.SetParent(group.transform,false);head.localPosition=Vector3.up*1.7f;
-            var belt=group.AddComponent<XRHolsters>();belt.Head=head;belt.UpdateHeading(.02f);for(int i=0;i<60;i++)belt.UpdateBody(.02f);
+            var belt=group.AddComponent<XRHolsters>();belt.Head=head;typeof(XRHolsters).GetMethod("Start",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).Invoke(belt,null);
+            Require(Mathf.Abs(belt.Position(XRHolsters.Slot.Flashlight).y-.99f)<.001f&&Mathf.Abs(belt.Position(XRHolsters.Slot.Camera).y-.99f)<.001f,"Belt and camera holster must be 71 cm below standing headset after the 3 cm lift");
+            belt.UpdateHeading(.02f);for(int i=0;i<60;i++)belt.UpdateBody(.02f);
             var standing=belt.Position(XRHolsters.Slot.Flashlight)-head.position;
             head.rotation=Quaternion.Euler(65,0,0);for(int i=0;i<60;i++)belt.UpdateBody(.02f);
             Require(Mathf.Abs((belt.Position(XRHolsters.Slot.Flashlight)-head.position).z-standing.z)<.005f,"Looking down moves belt unnecessarily");

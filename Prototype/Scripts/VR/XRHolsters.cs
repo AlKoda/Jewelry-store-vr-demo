@@ -138,7 +138,7 @@ public sealed class XRHolsters : MonoBehaviour
         }
     }
 
-    private void Start(){HipOffset.y-=.12f;ChestOffset.y-=.12f;}
+    private void Start(){HipOffset.y-=.09f;ChestOffset.y-=.09f;}
     private void LateUpdate()
     {
         UpdateHeading(Time.deltaTime);
