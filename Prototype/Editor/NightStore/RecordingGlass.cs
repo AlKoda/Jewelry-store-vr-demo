@@ -109,8 +109,8 @@ public static class RecordingGlass
         else if(name.StartsWith("DoorGlass"))geometry=Pane(.775f,2.05f,name.Contains("Left")?15:21,true);
         else geometry=Pane(1.92f,2.13f,31,name.EndsWith("Broken"));
         if(name.StartsWith("GroundGlass")){
-            face=GroundMaterial("GroundGlassFaces",face,new Color(.55f,.60f,.65f,.22f));
-            edge=GroundMaterial("GroundGlassCutEdges",edge,new Color(.78f,.84f,.89f,.38f));
+            face=GroundMaterial("GroundGlassFaces",face,new Color(.92f,.97f,1,.045f));
+            edge=GroundMaterial("GroundGlassCutEdges",edge,new Color(.66f,.77f,.78f,.10f));
         }
         var go=geometry.Emit(name,parent,position,scale,face,edge);
         if(name.StartsWith("GroundGlass"))Contact(go,face);
@@ -124,13 +124,20 @@ public static class RecordingGlass
     }
     static void Contact(GameObject scatter,Material unused)
     {
-        // A restrained feathered contact patch beneath each dense pile substitutes
-        // for transmitted glass contact shading unavailable in this raster renderer.
-        var material=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/GlassPileContact.mat");
-        if(!material){material=new Material(Shader.Find("CrimeScene/GlassContact"));AssetDatabase.CreateAsset(material,Folder+"/GlassPileContact.mat");}
-        var go=GameObject.CreatePrimitive(PrimitiveType.Quad);go.name="PileContact";go.transform.SetParent(scatter.transform,false);
-        go.transform.localPosition=new Vector3(0,-.001f,0);go.transform.localRotation=Quaternion.Euler(90,0,0);go.transform.localScale=new Vector3(1.25f,.72f,1);
-        UnityEngine.Object.DestroyImmediate(go.GetComponent<Collider>());var r=go.GetComponent<MeshRenderer>();r.sharedMaterial=material;r.shadowCastingMode=ShadowCastingMode.Off;
+        RefreshContact(scatter);
+    }
+    public static void RefreshContact(GameObject scatter){
+        var old=scatter.transform.Find("PileContact");if(old)UnityEngine.Object.DestroyImmediate(old.gameObject);
+        var source=scatter.GetComponent<MeshFilter>().sharedMesh;var vertices=source.vertices;var normals=source.normals;var triangles=source.GetTriangles(0);var projected=new List<int>();
+        // Only the upper planar faces contribute: no double-darkening from underside/edge triangles.
+        for(int i=0;i<triangles.Length;i+=3)if(normals[triangles[i]].y>.1f){projected.Add(triangles[i]);projected.Add(triangles[i+1]);projected.Add(triangles[i+2]);}
+        for(int i=0;i<vertices.Length;i++)vertices[i].y=-.001f;
+        var mesh=new Mesh{name=scatter.name+"_Contact",vertices=vertices,uv=source.uv,triangles=projected.ToArray()};mesh.RecalculateNormals();mesh.RecalculateBounds();
+        string path=Folder+"/"+mesh.name+".asset";var saved=AssetDatabase.LoadAssetAtPath<Mesh>(path);if(saved){EditorUtility.CopySerialized(mesh,saved);UnityEngine.Object.DestroyImmediate(mesh);mesh=saved;}else AssetDatabase.CreateAsset(mesh,path);
+        var material=AssetDatabase.LoadAssetAtPath<Material>(Folder+"/GlassShardContact.mat");if(!material){material=new Material(Shader.Find("CrimeScene/GlassContact"));AssetDatabase.CreateAsset(material,Folder+"/GlassShardContact.mat");}
+        material.SetFloat("_Strength",0);material.SetFloat("_UniformStrength",.035f);EditorUtility.SetDirty(material);
+        var go=new GameObject("PileContact");go.transform.SetParent(scatter.transform,false);go.AddComponent<MeshFilter>().sharedMesh=mesh;
+        var r=go.AddComponent<MeshRenderer>();r.sharedMaterial=material;r.shadowCastingMode=ShadowCastingMode.Off;r.receiveShadows=false;
     }
 }
 #endif

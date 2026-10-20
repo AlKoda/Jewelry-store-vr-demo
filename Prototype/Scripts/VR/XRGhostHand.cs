@@ -220,7 +220,7 @@ public sealed class XRGhostHand : MonoBehaviour
             bool occupied=input.Hand!=null&&(input.Hand.Held!=null||input.Hand.HoldingCamera);
             bool torchHeld=lights!=null&&((lights.TorchEquipped(false)&&lights.FlashlightLight.transform.parent==transform)||(lights.TorchEquipped(true)&&lights.UVTorchLight.transform.parent==transform));
             occupied|=torchHeld;
-            SetTorchGrip(torchHeld);
+            SetTorchGrip(torchHeld||(input.Hand!=null&&input.Hand.HoldingCamera));
             SetPose(occupied?Mathf.Max(.8f,input.GripValue):input.GripValue,input.TriggerValue,input.ThumbDown?1:0,Time.deltaTime);
         }
     }

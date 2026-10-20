@@ -184,10 +184,10 @@ public static partial class StoreKit
         CeilingPaint = Surface("KitCeiling", new Color(0.86f, 0.85f, 0.82f), 0.08f, 0, "CeilingPaint", 2.0f);
         // Facade piers, fascia band and parapet: the staged dark marble when present.
         Cladding = Surface("KitCladding", new Color(0.33f, 0.32f, 0.31f), 0.35f, 0, "FacadeStone", 2.0f);
-        Pavement = Surface("KitPavement", new Color(0.46f, 0.45f, 0.43f), 0.35f, 0, "PavementSlab", 1.2f);
-        // Wet asphalt: dark and glossy; the streetlight lenses glow in the street's baked
-        // probe (the headlamps reflect in the showroom's).
-        Asphalt = Surface("KitAsphalt", new Color(0.09f, 0.09f, 0.10f), 0.7f, 0, "AsphaltWet", 3.0f);
+        Pavement = Surface("KitPavement", new Color(0.46f, 0.45f, 0.43f), 0.22f, 0, "PavementSlab", 2f);
+        Asphalt = Surface("KitAsphalt", new Color(0.09f, 0.09f, 0.10f), 0.3f, 0, "AsphaltDry", 3.0f);
+        Pavement.SetFloat("_GlossMapScale",.22f);Pavement.SetFloat("_BumpScale",.45f);
+        Asphalt.SetFloat("_GlossMapScale",.30f);Asphalt.SetFloat("_BumpScale",.45f);
         Concrete = Surface("KitConcrete", new Color(0.56f, 0.55f, 0.52f), 0.2f, 0, "Concrete", 2.0f);
         // Weathered plaster tinted cream (the PBRExterior README tints Render per building).
         Render = Surface("KitRender", new Color(0.44f, 0.41f, 0.37f), 0.1f, 0, "Render", 2.0f, new Color(0.95f, 0.92f, 0.85f));
@@ -280,12 +280,13 @@ public static partial class StoreKit
         {
             new SurfaceSet
             {
-                Pack = PbrExteriorPack, Color = "PavementSlabWet_Color.jpg", Normal = "PavementSlab_Normal.png", Ms = "PavementSlabWet_MetallicSmoothness.png",
+                Pack = PbrExteriorPack, Color = "PavementSlab_Color.jpg", Normal = "PavementSlab_Normal.png", Ms = "PavementSlab_MetallicSmoothness.png",
                 Ao = "PavementSlab_AO.jpg", Tile = 2.0f, Bump = 1, Occlusion = 0.7f, Calibrated = true
             },
             Reference("PavementSlab", 1.2f), Generated("Pavement", 1.2f)
         },
         ["AsphaltWet"] = new[] { Pbr(PbrExteriorPack, "AsphaltWet", 3.0f, ao: 0.6f), Reference("AsphaltWet", 3.0f), Generated("Asphalt", 3.0f) },
+        ["AsphaltDry"] = new[] { Pbr(PbrExteriorPack, "AsphaltDry", 3.0f, ao: 0.6f), Reference("AsphaltWet", 3.0f), Generated("Asphalt", 3.0f) },
         ["Concrete"] = new[] { Pbr(PbrExteriorPack, "Concrete", 2.0f, 1.0f, 0.6f) },
         ["Render"] = new[] { Pbr(PbrExteriorPack, "Render", 2.0f, ao: 0.6f) },
         ["BrickFacade"] = new[] { Pbr(PbrExteriorPack, "BrickFacade", 3.0f, ao: 0.8f) },

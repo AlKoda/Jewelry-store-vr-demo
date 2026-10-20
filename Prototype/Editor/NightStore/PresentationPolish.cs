@@ -11,7 +11,7 @@ using Object=UnityEngine.Object;
 using static DemoGeometry;
 
 // In-place art repairs for the saved demonstration scene; does not regenerate its layout.
-public static class PresentationPolish
+public static partial class PresentationPolish
 {
     const string Folder="Assets/CrimeSceneDemo/CombinedArt";
     static Transform root;
@@ -21,6 +21,7 @@ public static class PresentationPolish
         TextureBudget(DemoAssetLibrary.Texture("SuppliedPoliceCar","police+car+3d+model.fbm/police+car+3d+model_basecolor.jpg"));
         root=GameObject.Find("NightStore").transform;StoreKit.Palette();
         Lighting();Jewelry();Traces();Street();Buildings();FacadeCharacter();Trees();Branding();EnvironmentSigns();InteriorDetails();LivedInDetails();
+        ConsistentPropMaterials();StreetSurfaceRepair();NaturalTrees();CarLightingRepair();ClearShardMaterials();
         Physics.SyncTransforms();AssetDatabase.SaveAssets();
         Debug.Log("PRESENTATION_POLISH_APPLIED saved scene preserved, shadow casters, closed display bases, subtle evidence, full street, supplied car, leafy canopy and Arabic branding");
     }
@@ -441,7 +442,7 @@ public static class PresentationPolish
         if(accepted<8)throw new Exception("Too few safe detail props: "+accepted);Debug.Log("LIVED_IN_DETAILS_PASS accepted="+accepted+"; rejected overlaps excluded, entrance aisle clear");
     }
     public static void PropsRun(){try{
-        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;StoreKit.Palette();LivedInDetails();
+        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;StoreKit.Palette();LivedInDetails();ConsistentPropMaterials();StreetSurfaceRepair();
         EditorSceneManager.SaveOpenScenes();ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();Preview();EditableDelivery.Build();Debug.Log("PROP_DRESSING_DELIVERY_PASS");EditorApplication.Exit(0);
     }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
     public static void Run(){try{
@@ -482,5 +483,14 @@ public static class PresentationPolish
         Debug.Log("PRESENTATION_INSPECTION_PASS");EditorApplication.Exit(0);
     }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
     static string PathOf(Transform t)=>t.parent?PathOf(t.parent)+"/"+t.name:t.name;
+    public static void RepairInspectRun(){try{
+        EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;var lines=new List<string>();
+        foreach(var r in root.GetComponentsInChildren<Renderer>()){
+            string path=PathOf(r.transform);if(!path.Contains("Staff")&&!path.Contains("Office")&&!path.Contains("PoliceCar")&&!path.Contains("Ground")&&!path.Contains("SelectedAmbient")&&!path.Contains("Glass"))continue;
+            lines.Add(path+" bounds="+r.bounds+" probe="+r.lightProbeUsage+" lightmap="+(r is MeshRenderer mr?mr.lightmapIndex:-1));
+            foreach(var m in r.sharedMaterials.Where(m=>m))lines.Add("  "+m.name+" shader="+m.shader.name+" color="+m.color+" emission="+(m.HasProperty("_EmissionColor")?m.GetColor("_EmissionColor"):Color.black)+" gloss="+(m.HasProperty("_Glossiness")?m.GetFloat("_Glossiness"):0)+" glossMap="+(m.HasProperty("_GlossMapScale")?m.GetFloat("_GlossMapScale"):0)+" maps="+string.Join(",",m.GetTexturePropertyNames().Where(p=>m.GetTexture(p)).Select(p=>p+":"+m.GetTexture(p).name)));
+        }
+        File.WriteAllLines("Builds/repair-audit.txt",lines);EditorApplication.Exit(0);
+    }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
 }
 #endif

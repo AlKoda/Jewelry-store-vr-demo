@@ -31,7 +31,9 @@ Shader "CrimeScene/DisplayGlass"
             // distortion or screen-space grab that swims in stereo or photos.
             half variation = sin(IN.worldPos.x * 19 + IN.worldPos.z * 11)
                            * sin(IN.worldPos.y * 23 + IN.worldPos.z * 7);
-            o.Albedo = _Color.rgb;
+            // Dielectric glass has no diffuse white surface. Opacity only absorbs
+            // transmitted background; Fresnel reflections remain independently visible.
+            o.Albedo = 0;
             o.Specular = half3(f0,f0,f0);
             o.Smoothness = saturate(_Smoothness - _MicroVariation * (0.5 + 0.5 * variation));
             o.Alpha = _Color.a;

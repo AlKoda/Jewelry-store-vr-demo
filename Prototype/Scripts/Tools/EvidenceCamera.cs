@@ -135,10 +135,18 @@ public sealed class EvidenceCamera : MonoBehaviour
         }
         Holder=holder;
         transform.SetParent(holder,false);
-        transform.localPosition=localOffset;
-        transform.localRotation=Quaternion.identity;
+        if(holder.GetComponent<HandInteractor>()!=null){
+            var input=holder.GetComponent<XRControllerInput>();var pose=ControllerGrip(input!=null&&input.Left);
+            transform.localPosition=pose.position;transform.localRotation=pose.rotation;
+        }else{transform.localPosition=localOffset;transform.localRotation=Quaternion.identity;}
         SetCollidersEnabled(false);
         StartViewfinder();
+    }
+    public static Pose ControllerGrip(bool left){
+        var torch=XRGhostHand.TorchPose(left);
+        var contact=torch.position-torch.rotation*Vector3.forward*.095f;
+        var handle=new Vector3(left?-.05f:.05f,-.003f,-.0075f);
+        return new Pose(contact-torch.rotation*handle,torch.rotation);
     }
 
     public void ReturnToRack()

@@ -29,6 +29,15 @@ public sealed class XRHolsters : MonoBehaviour
     private readonly Material[] materials = new Material[3];
     private Transform root;
     Transform belt;float beltYaw,yawVelocity;bool headingReady;
+    float standingHeadHeight, retreat=.13f;
+    // Height loss, rather than looking down, moves the belt clear of floor pickups.
+    public static float BendRetreat(float heightLoss)=>.13f+Mathf.Clamp01((heightLoss-.10f)/.45f)*.28f;
+    public void UpdateBody(float dt){
+        var head=Head?Head:transform;float height=head.position.y-transform.position.y;
+        if(standingHeadHeight<=0)standingHeadHeight=Mathf.Clamp(height,1.2f,2.1f);
+        standingHeadHeight=Mathf.Max(standingHeadHeight,Mathf.Min(height,2.1f));
+        retreat=Mathf.Lerp(retreat,BendRetreat(standingHeadHeight-height),1-Mathf.Exp(-10*dt));
+    }
     readonly GameObject[] displays=new GameObject[3];
     public void UpdateHeading(float dt){
         var head=Head?Head:transform;var forward=Vector3.ProjectOnPlane(head.forward,Vector3.up);
@@ -66,6 +75,7 @@ public sealed class XRHolsters : MonoBehaviour
         Quaternion heading=Quaternion.Euler(0,headingReady?beltYaw:head.eulerAngles.y,0);
         Vector3 offset = slot == Slot.Camera ? ChestOffset
             : new Vector3(slot == Slot.Flashlight ? HipOffset.x : -HipOffset.x, HipOffset.y, HipOffset.z);
+        offset.z-=retreat>0?retreat:.13f;
         Vector3 p = head.position + heading * offset;
         p.y = Mathf.Max(p.y, transform.position.y + MinHeight);
         return p;
@@ -132,12 +142,14 @@ public sealed class XRHolsters : MonoBehaviour
     private void LateUpdate()
     {
         UpdateHeading(Time.deltaTime);
+        UpdateBody(Time.deltaTime);
         bool show = VR;
         if (!show) { if (root != null) root.gameObject.SetActive(false); return; }
         if (root == null) Build();
         root.gameObject.SetActive(true);
         var head=Head?Head:transform;
-        belt.position=head.position+Vector3.up*HipOffset.y;belt.rotation=Quaternion.Euler(0,beltYaw,0);
+        belt.rotation=Quaternion.Euler(0,beltYaw,0);belt.position=head.position+Vector3.up*HipOffset.y-belt.forward*retreat;
+        var beltPosition=belt.position;beltPosition.y=Mathf.Max(beltPosition.y,transform.position.y+MinHeight);belt.position=beltPosition;
         var lights=Lighting?Lighting:FindFirstObjectByType<DemoLighting>();var camera=Camera?Camera:FindFirstObjectByType<EvidenceCamera>();
         for(int i=0;i<3;i++){
             displays[i].SetActive(i<2?lights==null||!lights.TorchEquipped(i==1):camera==null||camera.Holder==null);

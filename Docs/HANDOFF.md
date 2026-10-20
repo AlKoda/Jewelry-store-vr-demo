@@ -4,6 +4,20 @@ Updated October 20, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## October 20 reported-build repairs
+
+Current saved scene and Windows player include the material/street/glass/VR fixes. Rear-room and selected prop materials use restrained Standard finishes; accidental emission is disabled, dielectric props no longer use metallic maps, and actual screens remain dim. Three localized storage/office/break-room reflection captures avoid showroom/sky reflections leaking into those rooms.
+
+Road/pavement use the existing dry photographic PBR sets, restrained gloss and repaired metric UV0 coordinates; ground extensions retain their geometry and separate baked UV2. Five trees now use tapered branches and small photographic elm sprays, alpha-tested mips and 9 mm wind, replacing the large generic leaf cards and bare tree meshes. Generated artwork/prompt: GeneratedTextures/ELM_TWIG.md.
+
+Legacy siren bar, colored washes, car halos and old headlight beams are disabled. Two dim warm baked headlights align with the supplied FBX's actual nose (car-local -Z); no added luminous bumper rectangles. Original FBX mesh, scale and parked transform are preserved. Interior fixtures stay OFF. Fresh bake: seven 1024 lightmaps, 676 probes; fourteen refreshed reflection captures.
+
+Ground glass now has low absorption (face alpha .045, cut edge .10), independent dielectric Fresnel reflections and no diffuse-white surface. Faint contacts follow individual upper shard footprints instead of a broad pile blob. Closed shard geometry and existing fragments remain.
+
+XR belt is 13 cm farther back; measured headset height loss moves it up to another 28 cm back, smoothly, while looking down alone does not. Belt/holsters retain a minimum floor clearance. Camera grip uses the accepted torch's axis and a model handle contact on either hand; desktop camera pose is unchanged. Official hand assets and empty-hand/torch alignment remain intact.
+
+Unity repair checks, actual PC/Quest-tier torch shadow renders, hand/torch clearance checks, camera grip renders, glass on/off visibility comparison and strict Windows build passed. Quest comfort, camera fit, floor pickups and standalone performance still require headset acceptance. Evidence: Verification/Presentation/REPAIRS.md. Targeted entrypoints: PresentationPolish.RepairsRun (repair and bake) / RepairsReviewRun (validate saved scene and build); do not regenerate the layout.
+
 ## Generated environment signs — October 20
 
 Additional dressing: `PresentationPolish.PropsRun` adds 15 selected existing-pack props in the saved scene: phone/mouse, filing cabinet, succulent, ceramic vase, two indoor plants, two street benches, bins, planted pots and bike racks. Three intersecting candidates were rejected. Floor placement is seated to its support, bounds checked against solid fixtures, and the front/central exit aisle excluded. Imported materials/LODs are retained; reflection captures refreshed. Existing furniture/layout and interior light state are preserved. Quest hardware performance remains unverified.
