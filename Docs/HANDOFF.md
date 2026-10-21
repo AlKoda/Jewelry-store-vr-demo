@@ -67,7 +67,9 @@ Claude's shadow hooks are integrated: both torches use 2048 soft maps on PC / 10
 
 Portability: sync copies current pack metadata as well as payloads; the snapshot carries all active ThirdParty metadata, including legacy UserProps GUIDs. Large packs (now also designed Arabic signs and supplied car) mirror from the checkout. Existing GUIDs were preserved. Do not replace the legacy UserProps metadata with its differing source GUIDs.
 
-## Quest 3 standalone app — October 20 (Claude, unverified: never built)
+## Quest 3 standalone app — October 20 (Claude; built on the PC, not yet run on the headset)
+
+First build on Koda's PC: QuestBuild.Run passed in 11.5 minutes (`QUEST_BUILD_PASS`, Builds/Quest/JewelryStoreDemo.apk, 111 MB, versionCode 421600). Not installed yet: the headset's developer mode is blocked by the Meta Horizon phone app's pairing.
 
 Koda needs to show the demo on the Quest 3 without the PC. The same project and saved scene now also build as an Android app; see [QUEST_STANDALONE.md](QUEST_STANDALONE.md) for setup and use.
 - **Build-Quest-App.cmd** (→ Tools/build-quest.cmd) syncs, runs `QuestBuild.Run` with `-buildTarget Android` (no scene regeneration), and installs `Builds/Quest/JewelryStoreDemo.apk` over USB with `adb install -r`. Tools/pull-quest-photos.cmd copies the headset's photos.

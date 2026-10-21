@@ -8,7 +8,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
-| Claude | Quest 3 standalone app (Koda's request): Android build, headset quality tier, in-headset presenter menu, install scripts | new: Scripts/Core/DemoPlatform, Scripts/VR/XRPresenterMenu, Editor/Build/QuestBuild, Build-Quest-App.cmd, Tools/build-quest.cmd; small hooks in DemoLaunchOptions, NightQuality, DemoLighting, ToolStation, EvidenceCamera, XRControllerInput, PackImport, Tools/build-demo.cmd | 2026-10-20 | done, pushed; waiting for Koda's first Android build |
+| Claude | Quest 3 standalone app (Koda's request): Android build, headset quality tier, in-headset presenter menu, install scripts | new: Scripts/Core/DemoPlatform, Scripts/VR/XRPresenterMenu, Editor/Build/QuestBuild, Build-Quest-App.cmd, Tools/build-quest.cmd; small hooks in DemoLaunchOptions, NightQuality, DemoLighting, ToolStation, EvidenceCamera, XRControllerInput, PackImport, Tools/build-demo.cmd | 2026-10-20 | first Android build PASSED on Koda's PC (APK 111 MB, Oct 20); install waits on headset developer mode |
 | ChatGPT | Scene refinement review and plain unsmoothed car shading | ReviewAndRawCar, PresentationPolish, RawCarClay shader, SuppliedPoliceCar docs, validation, Docs, snapshot | 2026-10-20 | done; general scene audit, raw car GPU shading/geometry checks, fresh bake and strict Windows build passed |
 
 ## One project: edit it, never fork it
