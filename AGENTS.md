@@ -8,7 +8,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
-| Claude | Optimisation and headset-blocker pass done October 23 (CPU/GPU, Quest tier, lamps, tape run, floor, doors, case; unverified in Unity). Next: unguided sandbox direction after forensic research | Prototype/Scripts (all), Prototype/Shaders, Editor lighting/material/build code; not the Oman exterior or car authoring | 2026-10-23 | done, awaiting Koda's PC validation and headset test |
+| Claude | Forensic crime-scene research (Docs/Research), then free forensic models and evidence items integrated into the fieldwork workflow (powder, brush, lift, swab, cast, package) | Docs/Research, Prototype/ThirdParty/ForensicModels, Prototype/Scripts/Tools + Core fieldwork classes, Editor/NightStore/PortableFieldwork.cs, Docs/ASSET_REGISTER.md; not NEXT_SESSION_NOTES.md (ChatGPT) | 2026-10-23 | working |
 | ChatGPT | Publish current local work and handoff at Koda's explicit request | Prototype, Tools, Docs, refreshed canonical snapshot | 2026-10-23 | upload authorized; latest headset issues recorded only and remain open; no new fixes in this batch |
 
 ## One project: edit it, never fork it
