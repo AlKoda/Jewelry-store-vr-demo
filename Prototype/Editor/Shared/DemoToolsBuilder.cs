@@ -247,7 +247,7 @@ public static class DemoToolsBuilder
         player.transform.rotation=Quaternion.Euler(0,yaw,0);
         CharacterController cc=player.AddComponent<CharacterController>();
         cc.height=1.75f; cc.radius=.23f; cc.center=new Vector3(0,.875f,0);
-        cc.stepOffset=.15f; cc.skinWidth=.025f;
+        cc.stepOffset=.22f; cc.skinWidth=.025f;
         camera.transform.SetParent(player.transform,false);
         camera.transform.localPosition=new Vector3(0,1.65f,0);
         camera.transform.localRotation=Quaternion.identity;

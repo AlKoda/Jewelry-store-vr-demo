@@ -1,0 +1,1 @@
+Original project artwork: built-in OpenAI image generation and original sign typography. No reference stock photograph is used as a game texture. Project use permitted. Arial rendered as bitmap using installed Windows fonts.

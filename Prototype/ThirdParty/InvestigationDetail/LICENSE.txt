@@ -1,0 +1,18 @@
+Graphite four-door sedan: Innerscene, CC0 1.0 Universal public-domain dedication.
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Royal Oman Police emblem: official ROP header asset:
+https://www.rop.gov.om/english/images/Logo.png
+Copyright Royal Oman Police; NOT CC0. Their copyright notice reserves logo
+reproduction permissions: https://www.rop.gov.om/english/copyright.aspx
+Local educational police-vehicle depiction requested by the user. Public
+redistribution permission has not been obtained. Preserve local-only status.
+
+Police paint/response maps, door text and Arabic-only plate layouts: native
+project-authored artwork. Noto Sans Arabic font: SIL OFL 1.1, see
+../Fonts/Arabic/OFL.txt. English raster lettering uses Windows Arial Bold;
+no Arial font binaries are redistributed.
+
+The original car is separately user-supplied in SuppliedPoliceCar. This pack
+does not replace or alter its mesh. OmanPoliceBadge.png is a rejected web
+reference with a baked checkerboard background; it is not used in the scene.

@@ -1,0 +1,43 @@
+{
+  "created": "2026-10-21",
+  "local_only": true,
+  "status": "Car work remains paused; livery/sedan unused. Seven original FieldDocuments graphics are active in the portable-kit, repair-box and evidence workflow.",
+  "assets": [
+    {
+      "name": "Graphite four-door sedan",
+      "author": "Innerscene",
+      "page": "https://www.innerscene.com/tools/library/3d-parts/graphite-four-door-sedan-eed96d12",
+      "download": "https://www.innerscene.com/api/library/graphite-four-door-sedan-eed96d12/download",
+      "license": "CC0-1.0",
+      "changes": "glTF to OBJ; merged material groups; simplified LODs 14697/8000/7023 triangles; solid source colours retained as scalar materials. Original .asset-cache/graphite-sedan.glb."
+    },
+    {
+      "name": "OmanPoliceEmblem",
+      "url": "https://www.rop.gov.om/english/images/Logo.png",
+      "copyright": "Royal Oman Police; permission for public redistribution not obtained",
+      "use": "Badge portion of genuinely transparent official header, not generated artwork."
+    },
+    {
+      "name": "PoliceAuthoredPaint, PoliceSurfaceResponse, PoliceDoorMarkings, PoliceArabicPlate",
+      "generator": "Tools/paint_police_livery.py",
+      "method": "Deterministic native artwork projected into unchanged supplied UVs. No generated-image paint or source photograph rendered. Original source atlas luminance only locates existing window/trim regions.",
+      "text": [
+        "POLICE",
+        "الشرطة"
+      ],
+      "plate_numbers": false
+    },
+    {
+      "name": "OmanPoliceBadge.png",
+      "url": "https://w7.pngwing.com/pngs/211/852/png-transparent-muscat-royal-oman-police-oman-newspaper-police-emblem-people-logo.png",
+      "status": "Rejected reference: checkerboard is baked into pixels; not used in any material or scene."
+    }
+  ],
+  "field_documents": {
+    "path": "FieldDocuments/sources.json",
+    "reproduce": "Tools/make_field_documents.py",
+    "license": "Project-owned artwork; bundled Noto font licence retained",
+    "generated_image_service_used": false,
+    "active_files": 7
+  }
+}

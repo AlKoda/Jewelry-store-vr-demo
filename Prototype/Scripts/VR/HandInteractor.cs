@@ -76,11 +76,13 @@ public sealed class HandInteractor : ToolHolder
     // Grab the closest available tool, rack sample or camera within reach.
     public bool Grab()
     {
-        if (Held != null || HoldingCamera) return false;
+        if (Held != null || HoldingCamera || FieldTool || CarriedKit) return false;
         DeployedTool tool = NearestTool();
         if (tool != null) { takingPlaced=true;Hold(tool);takingPlaced=false;return Held==tool; }
         if (nearSample != null) return TakeSample(nearSample) != null;
         if (nearCamera) { ToggleCamera(); return true; }
+        var kit=InvestigationInteraction.NearKit(this);if(kit)return TakeKit(kit);
+        var fieldTool=InvestigationInteraction.Near(this);if(fieldTool)return TakeFieldTool(fieldTool);
         DeployedTool far = PointedTool();
         if (far == null) return false;
         takingPlaced=true;Hold(far);takingPlaced=false;
@@ -91,7 +93,9 @@ public sealed class HandInteractor : ToolHolder
 
     public void Release()
     {
-        if (Held != null) Place();
+        if(CarriedKit)PutDownKit();
+        else if(FieldTool)ReturnFieldTool();
+        else if (Held != null) Place();
         else if (HoldingCamera) ToggleCamera();
     }
 
@@ -99,10 +103,13 @@ public sealed class HandInteractor : ToolHolder
     // switch a held scene lamp on or off.
     public void Trigger()
     {
-        if (HoldingCamera && EvidenceCamera.Reviewing) EvidenceCamera.EndReview();
+        if(CarriedKit){}
+        else if(FieldTool)InvestigationInteraction.Use(this,new Ray(transform.position,transform.forward),.65f);
+        else if (HoldingCamera && EvidenceCamera.Reviewing) EvidenceCamera.EndReview();
         else if (HoldingCamera) EvidenceCamera.CapturePhoto();
         else if (Held != null && Held.Lamp != null && Station != null) Station.ToggleLamp(Held);
         else if (Held != null && Held.TapeAnchor != null) SelectTapePost(Held);
+        else if(Held==null&&InvestigationInteraction.Use(this,new Ray(transform.position,transform.forward),2)){}
         else { var lighting = FindFirstObjectByType<DemoLighting>(); if (lighting != null) lighting.UseTorch(transform); }
     }
 

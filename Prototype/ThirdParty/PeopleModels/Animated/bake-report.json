@@ -1,0 +1,170 @@
+[
+  {
+    "name": "Walker",
+    "avatar": "Adults/Male_Adult_05",
+    "motion": "m_walk_slow_01",
+    "motion_folder": "xy",
+    "source_frames": [
+      1,
+      45
+    ],
+    "fps": 30.0,
+    "duration": 1.4666666666666666,
+    "stride_distance": 1.2040624627651186,
+    "walk_speed": 0.8209516791580355,
+    "height_range": [
+      1.7806096847687396,
+      1.8061807454277894
+    ],
+    "bones": 80,
+    "vertices": 4180,
+    "polygons": 7836
+  },
+  {
+    "name": "Walker_Idle",
+    "avatar": "Adults/Male_Adult_05",
+    "motion": "m_idle_neutral_02",
+    "motion_folder": "static",
+    "source_frames": [
+      1,
+      466
+    ],
+    "fps": 30.0,
+    "duration": 15.5,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.8010949946910035,
+      1.8089045962769932
+    ],
+    "bones": 80,
+    "vertices": 4180,
+    "polygons": 7836
+  },
+  {
+    "name": "Talker",
+    "avatar": "Adults/Male_Adult_10",
+    "motion": "m_gestic_talk_neutral_01",
+    "motion_folder": "static",
+    "source_frames": [
+      1,
+      1068
+    ],
+    "fps": 30.0,
+    "duration": 35.56666666666667,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.7973930564478875,
+      1.8336882954711455
+    ],
+    "bones": 80,
+    "vertices": 3495,
+    "polygons": 6732
+  },
+  {
+    "name": "Talker_Idle",
+    "avatar": "Adults/Male_Adult_10",
+    "motion": "m_idle_neutral_02",
+    "motion_folder": "static",
+    "source_frames": [
+      1,
+      466
+    ],
+    "fps": 30.0,
+    "duration": 15.5,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.81872392814435,
+      1.8288136500938017
+    ],
+    "bones": 80,
+    "vertices": 3495,
+    "polygons": 6732
+  },
+  {
+    "name": "Listener",
+    "avatar": "Adults/Female_Adult_06",
+    "motion": "f_gestic_talk_neutral_01",
+    "motion_folder": "static",
+    "source_frames": [
+      1,
+      821
+    ],
+    "fps": 30.0,
+    "duration": 27.333333333333332,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.7278082581468066,
+      1.7390439143167689
+    ],
+    "bones": 80,
+    "vertices": 3669,
+    "polygons": 6992
+  },
+  {
+    "name": "Listener_Idle",
+    "avatar": "Adults/Female_Adult_06",
+    "motion": "f_idle_neutral_02",
+    "motion_folder": "static",
+    "source_frames": [
+      1,
+      338
+    ],
+    "fps": 30.0,
+    "duration": 11.233333333333333,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.7290328526046608,
+      1.7359141073973563
+    ],
+    "bones": 80,
+    "vertices": 3669,
+    "polygons": 6992
+  },
+  {
+    "name": "Phone",
+    "avatar": "Adults/Male_Adult_12",
+    "motion": "m_cell_phone_talk_01",
+    "motion_folder": "static",
+    "source_frames": [
+      154,
+      862
+    ],
+    "fps": 30.0,
+    "duration": 23.6,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.7055872710053943,
+      1.8039547157285043
+    ],
+    "bones": 80,
+    "vertices": 3383,
+    "polygons": 6722
+  },
+  {
+    "name": "Observer",
+    "avatar": "Professions/Business_Female_04",
+    "motion": "f_idle_neutral_02",
+    "motion_folder": "static",
+    "source_frames": [
+      1,
+      338
+    ],
+    "fps": 30.0,
+    "duration": 11.233333333333333,
+    "stride_distance": 0,
+    "walk_speed": 0,
+    "height_range": [
+      1.727127101333477,
+      1.7323366809921774
+    ],
+    "bones": 80,
+    "vertices": 4437,
+    "polygons": 8270
+  }
+]

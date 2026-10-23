@@ -1,0 +1,7 @@
+{
+  "result": "PASS",
+  "car_transforms": 21,
+  "pose_mesh_material_signature": "fca0f2fff130e66444e3472bf4fe03a66268e56e644603f7c131efac6dfd3314",
+  "reference": "Before-Livery-Evidence-20261021",
+  "scope": "Complete PoliceCar transform hierarchy, mesh references and material references. Light bake data intentionally excluded."
+}

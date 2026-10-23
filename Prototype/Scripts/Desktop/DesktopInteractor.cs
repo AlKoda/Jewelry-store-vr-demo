@@ -31,6 +31,20 @@ public sealed class DesktopInteractor : ToolHolder
     private Quaternion placedOrientation;
     protected override bool PreserveReleasePose => preservePlaced;
     public bool HasPlacementTarget { get; private set; }
+    private void OnGUI(){
+        if(!ReadDesktopInput||!View||(Panel&&(!Panel.HudVisible||Panel.CapturesInput)))return;
+        if(CarriedKit){DemoI18n.Label(new Rect(Screen.width*.25f,Screen.height-220,Screen.width*.5f,35),"Click: put kit on a clear floor or table   R: put down",GUI.skin.box);return;}
+        if(!InvestigationInteraction.Target(PointerRay(),2,this,out var hit))return;
+        string prompt=null;var clue=hit.collider.GetComponentInParent<EvidenceClue>();
+        if(FieldTool&&FieldTool.Kind==FieldInvestigationTool.Method.Brush&&clue&&clue.GetComponent<DustablePrint>())prompt="Hold G / Click and sweep: develop ridge mark";
+        else if(FieldTool&&clue&&clue.Available)prompt="G / Click: collect sample   R: return tool";
+        else if(clue&&clue.Available)prompt="G / Click: inspect evidence";
+        else if(hit.collider.GetComponentInParent<FieldInvestigationTool>())prompt="G / Click: take field tool";
+        else if(hit.collider.GetComponentInParent<PortableFieldKit>()&&hit.collider.GetComponentInParent<PortableFieldKit>().GripCollider==hit.collider)prompt="G / Click: carry field kit";
+        else if(hit.collider.GetComponentInParent<EvidenceContainer>())prompt="G / Click: open / close document box";
+        else if(hit.collider.GetComponentInParent<EvidenceRegister>())prompt="G / Click: next register page";
+        if(prompt!=null)DemoI18n.Label(new Rect(Screen.width*.25f,Screen.height-220,Screen.width*.5f,35),prompt,GUI.skin.box);
+    }
 
     private void Update()
     {
@@ -40,7 +54,9 @@ public sealed class DesktopInteractor : ToolHolder
         bool overPanel = Panel != null && Panel.PointerOverPanel;
         if (Input.GetMouseButtonDown(0) && !overPanel)
         {
-            if (Held != null)
+            if(CarriedKit)PlaceKit(PointerRay(),Reach);
+            else if(FieldTool)InvestigationInteraction.Use(this,PointerRay(),2);
+            else if (Held != null)
             {
                 if (HasPlacementTarget) Place();
                 else DemoFeedback.Post("Aim at the floor or a counter to place the " + DeployedTool.KindName(Held.Kind), FeedbackTone.Warning);
@@ -49,6 +65,7 @@ public sealed class DesktopInteractor : ToolHolder
             else if (HoveredSample != null) TakeSample(HoveredSample);
             else if (HoveringCamera) ToggleCamera();
             else if (HoldingCamera) EvidenceCamera.CapturePhoto();
+            else if(InvestigationInteraction.Use(this,PointerRay(),2)){}
             else if (Lighting != null) { if (Lighting.UVTorchModel != null && Lighting.UVTorchModel.activeSelf) Lighting.ToggleUVTorch(); else if (Lighting.FlashlightModel != null && Lighting.FlashlightModel.activeSelf) Lighting.ToggleFlashlight(); }
         }
         // 1-6 on the main row or the number pad, in the hotbar's order.
@@ -59,7 +76,8 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.E)) Rotate(RotateStep);
         float wheel = Input.GetAxis("Mouse ScrollWheel");
         if (wheel != 0 && !overPanel) Rotate(Mathf.Sign(wheel) * RotateStep);
-        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) Remove(Target);
+        if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) {if(CarriedKit)PutDownKit();else if(FieldTool)ReturnFieldTool();else Remove(Target);}
+        if(Input.GetKeyDown(KeyCode.G)&&!overPanel&&!Held&&!HoldingCamera){if(CarriedKit)PlaceKit(PointerRay(),Reach);else InvestigationInteraction.Use(this,PointerRay(),2);}
         if (Input.GetKeyDown(KeyCode.T)) Use(Target);
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
         if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();

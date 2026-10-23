@@ -1,0 +1,108 @@
+{
+  "result": "PASS",
+  "date": "2026-10-23",
+  "saved_scene": "UnityProject_Demo/Assets/CrimeSceneDemo/Scenes/JewelryStoreNight.unity",
+  "scene_sha256": "75ee5633bc756fba862ebc4a9231dfc46ebcb5a78452e85d51e300b9b84157ea",
+  "windows_player": "Builds/Windows/JewelryStoreDemo.exe",
+  "windows_assembly_sha256": "719806fe61d694794b4c170acd63685c0241d7c52b00e8a1d8fe4009bc4a5759",
+  "preview_sha256": "8525d13b2eec01c72fe8a3e5c3fc8788a08077b018e0717a6b66ba7fce96753f",
+  "field_tools": 4,
+  "evidence_targets": 14,
+  "sample_targets": 8,
+  "fieldwork_authored_triangles": 5606,
+  "curved_ridge_overlay_triangles": 24,
+  "play_mode_hierarchy_triangle_count": 5990,
+  "new_lights": 0,
+  "new_dynamic_rigidbodies": 0,
+  "verification_markers": {
+    "refine": [
+      "FIELDWORK_REFINEMENT_READY",
+      "PORTABLE_RIDGE_RENDER_PASS",
+      "CLEAN_REFLECTION_CAPTURE_PASS"
+    ],
+    "runtime": [
+      "PORTABLE_FIELDWORK_PASS",
+      "FIELDWORK_RUNTIME_PASS",
+      "FIELDWORK_TORCH_REPLACEMENT_PASS"
+    ],
+    "delivery": [
+      "PORTABLE_FIELDWORK_PASS",
+      "FIELDWORK_DELIVERY_PASS",
+      "VR_VISUAL_VALIDATION_PASS",
+      "TORCH_RENDERED_SHADOW_PASS"
+    ]
+  },
+  "checks": [
+    "source and Unity code/asset/GUID parity",
+    "actual near grip including hand inside trigger",
+    "desktop pointer carry/placement",
+    "two-handed exclusion and independent working tool",
+    "moving docks; tabletop/pavement support; wall/edge/air/lid-clearance rejection",
+    "latent/partial/complete brush hold; solid occlusion; correct lift tool and duplicate rejection",
+    "actual Start/event/JSON disk lifecycle and complete reset retaining earlier records",
+    "same-hand torch replacement safely puts down tools/case",
+    "strict Windows/VR visual build; existing scene, shadow, model, glass, street and car checks"
+  ],
+  "sources": [
+    {
+      "file": "Prototype/Scripts/Tools/PortableFieldKit.cs",
+      "sha256": "6d72bf1eb2c9490bf05fd61a4a2f80a3a60ffbe91ecef94efbde4c5a01b24a91"
+    },
+    {
+      "file": "Prototype/Scripts/Core/DustablePrint.cs",
+      "sha256": "f7375766c6047c3212791a994af6765391693f16975fc70b1858fbec3ea80c7d"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/PortableFieldwork.cs",
+      "sha256": "b66987dd505a7524023a6b577f1e6922881682be2fd6ad59dc9d58e1f838e0f3"
+    },
+    {
+      "file": "Prototype/Scripts/Tools/FieldInvestigationTool.cs",
+      "sha256": "0f29477047d15f6cca5efb4a883e5c83f9d1a77393b1946ca42dcee2cb723ed3"
+    },
+    {
+      "file": "Prototype/Scripts/Tools/ToolHolder.cs",
+      "sha256": "6e1e34d67a0dfbee272ddba3d06d223525785edeb12768e360c6a1a6ae77e4e8"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceClue.cs",
+      "sha256": "6a3a509d7bdd48c6d7a1fa573305883ae827810cffa9d9cd1a9a0a0d94316d5b"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceContainer.cs",
+      "sha256": "8a40da777e527cdd1b04b673c4b31cae23c7cd651d44d8e4538f13ea4a389b32"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceRegister.cs",
+      "sha256": "8f2390a0999f2545f9054193abd76ae38079b621b807276a0af64fad5fee2549"
+    },
+    {
+      "file": "Prototype/Scripts/Core/InvestigationInteraction.cs",
+      "sha256": "39bae0f4d7d3813d3a6cc6631b8de2205a1b21daa535fa5cf6723d45157f93d6"
+    },
+    {
+      "file": "Prototype/Scripts/Desktop/DesktopInteractor.cs",
+      "sha256": "6c286de4b6cd7f57fdbef07a7ea49270fde2de6fecc34cca59257c6b9689080e"
+    },
+    {
+      "file": "Prototype/Scripts/VR/HandInteractor.cs",
+      "sha256": "5cafdc3766de98381e3576c118705101b0205eabe937d5e950d1761154ce5a98"
+    },
+    {
+      "file": "Prototype/Scripts/VR/XRGhostHand.cs",
+      "sha256": "299b145f7f09f66530ae749cffbd3aebbabe425419d9dae47047e262f6888d61"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/InvestigationGameplay.cs",
+      "sha256": "59f94735d30837987be2833a1c85404d36ab4be68a44bbf57c30fc3cf96cd38c"
+    },
+    {
+      "file": "Prototype/Scripts/Resources/Arabic.json",
+      "sha256": "ab73d67c4aa73d5ec6cd3a52f14cdd080420adda53ff0a3f9920516dd7777d8c"
+    }
+  ],
+  "protection_report": "PROTECTION.json",
+  "research": "../Fieldwork/RESEARCH.md",
+  "delivery_scope": "Local only; no GitHub/official ZIP promotion, car untouched, no new standalone APK",
+  "hardware_acceptance": "Quest hand fit, stereo legibility and frame time unverified"
+}

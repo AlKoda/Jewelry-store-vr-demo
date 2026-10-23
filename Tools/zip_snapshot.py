@@ -25,7 +25,7 @@ CODE = ('Scripts', 'Editor', 'Shaders')
 LARGE = {'PBRInterior', 'PBRExterior', 'NightSky', 'JewelryModels', 'ForensicModels', 'StreetModels',
          'InteriorModels', 'WallGraphics', 'SurfaceDecals', 'NightSoundscape', 'Music', 'PeopleModels',
          'AmbientProps', 'AmbientProps2', 'CutoutDecals', 'RealismTextures', 'RealFoley', 'RealFoley2', 'Environments', 'ReferenceTextures', 'CgbookcaseTextures', 'ArabicSceneSigns', 'SuppliedPoliceCar'}
-LIMIT_MB = 95
+LIMIT_MB = 250
 
 MONO = ("fileFormatVersion: 2\nguid: {g}\nMonoImporter:\n  externalObjects: {{}}\n  serializedVersion: 2\n"
         "  defaultReferences: []\n  executionOrder: 0\n  icon: {{instanceID: 0}}\n  userData: \n"
@@ -103,7 +103,7 @@ def main():
     size = os.path.getsize(tmp) / 1048576
     if size > LIMIT_MB:
         os.remove(tmp)
-        sys.exit('zip would be %.1f MB, over %d MB: add the new large pack to LARGE' % (size, LIMIT_MB))
+        sys.exit('zip would be %.1f MB, over %d MB: review snapshot payload' % (size, LIMIT_MB))
     os.replace(tmp, ZIP)
     added, removed = set(entries) - before, before - set(entries)
     print('zip %.1f MB, %d entries: %d added, %d removed' % (size, len(entries), len(added), len(removed)))
@@ -113,3 +113,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

@@ -140,7 +140,8 @@ public static partial class PresentationPolish {
         var fascia=root.Find("Facade/FasciaSignSurround").GetComponentInChildren<MeshRenderer>();Check(fascia.bounds.max.y<3.7f&&fascia.bounds.max.z<-.25f,"Exterior wordmark touches upper facade decoration");
         foreach(var r in root.GetComponentsInChildren<MeshRenderer>().Where(r=>r.name=="ClosedSign"||r.name=="ClosedSignBack")){
             Check(r.sharedMaterial.mainTexture.name==(r.name=="ClosedSign"?"Closed_Print":"Open_Print"),"Wrong door-card face");
-            Check(Mathf.Abs(r.transform.localPosition.z)>.03f,"Door-card faces are coplanar");
+            var other=r.transform.parent.Find(r.name=="ClosedSign"?"ClosedSignBack":"ClosedSign");
+            Check(other&&Mathf.Abs(r.transform.localPosition.z-other.localPosition.z)>.008f&&Vector3.Dot(r.transform.forward,other.forward)<-.99f,"Door-card faces overlap or face the same direction");
         }
         foreach(Transform t in root.Find("Dressing/BespokeShowcaseInserts")){
             foreach(var f in t.GetComponentsInChildren<MeshFilter>())foreach(var v in f.sharedMesh.vertices)Check(Mathf.Abs(v.x)<=.8f&&Mathf.Abs(v.z)<=.255f&&v.y>=.70f&&v.y<=1.015f,"Showcase insert clips its glass/deck: "+t.name);
@@ -157,15 +158,20 @@ public static partial class PresentationPolish {
             hand.transform.SetPositionAndRotation(new Vector3(31,.65f,29),Quaternion.Euler(-12,85,22));hand.FollowHand();
             p=hand.transform.TransformPoint(offset);q=hand.transform.rotation*rotation;
             Check(Vector3.Distance(item.transform.position,p)<.0001f&&Quaternion.Angle(item.transform.rotation,q)<.01f,"Grip offset does not follow controller delta");
-            hand.Release();Check(item.Free&&Vector3.Distance(item.transform.position,p)<.0001f&&Quaternion.Angle(item.transform.rotation,q)<.01f,"Release changes placed item pose");
-            var desktop=group.AddComponent<DesktopInteractor>();desktop.ReadDesktopInput=false;
             var floor=GameObject.CreatePrimitive(PrimitiveType.Cube);floor.transform.SetParent(group.transform,false);floor.transform.position=new Vector3(31,-.05f,29);floor.transform.rotation=Quaternion.identity;floor.transform.localScale=new Vector3(6,.1f,6);Physics.SyncTransforms();
+            float Bottom()=>item.GetComponentsInChildren<MeshFilter>().Where(f=>f.GetComponent<TextMesh>()==null).SelectMany(f=>f.sharedMesh.vertices.Select(v=>f.transform.TransformPoint(v).y)).Min();
+            hand.Release();Check(item.Free&&Mathf.Abs(item.transform.position.x-p.x)<.0001f&&Mathf.Abs(item.transform.position.z-p.z)<.0001f&&Quaternion.Angle(item.transform.rotation,q)<.01f&&Mathf.Abs(Bottom())<.002f,"VR release loses orientation or floats above support: before="+p+" after="+item.transform.position+" angle="+Quaternion.Angle(item.transform.rotation,q)+" bottom="+Bottom());p=item.transform.position;
+            var desktop=group.AddComponent<DesktopInteractor>();desktop.ReadDesktopInput=false;
+            Physics.SyncTransforms();
             desktop.Hold(item);desktop.Carry(new Ray(new Vector3(p.x,3,p.z),Vector3.down));
             Check(Vector3.Distance(item.transform.position,p)<.0001f&&Quaternion.Angle(item.transform.rotation,q)<.01f,"Desktop pickup snaps placed item");
             desktop.Carry(new Ray(new Vector3(p.x+.5f,3,p.z),Vector3.down));p+=Vector3.right*.5f;
-            desktop.Place();Check(item.Free&&Vector3.Distance(item.transform.position,p)<.0001f&&Quaternion.Angle(item.transform.rotation,q)<.01f,"Desktop movement/release loses placement offset");
+            desktop.Place();Check(item.Free&&Mathf.Abs(item.transform.position.x-p.x)<.0001f&&Mathf.Abs(item.transform.position.z-p.z)<.0001f&&Quaternion.Angle(item.transform.rotation,q)<.01f&&Mathf.Abs(Bottom())<.002f,"Desktop release loses placement offset or support contact");
+            var support=GameObject.CreatePrimitive(PrimitiveType.Cube);support.transform.SetParent(group.transform,false);support.transform.SetPositionAndRotation(new Vector3(p.x,.55f,p.z),Quaternion.identity);support.transform.localScale=new Vector3(.4f,.1f,.4f);
+            item.transform.position=new Vector3(p.x,1.3f,p.z);hand.Hold(item);Physics.SyncTransforms();hand.Release();
+            Check(item.Free&&Quaternion.Angle(item.transform.rotation,q)<.01f&&Mathf.Abs(Bottom()-.6f)<.002f,"Repositioned marker does not seat on a raised counter");
         }finally{hand.ReleaseAll();Object.DestroyImmediate(item.gameObject);Object.DestroyImmediate(group);}
-        VRVisualValidation.CheckPreviewTorchOwnership();Debug.Log("SHOP_REVIEW_CHECKS_PASS five unique Arabic signs, office clearance, eight insert bounds, half-size markers, exact offset pickup/move/release");
+        VRVisualValidation.CheckPreviewTorchOwnership();Debug.Log("SHOP_REVIEW_CHECKS_PASS five unique Arabic signs, office clearance, eight insert bounds, half-size markers, offset pickup/move with orientation-preserving surface placement");
     }
     public static void ShopFinalizeRun(){try{
         EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;StoreKit.Palette();

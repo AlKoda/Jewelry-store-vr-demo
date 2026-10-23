@@ -24,12 +24,13 @@ public static partial class PresentationPolish {
         using(var hash=SHA256.Create())return BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(string.Join("\n",faces.OrderBy(f=>f))))).Replace("-","");
     }
     static void ApplyRawCarMaterialOnly(Transform model){
-        var m=Mat(Folder,"SuppliedCarUntexturedClay",new Color(.42f,.43f,.44f),.13f);
+        if(model.GetComponentsInChildren<MeshRenderer>(true).Any(r=>r.sharedMaterials.Any(m=>m&&m.shader.name=="CrimeScene/OmanPoliceCar"))){ApplyPoliceLivery(model);return;}
+        var m=Mat(Folder,"SuppliedCarUntexturedClay",new Color(.42f,.43f,.44f),0);
         m.shader=Shader.Find("CrimeScene/RawCarClay");if(!m.shader)throw new Exception("Raw car shader missing");m.SetFloat("_DebugGeometryNormals",0);
         foreach(string p in m.GetTexturePropertyNames())m.SetTexture(p,null);
         foreach(string keyword in m.shaderKeywords)m.DisableKeyword(keyword);
-        m.SetFloat("_Metallic",0);m.SetFloat("_Glossiness",.13f);m.SetColor("_EmissionColor",Color.black);m.globalIlluminationFlags=MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-        foreach(var r in model.GetComponentsInChildren<MeshRenderer>(true))r.sharedMaterials=Enumerable.Repeat(m,r.sharedMaterials.Length).ToArray();
+        m.SetFloat("_Metallic",0);m.SetFloat("_Glossiness",0);m.SetColor("_EmissionColor",Color.black);m.globalIlluminationFlags=MaterialGlobalIlluminationFlags.EmissiveIsBlack;
+        foreach(var r in model.GetComponentsInChildren<MeshRenderer>(true)){r.sharedMaterials=Enumerable.Repeat(m,r.sharedMaterials.Length).ToArray();r.receiveGI=ReceiveGI.LightProbes;r.lightmapIndex=-1;r.lightProbeUsage=LightProbeUsage.BlendProbes;}
         EditorUtility.SetDirty(m);
     }
     static void RawCarImport(){
@@ -47,10 +48,12 @@ public static partial class PresentationPolish {
         }
         FlatCarNormalsRenderCheck();
         foreach(var r in model.GetComponentsInChildren<MeshRenderer>())foreach(var m in r.sharedMaterials){
-            if(!m||m.shader.name!="CrimeScene/RawCarClay"||m.GetFloat("_DebugGeometryNormals")!=0||m.GetTexturePropertyNames().Any(p=>m.GetTexture(p))||m.IsKeywordEnabled("_EMISSION")||m.GetFloat("_Metallic")!=0)throw new Exception("Car still has texture/emission/metallic finish");
+            bool clay=m&&m.shader.name=="CrimeScene/RawCarClay"&&!m.GetTexturePropertyNames().Any(p=>m.GetTexture(p))&&m.GetFloat("_Metallic")==0;
+            bool paint=m&&m.shader.name=="CrimeScene/OmanPoliceCar"&&AssetDatabase.GetAssetPath(m.mainTexture)==LiveryFolder+"/PoliceAuthoredPaint.png"&&m.GetTexture("_SurfaceMap");
+            if((!clay&&!paint)||m.GetFloat("_DebugGeometryNormals")!=0||m.IsKeywordEnabled("_EMISSION"))throw new Exception("Car must use original face shading with plain clay or approved authored livery");
         }
         using(var hash=SHA256.Create())if(BitConverter.ToString(hash.ComputeHash(File.ReadAllBytes(RawCarPath))).Replace("-","")!="BEF2445C622AC69BAFB734D90BE5F7173EC9046F03790B48DD18D6761CE1445A")throw new Exception("Supplied FBX bytes changed");
-        Debug.Log($"RAW_CAR_VALIDATION_PASS rendered face shading for {total} triangles; original FBX bytes/triangle geometry, uniform placement and collision retained; zero material maps");
+        Debug.Log($"RAW_CAR_VALIDATION_PASS rendered face shading for {total} triangles; original FBX bytes/triangle geometry, uniform placement and collision retained; plain clay or authored paint only");
     }
     static void GeneralSceneReview(){
         int renderers=0,slots=0,missing=0,badMeshes=0,zeroNormals=0,duplicateObjects=0;
@@ -76,11 +79,11 @@ public static partial class PresentationPolish {
         if(missing>0||badMeshes>0)throw new Exception("Scene reference/mesh review failed; see current-scene-review.txt");
         Debug.Log("GENERAL_SCENE_REVIEW_PASS "+report[0]);
     }
-    static void FlatCarNormalsRenderCheck(){
+    static void FlatCarNormalsRenderCheck(string shaderName="CrimeScene/RawCarClay"){
         var stage=new GameObject("Temporary flat car shading check");stage.transform.position=Vector3.one*1000;
         var cube=GameObject.CreatePrimitive(PrimitiveType.Cube);cube.transform.SetParent(stage.transform,false);cube.layer=31;
         var mesh=Object.Instantiate(cube.GetComponent<MeshFilter>().sharedMesh);mesh.normals=mesh.vertices.Select(v=>v.normalized).ToArray();cube.GetComponent<MeshFilter>().sharedMesh=mesh;
-        var material=new Material(Shader.Find("CrimeScene/RawCarClay"));material.SetFloat("_DebugGeometryNormals",1);cube.GetComponent<Renderer>().sharedMaterial=material;
+        var material=new Material(Shader.Find(shaderName));material.SetFloat("_DebugGeometryNormals",1);cube.GetComponent<Renderer>().sharedMaterial=material;
         var go=new GameObject("Verification camera");go.transform.SetParent(stage.transform,false);var camera=go.AddComponent<Camera>();camera.transform.localPosition=new Vector3(3,2.5f,-4);camera.transform.LookAt(stage.transform.position);camera.orthographic=true;camera.orthographicSize=1;camera.cullingMask=1<<31;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;camera.stereoTargetEye=StereoTargetEyeMask.None;camera.renderingPath=RenderingPath.Forward;
         var target=new RenderTexture(256,256,24);camera.targetTexture=target;var previous=RenderTexture.active;bool fog=RenderSettings.fog;Texture2D pixels=null;
         try{

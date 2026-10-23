@@ -1,5 +1,7 @@
 # PeopleModels: posed human figures for the night jewellery store
 
+Animated crowd addition (October 21, local preview): see [Animated/README.md](Animated/README.md) for five skinned motion-captured bystanders, budgets, reproduction and provenance. The static OBJ instructions below do not apply to the new FBX skins.
+
 Static figures that give the burglary scene some life: a uniformed police officer by the patrol car, a forensic examiner at work, two plain-clothes detectives and a passer-by on the far pavement. They were made for Unity 6000.6.2f1 with the Built-in pipeline and no packages (OBJ/MTL plus textures). Prepared October 14-15, 2026. **Not imported or checked in Unity yet.**
 
 Revised October 15, 2026 after review: the forensic examiner's white coverall and cap were near-clipped (median 245 sRGB, about a third of the texels at 250 or more), so they would have blown out to flat white under the torch, the camera flash and bloom. `ForensicExaminer_Body_Color.jpg` and `ForensicExaminer_Protection_Color.jpg` were rebuilt: the white now has a median of 220 sRGB and a maximum of 240 (below Unity's 243 limit for non-metal albedo), and the fold shading is kept. `Source~/Preview.jpg` was re-rendered. The bone labelling in `Source~/pose_export.py` now breaks ties deterministically, so a rebuild reproduces the pack byte for byte; as a result `ForensicExaminer_Body_Normal.jpg` also changed slightly (two triangles at the right shoulder now count as sleeve). Nothing else changed.

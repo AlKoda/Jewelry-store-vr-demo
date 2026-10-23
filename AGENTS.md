@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Quest 3 standalone app (Koda's request): Android build, headset quality tier, in-headset presenter menu, install scripts | new: Scripts/Core/DemoPlatform, Scripts/VR/XRPresenterMenu, Editor/Build/QuestBuild, Build-Quest-App.cmd, Tools/build-quest.cmd; small hooks in DemoLaunchOptions, NightQuality, DemoLighting, ToolStation, EvidenceCamera, XRControllerInput, PackImport, Tools/build-demo.cmd | 2026-10-20 | first Android build PASSED on Koda's PC (APK 111 MB, Oct 20); install waits on headset developer mode |
-| ChatGPT | Scene refinement review and plain unsmoothed car shading | ReviewAndRawCar, PresentationPolish, RawCarClay shader, SuppliedPoliceCar docs, validation, Docs, snapshot | 2026-10-20 | done; general scene audit, raw car GPU shading/geometry checks, fresh bake and strict Windows build passed |
+| ChatGPT | Publish current local work and handoff at Koda's explicit request | Prototype, Tools, Docs, refreshed canonical snapshot | 2026-10-23 | upload authorized; latest headset issues recorded only and remain open; no new fixes in this batch |
 
 ## One project: edit it, never fork it
 
@@ -24,7 +24,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 - **Every new `.cs` or `.shader` needs a `.meta` beside it, with a fresh guid** (`python3 -I Tools/zip_snapshot.py` writes missing ones). Never change or delete an existing `.meta`: scenes find scripts by that guid. Move a script only together with its `.meta` (`git mv` both).
 - **Third-party assets:** `Prototype/ThirdParty/<pack>/` with LICENSE.txt, sources.json and README.md, plus a row in `Docs/ASSET_REGISTER.md`. CC0 preferred, CC BY with attribution accepted. Convert glTF/GLB with `Tools/glb_to_obj.py`. Never delete a pack's licence file. Keep sounds, textures, models and code even when unused: they may be used later.
 - **Docs:** live docs in `Docs/`. Reports of finished work go to `Docs/History/`. Reference images go to `Docs/References/`. Validators write to `Docs/Verification/<run>`. Never commit photos taken in the demo, Library, Builds, logs or Unity project folders (`UnityProject*`).
-- **The snapshot zip:** `Downloads/JewelryStore_Unity6000.6.2f1.zip` is the only one. After changing scripts, shaders or small ThirdParty packs, refresh it with `python3 -I Tools/zip_snapshot.py`. Keep it under 95 MB; large packs stay out (the launchers copy them from the checkout).
+- **The snapshot zip:** `Downloads/JewelryStore_Unity6000.6.2f1.zip` is the only one. After changing scripts, shaders or small ThirdParty packs, refresh it with `python3 -I Tools/zip_snapshot.py`. The canonical snapshot uses Git LFS (250 MB guard); clone with Git LFS and run git lfs pull. Large packs can stay out (the launchers copy them from the checkout).
 
 ## Working rules
 
@@ -34,5 +34,6 @@ Update your own row **before** you start and again when you stop. Pull first: an
 - Work directly on `main`. Pull before editing and again before pushing. Small commits with clear messages.
 - With every batch: update the top of `Docs/HANDOFF.md` (state table) and `Docs/ROADMAP.md`. Mark anything not run in Unity as **unverified**. Keep HANDOFF short: it describes the present, and the History files hold the past.
 - Nothing can be compiled outside Unity. Koda runs the validators on the PC and reports the results; never claim something works in Unity or the headset before that report.
+
 
 

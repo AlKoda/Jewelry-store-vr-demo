@@ -1,0 +1,44 @@
+{
+  "created": "2026-10-23",
+  "author": "Jewelry store project",
+  "license": "Project-owned original artwork; Noto Sans Arabic font under parent Fonts licence",
+  "method": "Pillow, fixed-seed paper grain, correctly shaped Arabic type; fictional shop documents, no generated image lettering",
+  "reproduce": "Tools/make_field_documents.py",
+  "files": [
+    {
+      "file": "CaseLabel.png",
+      "sha256": "be09f0f01b146d502080af6a21f3de1f2aa71eea01ac66ab03a3c1ab7ba7d214",
+      "bytes": 17647
+    },
+    {
+      "file": "FieldGuide.png",
+      "sha256": "6a375091a27619f43c690a785cae46b511132b7aefb5f614e7d821f489244736",
+      "bytes": 464354
+    },
+    {
+      "file": "RegisterPaper.png",
+      "sha256": "78ba43608c9a20d2008bfbd1ae0ddd7b8e1aa2e846c5390008a4dc0a65165655",
+      "bytes": 409673
+    },
+    {
+      "file": "RepairIntake.png",
+      "sha256": "8d92f4dc041d3d37cf79377bfed626513a3b4830169a04f797608d781b09830c",
+      "bytes": 441018
+    },
+    {
+      "file": "SalesReceipt.png",
+      "sha256": "b222a86a686130bca0af6c7526771c77d7b1fd77ef04137ff502226b7f179e1f",
+      "bytes": 453009
+    },
+    {
+      "file": "StaffNote.png",
+      "sha256": "2fea3b806cec00c3a52aadb8412624fe1bce328e86010ed8860918d98fd7c60d",
+      "bytes": 444226
+    },
+    {
+      "file": "StockTag.png",
+      "sha256": "925cf2c08139ed58e506f2e16f089e6ef33a73a9ecf6c24ec8acfe62596268f5",
+      "bytes": 428843
+    }
+  ]
+}

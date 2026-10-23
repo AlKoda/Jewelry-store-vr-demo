@@ -1,0 +1,516 @@
+{
+  "pack": "PeopleModels animated derivatives",
+  "prepared": "2026-10-21",
+  "upstream_commit": "0943055db6ec570bcef9f2c8b41c9e5467c808f9",
+  "license": "MIT; see ../LICENSE.txt",
+  "source_files": [
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_05/Export/Male_Adult_05.fbx",
+      "sha256": "cd0e17505d7b4148cf3b19ccdec9a90f063671f841b60d193d3527a0980052d0",
+      "bytes": 536496,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_05/Export/Male_Adult_05.fbx"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_10/Export/Male_Adult_10.fbx",
+      "sha256": "6a7a693d9a7ea6c866037f0cc8e45c5243bbcff008665b2ae505f72a6648ae00",
+      "bytes": 541104,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_10/Export/Male_Adult_10.fbx"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_12/Export/Male_Adult_12.fbx",
+      "sha256": "b44fa6011b934abd69954fd6c5025c1e2011e05c7892acb6bbc2e9cf70a84014",
+      "bytes": 487776,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_12/Export/Male_Adult_12.fbx"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Female_Adult_06/Export/Female_Adult_06.fbx",
+      "sha256": "ba3d6050d57d806b1461af48af446de5841a16d181d24f9c893f78949c193b20",
+      "bytes": 529632,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Female_Adult_06/Export/Female_Adult_06.fbx"
+    },
+    {
+      "path": "Assets/Avatars/Professions/Business_Female_04/Export/Business_Female_04.fbx",
+      "sha256": "68515701a9fd49a3e1f3632314da5def1169fe35896d34fbb10c5dcd78f2ca18",
+      "bytes": 588672,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Professions/Business_Female_04/Export/Business_Female_04.fbx"
+    },
+    {
+      "path": "Assets/Animations/all_animations_max_motextr_xy/m_walk_slow_01.max.fbx",
+      "sha256": "8c5e5ed18be9e1062a26d230677d2801a679c70fd67f8aa8de14ff37f6d20577",
+      "bytes": 1066224,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_xy/m_walk_slow_01.max.fbx"
+    },
+    {
+      "path": "Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_02.max.fbx",
+      "sha256": "d6d13b12e1f8d677dfaffef342a5ffeacf5ee3b38036de83425ab68316cd4e5e",
+      "bytes": 2938656,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_idle_neutral_02.max.fbx"
+    },
+    {
+      "path": "Assets/Animations/all_animations_max_motextr_static/m_gestic_talk_neutral_01.max.fbx",
+      "sha256": "4c2b9ff481a9538dafbbe7f6aa6ffd6b948b5d34bb16a1e2052e943bbbbd3cd8",
+      "bytes": 5977648,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_gestic_talk_neutral_01.max.fbx"
+    },
+    {
+      "path": "Assets/Animations/all_animations_max_motextr_static/f_idle_neutral_02.max.fbx",
+      "sha256": "0e7720884f3f4716c247dedb3467a07819ea52bc9169f9a1e1311152998c4ba3",
+      "bytes": 2335264,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/f_idle_neutral_02.max.fbx"
+    },
+    {
+      "path": "Assets/Animations/all_animations_max_motextr_static/f_gestic_talk_neutral_01.max.fbx",
+      "sha256": "fee2c764dcfac6f2edd85e73e11b1a13aac305372cbd657207d4c947b21a2476",
+      "bytes": 4761664,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/f_gestic_talk_neutral_01.max.fbx"
+    },
+    {
+      "path": "Assets/Animations/all_animations_max_motextr_static/m_cell_phone_talk_01.max.fbx",
+      "sha256": "9501002826cec966b7e3abfb9e1dfb5a9c528760343b0d6509a3ce4e0f85a2d7",
+      "bytes": 5374704,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Animations/all_animations_max_motextr_static/m_cell_phone_talk_01.max.fbx"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_05/Textures/m009_body_color.tga",
+      "sha256": "cf5704a0c083d57dab9b7cfdb797d8440fffd0128c7b560b8daad15c5dbcaad7",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_05/Textures/m009_body_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_05/Textures/m009_head_color.tga",
+      "sha256": "2ff27ddb9b4b63ec75ab121813890c34be569c26de99687cbf29e84cb814a22e",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_05/Textures/m009_head_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_05/Textures/m009_opacity_color.tga",
+      "sha256": "959801169cfd2274b72d8c7a052d4b83029c5f9a8afddf8d69837361fd411cf2",
+      "bytes": 16777260,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_05/Textures/m009_opacity_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_10/Textures/m024_body_color.tga",
+      "sha256": "5424cf19d81306897f005a94e104cfff08dd0d75cba57734cc056baab85e12cb",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_10/Textures/m024_body_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_10/Textures/m024_head_color.tga",
+      "sha256": "60e12ea8f638ddeb99f315a805b907c7ddbb5ea048234b0b1e58c5bfb8bc1dd3",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_10/Textures/m024_head_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_10/Textures/m024_opacity_color.tga",
+      "sha256": "801be5b63549f6ca46c405a4d86c723735a7c4edcbb042c453bdb6fed31bfbdb",
+      "bytes": 4194348,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_10/Textures/m024_opacity_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_color.tga",
+      "sha256": "df4f7dfa0dd1b7fea8ec723be18d00cbb511698a933a05add9d219860e71e51f",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_color.tga",
+      "sha256": "1b625b6c5a3861c72284fe03707a27bca50ded1c33d0b563b867aad9aaf5d828",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_opacity_color.tga",
+      "sha256": "8c7268f2057365ebd3b318e9e2802871185ee7e44b5ff401d4ce8a14f0cebf70",
+      "bytes": 4194348,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Female_Adult_06/Textures/f202_opacity_color.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_normal.tga",
+      "sha256": "2695e77a9bf3bceee2afb4d2e233c08eae01b37bb14c460d6ff27c00767f63ee",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Female_Adult_06/Textures/f202_body_normal.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_normal.tga",
+      "sha256": "1c75e22ee39269e831b5fe7458780d290578fd2bb79e3bc26e95a91dc6e798f9",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Female_Adult_06/Textures/f202_head_normal.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_05/Textures/m009_body_normal.tga",
+      "sha256": "17fe756165fb9d39ee0c1bbae956bcc01360fd2a333c258b95bbe4002975458d",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_05/Textures/m009_body_normal.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_05/Textures/m009_head_normal.tga",
+      "sha256": "c7077420b31c5146ce30d2ead43d530d7ceeb432ead7f56db185f64496e26b6c",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_05/Textures/m009_head_normal.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_10/Textures/m024_body_normal.tga",
+      "sha256": "7a9e4d43aa92d9eaf9d85d81a6554dea6ade8196f7416b325bf8107da45ccb66",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_10/Textures/m024_body_normal.tga"
+    },
+    {
+      "path": "Assets/Avatars/Adults/Male_Adult_10/Textures/m024_head_normal.tga",
+      "sha256": "42a8eeecd5c552b1052e5a9d2f4ced23b67fa78df4c6854ad95f21cb5e490393",
+      "bytes": 12582956,
+      "url": "https://raw.githubusercontent.com/microsoft/Microsoft-Rocketbox/0943055db6ec570bcef9f2c8b41c9e5467c808f9/Assets/Avatars/Adults/Male_Adult_10/Textures/m024_head_normal.tga"
+    }
+  ],
+  "bake_configuration": [
+    {
+      "name": "Walker",
+      "avatar": "Adults/Male_Adult_05",
+      "motion": "m_walk_slow_01",
+      "motion_folder": "xy",
+      "source_frames": [
+        1,
+        45
+      ],
+      "fps": 30.0,
+      "duration": 1.4666666666666666,
+      "stride_distance": 1.2040624627651186,
+      "walk_speed": 0.8209516791580355,
+      "height_range": [
+        1.7806096847687396,
+        1.8061807454277894
+      ],
+      "bones": 80,
+      "vertices": 4180,
+      "polygons": 7836
+    },
+    {
+      "name": "Walker_Idle",
+      "avatar": "Adults/Male_Adult_05",
+      "motion": "m_idle_neutral_02",
+      "motion_folder": "static",
+      "source_frames": [
+        1,
+        466
+      ],
+      "fps": 30.0,
+      "duration": 15.5,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.8010949946910035,
+        1.8089045962769932
+      ],
+      "bones": 80,
+      "vertices": 4180,
+      "polygons": 7836
+    },
+    {
+      "name": "Talker",
+      "avatar": "Adults/Male_Adult_10",
+      "motion": "m_gestic_talk_neutral_01",
+      "motion_folder": "static",
+      "source_frames": [
+        1,
+        1068
+      ],
+      "fps": 30.0,
+      "duration": 35.56666666666667,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.7973930564478875,
+        1.8336882954711455
+      ],
+      "bones": 80,
+      "vertices": 3495,
+      "polygons": 6732
+    },
+    {
+      "name": "Talker_Idle",
+      "avatar": "Adults/Male_Adult_10",
+      "motion": "m_idle_neutral_02",
+      "motion_folder": "static",
+      "source_frames": [
+        1,
+        466
+      ],
+      "fps": 30.0,
+      "duration": 15.5,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.81872392814435,
+        1.8288136500938017
+      ],
+      "bones": 80,
+      "vertices": 3495,
+      "polygons": 6732
+    },
+    {
+      "name": "Listener",
+      "avatar": "Adults/Female_Adult_06",
+      "motion": "f_gestic_talk_neutral_01",
+      "motion_folder": "static",
+      "source_frames": [
+        1,
+        821
+      ],
+      "fps": 30.0,
+      "duration": 27.333333333333332,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.7278082581468066,
+        1.7390439143167689
+      ],
+      "bones": 80,
+      "vertices": 3669,
+      "polygons": 6992
+    },
+    {
+      "name": "Listener_Idle",
+      "avatar": "Adults/Female_Adult_06",
+      "motion": "f_idle_neutral_02",
+      "motion_folder": "static",
+      "source_frames": [
+        1,
+        338
+      ],
+      "fps": 30.0,
+      "duration": 11.233333333333333,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.7290328526046608,
+        1.7359141073973563
+      ],
+      "bones": 80,
+      "vertices": 3669,
+      "polygons": 6992
+    },
+    {
+      "name": "Phone",
+      "avatar": "Adults/Male_Adult_12",
+      "motion": "m_cell_phone_talk_01",
+      "motion_folder": "static",
+      "source_frames": [
+        154,
+        862
+      ],
+      "fps": 30.0,
+      "duration": 23.6,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.7055872710053943,
+        1.8039547157285043
+      ],
+      "bones": 80,
+      "vertices": 3383,
+      "polygons": 6722
+    },
+    {
+      "name": "Observer",
+      "avatar": "Professions/Business_Female_04",
+      "motion": "f_idle_neutral_02",
+      "motion_folder": "static",
+      "source_frames": [
+        1,
+        338
+      ],
+      "fps": 30.0,
+      "duration": 11.233333333333333,
+      "stride_distance": 0,
+      "walk_speed": 0,
+      "height_range": [
+        1.727127101333477,
+        1.7323366809921774
+      ],
+      "bones": 80,
+      "vertices": 4437,
+      "polygons": 8270
+    }
+  ],
+  "changes": [
+    "Source mesh, weights and UVs retained; 80-bone world retarget, local-basis bake with captured parent matrices, in-place feet-grounded animation, cyclic tails; 15 sampled poses per second.",
+    "New TGA maps converted to PNG at 1024/512; albedo RGB maximum 238 and original cutout alpha retained. Phone/Observer reuse existing parent textures.",
+    "One project-created phone prop, 3 weathered barrier sections, shared soft foot contacts. No new lights or physics forces."
+  ],
+  "files": [
+    {
+      "file": "Animated/bake-report.json",
+      "bytes": 3597,
+      "sha256": "4f52670c0115903229d56b17f63bda55fba79e9cba7ab42b5fc79efb6e0268ad",
+      "license": "Project-owned",
+      "author": "Jewelry-store-vr-demo project"
+    },
+    {
+      "file": "Animated/Listener.fbx",
+      "bytes": 1035868,
+      "sha256": "f161f319403ab9bfac95164247ae1f4e54d33853fc6f0837a017f25534b0c8cd",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Listener_Body_Color.png",
+      "bytes": 953343,
+      "sha256": "21dbce60c544d8b79d087793496c2d32f4d3b3746b54dd79daab8f8fa94870a5",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Listener_Body_Normal.png",
+      "bytes": 257422,
+      "sha256": "23e34cdc9154faed56d009db216697c070f3912eb0d5aa3cd2fef6a7bc073c15",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Listener_Cutout_Color.png",
+      "bytes": 409987,
+      "sha256": "9e0ad7f7eb115dd7bf50be4adc969229c011e7063bca376bdc8a900e74e3ef29",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Listener_Head_Color.png",
+      "bytes": 890950,
+      "sha256": "abd23e5c37d6d7bc4079e11d27535ca9814540a81daa8246535b2d5f98cbdc4f",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Listener_Head_Normal.png",
+      "bytes": 258975,
+      "sha256": "5f8e531a862430952a4d2f71a729c8f682bbc99014ec2c709e24b34008dcd27e",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Listener_Idle.fbx",
+      "bytes": 694396,
+      "sha256": "08ddb91f7573518461915abd9fc6a7785747d8dbd97214c0d1c8cd0a7fa1907d",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Observer.fbx",
+      "bytes": 749388,
+      "sha256": "5bfcae564ff5eba7fbec13a23cc7d5a87e6d1b38f4d9fda16b5464138bd93a0b",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Phone.fbx",
+      "bytes": 942172,
+      "sha256": "d696bb99a995a88836b21f277fb3703c5380e23f1ed95b983154392ddc6e68b1",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/README.md",
+      "bytes": 2225,
+      "sha256": "468ce45fc44caee45ca86b76fe273c9d0dcde707bfecc9cf34072546a3681b30",
+      "license": "Project-owned",
+      "author": "Jewelry-store-vr-demo project"
+    },
+    {
+      "file": "Animated/Talker.fbx",
+      "bytes": 1169100,
+      "sha256": "d9833df7322917f054dc465c544dd26b84a50fad7a750d020ab94cbb1a9bbf04",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Talker_Body_Color.png",
+      "bytes": 905078,
+      "sha256": "eabc1279e7e8c6319ea169edefc82b98a98da4c6898fb77ba0571cd73233482f",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Talker_Body_Normal.png",
+      "bytes": 288302,
+      "sha256": "56d18caca287ebdbfab6fbd80cb84c5cea361381a0a8351062b7c4fbfc839af0",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Talker_Cutout_Color.png",
+      "bytes": 1134719,
+      "sha256": "eaadc6d00a5fda1456280fc8bfea6fcacaeb37c063381221a778308ed5cabff0",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Talker_Head_Color.png",
+      "bytes": 986100,
+      "sha256": "7dd441670fd9b9e15e9d048512e802c0f38ad47d43784fba9c63bd6b12716137",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Talker_Head_Normal.png",
+      "bytes": 232976,
+      "sha256": "92cfeadc455dc4b1e026db8744ab504f7f8f936ca47e3de6690b1dccf392cb1f",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Talker_Idle.fbx",
+      "bytes": 827708,
+      "sha256": "b27c68ed30ce889db1c8ce0fb051bdd0cb1d2b4ae51821c406997d9ef80ea0e5",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker.fbx",
+      "bytes": 614812,
+      "sha256": "8bfc1ed593ffc03b3a74789b39477b503431c89f20bb46d0bfcbdd29e2a165f0",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Body_Color.png",
+      "bytes": 1297477,
+      "sha256": "221d52fd03059db39243ff3f959683ffb8a938df55cc2ac54ed85ab303c22cd7",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Body_Normal.png",
+      "bytes": 327523,
+      "sha256": "0f0f4a5861458ac796a732db7fd36022406ec0d0271e8754bd0cb622d5facda9",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Cutout_Color.png",
+      "bytes": 1364002,
+      "sha256": "41e60e5593e7a91d1659d1d2c1cf602e8d8f973f3aa7947206a1a986fbb39e48",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Head_Color.png",
+      "bytes": 1245279,
+      "sha256": "c250fe5efd048d73f89b5c76d39959046e0f12607174a36544e31269a6742438",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Head_Normal.png",
+      "bytes": 243774,
+      "sha256": "c4c2e0376fb85b46270e8bb632a8810689decd39b91c0330bd2ed071d989498b",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Idle.fbx",
+      "bytes": 823724,
+      "sha256": "d66ea5a51872608550d1c1ccaa69557930a2fc7a54af6dec4a476a883e8a4533",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-prepared derivatives"
+    }
+  ]
+}

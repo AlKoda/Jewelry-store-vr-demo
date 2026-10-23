@@ -40,6 +40,9 @@ public sealed class ShopWalkController : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<CharacterController>();
+        // The street is 12 cm below the pavement; leave clearance for the skin
+        // around the capsule so ordinary kerbs do not behave like solid walls.
+        body.stepOffset = Mathf.Max(body.stepOffset, Mathf.Min(.22f, body.height * .45f));
         panel = FindFirstObjectByType<DemoDesktopPanel>();
         if (Bounds == null) Bounds = InteriorBounds.On(gameObject);
         spawn = transform.position;

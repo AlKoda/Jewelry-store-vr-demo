@@ -1,0 +1,8 @@
+{
+  "result": "PASS",
+  "reference": "Before-Portable-Kit-20261023",
+  "car_transform_count": 21,
+  "car_pose_mesh_material_signature": "d5a2e965c94fa8ce93abc8cfab456b1a0a9c1f1f26fe33a31bfcd97e5ee4d45c",
+  "official_zip_unchanged_sha256": "63e75ac1eaffd20b8aba4f52fcc93075deb369a45e467a43f4698edc63f3a072",
+  "scope": "Exact whole PoliceCar hierarchy local transform, mesh reference and material reference comparison; light bake metadata excluded."
+}

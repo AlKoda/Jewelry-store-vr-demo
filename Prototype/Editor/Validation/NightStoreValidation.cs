@@ -35,8 +35,8 @@ public static partial class NightStoreValidation
     public const int TriangleBudget = 220000, RendererBudget = 900, MaterialBudget = 133, TextureBudget = 2048;
     public const int TransparentBudget = 70, FacadePaneBudget = 10;
     public const int LightmapBudget = 8, LightmapSizeBudget = 1024;
-    // Realtime lights at once with a torch and two lit lamps; one of them may shadow.
-    public const int RealtimeLightBudget = 4, ShadowLightBudget = 2;
+    // Realtime lights at once: two shadowed portable lamps plus the active torch.
+    public const int RealtimeLightBudget = 4, ShadowLightBudget = 3;
     static NightStoreValidation() { EditorApplication.update += Tick; }
 
     public static void RunNightQuick() { Generate(false); }
@@ -1593,8 +1593,8 @@ public static partial class NightStoreValidation
             glow &= block.GetColor("_EmissionColor").maxColorComponent < 0.01f;
         }
         DemoValidation.Check(sample != null && sample.GetComponentsInChildren<Light>(true).Length == 0 && lamp && glow
-            && !first.LampLit && !second.LampLit && third.LampLit && station.LitLampCount == ToolStation.MaxLitLamps,
-            "Scene lamp lights its spot and limits lit lamps to one occlusion-safe light");
+            && !first.LampLit && second.LampLit && third.LampLit && station.LitLampCount == ToolStation.MaxLitLamps,
+            "Scene lamps keep two occlusion-safe lights on together");
         station.RemoveTool(second);
         bool remaining = station.LitLampCount == 1 && third.LampLit && !first.LampLit;
         station.RemoveTool(first);

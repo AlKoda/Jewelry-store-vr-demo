@@ -1275,6 +1275,122 @@
     {
       "en": "Hold Menu + Y for two seconds to quit VR",
       "ar": "اضغط على القائمة و Y لمدة ثانيتين للخروج من الواقع الافتراضي"
+    },
+    {
+      "en": "Evidence forceps",
+      "ar": "ملقط جمع الأدلة"
+    },
+    {
+      "en": "Sterile swab",
+      "ar": "مسحة معقمة"
+    },
+    {
+      "en": "Field tool returned to its tray",
+      "ar": "أعيدت الأداة إلى صينيتها"
+    },
+    {
+      "en": "Aim at a trace to sample",
+      "ar": "وجّه الأداة إلى الأثر لأخذ عينة"
+    },
+    {
+      "en": "Record this item in place",
+      "ar": "سجّل هذا العنصر في موضعه"
+    },
+    {
+      "en": "Use evidence forceps for this loose item",
+      "ar": "استخدم الملقط لهذه القطعة المنفصلة"
+    },
+    {
+      "en": "Use a sterile swab for this trace",
+      "ar": "استخدم مسحة معقمة لهذا الأثر"
+    },
+    {
+      "en": "Move closer to collect the sample",
+      "ar": "اقترب لجمع العينة"
+    },
+    {
+      "en": "Move closer to take the field tool",
+      "ar": "اقترب لأخذ أداة جمع العينات"
+    },
+    {
+      "en": "Sample sealed and recorded",
+      "ar": "أغلقت العينة وسجلت"
+    },
+    {
+      "en": "Evidence record could not be saved",
+      "ar": "تعذر حفظ سجل الأدلة"
+    },
+    {
+      "en": "G / Click: collect sample   R: return tool",
+      "ar": "G / نقر: جمع العينة   R: إعادة الأداة"
+    },
+    {
+      "en": "G / Click: inspect evidence",
+      "ar": "G / نقر: فحص الدليل"
+    },
+    {
+      "en": "G / Click: take field tool",
+      "ar": "G / نقر: أخذ أداة جمع العينات"
+    },
+    {
+      "en": "G / Click: open / close document box",
+      "ar": "G / نقر: فتح أو إغلاق صندوق الأوراق"
+    },
+    {
+      "en": "G / Click: next register page",
+      "ar": "G / نقر: الصفحة التالية في السجل"
+    },
+    {
+      "en": "Fingerprint brush",
+      "ar": "فرشاة إظهار البصمات"
+    },
+    {
+      "en": "Fingerprint lift card",
+      "ar": "بطاقة رفع الأثر"
+    },
+    {
+      "en": "Field kit in hand",
+      "ar": "حقيبة الفحص في اليد"
+    },
+    {
+      "en": "Choose a clear floor or table for the kit",
+      "ar": "اختر أرضية أو طاولة خالية لوضع الحقيبة"
+    },
+    {
+      "en": "No clear support nearby; kit returned to the field table",
+      "ar": "لا يوجد سطح مناسب قريب؛ أعيدت الحقيبة إلى الطاولة"
+    },
+    {
+      "en": "Use a lift card for the developed ridge mark",
+      "ar": "استخدم بطاقة رفع للأثر المطور"
+    },
+    {
+      "en": "Use the brush on a designated handle or glass edge",
+      "ar": "استخدم الفرشاة على المقبض المخصص للفحص"
+    },
+    {
+      "en": "Bring the brush closer to the surface",
+      "ar": "قرب الفرشاة من السطح"
+    },
+    {
+      "en": "Hold the trigger and sweep the brush over the surface",
+      "ar": "اضغط الزناد باستمرار ومرر الفرشاة على السطح"
+    },
+    {
+      "en": "Ridge mark developed: photograph it before lifting",
+      "ar": "ظهر أثر الحواف؛ صوره قبل رفعه"
+    },
+    {
+      "en": "Click: put kit on a clear floor or table   R: put down",
+      "ar": "نقر: وضع الحقيبة على سطح خال   R: إنزالها"
+    },
+    {
+      "en": "Hold G / Click and sweep: develop ridge mark",
+      "ar": "اضغط G أو الفأرة باستمرار ومرر الفرشاة لإظهار الأثر"
+    },
+    {
+      "en": "G / Click: carry field kit",
+      "ar": "G / نقر: حمل حقيبة الفحص"
     }
   ],
   "fragments": [

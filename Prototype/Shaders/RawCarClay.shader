@@ -2,7 +2,7 @@
 Shader "CrimeScene/RawCarClay" {
  Properties {
   _Color("Clay colour",Color)=(.42,.43,.44,1)
-  _Glossiness("Surface polish",Range(0,1))=.13
+  _Glossiness("Surface polish",Range(0,1))=0
   _Metallic("Metallic",Range(0,1))=0
   [HideInInspector] _EmissionColor("Emission",Color)=(0,0,0,1)
   [HideInInspector] _DebugGeometryNormals("Geometry-normal verification",Float)=0
@@ -29,9 +29,15 @@ Shader "CrimeScene/RawCarClay" {
   }
   void LightingRawClay_GI(SurfaceOutputRawClay s,UnityGIInput data,inout UnityGI gi){
    LightingStandard_GI(StandardClay(s),data,gi);
+   // Remove interpolated vertex SH from the imported smooth normals. Keep probe
+   // lighting and reflections, evaluated per polygon without touching the mesh.
+   #ifndef LIGHTMAP_ON
+   gi.indirect.diffuse=max(half3(0,0,0),ShadeSH9(half4(s.GeometryNormal,1)));
+   #endif
   }
   void surf(Input IN,inout SurfaceOutputRawClay o){
-   float3 face=normalize(cross(ddy(IN.worldPos),ddx(IN.worldPos)));
+   float3 derivative=cross(ddy(IN.worldPos),ddx(IN.worldPos));
+   float3 face=derivative*rsqrt(max(dot(derivative,derivative),1e-20));
    if(dot(face,IN.worldNormal)<0)face=-face;
    o.Albedo=_Color.rgb;o.Normal=float3(0,0,1);o.Emission=0;o.Metallic=0;o.Smoothness=_Glossiness;o.Occlusion=1;o.Alpha=1;o.GeometryNormal=face;
   }

@@ -1,0 +1,71 @@
+{
+  "result": "PASS",
+  "date": "2026-10-23",
+  "checks": [
+    "source/Unity parity and stable GUIDs",
+    "field document asset parity",
+    "fieldwork behavior and runtime lifecycle",
+    "same-hand torch replacement",
+    "JSON disk write retained on reset",
+    "strict Windows build; VR visual validation",
+    "existing shadow/tool safety/model/street/car checks"
+  ],
+  "fieldwork_triangles": 2536,
+  "field_tools": 2,
+  "evidence_targets": 12,
+  "sample_targets": 6,
+  "scene_sha256": "39da7d0cf1eea57793da1211a2c858dcdae58fd7cafff3bb1697089898a2773c",
+  "windows_assembly_sha256": "73cb5637eefb2610145b63c426ee6c7f9ef4eac146393ad96074a00012af0bca",
+  "source_files": [
+    {
+      "file": "Prototype/Scripts/Tools/FieldInvestigationTool.cs",
+      "sha256": "edd3833504ef4a200373919d75e0f4d57f5bfa36b1ce3a86eac6f17d5ded1d33"
+    },
+    {
+      "file": "Prototype/Scripts/Tools/ToolHolder.cs",
+      "sha256": "1a2ec63e34dd2beff1eb1d7374b3e19134f92ecba2fc51e6999448dc3305b6d5"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceClue.cs",
+      "sha256": "906b5ada0c7a4c4a2f06b78c62e08db8d026f56642479681d20e4677b46621cf"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceContainer.cs",
+      "sha256": "8a40da777e527cdd1b04b673c4b31cae23c7cd651d44d8e4538f13ea4a389b32"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceRegister.cs",
+      "sha256": "9fc863949499b19985574c52c1af89f20cc9a5575343710ae948b89d17393385"
+    },
+    {
+      "file": "Prototype/Scripts/Core/InvestigationInteraction.cs",
+      "sha256": "cc9a3abe1bc4e14b180047655157ba04fcce19e8bbfd8699a454070bc1546bb9"
+    },
+    {
+      "file": "Prototype/Scripts/Desktop/DesktopInteractor.cs",
+      "sha256": "096b7871b6612b303f3a2ab2d5e810f937c804e98d8653941cda1a54f18617a7"
+    },
+    {
+      "file": "Prototype/Scripts/VR/HandInteractor.cs",
+      "sha256": "972ca714a6e3ae0892f4e6962e8074143d3639f57b2e05a57c25b67a5894033d"
+    },
+    {
+      "file": "Prototype/Scripts/VR/XRGhostHand.cs",
+      "sha256": "2b797ab6bc18b1259482799ee9c1423f022b0a38b3802df1df66903615cd6c87"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/InvestigationGameplay.cs",
+      "sha256": "8348b6ac891d6df54d3d2477d318a91e0bf499095a33b30e879973d51826b1d4"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/InvestigationRefinement.cs",
+      "sha256": "5a4029a6653e5012781c1eb6de56174b90a5491d2417c7c448622f2320f28e7f"
+    },
+    {
+      "file": "Prototype/Scripts/Resources/Arabic.json",
+      "sha256": "65613a87cd59b28ffbb949ed92e4d6806814cc7cb6ed77a7cd52d86f4f23e8fd"
+    }
+  ],
+  "car_and_snapshot_protection": "PROTECTION.json",
+  "hardware_acceptance": "Quest grip fit, stereo readability and frame time unverified"
+}

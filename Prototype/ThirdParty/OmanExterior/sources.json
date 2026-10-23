@@ -1,0 +1,47 @@
+{
+  "mode": "built-in image_gen",
+  "date": "2026-10-21",
+  "outputs": [
+    "IvoryPlasterOriginal.png",
+    "ShopSignsOriginal.png",
+    "ParapetRunoff.png",
+    "SafetyGlassFineOriginal.png"
+  ],
+  "concept": "Docs/References/OmanStreetConcept.png",
+  "prompts": [
+    "Night Omani gold souk architectural concept; cream weathered flat-roof two-storey strips, Arabic signs, empty parking, no vehicles/people.",
+    "Seamless warm ivory aged cement stucco base color, fine sandy grain, neutral flat diffuse lighting, no objects/shadows/writing.",
+    "Four full-width sign strips: مجوهرات الياقوت / AL YAQOOT JEWELLERY; عطور البخور / AL BUKHOOR PERFUMES; خياطة النخيل / AL NAKHEEL TAILORING; سوق الذهب / GOLD MARKET. Lightly worn enamel.",
+    "Transparent RGBA grime decal atlas: subtle brown-gray vertical rain/dust runoff streaks, four varied clusters, top-edge deposits tapering downward, pale warm ochre-gray, no wall/base color/objects/text/shadows. Weathered Omani ivory plaster, age and dust rather than black mold.",
+    "Orthographic transparent RGBA accumulation of genuinely shattered colorless architectural safety glass: hundreds of small irregular translucent granules and angular chips, a few larger thin triangular fragments, dense center tapering to sparse edges. Flat soft neutral studio illumination, no floor/frame/wall/container/text/solid background or large baked highlights; no green, foam, snow, paper or diamonds. Used only as a lit fine-debris contact layer beneath real geometry."
+  ],
+  "generated_files": {
+    "concept": "exec-5617127a-2f05-48fb-bb5a-acff79036b80.png",
+    "plaster": "exec-67841a6e-5943-48bc-9fe8-23dba496b33b.png",
+    "signs": "exec-8e2c80fa-d0e6-443f-af6c-dfea138de00c.png",
+    "runoff": "exec-3b481a9f-b9c2-48a2-a5a4-946e69ebc2c9.png",
+    "safety_glass": "exec-72b84080-990d-4acc-9ba4-f81ff66a365a.png"
+  },
+  "source_folder": "C:/Users/MOBPC/.codex/generated_images/01a12e1c-36f0-77a1-b81d-58902ccda50b",
+  "derivation": "Original generated images preserved. Plaster periodic/smooth edge correction; four sign crops retain 4:1 aspect. Five additional sign bitmaps use shaped Arabic/English typography. New art imported with mipmaps, 1024px cap and Android ASTC 6x6.",
+  "road_and_sidewalk": {
+    "mode": "built-in image_gen",
+    "date": "2026-10-21",
+    "prompts": "ROAD_GENERATION_PROMPTS.md",
+    "originals": [
+      "RoadAggregateOriginal.png",
+      "RoadNetworkOriginal.png",
+      "RoadWeatherOriginal.png",
+      "RoadStressOriginal.png",
+      "RoadFatigueOriginal.png",
+      "PavingFracturesOriginal.png",
+      "PavingAggregateOriginal.png"
+    ],
+    "derived": {
+      "GroundFracturesPacked.png": "Linear RGBA: network, longitudinal stress, localized fatigue, concrete fractures",
+      "ParkingLayoutMask.png": "Deterministic rasterization of exact scene parking bay coordinates",
+      "RoadAggregateNormal.png": "Unity height-to-normal conversion, height scale 0.025",
+      "PavingAggregateNormal.png": "Unity height-to-normal conversion, height scale 0.025"
+    }
+  }
+}

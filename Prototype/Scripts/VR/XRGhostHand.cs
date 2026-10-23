@@ -227,7 +227,7 @@ public sealed class XRGhostHand : MonoBehaviour
         if (input != null && root.gameObject.activeSelf)
         {
             var lights=input.Lighting?input.Lighting:input.UVLighting;
-            bool occupied=input.Hand!=null&&(input.Hand.Held!=null||input.Hand.HoldingCamera);
+            bool occupied=input.Hand!=null&&(input.Hand.Held!=null||input.Hand.HoldingCamera||input.Hand.FieldTool||input.Hand.CarriedKit);
             bool torchHeld=lights!=null&&((lights.TorchEquipped(false)&&lights.FlashlightLight.transform.parent==transform)||(lights.TorchEquipped(true)&&lights.UVTorchLight.transform.parent==transform));
             occupied|=torchHeld;
             if(input.Hand!=null&&input.Hand.HoldingCamera)SetCameraGrip(true);

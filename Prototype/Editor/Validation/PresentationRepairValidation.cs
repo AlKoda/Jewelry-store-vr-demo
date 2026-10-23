@@ -75,7 +75,7 @@ public static partial class NightStoreValidation
             if(m.name.StartsWith("Consistent_")&&!m.name.ToLowerInvariant().Contains("screen")&&!m.name.ToLowerInvariant().Contains("indicator"))Require(!m.IsKeywordEnabled("_EMISSION")&&m.GetFloat("_Glossiness")<=.32f&&m.GetFloat("_GlossMapScale")<=.32f,"Prop finish is glowing or overpolished: "+m.name);
         }
         Require(root.Find("StaffRoomReflectionProbes").GetComponentsInChildren<ReflectionProbe>().Length==3,"Local rear room reflections missing");
-        Require(root.Find("Exterior/LivingStreetCanopy").GetComponentsInChildren<MeshRenderer>().Count(r=>r.name.StartsWith("NaturalCanopy_"))==5,"Natural street canopies missing");
+        var oman=root.Find("Exterior/OmanStreet");if(oman&&oman.gameObject.activeInHierarchy)PresentationPolish.ValidateOmanExterior();else Require(root.Find("Exterior/LivingStreetCanopy").GetComponentsInChildren<MeshRenderer>().Count(r=>r.name.StartsWith("NaturalCanopy_"))==5,"Natural street canopies missing");
         var group=new GameObject("Temporary belt/grip repair test");
         try{
             var head=new GameObject("Head").transform;head.SetParent(group.transform,false);head.localPosition=Vector3.up*1.7f;

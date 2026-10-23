@@ -23,7 +23,7 @@ public sealed class ToolStation : MonoBehaviour
     public bool AutoConnectTape = true;
     // Each lit lamp is a realtime spot light; two keep the night scene within its
     // pixel-light budget beside the flashlight. Lit lamps in the order they were lit.
-    public const int MaxLitLamps = 1;
+    public const int MaxLitLamps = 2;
     // Spot cookie a lamp projects once lit (the night store's NightSky LED floodlight);
     // null keeps the plain spot (the shop).
     public Texture LampCookie;
@@ -120,7 +120,7 @@ public sealed class ToolStation : MonoBehaviour
         UpdateLampShadows();
     }
 
-    // One portable lamp remains shadowed alongside whichever torch is lit (white or UV,
+    // Both portable lamps remain shadowed alongside whichever torch is lit (white or UV,
     // never both: DemoLighting.TorchesExclusive); no short-range
     // unshadowed substitute is permitted to illuminate through solid walls.
     public void UpdateLampShadows()
@@ -130,8 +130,8 @@ public sealed class ToolStation : MonoBehaviour
         {
             Light lamp = litLamps[i].Lamp;
             if (lamp == null) continue;
-            // One portable lamp plus the torch: bounded cost, no unshadowed lamp
-            // beams crossing walls. Profile the two shadow maps in actual PCVR.
+            // Two portable lamps plus the torch: bounded cost, no unshadowed lamp
+            // beams crossing walls. Profile the three shadow maps in actual PCVR.
             lamp.shadows = LightShadows.Soft;
             lamp.shadowCustomResolution=1024;
             lamp.shadowBias=.04f;lamp.shadowNormalBias=.3f;

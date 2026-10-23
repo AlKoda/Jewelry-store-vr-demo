@@ -32,7 +32,7 @@ public sealed class DemoLighting : MonoBehaviour
     public Color UVColor = new Color(0.38f, 0.12f, 1f);
     public float UVIntensity = 0.8f;
     public float UVRange = 6;
-    public float UVSpotAngle = 32;
+    public float UVSpotAngle = 68;
     public bool TorchesExclusive = true;
     // Authored placeholder traces (the night store's UVTraceExamples), hidden until the
     // instructor shows them; null in scenes without examples.
@@ -424,6 +424,7 @@ public sealed class DemoLighting : MonoBehaviour
         {
             light.range = UVRange;
             light.spotAngle = UVSpotAngle;
+            light.innerSpotAngle = Mathf.Min(26, UVSpotAngle * .40f);
             light.intensity = UVIntensity;
             light.color = UVColor;
             // Shadowed like the white torch, so the violet pool stops at walls, the counter and
@@ -441,7 +442,8 @@ public sealed class DemoLighting : MonoBehaviour
         else
         {
             light.range = 14;
-            light.spotAngle = 42;
+            light.spotAngle = 78;
+            light.innerSpotAngle = 30;
             light.intensity = FlashlightIntensity;
             light.color = FlashlightColor;
             light.shadows = LightShadows.Soft;

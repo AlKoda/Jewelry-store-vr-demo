@@ -106,7 +106,7 @@ public static partial class PresentationPolish
         var drops=Enumerable.Range(0,count).Select(i=>new Vector4(.35f+(float)rng.NextDouble()*.3f,.3f+(float)rng.NextDouble()*.4f,.09f+(float)rng.NextDouble()*.035f,.10f+(float)rng.NextDouble()*.06f)).ToArray();
         for(int y=0;y<size;y++)for(int x=0;x<size;x++){
             float u=(x+.5f)/size,v=(y+.5f)/size,a=0;
-            foreach(var d in drops){float r=new Vector2((u-d.x)/d.z,(v-d.y)/d.w).magnitude;float ragged=r*(1+.08f*(Mathf.PerlinNoise(u*22+variant,v*24)-.5f));float body=1-Mathf.SmoothStep(.90f,1.02f,ragged);float rim=Mathf.SmoothStep(.60f,.92f,r);a=Mathf.Max(a,body*(.46f+.4f*rim)*(.85f+.15f*Mathf.PerlinNoise(u*35,v*35)));}
+            foreach(var d in drops){float r=new Vector2((u-d.x)/d.z,(v-d.y)/d.w).magnitude;float ragged=r*(1+.08f*(Mathf.PerlinNoise(u*22+variant,v*24)-.5f));float body=1-Mathf.SmoothStep(0,1,Mathf.InverseLerp(.90f,1.02f,ragged));float rim=Mathf.SmoothStep(0,1,Mathf.InverseLerp(.60f,.92f,r));a=Mathf.Max(a,body*(.46f+.4f*rim)*(.85f+.15f*Mathf.PerlinNoise(u*35,v*35)));}
             pixels[y*size+x]=new Color(1,1,1,a);
         }
         t.SetPixels(pixels);t.wrapMode=TextureWrapMode.Clamp;t.filterMode=FilterMode.Trilinear;t.Apply(true,false);return Save(t,t.name);

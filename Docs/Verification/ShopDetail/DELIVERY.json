@@ -1,0 +1,121 @@
+{
+  "result": "PASS",
+  "date": "2026-10-23",
+  "scope": "Existing night scene and unified keyboard/PCVR Windows player; local only",
+  "intact_bevelled_panes": 57,
+  "intact_renderer_assemblies": 13,
+  "native_case_fractures": 6,
+  "damaged_cases": 3,
+  "fieldwork_clues": 18,
+  "sample_targets_and_packets": 10,
+  "reused_uv_search_targets": 2,
+  "new_uv_trace_components": 0,
+  "additional_lights": 0,
+  "new_fragment_rigidbodies": 0,
+  "fieldwork_authored_triangles": 6274,
+  "fieldwork_play_scan_triangles": 6658,
+  "architectural_glass_and_base_debris_triangles": 53632,
+  "fine_glass_render_changed_pixels": 22332,
+  "checks": [
+    "source/Unity and GUID parity",
+    "seven original Arabic paper/label asset parity",
+    "perimeter-only door geometry; accepted door openings retained",
+    "closed bevelled panes and native case fracture bounds/normals/materials",
+    "duplicate/stretched/flat legacy glass inactive",
+    "actual white/UV shadow occlusion at two tiers; strict VR visual build",
+    "closed/open box reach; UV-off/blocked/lighted discovery and reset",
+    "all portable carry, brush/lift, same-hand torch and JSON retention tests",
+    "latest-entry selection and adaptive register text"
+  ],
+  "log_markers": {
+    "refine": [
+      "GLASS_FAMILY_AUTHORED beveled intact panes=57 native case fractures=6",
+      "GLASS_FAMILY_CHECKS_PASS",
+      "GENERAL_SCENE_REVIEW_PASS",
+      "SHOP_DETAIL_REFINEMENT_READY",
+      "CLEAN_REFLECTION_CAPTURE_PASS"
+    ],
+    "runtime": [
+      "SHOP_SEARCH_BEHAVIOUR_PASS",
+      "PORTABLE_FIELDWORK_PASS",
+      "FIELDWORK_RUNTIME_PASS",
+      "FIELDWORK_TORCH_REPLACEMENT_PASS"
+    ],
+    "delivery": [
+      "FINE_GLASS_VISIBILITY_PASS",
+      "GLASS_FAMILY_CHECKS_PASS",
+      "SHOP_DETAIL_DELIVERY_PASS",
+      "VR_VISUAL_VALIDATION_PASS",
+      "TORCH_RENDERED_SHADOW_PASS"
+    ]
+  },
+  "scene_sha256": "c72124b341627b0db61efb9a17fedef47931e514d04f5d513a17b3802808bd44",
+  "windows_assembly_sha256": "390808773554b47a720215ce1ed9cc12bd248421aa3fd739b7b805bf262d2c50",
+  "source_files": [
+    {
+      "file": "Prototype/Editor/NightStore/ShopDetailRefinement.cs",
+      "sha256": "b8418fa9ff5a6dd37767f9e89f228d08815163ee6b69cbaacd4f2c179f00dd9a"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/ShopGlassRefinement.cs",
+      "sha256": "837d53b090504b0038f58c0dd711ffe3aedc5afa2dbab4f2b1b9310366bba25f"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/RecordingGlass.cs",
+      "sha256": "63b161df194c3e7cb37b28e29bfe48fd1c339c40b323de4bc2c83c4dc18a988e"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/ArchitecturalGlassReview.cs",
+      "sha256": "ab37a480f5de92e079b8b5f9d466133ca8203e8143e118ff8d506b6ec6280712"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/InvestigationRefinement.cs",
+      "sha256": "e12d8669e1da97ae335ab6dd59c90c50c11c3770f482b09dea654c3e5760e11c"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/InvestigationGameplay.cs",
+      "sha256": "eda27b7c4b0fdda37bf0373453763f06688295404e8ef4ad6eb9e3ff53e47d4f"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/PortableFieldwork.cs",
+      "sha256": "5e937d8722ac08e4d26039ae93e811b32a0542b37321ff808e62bfd709d99b25"
+    },
+    {
+      "file": "Prototype/Editor/NightStore/ShopModelReview.cs",
+      "sha256": "b56327d0f4d33aa73e359d5fbd131e3fde12bd527d828c2de693eab2235ecdca"
+    },
+    {
+      "file": "Prototype/Scripts/Core/UVDiscoverableClue.cs",
+      "sha256": "ee27f83501a55a33c6d4397a8815e367e27b2a5d2af30e3513ca7eb70180c08a"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceClue.cs",
+      "sha256": "1b2a478ba60999a66f61420f1cfa0ce6829686eb6239d524cea9b5fe002e084e"
+    },
+    {
+      "file": "Prototype/Scripts/Core/EvidenceRegister.cs",
+      "sha256": "2e13a67e3cb1dc05df9cc407e3b1f63839f658a8ca743ce5722e3bcced4b7af4"
+    },
+    {
+      "file": "Prototype/Shaders/DisplayGlass.shader",
+      "sha256": "ccaf8d241145269841b031d5a0f2fe6188ce658b0757c665b54480e54986e7b3"
+    },
+    {
+      "file": "Prototype/Shaders/GlassCrumbBed.shader",
+      "sha256": "95dcbaa9a6db171e805699737b0d10bd46bf7af9d90aad750c84b2e6a4c4df7c"
+    },
+    {
+      "file": "Prototype/Shaders/FractureGlint.shader",
+      "sha256": "e990f192c4a2bbc091bf80caad07005949c7d58bce9a3ee3194593c3f2f32dbd"
+    }
+  ],
+  "protection_report": "PROTECTION.json",
+  "human_checks_pending": [
+    "Quest 3 stereo appearance",
+    "real hand/tool fit for new field interactions",
+    "actual standalone frame time"
+  ],
+  "standalone_apk": "not rebuilt in this pass",
+  "github_official_zip": "unchanged; awaiting Oman-preview promotion approval",
+  "windows_level1_sha256": "e766dde9533c7dc335341bd359ba2099a4851df98637214cf540f16a64b33455"
+}

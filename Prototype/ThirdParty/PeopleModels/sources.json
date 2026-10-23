@@ -5,7 +5,8 @@
  "unverified_in_unity": true,
  "revisions": [
   "2026-10-15: ForensicExaminer_Body_Color.jpg and ForensicExaminer_Protection_Color.jpg rebuilt after review: the white coverall and cap were near-clipped (median 245, 35% of texels >= 250); now median 220 sRGB, maximum 240, fold shading kept. Source~/Preview.jpg re-rendered. pose_export.py now breaks bone-label ties deterministically (first corner), so ForensicExaminer_Body_Normal.jpg changed in two shoulder triangles.",
-  "2026-10-15: LOD variants added (PasserBy_Phone_LOD1/LOD2, PoliceOfficer_Standing_LOD1/LOD2) by Source~/make_lods.py; no existing file changed."
+  "2026-10-15: LOD variants added (PasserBy_Phone_LOD1/LOD2, PoliceOfficer_Standing_LOD1/LOD2) by Source~/make_lods.py; no existing file changed.",
+  "2026-10-21: Animated derivatives: five distinct avatars, walking/idle/conversation/phone mocap, matte photo textures, licence preserved. See Animated/sources.json."
  ],
  "upstream": {
   "repository": "https://github.com/microsoft/Microsoft-Rocketbox",
@@ -1919,6 +1920,207 @@
    "license": "Project-owned",
    "author": "Project-owned original work (Jewelry-store-vr-demo PeopleModels pack)",
    "source_url": "project-made"
+  },
+  {
+   "file": "Animated/bake-report.json",
+   "bytes": 3597,
+   "sha256": "4f52670c0115903229d56b17f63bda55fba79e9cba7ab42b5fc79efb6e0268ad",
+   "license": "Project-owned",
+   "author": "Jewelry-store-vr-demo project"
+  },
+  {
+   "file": "Animated/Listener.fbx",
+   "bytes": 1035868,
+   "sha256": "f161f319403ab9bfac95164247ae1f4e54d33853fc6f0837a017f25534b0c8cd",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Listener_Body_Color.png",
+   "bytes": 953343,
+   "sha256": "21dbce60c544d8b79d087793496c2d32f4d3b3746b54dd79daab8f8fa94870a5",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Listener_Body_Normal.png",
+   "bytes": 257422,
+   "sha256": "23e34cdc9154faed56d009db216697c070f3912eb0d5aa3cd2fef6a7bc073c15",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Listener_Cutout_Color.png",
+   "bytes": 409987,
+   "sha256": "9e0ad7f7eb115dd7bf50be4adc969229c011e7063bca376bdc8a900e74e3ef29",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Listener_Head_Color.png",
+   "bytes": 890950,
+   "sha256": "abd23e5c37d6d7bc4079e11d27535ca9814540a81daa8246535b2d5f98cbdc4f",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Listener_Head_Normal.png",
+   "bytes": 258975,
+   "sha256": "5f8e531a862430952a4d2f71a729c8f682bbc99014ec2c709e24b34008dcd27e",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Listener_Idle.fbx",
+   "bytes": 694396,
+   "sha256": "08ddb91f7573518461915abd9fc6a7785747d8dbd97214c0d1c8cd0a7fa1907d",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Observer.fbx",
+   "bytes": 749388,
+   "sha256": "5bfcae564ff5eba7fbec13a23cc7d5a87e6d1b38f4d9fda16b5464138bd93a0b",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Phone.fbx",
+   "bytes": 942172,
+   "sha256": "d696bb99a995a88836b21f277fb3703c5380e23f1ed95b983154392ddc6e68b1",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/README.md",
+   "bytes": 2225,
+   "sha256": "468ce45fc44caee45ca86b76fe273c9d0dcde707bfecc9cf34072546a3681b30",
+   "license": "Project-owned",
+   "author": "Jewelry-store-vr-demo project"
+  },
+  {
+   "file": "Animated/sources.json",
+   "bytes": 21816,
+   "sha256": "eccfef50e127948529cc8d1e58e9111bc208347f40c22488d0073c93ca0265bd",
+   "license": "Project-owned",
+   "author": "Jewelry-store-vr-demo project"
+  },
+  {
+   "file": "Animated/Talker.fbx",
+   "bytes": 1169100,
+   "sha256": "d9833df7322917f054dc465c544dd26b84a50fad7a750d020ab94cbb1a9bbf04",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Talker_Body_Color.png",
+   "bytes": 905078,
+   "sha256": "eabc1279e7e8c6319ea169edefc82b98a98da4c6898fb77ba0571cd73233482f",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Talker_Body_Normal.png",
+   "bytes": 288302,
+   "sha256": "56d18caca287ebdbfab6fbd80cb84c5cea361381a0a8351062b7c4fbfc839af0",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Talker_Cutout_Color.png",
+   "bytes": 1134719,
+   "sha256": "eaadc6d00a5fda1456280fc8bfea6fcacaeb37c063381221a778308ed5cabff0",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Talker_Head_Color.png",
+   "bytes": 986100,
+   "sha256": "7dd441670fd9b9e15e9d048512e802c0f38ad47d43784fba9c63bd6b12716137",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Talker_Head_Normal.png",
+   "bytes": 232976,
+   "sha256": "92cfeadc455dc4b1e026db8744ab504f7f8f936ca47e3de6690b1dccf392cb1f",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Talker_Idle.fbx",
+   "bytes": 827708,
+   "sha256": "b27c68ed30ce889db1c8ce0fb051bdd0cb1d2b4ae51821c406997d9ef80ea0e5",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker.fbx",
+   "bytes": 614812,
+   "sha256": "8bfc1ed593ffc03b3a74789b39477b503431c89f20bb46d0bfcbdd29e2a165f0",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker_Body_Color.png",
+   "bytes": 1297477,
+   "sha256": "221d52fd03059db39243ff3f959683ffb8a938df55cc2ac54ed85ab303c22cd7",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker_Body_Normal.png",
+   "bytes": 327523,
+   "sha256": "0f0f4a5861458ac796a732db7fd36022406ec0d0271e8754bd0cb622d5facda9",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker_Cutout_Color.png",
+   "bytes": 1364002,
+   "sha256": "41e60e5593e7a91d1659d1d2c1cf602e8d8f973f3aa7947206a1a986fbb39e48",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker_Head_Color.png",
+   "bytes": 1245279,
+   "sha256": "c250fe5efd048d73f89b5c76d39959046e0f12607174a36544e31269a6742438",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker_Head_Normal.png",
+   "bytes": 243774,
+   "sha256": "c4c2e0376fb85b46270e8bb632a8810689decd39b91c0330bd2ed071d989498b",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Animated/Walker_Idle.fbx",
+   "bytes": 823724,
+   "sha256": "d66ea5a51872608550d1c1ccaa69557930a2fc7a54af6dec4a476a883e8a4533",
+   "license": "MIT",
+   "author": "Microsoft Corporation; project-prepared derivatives"
+  },
+  {
+   "file": "Source~/bake_crowd.py",
+   "bytes": 7861,
+   "sha256": "2bb54998f2f5187e349bc73a58098fadf47e5d522c51c3a4f97d665539f38bfd",
+   "license": "Project-owned",
+   "author": "Jewelry-store-vr-demo project"
+  },
+  {
+   "file": "Source~/prepare_crowd_textures.py",
+   "bytes": 1160,
+   "sha256": "f2ee1388ed671e4c7db9ffd38b267c0f8cc04133bcaf291569c07bbd6b5d25e8",
+   "license": "Project-owned",
+   "author": "Jewelry-store-vr-demo project"
   }
- ]
+ ],
+ "animated_derivatives": {
+  "folder": "Animated",
+  "provenance": "Animated/sources.json",
+  "local_unity_verified": "Unity 6000.6.2f1 skin and behaviour checks; Windows build recorded separately. Quest hardware acceptance remains pending."
+ }
 }

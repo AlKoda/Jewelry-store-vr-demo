@@ -1,6 +1,7 @@
 Shader "CrimeScene/GlassContact" {
  Properties {_Strength("Soft pile contact",Range(0,.2))=.09 _UniformStrength("Shard contact",Range(0,.2))=0}
- SubShader { Tags {"Queue"="Transparent-10" "RenderType"="Transparent"} ZWrite Off Blend DstColor Zero
+ // Depth bias seats the sub-millimetre contact projection without floor z-fighting.
+ SubShader { Tags {"Queue"="Transparent-10" "RenderType"="Transparent"} ZWrite Off Offset -1,-1 Blend DstColor Zero
  Pass { CGPROGRAM
  #pragma vertex vert
  #pragma fragment frag
