@@ -733,7 +733,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
         if (Station.PendingPost != null && DemoI18n.LayoutButton("Cancel selection  (X)", s.Button)) Defer(Station.CancelTapeSelection);
         GUILayout.EndHorizontal();
         if (Station.PendingPrompt != null) DemoI18n.LayoutLabel("<color=" + DemoUi.Hex(DemoUi.Accent) + ">" + Station.PendingPrompt + "</color>", s.Body);
-        if (Station.LitLampCount > 0) DemoI18n.LayoutLabel("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
+        if (Station.LitLampCount > 0) DemoI18n.LayoutLabel("Scene lamps lit: " + Station.LitLampCount + " (" + Station.ShadowedLampCount + " shadowed)", s.Dim);
 
         Heading(s, "PLACED");
         PlacedTools(s);
@@ -966,7 +966,7 @@ public sealed class DemoDesktopPanel : MonoBehaviour
                 if (flashing != Lighting.LightBarFlashing) Defer(Lighting.ToggleLightBarFlashing);
                 DemoI18n.LayoutLabel("Switch it off to hold the bar steady for visitors sensitive to flashing light. A reset makes it flash again.", s.Small);
             }
-            if (Station.LitLampCount > 0) DemoI18n.LayoutLabel("Scene lamps lit: " + Station.LitLampCount + " of " + ToolStation.MaxLitLamps, s.Dim);
+            if (Station.LitLampCount > 0) DemoI18n.LayoutLabel("Scene lamps lit: " + Station.LitLampCount + " (" + Station.ShadowedLampCount + " shadowed)", s.Dim);
         }
         DressingSection(s);
         MusicSection(s);

@@ -64,6 +64,7 @@ public sealed class XRPresenterMenu : MonoBehaviour
             () => XRHeadTracking.HeightOffset += 0.05f);
         Add("Height -5 cm", "خفض الطول 5 سم", () => Mathf.RoundToInt(XRHeadTracking.HeightOffset * 100) + " cm",
             () => XRHeadTracking.HeightOffset -= 0.05f);
+        Add("Calibrate floor", "معايرة الأرضية", () => Mathf.RoundToInt(XRHeadTracking.FloorCorrection * 100) + " cm", CalibrateFloor);
         Add("Light bar", "أضواء الدورية", () =>
         {
             DemoLighting lighting = Lighting;
@@ -76,6 +77,18 @@ public sealed class XRPresenterMenu : MonoBehaviour
         Add("Controller hints", "تلميحات الأزرار", () => XRControllerInput.HintsVisible ? L("shown", "ظاهرة") : L("hidden", "مخفية"),
             XRControllerInput.ToggleHints);
         Add("Close", "إغلاق", null, Hide);
+    }
+
+    // Rest one controller on the real floor, then choose this with the other: the lowest tracked controller
+    // sets the floor correction for head and hands together (XRHeadTracking.CalibrateFloor).
+    private void CalibrateFloor()
+    {
+        float lowest = float.PositiveInfinity;
+        foreach (XRControllerInput input in FindObjectsByType<XRControllerInput>(FindObjectsSortMode.None))
+            if (input.PoseTracked) lowest = Mathf.Min(lowest, input.RawTrackedY);
+        if (float.IsInfinity(lowest)) { DemoFeedback.Post(L("No tracked controller to measure the floor with", "لا توجد وحدة تحكم متتبعة لقياس الأرضية"), FeedbackTone.Warning); return; }
+        XRHeadTracking.CalibrateFloor(lowest);
+        DemoFeedback.Post(L("Floor calibrated: ", "تمت معايرة الأرضية: ") + Mathf.RoundToInt(XRHeadTracking.FloorCorrection * 100) + " cm", FeedbackTone.Success);
     }
 
     private DemoLighting lightingCache;

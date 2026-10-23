@@ -21,7 +21,7 @@ Shader "CrimeScene/DisplayGlass"
         ZWrite Off
         CGPROGRAM
         #pragma target 3.0
-        #pragma surface surf StandardSpecular alpha:premul fullforwardshadows
+        #pragma surface surf StandardSpecular alpha:premul
         #pragma multi_compile_instancing
         #pragma shader_feature_local _GLASS_WEAR
         fixed4 _Color;

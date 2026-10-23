@@ -80,4 +80,4 @@ All of this is in `DemoPlatform`, `NightQuality` and `PackImport`. The PC build 
   - glass and reflections;
   - the size of the presenter menu.
 
-  If the frame rate is low, the next steps are fixed foveated rendering and lowering the number of cases or the glass layers.
+  Since October 23 (unverified) NightQuality applies `QuestEyeResolutionScale` 0.9 and fixed foveation `QuestFoveation` 0.5 on the headset alone (QuestBuild enables the OpenXR Foveated Rendering feature), the camera flash casts no shadow there, older lit lamps are vertex lights and the glass shaders skip ForwardAdd shadow sampling. If the frame rate is still low, raise the foveation level or lower the scale, then the number of cases or the glass layers.

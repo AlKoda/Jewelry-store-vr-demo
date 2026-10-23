@@ -110,6 +110,7 @@ public static class QuestBuild
         {
             string name = feature.GetType().Name;
             if (name == "MetaQuestFeature") { feature.enabled = true; quest = true; }
+            else if (name == "FoveatedRenderingFeature") feature.enabled = true; // fixed foveation; NightQuality sets the level at runtime
             else if (feature is OpenXRInteractionFeature)
                 feature.enabled = name == "OculusTouchControllerProfile" || name == "MetaQuestTouchPlusControllerProfile";
             EditorUtility.SetDirty(feature);

@@ -21,7 +21,7 @@ public static class InvestigationInteraction {
   var register=hit.collider.GetComponentInParent<EvidenceRegister>();if(register){register.NextPage();return true;}return false;
  }
  public static PortableFieldKit NearKit(HandInteractor hand){
-  foreach(var collider in Physics.OverlapSphere(hand.transform.position,.10f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Collide)){
+  foreach(var collider in Physics.OverlapSphere(hand.transform.position,.08f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Collide)){
    var kit=collider.GetComponentInParent<PortableFieldKit>();if(!kit||kit.Holder||kit.GripCollider!=collider)continue;
    if(Reachable(hand,collider,kit.Grip.position))return kit;
   }return null;

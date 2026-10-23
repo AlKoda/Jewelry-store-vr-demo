@@ -54,8 +54,19 @@ public static class RecordingGlass
             var mesh=Save(name);var go=new GameObject(name);go.transform.SetParent(parent,false);go.transform.localPosition=position;go.transform.localScale=scale;
             go.AddComponent<MeshFilter>().sharedMesh=mesh;var r=go.AddComponent<MeshRenderer>();r.sharedMaterials=new[]{face,edge};
             r.shadowCastingMode=ShadowCastingMode.Off;r.lightProbeUsage=LightProbeUsage.BlendProbes;r.reflectionProbeUsage=ReflectionProbeUsage.BlendProbes;
-            GameObjectUtility.SetStaticEditorFlags(go,StaticEditorFlags.BatchingStatic);
+            // Static batching would weld a pane into one scene mesh, so glass left in a door leaf
+            // (a Rigidbody/HingeJoint, or the authored door objects before Doors() adds them) stays
+            // behind when the door swings: anything under a moving parent keeps no static flag.
+            GameObjectUtility.SetStaticEditorFlags(go,MovesAtRuntime(parent)?0:StaticEditorFlags.BatchingStatic);
             return go;
+        }
+        public static bool MovesAtRuntime(Transform parent)
+        {
+            if(parent==null)return false;
+            if(parent.GetComponentInParent<Rigidbody>()||parent.GetComponentInParent<HingeJoint>()||parent.GetComponentInParent<PushDoorLeaf>())return true;
+            for(var t=parent;t!=null;t=t.parent)
+                if(t.name=="DoorLeft"||t.name=="DoorRight"||(t.name=="Door"&&t.parent&&(t.parent.name=="OfficeDoor"||t.parent.name=="ServiceDoor")))return true;
+            return false;
         }
     }
     static void PolishedPanePart(Geometry geometry,Bounds bounds){

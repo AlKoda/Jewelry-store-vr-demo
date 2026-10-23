@@ -16,21 +16,95 @@ public sealed class DeployedTool : MonoBehaviour
         foreach(var collider in GetComponentsInChildren<Collider>(true))
             collider.isTrigger=Kind!=DemoToolKind.Lamp || Holder!=null || collider.name=="Tool selection volume";
     }
-    void Start(){
+    void Start(){BuildSelectionVolume();}
+    // One trigger box round every renderer, so pointing and grabbing need no exact hit; rebuilt
+    // when a lamp's telescoping column changes its height.
+    private BoxCollider selectionVolume;
+    private void BuildSelectionVolume(){
         var renderers=GetComponentsInChildren<MeshRenderer>();if(renderers.Length==0)return;
         Bounds b=renderers[0].bounds;foreach(var r in renderers)b.Encapsulate(r.bounds);
-        var target=new GameObject("Tool selection volume");target.transform.SetParent(transform,false);
-        var box=target.AddComponent<BoxCollider>();box.isTrigger=true;
-        box.center=transform.InverseTransformPoint(b.center);
-        box.size=Vector3.Scale(b.size,new Vector3(1/Mathf.Abs(transform.lossyScale.x),1/Mathf.Abs(transform.lossyScale.y),1/Mathf.Abs(transform.lossyScale.z)))+Vector3.one*.035f;
+        if(selectionVolume==null){
+            var target=new GameObject("Tool selection volume");target.transform.SetParent(transform,false);
+            selectionVolume=target.AddComponent<BoxCollider>();selectionVolume.isTrigger=true;
+        }
+        selectionVolume.center=transform.InverseTransformPoint(b.center);
+        selectionVolume.size=Vector3.Scale(b.size,new Vector3(1/Mathf.Abs(transform.lossyScale.x),1/Mathf.Abs(transform.lossyScale.y),1/Mathf.Abs(transform.lossyScale.z)))+Vector3.one*.035f;
     }
     public Transform TapeAnchor;
     public TextMesh NumberLabel;
     public TextMesh BackNumberLabel;
-    // Scene lamp only: its spot light and emissive panel face. ToolStation decides
-    // which lamps are lit (at most two at once).
+    // Scene lamp only: its spot light and emissive panel face. Every placed lamp stays lit;
+    // ToolStation decides which of them shadow (the two newest).
     public Light Lamp;
     public MeshRenderer LampFace;
+
+    // ---- scene lamp telescoping column -------------------------------------------------
+    // The light stand's upper column slides: LampHeight is the head pivot's height above the
+    // feet (DemoToolGeometry.LampPanelY when built). Grip moves the whole lamp; use/place near
+    // the pole drives SetLampHeight (HandInteractor, DesktopInteractor). Lamps built before the
+    // column became a separate part get a runtime extension tube and only extend upwards.
+    public const float LampMaxHeight = 2.1f;
+    private Transform lampHead, lampColumn, lampYoke;
+    private CapsuleCollider lampColumnCollider;
+    private bool lampPartsSearched;
+    public bool IsLamp => Kind == DemoToolKind.Lamp;
+    private void FindLampParts()
+    {
+        if (lampPartsSearched || !IsLamp) return;
+        lampPartsSearched = true;
+        lampHead = transform.Find("Head");
+        lampYoke = transform.Find("Yoke");
+        lampColumn = transform.Find("Column");
+        Transform stand = transform.Find("Stand");
+        if (stand != null) lampColumnCollider = stand.GetComponent<CapsuleCollider>();
+        if (lampHead != null && lampColumn == null) lampColumn = DemoToolGeometry.LampExtension(this);
+    }
+    public float LampHeight { get { FindLampParts(); return lampHead != null ? lampHead.localPosition.y : DemoToolGeometry.LampPanelY; } }
+    // The head cannot drop below the fixed column top plus the yoke; a legacy prefab's fixed
+    // column already reaches the built head height, so it only extends.
+    public float LampMinHeight
+    {
+        get
+        {
+            FindLampParts();
+            if (lampColumn == null) return DemoToolGeometry.LampPanelY;
+            return lampColumn.localPosition.y + DemoToolGeometry.LampYokeDrop + 0.05f;
+        }
+    }
+    public bool LampTelescopes { get { FindLampParts(); return lampHead != null; } }
+    // Moves the head (light, housing, yoke) to height metres above the feet and stretches the
+    // column to meet it; returns the height actually applied.
+    public float SetLampHeight(float height)
+    {
+        FindLampParts();
+        if (lampHead == null) return DemoToolGeometry.LampPanelY;
+        height = Mathf.Clamp(height, LampMinHeight, LampMaxHeight);
+        Vector3 p = lampHead.localPosition; p.y = height; lampHead.localPosition = p;
+        if (lampYoke != null) { Vector3 y = lampYoke.localPosition; y.y = height; lampYoke.localPosition = y; }
+        if (lampColumn != null)
+        {
+            Vector3 scale = lampColumn.localScale;
+            scale.y = Mathf.Max(0.001f, height - DemoToolGeometry.LampYokeDrop - lampColumn.localPosition.y);
+            lampColumn.localScale = scale;
+        }
+        if (lampColumnCollider != null)
+        {
+            float bottom = 0.3f, top = height + 0.05f;
+            lampColumnCollider.center = new Vector3(0, (bottom + top) / 2, 0);
+            lampColumnCollider.height = top - bottom;
+        }
+        if (selectionVolume != null) BuildSelectionVolume();
+        return height;
+    }
+    // True when a point (a hand) is within reach of the column itself, not the feet or the
+    // panel: the telescoping grip. The column is the tool's local y axis.
+    public bool NearLampColumn(Vector3 point, float reach = 0.12f)
+    {
+        if (!IsLamp) return false;
+        Vector3 local = transform.InverseTransformPoint(point);
+        float radial = new Vector2(local.x, local.z).magnitude;
+        return radial <= reach && local.y > 0.25f && local.y < LampHeight + 0.05f;
+    }
     public int MarkerNumber { get; private set; }
     // The adapter currently carrying this tool; null when it rests in the scene.
     private ToolHolder holder;

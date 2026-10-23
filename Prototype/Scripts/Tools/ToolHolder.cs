@@ -26,7 +26,7 @@ public abstract class ToolHolder : MonoBehaviour
         if(!kit.Take(this,CameraAnchor))return false;CarriedKit=kit;var lighting=FindFirstObjectByType<DemoLighting>();if(this is HandInteractor&&lighting)lighting.ClearHandTorch(CameraAnchor);
         DemoSounds.Play(DemoSound.Click,kit.Grip.position,.18f);DemoFeedback.Post("Field kit in hand");return true;
     }
-    public void PutDownKit(bool home=false){if(!CarriedKit)return;var kit=CarriedKit;CarriedKit=null;kit.Release(home);}
+    public void PutDownKit(bool home=false,bool audible=true){if(!CarriedKit)return;var kit=CarriedKit;CarriedKit=null;kit.Release(home,false,audible);}
     public bool PlaceKit(Ray ray,float reach){if(!CarriedKit||!CarriedKit.PlaceByRay(ray,reach))return false;var kit=CarriedKit;CarriedKit=null;kit.Release(false,true);return true;}
     public bool TakeFieldTool(FieldInvestigationTool tool){
         if(this is HandInteractor&&tool&&Vector3.Distance(transform.position,tool.transform.position)>.32f){DemoFeedback.Post("Move closer to take the field tool",FeedbackTone.Warning);return false;}
@@ -91,9 +91,10 @@ public abstract class ToolHolder : MonoBehaviour
     public virtual void Place()
     {
         DeployedTool placed = Held;
+        bool first = placed != null && !placed.HasBeenPlaced; // read before Settle marks it placed
         Settle(true);
         if (placed != null) DemoFeedback.Post(placed.DisplayName + " placed", FeedbackTone.Success);
-        if (Station != null) Station.NotifyPlaced(placed);
+        if (Station != null) Station.NotifyPlaced(placed, first, this);
     }
 
     // Lets go of the held tool and sets it on the nearest upward surface beneath it,

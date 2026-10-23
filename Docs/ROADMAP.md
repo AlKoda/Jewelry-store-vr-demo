@@ -2,15 +2,15 @@
 
 Updated October 23, 2026. Prototype and the local Unity project must match; Koda authorized uploading all current local work on October 23; latest feedback remains notes only.
 
-Latest tested-build feedback is **recorded only; fixes deferred at Koda's request**. See [NEXT_SESSION_NOTES.md](NEXT_SESSION_NOTES.md) for the full requirements, including the exact continuous-tape workflow. User feedback supersedes any visual/interaction acceptance implied by the completed local checks below.
+Latest tested-build feedback (see [NEXT_SESSION_NOTES.md](NEXT_SESSION_NOTES.md)) is now coded by Claude in Prototype (October 23, **unverified**: cloud compile only, no Unity run). User feedback supersedes any visual/interaction acceptance implied by the completed local checks below.
 
 - [ ] Restore the unguided sandbox direction: remove quests/tasks, hints and progression restrictions; external instruction supplies the help. Support tools on all appropriate compatible traces/objects; research real forensic practice before the next mechanics pass.
-- [ ] Make door glass follow its door; ease/damp every door; make intact storefront/display glass visibly realistic in the actual build.
-- [ ] Separate tool-case handle/tool selection and allow placement on suitable surfaces, including display-case tops.
-- [ ] Correct physical-to-virtual floor alignment so evidence on the ground is reachable.
-- [ ] Reliable continuous tape chains: automatically supply the next linked endpoint, cancel to end a run, start subsequent runs independently, optionally snap/join existing endpoints.
-- [ ] Keep every placed lamp lit; normal grip moves the lamp, use/place near its pole adjusts telescoping height. This replaces the two-lit-lamp limit.
-- [ ] Refine and headset-test these mechanics before adding more guided content. None of these feedback fixes is implemented in this notes batch.
+- [x] CODED, unverified: door glass remnants keep no static flag (move with the leaf); eased, speed-limited door swing. Still open: intact storefront/display glass visibly realistic in the actual build.
+- [x] CODED, unverified: tool wins over the case handle unless the handle is clearly nearer; case rests on display-case tops and narrower tables (centre + 60 % footprint, 4 cm).
+- [x] CODED, unverified: head-only height offset (default 0) plus a shared floor correction measured by the presenter menu's "Calibrate floor".
+- [x] CODED, unverified: continuous tape run (next linked post in hand, live ribbon, remove to end, independent next run, 12 cm snap and deliberate join).
+- [x] CODED, unverified: every placed lamp stays lit (two newest shadowed); grip carries, trigger on the column telescopes the head (1.25 to 2.1 m), PC + / -.
+- [ ] Koda: run ShopCityValidation / NightStoreValidation / SceneReviewValidation / BeltLampReview, regenerate tool prefabs, rebuild Windows player and Quest APK, then headset-test floor reach, door contact, tool selection, case on a glass top, tape run and several lit lamps before adding guided content.
 
 - [x] LOCAL October 23: approved door openings retained; all 57 intact case panes bevelled, distinct photographic-wear glass finishes, six native case fractures and varied 3D debris. UV discovery/box searches bring the register to eighteen clues/ten samples. Fresh lighting/reflections, edit/play checks and strict Windows build pass; see Verification/ShopDetail.
 - [x] LOCAL October 23: exterior table and carryable open case with four field tools, moving docks, supported placement, fingerprint brush/lift workflow, fourteen clues/eight sample points and persistent bilingual register. Saved scene, edit/play/file-reset checks and Windows build passed; see Verification/PortableFieldwork. Earlier document-box workflow retained.
@@ -49,7 +49,7 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [ ] Retest corrected flashlight-only palm orientation; original empty-hand models restored after misunderstanding. Build and grip checks pass.
 - [ ] Headset check of Claude's October 19 shadow/UV/reflection round: UV stops at walls, no stripe acne, case reflections, ambient prop materials; profile the shadow maps (needs a bake build for the builder changes).
-- [ ] Quest 3 standalone app: install Android Build Support, run Build-Quest-App.cmd, check frame rate (72 Hz) in the showroom with the flashlight, presenter menu size, glass/reflections; then fixed foveation if needed (Docs/QUEST_STANDALONE.md).
+- [ ] Quest 3 standalone app: APK built once on Koda's PC (October 23, 111 MB) but not installed (headset developer mode blocked). Check frame rate (72 Hz) in the showroom with the flashlight, presenter menu size, glass/reflections; the eye-buffer scale 0.9 and fixed foveation 0.5 (NightQuality, unverified) are the first knobs to tune (Docs/QUEST_STANDALONE.md).
 
 - [x] Render-check actual white/UV torch shadows in PC and Quest quality tiers; keep store interior fixtures off.
 - [x] Remove player-displacing collision from small tools; preserve selection, UV occlusion and solid placed scene lamps.

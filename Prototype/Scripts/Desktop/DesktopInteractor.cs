@@ -79,6 +79,9 @@ public sealed class DesktopInteractor : ToolHolder
         if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) {if(CarriedKit)PutDownKit();else if(FieldTool)ReturnFieldTool();else Remove(Target);}
         if(Input.GetKeyDown(KeyCode.G)&&!overPanel&&!Held&&!HoldingCamera){if(CarriedKit)PlaceKit(PointerRay(),Reach);else InvestigationInteraction.Use(this,PointerRay(),2);}
         if (Input.GetKeyDown(KeyCode.T)) Use(Target);
+        // + and - (main row or number pad) slide the hovered or held lamp's telescoping column by 10 cm.
+        if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.KeypadPlus)) AdjustLampHeight(Target, LampHeightStep);
+        if (Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus)) AdjustLampHeight(Target, -LampHeightStep);
         if (Input.GetKeyDown(KeyCode.X) && Station != null) Station.CancelTapeSelection();
         if (Input.GetKeyDown(KeyCode.F)) ToggleCamera();
         if (Input.GetKeyDown(KeyCode.P)) Photograph();
@@ -111,6 +114,16 @@ public sealed class DesktopInteractor : ToolHolder
     }
 
     public DeployedTool Target => Held != null ? Held : Hovered;
+
+    public const float LampHeightStep = 0.1f;
+    // Slides a scene lamp's head up or down (DeployedTool.SetLampHeight clamps the column's travel).
+    public bool AdjustLampHeight(DeployedTool lamp, float delta)
+    {
+        if (lamp == null || !lamp.IsLamp || !lamp.LampTelescopes) return false;
+        float height = lamp.SetLampHeight(lamp.LampHeight + delta);
+        DemoFeedback.Post("Lamp head at " + height.ToString("0.00") + " m");
+        return true;
+    }
 
     // T on a scene lamp switches it; on a tape post or reel it selects the endpoint.
     public void Use(DeployedTool tool)

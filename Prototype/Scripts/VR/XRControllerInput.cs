@@ -123,6 +123,8 @@ public sealed class XRControllerInput : MonoBehaviour
         }
     }
 
+    // The controller's tracked height in rig space before any correction (floor calibration reads it).
+    public float RawTrackedY { get; private set; }
     public bool PoseTracked { get; private set; }
     bool needsNeutral=true;
     float quitChordSince=-1;
@@ -153,7 +155,7 @@ public sealed class XRControllerInput : MonoBehaviour
         device = InputDevices.GetDeviceAtXRNode(Node);
         if (!HasTrackedPose(device)) { LoseTracking(); return; }
         PoseTracked=true;
-        if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*XRHeadTracking.HeightOffset;
+        if (device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) { RawTrackedY = position.y; transform.localPosition = position+Vector3.up*XRHeadTracking.FloorCorrection; } // hands take the floor correction only, never the head's comfort lift
         if (device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
         if(needsNeutral){if(!Neutral(device))return;needsNeutral=false;}
 
@@ -226,9 +228,12 @@ public sealed class XRControllerInput : MonoBehaviour
         InputDevice late = InputDevices.GetDeviceAtXRNode(Node);
         if (!HasTrackedPose(late)) { LoseTracking();return; }
         if(!PoseTracked)return;
-        if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*XRHeadTracking.HeightOffset;
+        if (late.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*XRHeadTracking.FloorCorrection; // hands take the floor correction only, never the head's comfort lift
         if (late.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
-        if (!needsNeutral && hand != null && hand.Held != null) hand.FollowHand();
+        if (needsNeutral || hand == null) return;
+        if (hand.Held != null) hand.FollowHand();
+        else if (hand.FieldTool != null) hand.FieldTool.Follow(hand.transform);  // the brush, lifter and kit otherwise lag the
+        else if (hand.CarriedKit != null) hand.CarriedKit.Follow(hand.transform); // rendered hand by the late-pose correction
     }
 
     // The tool wheel takes the trigger first: the left trigger opens it with an empty left hand and,
@@ -246,7 +251,7 @@ public sealed class XRControllerInput : MonoBehaviour
         if (Left && presenter != null && presenter.Open) return true; // no tool wheel over the menu
         if (Left && wheel != null)
         {
-            if (pressed && hand.Held == null && !hand.HoldingCamera)
+            if (pressed && hand.Held == null && !hand.HoldingCamera && hand.FieldTool == null && hand.CarriedKit == null)
             {
                 OpenWheel();
                 Buzz(HandEvent.Select);

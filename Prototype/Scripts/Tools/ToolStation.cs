@@ -21,13 +21,24 @@ public sealed class ToolStation : MonoBehaviour
     // Separate chains, so a reel laid during a barrier run does not break the run.
     private DeployedTool lastPlacedPost, lastPlacedReel;
     public bool AutoConnectTape = true;
-    // Each lit lamp is a realtime spot light; two keep the night scene within its
-    // pixel-light budget beside the flashlight. Lit lamps in the order they were lit.
-    public const int MaxLitLamps = 2;
+    // Every placed lamp stays lit (Koda, October 23). Each lit lamp is a realtime spot light;
+    // only the newest MaxShadowedLamps carry shadow maps and the full 8 m beam, older ones fall
+    // back to a short unshadowed pool (LampUnshadowedRange) that cannot reach through a wall.
+    // The Quest alone shadows one lamp while a torch is on (two shadow maps in total).
+    public const int MaxShadowedLamps = 2;
     // Spot cookie a lamp projects once lit (the night store's NightSky LED floodlight);
     // null keeps the plain spot (the shop).
     public Texture LampCookie;
     private readonly List<DeployedTool> litLamps = new List<DeployedTool>();
+    // The continuous tape run: the last placed post of the run and the linked post in a hand, joined
+    // by a live ribbon that follows the hand (SceneTape re-stretches every frame).
+    private DeployedTool runHead, runHeldPost;
+    private SceneTape runTape;
+    public DeployedTool RunHead => runHead;
+    public DeployedTool RunHeldPost => runHeldPost;
+    public bool TapeRunActive => runHead != null && runHead.gameObject.activeInHierarchy && runHeldPost != null && runHeldPost.gameObject.activeInHierarchy;
+    // A free post whose anchor lies within this of a held post's anchor is a join candidate.
+    public float TapeSnapRadius = 0.12f;
     public DeployedTool LastPlacedPost => lastPlacedPost;
     public DeployedTool LastPlacedReel => lastPlacedReel;
     public DeployedTool PendingPost => pendingPost;
@@ -95,7 +106,7 @@ public sealed class ToolStation : MonoBehaviour
         get { PruneLamps(); return litLamps.Count; }
     }
 
-    // Lighting a lamp beyond MaxLitLamps switches off the one lit longest ago.
+    // Lit lamps are independent; lighting one never switches another off.
     public void SetLampLit(DeployedTool lamp, bool lit)
     {
         if (lamp == null || lamp.Lamp == null) return;
@@ -116,12 +127,6 @@ public sealed class ToolStation : MonoBehaviour
         PruneLamps();
         if (lit)
         {
-            while (litLamps.Count >= MaxLitLamps)
-            {
-                litLamps[0].SetLampLit(false);
-                litLamps.RemoveAt(0);
-                DemoFeedback.Post("Two scene lamps at most: the first one went off");
-            }
             litLamps.Add(lamp);
             if (LampCookie != null && lamp.Lamp != null) lamp.Lamp.cookie = LampCookie;
         }
@@ -129,24 +134,57 @@ public sealed class ToolStation : MonoBehaviour
         UpdateLampShadows();
     }
 
-    // Both portable lamps remain shadowed alongside whichever torch is lit (white or UV,
-    // never both: DemoLighting.TorchesExclusive); no short-range
-    // unshadowed substitute is permitted to illuminate through solid walls.
+    private DemoLighting lightingCache;
+    private DemoLighting Lighting => lightingCache != null ? lightingCache : lightingCache = FindFirstObjectByType<DemoLighting>();
+
+    // How many lit lamps may shadow right now: two beside whichever torch is lit on the PC
+    // (white or UV, never both: DemoLighting.TorchesExclusive), one on the headset alone while
+    // a torch is on, so the mobile GPU renders at most two shadow maps a frame.
+    public int ShadowedLampBudget
+    {
+        get
+        {
+            if (!DemoPlatform.Standalone) return MaxShadowedLamps;
+            DemoLighting lighting = Lighting;
+            bool torch = lighting != null && (lighting.FlashlightOn || lighting.UVTorchOn);
+            return torch ? 1 : MaxShadowedLamps;
+        }
+    }
+
+    // The newest lit lamps (the ones the presenter is working with) keep soft shadows and the
+    // full beam; the rest stay lit as short unshadowed pools, vertex-lit on the headset alone so
+    // they cost no extra forward pass. DemoLighting calls this when a torch switches.
     public void UpdateLampShadows()
     {
         PruneLamps();
+        int budget = ShadowedLampBudget;
         for (int i = 0; i < litLamps.Count; i++)
         {
             Light lamp = litLamps[i].Lamp;
             if (lamp == null) continue;
-            // Two portable lamps plus the torch: bounded cost, no unshadowed lamp
-            // beams crossing walls. Profile the three shadow maps in actual PCVR.
-            lamp.shadows = LightShadows.Soft;
-            lamp.shadowCustomResolution=1024;
-            lamp.shadowBias=.04f;lamp.shadowNormalBias=.3f;
-            DemoPlatform.TuneShadows(lamp, 1024); // hard 512 on the Quest alone
-            lamp.range=DemoToolGeometry.LampRange;
+            bool shadowed = i >= litLamps.Count - budget;
+            if (shadowed)
+            {
+                lamp.shadows = LightShadows.Soft;
+                lamp.shadowCustomResolution = 1024;
+                lamp.shadowBias = .04f; lamp.shadowNormalBias = .3f;
+                DemoPlatform.TuneShadows(lamp, 1024); // hard 512 on the Quest alone
+                lamp.range = DemoToolGeometry.LampRange;
+                lamp.renderMode = LightRenderMode.ForcePixel;
+            }
+            else
+            {
+                lamp.shadows = LightShadows.None;
+                lamp.range = DemoToolGeometry.LampUnshadowedRange;
+                lamp.renderMode = DemoPlatform.Standalone ? LightRenderMode.ForceVertex : LightRenderMode.Auto;
+            }
         }
+    }
+
+    // Shadowed lit lamps (validators).
+    public int ShadowedLampCount
+    {
+        get { PruneLamps(); int n = 0; foreach (DeployedTool lamp in litLamps) if (lamp.Lamp != null && lamp.Lamp.shadows != LightShadows.None) n++; return n; }
     }
 
     // Removed lamps are inactive before Destroy lands; they no longer count.
@@ -191,27 +229,97 @@ public sealed class ToolStation : MonoBehaviour
             ? "Measured " + tape.DistanceLabel.text : "Tape connected", FeedbackTone.Success);
     }
 
-    // Called only on deliberate placement, not spawn, reset or mode switching. A new
-    // post joins the last placed post, a new reel the last placed reel, never across.
-    public void NotifyPlaced(DeployedTool tool)
+    // Called only on deliberate placement, not spawn, reset or mode switching. firstPlacement is the
+    // value of HasBeenPlaced before the holder settled the tool (ToolHolder.Place reads it first; the
+    // older single-argument form is for validators placing tools directly).
+    //
+    // Tape posts form a continuous run: placing a post leaves a linked post in the same hand with a
+    // live ribbon back to it, and so on until that held post is removed (HandInteractor.RemoveHeld /
+    // the desktop's remove key), which ends the run; the next post then starts a new run that does not
+    // join the old one. A held post set down within TapeSnapRadius of another run's free post joins
+    // that post instead: the held post merges into it and the run continues from there.
+    // Measuring reels keep the simpler pairing: a new reel joins the last placed reel.
+    public void NotifyPlaced(DeployedTool tool) => NotifyPlaced(tool, true, null);
+
+    public void NotifyPlaced(DeployedTool tool, bool firstPlacement, ToolHolder holder)
     {
         if(tool==null || tool.TapeAnchor==null || !tool.transform.IsChildOf(DeploymentRoot)) return;
-        if(!tool.HasBeenPlaced && AutoConnectTape)
+        bool reel=tool.Kind==DemoToolKind.Measure;
+        if(firstPlacement && AutoConnectTape && reel)
         {
-            bool reel=tool.Kind==DemoToolKind.Measure;
-            DeployedTool previous=reel?lastPlacedReel:lastPlacedPost;
-            if(previous!=null && previous.gameObject.activeInHierarchy)
+            DeployedTool previous=lastPlacedReel;
+            if(previous!=null && previous.gameObject.activeInHierarchy) { pendingPost=previous; SelectTapePost(tool); }
+            lastPlacedReel=tool;
+        }
+        else if(firstPlacement && AutoConnectTape && tool.Kind==DemoToolKind.TapePost)
+        {
+            DeployedTool joined = SnapTarget(tool);
+            if(tool==runHeldPost && runTape!=null && runHead!=null && runHead.gameObject.activeInHierarchy)
             {
-                pendingPost=previous;
-                SelectTapePost(tool);
+                // The linked post of a run: its ribbon is already there. Joining another post hands the
+                // ribbon's end to that post and retires the held one.
+                if(joined!=null)
+                {
+                    runTape.EndAnchor=joined.TapeAnchor;
+                    runTape.Refresh();
+                    tool.RemoveTool();
+                    tool=joined;
+                    DemoFeedback.Post("Tape joined", FeedbackTone.Success);
+                }
+                runHead=tool;
             }
-            if(reel) lastPlacedReel=tool; else lastPlacedPost=tool;
+            else
+            {
+                // A post placed on its own starts a run; next to another free post it first connects to it.
+                if(joined!=null) { pendingPost=joined; SelectTapePost(tool); }
+                runHead=tool;
+            }
+            lastPlacedPost=tool;
+            runHeldPost=null; runTape=null;
+            ContinueRun(holder);
         }
         tool.HasBeenPlaced=true;
         ToolsChanged.Invoke();
     }
 
-    public void StartNewTapeRun() { lastPlacedPost=null; lastPlacedReel=null; pendingPost=null; ToolsChanged.Invoke(); }
+    // Puts the next linked post in the hand that just placed one, with the live ribbon from the run head.
+    private void ContinueRun(ToolHolder holder)
+    {
+        if(holder==null || runHead==null || TapePrefab==null) return;
+        DeployedTool next=holder.SpawnIntoHand(DemoToolKind.TapePost);
+        if(next==null || next.TapeAnchor==null) return;
+        runHeldPost=next;
+        runTape=Instantiate(TapePrefab, DeploymentRoot);
+        runTape.StartAnchor=runHead.TapeAnchor;
+        runTape.EndAnchor=next.TapeAnchor;
+        runTape.Refresh();
+        DemoFeedback.Post("Tape run: place the next post, or remove it to finish");
+    }
+
+    // The nearest other placed post whose anchor is within TapeSnapRadius of this post's anchor, or null.
+    public DeployedTool SnapTarget(DeployedTool post)
+    {
+        if(post==null || post.TapeAnchor==null || DeploymentRoot==null) return null;
+        DeployedTool best=null; float bestDistance=TapeSnapRadius;
+        foreach(Transform child in DeploymentRoot)
+        {
+            DeployedTool other=child.GetComponent<DeployedTool>();
+            if(other==null || other==post || other==runHead || other.Kind!=DemoToolKind.TapePost || other.TapeAnchor==null
+               || !other.gameObject.activeInHierarchy || !other.Free || !other.HasBeenPlaced) continue;
+            float d=Vector3.Distance(other.TapeAnchor.position, post.TapeAnchor.position);
+            if(d<bestDistance) { bestDistance=d; best=other; }
+        }
+        return best;
+    }
+
+    // Ends the run when its held post is removed (or the hand lets go of it some other way).
+    public void EndTapeRun()
+    {
+        runHead=null; runHeldPost=null; runTape=null;
+        ToolsChanged.Invoke();
+    }
+
+    public void StartNewTapeRun() { lastPlacedPost=null; lastPlacedReel=null; pendingPost=null; EndTapeRun(); }
 
     public void CancelTapeSelection() { pendingPost = null; ToolsChanged.Invoke(); }
 
@@ -223,6 +331,9 @@ public sealed class ToolStation : MonoBehaviour
         if (pendingPost == tool) pendingPost = null;
         if(lastPlacedPost==tool) lastPlacedPost=null;
         if(lastPlacedReel==tool) lastPlacedReel=null;
+        // Removing the held linked post finishes the run (its ribbon goes with it below); removing the
+        // run head also ends it, so the next post starts fresh.
+        if(tool==runHeldPost || tool==runHead) { runHead=null; runHeldPost=null; runTape=null; }
         bool wasLit = litLamps.Remove(tool);
         if(tool.TapeAnchor!=null)
             foreach(SceneTape tape in DeploymentRoot.GetComponentsInChildren<SceneTape>())
@@ -239,6 +350,7 @@ public sealed class ToolStation : MonoBehaviour
         pendingPost = null;
         lastPlacedPost = null;
         lastPlacedReel = null;
+        runHead = null; runHeldPost = null; runTape = null;
         litLamps.Clear();
         if (DeploymentRoot == null) return;
         for (int i = DeploymentRoot.childCount - 1; i >= 0; i--)

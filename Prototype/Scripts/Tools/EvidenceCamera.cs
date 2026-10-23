@@ -95,6 +95,8 @@ public sealed class EvidenceCamera : MonoBehaviour
             flash.shadowBias=.04f;flash.shadowNormalBias=.3f;
             DemoPlatform.TuneShadows(flash, 1024);
             flash.renderMode = LightRenderMode.ForcePixel;
+            // A two-frame flash is not worth a shadow map on the mobile GPU; it still lights per pixel.
+            if (DemoPlatform.Standalone) flash.shadows = LightShadows.None;
         }
         if (flash == null) return;
         flash.intensity = FlashIntensity;

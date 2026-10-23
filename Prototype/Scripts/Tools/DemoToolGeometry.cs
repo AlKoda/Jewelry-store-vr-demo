@@ -136,22 +136,31 @@ public static class DemoToolGeometry
         stand.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.026f, 0.026f }, new[] { LampCollar - 0.03f, LampCollar + 0.03f }, 10, true, true, true);
         stand.Cylinder(null, new Vector3(0, 0.3f, 0), new Vector3(0, 1.02f, 0), 0.017f, 8);
         stand.Lathe(null, Vector3.zero, Quaternion.identity, new[] { 0.022f, 0.022f }, new[] { 1.0f, 1.05f }, 10, true, true, true);
-        stand.Cylinder(null, new Vector3(0, 1.05f, 0), new Vector3(0, LampPanelY - 0.13f, 0), 0.012f, 8, false);
-        // Yoke: a cross bar under the panel and two arms up to the tilt knobs.
+        // The sliding upper column is its own part, a unit-length tube from the collar at
+        // LampColumnTop up to the yoke; DeployedTool.SetLampHeight stretches it (local y scale) to
+        // meet the head wherever the presenter sets it (LampMinHeight..LampMaxHeight).
+        Transform column = Part("Column", root, UnitColumn(0.012f), black).transform;
+        column.localPosition = new Vector3(0, LampColumnTop, 0);
+        column.localScale = new Vector3(1, LampPanelY - LampYokeDrop - LampColumnTop, 1);
+        // Yoke: a cross bar under the panel and two arms up to the tilt knobs, in its own part
+        // at the head's height (it rides up and down with the head, but does not tilt).
+        ProceduralMesh yokeMesh = new ProceduralMesh();
         float arm = LampPanelWidth * 0.5f + 0.02f;
-        stand.Box(null, new Vector3(0, LampPanelY - 0.13f, 0), new Vector3(2 * arm + 0.016f, 0.016f, 0.02f));
+        yokeMesh.Box(null, new Vector3(0, -LampYokeDrop, 0), new Vector3(2 * arm + 0.016f, 0.016f, 0.02f));
         for (int s = -1; s <= 1; s += 2)
         {
-            stand.Box(null, new Vector3(s * arm, LampPanelY - 0.065f, 0), new Vector3(0.016f, 0.13f, 0.02f));
-            stand.Cylinder(null, new Vector3(s * arm, LampPanelY, 0), new Vector3(s * (arm + 0.025f), LampPanelY, 0), 0.016f, 8);
+            yokeMesh.Box(null, new Vector3(s * arm, -LampYokeDrop * 0.5f, 0), new Vector3(0.016f, LampYokeDrop, 0.02f));
+            yokeMesh.Cylinder(null, new Vector3(s * arm, 0, 0), new Vector3(s * (arm + 0.025f), 0, 0), 0.016f, 8);
         }
+        Transform yoke = Part("Yoke", root, yokeMesh, black).transform;
+        yoke.localPosition = new Vector3(0, LampPanelY, 0);
         BoxCollider legs = Part("Stand", root, stand, black).AddComponent<BoxCollider>();
         legs.center = new Vector3(0, 0.15f, 0);
         legs.size = new Vector3(LampSpread * 1.8f, 0.3f, LampSpread * 1.6f);
-        CapsuleCollider column = legs.gameObject.AddComponent<CapsuleCollider>();
-        column.center = new Vector3(0, 0.95f, 0);
-        column.radius = 0.04f;
-        column.height = 1.3f;
+        CapsuleCollider columnCollider = legs.gameObject.AddComponent<CapsuleCollider>();
+        columnCollider.center = new Vector3(0, 0.95f, 0);
+        columnCollider.radius = 0.04f;
+        columnCollider.height = 1.3f;
 
         // Panel housing and its face, in a head pivot tilted down about the knob axis.
         Transform head = new GameObject("Head").transform;
@@ -197,7 +206,33 @@ public static class DemoToolGeometry
 
     public const float LampRange = 8, LampUnshadowedRange = 3.5f;
     public const float LampPanelY = 1.5f, LampPanelWidth = 0.3f, LampPanelHeight = 0.2f, LampTilt = 15;
+    // Top of the fixed lower column (the locking collar) and how far the yoke's cross bar hangs under the head pivot.
+    public const float LampColumnTop = 1.05f, LampYokeDrop = 0.13f;
     private const float LampCollar = 0.62f, LampSpread = 0.36f;
+
+    // A tube from local y 0 to 1, scaled along y to any length (SetLampHeight).
+    private static ProceduralMesh UnitColumn(float radius)
+    {
+        ProceduralMesh tube = new ProceduralMesh();
+        tube.Cylinder(null, Vector3.zero, Vector3.up, radius, 8, false);
+        return tube;
+    }
+
+    // Lamps saved before the column became its own part have it inside the "Stand" mesh up to
+    // LampPanelY - LampYokeDrop. This adds a matching extension tube starting there, so such a
+    // lamp still telescopes upwards (DeployedTool.FindLampParts); null when the lamp has no head.
+    public static Transform LampExtension(DeployedTool lamp)
+    {
+        if (lamp == null || lamp.transform.Find("Head") == null) return null;
+        Transform stand = lamp.transform.Find("Stand");
+        Material black = stand != null && stand.GetComponent<MeshRenderer>() != null ? stand.GetComponent<MeshRenderer>().sharedMaterial
+            : Paint("ToolStandBlack", new Color(0.035f, 0.035f, 0.04f), 0.45f, 0.3f);
+        Transform column = Part("Column", lamp.transform, UnitColumn(0.012f), black).transform;
+        column.GetComponent<MeshRenderer>().shadowCastingMode = ShadowCastingMode.Off;
+        column.localPosition = new Vector3(0, LampPanelY - LampYokeDrop, 0);
+        column.localScale = new Vector3(1, 0.001f, 1);
+        return column;
+    }
 
     private const float ConeBase = 0.13f, ConeTop = 0.022f, ConeFoot = 0.035f, ConeHeight = 0.46f;
     private static float ConeRadius(float y) => Mathf.Lerp(ConeBase, ConeTop, (y - ConeFoot) / (ConeHeight - ConeFoot));

@@ -82,7 +82,7 @@ public sealed class DemoStatusBoard : MonoBehaviour
             text.text = "<color=" + accent + ">SCENE TOOLS</color>\n"
                 + Station.DeployedCount + " deployed, next marker " + Station.NextMarkerNumber + "\n"
                 + (Station.PendingPrompt != null ? "<color=" + accent + ">" + Station.PendingPrompt + "</color>" : "Tape: select two posts or two reels") + "\n"
-                + (lamps > 0 ? "Scene lamps lit: " + lamps + " of " + ToolStation.MaxLitLamps + "\n" : "")
+                + (lamps > 0 ? "Scene lamps lit: " + lamps + " (" + Station.ShadowedLampCount + " shadowed)\n" : "")
                 + photoLine;
         }
         FitPanel();

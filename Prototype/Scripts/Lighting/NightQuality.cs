@@ -69,10 +69,17 @@ public sealed class NightQuality : MonoBehaviour
     public int QuestPixelLights = 2;
     public float QuestShadowDistance = 8;
     public float QuestLodBias = 0.7f;
+    // Eye buffer scale on the headset alone (1 = the runtime's recommended size): 0.9 saves about a
+    // fifth of the fill for the forward passes, with MSAA hiding most of the difference.
+    public float QuestEyeResolutionScale = 0.9f;
+    // Fixed foveation level (0 off .. 1 strongest) through the OpenXR Foveated Rendering feature
+    // that QuestBuild enables: the dark periphery of the night store is rendered coarser.
+    [Range(0, 1)] public float QuestFoveation = 0.5f;
 
     public void Apply()
     {
         bool quest = DemoPlatform.Standalone;
+        ApplyHeadsetRendering(quest);
         QualitySettings.pixelLightCount = quest ? QuestPixelLights : PixelLights;
         QualitySettings.shadows = quest ? ShadowQuality.HardOnly : ShadowQuality.All;
         QualitySettings.shadowResolution = quest ? ShadowResolution.Medium : ShadowResolution.VeryHigh;
@@ -82,6 +89,25 @@ public sealed class NightQuality : MonoBehaviour
         QualitySettings.softParticles = false;
         QualitySettings.lodBias = quest ? QuestLodBias : 1;
         if (Camera.main != null) Configure(Camera.main);
+    }
+
+    // Eye buffer scale and foveation apply only with a live XR device (never on the PC monitor
+    // or in the Editor); the PC path keeps the runtime's own scale.
+    public void ApplyHeadsetRendering(bool quest)
+    {
+        if (!UnityEngine.XR.XRSettings.enabled || !Application.isPlaying) return;
+        float scale = quest ? Mathf.Clamp(QuestEyeResolutionScale, 0.5f, 1.5f) : 1f;
+        if (Mathf.Abs(UnityEngine.XR.XRSettings.eyeTextureResolutionScale - scale) > 0.001f) UnityEngine.XR.XRSettings.eyeTextureResolutionScale = scale;
+#if UNITY_2023_2_OR_NEWER
+        var displays = new System.Collections.Generic.List<UnityEngine.XR.XRDisplaySubsystem>();
+        SubsystemManager.GetSubsystems(displays);
+        foreach (var display in displays)
+        {
+            if (!display.running) continue;
+            display.foveatedRenderingLevel = quest ? Mathf.Clamp01(QuestFoveation) : 0f;
+            display.foveatedRenderingFlags = UnityEngine.XR.XRDisplaySubsystem.FoveatedRenderingFlags.None; // fixed, no gaze
+        }
+#endif
     }
 
     // Forward rendering keeps MSAA; LDR skips the HDR buffer the night does not need

@@ -44,6 +44,12 @@ public sealed class HandInteractor : ToolHolder
     private void Update()
     {
         if(controller!=null&&Application.isPlaying&&!controller.PoseTracked){Highlight(null);return;}
+        if (adjustingLamp != null)
+        {
+            if (controller != null && !controller.TriggerHeld) EndLampHeight();
+            else UpdateLampHeight();
+            return;
+        }
         if (Held != null) FollowHand();
         else
         {
@@ -64,6 +70,18 @@ public sealed class HandInteractor : ToolHolder
         Vector3 p=transform.TransformPoint(new Vector3(0,-.045f,.005f))-r*grip;
         if(Held.Kind==DemoToolKind.Lamp)p.y=Mathf.Max(p.y,Bounds!=null?Bounds.FloorAt(p):FloorY);
         Held.transform.SetPositionAndRotation(p, r);
+        SnapTapePost();
+    }
+
+    // A held tape post near another placed post sticks to it (anchor on anchor), so the player sees the
+    // join that placing it there will make (ToolStation.NotifyPlaced joins the run to that post).
+    private void SnapTapePost()
+    {
+        if (Held == null || Held.Kind != DemoToolKind.TapePost || Held.TapeAnchor == null || Station == null) return;
+        DeployedTool target = Station.SnapTarget(Held);
+        if (target == null) { Highlight(Held); return; }
+        Held.transform.position += target.TapeAnchor.position - Held.TapeAnchor.position;
+        Highlight(target);
     }
 
     public static Vector3 GripPoint(DemoToolKind kind){switch(kind){
@@ -77,13 +95,23 @@ public sealed class HandInteractor : ToolHolder
     // Grab the closest available tool, rack sample or camera within reach.
     public bool Grab()
     {
+        EndLampHeight();
         if (Held != null || HoldingCamera || FieldTool || CarriedKit) return false;
         DeployedTool tool = NearestTool();
         if (tool != null) { takingPlaced=true;Hold(tool);takingPlaced=false;return Held==tool; }
         if (nearSample != null) return TakeSample(nearSample) != null;
         if (nearCamera) { ToggleCamera(); return true; }
-        var kit=InvestigationInteraction.NearKit(this);if(kit)return TakeKit(kit);
-        var fieldTool=InvestigationInteraction.Near(this);if(fieldTool)return TakeFieldTool(fieldTool);
+        // Inside the open case the handle and the tools compete: the hand takes the nearer one,
+        // and a tool wins a tie (the handle only when it is clearly, 3 cm, nearer).
+        var kit=InvestigationInteraction.NearKit(this);
+        var fieldTool=InvestigationInteraction.Near(this);
+        if(kit&&fieldTool){
+            float toHandle=Vector3.Distance(transform.position,kit.GripCollider!=null?kit.GripCollider.ClosestPoint(transform.position):kit.Grip.position);
+            float toTool=Vector3.Distance(transform.position,fieldTool.transform.position);
+            if(toHandle+.03f<toTool)fieldTool=null;else kit=null;
+        }
+        if(fieldTool)return TakeFieldTool(fieldTool);
+        if(kit)return TakeKit(kit);
         DeployedTool far = PointedTool();
         if (far == null) return false;
         takingPlaced=true;Hold(far);takingPlaced=false;
@@ -101,7 +129,8 @@ public sealed class HandInteractor : ToolHolder
     }
 
     // Use the held object: photograph with the camera, select a held tape post or reel,
-    // switch a held scene lamp on or off.
+    // switch a held scene lamp on or off. With an empty hand on a placed lamp's column, the
+    // trigger takes hold of the telescoping column instead (released: the height locks).
     public void Trigger()
     {
         if(CarriedKit){}
@@ -110,11 +139,59 @@ public sealed class HandInteractor : ToolHolder
         else if (HoldingCamera) EvidenceCamera.CapturePhoto();
         else if (Held != null && Held.Lamp != null && Station != null) Station.ToggleLamp(Held);
         else if (Held != null && Held.TapeAnchor != null) SelectTapePost(Held);
+        else if (Held == null && BeginLampHeight(LampColumnAtHand())) {}
         else if(Held==null&&InvestigationInteraction.Use(this,new Ray(transform.position,transform.forward),2)){}
         else { var lighting = FindFirstObjectByType<DemoLighting>(); if (lighting != null) lighting.UseTorch(transform); }
     }
 
     public void RemoveHeld() { Remove(Held); }
+
+    // ---- scene lamp column -------------------------------------------------------------
+    // Trigger held on a placed lamp's column: the head follows the hand's rise and fall from
+    // where it took hold (DeployedTool.SetLampHeight clamps it). Grip still carries the whole lamp.
+    private DeployedTool adjustingLamp;
+    private float adjustStartY, adjustStartHeight;
+    public DeployedTool AdjustingLamp => adjustingLamp;
+
+    // The free scene lamp whose column is within reach of the hand, or null.
+    public DeployedTool LampColumnAtHand()
+    {
+        int count;
+        while ((count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius, overlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide)) == overlaps.Length)
+            overlaps = new Collider[overlaps.Length * 2];
+        for (int i = 0; i < count; i++)
+        {
+            DeployedTool tool = overlaps[i].GetComponentInParent<DeployedTool>();
+            if (tool != null && tool.IsLamp && tool.Free && tool.HasBeenPlaced && tool.NearLampColumn(transform.position)) return tool;
+        }
+        return null;
+    }
+
+    public bool BeginLampHeight(DeployedTool lamp)
+    {
+        if (lamp == null || !lamp.IsLamp || !lamp.Free || !lamp.LampTelescopes) return false;
+        adjustingLamp = lamp;
+        adjustStartY = transform.position.y;
+        adjustStartHeight = lamp.LampHeight;
+        Highlight(lamp);
+        DemoFeedback.Post("Lamp column: raise or lower the hand, let go of the trigger to lock it");
+        return true;
+    }
+
+    public void UpdateLampHeight()
+    {
+        if (adjustingLamp == null) return;
+        if (!adjustingLamp.Free) { EndLampHeight(); return; }
+        adjustingLamp.SetLampHeight(adjustStartHeight + (transform.position.y - adjustStartY));
+    }
+
+    public void EndLampHeight()
+    {
+        if (adjustingLamp == null) return;
+        DemoFeedback.Post("Lamp head at " + adjustingLamp.LampHeight.ToString("0.00") + " m", FeedbackTone.Success);
+        DemoSounds.Play(DemoSound.Click, adjustingLamp.transform.position, 0.3f);
+        adjustingLamp = null;
+    }
 
     public override void Hold(DeployedTool tool)
     {

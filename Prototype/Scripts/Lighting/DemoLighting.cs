@@ -409,7 +409,13 @@ public sealed class DemoLighting : MonoBehaviour
         }
         Texture cookie = torch.Ultraviolet && UVTorchCookie != null ? UVTorchCookie : FlashlightCookie;
         if (cookie != null) torch.Light.cookie = cookie;
-        if (on) Attach(torch);
+        // A hand already holding a tool cannot take the torch: it stays off (and holstered) rather
+        // than lit but hidden, which used to leave a working light with no model to aim.
+        if (on && !Attach(torch))
+        {
+            on = false;
+            DemoFeedback.Post(torch.Ultraviolet ? "Put the tool down first to use the UV torch" : "Put the tool down first to use the flashlight", FeedbackTone.Warning);
+        }
         torch.Light.enabled = on;
         // Off means inactive too, so the scene's light budget checks do not count it.
         torch.Light.gameObject.SetActive(on);
@@ -502,8 +508,8 @@ public sealed class DemoLighting : MonoBehaviour
     }
 
     // The main camera on the desktop; the torch's own hand (white right, UV left)
-    // while VR drives the rig.
-    private void Attach(Torch torch)
+    // while VR drives the rig. False when that hand is holding a tool (nothing attached).
+    private bool Attach(Torch torch)
     {
         if (mode == null) mode = FindFirstObjectByType<DemoModeSwitch>();
         torch.InVR = mode != null && mode.VRActive;
@@ -517,7 +523,7 @@ public sealed class DemoLighting : MonoBehaviour
                 if (hand.Node == wanted) holder = hand.transform;
         if(holder!=null){
             var occupied=holder.GetComponent<HandInteractor>();
-            if(occupied!=null&&occupied.Held!=null){torch.Light.enabled=false;torch.Model.SetActive(false);return;}
+            if(occupied!=null&&(occupied.Held!=null||occupied.FieldTool!=null||occupied.CarriedKit!=null)){torch.Light.enabled=false;torch.Model.SetActive(false);return false;}
         }
         bool onView = holder == null;
         if (onView) holder = Camera.main != null ? Camera.main.transform : transform;
@@ -535,6 +541,7 @@ public sealed class DemoLighting : MonoBehaviour
         model.localPosition = onView ? at : Vector3.zero;
         model.localRotation = onView ? Quaternion.LookRotation(new Vector3(0, 0, 4) - at) : Quaternion.identity;
         model.localScale = Vector3.one * (onView ? ViewModelScale : 1);
+        return true;
     }
 
     // The UV torch mirrors the white torch's desktop offsets to the left of the view.

@@ -21,9 +21,12 @@ public sealed class PackImport : AssetPostprocessor
         "PBRInterior", "PBRExterior", "NightSky", "JewelryModels", "ForensicModels", "StreetModels",
         "InteriorModels", "WallGraphics", "SurfaceDecals", "NightSoundscape", "Music", "PeopleModels",
         "AmbientProps", "AmbientProps2", "CutoutDecals", "RealFoley", "RealFoley2", "RealismTextures",
+        // Added October 23 so the Quest texture cap and compression reach the newer packs too.
+        "ArabicSceneSigns", "OmanExterior", "GeneratedTextures", "CityBackdrop", "InvestigationDetail",
+        "NightMaterials", "ReferenceTextures", "CgbookcaseTextures", "Environments", "NightGraphics", "SuppliedPoliceCar",
     };
 
-    // The pack whose folder holds the path; null outside the twelve and under a trailing-~ folder.
+    // The pack whose folder holds the path; null outside the listed packs and under a trailing-~ folder.
     public static string PackOf(string path)
     {
         if (string.IsNullOrEmpty(path) || path.Contains("~/")) return null;
@@ -36,7 +39,7 @@ public sealed class PackImport : AssetPostprocessor
 
     // Bump on every rule change. Unity then reimports every texture and audio clip of the
     // project once (it cannot tell which files a postprocessor governs).
-    public override uint GetVersion() => 1;
+    public override uint GetVersion() => 2;
 
     // Largest pack texture in the Quest standalone build (Android platform override).
     public const int QuestMaxTextureSize = 1024;

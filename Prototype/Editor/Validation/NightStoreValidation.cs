@@ -1201,7 +1201,7 @@ public static partial class NightStoreValidation
         => light.name.StartsWith("Headlight_", StringComparison.Ordinal) || light.name.StartsWith("Streetlight_", StringComparison.Ordinal);
 
     // Arrival has no realtime light at all once baked (RunNightQuick: only the seven
-    // shadowless stand-ins). The flashlight or the UV torch with the two lit lamps the
+    // shadowless stand-ins). The flashlight or the UV torch with the two shadowed lamps the
     // station allows stay within RealtimeLightBudget. Whichever torch is on (they are exclusive)
     // shadows, and so does the lamp lit last (ToolStation.UpdateLampShadows): the UV torch is
     // shadowed since October 19 so its violet pool stops at walls.
@@ -1590,13 +1590,19 @@ public static partial class NightStoreValidation
             third.LampFace.GetPropertyBlock(block);
             glow = block.GetColor("_EmissionColor").maxColorComponent > 1;
             first.LampFace.GetPropertyBlock(block);
-            glow &= block.GetColor("_EmissionColor").maxColorComponent < 0.01f;
+            glow &= block.GetColor("_EmissionColor").maxColorComponent > 1; // the oldest lamp stays lit too
         }
-        DemoValidation.Check(sample != null && sample.GetComponentsInChildren<Light>(true).Length == 0 && lamp && glow
-            && !first.LampLit && second.LampLit && third.LampLit && station.LitLampCount == ToolStation.MaxLitLamps,
-            "Scene lamps keep two occlusion-safe lights on together");
+        // Every placed lamp stays lit; only the two newest shadow and the oldest falls back to the
+        // short unshadowed pool so it cannot light through a wall (ToolStation.UpdateLampShadows).
+        bool oldest = first != null && first.Lamp.shadows == LightShadows.None && Mathf.Abs(first.Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f
+            && first.Lamp.renderMode == LightRenderMode.Auto && second.Lamp.shadows != LightShadows.None;
+        DemoValidation.Check(sample != null && sample.GetComponentsInChildren<Light>(true).Length == 0 && lamp && glow && oldest
+            && first.LampLit && second.LampLit && third.LampLit && station.LitLampCount == 3 && station.ShadowedLampCount == ToolStation.MaxShadowedLamps,
+            "Scene lamps all stay lit; the two newest carry the occlusion-safe shadows");
         station.RemoveTool(second);
-        bool remaining = station.LitLampCount == 1 && third.LampLit && !first.LampLit;
+        // With one lamp gone the oldest takes the free shadow slot back.
+        bool remaining = station.LitLampCount == 2 && third.LampLit && first.LampLit && first.Lamp.shadows != LightShadows.None
+            && Mathf.Abs(first.Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
         station.RemoveTool(first);
         station.RemoveTool(third);
         int orphans = 0;

@@ -14,9 +14,9 @@ public static class BeltLampReview {
   DeployedTool Lamp(){var g=new GameObject("Test portable lamp");g.transform.SetParent(test.transform);var t=g.AddComponent<DeployedTool>();t.Kind=DemoToolKind.Lamp;t.Lamp=g.AddComponent<Light>();t.Lamp.type=LightType.Spot;return t;}
   var a=Lamp();var b=Lamp();var c=Lamp();station.SetLampLit(a,true);station.SetLampLit(b,true);
   if(!a.LampLit||!b.LampLit||station.LitLampCount!=2||a.Lamp.shadows==LightShadows.None||b.Lamp.shadows==LightShadows.None)throw new Exception("Second lamp disables first or loses shadows");
-  station.SetLampLit(c,true);if(a.LampLit||!b.LampLit||!c.LampLit||station.LitLampCount!=2)throw new Exception("Two-lamp budget broken");
-  station.SetLampLit(b,false);if(!c.LampLit||station.LitLampCount!=1)throw new Exception("Lamp switching not independent");
-  Object.DestroyImmediate(test);test=null;Debug.Log("BELT_LAMP_CHECKS_PASS belt +1cm; two independent shadowed lamps, bounded third-lamp replacement");EditableDelivery.Build();Debug.Log("BELT_LAMP_LOCAL_DELIVERY_PASS");EditorApplication.Exit(0);
+  station.SetLampLit(c,true);if(!a.LampLit||!b.LampLit||!c.LampLit||station.LitLampCount!=3||a.Lamp.shadows!=LightShadows.None||b.Lamp.shadows==LightShadows.None||c.Lamp.shadows==LightShadows.None)throw new Exception("Third lamp must stay lit while only the two newest shadow");
+  station.SetLampLit(b,false);if(!c.LampLit||!a.LampLit||station.LitLampCount!=2||a.Lamp.shadows==LightShadows.None)throw new Exception("Lamp switching not independent or shadow slot not handed back");
+  Object.DestroyImmediate(test);test=null;Debug.Log("BELT_LAMP_CHECKS_PASS belt +1cm; every lamp stays lit, two newest shadowed");EditableDelivery.Build();Debug.Log("BELT_LAMP_LOCAL_DELIVERY_PASS");EditorApplication.Exit(0);
  }catch(Exception e){Debug.LogException(e);if(test)Object.DestroyImmediate(test);EditorApplication.Exit(1);}}
 }
 #endif

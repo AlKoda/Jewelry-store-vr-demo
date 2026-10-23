@@ -1,6 +1,6 @@
 # Next-session feedback — October 23, 2026
 
-Koda requested **notes only**. These are unresolved observations from the tested build, not implemented fixes. Do not change the build for this notes batch. Earlier automated checks do not establish that these interactions or visuals are acceptable in the headset.
+Koda requested **notes only** on October 23; later the same day Koda asked Claude to optimise and code everything, so the door, case, floor, tape and lamp items below are now **coded in Prototype (unverified: cloud compile only)**, see Docs/HANDOFF.md. The sandbox direction and the glass visibility review remain open. Earlier automated checks do not establish that these interactions or visuals are acceptable in the headset.
 
 ## Governing direction: an unguided forensic sandbox
 

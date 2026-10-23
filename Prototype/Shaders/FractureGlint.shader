@@ -5,7 +5,7 @@ Shader "CrimeScene/FractureGlint" {
  Tags {"Queue"="Transparent+1" "RenderType"="Transparent"} LOD 200 Cull Back ZWrite Off
  CGPROGRAM
  #pragma target 3.0
- #pragma surface surf StandardSpecular alpha:premul fullforwardshadows
+ #pragma surface surf StandardSpecular alpha:premul
  #pragma multi_compile_instancing
  fixed4 _Color;half _Smoothness,_DiffuseScatter;
  struct Input {float3 worldPos;};

@@ -11,13 +11,42 @@ using UnityEngine.XR;
 [DefaultExecutionOrder(-110)]
 public sealed class XRHeadTracking : MonoBehaviour
 {
-    // Read once from PlayerPrefs; the getter runs six times a frame (head and both hands, Update and
-    // before render), so it must not touch PlayerPrefs each time.
-    private static float height = PlayerPrefs.GetFloat("VRHeightOffset", .12f);
+    // Two separate corrections, both read once from PlayerPrefs (the getters run several times a frame):
+    // - HeightOffset lifts the HEAD only (a comfort setting, default 0). It used to default to +12 cm and
+    //   was also added to both controllers, which lifted the whole tracked space: a real hand on the real
+    //   floor rendered 12 cm above the virtual floor, so nothing on the floor could be reached.
+    // - FloorCorrection moves head and hands together; CalibrateFloor measures it from a controller
+    //   resting on the real floor, instead of guessing. Floor-origin tracking makes it ~0 on a good setup.
+    private static float height = LoadHeight();
+    private static float floorCorrection = PlayerPrefs.GetFloat("VRFloorCorrection", 0f);
+    private static float LoadHeight()
+    {
+        // Builds before October 23 saved +0.12 here and applied it to the hands too; forget that value once.
+        if (PlayerPrefs.GetInt("VRHeightOffsetVersion", 0) < 2)
+        {
+            PlayerPrefs.DeleteKey("VRHeightOffset");
+            PlayerPrefs.SetInt("VRHeightOffsetVersion", 2);
+            PlayerPrefs.Save();
+        }
+        return PlayerPrefs.GetFloat("VRHeightOffset", 0f);
+    }
     public static float HeightOffset
     {
         get => height;
         set { height = Mathf.Clamp(value, -.2f, .4f); PlayerPrefs.SetFloat("VRHeightOffset", height); PlayerPrefs.Save(); }
+    }
+    public static float FloorCorrection
+    {
+        get => floorCorrection;
+        set { floorCorrection = Mathf.Clamp(value, -.3f, .3f); PlayerPrefs.SetFloat("VRFloorCorrection", floorCorrection); PlayerPrefs.Save(); }
+    }
+    // Height of a Touch controller's tracked point above a surface it rests on.
+    public const float ControllerRestHeight = 0.035f;
+    // Called with the controller on the real floor: its tracked height (rig space, before any correction)
+    // should then be ControllerRestHeight; whatever remains becomes the shared floor correction.
+    public static void CalibrateFloor(float lowestTrackedControllerY)
+    {
+        FloorCorrection = ControllerRestHeight - lowestTrackedControllerY;
     }
     private void OnEnable() { Application.onBeforeRender += LatePose; }
     private void OnDisable() { Application.onBeforeRender -= LatePose; }
@@ -29,7 +58,7 @@ public sealed class XRHeadTracking : MonoBehaviour
     {
         InputDevice head = InputDevices.GetDeviceAtXRNode(XRNode.CenterEye);
         if (!head.isValid) return;
-        if (head.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*HeightOffset;
+        if (head.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position)) transform.localPosition = position+Vector3.up*(HeightOffset+FloorCorrection);
         if (head.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
     }
 }

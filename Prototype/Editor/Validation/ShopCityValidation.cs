@@ -113,6 +113,7 @@ public static class ShopCityValidation
                 HandChecks();
                 FreeHoldAndWheelChecks();
                 VRComfortChecks();
+                HeadsetBlockerChecks();
                 QuestStandaloneChecks();
                 DemoValidation.InterfaceChecks();
                 BackdropChecks();
@@ -590,6 +591,135 @@ public static class ShopCityValidation
 
         DemoValidation.Check(QuestBuild.PackageName == "com.alkoda.jewelrystorecrimescene" && PackImport.QuestMaxTextureSize == 1024,
             "Quest app identity and texture cap are defined (the Android build itself runs only through Build-Quest-App.cmd)");
+    }
+
+    // Koda's October 23 headset blockers: every placed lamp stays lit (two newest shadowed) and
+    // telescopes from its column; a placed tape post hands the next linked post to the same hand
+    // with a live ribbon, a held post snaps onto a placed one, removing the held post ends the
+    // run; the floor correction is measured from a controller on the real floor.
+    private static void HeadsetBlockerChecks()
+    {
+        DesktopInteractor desktop = DemoValidation.Find<DesktopInteractor>();
+        DemoValidation.Find<DemoModeSwitch>().Apply(true);
+        ToolStation station = desktop.Station;
+        HandInteractor hand = desktop.transform.Find("RightHand").GetComponent<HandInteractor>();
+        Pose saved = new Pose(hand.transform.position, hand.transform.rotation);
+        int before = station.DeployedCount;
+        hand.transform.rotation = Quaternion.identity;
+
+        // ---- lamps: three placed, all lit, only the two newest shadowed
+        DeployedTool[] lamps = new DeployedTool[3];
+        for (int i = 0; i < 3; i++)
+        {
+            hand.transform.position = new Vector3(-2.6f + i * 0.9f, 1.0f, 5.2f);
+            lamps[i] = hand.SpawnIntoHand(DemoToolKind.Lamp);
+            hand.Release();
+        }
+        bool allLit = lamps[0] != null && lamps[1] != null && lamps[2] != null && lamps[0].LampLit && lamps[1].LampLit && lamps[2].LampLit
+            && station.LitLampCount == 3 && station.ShadowedLampCount == ToolStation.MaxShadowedLamps;
+        bool oldestDimmed = allLit && lamps[0].Lamp.shadows == LightShadows.None && Mathf.Abs(lamps[0].Lamp.range - DemoToolGeometry.LampUnshadowedRange) < 0.01f
+            && lamps[0].Lamp.renderMode == LightRenderMode.Auto && lamps[1].Lamp.shadows != LightShadows.None && lamps[2].Lamp.shadows != LightShadows.None
+            && Mathf.Abs(lamps[2].Lamp.range - DemoToolGeometry.LampRange) < 0.01f;
+        DemoValidation.Check(allLit && oldestDimmed, "Every placed scene lamp stays lit; the two newest keep shadows, the oldest a short unshadowed pool");
+        DemoPlatform.ForceStandalone = true;
+        DemoLighting lighting = DemoValidation.Find<DemoLighting>();
+        lighting.Flashlight(true);
+        bool questBudget = station.ShadowedLampBudget == 1 && station.ShadowedLampCount == 1 && lamps[2].Lamp.shadows != LightShadows.None
+            && lamps[1].Lamp.renderMode == LightRenderMode.ForceVertex && lamps[0].Lamp.renderMode == LightRenderMode.ForceVertex && lamps[1].LampLit;
+        lighting.Flashlight(false);
+        bool questTorchOff = station.ShadowedLampCount == ToolStation.MaxShadowedLamps;
+        DemoPlatform.ForceStandalone = false;
+        station.UpdateLampShadows();
+        DemoValidation.Check(questBudget && questTorchOff, "On the Quest alone a lit torch leaves one shadowed lamp; the others stay lit as vertex lights");
+
+        // ---- telescoping column: trigger near the pole, the head follows the hand
+        DeployedTool lamp = lamps[2];
+        bool telescopes = lamp != null && lamp.LampTelescopes && Mathf.Abs(lamp.LampHeight - DemoToolGeometry.LampPanelY) < 0.001f
+            && lamp.transform.Find("Column") != null && lamp.transform.Find("Yoke") != null && lamp.transform.Find("Head") != null;
+        bool atColumn = false, follows = false, lightMoved = false, clamped = false, columnStretched = false, released = false;
+        if (telescopes)
+        {
+            hand.transform.position = lamp.transform.position + new Vector3(0.06f, 1.0f, 0);
+            atColumn = hand.LampColumnAtHand() == lamp;
+            float lightBefore = lamp.Lamp.transform.position.y;
+            hand.Trigger(); // an empty hand on the column takes hold of it
+            hand.transform.position += Vector3.up * 0.3f;
+            hand.UpdateLampHeight();
+            follows = hand.AdjustingLamp == lamp && Mathf.Abs(lamp.LampHeight - (DemoToolGeometry.LampPanelY + 0.3f)) < 0.001f;
+            lightMoved = Mathf.Abs(lamp.Lamp.transform.position.y - lightBefore - 0.3f) < 0.001f;
+            Transform column = lamp.transform.Find("Column");
+            columnStretched = Mathf.Abs(column.localScale.y - (lamp.LampHeight - DemoToolGeometry.LampYokeDrop - DemoToolGeometry.LampColumnTop)) < 0.001f
+                && Mathf.Abs(lamp.transform.Find("Yoke").localPosition.y - lamp.LampHeight) < 0.001f;
+            hand.EndLampHeight();
+            released = hand.AdjustingLamp == null;
+            clamped = Mathf.Abs(lamp.SetLampHeight(9) - DeployedTool.LampMaxHeight) < 0.001f && Mathf.Abs(lamp.SetLampHeight(0) - lamp.LampMinHeight) < 0.001f
+                && lamp.LampMinHeight > DemoToolGeometry.LampColumnTop && lamp.LampMinHeight < DemoToolGeometry.LampPanelY;
+            desktop.AdjustLampHeight(lamp, 0.1f);
+            clamped &= Mathf.Abs(lamp.LampHeight - (lamp.LampMinHeight + 0.1f)) < 0.001f;
+        }
+        DemoValidation.Check(telescopes && atColumn && follows && lightMoved && columnStretched && released,
+            "Trigger on a placed lamp's column slides its head, yoke and light with the hand; letting go locks it");
+        DemoValidation.Check(clamped, "A lamp's column travel is clamped between its collar and 2.1 m (desktop +/- steps it)");
+        foreach (DeployedTool l in lamps) if (l != null) station.RemoveTool(l);
+
+        // ---- continuous tape run
+        hand.transform.position = new Vector3(-2.6f, 1.0f, 4.0f);
+        DeployedTool first = hand.SpawnIntoHand(DemoToolKind.TapePost);
+        hand.Release();
+        DeployedTool linked = hand.Held;
+        SceneTape ribbon = null;
+        foreach (SceneTape tape in station.DeploymentRoot.GetComponentsInChildren<SceneTape>())
+            if (first != null && tape.StartAnchor == first.TapeAnchor) ribbon = tape;
+        bool runStarted = first != null && first.HasBeenPlaced && station.TapeRunActive && station.RunHead == first && linked != null
+            && linked.Kind == DemoToolKind.TapePost && linked == station.RunHeldPost && ribbon != null && ribbon.EndAnchor == linked.TapeAnchor;
+        hand.transform.position = new Vector3(-0.8f, 1.0f, 4.0f);
+        hand.Release();
+        DeployedTool second = linked;
+        DeployedTool third = hand.Held;
+        bool runContinues = runStarted && second.HasBeenPlaced && station.RunHead == second && third != null && third != second
+            && station.RunHeldPost == third && ribbon != null && ribbon.StartAnchor == first.TapeAnchor && ribbon.EndAnchor == second.TapeAnchor;
+        hand.RemoveHeld();
+        int ribbons = station.DeploymentRoot.GetComponentsInChildren<SceneTape>().Length;
+        bool runEnded = runContinues && !station.TapeRunActive && hand.Held == null && ribbons == 1;
+        DemoValidation.Check(runStarted && runContinues && runEnded,
+            "Placing a tape post hands the next linked post to the same hand with a live ribbon; removing the held post ends the run");
+        // A new run, then its held post snaps onto the first post and joins it.
+        hand.transform.position = new Vector3(-2.6f, 1.0f, 6.0f);
+        DeployedTool fourth = hand.SpawnIntoHand(DemoToolKind.TapePost);
+        hand.Release();
+        DeployedTool heldPost = hand.Held;
+        bool newRun = fourth != null && station.RunHead == fourth && heldPost != null && heldPost != third;
+        bool snapped = false, joined = false;
+        if (newRun && first != null)
+        {
+            hand.transform.position = first.transform.position + new Vector3(0.05f, 0.825f, -0.005f);
+            hand.FollowHand();
+            snapped = station.SnapTarget(heldPost) == first && Vector3.Distance(heldPost.TapeAnchor.position, first.TapeAnchor.position) < 0.001f;
+            hand.Release();
+            SceneTape join = null;
+            foreach (SceneTape tape in station.DeploymentRoot.GetComponentsInChildren<SceneTape>())
+                if (tape.StartAnchor == fourth.TapeAnchor) join = tape;
+            joined = join != null && join.EndAnchor == first.TapeAnchor && station.RunHead == first && (heldPost == null || !heldPost.gameObject.activeInHierarchy)
+                && station.DeploymentRoot.GetComponentsInChildren<SceneTape>().Length == 2 && hand.Held != null;
+            hand.RemoveHeld();
+        }
+        DemoValidation.Check(newRun && snapped && joined, "A held tape post snaps onto a placed post and placing it there joins the run to that post");
+        foreach (DeployedTool post in new[] { first, second, fourth }) if (post != null) station.RemoveTool(post);
+        station.StartNewTapeRun();
+
+        // ---- floor correction from a controller resting on the real floor
+        float savedFloor = XRHeadTracking.FloorCorrection, savedHeight = XRHeadTracking.HeightOffset;
+        XRHeadTracking.CalibrateFloor(0.1f);
+        bool floor = Mathf.Abs(XRHeadTracking.FloorCorrection - (XRHeadTracking.ControllerRestHeight - 0.1f)) < 0.0001f;
+        XRHeadTracking.FloorCorrection = savedFloor;
+        XRPresenterMenu menu = desktop.transform.Find("LeftHand").GetComponentInChildren<XRPresenterMenu>(true);
+        bool button = menu != null && menu.IndexOf("Calibrate floor") >= 0;
+        DemoValidation.Check(floor && button && XRHeadTracking.HeightOffset == savedHeight,
+            "Calibrate floor sets the shared floor correction from the controller on the floor; the head-only height offset is separate");
+
+        hand.transform.SetPositionAndRotation(saved.position, saved.rotation);
+        DemoValidation.Check(station.DeployedCount == before && station.DeploymentRoot.GetComponentsInChildren<SceneTape>().Length == 0,
+            "Headset blocker checks leave no tools or ribbons behind");
     }
 
     private static void VRComfortChecks()

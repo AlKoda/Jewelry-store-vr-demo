@@ -26,11 +26,17 @@ public sealed class PortableFieldKit : MonoBehaviour {
   Follow(Holder is HandInteractor?Holder.transform:((DesktopInteractor)Holder).View.transform);
  }
  bool Support(Ray ray,float reach,out RaycastHit hit)=>DemoPhysics.Nearest(ray,reach,out hit,transform,Holder?Holder.transform:null,true);
+ // A stable rest: the centre and the four points at 60% of the footprint are supported within
+ // 4 cm of the chosen point, so a display-case top narrower than the case (it may overhang 20%
+ // a side, like a real case on a counter) and a table both qualify; a wall or a prop in the
+ // case's own volume refuses it.
+ public float RestTolerance=.04f, RestFootprint=.30f;
  public bool CanRestAt(Vector3 point,Quaternion rotation){
   if(Bounds&&Vector3.Distance(Bounds.Clamp(point),point)>.015f)return false;
-  foreach(float x in new[]{-.46f,.46f})foreach(float z in new[]{-.46f,.46f}){
+  foreach(float x in new[]{0f,-RestFootprint,RestFootprint})foreach(float z in new[]{0f,-RestFootprint,RestFootprint}){
+   if(x!=0&&z==0||x==0&&z!=0)continue; // centre and four corners
    var corner=point+rotation*new Vector3(Footprint.x*x,.09f,Footprint.y*z);
-   if(!Support(new Ray(corner,Vector3.down),.15f,out var ground)||Mathf.Abs(ground.point.y-point.y)>.025f)return false;
+   if(!Support(new Ray(corner,Vector3.down),.09f+RestTolerance+.15f,out var ground)||Mathf.Abs(ground.point.y-point.y)>RestTolerance)return false;
   }
   // A table/floor below the bottom is fine; walls and objects above it are not.
   foreach(var c in Physics.OverlapBox(point+rotation*new Vector3(0,.31f,.065f),new Vector3(.46f,.285f,.325f),rotation,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore)){
@@ -50,9 +56,10 @@ public sealed class PortableFieldKit : MonoBehaviour {
    if(Support(new Ray(p,Vector3.down),3,out var hit)&&CanRestAt(hit.point,rotation)){transform.SetPositionAndRotation(hit.point+Vector3.up*.002f,rotation);return true;}
   }return false;
  }
- public void Release(bool restoreHome=false,bool alreadyPlaced=false){
+ public void Release(bool restoreHome=false,bool alreadyPlaced=false,bool audible=true){
   if(!restoreHome&&!alreadyPlaced&&!PutDown()){restoreHome=true;DemoFeedback.Post("No clear support nearby; kit returned to the field table",FeedbackTone.Warning);}
-  Holder=null;if(restoreHome){RecordHome();transform.SetPositionAndRotation(home,homeRotation);}DemoSounds.Play(DemoSound.Thud,transform.position,.15f);
+  Holder=null;if(restoreHome){RecordHome();transform.SetPositionAndRotation(home,homeRotation);}if(audible)DemoSounds.Play(DemoSound.Thud,transform.position,.15f);
  }
- public void ResetToHome(){if(Holder)Holder.PutDownKit(true);else Release(true);}
+ // A reset teleports the case home silently (ReleaseAll may already have set it down).
+ public void ResetToHome(){if(Holder)Holder.PutDownKit(true,false);else Release(true,false,false);}
 }

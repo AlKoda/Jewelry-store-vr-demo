@@ -41,7 +41,8 @@ Pointer = mouse, or the screen centre while right-click mouse look is toggled on
 | Left click | Pick up the pointed tool / place the held tool / take a new tool from a rack sample / pick up the camera |
 | 1–6 | New cone, marker, tape post, L-scale, measuring reel or scene lamp straight into the hand |
 | Q / E, mouse wheel | Rotate the held tool in 15° steps |
-| T | On a held or pointed scene lamp, switch it on/off (at most two lit, the oldest goes out); otherwise SelectTapePost on the held or pointed post or measuring reel (same-kind pairs connect) |
+| T | On a held or pointed scene lamp, switch it on/off (every placed lamp stays lit; the two newest carry shadows); otherwise SelectTapePost on the held or pointed post or measuring reel (same-kind pairs connect) |
+| + / - | Slide the held or pointed scene lamp's telescoping column up or down by 10 cm (1.25 m to 2.1 m) |
 | X | CancelTapeSelection |
 | R / Delete / Backspace | Remove the held or pointed tool |
 | F | Hold the evidence camera in front of the view / return it to the rack |
@@ -103,7 +104,7 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Controller | Action |
 |---|---|
 | Grip (either hand) | Hold the nearest tool within 25 cm, else take a new one from a rack sample, else the camera; release puts it down on the surface beneath |
-| Trigger | Photograph while holding the camera; switch a held scene lamp on/off (at most two lit, the oldest goes out); select a held tape post or measuring reel |
+| Trigger | Photograph while holding the camera; switch a held scene lamp on/off (every placed lamp stays lit); select a held tape post or measuring reel; with an empty hand on a placed lamp's column, hold it to slide the head up or down with the hand (release locks the height); otherwise switch the torch in this hand |
 | A / X (primary) | New tool of the hand's current kind, straight into the hand |
 | B / Y (secondary) | Remove the held tool; with empty hands, cycle the kind (cone → marker → tape post → scale → measuring tape → scene lamp) |
 | Left thumbstick (default, October 18, unverified) | Smooth walking at up to 1.4 m/s in the direction the head looks, with strafe; 0.2 dead zone; blocked by fixtures and the interior bounds; no comfort vignette yet |
@@ -130,7 +131,7 @@ If controller poses do not arrive under a future OpenXR version, the fallback is
 | Method | Effect |
 |---|---|
 | HandInteractor.Grab() / Release() | Hold the nearest tool or the camera; drop onto the surface below, inside the bounds |
-| HandInteractor.Trigger() | Photograph with the held camera; switch a held scene lamp; select a held tape post or reel |
+| HandInteractor.Trigger() | Photograph with the held camera; switch a held scene lamp; select a held tape post or reel; take hold of a placed lamp's telescoping column (BeginLampHeight/UpdateLampHeight/EndLampHeight) |
 | HandInteractor.SpawnIntoHand(kind) / RemoveHeld() | New tool in the hand; remove the held one |
 | XRLocomotion.FindDestination(Ray, out Vector3) | Valid floor point under the pointer for a preview marker, or false |
 | XRLocomotion.TryTeleport(Ray) / TryTeleport(Vector3) | Move the rig so the head lands over the target; refused outside InteriorBounds or more than MaxStepHeight above the floor |
