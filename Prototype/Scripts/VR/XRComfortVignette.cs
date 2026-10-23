@@ -26,6 +26,8 @@ public sealed class XRComfortVignette : MonoBehaviour
     public float Alpha { get; private set; }
 
     private DemoModeSwitch mode;
+
+    private bool modeSearched;
     private Vector3 lastPosition;
     private bool hasLast;
     private MeshRenderer ring;
@@ -48,7 +50,7 @@ public sealed class XRComfortVignette : MonoBehaviour
         }
         lastPosition = p;
         hasLast = true;
-        if (mode == null) mode = FindFirstObjectByType<DemoModeSwitch>();
+        if (mode == null && !modeSearched) { mode = FindFirstObjectByType<DemoModeSwitch>(); modeSearched = true; }
         bool vr = mode == null || mode.VRActive;
         float target = Enabled && vr ? Strength * Mathf.Clamp01(speed / Mathf.Max(0.01f, FullSpeed)) : 0;
         Alpha = Mathf.MoveTowards(Alpha, target, deltaTime * Strength / Mathf.Max(0.01f, FadeSeconds));

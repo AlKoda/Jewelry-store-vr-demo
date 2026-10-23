@@ -6,11 +6,18 @@ using UnityEngine.Rendering;
 public sealed class CrowdGroundContacts : MonoBehaviour {
  public Transform[] Feet=new Transform[0],Roots=new Transform[0];
  public Material ContactMaterial;
- Mesh mesh;Vector3[] vertices;Color32[] colors;
- void Start(){RefreshContacts();}
- void LateUpdate(){RefreshContacts();}
- public void RefreshContacts(){
+ Mesh mesh;Vector3[] vertices;Color32[] colors;MeshRenderer view;Vector3[] lastFeet;
+ void Start(){RefreshContacts(true);}
+ // Offscreen crowds and still feet skip the mesh upload (the skins are already culled by Animation).
+ void LateUpdate(){RefreshContacts(false);}
+ public void RefreshContacts(bool force=false){
   if(Feet.Length==0||Feet.Length!=Roots.Length||!ContactMaterial)return;
+  if(!force&&mesh&&view&&!view.isVisible)return;
+  if(lastFeet==null||lastFeet.Length!=Feet.Length)lastFeet=new Vector3[Feet.Length];
+  bool moved=force;
+  for(int i=0;i<Feet.Length&&!moved;i++)if(Feet[i]&&(Feet[i].position-lastFeet[i]).sqrMagnitude>4e-6f)moved=true;
+  if(!moved)return;
+  for(int i=0;i<Feet.Length;i++)if(Feet[i])lastFeet[i]=Feet[i].position;
   if(!mesh){
    mesh=new Mesh{name="Crowd foot contact shading"};mesh.MarkDynamic();vertices=new Vector3[Feet.Length*4];colors=new Color32[vertices.Length];
    var uv=new Vector2[vertices.Length];var triangles=new int[Feet.Length*6];
@@ -20,7 +27,7 @@ public sealed class CrowdGroundContacts : MonoBehaviour {
    }
    mesh.vertices=vertices;mesh.uv=uv;mesh.triangles=triangles;
    var filter=GetComponent<MeshFilter>();if(!filter)filter=gameObject.AddComponent<MeshFilter>();filter.sharedMesh=mesh;
-   var renderer=GetComponent<MeshRenderer>();if(!renderer)renderer=gameObject.AddComponent<MeshRenderer>();renderer.sharedMaterial=ContactMaterial;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.lightProbeUsage=LightProbeUsage.Off;renderer.reflectionProbeUsage=ReflectionProbeUsage.Off;
+   var renderer=GetComponent<MeshRenderer>();if(!renderer)renderer=gameObject.AddComponent<MeshRenderer>();view=renderer;renderer.sharedMaterial=ContactMaterial;renderer.shadowCastingMode=ShadowCastingMode.Off;renderer.receiveShadows=false;renderer.lightProbeUsage=LightProbeUsage.Off;renderer.reflectionProbeUsage=ReflectionProbeUsage.Off;
   }
   for(int i=0;i<Feet.Length;i++){
    if(!Feet[i]||!Roots[i])continue;

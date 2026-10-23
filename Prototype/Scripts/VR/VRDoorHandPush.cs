@@ -10,6 +10,10 @@ public sealed class VRDoorHandPush : MonoBehaviour
     DemoModeSwitch mode;
     GameObject visual;
     Material material;
+    Renderer[] controllerParts;
+    bool lastActive, appliedOnce;
+    static readonly RaycastHit[] sweepHits = new RaycastHit[16];
+    static readonly Collider[] overlapHits = new Collider[16];
     void Start()
     {
         mode = FindFirstObjectByType<DemoModeSwitch>();
@@ -33,8 +37,10 @@ public sealed class VRDoorHandPush : MonoBehaviour
     void LateUpdate()
     {
         bool active=mode&&mode.VRActive&&Input&&Input.PoseTracked;
-        if(visual)visual.SetActive(active);
-        var controller=transform.Find("ControllerModel");if(controller)foreach(var renderer in controller.GetComponentsInChildren<Renderer>(true))renderer.forceRenderingOff=active;
+        if(visual&&visual.activeSelf!=active)visual.SetActive(active);
+        // The controller model's renderers are collected once and only touched when the state flips.
+        if(controllerParts==null){var controller=transform.Find("ControllerModel");if(controller)controllerParts=controller.GetComponentsInChildren<Renderer>(true);}
+        if(controllerParts!=null&&(!appliedOnce||active!=lastActive)){foreach(var renderer in controllerParts)if(renderer)renderer.forceRenderingOff=active;lastActive=active;appliedOnce=true;}
         ProcessPose(transform.TransformPoint(new Vector3(0,0,.07f)),active);
     }
     public void ProcessPose(Vector3 position,bool active)
@@ -42,10 +48,10 @@ public sealed class VRDoorHandPush : MonoBehaviour
         if(!active||!anchored){previous=position;anchored=active;return;}
         var delta=position-previous;var from=previous;previous=position;float length=delta.magnitude;
         if(length<.002f||length>.5f)return;
-        foreach(var hit in Physics.SphereCastAll(from,Radius,delta/length,length+.015f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore))
-        {var door=hit.collider.GetComponentInParent<PushDoorLeaf>();if(door)door.Push(hit.point,delta/length);}
-        foreach(var collider in Physics.OverlapSphere(position,Radius,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore))
-        {var door=collider.GetComponentInParent<PushDoorLeaf>();if(door)door.Push(collider.ClosestPoint(position),delta/length);}
+        int sweeps=Physics.SphereCastNonAlloc(from,Radius,delta/length,sweepHits,length+.015f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore);
+        for(int i=0;i<sweeps;i++){var door=sweepHits[i].collider.GetComponentInParent<PushDoorLeaf>();if(door)door.Push(sweepHits[i].point,delta/length);}
+        int overlaps=Physics.OverlapSphereNonAlloc(position,Radius,overlapHits,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore);
+        for(int i=0;i<overlaps;i++){var door=overlapHits[i].GetComponentInParent<PushDoorLeaf>();if(door)door.Push(overlapHits[i].ClosestPoint(position),delta/length);}
     }
     void OnDestroy(){if(material)Destroy(material);}
 }

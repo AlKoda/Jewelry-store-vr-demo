@@ -34,6 +34,7 @@ public sealed class UVTrace : MonoBehaviour
     private Renderer view;
 
     public float Visibility { get; private set; }
+    private float target; // last sight-test result, kept between the alternating frames
     // Enabled traces (a hidden example group registers none).
     public static int ActiveCount => traces.Count;
     // The quad faces its local -z (Unity's quad), lying on its surface.
@@ -57,11 +58,16 @@ public sealed class UVTrace : MonoBehaviour
     public static void UpdateAll(Vector3 torch, Vector3 direction, float cosHalfAngle, float range, float deltaTime)
     {
         float step = FadeSeconds > 0 ? deltaTime / FadeSeconds : 1;
+        // Every trace is tested every other frame (odd and even indices alternate), which halves the
+        // raycasts while the torch is on; settle calls (deltaTime >= FadeSeconds) test all of them.
+        bool all = deltaTime >= FadeSeconds;
+        int phase = Time.frameCount & 1;
         for (int i = 0; i < traces.Count; i++)
         {
             UVTrace trace = traces[i];
-            float target = i < MaxTraces ? trace.LitFraction(torch, direction, cosHalfAngle, range) : 0;
-            if (target != trace.Visibility) trace.Apply(Mathf.MoveTowards(trace.Visibility, target, step));
+            if (!all && (i & 1) != phase) { if (trace.target != trace.Visibility) trace.Apply(Mathf.MoveTowards(trace.Visibility, trace.target, step)); continue; }
+            trace.target = i < MaxTraces ? trace.LitFraction(torch, direction, cosHalfAngle, range) : 0;
+            if (trace.target != trace.Visibility) trace.Apply(Mathf.MoveTowards(trace.Visibility, trace.target, step));
         }
     }
 

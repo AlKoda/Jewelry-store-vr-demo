@@ -38,10 +38,11 @@ public sealed class HandInteractor : ToolHolder
 
     // Runs after XRControllerInput (execution order -100), so FollowHand uses this frame's
     // controller pose; ShopCityValidation invokes it by name.
-    void Start(){GrabRadius=Mathf.Min(GrabRadius,.18f);}
+    private XRControllerInput controller;
+    private static readonly RaycastHit[] pullHits = new RaycastHit[32];
+    void Start(){GrabRadius=Mathf.Min(GrabRadius,.18f);controller=GetComponent<XRControllerInput>();}
     private void Update()
     {
-        var controller=GetComponent<XRControllerInput>();
         if(controller!=null&&Application.isPlaying&&!controller.PoseTracked){Highlight(null);return;}
         if (Held != null) FollowHand();
         else
@@ -135,8 +136,10 @@ public sealed class HandInteractor : ToolHolder
         Ray ray = new Ray(transform.position, transform.forward);
         DeployedTool tool = null;
         float distance = float.MaxValue;
-        foreach (RaycastHit h in Physics.SphereCastAll(ray, PullRadius, PullReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
+        int count = Physics.SphereCastNonAlloc(ray, PullRadius, pullHits, PullReach, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
+        for (int i = 0; i < count; i++)
         {
+            RaycastHit h = pullHits[i];
             if (h.distance >= distance || h.collider.transform.IsChildOf(transform)) continue;
             DeployedTool candidate = h.collider.GetComponentInParent<DeployedTool>();
             if (candidate == null || !candidate.Free) continue;

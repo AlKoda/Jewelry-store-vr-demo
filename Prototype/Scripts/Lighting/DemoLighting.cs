@@ -319,7 +319,10 @@ public sealed class DemoLighting : MonoBehaviour
         DemoFeedback.Post(UVTorchOn ? "UV torch on" : "UV torch off");
     }
 
-    private bool CameraInUse() { var camera = FindFirstObjectByType<EvidenceCamera>(); return camera != null && camera.Holder != null; }
+    // The evidence camera is found once (it is checked twice a frame while a torch is equipped).
+    private EvidenceCamera evidenceCamera;
+    private EvidenceCamera Evidence => evidenceCamera != null ? evidenceCamera : evidenceCamera = FindFirstObjectByType<EvidenceCamera>();
+    private bool CameraInUse() { var camera = Evidence; return camera != null && camera.Holder != null; }
 
     private void ToggleBeam(Torch torch)
     {
@@ -506,7 +509,7 @@ public sealed class DemoLighting : MonoBehaviour
         torch.InVR = mode != null && mode.VRActive;
         torch.CameraInUse = CameraInUse();
         XRNode wanted = torch.Hand;
-        var camera = FindFirstObjectByType<EvidenceCamera>();
+        var camera = Evidence;
         if (torch.InVR && camera != null && camera.Holder != null) { var carrying = camera.Holder.GetComponent<XRControllerInput>(); if(carrying != null && carrying.Node == wanted) wanted = wanted == XRNode.LeftHand ? XRNode.RightHand : XRNode.LeftHand; }
         Transform holder = null;
         if (torch.InVR)

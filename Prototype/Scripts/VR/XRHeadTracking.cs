@@ -11,7 +11,14 @@ using UnityEngine.XR;
 [DefaultExecutionOrder(-110)]
 public sealed class XRHeadTracking : MonoBehaviour
 {
-    public static float HeightOffset {get=>PlayerPrefs.GetFloat("VRHeightOffset",.12f);set{PlayerPrefs.SetFloat("VRHeightOffset",Mathf.Clamp(value,-.2f,.4f));PlayerPrefs.Save();}}
+    // Read once from PlayerPrefs; the getter runs six times a frame (head and both hands, Update and
+    // before render), so it must not touch PlayerPrefs each time.
+    private static float height = PlayerPrefs.GetFloat("VRHeightOffset", .12f);
+    public static float HeightOffset
+    {
+        get => height;
+        set { height = Mathf.Clamp(value, -.2f, .4f); PlayerPrefs.SetFloat("VRHeightOffset", height); PlayerPrefs.Save(); }
+    }
     private void OnEnable() { Application.onBeforeRender += LatePose; }
     private void OnDisable() { Application.onBeforeRender -= LatePose; }
     private void Update() { ApplyPose(); }

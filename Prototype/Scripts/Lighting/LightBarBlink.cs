@@ -34,12 +34,20 @@ public sealed class LightBarBlink : MonoBehaviour
     private const string EmissionProperty = "_EmissionColor", TintProperty = "_TintColor";
     private MaterialPropertyBlock block;
 
-    private void Update() { Apply(Time.time); }
+    private bool steadyApplied;
+    private void Update()
+    {
+        // A steady bar changes nothing frame to frame: apply once and stop writing property blocks.
+        if (!Flashing && steadyApplied) return;
+        Apply(Time.time);
+        steadyApplied = !Flashing;
+    }
 
     // Presenter switch; a session reset turns flashing back on (DemoLighting).
     public void SetFlashing(bool flashing)
     {
         Flashing = flashing;
+        steadyApplied = false;
         Apply(Time.time);
     }
 

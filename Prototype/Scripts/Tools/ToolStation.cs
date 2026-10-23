@@ -33,7 +33,16 @@ public sealed class ToolStation : MonoBehaviour
     public DeployedTool PendingPost => pendingPost;
     public int NextMarkerNumber => nextMarker;
     // Active tools only; objects pending destruction are already inactive.
-    public int DeployedCount => DeploymentRoot != null ? DeploymentRoot.GetComponentsInChildren<DeployedTool>().Length : 0;
+    private static readonly List<DeployedTool> countScratch = new List<DeployedTool>();
+    public int DeployedCount
+    {
+        get
+        {
+            if (DeploymentRoot == null) return 0;
+            DeploymentRoot.GetComponentsInChildren(false, countScratch); // reused list: the HUD asks four times a second
+            return countScratch.Count;
+        }
+    }
     // What the visitor should do while one end of a connection is selected; null otherwise.
     public string PendingPrompt => pendingPost == null ? null
         : pendingPost.Kind == DemoToolKind.Measure ? "Measure: choose the second reel" : "Tape: choose the second post";

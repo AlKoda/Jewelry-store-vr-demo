@@ -66,7 +66,7 @@ public sealed class XRPresenterMenu : MonoBehaviour
             () => XRHeadTracking.HeightOffset -= 0.05f);
         Add("Light bar", "أضواء الدورية", () =>
         {
-            DemoLighting lighting = FindFirstObjectByType<DemoLighting>();
+            DemoLighting lighting = Lighting;
             return lighting != null && lighting.LightBar != null && !lighting.LightBar.Flashing ? L("steady", "ثابتة") : L("flashing", "وامضة");
         }, () =>
         {
@@ -77,6 +77,9 @@ public sealed class XRPresenterMenu : MonoBehaviour
             XRControllerInput.ToggleHints);
         Add("Close", "إغلاق", null, Hide);
     }
+
+    private DemoLighting lightingCache;
+    private DemoLighting Lighting => lightingCache != null ? lightingCache : lightingCache = FindFirstObjectByType<DemoLighting>();
 
     private void Add(string en, string ar, Func<string> state, Action run) => items.Add(new Item { En = en, Ar = ar, State = state, Run = run });
 

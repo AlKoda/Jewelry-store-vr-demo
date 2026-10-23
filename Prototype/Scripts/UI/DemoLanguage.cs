@@ -18,7 +18,9 @@ public static class DemoLanguage
     static Regex[] patterns;
     static Font font;
     public static event Action Changed;
-    public static bool Arabic { get=>PlayerPrefs.GetInt("DemoUiArabic",1)==1; set {if(Arabic==value)return;PlayerPrefs.SetInt("DemoUiArabic",value?1:0);PlayerPrefs.Save();visual.Clear();logicalCache.Clear();wrapped.Clear();Changed?.Invoke();} }
+    // Cached: every label reads this each frame, so the PlayerPrefs lookup runs once.
+    static bool arabic=PlayerPrefs.GetInt("DemoUiArabic",1)==1;
+    public static bool Arabic { get=>arabic; set {if(arabic==value)return;arabic=value;PlayerPrefs.SetInt("DemoUiArabic",value?1:0);PlayerPrefs.Save();visual.Clear();logicalCache.Clear();wrapped.Clear();Changed?.Invoke();} }
     public static Font Font {get {if(!font)font=Resources.Load<Font>("ArabicUiFont");return font;}}
     public static bool HasArabic(string text)=>!string.IsNullOrEmpty(text)&&Regex.IsMatch(text,"[\u0600-\u06ff\ufb50-\ufeff]");
     static void Load()

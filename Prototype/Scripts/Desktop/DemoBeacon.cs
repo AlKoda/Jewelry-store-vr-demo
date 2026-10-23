@@ -19,6 +19,7 @@ public sealed class DemoBeacon : MonoBehaviour
 
     private Transform marker, ring;
     private Material ringMaterial, columnMaterial;
+    private static readonly int EmissionId = Shader.PropertyToID("_EmissionColor");
 
     private void OnEnable()
     {
@@ -54,7 +55,7 @@ public sealed class DemoBeacon : MonoBehaviour
         float pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 2 * Mathf.PI / PulseSeconds);
         float width = Mathf.Lerp(0.5f, 0.7f, pulse);
         ring.localScale = new Vector3(width, 0.01f, width);
-        ringMaterial.SetColor("_EmissionColor", Amber * Mathf.Lerp(0.6f, 2.2f, pulse));
+        ringMaterial.SetColor(EmissionId, Amber * Mathf.Lerp(0.6f, 2.2f, pulse));
         columnMaterial.color = new Color(Amber.r, Amber.g, Amber.b, Mathf.Lerp(0.10f, 0.28f, pulse));
     }
 

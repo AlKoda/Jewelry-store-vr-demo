@@ -21,7 +21,7 @@ public sealed class DemoLaunchOptions:MonoBehaviour
             if(args[i+1].Equals("desktop",StringComparison.OrdinalIgnoreCase))Requested=DemoModeSwitch.DemoMode.Desktop;
             else if(args[i+1].Equals("vr",StringComparison.OrdinalIgnoreCase))Requested=DemoModeSwitch.DemoMode.VR;
         }
-        var g=new GameObject("Delivery launch mode");DontDestroyOnLoad(g);g.AddComponent<DemoLaunchOptions>();
+        var g=new GameObject("Delivery launch mode");DontDestroyOnLoad(g);g.AddComponent<DemoLaunchOptions>().useGUILayout=false; // OnGUI only draws a failure box
     }
     IEnumerator Start(){
         if(Requested!=DemoModeSwitch.DemoMode.VR)yield break;

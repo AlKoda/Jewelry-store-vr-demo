@@ -16,7 +16,7 @@ public sealed class CrowdBystander : MonoBehaviour {
  public bool IsWalking {get;private set;}
  public bool IsSpeaking {get;private set;}
  Vector3 home;float clock,wait,walked,footDistance;bool initialized,towardsEnd=true;
- string currentClip;
+ string currentClip;AnimationState motionState;
  Transform viewer;AudioSource footSource;
 
  void Start(){Initialize();}
@@ -52,11 +52,13 @@ public sealed class CrowdBystander : MonoBehaviour {
    }
   }
   SelectClip(Role==Behaviour.Walker?(IsWalking?"Motion":"Idle"):Role==Behaviour.Conversation?(IsSpeaking?"Motion":"Idle"):"Motion");
-  if(IsWalking&&CharacterAnimation&&CharacterAnimation["Motion"]!=null)CharacterAnimation["Motion"].speed=stridePlayback;
+  if(IsWalking&&motionState!=null)motionState.speed=stridePlayback;
  }
  void SelectClip(string name,bool initial=false){
-  if(!CharacterAnimation||!CharacterAnimation.GetClip(name)||(!initial&&name==currentClip))return;
-  currentClip=name;var state=CharacterAnimation[name];state.wrapMode=WrapMode.Loop;state.speed=PlaybackSpeed;
+  if(!CharacterAnimation||(!initial&&name==currentClip))return;
+  var state=CharacterAnimation[name];if(state==null)return;
+  if(name=="Motion")motionState=state;
+  currentClip=name;state.wrapMode=WrapMode.Loop;state.speed=PlaybackSpeed;
   if(initial){CharacterAnimation.Play(name);state.time=Mathf.Repeat(PhaseSeconds,state.length);}
   else CharacterAnimation.CrossFade(name,.35f);
  }

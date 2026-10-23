@@ -108,6 +108,7 @@ public sealed class XRGhostHand : MonoBehaviour
     private Mesh capsule, sphere;
     private float side = 1;
     private DemoModeSwitch mode;
+    private bool modeSearched;
     // [finger][joint]; 0 index, 1 middle, 2 ring, 3 little, 4 thumb.
     private readonly Transform[][] joints = new Transform[5][];
     private static readonly float[] FingerX = { 0.03f, 0.01f, -0.01f, -0.028f };
@@ -239,7 +240,7 @@ public sealed class XRGhostHand : MonoBehaviour
     // Shows the hand only in VR, applies the shared opacity and hides or shows the controller model.
     public void Apply(bool force)
     {
-        if (mode == null) mode = FindFirstObjectByType<DemoModeSwitch>();
+        if (mode == null && !modeSearched) { mode = FindFirstObjectByType<DemoModeSwitch>(); modeSearched = true; }
         bool show = Visible && input != null && input.PoseTracked && (mode == null || mode.VRActive);
         if (force || root.gameObject.activeSelf != show) root.gameObject.SetActive(show);
         Color c = DemoUi.WithAlpha(Tint, Mathf.Clamp01(Opacity));

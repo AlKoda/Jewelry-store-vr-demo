@@ -60,6 +60,7 @@ public sealed class XRHolsters : MonoBehaviour
         }
     }
     private DemoModeSwitch mode;
+    private bool modeSearched;
 
     private void OnEnable() { Active = this; }
 
@@ -133,12 +134,29 @@ public sealed class XRHolsters : MonoBehaviour
     {
         get
         {
-            if (mode == null) mode = FindFirstObjectByType<DemoModeSwitch>();
+            if (mode == null && !modeSearched) { mode = FindFirstObjectByType<DemoModeSwitch>(); modeSearched = true; }
             return mode == null || mode.VRActive;
         }
     }
 
-    private void Start(){HipOffset.y-=.08f;ChestOffset.y-=.08f;}
+    // Found once: these were two scene searches and one array allocation per frame.
+    private HandInteractor[] hands = new HandInteractor[0];
+    private XRControllerInput[] handInputs = new XRControllerInput[0];
+    private float handsRefreshed = -10;
+    private void RefreshHands()
+    {
+        hands = FindObjectsByType<HandInteractor>(FindObjectsSortMode.None);
+        handInputs = new XRControllerInput[hands.Length];
+        for (int i = 0; i < hands.Length; i++) handInputs[i] = hands[i].GetComponent<XRControllerInput>();
+        handsRefreshed = Time.unscaledTime;
+    }
+    private void Start()
+    {
+        HipOffset.y-=.08f;ChestOffset.y-=.08f;
+        if (Lighting == null) Lighting = FindFirstObjectByType<DemoLighting>();
+        if (Camera == null) Camera = FindFirstObjectByType<EvidenceCamera>();
+        RefreshHands();
+    }
     private void LateUpdate()
     {
         UpdateHeading(Time.deltaTime);
@@ -150,21 +168,27 @@ public sealed class XRHolsters : MonoBehaviour
         var head=Head?Head:transform;
         belt.rotation=Quaternion.Euler(0,beltYaw,0);belt.position=head.position+Vector3.up*HipOffset.y-belt.forward*retreat;
         var beltPosition=belt.position;beltPosition.y=Mathf.Max(beltPosition.y,transform.position.y+MinHeight);belt.position=beltPosition;
-        var lights=Lighting?Lighting:FindFirstObjectByType<DemoLighting>();var camera=Camera?Camera:FindFirstObjectByType<EvidenceCamera>();
+        var lights=Lighting;var camera=Camera;
+        // Hands are re-collected only every 2 s (a rig rebuild or a late-enabled hand), not per frame.
+        if (hands.Length < 2 && Time.unscaledTime - handsRefreshed > 2f) RefreshHands();
         for(int i=0;i<3;i++){
             displays[i].SetActive(i<2?lights==null||!lights.TorchEquipped(i==1):camera==null||camera.Holder==null);
             displays[i].transform.SetPositionAndRotation(Position((Slot)i)+(i<2?Vector3.up*.12f:Vector3.zero),Quaternion.Euler(i<2?-90:0,beltYaw,0));
         }
-        HandInteractor[] hands = FindObjectsByType<HandInteractor>(FindObjectsSortMode.None);
         for (int i = 0; i < 3; i++)
         {
             Vector3 p = Position((Slot)i);
             markers[i].position = p;
             if (Head != null) DemoUi.FaceViewer(markers[i], Head.position);
             bool near = false;
-            foreach (HandInteractor h in hands) near |= Vector3.Distance(h.transform.position, p) <= TakeRadius;
             float proximity=float.PositiveInfinity;
-            foreach(var h in hands)if(h.GetComponent<XRControllerInput>()?.PoseTracked==true)proximity=Mathf.Min(proximity,Vector3.Distance(h.transform.position,p));
+            for (int h = 0; h < hands.Length; h++)
+            {
+                if (hands[h] == null) continue;
+                float d = Vector3.Distance(hands[h].transform.position, p);
+                near |= d <= TakeRadius;
+                if (handInputs[h] != null && handInputs[h].PoseTracked) proximity = Mathf.Min(proximity, d);
+            }
             markers[i].gameObject.SetActive(proximity<.45f || XRControllerInput.HintsVisible);
             materials[i].color = DemoUi.WithAlpha(near ? DemoUi.Accent : DemoUi.Info, near ? 0.85f : 0.22f);
         }
