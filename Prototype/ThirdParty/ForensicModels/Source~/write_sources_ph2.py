@@ -110,7 +110,7 @@ for f in sorted(os.listdir(PACK)):
          'source_url': 'https://polyhaven.com/a/' + aid, 'author': authors, **CC0,
          'mirror_repository': 'https://github.com/' + repo, 'mirror_commit': commit, 'mirror_dir': mdir % aid, 'mirror_credits_file': credits,
          'corroboration': corr,
-         'source_files': [{'file': k.split('/', 1)[1].replace(m + '.gltf', aid + ('_1k' if aid == 'cement_bag' and False else '') + '.gltf'), 'sha256': v}
+         'source_files': [{'file': k.split('/', 1)[1].replace(m + '.gltf', aid + '.gltf'), 'sha256': v}
                           for k, v in sorted(src_sha.items()) if k.startswith(m + '/')],
          'fetched': '2026-10-24', 'changes': COMMON + ' ' + CHANGES[m]}
     if author_source:
@@ -135,5 +135,5 @@ doc['batch_2026_10_24'] = {
                'Authors as given by the mirror credit files named in author_source; CigaretteButt has no author record.',
     'texture_rules': 'Colour maps 512 or 1024 px JPG q90; normal 256 to 1024 px JPG q90 (OpenGL +Y); MetallicSmoothness 256 to 512 px PNG (R metal, G = B = 0, A smoothness, sRGB off).',
 }
-json.dump(doc, open(os.path.join(PACK, 'sources.json'), 'w'), indent=1, ensure_ascii=False)
+json.dump(doc, open(os.path.join(PACK, 'sources.json'), 'w'), indent=1)
 print('files', len(doc['files']), 'new', len(new), 'models', len(doc['models']))

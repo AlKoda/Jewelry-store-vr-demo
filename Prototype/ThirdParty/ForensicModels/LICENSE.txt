@@ -1,6 +1,7 @@
 ForensicModels - burglary, forensic and police props for the night jewellery-store scene
 Prepared October 14, 2026; corrected October 15, 2026 (glove tag removed from the smoothness and normal maps,
 searchlight, binder and hammer authors recorded); LOD variants of four models added October 15, 2026.
+Poly Haven batch 2 (12 more models, three colour maps rewritten, four wordmarks painted out) added October 24, 2026.
 Not yet imported or checked in Unity.
 
 Everything in this folder is either CC0 1.0 (Poly Haven) or project-owned original work.
@@ -49,6 +50,20 @@ SecurityCamera.*           security_camera_01    "Security Camera 01"       Alex
 LeatherBinder.*            binder_notebook       "Binder Notebook"          DaDrood
 OfficeNotepads.*           office_notepads       "Office Notepads"          Ulan Cabanilla
 
+Batch 2, October 24, 2026 (authors as named by the mirror credit files listed below; polyhaven.com not reachable):
+LiftingTapeRoll.*          medical_tape          "Medical Tape"             Miroslav Turura
+ReagentSprayBottle.*       all_purpose_cleaner   "All Purpose Cleaner"      Kuutti Siitonen
+DentalStoneBag.*           cement_bag            "Cement Bag"               PierreB3D
+EvidenceBox.*              cardboard_box_01      "Cardboard Box 01"         Rahul Chaudhary
+BurglarToolbox.*           metal_toolbox         "Metal Toolbox"            Mateusz Sadek
+BaseballBat.*              baseball_bat          "Baseball Bat"             Enrique Martín
+RedScrewdriver.*           screwdriver           "Screwdriver"              PierreB3D
+Lighter.*                  vintage_lighter       "Vintage Lighter"          Slinc
+Spectacles.*               round_spectacles      "Round Spectacles"         Sean Buckley
+DroppedWatch.*             digital_wrist_watch   "Digital Wrist Watch"      Adrian C
+CigaretteButt.*            cigarette_case        "Cigarette Case" (1 cigarette)  not confirmed (no mirror names the author)
+ReagentBottles.*           chemistry_set         "Chemistry Set" (3 bottles) Jiří Ptáček
+
 Mirrors used (repository @ commit, folder; credit file):
   crowbar_01, sledgehammer_01, magnifying_glass_01:
       github.com/tuniveza/Generative-Games @ 831f115caeea2201fdac5315bac4fcb707eeaf85,
@@ -84,6 +99,31 @@ Mirrors used (repository @ commit, folder; credit file):
   release. Only this one record names the author, and polyhaven.com cannot be reached from the build machine, so the
   name is not confirmed against the asset page itself (CC0 needs no attribution either way).
 
+  Batch 2 mirrors (October 24, 2026; the glTF, .bin and texture files are the unmodified api.polyhaven.com downloads,
+  SHA-256 per file in sources.json):
+  medical_tape, all_purpose_cleaner, metal_toolbox, screwdriver, vintage_lighter, round_spectacles,
+  digital_wrist_watch, cigarette_case (2K):
+      github.com/Geadas11/Claude_steam_game @ 8b6aa56f951450b7a05434615bcdda2bd2d1e8fa, assets/3d/models/<id>/ ;
+      assets/3d/CREDITS.md ("Todos do Poly Haven, licenca CC0"), tools/fetch_polyhaven.py (saves the API download unchanged)
+  cement_bag, cardboard_box_01, baseball_bat (1K):
+      github.com/andersanders806-dev/dopesick-game @ e0b84f5eda44ac0e5fca605292cf6cac5aac3cce, assets/polyhaven/<id>/ ;
+      README.md, dev-tools/fetch_polyhaven_models.py ("Download CC0 3D models from Poly Haven")
+  chemistry_set (1K): github.com/Tiddybub/3d-assets @ 11ff7082e566a6278553bf7623980cb93dd41e27, sci-fi/chemistry_set/ ;
+      sci-fi/chemistry_set/SOURCE.md ("Source: Poly Haven / Jiri Ptacek", "License: CC0-1.0")
+  Byte-identical second copies: medical_tape.bin in github.com/VoxogoBrusch/the-levels @ 1e7c3778 (ASSET_LICENSES.md:
+  "Poly Haven distributes these assets under CC0 1.0"); metal_toolbox.bin in github.com/m4tthewdavis/fallout-minnesota
+  @ 005554ad (assets/CREDITS.md); cardboard_box_01 and baseball_bat files recorded with the same dl.polyhaven.org URLs in
+  github.com/duplighost/qualiacology @ 788d1c8b, olly-olly/assets/SOURCES.md.
+  Author records for batch 2: github.com/omarrayyann/tabletask @ c59db35b, assets/sources/polyhaven.md (Miroslav Turura,
+  Kuutti Siitonen, Mateusz Sadek, PierreB3D, Slinc, Sean Buckley, Adrian C); the Poly Haven model index of April 2024
+  mirrored in github.com/Akshay25798/VFX-Houdini-Asset_Browser @ a6bbb5f6, downloads/json/models.json (Kuutti Siitonen,
+  Enrique Martín, Rahul Chaudhary); github.com/duplighost/qualiacology @ 788d1c8b, olly-olly/ASSET-LICENSES.md (Enrique
+  Martín, Rahul Chaudhary); github.com/sebasfavaron/gendarmeria-poc @ ff94bc01, CREDITOS.md (PierreB3D, Rahul Chaudhary);
+  github.com/ReidT205/blacksite-assets @ 1476a0ff, ATTRIBUTION.md (PierreB3D, Rahul Chaudhary, Mateusz Sadek, Jiří Ptáček);
+  github.com/PianoNic/BackroomsBaden @ 794e9165, client/public/models/LICENSES.md (Adrian C);
+  github.com/chmajster/WroclawTheGame @ 72fd1f81, docs/FREE_MODEL_ASSETS.md (Mateusz Sadek). No record names the author
+  of cigarette_case (CC0 needs no attribution either way).
+
 Changes made here (all files):
   - Converted glTF -> OBJ/MTL with Tools/glb_to_obj.py (--ground: lowest point at y = 0, centred in x/z),
     metres and authored orientation kept; OBJ numbers rounded to 0.1 mm.
@@ -105,10 +145,26 @@ Changes made here (all files):
     Crowbar.obj, Sledgehammer.obj and FlatheadScrewdriver.obj by the project-owned Source~/make_lods.py (every
     vertex and UV is an original one of the source; nothing new added). They use the original MTL files and maps.
     These CC0 derivatives stay CC0 1.0 (same authors as their source models).
+  - Batch 2 (October 24, 2026; Source~/relabel_ph2.py, Source~/build_ph2.py):
+    LiftingTapeRoll: medical_tape scaled x2 (tape width 0.05 m), mesh split into lifting_tape (d 0.9) and tape_core
+      materials, colour map rebuilt (clear off-white tape, kraft core), tape smoothness raised.
+    ReagentSprayBottle: all_purpose_cleaner body recoloured pink -> white, the "Planis" / "SUPER CLEANER+" labels painted
+      out and plain "LATENT BLOOD REAGENT" labels drawn (fictional text, DejaVu Sans, no pictograms, no brand).
+    DentalStoneBag: cement_bag colour map rebuilt from scratch as plain paper with a "DENTAL STONE / forensic casting
+      grade / 11 kg" print; the "CEMENT" artwork and its logo are gone.
+    EvidenceBox 16,952 -> 5,999, Spectacles 11,810 -> 9,000, DroppedWatch 10,390 -> 9,002 triangles (UV-exact,
+      Source~/decimate_exact.py); BurglarToolbox lid and handle decimated per group, 14,228 -> 9,994.
+    Wordmarks painted out: "STEEL..." roundel (metal_toolbox), "LANSTEY" (screwdriver), "TROP (R)" (vintage_lighter),
+      "RISTO" and the case-back engraving (digital_wrist_watch). Generic function labels on the watch were kept.
+    CigaretteButt: one cigarette node of cigarette_case cut to 25 mm, capped and crushed; the case itself is not shipped.
+    ReagentBottles: six nodes (three bottles with stoppers) of chemistry_set extracted and decimated 3,584 -> 2,897;
+      the rest of the set is not shipped.
+    These CC0 derivatives stay CC0 1.0 (same authors as their source models).
 
 Voluntary credit line: "3D models by Alexander Otterbeck, Dylan Guzman, Tics, Dylan Detwiller, Antanas Kep,
 Yann Kervran, Satyaki Mandal, Dario Barresi, Rico Cilliers, Benny Weimer, ProgrammerOnCoffee,
-Kuutti Siitonen, Nazar Borodavka, Elijah Cragg, DaDrood and Ulan Cabanilla (polyhaven.com, CC0)."
+Kuutti Siitonen, Nazar Borodavka, Elijah Cragg, DaDrood, Ulan Cabanilla, Miroslav Turura, PierreB3D,
+Rahul Chaudhary, Mateusz Sadek, Enrique Martín, Slinc, Sean Buckley, Adrian C and Jiří Ptáček (polyhaven.com, CC0)."
 
 ===============================================================================
 2. Project-owned original work

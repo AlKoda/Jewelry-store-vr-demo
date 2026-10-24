@@ -1,0 +1,11 @@
+newmtl lifting_tape
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 0.9
+map_Kd LiftingTapeRoll_Color.jpg
+
+newmtl tape_core
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.0
+map_Kd LiftingTapeRoll_Color.jpg

@@ -45,7 +45,7 @@ public static partial class PresentationPolish {
    switch(kind){
     case FieldInvestigationTool.Method.MagneticWand:options.ModelEuler=new Vector3(90,0,0);model=DemoAssetLibrary.PlacePack("ForensicModels","MagneticWand",g,V(0,0,-.05f),0,options);
      if(!model){k.Cylinder(polymer,V(0,0,-.05f),V(0,0,.085f),.006f,10);k.Cylinder(rubber,V(0,0,.085f),V(0,0,.103f),.009f,12);}break;
-    case FieldInvestigationTool.Method.Tape:model=DemoAssetLibrary.PlacePack("ForensicModels","LiftingTapeRoll",g,V(0,-.0225f,.03f),0,options);
+    case FieldInvestigationTool.Method.Tape:model=DemoAssetLibrary.PlacePack("ForensicModels","LiftingTapeRoll",g,V(0,-.015f,.03f),0,options);
      if(!model)k.Cylinder(polymer,V(0,-.025f,.03f),V(0,.025f,.03f),.03f,16);
      k.Bar(card,V(0,-.016f,.095f),V(.076f,.0012f,.127f),.0004f);break; // 3 x 5 in backing card under the roll
     case FieldInvestigationTool.Method.GelLifter:options.Scale=.5f;model=DemoAssetLibrary.PlacePack("ForensicModels","GelLifterBlack",g,V(0,0,.04f),0,options);
@@ -54,7 +54,7 @@ public static partial class PresentationPolish {
      if(!model){k.Bar(card,V(0,.012f,.03f),V(.12f,.024f,.08f),.002f);for(int i=0;i<3;i++)k.Cylinder(polymer,V(-.03f+i*.03f,.02f,.012f),V(-.03f+i*.03f,.05f,.012f),.009f,10);}break;
     case FieldInvestigationTool.Method.CastingKit:model=DemoAssetLibrary.PlacePack("ForensicModels","MixingBowlRubber",g,V(0,-.03f,.05f),0,options);
      if(!model)k.Lathe(rubber,V(0,-.03f,.05f),Quaternion.identity,new[]{.05f,.08f,.08f,.045f},new[]{0f,.06f,.065f,.012f},16,true,true,true);break;
-    default:options.ModelEuler=new Vector3(90,0,0);model=DemoAssetLibrary.PlacePack("ForensicModels","MikrosilTube",g,V(0,0,-.05f),0,options);
+    default:model=DemoAssetLibrary.PlacePack("ForensicModels","MikrosilTube",g,V(0,-.02f,-.06f),0,options); // the tube lies along +z already
      if(!model)k.Cylinder(polymer,V(0,0,-.05f),V(0,0,.09f),.018f,12);break;
    }
   }

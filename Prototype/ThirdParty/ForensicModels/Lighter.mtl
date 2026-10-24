@@ -1,0 +1,11 @@
+newmtl vintage_lighter
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.0
+map_Kd Lighter_Color.jpg
+
+newmtl vintage_lighter_alpha
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.0
+map_Kd Lighter_Color.jpg

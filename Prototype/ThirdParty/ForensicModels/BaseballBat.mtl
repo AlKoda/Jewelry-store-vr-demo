@@ -1,0 +1,5 @@
+newmtl baseball_bat
+Kd 1.000 1.000 1.000
+Ks 0.05 0.05 0.05
+d 1.0
+map_Kd BaseballBat_Color.jpg
