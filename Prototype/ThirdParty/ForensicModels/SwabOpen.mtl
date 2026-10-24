@@ -1,0 +1,5 @@
+newmtl Swab
+Kd 1.000 1.000 1.000
+Ks 0.200 0.200 0.200
+d 1.000
+map_Kd SwabOpen_Color.jpg

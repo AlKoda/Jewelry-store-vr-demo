@@ -129,6 +129,17 @@ the project may use, change and redistribute them without restriction (treat the
       GlassCrackDecal_Normal.png
   Source~/*.py: the generator and conversion scripts (Unity ignores folders ending in "~"). Source~/make_lods.py
       is a copy of the project's own StreetModels LOD tool (Source~/make_lods.py there).
+  CSI consumables and evidence (October 24, 2026; Source~/proc_csi.py, Source~/assemble_csi.py): MagneticWand,
+      GelLifterBlack, GelLifterWhite, BackingCardWhite, BackingCardBlack, LiftCardWithPrint, HingeLifterBlack,
+      HingeLifterWhite, SwabTube, SwabOpen, SwabBox, DistilledWaterAmpoule, KMTestKit, MikrosilTube, MikrosilCatalyst,
+      MixingSpatula, ToolMarkCast, MixingBowlRubber, CastingFrame, EvidenceTag, EvidenceLabelRoll, BiohazardBinSmall,
+      SteppingPlate, OrangeGoggles, FaceMask, ShoeCoverPair, HairFibreSpecimen, FibreTuft, ElectrostaticLiftFilm, and
+      the decal textures FootwearDustMark_ColorAlpha.png / _Normal.png and PryMark_ColorAlpha.png / _Normal.png.
+      Project-owned original work like the rest of this section; procedural geometry and textures only. The ridge
+      art on LiftCardWithPrint_Color.jpg is composited from the project's own synthetic SurfaceDecals/
+      Fingerprints_Atlas.png (no real person). The biohazard pictogram is an own drawing of the generic public-domain
+      symbol. The short Arabic lines were rasterised with the project's Noto Sans Arabic
+      (Prototype/ThirdParty/Fonts/Arabic, SIL Open Font License; glyph images only, no font file is shipped here).
 
 Printed text on labels, forms and markers was rasterised with the DejaVu fonts installed on the build
 machine (Bitstream Vera / DejaVu licence; only glyph images are used, no font file is shipped). Every

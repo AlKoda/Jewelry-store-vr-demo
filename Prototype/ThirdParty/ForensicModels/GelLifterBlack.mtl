@@ -1,0 +1,11 @@
+newmtl GelLifter
+Kd 1.000 1.000 1.000
+Ks 0.400 0.400 0.400
+d 1.000
+map_Kd GelLifterBlack_Color.jpg
+
+newmtl CoverSheetPET
+Kd 0.900 0.920 0.950
+Ks 0.900 0.900 0.900
+d 0.220
+Ns 900

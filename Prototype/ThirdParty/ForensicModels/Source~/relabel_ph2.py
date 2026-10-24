@@ -8,6 +8,11 @@ relabel_ph2.py SRC_ROOT
                       white labels reading "LATENT BLOOD REAGENT" are drawn in DejaVu Sans. No pictograms, no brand.
   DentalStoneBag      cement_bag: the whole map is rebuilt as off-white/grey paper (shaded by the AO channel of the ARM map)
                       with a plain two-colour print: "DENTAL STONE / forensic casting grade / 11 kg". No brand, no logo.
+  BurglarToolbox      metal_toolbox: the round brand-style sticker on the front ("STEEL..." roundel) covered with paint cloned from the same map.
+  RedScrewdriver      screwdriver: the handle wordmark ("LANSTEY") painted out.
+  Lighter             vintage_lighter: the engraved wordmark ("TROP (R)") on the case painted out.
+  DroppedWatch        digital_wrist_watch: the bezel wordmark ("RISTO") and the faint case-back engraving painted out;
+                      the generic function labels (MODE, LIGHT, START/STOP, WATER RESIST, ALARM CHRONO) stay.
 
 Every printed string is fictional/generic. Fonts: DejaVu Sans (glyph images only, no font file shipped).
 """
@@ -31,6 +36,61 @@ def grain(shape, amp, seed, blur=0.8):
     n = rng.normal(0, 1, shape[:2]).astype(np.float32)
     n = np.asarray(Image.fromarray(((n * 40) + 128).clip(0, 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(blur)), np.float32) - 128
     return n[..., None] / 40 * amp
+
+
+def inpaint(a, mask, iters=400):
+    """Boundary diffusion fill (the delabel.py method) of the masked texels of a float RGB crop."""
+    a = a.astype(np.float32).copy(); m = mask.copy()
+    known = ~m
+    for _ in range(iters):
+        if not m.any(): break
+        s_ = np.zeros_like(a); c = np.zeros(a.shape[:2], np.float32)
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)):
+            sh = np.roll(np.roll(a, dy, 0), dx, 1); kn = np.roll(np.roll(known, dy, 0), dx, 1)
+            s_ += sh * kn[..., None]; c += kn
+        fill = m & (c > 0)
+        a[fill] = s_[fill] / c[fill][:, None]
+        known = known | fill; m = m & ~fill
+    return a
+
+
+def paint_out(path, boxes, seed, amp=5, pad=24, lettering=None):
+    """Fill rectangles (x0, y0, x1, y1) of a colour map from their surroundings. With lettering=('light'|'dark', thresh)
+    only the letter texels inside the box (lighter or darker than the box median by thresh) are filled, keeping the
+    surface texture around them; otherwise the whole box is filled. Works on a padded crop, so it is cheap."""
+    im = np.asarray(Image.open(path).convert('RGB'), np.float32)
+    for k, (x0, y0, x1, y1) in enumerate(boxes):
+        cx0, cy0 = max(0, x0 - pad), max(0, y0 - pad); cx1, cy1 = min(im.shape[1], x1 + pad), min(im.shape[0], y1 + pad)
+        crop = im[cy0:cy1, cx0:cx1]
+        mask = np.zeros(crop.shape[:2], bool)
+        sub = np.zeros(crop.shape[:2], bool); sub[y0 - cy0:y1 - cy0, x0 - cx0:x1 - cx0] = True
+        if lettering:
+            lum = crop.mean(2); med = np.median(lum[sub])
+            letters = (lum > med + lettering[1]) if lettering[0] == 'light' else (lum < med - lettering[1])
+            letters = np.asarray(Image.fromarray((letters & sub).astype(np.uint8) * 255).filter(ImageFilter.MaxFilter(5))) > 0
+            mask = letters & sub
+        else:
+            mask = sub
+        filled = inpaint(crop, mask, iters=max(x1 - x0, y1 - y0) + 50)
+        filled[mask] += grain(crop.shape, amp, seed + k)[mask]
+        im[cy0:cy1, cx0:cx1] = filled
+    Image.fromarray(im.clip(0, 255).astype(np.uint8)).save(path, quality=95)
+    print('painted out', os.path.basename(path), boxes)
+
+
+def clone_patch(path, dst_box, src_xy, seed, feather=10):
+    """Cover a rectangle of a colour map with a patch cloned from elsewhere in the same map (feathered edges)."""
+    im = np.asarray(Image.open(path).convert('RGB'), np.float32)
+    x0, y0, x1, y1 = dst_box; w, h = x1 - x0, y1 - y0
+    sx, sy = src_xy
+    patch = im[sy:sy + h, sx:sx + w].copy()
+    patch += grain(patch.shape, 3, seed, 0.8)
+    yy, xx = np.mgrid[0:h, 0:w]
+    edge = np.minimum(np.minimum(xx, w - 1 - xx), np.minimum(yy, h - 1 - yy))
+    alpha = np.clip((edge + 0.5) / feather, 0, 1)[..., None]
+    im[y0:y1, x0:x1] = im[y0:y1, x0:x1] * (1 - alpha) + patch * alpha
+    Image.fromarray(im.clip(0, 255).astype(np.uint8)).save(path, quality=95)
+    print('cloned over', os.path.basename(path), dst_box, 'from', src_xy)
 
 
 def uv_mask(gltf, size, select):
@@ -195,13 +255,13 @@ def bag(folder):
     # underside: same islands mirrored in u
     bottom = design(int(n * 0.61), int(n * 0.36)).transpose(Image.FLIP_LEFT_RIGHT)
     img.paste(bottom, (int(n * 0.03), int(n * 0.16)), bottom)
-    # long sides (u 0.67..0.78 and 0.80..0.90 are the bag height, v 0.38..0.98 the length): rotated strips
-    s1 = side(int(n * 0.60), int(n * 0.11)).rotate(90, expand=True)
+    # long sides (u 0.67..0.78 and 0.80..0.90 are the bag height, v 0.38..0.98 the length): rotated strips (checked in a render)
+    s1 = side(int(n * 0.60), int(n * 0.11)).rotate(270, expand=True)
     img.paste(s1, (int(n * 0.67), int(n * 0.38)), s1)
-    s2 = side(int(n * 0.60), int(n * 0.10)).rotate(270, expand=True)
+    s2 = side(int(n * 0.60), int(n * 0.10)).rotate(90, expand=True)
     img.paste(s2, (int(n * 0.80), int(n * 0.38)), s2)
-    # ends (u 0.02..0.42 and 0.55..0.95, v 0.01..0.13)
-    e1 = end(int(n * 0.40), int(n * 0.12)); img.paste(e1, (int(n * 0.02), int(n * 0.01)), e1)
+    # ends (u 0.02..0.42 and 0.55..0.95, v 0.01..0.13); both islands are upside down in texture space
+    e1 = end(int(n * 0.40), int(n * 0.12)).rotate(180); img.paste(e1, (int(n * 0.02), int(n * 0.01)), e1)
     e2 = end(int(n * 0.40), int(n * 0.12)).rotate(180); img.paste(e2, (int(n * 0.55), int(n * 0.01)), e2)
     # wear: the print fades a little with the AO/creases
     out = np.asarray(img, np.float32)
@@ -213,3 +273,12 @@ def bag(folder):
 tape(os.path.join(R, 'LiftingTapeRoll'))
 bottle(os.path.join(R, 'ReagentSprayBottle'))
 bag(os.path.join(R, 'DentalStoneBag'))
+# 4. wordmarks and brand-style badges on the as-is models (2K maps; boxes in texels)
+clone_patch(os.path.join(R, 'BurglarToolbox', 'textures', 'metal_toolbox_diff_2k.jpg'), (358, 93, 518, 236), (1100, 700), 41, feather=8)
+paint_out(os.path.join(R, 'RedScrewdriver', 'textures', 'screwdriver_diff_2k.jpg'), [(355, 1270, 780, 1365)], 42, amp=4,
+          lettering=('light', 45))
+paint_out(os.path.join(R, 'Lighter', 'textures', 'vintage_lighter_diff_2k.jpg'), [(125, 905, 595, 1035)], 43, amp=3)
+paint_out(os.path.join(R, 'DroppedWatch', 'textures', 'digital_wrist_watch_diff_2k.jpg'), [(1104, 928, 1143, 1072)], 44, amp=2,
+          lettering=('light', 60))
+paint_out(os.path.join(R, 'DroppedWatch', 'textures', 'digital_wrist_watch_diff_2k.jpg'), [(150, 1700, 340, 1825)], 45, amp=4,
+          lettering=('dark', 12))

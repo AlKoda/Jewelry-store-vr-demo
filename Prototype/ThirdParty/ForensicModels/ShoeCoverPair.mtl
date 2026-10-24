@@ -1,0 +1,6 @@
+newmtl Cover
+Kd 1.000 1.000 1.000
+Ks 0.400 0.400 0.400
+d 1.000
+Ns 150
+map_Kd ShoeCoverPair_Color.jpg

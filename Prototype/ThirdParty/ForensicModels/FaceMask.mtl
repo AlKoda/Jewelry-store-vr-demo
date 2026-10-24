@@ -1,0 +1,10 @@
+newmtl Mask
+Kd 1.000 1.000 1.000
+Ks 0.020 0.020 0.020
+d 1.000
+map_Kd FaceMask_Color.jpg
+
+newmtl EarLoop
+Kd 0.950 0.950 0.950
+Ks 0.050 0.050 0.050
+d 1.000

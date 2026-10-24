@@ -1,0 +1,11 @@
+newmtl LifterCard
+Kd 1.000 1.000 1.000
+Ks 0.100 0.100 0.100
+d 1.000
+map_Kd HingeLifterBlack_Color.jpg
+
+newmtl LifterFilm
+Kd 0.920 0.940 0.960
+Ks 0.800 0.800 0.800
+d 0.300
+Ns 600

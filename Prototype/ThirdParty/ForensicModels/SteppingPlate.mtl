@@ -1,0 +1,10 @@
+newmtl Polycarbonate
+Kd 0.860 0.900 0.920
+Ks 0.900 0.900 0.900
+d 0.300
+Ns 900
+
+newmtl RubberFoot
+Kd 0.060 0.060 0.060
+Ks 0.050 0.050 0.050
+d 1.000

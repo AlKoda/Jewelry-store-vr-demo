@@ -183,10 +183,9 @@ def loft(rings, uv=(0, 0, 1, 1), close=True, smooth=60, outward=True):
 
 
 def rrect(w, d, r, nc=4, y=0.0):
-    """Rounded rectangle in x/z (CCW seen from +Y), starting at the middle of the +z (front) edge."""
+    """Rounded rectangle in x/z, four corner arcs (nc segments each), starting at the +x/+z corner."""
     pts = []
     cs = [(w / 2 - r, d / 2 - r, 0), (-w / 2 + r, d / 2 - r, 90), (-w / 2 + r, -d / 2 + r, 180), (w / 2 - r, -d / 2 + r, 270)]
-    pts.append((0, y, d / 2))
     for cx, cz, a0 in cs:
         for k in range(nc + 1):
             a = math.radians(a0 + 90 * k / nc)
@@ -215,36 +214,50 @@ def add_box(m, mat, size, center, region, M=None):
     m.add(mat, P, UV, N)
 
 
+def rbox(size, radius, seg, uv_rects, center=(0, 0, 0)):
+    """meshkit.rounded_box with per-face planar UVs in the meshkit.box orientation (top: u -> +x, v -> -z, etc.),
+    so printed faces read the same way as on a plain box."""
+    P, UV, N = mk.rounded_box(size, radius, seg)
+    sx, sy, sz = [v / 2 for v in size]
+    UV = np.array(UV); fn = N.mean(1)
+    for f in range(len(P)):
+        n = fn[f]; ax = int(np.argmax(np.abs(n))); pos = n[ax] > 0
+        key = (('px', 'nx'), ('py', 'ny'), ('pz', 'nz'))[ax][0 if pos else 1]
+        x, y, z = P[f, :, 0], P[f, :, 1], P[f, :, 2]
+        if key == 'py': u, v = (x + sx) / (2 * sx), (sz - z) / (2 * sz)
+        elif key == 'ny': u, v = (x + sx) / (2 * sx), (z + sz) / (2 * sz)
+        elif key == 'pz': u, v = (x + sx) / (2 * sx), (y + sy) / (2 * sy)
+        elif key == 'nz': u, v = (sx - x) / (2 * sx), (y + sy) / (2 * sy)
+        elif key == 'px': u, v = (sz - z) / (2 * sz), (y + sy) / (2 * sy)
+        else: u, v = (z + sz) / (2 * sz), (y + sy) / (2 * sy)
+        r = uv_rects.get(key, (0, 0, 1, 1))
+        UV[f, :, 0] = r[0] + (r[2] - r[0]) * np.clip(u, 0, 1); UV[f, :, 1] = r[1] + (r[3] - r[1]) * np.clip(v, 0, 1)
+    return P + np.array(center), UV, N
+
+
 def biohazard(d, cx, cy, s, fill):
-    """Generic three-ring biohazard pictogram drawn from primitives (public-domain symbol, own drawing)."""
+    """Generic three-lobe biohazard pictogram drawn from primitives (public-domain symbol, own drawing). s = half size."""
     mask = Image.new('L', d._image.size, 0); md = ImageDraw.Draw(mask)
-    ro, ri = 0.46 * s, 0.30 * s; off = 0.27 * s
+    def disc(x, y, r, v):
+        md.ellipse([x - r, y - r, x + r, y + r], fill=v)
+    lobes = [(cx + 0.30 * s * math.cos(math.radians(90 + 120 * k)), cy - 0.30 * s * math.sin(math.radians(90 + 120 * k))) for k in range(3)]
+    for x, y in lobes:
+        disc(x, y, 0.50 * s, 255)
+    for x, y in lobes:
+        disc(x, y, 0.36 * s, 0)
+    disc(cx, cy, 0.30 * s, 0)              # opens the lobes toward the centre
+    disc(cx, cy, 0.24 * s, 255); disc(cx, cy, 0.15 * s, 0)   # central ring
+    # gaps: the central ring is broken on the lobe axes, each lobe is cut by a short radial gap between the lobes
+    for k in range(3):
+        a = math.radians(90 + 120 * k); b = math.radians(150 + 120 * k)
+        for t in np.linspace(0.12, 0.27, 10) * s:
+            disc(cx + t * math.cos(a), cy - t * math.sin(a), 0.035 * s, 0)
+        for t in np.linspace(0.26, 0.56, 14) * s:
+            disc(cx + t * math.cos(b), cy - t * math.sin(b), 0.03 * s, 0)
+    # the three little feet below each lobe tip
     for k in range(3):
         a = math.radians(90 + 120 * k)
-        x, y = cx + off * math.cos(a), cy - off * math.sin(a)
-        md.ellipse([x - ro, y - ro, x + ro, y + ro], fill=255)
-    for k in range(3):
-        a = math.radians(90 + 120 * k)
-        x, y = cx + off * math.cos(a), cy - off * math.sin(a)
-        md.ellipse([x - ri, y - ri, x + ri, y + ri], fill=0)
-    # centre ring and the three gaps toward it
-    md.ellipse([cx - 0.19 * s, cy - 0.19 * s, cx + 0.19 * s, cy + 0.19 * s], fill=255)
-    md.ellipse([cx - 0.11 * s, cy - 0.11 * s, cx + 0.11 * s, cy + 0.11 * s], fill=0)
-    for k in range(3):
-        a = math.radians(90 + 120 * k)
-        for t in np.linspace(0.12, 0.40, 12) * s:
-            x, y = cx + t * math.cos(a), cy - t * math.sin(a)
-            md.ellipse([x - 0.03 * s, y - 0.03 * s, x + 0.03 * s, y + 0.03 * s], fill=0)
-        a2 = math.radians(270 + 120 * k)
-        for t in np.linspace(0.58, 0.80, 8) * s:
-            x, y = cx + t * math.cos(a2), cy - t * math.sin(a2)
-            md.ellipse([x - 0.025 * s, y - 0.025 * s, x + 0.025 * s, y + 0.025 * s], fill=0)
-    # small arcs ("feet") outside each ring
-    for k in range(3):
-        a = math.radians(90 + 120 * k)
-        x, y = cx + off * math.cos(a), cy - off * math.sin(a)
-        md.arc([x - 0.56 * s, y - 0.56 * s, x + 0.56 * s, y + 0.56 * s], math.degrees(-a) - 35 + 180, math.degrees(-a) + 35 + 180,
-               fill=255, width=int(0.045 * s))
+        md.arc([cx - 0.92 * s, cy - 0.92 * s, cx + 0.92 * s, cy + 0.92 * s], -math.degrees(a) - 14, -math.degrees(a) + 14, fill=255, width=int(0.06 * s))
     d._image.paste(fill, (0, 0), mask)
 
 
@@ -313,7 +326,7 @@ def gel_lifter(name, black):
     save_maps(name, im, None, metal=0.0, smooth=sm, ms_px=256)
     m = mk.Mesh()
     GEL = (0, 0, 0.5, 1); BACK = (0.5, 0, 1, 1); EDGE = (0.5, 0.5, 0.51, 0.51)
-    P, UV, N = mk.rounded_box((W, 0.0013, D), 0.003, 2, uv_rects={'py': GEL, 'ny': BACK, 'px': EDGE, 'nx': EDGE, 'pz': EDGE, 'nz': EDGE})
+    P, UV, N = rbox((W, 0.0013, D), 0.003, 2, {'py': GEL, 'ny': BACK, 'px': EDGE, 'nx': EDGE, 'pz': EDGE, 'nz': EDGE})
     m.add('GelLifter', P + [0, 0.00065, 0], UV, N)
     # clear cover sheet, lifted at the +x/+z corner
     def top(X, Z):
@@ -387,7 +400,7 @@ def backing_card(name, black, with_print=False):
             for r in range(8, 70, 5):
                 d.ellipse([cx - r * 0.8, cy - r, cx + r * 0.8, cy + r], outline=(25, 25, 25), width=2)
         # powder haze along the tape and a felt-pen lift number
-        haze = (mk.noise(y1 - y0, x1 - x0, 12, 123, 3) > 0.62).astype(np.float32) * 0.25
+        haze = (mk.noise(y1 - y0, x1 - x0, 6, 123, 3) > 0.74).astype(np.float32) * 0.10
         a = arr(im); a[y0:y1, x0:x1] *= (1 - haze[..., None]); im = img(a); d = ImageDraw.Draw(im)
         d.text((x0 + 12, y0 + 10), 'L-4', font=font('sans-bold', 40), fill=(30, 30, 110))
         TAPE = R(x0, y0, x1, y1)
@@ -510,7 +523,7 @@ def swab_box():
     d.text((16, 14), 'SWAB DRYING BOX', font=font('sans-bold', 42), fill=(40, 35, 30))
     d.text((16, 66), 'Biological sample  -  keep upright  -  do not seal until dry', font=font('sans', 22), fill=(50, 45, 40))
     d.text((16, 100), 'Case ________  Item ____  Date ______  Officer ______', font=font('sans', 22), fill=(50, 45, 40))
-    ar(d, (1000, 150), 'عينة بيولوجية - يحفظ جافاً', 26, (50, 45, 40))
+    ar(d, (530, 150), 'عينة بيولوجية - يحفظ جافاً', 26, (50, 45, 40))
     # ventilation holes on the top and the front
     for row0 in (150, 300):
         for k in range(12):
@@ -527,7 +540,7 @@ def swab_box():
     save_maps('SwabBox', im, blur(hgt, 1.2), 2.5, 0.0, 0.25, n_px=512, ms_px=128)
     m = mk.Mesh()
     TOP = R(0, 0, 1024, 187, W, H); FRONT = R(0, 187, 1024, 374, W, H); END = R(0, 374, 187, 560, W, H); PLAIN = R(600, 420, 700, 500, W, H)
-    P, UV, N = mk.rounded_box((Lx, Hy, Dz), 0.0012, 1, uv_rects={'py': TOP, 'pz': FRONT, 'nz': FRONT, 'px': END, 'nx': END, 'ny': PLAIN})
+    P, UV, N = rbox((Lx, Hy, Dz), 0.0012, 1, {'py': TOP, 'pz': FRONT, 'nz': FRONT, 'px': END, 'nx': END, 'ny': PLAIN})
     m.add('SwabBoxCard', P + [0, Hy / 2, 0], UV, N)
     finish('SwabBox', m, {'SwabBoxCard': dict(map='SwabBox_Color.jpg', Ks=0.05)}, (Lx, Hy, Dz), 'Lies flat, label up, long axis X.')
 
@@ -598,7 +611,7 @@ def km_kit():
     # lid hinged at the back (z = -Dz/2), open 105 degrees: inside face (-y before rotation) carries the label
     P, UV, N = mk.box((Lx, t, Dz), uvs={'ny': LID, 'py': CASE, 'px': CASE, 'nx': CASE, 'pz': CASE, 'nz': CASE})
     P = P + [0, t / 2, Dz / 2]
-    P, N = mk.xform(P, N, mk.chain(mk.T(0, Hy, -Dz / 2), mk.Rx(105)))
+    P, N = mk.xform(P, N, mk.chain(mk.T(0, Hy, -Dz / 2), mk.Rx(-105)))
     m.add('KitAtlas', P, UV, N)
     # three dropper bottles lying along x, caps toward +x
     prof = [(0.0, 0.0), (0.0095, 0.0), (0.0115, 0.002), (0.0115, 0.038), (0.0100, 0.044), (0.0055, 0.047), (0.0055, 0.050)]
@@ -615,8 +628,8 @@ def km_kit():
         P, UV, N = mk.lathe(cap, 20, uv=CAP[k]); sub.add('KitAtlas', P, UV, N)
         m.merge(sub, Mb)
     add_box(m, 'KitAtlas', (0.028, 0.006, 0.04), (0.040, t + 0.003, 0.0), PAD)
-    finish('KMTestKit', m, {'KitAtlas': dict(map='KMTestKit_Color.jpg', Ks=0.2)}, (0.12, 0.08, 0.08),
-           'Open case, lid hinged at -z standing at 105 degrees; three dropper bottles lie along X with caps to -x; filter pad at +x.')
+    finish('KMTestKit', m, {'KitAtlas': dict(map='KMTestKit_Color.jpg', Ks=0.2)}, (0.12, 0.107, 0.103),
+           'Open case, lid hinged at -z leaning back at 105 degrees; three dropper bottles lie along X with caps to -x; filter pad at +x.')
 
 
 # ============================================================================== 7. silicone casting
@@ -649,12 +662,15 @@ def mikrosil_tube(name, L, r, title, lines, base_rgb, S=1024):
     hgt = np.zeros((H, S), np.float32); sm = np.full((H, S), 0.5, np.float32); mm = np.zeros((H, S), np.float32)
     im = img(col); d = ImageDraw.Draw(im)
     # rows 0..384 body wrap (u around, v along: v=1 at the shoulder); label panel in the middle
-    d.rectangle([q(60), q(70), q(980), q(330)], fill=(248, 246, 240))
-    d.text((q(80), q(84)), title, font=font('sans-bold', q(46)), fill=(50, 32, 20))
-    y = q(140)
+    # label panel authored upright (text along its width), then rotated so the text runs along the tube (v)
+    pan = Image.new('RGB', (1000, 600), (248, 246, 240)); pd = ImageDraw.Draw(pan)
+    pd.text((50, 40), title, font=font('sans-bold', 86), fill=(50, 32, 20))
+    y = 170
     for ln in lines:
-        d.text((q(80), y), ln, font=font('sans', q(24)), fill=(50, 40, 35)); y += q(32)
-    ar(d, (q(960), q(300)), 'معجون صب السيليكون' if 'PUTTY' in title else 'مادة مصلّبة', q(26), (50, 40, 35))
+        pd.text((50, y), ln, font=font('sans', 46), fill=(50, 40, 35)); y += 62
+    ar(pd, (950, 540), 'معجون صب السيليكون' if 'PUTTY' in title else 'مادة مصلّبة', 50, (50, 40, 35))
+    pan = pan.rotate(90, expand=True).resize((q(560), q(300)), Image.LANCZOS)   # 600 x 1000 -> around x along
+    im.paste(pan, (q(232), q(50)))
     # rows 384..448 crimp (foil), rows 448..512 cap (white ribbed)
     c0, c1 = q(384), q(448)
     d.rectangle([0, c0, S - 1, c1 - 1], fill=(190, 190, 195)); mm[c0:c1] = 1; sm[c0:c1] = 0.6
@@ -889,13 +905,13 @@ def biohazard_bin():
     im = img(col); d = ImageDraw.Draw(im)
     # cols 0..640, rows 0..512: front face (170 x 220 mm at 3.76 px/mm... use 640 x 512 for 0.17 x 0.22 -> 3.76 / 2.33; fine for flat colour)
     ink = (20, 20, 20)
-    biohazard(d, 320, 150, 170, ink)
-    d.text((320, 262), 'BIOHAZARD', font=font('sans-bold', 54), fill=ink, anchor='mm')
-    d.text((320, 306), 'SHARPS AND INFECTIOUS WASTE', font=font('sans-bold', 24), fill=ink, anchor='mm')
-    ar(d, (560, 345), 'خطر بيولوجي - نفايات حادة', 26, ink)
-    d.text((320, 395), '5 L   -   DO NOT FILL ABOVE THE LINE', font=font('sans', 22), fill=ink, anchor='mm')
-    d.text((320, 430), 'Close the lid and lock it before transport. Dispose of as clinical waste.', font=font('sans', 16), fill=ink, anchor='mm')
-    d.text((320, 460), 'Unit 7  -  opened: ______  closed: ______', font=font('sans', 16), fill=ink, anchor='mm')
+    biohazard(d, 320, 128, 125, ink)
+    d.text((320, 280), 'BIOHAZARD', font=font('sans-bold', 54), fill=ink, anchor='mm')
+    d.text((320, 322), 'SHARPS AND INFECTIOUS WASTE', font=font('sans-bold', 24), fill=ink, anchor='mm')
+    ar(d, (560, 358), 'خطر بيولوجي - نفايات حادة', 26, ink)
+    d.text((320, 400), '5 L   -   DO NOT FILL ABOVE THE LINE', font=font('sans', 22), fill=ink, anchor='mm')
+    d.text((320, 434), 'Close the lid and lock it before transport. Dispose of as clinical waste.', font=font('sans', 16), fill=ink, anchor='mm')
+    d.text((320, 464), 'Unit 7  -  opened: ______  closed: ______', font=font('sans', 16), fill=ink, anchor='mm')
     # fill line on the plain side region (cols 640..768) at 75 % of the height
     d.line([(640, 128), (767, 128)], fill=ink, width=4); d.text((650, 100), 'MAX', font=font('sans-bold', 20), fill=ink)
     # lid region: slot and lock text
@@ -923,7 +939,7 @@ def biohazard_bin():
     ring0 = [(p[0], p[2]) for p in rings[0]]
     P, UV, N = cap_poly(ring0, 0.0, False, SIDE); m.add('BinAtlas', P, UV, N)
     # red lid with a dark aperture and a hinged flap
-    P, UV, N = mk.rounded_box((0.180, 0.030, 0.135), 0.010, 2, uv_rects={k: LID for k in SIX}); m.add('BinAtlas', P + [0, 0.226 + 0.015, 0], UV, N)
+    P, UV, N = rbox((0.180, 0.030, 0.135), 0.010, 2, {k: LID for k in SIX}); m.add('BinAtlas', P + [0, 0.226 + 0.015, 0], UV, N)
     P, UV, N = mk.box((0.070, 0.004, 0.036), uvs={k: HOLE for k in SIX}); m.add('BinAtlas', P + [0, 0.256 + 0.001, 0.010], UV, N)
     P, UV, N = mk.box((0.074, 0.003, 0.040)); P = P + [0, 0.0015, 0.020]
     P, N = mk.xform(P, N, mk.chain(mk.T(0, 0.258, -0.010), mk.Rx(-40)))
@@ -967,22 +983,18 @@ def goggles():
     P, UV, N = mk.tube(pts, 0.0065, 10, uv=FRAME, closed_ends=False); m.add('Frame', P, UV, N)
     # nose bridge block and the lens (bent plate inside the frame)
     add_box(m, 'Frame', (0.030, 0.012, 0.012), (0, -0.018, -0.004), FRAME)
-    def lens_y(X, Z):
-        return X * 0  # placeholder (slab works in x/z); built below
-    xs = np.linspace(-W / 2 + 0.004, W / 2 - 0.004, 25); ys = np.linspace(-Hh / 2 + 0.004, Hh / 2 - 0.004, 9)
-    X, Y = np.meshgrid(xs, ys)
-    # trim to the rounded rectangle: clamp corners inward
-    cx = np.clip(np.abs(X) - (W / 2 - rc - 0.004), 0, None); cy = np.clip(np.abs(Y) - (Hh / 2 - rc - 0.004), 0, None)
-    rr = np.sqrt(cx ** 2 + cy ** 2); over = rr > (rc - 0.001)
-    sc = np.where(over, (rc - 0.001) / (rr + 1e-9), 1.0)
-    X = np.sign(X) * ((W / 2 - rc - 0.004) + cx * sc) * (np.abs(X) > (W / 2 - rc - 0.004)) + X * (np.abs(X) <= (W / 2 - rc - 0.004))
-    Y = np.sign(Y) * ((Hh / 2 - rc - 0.004) + cy * sc) * (np.abs(Y) > (Hh / 2 - rc - 0.004)) + Y * (np.abs(Y) <= (Hh / 2 - rc - 0.004))
-    Z = -0.020 * (X / (W / 2)) ** 2 + 0.003
-    G = np.stack([X, Y, Z], -1)
-    UVg = np.stack([(X + W / 2) / W, (Y + Hh / 2) / Hh], -1)
-    P, UV, _ = mk.grid_surface(G, UVg); P, UV = orient(P, UV, (0, 0, 1))
-    Pb = P[:, ::-1].copy(); UVb = UV[:, ::-1].copy()
-    m.add('LensOrange', P, UV, mk.smooth_normals(P, 80)); m.add('LensOrange', Pb, UVb, mk.smooth_normals(Pb, 80))
+    # lens: rounded-rectangle plate inside the frame, bent like the frame, 1 mm thick (front and back faces)
+    poly = rrect(W - 0.010, Hh - 0.010, rc - 0.004, 6)[:, [0, 2]]
+    tris = mk.triangulate(poly)
+    for zoff, sign in ((0.0035, 1), (0.0025, -1)):
+        Pl = []
+        for a, b, c in tris:
+            t = np.array([(poly[k][0], poly[k][1], -0.020 * (poly[k][0] / (W / 2)) ** 2 + zoff) for k in (a, b, c)])
+            if (np.cross(t[1] - t[0], t[2] - t[0])[2] < 0) == (sign > 0):
+                t = t[::-1]
+            Pl.append(t)
+        Pl = np.array(Pl); UVl = np.stack([(Pl[..., 0] + W / 2) / W, (Pl[..., 1] + Hh / 2) / Hh], -1)
+        m.add('LensOrange', Pl, UVl, mk.smooth_normals(Pl, 80))
     # elastic strap: 25 mm band around the back (semi-ellipse in x/z)
     tt = np.linspace(0, math.pi, 25)
     sx = (W / 2 + 0.004) * np.cos(tt); sz = -0.020 - 0.085 * np.sin(tt)
@@ -1037,7 +1049,7 @@ def shoe_covers():
     save_maps('ShoeCoverPair', col, hgt, 3.0, 0.0, 0.62 + 0.1 * (n - 0.5), n_px=512, ms_px=128)
     m = mk.Mesh()
     rng = np.random.default_rng(263)
-    for k, (dx, dz, rot) in enumerate(((-0.075, 0.0, 12), (0.085, 0.01, -20))):
+    for k, (dx, dz, rot) in enumerate(((-0.072, 0.0, 82), (0.072, 0.02, 104))):
         prof = [(0.0, 0.0)] + [(0.065 * math.sin(t), 0.055 * (1 - math.cos(t)) / 2) for t in np.linspace(0.15, math.pi - 0.1, 11)] + [(0.0, 0.055)]
         P, UV, N = mk.lathe(prof, 28, uv=(0, 0, 1, 1), sx=2.3, sz=1.0); P = np.array(P)
         # crumple: low-frequency displacement, flattened to lie on the floor
@@ -1047,7 +1059,7 @@ def shoe_covers():
         P[..., 1] *= (0.75 + 0.25 * np.cos(ang * 2 + 0.5)) * (1 - 0.35 * el ** 2)
         sub = mk.Mesh(); sub.add('Cover', P, UV, mk.smooth_normals(P, 80))
         m.merge(sub, mk.chain(mk.T(dx, 0, dz), mk.Ry(rot)))
-    finish('ShoeCoverPair', m, {'Cover': dict(map='ShoeCoverPair_Color.jpg', Ks=0.4, Ns=150)}, (0.33, 0.055, 0.17),
+    finish('ShoeCoverPair', m, {'Cover': dict(map='ShoeCoverPair_Color.jpg', Ks=0.4, Ns=150)}, (0.30, 0.036, 0.32),
            'Two crumpled overshoes on the floor; the gathered elastic opening is the darker band at the top.')
 
 
@@ -1151,12 +1163,14 @@ def footwear_decal():
     scuff = blur(np.asarray(im, np.float32), 1.5)
     alpha = np.clip(alpha * (1 - 0.6 * scuff) + 0.25 * scuff * (0.5 + 0.5 * n2), 0, 1)
     grey = np.array([0.72, 0.70, 0.66])
-    rgb = grey[None, None] * (0.85 + 0.3 * n[..., None])
+    rgb = grey[None, None] * (0.90 + 0.2 * blur(n2, 3)[..., None])
+    rgb = np.where(alpha[..., None] > 0.004, rgb, grey)   # constant colour under alpha = 0 keeps the PNG small
     out = np.dstack([rgb, alpha[..., None]])
     Image.fromarray((np.clip(out, 0, 1) * 255).astype(np.uint8), 'RGBA').save(os.path.join(OUT, 'FootwearDustMark_ColorAlpha.png'), optimize=True)
-    Image.fromarray(mk.normal_from_height(blur(alpha, 1.0) * 0.4, 1.0)).save(os.path.join(OUT, 'FootwearDustMark_Normal.png'), optimize=True)
+    nm = Image.fromarray(mk.normal_from_height(blur(alpha, 1.5) * 0.4, 1.0)).resize((512, 512), Image.LANCZOS)
+    nm.save(os.path.join(OUT, 'FootwearDustMark_Normal.png'), optimize=True)
     STATS['FootwearDustMark'] = {'kind': 'decal', 'files': ['FootwearDustMark_ColorAlpha.png', 'FootwearDustMark_Normal.png'],
-                                 'suggested_size_m': [0.32, 0.32], 'note': 'Partial trainer sole in grey dust, toe toward +u; mark spans 0.28 x 0.11 m at 0.32 m quad.'}
+                                 'suggested_size_m': [0.32, 0.32], 'note': 'Partial trainer sole in grey dust, toe toward +u; mark spans 0.28 x 0.11 m at a 0.32 m quad. Normal map 512 px (soft relief).'}
     print('%-22s decal 1024 px' % 'FootwearDustMark')
 
 
@@ -1186,16 +1200,17 @@ def pry_decal():
     sc = blur(np.asarray(sc, np.float32), 0.6)
     alpha = np.clip(chip + 0.7 * sc, 0, 1)
     # colour: bare substrate inside the chip (primer grey / timber tan mix), darker crushed metal in the blade dents
-    bare = np.array([0.62, 0.58, 0.50])[None, None] * (0.85 + 0.3 * n[..., None]) * (0.9 + 0.2 * n2[..., None])
+    bare = np.array([0.62, 0.58, 0.50])[None, None] * (0.88 + 0.24 * blur(n, 2)[..., None]) * (0.9 + 0.2 * n2[..., None])
     dent = np.array([0.35, 0.33, 0.30])
     rgb = bare * (1 - dep[..., None]) + dent * dep[..., None]
     rgb = rgb * (1 - 0.5 * sc[..., None]) + np.array([0.80, 0.78, 0.74]) * 0.5 * sc[..., None]
+    rgb = np.where(alpha[..., None] > 0.004, rgb, np.array([0.62, 0.58, 0.50]))   # constant colour under alpha = 0
     out = np.dstack([rgb, alpha[..., None]])
     Image.fromarray((np.clip(out, 0, 1) * 255).astype(np.uint8), 'RGBA').save(os.path.join(OUT, 'PryMark_ColorAlpha.png'), optimize=True)
     height = -blur(dep, 2.0) * 1.0 - blur(chip, 1.0) * 0.25 - sc * 0.15
-    Image.fromarray(mk.normal_from_height(height, 3.0)).save(os.path.join(OUT, 'PryMark_Normal.png'), optimize=True)
+    Image.fromarray(mk.normal_from_height(height, 3.0)).resize((512, 512), Image.LANCZOS).save(os.path.join(OUT, 'PryMark_Normal.png'), optimize=True)
     STATS['PryMark'] = {'kind': 'decal', 'files': ['PryMark_ColorAlpha.png', 'PryMark_Normal.png'], 'suggested_size_m': [0.12, 0.12],
-                        'note': 'Two overlapping flat-blade pry impressions with chipped paint and drag scratches; centre of the 1024 px texture.'}
+                        'note': 'Two overlapping flat-blade pry impressions with chipped paint and drag scratches; centre of the 1024 px texture. Normal map 512 px.'}
     print('%-22s decal 1024 px' % 'PryMark')
 
 

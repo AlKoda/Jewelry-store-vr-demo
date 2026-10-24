@@ -1,0 +1,10 @@
+newmtl WandBody
+Kd 1.000 1.000 1.000
+Ks 0.300 0.300 0.300
+d 1.000
+map_Kd MagneticWand_Color.jpg
+
+newmtl PowderBall
+Kd 0.030 0.030 0.030
+Ks 0.020 0.020 0.020
+d 1.000

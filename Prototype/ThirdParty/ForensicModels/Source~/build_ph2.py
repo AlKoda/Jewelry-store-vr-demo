@@ -27,9 +27,10 @@ SPEC = {
     'ReagentSprayBottle':  dict(scale=1.0, tris=0,    cpx=1024, npx=512,  mpx=512, glass={}),
     'DentalStoneBag':      dict(scale=1.0, tris=0,    cpx=1024, npx=512,  mpx=512, glass={}),
     'EvidenceBox':         dict(scale=1.0, tris=6000, cpx=1024, npx=1024, mpx=512, glass={}),
-    'BurglarToolbox':      dict(scale=1.0, tris=9000, cpx=1024, npx=1024, mpx=512, glass={}),
+    'BurglarToolbox':      dict(scale=1.0, tris=0,    cpx=1024, npx=1024, mpx=512, glass={},
+                                group_tris={'Cylinder_015': 4500, 'Cylinder_021': 1000}, agg=3),   # lid, handle (glTF mesh names)
     'BaseballBat':         dict(scale=1.0, tris=0,    cpx=1024, npx=512,  mpx=256, glass={}),
-    'PhillipsScrewdriver': dict(scale=1.0, tris=0,    cpx=512,  npx=512,  mpx=256, glass={}),
+    'RedScrewdriver':      dict(scale=1.0, tris=0,    cpx=512,  npx=512,  mpx=256, glass={}),
     'Lighter':             dict(scale=1.0, tris=0,    cpx=512,  npx=512,  mpx=256, glass={}),
     'Spectacles':          dict(scale=1.0, tris=9000, cpx=512,  npx=512,  mpx=256,
                                 glass={'round_spectacles_glass': ((0.9, 0.94, 0.95), 0.2)}),
@@ -234,6 +235,30 @@ def hook_cigarette(groups, src_folder):
 HOOKS = {'tape': hook_tape, 'cigarette': hook_cigarette}
 
 
+def decimate_groups(groups, targets, agg=7):
+    """Per-group UV-exact decimation (the decimate_exact.py method) with an explicit target per group name; other
+    groups are kept. Used where a proportional share over the whole model folds thin sheet parts into slivers."""
+    import fast_simplification as fs
+    out = []
+    for gname, mtl, P, UV, F in groups:
+        target = targets.get(gname)
+        if not target or len(F) <= target:
+            out.append([gname, mtl, P, UV, F]); continue
+        pts = P.astype(np.float32); Fi = F.astype(np.int64)
+        _, _, coll = fs.simplify(pts, Fi, target_count=target, agg=agg, return_collapses=True)
+        P2, F2, mapping = fs.replay_simplification(pts, Fi, coll)
+        orig = np.full(len(P2), -1)
+        d = np.linalg.norm(pts - P2[np.clip(mapping, 0, None)], axis=1)
+        for i in np.argsort(d):
+            j = mapping[i]
+            if j >= 0 and orig[j] < 0:
+                orig[j] = i
+        assert (orig >= 0).all()
+        print('  %s %d -> %d (agg %d)' % (gname, len(F), len(F2), agg))
+        out.append([gname, mtl, np.asarray(P2, float), UV[orig], np.asarray(F2, np.int64)])
+    return out
+
+
 # ---------------------------------------------------------------- main
 def main():
     src_root, out, tool = sys.argv[1:4]
@@ -271,6 +296,8 @@ def main():
             print('  decimated:', r.stdout.strip().split('\n')[-1])
             raw = dec
         groups = read_obj(raw)
+        if spec.get('group_tris'):
+            groups = decimate_groups(groups, spec['group_tris'], spec.get('agg', 7))
         if spec.get('hook'):
             groups = HOOKS[spec['hook']](groups, folder)
         groups = ground(groups)

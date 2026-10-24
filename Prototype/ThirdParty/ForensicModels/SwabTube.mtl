@@ -1,0 +1,11 @@
+newmtl TubeClear
+Kd 0.900 0.930 0.950
+Ks 0.900 0.900 0.900
+d 0.280
+Ns 900
+
+newmtl SwabAtlas
+Kd 1.000 1.000 1.000
+Ks 0.200 0.200 0.200
+d 1.000
+map_Kd SwabTube_Color.jpg
