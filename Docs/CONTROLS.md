@@ -146,7 +146,8 @@ Ten tools dock in the portable case: forceps, sterile swab, powder brush, hinge 
 
 | Tool | On | What happens |
 |---|---|---|
-| Brush, magnetic wand | Any glass, metal or painted surface (held trigger, sweep) | Develops the latent marks under the contact; keep brushing past development and the ridges fill in (logged). On paper: wrong method, logged |
+| Brush | Glass, metal or painted surfaces: bristles on the surface, trigger held, sweep | Develops the latent marks under the bristles by motion (standing still does little); keep brushing past development and the ridges fill in (logged). On paper: wrong method, logged |
+| Magnetic wand | Textured plastic and non-steel surfaces: hover a finger's width above, trigger held, circle slowly | Develops by dwell as the powder is drawn across the surface; it never touches. On steel the powder clings (logged). On paper: wrong method, logged |
 | Tape, hinge lifter, gel lifter | A developed mark | Lifts it (photograph first or the lift is out of sequence); the gel lifter also lifts dust footwear marks and leaves DNA recoverable |
 | Swab | Handles, items, stains | Takes DNA or the stain; a wet swab over an undeveloped mark wipes it (logged) |
 | Blood test kit | A red-brown stain (four presses) | Rub, ethanol, reagent, peroxide: pink is a presumptive positive; paint stays white; a reagent left over 30 s makes the test invalid |
@@ -155,6 +156,8 @@ Ten tools dock in the portable case: forceps, sterile swab, powder brush, hinge 
 
 ### Case, cart and camera (October 24, unverified)
 
-- **Hint card:** while a field tool is held, a card above it names the tool, what it works on and how to use it; the same line appears in the message feed when you take it. Compatible targets glow faintly; display-case tops glow as a whole for the brush and wand.
+- **Hint card (on request):** with a field tool in hand, B/Y on that controller (V on the PC) shows or hides a card above the tool: its name, what it works on, how to use it. Nothing is shown otherwise; taking a tool only names it. Items the tool can work on carry a very faint small pulse; display-case tops are never marked.
+- **Case:** no printed text. Tray left column forceps, swab, brush, wand; right column silicone kit and lifting tape; hinge lifter, blood test kit and gel lifter ride in the lid under elastic straps; the register clipboard keeps the lid's right half; powder jar and sealed packets on the base; casting bowl on the pavement.
+- **Doors:** every leaf swings freely (lighter spring and damping). Grip with the hand on a door leaf to take hold of it: the leaf follows the hand around its hinge until the grip opens; walking into it or sweeping a hand through it still pushes it. PC: click or G on a leaf shoves it open.
 - **Cart:** the exterior field table is a cart. Grip its push bar (the rail on the street side) and walk: it rolls with you and the open case rides on top. Release to park it; a blocked spot rolls it back. Reset returns cart and case.
 - **Camera hold:** grab the camera and point the controller at the sky (wrist bent down, fingers up): the body sits on the fist and the lens looks level ahead. Trigger photographs, A/X toggles the flash.

@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// While a field tool is held, everything it can work on glows faintly (Koda, October 24): a soft
-// pulsing disc over each compatible clue, and a dim sheet over each display-case top for the
-// powder applicators (the marks themselves stay hidden: finding them is the work). Sits on the
-// EvidenceRegister; listens to FieldInvestigationTool.HeldChanged. Unlit sprites, no lights.
+// While a field tool is held, the items it can work on glow very faintly (Koda, October 24: "almost
+// unnoticeable", only around what can be picked up or used as evidence): a small, soft pulsing disc
+// over each compatible clue. Case tops are never marked; the hidden marks on them are found by
+// sweeping. Sits on the EvidenceRegister; listens to FieldInvestigationTool.HeldChanged. Unlit
+// sprites, no lights.
 public sealed class ForensicGlow : MonoBehaviour {
  public EvidenceRegister Register;
- public float Radius=.07f, Pulse=1.6f, MinAlpha=.10f, MaxAlpha=.30f;
+ public float Radius=.032f, Pulse=.9f, MinAlpha=.025f, MaxAlpha=.07f;
  readonly List<Renderer> glows=new List<Renderer>();
  readonly List<Transform> follow=new List<Transform>();
  FieldInvestigationTool held;Material material;static Texture2D disc;static Mesh quad;Transform eye;
@@ -38,7 +39,6 @@ public sealed class ForensicGlow : MonoBehaviour {
  public void Rebuild(){
   Clear();if(!held||!Register)return;
   foreach(var clue in Register.AllClues)if(Compatible(clue,held.Kind)&&!clue.GetComponentInParent<LatentMarkField>())Add(clue.transform,clue.transform.position+Vector3.up*.015f,Radius,false);
-  if(held.IsApplicator)foreach(var field in FindObjectsByType<LatentMarkField>(FindObjectsSortMode.None)){var box=field.GetComponent<BoxCollider>();if(!box)continue;var sheet=Add(field.transform,field.transform.TransformPoint(box.center+Vector3.up*(box.size.y*.5f+.004f)),1,true);sheet.transform.localScale=new Vector3(box.size.x,box.size.z,1);}
  }
  // Field marks (children of a LatentMarkField) are found by sweeping, so they are never pointed out one by one.
  Renderer Add(Transform target,Vector3 at,float radius,bool flat){

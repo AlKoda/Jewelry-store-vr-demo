@@ -48,7 +48,8 @@ public sealed class LatentMarkField : MonoBehaviour {
   return best;
  }
  // The mark under a brush contact on any field surface, or null.
- public static DustablePrint MarkAt(RaycastHit hit,float radius){var own=hit.collider.GetComponentInParent<DustablePrint>();if(own)return own;var field=hit.collider.GetComponentInParent<LatentMarkField>();return field?field.Nearest(hit.point,radius):null;}
+ public static DustablePrint MarkAt(RaycastHit hit,float radius)=>MarkAt(hit.collider,hit.point,radius);
+ public static DustablePrint MarkAt(Collider at,Vector3 point,float radius){if(!at)return null;var own=at.GetComponentInParent<DustablePrint>();if(own)return own;var field=at.GetComponentInParent<LatentMarkField>();return field?field.Nearest(point,radius):null;}
  static Mesh Quad(){
   if(quad)return quad;quad=new Mesh{name="LatentMarkQuad"};
   quad.vertices=new[]{new Vector3(-.5f,0,-.5f),new Vector3(.5f,0,-.5f),new Vector3(.5f,0,.5f),new Vector3(-.5f,0,.5f)};

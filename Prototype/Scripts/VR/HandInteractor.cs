@@ -50,6 +50,7 @@ public sealed class HandInteractor : ToolHolder
             else UpdateLampHeight();
             return;
         }
+        if(heldDoor){heldDoor.Hold(transform.position);return;}
         if (Held != null) FollowHand();
         else
         {
@@ -112,6 +113,9 @@ public sealed class HandInteractor : ToolHolder
         }
         if(fieldTool)return TakeFieldTool(fieldTool);
         if(kit)return TakeKit(kit);
+        // A door leaf under the hand is taken hold of: it swings with the hand until the grip opens.
+        var door=DoorAtHand();
+        if(door){heldDoor=door;door.BeginHold(transform.position);DemoFeedback.Post("Door in hand: swing it, open the grip to let go");return true;}
         DeployedTool far = PointedTool();
         if (far == null) return false;
         takingPlaced=true;Hold(far);takingPlaced=false;
@@ -122,6 +126,7 @@ public sealed class HandInteractor : ToolHolder
 
     public void Release()
     {
+        if(heldDoor){heldDoor.EndHold();heldDoor=null;return;}
         if(CarriedKit)PutDownKit();
         else if(FieldTool)ReturnFieldTool();
         else if (Held != null) Place();
@@ -145,6 +150,27 @@ public sealed class HandInteractor : ToolHolder
     }
 
     public void RemoveHeld() { Remove(Held); }
+
+    // ---- door leaves ---------------------------------------------------------------------
+    private PushDoorLeaf heldDoor;
+    public PushDoorLeaf HeldDoor => heldDoor;
+    // The door leaf whose solid collider is within reach of the hand, or null.
+    public PushDoorLeaf DoorAtHand()
+    {
+        int count;
+        while ((count = Physics.OverlapSphereNonAlloc(transform.position, GrabRadius * .7f, overlaps, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore)) == overlaps.Length)
+            overlaps = new Collider[overlaps.Length * 2];
+        PushDoorLeaf best = null; float bestDistance = float.MaxValue;
+        for (int i = 0; i < count; i++)
+        {
+            var door = overlaps[i].GetComponentInParent<PushDoorLeaf>();
+            if (door == null) continue;
+            float distance = (overlaps[i].ClosestPoint(transform.position) - transform.position).sqrMagnitude;
+            if (distance < bestDistance) { bestDistance = distance; best = door; }
+        }
+        return best;
+    }
+    public override void ReleaseAll() { if (heldDoor) { heldDoor.EndHold(); heldDoor = null; } base.ReleaseAll(); }
 
     // ---- scene lamp column -------------------------------------------------------------
     // Trigger held on a placed lamp's column: the head follows the hand's rise and fall from

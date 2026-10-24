@@ -21,37 +21,38 @@ public static partial class PresentationPolish {
   var kit=register.Kit;var caseRoot=kit.transform;var tray=caseRoot.Find("FieldKit");var lid=caseRoot.Find("RaisedLid");
   foreach(var old in register.Tools.Where(t=>t&&t.Kind>=FieldInvestigationTool.Method.MagneticWand).ToArray())Object.DestroyImmediate(old.gameObject);
   var tools=register.Tools.Where(t=>t&&t.Kind<FieldInvestigationTool.Method.MagneticWand).ToList();
-  // ---- case tools, arranged (October 24): two columns in the tray, four rows each, a printed
-  // label beside every slot; the gel lifter and the test kit on the case base; the casting bowl outside.
+  // ---- case tools, arranged (October 24, second pass: no printed text anywhere on the case; Koda):
+  // the hand tools lie in the tray, left column forceps/swab/brush/wand, right column silicone kit
+  // and lifting tape; the flat items (hinge lifter, blood test kit, gel lifter) ride in the lid under
+  // elastic straps; the casting bowl stands outside on the pavement.
   tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MagneticWand,Vector3.zero));
   tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.Tape,Vector3.zero));
   tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MikrosilKit,Vector3.zero));
-  var gel=FieldTool(caseRoot,register,FieldInvestigationTool.Method.GelLifter,V(.36f,.025f,-.17f));gel.transform.localRotation=Quaternion.identity;tools.Add(gel);
-  var km=FieldTool(caseRoot,register,FieldInvestigationTool.Method.KMTest,V(.36f,.025f,.02f));km.transform.localRotation=Quaternion.Euler(0,90,0);tools.Add(km);
+  tools.Add(FieldTool(lid,register,FieldInvestigationTool.Method.GelLifter,Vector3.zero));
+  tools.Add(FieldTool(lid,register,FieldInvestigationTool.Method.KMTest,Vector3.zero));
   // The casting kit works outside: its bowl rests on the pavement beside the table with its own ground dock.
   var casting=FieldTool(caseRoot,register,FieldInvestigationTool.Method.CastingKit,V(.7f,-.892f+.002f,-.75f));casting.transform.localRotation=Quaternion.identity;casting.transform.SetParent(register.transform,true);var castingDock=Group("CastingKitGroundDock",register.transform);castingDock.SetPositionAndRotation(casting.transform.position,casting.transform.rotation);casting.Dock=castingDock;tools.Add(casting);
   register.Tools=tools.ToArray();
+  // Tray slots: tools lie along the tray's X, two columns either side of the partition.
   var slots=new Dictionary<FieldInvestigationTool.Method,Vector3>{
    {FieldInvestigationTool.Method.Forceps,V(-.115f,.034f,-.112f)},{FieldInvestigationTool.Method.Swab,V(-.115f,.034f,-.037f)},{FieldInvestigationTool.Method.Brush,V(-.115f,.034f,.038f)},{FieldInvestigationTool.Method.MagneticWand,V(-.115f,.034f,.113f)},
-   {FieldInvestigationTool.Method.LiftCard,V(.115f,.034f,-.112f)},{FieldInvestigationTool.Method.MikrosilKit,V(.115f,.034f,-.032f)},{FieldInvestigationTool.Method.Tape,V(.115f,.034f,.06f)}};
+   {FieldInvestigationTool.Method.MikrosilKit,V(.115f,.034f,-.075f)},{FieldInvestigationTool.Method.Tape,V(.115f,.034f,.07f)}};
+  // Lid slots (lid local: the inner face is -Y, the lid's top edge is -Z): flat items side by side on
+  // the left half, the register clipboard keeps the right half. Height per item so it rests on the face.
+  var lidSlots=new Dictionary<FieldInvestigationTool.Method,Vector3>{
+   {FieldInvestigationTool.Method.LiftCard,V(-.36f,-.011f,-.26f)},{FieldInvestigationTool.Method.KMTest,V(-.21f,-.010f,-.26f)},{FieldInvestigationTool.Method.GelLifter,V(-.06f,-.011f,-.26f)}};
   foreach(var tool in register.Tools){
    if(slots.TryGetValue(tool.Kind,out var slot)){tool.transform.SetParent(tray,false);tool.transform.localPosition=slot;tool.transform.localRotation=Quaternion.Euler(0,90,0);}
+   else if(lidSlots.TryGetValue(tool.Kind,out var lidSlot)){tool.transform.SetParent(lid,false);tool.transform.localPosition=lidSlot;tool.transform.localRotation=Quaternion.Euler(180,0,0);}
    if(!tool.Dock){var dock=Group("Dock_"+tool.Kind,caseRoot);tool.Dock=dock;}
    if(tool.Dock.IsChildOf(caseRoot))tool.Dock.SetPositionAndRotation(tool.transform.position,tool.transform.rotation);
   }
-  foreach(var old in tray.GetComponentsInChildren<Transform>(true).Where(t=>t.name.StartsWith("SlotLabel_")).ToArray())Object.DestroyImmediate(old.gameObject);
-  foreach(var tool in register.Tools){
-   if(!slots.TryGetValue(tool.Kind,out var slot))continue;
-   // A short printed label on the tray floor in front of the slot, like a labelled kit insert.
-   var label=Text("SlotLabel_"+tool.Kind,tray,ShortName(tool.Kind),slot+V(slot.x<0?-.085f:.085f,-.013f,-.028f),0,.0052f,new Color(.92f,.9f,.82f));
-   label.transform.localRotation=Quaternion.Euler(90,0,0);label.anchor=TextAnchor.UpperCenter;label.alignment=TextAlignment.Center;label.fontSize=48;label.characterSize=.0045f;
-   var ink=Mat(Folder,"FieldSlotLabelInk",Color.white,0);ink.shader=Shader.Find("CrimeScene/WorldText");ink.mainTexture=label.font.material.mainTexture;label.GetComponent<MeshRenderer>().sharedMaterial=ink;label.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;label.gameObject.layer=CrowdLayer;
-  }
-  // The tool guide inside the lid: one line per tool, what it works on and how (bilingual at runtime through LocalizedWorldLabel is Phase 2; English here).
-  var oldGuide=lid.Find("ToolGuide");if(oldGuide)Object.DestroyImmediate(oldGuide.gameObject);
-  var guide=Text("ToolGuide",lid,ToolGuideText(),V(-.25f,-.014f,-.24f),0,.0036f,new Color(.07f,.07f,.06f));guide.transform.localRotation=Quaternion.Euler(-90,180,0);guide.anchor=TextAnchor.UpperLeft;guide.alignment=TextAlignment.Left;guide.fontSize=48;guide.characterSize=.0028f;guide.lineSpacing=1.15f;
-  var guideInk=Mat(Folder,"FieldToolGuideInk",Color.black,0);guideInk.shader=Shader.Find("CrimeScene/WorldText");guideInk.mainTexture=guide.font.material.mainTexture;guide.GetComponent<MeshRenderer>().sharedMaterial=guideInk;guide.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;guide.gameObject.layer=CrowdLayer;
-  var guideSheet=Mat(Folder,"FieldToolGuidePaper",new Color(.93f,.92f,.86f),.04f);var sheetMesh=new KitMesh{Lightmapped=false};sheetMesh.Bar(guideSheet,V(0,0,0),V(.30f,.0012f,.20f),.0004f);var guidePaper=sheetMesh.Emit("ToolGuidePaper",lid,V(-.1f,-.0125f,-.14f),Quaternion.identity,Folder,"field_tool_guide_paper");guidePaper.layer=CrowdLayer;guidePaper.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
+  // No printed text on the case (Koda): labels and the lid guide of the first pass go.
+  foreach(var old in caseRoot.GetComponentsInChildren<Transform>(true).Where(t=>t.name.StartsWith("SlotLabel_")||t.name=="ToolGuide"||t.name=="ToolGuidePaper"||t.name=="LidStraps").ToArray())Object.DestroyImmediate(old.gameObject);
+  // Elastic straps hold the lid items: two dark bands across each, like a real case lid organiser.
+  var strap=Mat(Folder,"FieldLidStrap",new Color(.05f,.052f,.055f),.08f);var straps=new KitMesh{Lightmapped=false};
+  foreach(var pair in lidSlots){float thick=pair.Key==FieldInvestigationTool.Method.KMTest?.026f:.004f;foreach(float dz in new[]{-.05f,.05f})straps.Bar(strap,V(pair.Value.x,-.0075f-thick-.002f,pair.Value.z+dz),V(.13f,.004f,.018f),.001f);}
+  var strapObject=straps.Emit("LidStraps",lid,Vector3.zero,Quaternion.identity,Folder,"field_lid_straps");strapObject.layer=CrowdLayer;strapObject.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
   foreach(var tool in register.Tools)foreach(var t in tool.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;
   if(!register.GetComponent<ForensicGlow>())register.gameObject.AddComponent<ForensicGlow>().Register=register;
   // ---- the field table is a cart (it has casters): pull it by its push bar and the case rides along
@@ -177,15 +178,6 @@ public static partial class PresentationPolish {
   foreach(var t in group.GetComponentsInChildren<Transform>(true))GameObjectUtility.SetStaticEditorFlags(t.gameObject,0);
   Debug.Log("FORENSIC_SANDBOX_AUTHORED tools="+register.Tools.Length+" clues="+register.Clues.Length+" fields="+fields+" consumables placed from pack="+placed+"/"+items.Length);
  }
- static string ShortName(FieldInvestigationTool.Method kind){switch(kind){
-  case FieldInvestigationTool.Method.Forceps:return "FORCEPS";case FieldInvestigationTool.Method.Swab:return "SWAB";case FieldInvestigationTool.Method.Brush:return "BRUSH";
-  case FieldInvestigationTool.Method.LiftCard:return "HINGE LIFTER";case FieldInvestigationTool.Method.MagneticWand:return "MAG. WAND";case FieldInvestigationTool.Method.Tape:return "LIFT TAPE";
-  case FieldInvestigationTool.Method.GelLifter:return "GEL LIFTER";case FieldInvestigationTool.Method.KMTest:return "BLOOD TEST";case FieldInvestigationTool.Method.CastingKit:return "CASTING";default:return "SILICONE";}}
- static string ToolGuideText(){
-  var b=new System.Text.StringBuilder("FIELD TOOLS: what each works on, and how\n");
-  foreach(FieldInvestigationTool.Method kind in Enum.GetValues(typeof(FieldInvestigationTool.Method)))b.Append(ShortName(kind)).Append(": ").Append(FieldInvestigationTool.WorksOn(kind)).Append(". ").Append(FieldInvestigationTool.HowTo(kind)).Append('\n');
-  b.Append("Photograph before you touch. Glowing items suit the tool in your hand.");return b.ToString();
- }
  // A pack model on the floor, or a small fallback block of the same footprint.
  static GameObject Dropped(Transform parent,string model,Vector3 at,float yaw,Vector3 size,Color fallback){
   var g=DemoAssetLibrary.PlacePack("ForensicModels",model,parent,at,yaw,new DemoAssetLibrary.PackOptions{Shadows=true,Lod=DemoAssetLibrary.LodClass.None});
@@ -253,11 +245,12 @@ public static partial class PresentationPolish {
    // -- the glow follows the held tool: compatible targets only, fields for the applicators, nothing once put back
    var glow=register.GetComponent<ForensicGlow>();Require(glow,"glow component missing from the register");
    Take(forceps);glow.Track(forceps);Require(glow.ActiveGlows>=4&&ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.Forceps)&&!ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.Forceps),"forceps glow does not mark the loose items only");
-   Take(brush);glow.Track(brush);Require(glow.ActiveGlows>=fields.Length+2&&ForensicGlow.Compatible(handle,FieldInvestigationTool.Method.Brush),"brush glow does not cover the case tops and the handle marks");
+   Take(brush);glow.Track(brush);Require(glow.ActiveGlows>=2&&glow.ActiveGlows<fields.Length+2&&ForensicGlow.Compatible(handle,FieldInvestigationTool.Method.Brush),"brush glow should mark the handle marks only, never the case tops");
    Take(kmTool);glow.Track(kmTool);Require(ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.KMTest)&&!ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.KMTest),"test-kit glow is not limited to stains");
    hand.ReleaseAll();glow.Untrack();Require(glow.ActiveGlows==0&&register.transform.Cast<Transform>().All(t=>t.name!="Glow"),"glow stays after the tool is put back");
    Require(register.Tools.All(t=>t.Dock&&Vector3.Distance(t.transform.position,t.Dock.position)<.001f),"a tool rests away from its dock after the arrangement");
-   Require(register.Kit.transform.Find("FieldKit").GetComponentsInChildren<TextMesh>(true).Count(t=>t.name.StartsWith("SlotLabel_"))==7&&register.Kit.transform.Find("RaisedLid/ToolGuide"),"slot labels or the lid tool guide missing");
+   Require(!register.Kit.GetComponentsInChildren<TextMesh>(true).Any(t=>t.name.StartsWith("SlotLabel_")||t.name=="ToolGuide")&&!register.Kit.transform.Find("RaisedLid/ToolGuidePaper")&&register.Kit.transform.Find("RaisedLid/LidStraps"),"printed text left on the case, or the lid straps missing");
+   Require(register.Tools.Count(t=>t.transform.parent==register.Kit.transform.Find("RaisedLid"))==3&&register.Tools.Count(t=>t.transform.parent==register.Kit.transform.Find("FieldKit"))==6,"three lid tools and six tray tools expected");
    // -- the cart: pulled by its bar, the case rides on it, both come home on reset
    var cart=register.ExtraKits.Length>0?register.ExtraKits[0]:null;Require(cart&&cart.Cart&&cart.Grip,"field cart missing");
    var kitHome=register.Kit.transform.position;var cartHome=cart.transform.position;Physics.SyncTransforms();

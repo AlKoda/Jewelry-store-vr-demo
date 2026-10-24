@@ -4,7 +4,18 @@ Updated October 23, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
-## Koda's first test of the sandbox, fixes — October 24 (unverified until the PC run)
+## Koda's second test, fixes — October 24 (PC run of `SandboxRefreshRun` pending for this round)
+
+Koda's feedback on the 40baef7 build: wand iffy and the same as the brush; glow too big and noticeable; the case lid text rendered mirrored and clutters; hints should appear only on a button; doors a chore, should be grabbable. Changes:
+
+- **Applicators:** `FieldInvestigationTool.TipContact` finds the brushable surface within reach of the working tip (overlap, box/convex colliders) instead of relying on the controller ray; the ray is a fallback. Brush: 5 cm contact, develops by motion. Magnetic wand: 9 cm hover reach, develops by dwell (`Development`), wider mark pickup; distinct how-to and feedback lines (EN/AR).
+- **Glow:** `ForensicGlow` radius .032, alpha .025–.07, slow pulse, discs over compatible clues only; the case-top sheets are gone. Check updated.
+- **Hints:** no card on take (only "<tool> in hand"); B/Y with a field tool held toggles the card (`ToggleHint`), V on the desktop. CONTROLS updated.
+- **Case:** all printed text removed (slot labels, lid guide and its sheet). Tray: forceps/swab/brush/wand left, silicone kit/tape right. Lid left half: hinge lifter, blood test kit, gel lifter under rubber straps (`LidStraps`), `Euler(180,0,0)` on the lid's inner face; the clipboard keeps the right half. Check: three lid tools, six tray tools, no TextMesh on the case.
+- **Doors:** `PushDoorLeaf.BeginHold/Hold/EndHold`: `HandInteractor.Grab` with the hand on a leaf (`DoorAtHand`) holds it; the leaf is driven to keep the grabbed point under the hand (gain 12, cap 3 rad/s) and contact pushes are ignored while held; grip release lets go. `Shove` for the desktop click/G. Spring .7/damper 1.0, angular damping 1.2, OpenSpeed 1.6, StartFraction .7, applied to the saved scene by `IntegrationDelivery.RetuneDoor` in SandboxRefreshRun and to fresh scenes in SceneReviewPass.Doors.
+- **Parking lot:** the saved scene still holds `OmanStreet` and `ParkingAndPavements`; nothing removed them. If it is missing in a build, it is the Quest APK (older) versus the Windows build.
+
+## Koda's first test of the sandbox, fixes — October 24 (PC run done: FORENSIC_SANDBOX_PASS, probes 800, bake 16.9 s, build at 40baef7)
 
 Koda tested the integrated build and asked for: arranged tools with hints, a glow on what a tool works on, a ding on correct use, matching shaders, spectators lit by the street, tool shadows that touch their tools, and marker numbers that fill gaps. Changes (cloud compile 0 errors; `PresentationPolish.SandboxRefreshRun` re-authors, rebuilds probes, rebakes, previews and builds on the PC):
 

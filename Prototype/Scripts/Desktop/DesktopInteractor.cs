@@ -43,6 +43,8 @@ public sealed class DesktopInteractor : ToolHolder
         else if(hit.collider.GetComponentInParent<PortableFieldKit>()&&hit.collider.GetComponentInParent<PortableFieldKit>().GripCollider==hit.collider)prompt="G / Click: carry field kit";
         else if(hit.collider.GetComponentInParent<EvidenceContainer>())prompt="G / Click: open / close document box";
         else if(hit.collider.GetComponentInParent<EvidenceRegister>())prompt="G / Click: next register page";
+        else if(hit.collider.GetComponentInParent<PushDoorLeaf>())prompt="G / Click: push the door open";
+        if(prompt!=null&&FieldTool)prompt+="   V: how this tool works";
         if(prompt!=null)DemoI18n.Label(new Rect(Screen.width*.25f,Screen.height-220,Screen.width*.5f,35),prompt,GUI.skin.box);
     }
 
@@ -66,6 +68,7 @@ public sealed class DesktopInteractor : ToolHolder
             else if (HoveringCamera) ToggleCamera();
             else if (HoldingCamera) EvidenceCamera.CapturePhoto();
             else if(InvestigationInteraction.Use(this,PointerRay(),2)){}
+            else if(ShoveDoor(PointerRay())){}
             else if (Lighting != null) { if (Lighting.UVTorchModel != null && Lighting.UVTorchModel.activeSelf) Lighting.ToggleUVTorch(); else if (Lighting.FlashlightModel != null && Lighting.FlashlightModel.activeSelf) Lighting.ToggleFlashlight(); }
         }
         // 1-6 on the main row or the number pad, in the hotbar's order.
@@ -77,7 +80,8 @@ public sealed class DesktopInteractor : ToolHolder
         float wheel = Input.GetAxis("Mouse ScrollWheel");
         if (wheel != 0 && !overPanel) Rotate(Mathf.Sign(wheel) * RotateStep);
         if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Delete) || Input.GetKeyDown(KeyCode.Backspace)) {if(CarriedKit)PutDownKit();else if(FieldTool)ReturnFieldTool();else Remove(Target);}
-        if(Input.GetKeyDown(KeyCode.G)&&!overPanel&&!Held&&!HoldingCamera){if(CarriedKit)PlaceKit(PointerRay(),Reach);else InvestigationInteraction.Use(this,PointerRay(),2);}
+        if(Input.GetKeyDown(KeyCode.G)&&!overPanel&&!Held&&!HoldingCamera){if(CarriedKit)PlaceKit(PointerRay(),Reach);else if(!InvestigationInteraction.Use(this,PointerRay(),2))ShoveDoor(PointerRay());}
+        if(Input.GetKeyDown(KeyCode.V)&&FieldTool&&!overPanel)FieldTool.ToggleHint();
         if (Input.GetKeyDown(KeyCode.T)) Use(Target);
         // + and - (main row or number pad) slide the hovered or held lamp's telescoping column by 10 cm.
         if (Input.GetKeyDown(KeyCode.Equals) || Input.GetKeyDown(KeyCode.KeypadPlus)) AdjustLampHeight(Target, LampHeightStep);
@@ -138,6 +142,14 @@ public sealed class DesktopInteractor : ToolHolder
         if (EvidenceCamera == null) return;
         if (HoldingCamera || View == null) EvidenceCamera.CapturePhoto();
         else EvidenceCamera.CaptureFromView(View.transform);
+    }
+
+    // A pointed door leaf within reach swings open away from the pointer (a shove, not a nudge).
+    public bool ShoveDoor(Ray ray)
+    {
+        if (!Raycast(ray, Reach, out RaycastHit hit, null, Walker != null ? Walker.transform : null)) return false;
+        var door = hit.collider.GetComponentInParent<PushDoorLeaf>(); if (door == null) return false;
+        door.Shove(hit.point, ray.direction); return true;
     }
 
     public Ray PointerRay()

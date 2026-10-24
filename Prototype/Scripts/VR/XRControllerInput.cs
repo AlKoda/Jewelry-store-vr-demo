@@ -203,6 +203,7 @@ public sealed class XRControllerInput : MonoBehaviour
         if (Changed(device, CommonUsages.secondaryButton, ref secondary) && secondary)
         {
             if (hand.HoldingCamera) { hand.EvidenceCamera.ReviewStep(); Buzz(HandEvent.Select); }
+            else if (hand.FieldTool != null) { hand.FieldTool.ToggleHint(); Buzz(HandEvent.Select); }
             else if (hand.Held != null) { hand.RemoveHeld(); Buzz(HandEvent.Select); }
             else if(hand.PointedTool()!=null){hand.Remove(hand.PointedTool());Buzz(HandEvent.Select);}
             else CycleKind();

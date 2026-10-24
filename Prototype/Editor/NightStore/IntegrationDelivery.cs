@@ -51,7 +51,7 @@ public static partial class PresentationPolish {
   EvidenceGameplay();FieldworkChecks();
   EvidenceGameplay();
   foreach(var guide in root.GetComponentsInChildren<Transform>(true).Where(t=>t.name=="FieldGuide").ToArray())Object.DestroyImmediate(guide.gameObject);
-  foreach(var door in root.GetComponentsInChildren<PushDoorLeaf>(true))foreach(var t in door.GetComponentsInChildren<Transform>(true))GameObjectUtility.SetStaticEditorFlags(t.gameObject,0);
+  foreach(var door in root.GetComponentsInChildren<PushDoorLeaf>(true)){foreach(var t in door.GetComponentsInChildren<Transform>(true))GameObjectUtility.SetStaticEditorFlags(t.gameObject,0);RetuneDoor(door);}
   NightLighting.UseLinearColorSpace();NightLighting.UseBaked(root);NightLighting.RebuildProbes(root);
   int probes=root.GetComponentInChildren<LightProbeGroup>(true).probePositions.Length;
   var register=root.GetComponentInChildren<EvidenceRegister>();register.ResetInvestigation();register.RefreshPage();
@@ -70,6 +70,13 @@ public static partial class PresentationPolish {
  // Close-ups for the October 24 review: the open case from above and from the front (tool
  // arrangement, labels, shading), a cone and a marker under the torch (shadow contact), and the
  // spectators on the far pavement (probe lighting). Written to Builds/sandbox-view-*.png.
+ // Doors swing freely (Koda, October 24: "a chore to open"): a lighter closing spring and damping,
+ // a quicker swing, and the leaf values the saved scene still carried from the first pass.
+ static void RetuneDoor(PushDoorLeaf door){
+  door.OpenSpeed=1.6f;door.Acceleration=4f;door.StartFraction=.7f;door.HoldSpeed=3f;door.HoldGain=12f;
+  var body=door.GetComponent<Rigidbody>();if(body){body.angularDamping=1.2f;body.maxAngularVelocity=3.2f;}
+  var hinge=door.GetComponent<HingeJoint>();if(hinge){var spring=hinge.spring;spring.spring=.7f;spring.damper=1.0f;hinge.spring=spring;}
+ }
  static void SandboxPreview(){
   var cameraObject=new GameObject("Temporary sandbox camera");var camera=cameraObject.AddComponent<Camera>();NightQuality.Configure(camera);camera.stereoTargetEye=StereoTargetEyeMask.None;camera.fieldOfView=50;camera.nearClipPlane=.03f;camera.farClipPlane=220;
   var lighting=cameraObject.AddComponent<DemoLighting>();lighting.Flashlight(true);foreach(var r in lighting.FlashlightModel.GetComponentsInChildren<Renderer>())r.enabled=false;
