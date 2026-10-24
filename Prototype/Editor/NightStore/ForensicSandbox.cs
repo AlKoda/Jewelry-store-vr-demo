@@ -237,11 +237,11 @@ public static partial class PresentationPolish {
    Take(forceps);a.transform.position=butt.transform.position+Vector3.up*.3f;Require(butt.Sample(forceps)&&butt.Log.Last("Collected").flag==StepFlag.OutOfSequence&&register.Entries.Last().container.Contains("paper"),"cigarette end not bagged in paper or sequence not recorded");
    register.ResetInvestigation();Require(register.AllClues.All(c=>!c.Sampled&&c.Log.Steps.Count==0)&&cast.State==CastableMark.Stage.Open&&bloodTest.Result==BloodStainClue.Outcome.Untested,"reset leaves sandbox state behind");
    // -- the glow follows the held tool: compatible targets only, fields for the applicators, nothing once put back
-   var glow=register.GetComponent<ForensicGlow>();Require(glow,"glow component missing from the register");glow.enabled=false;glow.enabled=true;
-   Take(forceps);Require(glow.ActiveGlows>=4&&ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.Forceps)&&!ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.Forceps),"forceps glow does not mark the loose items only");
-   Take(brush);Require(glow.ActiveGlows>=fields.Length+2&&ForensicGlow.Compatible(handle,FieldInvestigationTool.Method.Brush),"brush glow does not cover the case tops and the handle marks");
-   Take(kmTool);Require(ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.KMTest)&&!ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.KMTest),"test-kit glow is not limited to stains");
-   hand.ReleaseAll();Require(glow.ActiveGlows==0,"glow stays after the tool is put back");
+   var glow=register.GetComponent<ForensicGlow>();Require(glow,"glow component missing from the register");
+   Take(forceps);glow.Track(forceps);Require(glow.ActiveGlows>=4&&ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.Forceps)&&!ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.Forceps),"forceps glow does not mark the loose items only");
+   Take(brush);glow.Track(brush);Require(glow.ActiveGlows>=fields.Length+2&&ForensicGlow.Compatible(handle,FieldInvestigationTool.Method.Brush),"brush glow does not cover the case tops and the handle marks");
+   Take(kmTool);glow.Track(kmTool);Require(ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.KMTest)&&!ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.KMTest),"test-kit glow is not limited to stains");
+   hand.ReleaseAll();glow.Untrack();Require(glow.ActiveGlows==0&&register.transform.Cast<Transform>().All(t=>t.name!="Glow"),"glow stays after the tool is put back");
    Require(register.Tools.All(t=>t.Dock&&Vector3.Distance(t.transform.position,t.Dock.position)<.001f),"a tool rests away from its dock after the arrangement");
    Require(register.Kit.transform.Find("FieldKit").GetComponentsInChildren<TextMesh>(true).Count(t=>t.name.StartsWith("SlotLabel_"))==7&&register.Kit.transform.Find("RaisedLid/ToolGuide"),"slot labels or the lid tool guide missing");
    // -- marker numbers: a removed number is reused

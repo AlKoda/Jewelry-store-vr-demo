@@ -14,7 +14,10 @@ public sealed class ForensicGlow : MonoBehaviour {
  public int ActiveGlows=>glows.Count;
  void OnEnable(){FieldInvestigationTool.HeldChanged+=OnHeld;if(!Register)Register=GetComponent<EvidenceRegister>();}
  void OnDisable(){FieldInvestigationTool.HeldChanged-=OnHeld;Clear();}
- void OnHeld(FieldInvestigationTool tool,bool taken){if(taken){held=tool;Rebuild();}else if(held==tool){held=null;Clear();}}
+ void OnHeld(FieldInvestigationTool tool,bool taken){if(taken)Track(tool);else if(held==tool)Untrack();}
+ // Direct control for the validators (no OnEnable subscription in edit mode) and for other holders.
+ public void Track(FieldInvestigationTool tool){held=tool;Rebuild();}
+ public void Untrack(){held=null;Clear();}
  // Colour by what the tool does: warm for collection, cool for powder, violet for chemistry.
  public static Color Tint(FieldInvestigationTool.Method kind){switch(kind){
   case FieldInvestigationTool.Method.Brush:case FieldInvestigationTool.Method.MagneticWand:return new Color(.55f,.8f,1f);
@@ -40,7 +43,7 @@ public sealed class ForensicGlow : MonoBehaviour {
  // Field marks are found by sweeping, so they are never pointed out one by one.
  static Transform LatentMarkFieldRoot(EvidenceClue clue){var field=clue.GetComponentInParent<LatentMarkField>();return field?field.transform:null;}
  Renderer Add(Transform target,Vector3 at,float radius,bool flat){
-  var g=new GameObject("Glow");g.transform.SetParent(transform,false);g.transform.position=at;g.layer=target.gameObject.layer;
+  var g=new GameObject("Glow"){hideFlags=HideFlags.DontSave};g.transform.SetParent(transform,false);g.transform.position=at;g.layer=target.gameObject.layer;
   g.AddComponent<MeshFilter>().sharedMesh=Quad();var r=g.AddComponent<MeshRenderer>();r.sharedMaterial=Material();r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;r.lightProbeUsage=UnityEngine.Rendering.LightProbeUsage.Off;
   if(flat)g.transform.rotation=Quaternion.LookRotation(Vector3.down,target.forward);else g.transform.localScale=Vector3.one*radius*2;
   glows.Add(r);follow.Add(flat?null:target);return r;
@@ -53,7 +56,7 @@ public sealed class ForensicGlow : MonoBehaviour {
  }
  // A collected or developed target stops glowing without waiting for the tool to change hands.
  public void Refresh(){if(held)Rebuild();}
- void Clear(){foreach(var r in glows)if(r)Destroy(r.gameObject);glows.Clear();follow.Clear();}
+ void Clear(){foreach(var r in glows)if(r){if(Application.isPlaying)Destroy(r.gameObject);else DestroyImmediate(r.gameObject);}glows.Clear();follow.Clear();}
  Material Material(){if(material)return material;material=DemoUi.UnlitMaterial(Color.white,3005);material.mainTexture=Disc();return material;}
  static Texture2D Disc(){
   if(disc)return disc;disc=new Texture2D(64,64,TextureFormat.RGBA32,false){wrapMode=TextureWrapMode.Clamp,hideFlags=HideFlags.DontSave};var px=new Color32[64*64];
@@ -64,5 +67,5 @@ public sealed class ForensicGlow : MonoBehaviour {
   if(quad)return quad;quad=new Mesh{name="GlowQuad"};quad.vertices=new[]{new Vector3(-.5f,-.5f,0),new Vector3(.5f,-.5f,0),new Vector3(.5f,.5f,0),new Vector3(-.5f,.5f,0)};
   quad.uv=new[]{new Vector2(0,0),new Vector2(1,0),new Vector2(1,1),new Vector2(0,1)};quad.triangles=new[]{0,2,1,0,3,2,0,1,2,0,2,3};quad.RecalculateBounds();return quad;
  }
- void OnDestroy(){if(material)Destroy(material);}
+ void OnDestroy(){if(material){if(Application.isPlaying)Destroy(material);else DestroyImmediate(material);}}
 }
