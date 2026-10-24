@@ -19,17 +19,17 @@ public sealed class BloodStainClue : MonoBehaviour {
  public bool Advance(EvidenceClue clue,float now){
   var log=ProcedureLog.Of(clue);
   switch(Step){
-   case Stage.None:Step=Stage.Rubbed;DemoFeedback.Post("Filter paper rubbed on the stain");return true;
-   case Stage.Rubbed:Step=Stage.Ethanol;DemoFeedback.Post("One drop of ethanol on the paper");return true;
-   case Stage.Ethanol:Step=Stage.Reagent;reagentTime=now;DemoFeedback.Post("One drop of reagent: no colour yet (a colour now would be a false positive)");return true;
+   case Stage.None:Step=Stage.Rubbed;DemoFeedback.Post(DemoLanguage.Arabic?"نقلت عينة إلى ورقة الاختبار":"Sample transferred to test paper");return true;
+   case Stage.Rubbed:Step=Stage.Ethanol;DemoFeedback.Post(DemoLanguage.Arabic?"أضيف الإيثانول":"Ethanol applied");return true;
+   case Stage.Ethanol:Step=Stage.Reagent;reagentTime=now;DemoFeedback.Post(DemoLanguage.Arabic?"أضيف الكاشف، لا تغير في اللون":"Reagent applied; no colour change");return true;
    case Stage.Reagent:
     Step=Stage.Peroxide;float waited=now-reagentTime;
-    if(waited>WindowSeconds){Result=Outcome.Invalid;log.Add("KM test invalid","presumptive blood test",StepFlag.OutOfSequence,"reagent left "+Mathf.RoundToInt(waited)+" s before the peroxide; repeat with a fresh paper");DemoFeedback.Post("The reagent stood too long: the test is invalid, repeat it",FeedbackTone.Warning);Step=Stage.None;Tint(false);return true;}
+    if(waited>WindowSeconds){Result=Outcome.Invalid;log.Add("KM test invalid","presumptive blood test",StepFlag.OutOfSequence,"reagent left "+Mathf.RoundToInt(waited)+" s before the peroxide; repeat with a fresh paper");DemoFeedback.Post(DemoLanguage.Arabic?"نتيجة الاختبار غير صالحة":"Test result invalid",FeedbackTone.Warning);Step=Stage.None;Tint(false);return true;}
     Result=IsBlood?Outcome.Positive:Outcome.Negative;Tint(IsBlood);
     log.Add(IsBlood?"KM test positive":"KM test negative","presumptive blood test",StepFlag.Correct,IsBlood?"pink within the window; presumptive only, not confirmatory":"no colour change");
     clue.Inspect();DemoSounds.Play(DemoSound.Select,transform.position,.15f);
-    DemoFeedback.Post(IsBlood?"Pink within seconds: presumptive positive for blood (not a confirmation). Swab it and package in paper":"No colour change: presumptive negative. Record it as a stain of another kind",IsBlood?FeedbackTone.Success:FeedbackTone.Info);return true;
-   default:DemoFeedback.Post(Result==Outcome.Positive?"Already tested positive: swab the stain":"Already tested: no further test needed");return false;
+    DemoFeedback.Post(IsBlood?(DemoLanguage.Arabic?"ظهر لون وردي؛ نتيجة أولية وليست تأكيدًا":"Pink colour; presumptive result, not confirmation"):(DemoLanguage.Arabic?"لم يتغير اللون":"No colour change"),IsBlood?FeedbackTone.Success:FeedbackTone.Info);return true;
+   default:DemoFeedback.Post(DemoLanguage.Arabic?"الاختبار مسجل":"Test recorded");return false;
   }
  }
  void Tint(bool pink){if(!TestPaper)return;if(block==null)block=new MaterialPropertyBlock();block.SetColor("_Color",pink?new Color(.95f,.45f,.62f):Color.white);TestPaper.SetPropertyBlock(block);}

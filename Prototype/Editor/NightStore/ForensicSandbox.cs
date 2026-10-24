@@ -28,7 +28,7 @@ public static partial class PresentationPolish {
   var gel=FieldTool(caseRoot,register,FieldInvestigationTool.Method.GelLifter,V(.36f,.025f,-.17f));gel.transform.localRotation=Quaternion.identity;tools.Add(gel);
   var km=FieldTool(caseRoot,register,FieldInvestigationTool.Method.KMTest,V(.36f,.025f,0));km.transform.localRotation=Quaternion.Euler(0,90,0);tools.Add(km);
   // The casting kit works outside: its bowl rests on the pavement beside the table (its dock is a child of the case, like every tool's).
-  var casting=FieldTool(caseRoot,register,FieldInvestigationTool.Method.CastingKit,V(.7f,-.892f+.002f,-.75f));casting.transform.localRotation=Quaternion.identity;tools.Add(casting);
+  var casting=FieldTool(caseRoot,register,FieldInvestigationTool.Method.CastingKit,V(.7f,-.892f+.002f,-.75f));casting.transform.localRotation=Quaternion.identity;casting.transform.SetParent(register.transform,true);var castingDock=Group("CastingKitGroundDock",register.transform);castingDock.SetPositionAndRotation(casting.transform.position,casting.transform.rotation);casting.Dock=castingDock;tools.Add(casting);
   register.Tools=tools.ToArray();
   foreach(var tool in register.Tools){if(tool.Dock)continue;var dock=Group("Dock_"+tool.Kind,caseRoot);dock.SetPositionAndRotation(tool.transform.position,tool.transform.rotation);tool.Dock=dock;}
   foreach(var tool in register.Tools)foreach(var t in tool.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;
@@ -153,7 +153,7 @@ public static partial class PresentationPolish {
   void Require(bool value,string message){if(!value)throw new Exception("Forensic sandbox: "+message);}
   bool persist=register.PersistRecords;register.PersistRecords=false;var kit=register.Kit;
   foreach(FieldInvestigationTool.Method kind in Enum.GetValues(typeof(FieldInvestigationTool.Method)))Require(register.Tools.Count(t=>t&&t.Kind==kind)==1,"one tool of each kind required, missing "+kind);
-  Require(register.Tools.All(t=>t.Dock&&t.Dock.IsChildOf(kit.transform)&&t.GetComponentsInChildren<Collider>().All(c=>c.isTrigger)),"every tool docks to the case and never collides with the player");
+  Require(register.Tools.All(t=>t.Dock&&(t.Kind==FieldInvestigationTool.Method.CastingKit?!t.Dock.IsChildOf(kit.transform):t.Dock.IsChildOf(kit.transform))&&t.GetComponentsInChildren<Collider>().All(c=>c.isTrigger)),"tools use their case or ground dock and never collide with the player");
   var fields=root.GetComponentsInChildren<LatentMarkField>(true);Require(fields.Length>=6,"latent-mark fields missing from the display cases");
   foreach(var f in fields)f.Build();int marks=fields.Sum(f=>f.Marks.Count);Require(marks>=4&&fields.Any(f=>f.Marks.Any(m=>!m.Smudge)),"the seeded fields hold too few marks ("+marks+")");
   Require(register.RuntimeClues.Count==marks,"field marks are not registered as runtime clues");
@@ -203,10 +203,12 @@ public static partial class PresentationPolish {
    var gelTool=Tool(FieldInvestigationTool.Method.GelLifter);Take(gelTool);a.transform.position=dustClue.transform.position+Vector3.up*.3f;Require(dustClue.Sample(gelTool)&&dustClue.CollectedWith==FieldInvestigationTool.Method.GelLifter,"gel lifter cannot lift the dust mark");
    // -- dropped item: forceps without a photograph is out of sequence, wrong method is recorded
    var butt=register.Clues.First(c=>c.Id=="E24");var forceps=Tool(FieldInvestigationTool.Method.Forceps);Take(swab);a.transform.position=butt.transform.position+Vector3.up*.3f;Require(!butt.Sample(swab)&&butt.Log.Has("Wrong method offered"),"wrong method on the cigarette end not recorded");
-   Take(forceps);Require(butt.Sample(forceps)&&butt.Log.Last("Collected").flag==StepFlag.OutOfSequence&&register.Entries.Last().container.Contains("paper"),"cigarette end not bagged in paper or sequence not recorded");
+   Take(forceps);a.transform.position=butt.transform.position+Vector3.up*.3f;Require(butt.Sample(forceps)&&butt.Log.Last("Collected").flag==StepFlag.OutOfSequence&&register.Entries.Last().container.Contains("paper"),"cigarette end not bagged in paper or sequence not recorded");
    register.ResetInvestigation();Require(register.AllClues.All(c=>!c.Sampled&&c.Log.Steps.Count==0)&&cast.State==CastableMark.Stage.Open&&bloodTest.Result==BloodStainClue.Outcome.Untested,"reset leaves sandbox state behind");
    Debug.Log("FORENSIC_SANDBOX_PASS ten tools; "+fields.Length+" latent fields with "+marks+" marks; sweep develops and over-brushes; porous paper; DNA-before-powder wipes the mark; photograph-then-lift correct; lift-first out of sequence; KM positive/negative/invalid; dental-stone and silicone casting; dust-mark discipline; forceps and paper packaging; JSON; reset");
   }finally{hand.ReleaseAll();Object.DestroyImmediate(a);foreach(var f in fields)f.ResetField();register.ResetInvestigation();register.PersistRecords=persist;Physics.SyncTransforms();}
  }
 }
 #endif
+
+

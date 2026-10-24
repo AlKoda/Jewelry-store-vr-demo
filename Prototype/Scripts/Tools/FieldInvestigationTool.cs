@@ -39,23 +39,23 @@ public sealed class FieldInvestigationTool : MonoBehaviour {
   if(IsApplicator){
    dusting=clue?clue.GetComponent<DustablePrint>():null;
    if(!dusting&&hasHit)dusting=LatentMarkField.MarkAt(hit,.05f);
-   if(dusting){if(!CanBrush(dusting)){dusting=null;DemoFeedback.Post("Bring the "+(Kind==Method.Brush?"brush":"wand")+" closer to the surface",FeedbackTone.Warning);return false;}sweeping=false;previousContact=dusting.transform.position;DemoFeedback.Post("Hold the trigger and sweep lightly over the surface; stop when ridges show");return true;}
+   if(dusting){if(!CanBrush(dusting)){dusting=null;ForensicFeedback.Post("Bring the "+(Kind==Method.Brush?"brush":"wand")+" closer to the surface",FeedbackTone.Warning);return false;}sweeping=false;previousContact=dusting.transform.position;ForensicFeedback.Post("Hold the trigger and sweep lightly over the surface; stop when ridges show");return true;}
    if(hasHit&&(hit.collider.GetComponentInParent<LatentMarkField>()||hit.collider.GetComponentInParent<ForensicSurface>())){
     var surface=ForensicSurface.ClassOf(hit.collider);sweeping=true;previousContact=hit.point;
-    if(ForensicSurface.Porous(surface)){DemoFeedback.Post("Powder is not the method for paper or fabric: photograph it and bag it for the laboratory (ninhydrin, DFO)",FeedbackTone.Warning);porousWarned=Time.time;}
-    else DemoFeedback.Post("Hold the trigger and sweep lightly over the surface; stop when ridges show");
+    if(ForensicSurface.Porous(surface)){ForensicFeedback.Post("Powder is not the method for paper or fabric: photograph it and bag it for the laboratory (ninhydrin, DFO)",FeedbackTone.Warning);porousWarned=Time.time;}
+    else ForensicFeedback.Post("Hold the trigger and sweep lightly over the surface; stop when ridges show");
     return true;
    }
-   DemoFeedback.Post(Kind==Method.Brush?"Sweep the brush over a glass, metal or painted surface":"Sweep the wand over a textured or plastic surface",FeedbackTone.Warning);return false;
+   ForensicFeedback.Post(Kind==Method.Brush?"Sweep the brush over a glass, metal or painted surface":"Sweep the wand over a textured or plastic surface",FeedbackTone.Warning);return false;
   }
-  if(!clue){DemoFeedback.Post(Kind==Method.KMTest?"Hold the test over a suspected stain":Kind==Method.CastingKit||Kind==Method.MikrosilKit?"Aim the kit at a mark to cast":"Aim at a trace to sample",FeedbackTone.Warning);return false;}
-  if(Kind==Method.KMTest){var stain=clue.GetComponent<BloodStainClue>();if(!stain){DemoFeedback.Post("The presumptive test is for suspected blood stains",FeedbackTone.Warning);return false;}if(!clue.Available&&!clue.Observed){DemoFeedback.Post("Nothing to test here yet",FeedbackTone.Warning);return false;}return stain.Advance(clue);}
-  if(Kind==Method.CastingKit||Kind==Method.MikrosilKit){var cast=clue.GetComponent<CastableMark>();if(!cast||cast.Kit!=Kind){DemoFeedback.Post(Kind==Method.CastingKit?"Dental stone casts three-dimensional impressions in soil or sand":"Silicone casts tool marks on hard surfaces",FeedbackTone.Warning);return false;}}
+  if(!clue){ForensicFeedback.Post(Kind==Method.KMTest?"Hold the test over a suspected stain":Kind==Method.CastingKit||Kind==Method.MikrosilKit?"Aim the kit at a mark to cast":"Aim at a trace to sample",FeedbackTone.Warning);return false;}
+  if(Kind==Method.KMTest){var stain=clue.GetComponent<BloodStainClue>();if(!stain){ForensicFeedback.Post("The presumptive test is for suspected blood stains",FeedbackTone.Warning);return false;}if(!clue.Available&&!clue.Observed){ForensicFeedback.Post("Nothing to test here yet",FeedbackTone.Warning);return false;}return stain.Advance(clue);}
+  if(Kind==Method.CastingKit||Kind==Method.MikrosilKit){var cast=clue.GetComponent<CastableMark>();if(!cast||cast.Kit!=Kind){ForensicFeedback.Post(Kind==Method.CastingKit?"Dental stone casts three-dimensional impressions in soil or sand":"Silicone casts tool marks on hard surfaces",FeedbackTone.Warning);return false;}}
   return clue.Sample(this);
  }
  bool CanBrush(DustablePrint print)=>Holder&&print&&Vector3.Distance(Tip.position,print.transform.position)<(Holder is HandInteractor ? .28f : 2);
  void ContinueDusting(){
-  if(!dusting&&!sweeping)return;if(dusting&&(dusting.Developed||!CanBrush(dusting))&&!sweeping)return;bool pressed=false;Ray ray;
+  if(!dusting&&!sweeping)return;if(dusting&&!CanBrush(dusting)&&!sweeping)return;bool pressed=false;Ray ray;
   if(Holder is HandInteractor hand){var input=hand.GetComponent<XRControllerInput>();pressed=input&&input.TriggerHeld;ray=new Ray(hand.transform.position,hand.transform.forward);}
   else{var desktop=(DesktopInteractor)Holder;pressed=desktop.ReadDesktopInput&&(!desktop.Panel||!desktop.Panel.CapturesInput)&&(Input.GetMouseButton(0)||Input.GetKey(KeyCode.G));ray=desktop.PointerRay();}
   BrushStroke(ray,Time.deltaTime,pressed);
@@ -70,7 +70,7 @@ public sealed class FieldInvestigationTool : MonoBehaviour {
   else{
    if(!hit.collider.GetComponentInParent<LatentMarkField>()&&!hit.collider.GetComponentInParent<ForensicSurface>()&&!hit.collider.GetComponentInParent<DustablePrint>())return false;
    var surface=ForensicSurface.ClassOf(hit.collider);
-   if(ForensicSurface.Porous(surface)){if(Time.time-porousWarned>4){porousWarned=Time.time;DemoFeedback.Post("Powder on paper: the mark is being lost. Paper goes to the laboratory",FeedbackTone.Warning);}previousContact=hit.point;return false;}
+   if(ForensicSurface.Porous(surface)){if(Time.time-porousWarned>4){porousWarned=Time.time;ForensicFeedback.Post("Powder on paper: the mark is being lost. Paper goes to the laboratory",FeedbackTone.Warning);}previousContact=hit.point;return false;}
    target=LatentMarkField.MarkAt(hit,.035f);
    if(!target){previousContact=hit.point;return true;} // powder on bare glass: nothing shows
   }

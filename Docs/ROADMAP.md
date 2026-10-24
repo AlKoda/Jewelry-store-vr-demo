@@ -103,3 +103,8 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [x] Raise belt/holsters 1 cm; allow two simultaneous independently switched shadowed lamps (third replaces oldest); behavior regression and Windows build pass locally.
 
+
+- [ ] October 23 integration: verify rebuilt player after moving XRHeadTracking preferences to runtime startup; finish sandbox and saved-scene updates. Register target-count/search hints removed; this is only the first sandbox step.
+
+- [x] October 24: integrate finished forensic models and Phase 1 into saved scene; fix Unity serialization/startup/UV cache issues, run FieldworkChecks before and after reopening, rebuild Windows/PCVR.
+- [ ] Quest Link acceptance: floor reach, moving door glass, tool-case selection/placement, lamp height/all-lit behavior, tape and new forensic tools. Phase 2 remains separate.

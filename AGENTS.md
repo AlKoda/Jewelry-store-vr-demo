@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Forensic research delivered (Docs/Research, October 24); sandbox mechanics Phase 1 coded (unverified); ForensicModels additions landing from asset agents | Docs/Research, Prototype/ThirdParty/ForensicModels, Prototype/Scripts/Core + Tools fieldwork classes, Editor/NightStore/ForensicSandbox.cs and InvestigationGameplay.cs, Docs/ASSET_REGISTER.md; not NEXT_SESSION_NOTES.md (ChatGPT) | 2026-10-23 | research done; code awaiting Koda's PC validation; models in progress |
-| ChatGPT | Publish current local work and handoff at Koda's explicit request | Prototype, Tools, Docs, refreshed canonical snapshot | 2026-10-23 | upload authorized; latest headset issues recorded only and remain open; no new fixes in this batch |
+| ChatGPT | Integrate Claude forensic mechanics; saved-scene door/glass and tool usability corrections | Source integration fixes, new IntegrationDelivery editor pass, Docs, existing Unity scene | 2026-10-24 | local integration complete: saved-scene checks and Windows build passed; PCVR headset review pending; Phase 2 deferred |
 
 ## One project: edit it, never fork it
 
@@ -34,6 +34,8 @@ Update your own row **before** you start and again when you stop. Pull first: an
 - Work directly on `main`. Pull before editing and again before pushing. Small commits with clear messages.
 - With every batch: update the top of `Docs/HANDOFF.md` (state table) and `Docs/ROADMAP.md`. Mark anything not run in Unity as **unverified**. Keep HANDOFF short: it describes the present, and the History files hold the past.
 - Nothing can be compiled outside Unity. Koda runs the validators on the PC and reports the results; never claim something works in Unity or the headset before that report.
+
+
 
 
 

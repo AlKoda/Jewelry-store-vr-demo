@@ -4,6 +4,14 @@ Updated October 23, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Local integration — October 24, verified in Unity
+
+Imported the completed ForensicModels batch (19/19 consumables resolved) and applied fieldwork to the existing saved scene with PresentationPolish.IntegrationRun. This runs EvidenceGameplay/FieldworkChecks, recreates reset fieldwork, updates only the lamp prefab, clears static flags from 68 moving door objects, increases intact retail/window absorption to .23/.26 and removes the field-guide sheet. The saved scene was reopened and checked for missing scripts, then FieldworkChecks and the strict Windows build passed. Ten tools, 27 authored clues, nine case fields and 13 seeded marks in checks. No headset acceptance or standalone performance claim.
+
+Integration fixes: split ProcedureLog and ForensicSurface into matching Unity script files (shared-file components vanished on save); retain the tested XRHeadTracking runtime preference initialization; remove destroyed UV traces from the cached list across scene reload; generated fingerprint colliders are 6 mm tall rather than roughly half a metre; generated marks now appear in the register; over-brushing continues on authored marks; the ground casting kit has an independent dock; its tests reflect that location, and the cigarette test now moves the simulated hand back to the evidence after changing tools. Preserved 121 newly imported asset GUIDs in source.
+
+The fieldwork coaching messages, evidence-count targets and search directions are removed; sample acknowledgements and test observations remain. Reagent jug and RedScrewdriver are kept as supplied. Phase 2 (darkness reagent spray, glove changes, review screen and complete new-string Arabic) remains deferred as Koda clarified. Entry point IntegrationRun updates only fieldwork and targeted scene fixes, not the exterior or car. Local backup: ../Backups/Before-Forensic-Integration-20261024. Verification log: Builds/integration-oct24.log. Snapshot refreshed for Git LFS distribution. PCVR Link/Air Link is the requested test target.
+
 ## Forensic research and sandbox mechanics — October 24 (unverified in Unity)
 
 Koda asked for thorough crime-scene research to build training on, then free models and evidence mechanics. Delivered in Prototype and Docs, cloud compile only (0 errors), nothing run in Unity:
@@ -263,3 +271,7 @@ Latest correction: the original empty-hand models were correct; Koda meant the h
 
 
 Snapshot distribution: the refreshed canonical ZIP uses Git LFS because saved generated scene assets exceed the ordinary GitHub file limit. Install Git LFS and run git lfs pull after cloning before launching. No new scene generation or gameplay fixes were performed during publishing.
+
+October 23 local integration: pulled de58ac5 and synchronized into Unity. Initial import/compile passed. BeltLampReview lamp assertions passed, but the Windows build exposed XRHeadTracking static PlayerPrefs initialization (GetInt forbidden during construction). Moved preference initialization to BeforeSceneLoad; Windows rebuild passed (EXISTING_SCENE_DELIVERY_PASS and BELT_LAMP_LOCAL_DELIVERY_PASS). Removed register target totals/search directions and the developed-print photograph instruction. Generic trace compatibility, full sandbox removal, saved-scene door flags/glass/prefab updates and headset testing remain open.
+
+

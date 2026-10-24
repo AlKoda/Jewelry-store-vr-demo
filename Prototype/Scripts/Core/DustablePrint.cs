@@ -25,12 +25,12 @@ public sealed class DustablePrint : MonoBehaviour {
   if(!was&&Developed){
    var log=Clue?ProcedureLog.Of(Clue):null;var surface=Clue?Clue.Surface:SurfaceClass.NonPorousSmooth;
    if(log)log.Add("Developed",ForensicRules.MethodName(applicator),ForensicRules.Applicator(applicator,surface),Smudge?"smear, no ridge detail":"ridge detail, grade 4");
-   if(Smudge){DemoFeedback.Post("Powder shows a smear with no ridge detail",FeedbackTone.Info);if(Clue)Clue.Inspect();return;}
+   if(Smudge){ForensicFeedback.Post("Powder shows a smear with no ridge detail",FeedbackTone.Info);if(Clue)Clue.Inspect();return;}
    if(Clue)Clue.Inspect();DemoSounds.Play(DemoSound.Select,transform.position,.15f);
-   DemoFeedback.Post(applicator==FieldInvestigationTool.Method.MagneticWand&&surface==SurfaceClass.Steel?"Ridge mark developed, but magnetic powder clings to steel: a glass-fibre brush suits this surface":"Ridge mark developed: photograph it before lifting",FeedbackTone.Success);
+   ForensicFeedback.Post(applicator==FieldInvestigationTool.Method.MagneticWand&&surface==SurfaceClass.Steel?"Ridge mark developed, but magnetic powder clings to steel: a glass-fibre brush suits this surface":"Ridge mark developed: photograph it before lifting",FeedbackTone.Success);
   }else if(Developed&&!Smudge&&Coverage>=1.3f&&!overLogged){
    overLogged=true;var log=Clue?ProcedureLog.Of(Clue):null;if(log)log.Add("Over-brushed",ForensicRules.MethodName(applicator),StepFlag.Discipline,"ridge detail filling in, grade "+Grade);
-   DemoFeedback.Post("Too much powder: the ridges are filling in",FeedbackTone.Warning);
+   ForensicFeedback.Post("Too much powder: the ridges are filling in",FeedbackTone.Warning);
   }
  }
  // A wet swab or a careless wipe takes an undeveloped mark away for good.

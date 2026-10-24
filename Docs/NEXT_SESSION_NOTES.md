@@ -50,3 +50,12 @@ Retain the door's accepted visual design while addressing these reported movemen
 
 No runtime code, models, shaders, saved scene, player, APK or official ZIP was changed for this notes-only request. The Oman preview remains local; Koda authorized GitHub and snapshot promotion on October 23 so Claude can continue.
 
+
+## Active implementation — October 23
+
+Pulled Claude's de58ac5 blocker/optimisation changes and synchronized them into the local Unity project. Initial Unity import/compile completed successfully. Belt/lamp checks and Windows build passed after correcting XRHeadTracking startup; headset acceptance remains pending. Register totals that reveal undiscovered targets and search instructions have been removed from source; broader sandbox compatibility is still open.
+
+Research reference: https://www.ojp.gov/pdffiles1/ncjrs/243598.pdf (NIJ/NFSTC Crime Scene Investigation guide, latent fingerprint processing). Smooth nonporous surfaces are suitable powder-development targets; photograph developed detail and preserve/lift it using appropriate contrasting backing. Application direction: retain physical compatibility and observable consequences while removing game progression gates and instructional prompts. Do not treat every UV glow as identified blood or a fingerprint.
+
+
+October 24: Phase 1 integrated into saved scene; saved/reopened scene checks and Windows build passed. Door static flags and lamp prefab updated; glass opacity increased; generic latent field interactions tested; guidance suppressed. Physical headset acceptance remains open. Phase 2 remains deferred per Koda's latest clarification. See HANDOFF integration section.

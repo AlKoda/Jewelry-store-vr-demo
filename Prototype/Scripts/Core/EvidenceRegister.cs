@@ -24,8 +24,8 @@ public sealed class EvidenceRegister : MonoBehaviour {
  public PortableFieldKit Kit;
  public bool PersistRecords=true;
  RecordFile document=new RecordFile();string output;int visiblePackets;Material runtimeInk;
- public int ObservedCount=>Clues.Count(c=>c&&c.Observed);
- public int SampleCount=>Clues.Count(c=>c&&c.Sampled);
+ public int ObservedCount=>AllClues.Count(c=>c&&c.Observed);
+ public int SampleCount=>AllClues.Count(c=>c&&c.Sampled);
  public IReadOnlyList<Entry> Entries=>document.entries;
  public string RecordPath=>output;
  void OnEnable(){if(Session)Session.SessionReset.AddListener(ResetInvestigation);if(Camera)Camera.PhotoSaved.AddListener(PhotoSaved);DemoLanguage.Changed+=RefreshPage;}
@@ -38,7 +38,7 @@ public sealed class EvidenceRegister : MonoBehaviour {
  public void Record(EvidenceClue clue,bool sampled){Begin();var log=clue.GetComponent<ProcedureLog>();
   document.entries.Add(new Entry{id=clue.Id,title=clue.TitleEn,observation=clue.ObservationEn,action=sampled?"sample sealed":"observed in place",utc=DateTime.UtcNow.ToString("o"),position=clue.transform.position,
    method=sampled?ForensicRules.MethodName(clue.CollectedWith):"",container=sampled?ForensicRules.Container(clue.CollectedWith,clue.Biological):"",procedure=log?log.Summary():"",flags=log?log.Flags:0});
-  if(sampled&&visiblePackets<SealedPackets.Length)SealedPackets[visiblePackets++].SetActive(true);Page=Array.IndexOf(Clues.Where(c=>c&&c.Observed).ToArray(),clue)+1;RefreshPage();Save();}
+  if(sampled&&visiblePackets<SealedPackets.Length)SealedPackets[visiblePackets++].SetActive(true);Page=Array.IndexOf(AllClues.Where(c=>c&&c.Observed).ToArray(),clue)+1;RefreshPage();Save();}
  void PhotoSaved(string path){Begin();document.photographs.Add(path);if(Camera)LogPhotograph(Camera.LastCapturePosition,Camera.LastCaptureRotation);Save();}
  // Every clue inside the frame and within reach is noted as photographed; a deployed photo scale
  // within ScaleReach of it makes the photograph "with scale" (documentation_burglary.md §1).
@@ -55,9 +55,9 @@ public sealed class EvidenceRegister : MonoBehaviour {
  void Save(){if(!PersistRecords||!Application.isPlaying)return;try{Directory.CreateDirectory(Path.GetDirectoryName(output));File.WriteAllText(output,JsonUtility.ToJson(document,true));}catch(Exception e){Debug.LogWarning("Evidence record could not be saved: "+e.Message);DemoFeedback.Post("Evidence record could not be saved",FeedbackTone.Warning);}}
  public void NextPage(){Page++;RefreshPage();DemoSounds.Play(DemoSound.Select,transform.position,.15f);}
  public void RefreshPage(){
-  if(!PageText)return;var seen=Clues.Where(c=>c&&c.Observed).ToArray();string text;
+  if(!PageText)return;var seen=AllClues.Where(c=>c&&c.Observed).ToArray();string text;
   Page%=seen.Length+1;
-  if(Page==0)text=DemoLanguage.Arabic?"سجل فحص الموقع\nالملاحظات: "+ObservedCount+" / "+Clues.Length+"\nالعينات المغلقة: "+SampleCount+" / "+Clues.Count(c=>c.CanSample)+"\nافحص آثار المقبض والسطح بضوء UV\nافتح علب الصيانة وافحص محتوياتها\nانقر لمراجعة الملاحظات المسجلة":"FIELD REGISTER\nObservations: "+ObservedCount+" / "+Clues.Length+"\nSealed samples: "+SampleCount+" / "+Clues.Count(c=>c.CanSample)+"\nUV: examine handle / counter traces\nSearch the repair and document boxes\nClick to review recorded notes";
+  if(Page==0)text=DemoLanguage.Arabic?"سجل فحص الموقع\nالملاحظات: "+ObservedCount+"\nالعينات المغلقة: "+SampleCount:"FIELD REGISTER\nObservations: "+ObservedCount+"\nSealed samples: "+SampleCount;
   else {var clue=seen[Page-1];text=(DemoLanguage.Arabic?"سجل الأدلة":"EVIDENCE REGISTER")+"  "+Page+" / "+seen.Length+"\n"+clue.Id+" · "+clue.Title+"\n"+Wrap(clue.Observation)+"\n"+(clue.Sampled?(DemoLanguage.Arabic?"العينة مغلقة ومسجلة":"SAMPLE SEALED & RECORDED"):(DemoLanguage.Arabic?"تمت المعاينة في الموقع":"OBSERVED IN PLACE"));}
   PageText.characterSize=.0027f*Mathf.Min(1,6f/text.Split('\n').Length);PageText.text=DemoLanguage.Text(text);if(DemoLanguage.Font)PageText.font=DemoLanguage.Font;
  }
@@ -68,3 +68,4 @@ public sealed class EvidenceRegister : MonoBehaviour {
   foreach(var p in SealedPackets)if(p)p.SetActive(false);visiblePackets=0;Page=0;document=new RecordFile();Begin();RefreshPage();
  }
 }
+

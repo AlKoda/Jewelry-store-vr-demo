@@ -22,13 +22,13 @@ public sealed class CastableMark : MonoBehaviour {
     State=Stage.Setting;poured=Time.time;if(CastVisual)CastVisual.SetActive(true);
     bool photographed=ProcedureLog.Of(clue).Has("Photographed");
     ProcedureLog.Of(clue).Add(Type==Kind.Impression?"Cast poured":"Silicone applied",ForensicRules.MethodName(Kit),photographed?StepFlag.Correct:StepFlag.OutOfSequence,photographed?null:"no photograph with scale before casting");
-    DemoFeedback.Post(Type==Kind.Impression?"Dental stone poured: let it set ("+Mathf.RoundToInt(SetSeconds)+" s here stands for 30 minutes)":"Silicone spread over the mark: let it cure ("+Mathf.RoundToInt(SetSeconds)+" s here stands for 8 minutes)",FeedbackTone.Success);return true;
-   case Stage.Setting:Tick();if(State==Stage.Setting)DemoFeedback.Post("Still setting: "+Mathf.CeilToInt(Remaining)+" s");return true;
+    ForensicFeedback.Post(Type==Kind.Impression?"Dental stone poured: let it set ("+Mathf.RoundToInt(SetSeconds)+" s here stands for 30 minutes)":"Silicone spread over the mark: let it cure ("+Mathf.RoundToInt(SetSeconds)+" s here stands for 8 minutes)",FeedbackTone.Success);return true;
+   case Stage.Setting:Tick();if(State==Stage.Setting)ForensicFeedback.Post("Still setting: "+Mathf.CeilToInt(Remaining)+" s");return true;
    default:return false; // Set: the caller collects it; Lifted: nothing left
   }
  }
  void Update(){Tick();}
- public void Tick(){if(State==Stage.Setting&&Time.time-poured>=SetSeconds){State=Stage.Set;DemoFeedback.Post(Type==Kind.Impression?"The cast has set: lift it and mark the back":"The silicone has cured: peel it off",FeedbackTone.Success);}}
+ public void Tick(){if(State==Stage.Setting&&Time.time-poured>=SetSeconds){State=Stage.Set;ForensicFeedback.Post(Type==Kind.Impression?"The cast has set: lift it and mark the back":"The silicone has cured: peel it off",FeedbackTone.Success);}}
  public void ForceSet(){if(State==Stage.Setting)State=Stage.Set;}
  public void OnLifted(){State=Stage.Lifted;if(CastVisual)CastVisual.SetActive(false);}
  public void ResetCast(){State=Stage.Open;if(CastVisual)CastVisual.SetActive(false);}

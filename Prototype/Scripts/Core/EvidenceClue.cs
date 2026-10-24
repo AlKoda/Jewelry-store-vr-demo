@@ -39,10 +39,10 @@ public sealed class EvidenceClue : MonoBehaviour {
  }
  public bool Sample(FieldInvestigationTool tool){
   if(!Available||!tool)return false;
-  if(!CanSample){DemoFeedback.Post("Record this item in place",FeedbackTone.Warning);return false;}
+  if(!CanSample){return false;}
   if(!Accepts(tool.Kind)){
    if(refused.Add(tool.Kind))Log.Add("Wrong method offered",ForensicRules.MethodName(tool.Kind),StepFlag.WrongMethod,"accepted: "+AcceptedList());
-   DemoFeedback.Post(WrongToolMessage(),FeedbackTone.Warning);return false;
+   return false;
   }
   // A controller ray cannot collect across the room. Desktop also has a short
   // examination reach, independent of placement-tool distance grabbing.
@@ -58,7 +58,7 @@ public sealed class EvidenceClue : MonoBehaviour {
   if(cast)cast.OnLifted();
   Observed=true;Sampled=true;CollectedWith=tool.Kind;if(Specimen)Specimen.SetActive(false);if(GetComponent<Collider>())GetComponent<Collider>().enabled=false;
   if(Register)Register.Record(this,true);DemoSounds.Play(DemoSound.Select,transform.position,.2f);
-  DemoFeedback.Post(photographed?"Sample sealed and recorded":"Sample sealed and recorded (no photograph was taken first)",photographed?FeedbackTone.Success:FeedbackTone.Warning);return true;
+  DemoFeedback.Post(DemoLanguage.Arabic?"تم حفظ العينة وتسجيلها":"Sample sealed and recorded",FeedbackTone.Success);return true;
  }
  string AcceptedList(){var names=new List<string>{ForensicRules.MethodName(RequiredTool)};if(ExtraMethods!=null)foreach(var m in ExtraMethods)names.Add(ForensicRules.MethodName(m));return string.Join(", ",names);}
  string WrongToolMessage(){

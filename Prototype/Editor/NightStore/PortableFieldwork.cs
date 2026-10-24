@@ -80,7 +80,7 @@ public static partial class PresentationPolish {
   void Require(bool value,string message){if(!value)throw new Exception("Portable fieldwork: "+message);}
   bool persist=register.PersistRecords;register.PersistRecords=false;
   var kit=register.Kit;Require(kit&&kit.Grip&&kit.GripCollider&&kit.GripCollider.isTrigger,"case/handle missing");
-  Require(register.SealedPackets.Length==10&&register.Tools.All(t=>t.Dock&&t.Dock.IsChildOf(kit.transform)),"packets or moving tool docks missing");
+  Require(register.SealedPackets.Length==10&&register.Tools.All(t=>t.Dock&&(t.Kind==FieldInvestigationTool.Method.CastingKit?!t.Dock.IsChildOf(kit.transform):t.Dock.IsChildOf(kit.transform))),"packets or moving tool docks missing");
   Require(kit.transform.position.z<0&&Mathf.Abs(kit.transform.position.x+4.3f)<.01f,"kit/table must start outside the shop");
   Require(root.GetComponentsInChildren<UVTrace>(true).Count(t=>t.name.StartsWith("EvidenceUV_HandlePrint_"))==6,"existing UV handle traces changed");
   var a=new GameObject("Temporary portable kit hand");var b=new GameObject("Temporary kit work hand");var hand=a.AddComponent<HandInteractor>();var other=b.AddComponent<HandInteractor>();

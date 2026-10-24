@@ -18,28 +18,11 @@ public sealed class ProcedureStep { public string step, tool, utc, note; public 
 // without a scale), developed, lifted, swabbed, tested, cast, collected, and the slips along the
 // way (lift before photograph, powder on paper, mark trodden on). One per EvidenceClue, added on
 // first use; cleared by the session reset.
-public sealed class ProcedureLog : MonoBehaviour {
- public readonly List<ProcedureStep> Steps=new List<ProcedureStep>();
- public int Flags {get;private set;}
- public static ProcedureLog Of(Component c){if(!c)return null;var log=c.GetComponent<ProcedureLog>();return log?log:c.gameObject.AddComponent<ProcedureLog>();}
- public ProcedureStep Add(string step,string tool,StepFlag flag,string note=null){
-  var s=new ProcedureStep{step=step,tool=tool,utc=DateTime.UtcNow.ToString("o"),flag=flag,note=note};Steps.Add(s);
-  if(flag==StepFlag.OutOfSequence||flag==StepFlag.WrongMethod||flag==StepFlag.Discipline)Flags++;return s;
- }
- public bool Has(string step){foreach(var s in Steps)if(s.step==step)return true;return false;}
- public ProcedureStep Last(string step){for(int i=Steps.Count-1;i>=0;i--)if(Steps[i].step==step)return Steps[i];return null;}
- public void Clear(){Steps.Clear();Flags=0;}
- // One line per step, for the register entry and the JSON record.
- public string Summary(){var b=new StringBuilder();foreach(var s in Steps){if(b.Length>0)b.Append("; ");b.Append(s.step);if(!string.IsNullOrEmpty(s.tool))b.Append(" (").Append(s.tool).Append(')');if(s.flag!=StepFlag.Correct)b.Append(" [").Append(s.flag).Append(']');}return b.ToString();}
-}
+
 
 // Marks a scene object (a glass top, a painted frame, a paper) with its surface class, so a
 // powder brush swept over anything knows whether powder is the right method there.
-public sealed class ForensicSurface : MonoBehaviour {
- public SurfaceClass Class=SurfaceClass.NonPorousSmooth;
- public static SurfaceClass ClassOf(Collider c,SurfaceClass fallback=SurfaceClass.NonPorousSmooth){if(!c)return fallback;var s=c.GetComponentInParent<ForensicSurface>();return s?s.Class:fallback;}
- public static bool Porous(SurfaceClass c)=>c==SurfaceClass.Porous||c==SurfaceClass.Fabric;
-}
+
 
 // The rules of thumb the log applies, each traced to the research notes.
 public static class ForensicRules {

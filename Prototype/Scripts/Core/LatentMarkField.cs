@@ -34,7 +34,7 @@ public sealed class LatentMarkField : MonoBehaviour {
    var filter=g.AddComponent<MeshFilter>();filter.sharedMesh=Quad();var r=g.AddComponent<MeshRenderer>();r.sharedMaterial=RidgeMaterial;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=true;r.lightProbeUsage=UnityEngine.Rendering.LightProbeUsage.BlendProbes;r.enabled=false;
    g.transform.localScale=new Vector3(MarkWidth,1,MarkHeight);
    int cell=rng.Next(0,AtlasColumns*AtlasRows);var block=new MaterialPropertyBlock();block.SetVector("_MainTex_ST",new Vector4(AtlasCell.x,AtlasCell.y,(cell%AtlasColumns)*AtlasCell.x,1-AtlasCell.y-(cell/AtlasColumns)*AtlasCell.y));r.SetPropertyBlock(block);
-   var hit=g.AddComponent<BoxCollider>();hit.isTrigger=true;hit.size=new Vector3(1.6f,.02f/MarkHeight,1.4f);hit.center=Vector3.zero;
+   var hit=g.AddComponent<BoxCollider>();hit.isTrigger=true;hit.size=new Vector3(1.6f,.006f,1.4f);hit.center=Vector3.zero;
    var clue=g.AddComponent<EvidenceClue>();clue.Id=IdPrefix+"-"+i;clue.TitleEn="Developed mark, "+PlaceEn;clue.TitleAr="أثر مطور، "+PlaceAr;
    clue.ObservationEn="A powder-developed contact on the glass. Comparison is still required; it does not identify a person.";clue.ObservationAr="أثر تلامس مطور بالمسحوق على الزجاج. يحتاج إلى مقارنة ولا يحدد شخصًا بمفرده.";
    clue.Register=Register;clue.CanSample=true;clue.RequiredTool=FieldInvestigationTool.Method.LiftCard;clue.ExtraMethods=new[]{FieldInvestigationTool.Method.Tape,FieldInvestigationTool.Method.GelLifter};clue.Surface=Surface;

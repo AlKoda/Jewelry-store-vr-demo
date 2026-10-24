@@ -65,6 +65,7 @@ public sealed class UVTrace : MonoBehaviour
         for (int i = 0; i < traces.Count; i++)
         {
             UVTrace trace = traces[i];
+            if (!trace) { traces.RemoveAt(i--); continue; }
             if (!all && (i & 1) != phase) { if (trace.target != trace.Visibility) trace.Apply(Mathf.MoveTowards(trace.Visibility, trace.target, step)); continue; }
             trace.target = i < MaxTraces ? trace.LitFraction(torch, direction, cosHalfAngle, range) : 0;
             if (trace.target != trace.Visibility) trace.Apply(Mathf.MoveTowards(trace.Visibility, trace.target, step));
@@ -74,7 +75,7 @@ public sealed class UVTrace : MonoBehaviour
     // The torch went off: every trace dark at once.
     public static void HideAll()
     {
-        foreach (UVTrace trace in traces) trace.Apply(0);
+        foreach (UVTrace trace in traces) if (trace) trace.Apply(0);
     }
 
     // The sight lines start this far along the beam, matching the torch shadow's near plane.
@@ -158,3 +159,4 @@ public sealed class UVTrace : MonoBehaviour
         view.SetPropertyBlock(block);
     }
 }
+

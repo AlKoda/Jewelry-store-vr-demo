@@ -17,8 +17,10 @@ public sealed class XRHeadTracking : MonoBehaviour
     //   floor rendered 12 cm above the virtual floor, so nothing on the floor could be reached.
     // - FloorCorrection moves head and hands together; CalibrateFloor measures it from a controller
     //   resting on the real floor, instead of guessing. Floor-origin tracking makes it ~0 on a good setup.
-    private static float height = LoadHeight();
-    private static float floorCorrection = PlayerPrefs.GetFloat("VRFloorCorrection", 0f);
+    private static float height;
+    private static float floorCorrection;
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void InitializeOffsets() { height = LoadHeight(); floorCorrection = PlayerPrefs.GetFloat("VRFloorCorrection", 0f); }
     private static float LoadHeight()
     {
         // Builds before October 23 saved +0.12 here and applied it to the hands too; forget that value once.
@@ -62,3 +64,4 @@ public sealed class XRHeadTracking : MonoBehaviour
         if (head.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation)) transform.localRotation = rotation;
     }
 }
+
