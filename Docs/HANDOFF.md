@@ -4,6 +4,19 @@ Updated October 23, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md
 
 One authoritative source tree: Prototype, using Claude's organized runtime/editor folders. One current project: UnityProject_Demo. One saved night scene: JewelryStoreNight. One output: Builds/Windows/JewelryStoreDemo.exe. Three primary entry points: Play-Keyboard.cmd, Play-VR.cmd, Open-In-Unity.cmd. Start-Latest/Start-Demo are compatibility aliases.
 
+## Koda's first test of the sandbox, fixes — October 24 (unverified until the PC run)
+
+Koda tested the integrated build and asked for: arranged tools with hints, a glow on what a tool works on, a ding on correct use, matching shaders, spectators lit by the street, tool shadows that touch their tools, and marker numbers that fill gaps. Changes (cloud compile 0 errors; `PresentationPolish.SandboxRefreshRun` re-authors, rebuilds probes, rebakes, previews and builds on the PC):
+
+- **Case arrangement:** two tray columns of four slots (forceps, swab, brush, wand; hinge lifter, silicone kit, lifting tape) with a printed slot label each, gel lifter and blood test on the case base, casting bowl outside with its ground dock; docks follow. A tool guide sheet in the lid lists every tool, what it works on and how.
+- **Hints:** `ForensicFeedback` posts again (ChatGPT had muted it for the unguided direction; Koda asked for hints). Taking a tool posts its "works on / how to" line (`FieldInvestigationTool.WorksOn/HowTo`, bilingual).
+- **Glow:** `ForensicGlow` on the register: while a tool is held, every compatible clue carries a faint pulsing disc (tinted by tool family) and the powder applicators show a dim sheet over each display-case top; the marks themselves stay hidden. Refreshes on every state change, gone when the tool is put back.
+- **Ding:** `DemoSound.Ding` (generated two-note bell) on every Correct or Acceptable logged step and once per photograph that covers a clue.
+- **Markers:** `ToolStation` reuses the lowest free marker number after a removal (`markerNumbers` set); validator check added.
+- **Shadows:** torch bias .025/.16 to .01/.1, lamps and flash .04/.3 to .015/.15 (the large depth bias detached small tools from their shadows).
+- **Spectators:** the far-pavement people stood outside the light-probe hull (probes ended at z -15.5, people at -21.7), so they took the hull edge value and looked unlit. `NightLighting.RebuildProbes` adds two rows at body heights along z -22.2 to -19.4; needs the rebake that SandboxRefreshRun performs.
+- **Shaders:** pack models go through `DemoAssetLibrary.PackMaterial` (Standard, glass/cutout roles) like every other pack; no change found necessary, to be judged in the new previews.
+
 ## Local integration — October 24, verified in Unity
 
 Imported the completed ForensicModels batch (19/19 consumables resolved) and applied fieldwork to the existing saved scene with PresentationPolish.IntegrationRun. This runs EvidenceGameplay/FieldworkChecks, recreates reset fieldwork, updates only the lamp prefab, clears static flags from 68 moving door objects, increases intact retail/window absorption to .23/.26 and removes the field-guide sheet. The saved scene was reopened and checked for missing scripts, then FieldworkChecks and the strict Windows build passed. Ten tools, 27 authored clues, nine case fields and 13 seeded marks in checks. No headset acceptance or standalone performance claim.

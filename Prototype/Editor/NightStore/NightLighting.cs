@@ -503,6 +503,17 @@ public static class NightLighting
     // objects): 1 m inside, 2 m on the accessible exterior, a row along the buildings
     // across the street, and extra probes along the headlight beams' edges where the
     // light changes fastest. Probes inside solid fixtures are skipped.
+    // Replaces the saved scene's probe group with a fresh one (new rows were added October 24 for
+    // the spectators across the street); the caller bakes afterwards, probes carry no light until then.
+    public static void RebuildProbes(Transform root)
+    {
+        Transform group = root.Find(GroupName);
+        if (group == null) throw new System.Exception("Night store lighting group missing");
+        Transform old = group.Find("LightProbes");
+        if (old != null) Object.DestroyImmediate(old.gameObject);
+        Probes(group);
+    }
+
     private static void Probes(Transform group)
     {
         List<Vector3> points = new List<Vector3>();
@@ -511,6 +522,10 @@ public static class NightLighting
         ProbeGrid(points, -L.OfficeHalf + 0.5f, L.OfficeHalf - 0.5f, L.RearZ + 0.5f, L.MaxZ - 0.4f, 1, heights);
         ProbeGrid(points, -L.PavementHalfX, L.PavementHalfX, L.StagingBay.MinZ, -1, 2, heights);
         ProbeGrid(points, -24, 24, L.FarPavementZ + 1.5f, L.FarPavementZ + 1.5f, 4, new[] { 0.5f, 3f, 7f });
+        // The spectators stand on the far pavement by the buildings (z about -21.5): two rows at
+        // body heights there, so skinned people take the streetlight from probes instead of the
+        // hull's edge value (they looked unlit and out of place, October 24).
+        ProbeGrid(points, -8, 9, -22.2f, -19.4f, 1.4f, new[] { 0.3f, 1.0f, 1.8f });
         foreach (string side in new[] { "Left", "Right" })
         {
             Transform beam = group.Find("Headlight_" + side);

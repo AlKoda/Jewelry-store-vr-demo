@@ -9,7 +9,11 @@ public sealed class ProcedureLog : MonoBehaviour {
  public static ProcedureLog Of(Component c){if(!c)return null;var log=c.GetComponent<ProcedureLog>();return log?log:c.gameObject.AddComponent<ProcedureLog>();}
  public ProcedureStep Add(string step,string tool,StepFlag flag,string note=null){
   var s=new ProcedureStep{step=step,tool=tool,utc=DateTime.UtcNow.ToString("o"),flag=flag,note=note};Steps.Add(s);
-  if(flag==StepFlag.OutOfSequence||flag==StepFlag.WrongMethod||flag==StepFlag.Discipline)Flags++;return s;
+  if(flag==StepFlag.OutOfSequence||flag==StepFlag.WrongMethod||flag==StepFlag.Discipline)Flags++;
+  // A correct or acceptable use of a tool rings a short ding (Koda, October 24); observing and
+  // the camera's own log entries stay silent (EvidenceRegister.LogPhotograph rings once per photo).
+  else if(step!="Observed"&&step!="Photographed"&&!string.IsNullOrEmpty(tool)&&Application.isPlaying)DemoSounds.Play(DemoSound.Ding,transform.position,.5f);
+  return s;
  }
  public bool Has(string step){foreach(var s in Steps)if(s.step==step)return true;return false;}
  public ProcedureStep Last(string step){for(int i=Steps.Count-1;i>=0;i--)if(Steps[i].step==step)return Steps[i];return null;}

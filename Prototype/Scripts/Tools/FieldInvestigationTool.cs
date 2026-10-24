@@ -20,10 +20,34 @@ public sealed class FieldInvestigationTool : MonoBehaviour {
   case Method.MagneticWand:return "Magnetic powder wand";case Method.Tape:return "Lifting tape and backing card";case Method.GelLifter:return "Gelatin lifter";
   case Method.KMTest:return "Presumptive blood test kit";case Method.CastingKit:return "Dental-stone casting kit";default:return "Silicone casting kit";}}}
  public bool IsApplicator=>Kind==Method.Brush||Kind==Method.MagneticWand;
+ // What the tool works on and how (Docs/Research/FORENSIC_MECHANICS_SPEC.md §3), shown when it is
+ // taken and printed on the case lid; ForensicGlow lights the compatible targets while it is held.
+ public static string WorksOn(Method kind){switch(kind){
+  case Method.Forceps:return DemoLanguage.Arabic?"الأشياء الصغيرة والألياف والشعر":"loose items, fibres, hairs, cigarette ends";
+  case Method.Swab:return DemoLanguage.Arabic?"المقابض والبقع والأشياء الملموسة":"handles, stains, touched items";
+  case Method.Brush:return DemoLanguage.Arabic?"الزجاج والمعدن والأسطح الملساء":"glass, metal and painted surfaces";
+  case Method.MagneticWand:return DemoLanguage.Arabic?"البلاستيك والأسطح الخشنة (ليس الفولاذ)":"textured plastic, not steel";
+  case Method.LiftCard:case Method.Tape:return DemoLanguage.Arabic?"الأثر المطور بالمسحوق":"a developed powder mark";
+  case Method.GelLifter:return DemoLanguage.Arabic?"الأثر المطور وآثار الأحذية في الغبار":"developed marks and dust footwear marks";
+  case Method.KMTest:return DemoLanguage.Arabic?"البقع البنية المحمرة":"red-brown stains";
+  case Method.CastingKit:return DemoLanguage.Arabic?"آثار الأحذية في الرمل أو التراب":"footwear impressions in sand or soil";
+  default:return DemoLanguage.Arabic?"آثار الأدوات على المعدن والطلاء":"tool marks on metal and paint";}}
+ public static string HowTo(Method kind){switch(kind){
+  case Method.Forceps:return DemoLanguage.Arabic?"صوّر أولًا ثم اضغط الزناد على الأثر":"photograph first, then trigger on the item";
+  case Method.Swab:return DemoLanguage.Arabic?"صوّر وارفع الأثر أولًا، ثم اضغط الزناد على السطح":"photograph and lift any mark first, then trigger on the surface";
+  case Method.Brush:case Method.MagneticWand:return DemoLanguage.Arabic?"اضغط الزناد باستمرار وامسح بخفة؛ توقف عند ظهور الخطوط":"hold the trigger, sweep lightly, stop when ridges show";
+  case Method.LiftCard:case Method.Tape:case Method.GelLifter:return DemoLanguage.Arabic?"صوّر الأثر بمقياس ثم اضغط الزناد عليه":"photograph the mark with a scale, then trigger on it";
+  case Method.KMTest:return DemoLanguage.Arabic?"أربع ضغطات على البقعة: مسح، إيثانول، كاشف، بيروكسيد":"four presses on the stain: rub, ethanol, reagent, peroxide";
+  case Method.CastingKit:return DemoLanguage.Arabic?"صوّر بمقياس، اضغط لصب القالب، انتظر، ثم اضغط لرفعه":"photograph with a scale, trigger to pour, wait, trigger to lift";
+  default:return DemoLanguage.Arabic?"صوّر بمقياس، اضغط لفرد السيليكون، انتظر، ثم اضغط لرفعه":"photograph with a scale, trigger to spread, wait, trigger to peel";}}
+ public string Hint=>WorksOn(Kind)+". "+HowTo(Kind);
+ // Raised when a tool is taken or put back, so the glow on compatible targets can follow the hand.
+ public static event System.Action<FieldInvestigationTool,bool> HeldChanged;
  public void RecordHome(){if(recorded)return;recorded=true;home=transform.position;rotation=transform.rotation;homeParent=transform.parent;}
  void Awake(){RecordHome();foreach(var c in GetComponentsInChildren<Collider>())c.isTrigger=true;}
  public bool Take(ToolHolder holder,Transform anchor){
-  if(Holder||!holder||!anchor)return false;RecordHome();Holder=holder;transform.SetParent(Register?Register.transform:null,true);lighting=FindFirstObjectByType<DemoLighting>();Follow(anchor);return true;
+  if(Holder||!holder||!anchor)return false;RecordHome();Holder=holder;transform.SetParent(Register?Register.transform:null,true);lighting=FindFirstObjectByType<DemoLighting>();Follow(anchor);
+  ForensicFeedback.Post((DemoLanguage.Arabic?"":ToolName+": ")+Hint);HeldChanged?.Invoke(this,true);return true;
  }
  public void Follow(Transform anchor){if(!anchor)return;var offset=Holder is DesktopInteractor?new Vector3(.18f,-.14f,.38f):HandPosition;transform.SetPositionAndRotation(anchor.TransformPoint(offset),anchor.rotation*Quaternion.Euler(HandEuler));}
  void LateUpdate(){
@@ -32,7 +56,7 @@ public sealed class FieldInvestigationTool : MonoBehaviour {
   Follow(Holder is HandInteractor?Holder.transform:((DesktopInteractor)Holder).View.transform);
   if(IsApplicator)ContinueDusting();
  }
- public void ReturnToRack(){if(!recorded)RecordHome();Holder=null;dusting=null;sweeping=false;transform.SetParent(Dock?Dock.parent:homeParent,true);transform.SetPositionAndRotation(Dock?Dock.position:home,Dock?Dock.rotation:rotation);}
+ public void ReturnToRack(){if(!recorded)RecordHome();bool held=Holder;Holder=null;dusting=null;sweeping=false;transform.SetParent(Dock?Dock.parent:homeParent,true);transform.SetPositionAndRotation(Dock?Dock.position:home,Dock?Dock.rotation:rotation);if(held)HeldChanged?.Invoke(this,false);}
  public bool Use(EvidenceClue clue)=>UseAt(clue,default,false);
  // The trigger on whatever the ray found: a clue, or (for the powder applicators) any surface.
  public bool UseAt(EvidenceClue clue,RaycastHit hit,bool hasHit){

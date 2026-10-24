@@ -443,8 +443,8 @@ public sealed class DemoLighting : MonoBehaviour
             light.shadows = LightShadows.Soft;
             light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.High;
             light.shadowCustomResolution = 2048;
-            light.shadowBias = .025f;
-            light.shadowNormalBias = .16f;
+            light.shadowBias = .01f;
+            light.shadowNormalBias = .1f;
             light.shadowNearPlane = .06f;
             DemoPlatform.TuneShadows(light, 2048); // one hard 1024 map on the Quest alone
         }
@@ -459,8 +459,8 @@ public sealed class DemoLighting : MonoBehaviour
             light.shadowResolution = UnityEngine.Rendering.LightShadowResolution.VeryHigh;
             light.shadowCustomResolution = 2048;
             // Near Unity's defaults (0.05 / 0.4): the earlier 0.015 / 0.12 striped grazing floors and walls.
-            light.shadowBias = .025f;
-            light.shadowNormalBias = .16f;
+            light.shadowBias = .01f;
+            light.shadowNormalBias = .1f;
             light.shadowNearPlane = .06f;
             DemoPlatform.TuneShadows(light, 2048); // hard 1024 on the Quest alone
         }

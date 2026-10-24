@@ -2,7 +2,7 @@ using UnityEngine;
 
 // Shutter, Switch and Select have no generated version: they sound only when a
 // DemoSoundBank supplies a recorded clip. New values go at the end (the index is stored).
-public enum DemoSound { Click, Thud, Ambience, Shutter, Switch, Select }
+public enum DemoSound { Click, Thud, Ambience, Shutter, Switch, Select, Ding }
 
 // Small generated sounds, so the demo has audio feedback without audio assets:
 // a click when a tool is taken, a thud when it is set down, and a quiet
@@ -14,7 +14,7 @@ public enum DemoSound { Click, Thud, Ambience, Shutter, Switch, Select }
 public static class DemoSounds
 {
     private const int SampleRate = 22050;
-    private static readonly AudioClip[] clips = new AudioClip[3];
+    private static readonly AudioClip[] clips = new AudioClip[7];
     private static DemoSoundBank bank;
 
     public static DemoSoundBank Bank => bank;
@@ -86,13 +86,34 @@ public static class DemoSounds
             case DemoSound.Thud:
                 samples = Tone(0.14f, 110, 0.7f);
                 break;
-            default:
+            case DemoSound.Ding:
+                samples = Chime();
+                break;
+            case DemoSound.Ambience:
                 samples = Noise(4f, 0.12f);
                 break;
+            default:
+                return null;
         }
         AudioClip clip = AudioClip.Create(sound.ToString(), samples.Length, 1, SampleRate, false);
         clip.SetData(samples, 0);
         return clip;
+    }
+
+    // Two-note bell (E6 then B6) with an exponential decay: the "done right" ding for a correct
+    // forensic step (ProcedureLog), quiet enough to sit under the recorded foley.
+    private static float[] Chime()
+    {
+        float[] samples = new float[(int)(SampleRate * 0.55f)];
+        for (int i = 0; i < samples.Length; i++)
+        {
+            float t = (float)i / SampleRate;
+            float a = Mathf.Exp(-t * 7f) * 0.32f;
+            float note = t < 0.11f ? 1318.5f : 1975.5f;
+            float v = Mathf.Sin(2 * Mathf.PI * note * t) + 0.35f * Mathf.Sin(2 * Mathf.PI * note * 2.01f * t);
+            samples[i] = v * a * Mathf.Min(1, t * 400); // 2.5 ms attack
+        }
+        return samples;
     }
 
     // Sine burst with a linear fade-out.

@@ -16,7 +16,9 @@ public sealed class ToolStation : MonoBehaviour
     public Transform SpawnPoint;
     public UnityEvent ToolsChanged = new UnityEvent();
 
-    private int nextMarker = 1;
+    // Marker numbers in use; a new marker takes the lowest free number, so a removed
+    // marker's number is reused instead of leaving a gap in the sequence.
+    private readonly System.Collections.Generic.HashSet<int> markerNumbers = new System.Collections.Generic.HashSet<int>();
     private DeployedTool pendingPost;
     // Separate chains, so a reel laid during a barrier run does not break the run.
     private DeployedTool lastPlacedPost, lastPlacedReel;
@@ -42,7 +44,7 @@ public sealed class ToolStation : MonoBehaviour
     public DeployedTool LastPlacedPost => lastPlacedPost;
     public DeployedTool LastPlacedReel => lastPlacedReel;
     public DeployedTool PendingPost => pendingPost;
-    public int NextMarkerNumber => nextMarker;
+    public int NextMarkerNumber { get { int n = 1; while (markerNumbers.Contains(n)) n++; return n; } }
     // Active tools only; objects pending destruction are already inactive.
     private static readonly List<DeployedTool> countScratch = new List<DeployedTool>();
     public int DeployedCount
@@ -94,7 +96,7 @@ public sealed class ToolStation : MonoBehaviour
         }
         DeployedTool tool = Instantiate(prefab, SpawnPoint.position,
             SpawnPoint.rotation, DeploymentRoot);
-        if (kind == DemoToolKind.Marker) tool.SetMarkerNumber(nextMarker++);
+        if (kind == DemoToolKind.Marker) { int number = NextMarkerNumber; markerNumbers.Add(number); tool.SetMarkerNumber(number); }
         // A new lamp comes on in the hand, so it can be aimed while it is carried.
         if (kind == DemoToolKind.Lamp) LightLamp(tool, true);
         ToolsChanged.Invoke();
@@ -167,7 +169,7 @@ public sealed class ToolStation : MonoBehaviour
             {
                 lamp.shadows = LightShadows.Soft;
                 lamp.shadowCustomResolution = 1024;
-                lamp.shadowBias = .04f; lamp.shadowNormalBias = .3f;
+                lamp.shadowBias = .015f; lamp.shadowNormalBias = .15f; // small tools were losing contact with their shadows at .04
                 DemoPlatform.TuneShadows(lamp, 1024); // hard 512 on the Quest alone
                 lamp.range = DemoToolGeometry.LampRange;
                 lamp.renderMode = LightRenderMode.ForcePixel;
@@ -335,6 +337,7 @@ public sealed class ToolStation : MonoBehaviour
         // run head also ends it, so the next post starts fresh.
         if(tool==runHeldPost || tool==runHead) { runHead=null; runHeldPost=null; runTape=null; }
         bool wasLit = litLamps.Remove(tool);
+        if (tool.Kind == DemoToolKind.Marker) markerNumbers.Remove(tool.MarkerNumber);
         if(tool.TapeAnchor!=null)
             foreach(SceneTape tape in DeploymentRoot.GetComponentsInChildren<SceneTape>())
                 if(tape.StartAnchor==tool.TapeAnchor || tape.EndAnchor==tool.TapeAnchor)
@@ -359,7 +362,7 @@ public sealed class ToolStation : MonoBehaviour
             child.SetActive(false);
             Destroy(child);
         }
-        nextMarker = 1;
+        markerNumbers.Clear();
         ToolsChanged.Invoke();
     }
 }

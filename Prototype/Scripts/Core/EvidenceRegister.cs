@@ -35,7 +35,9 @@ public sealed class EvidenceRegister : MonoBehaviour {
  }
  void OnDestroy(){if(runtimeInk)Destroy(runtimeInk);}
  public void Begin(){if(!string.IsNullOrEmpty(document.session))return;document.session=Guid.NewGuid().ToString("N");output=Path.Combine(Application.persistentDataPath,"EvidenceRecords",document.session+".json");foreach(var t in Tools)if(t)t.RecordHome();}
- public void Record(EvidenceClue clue,bool sampled){Begin();var log=clue.GetComponent<ProcedureLog>();
+ // The glow over compatible targets follows every change of state.
+ public void GlowRefresh(){var glow=GetComponent<ForensicGlow>();if(glow)glow.Refresh();}
+ public void Record(EvidenceClue clue,bool sampled){Begin();GlowRefresh();var log=clue.GetComponent<ProcedureLog>();
   document.entries.Add(new Entry{id=clue.Id,title=clue.TitleEn,observation=clue.ObservationEn,action=sampled?"sample sealed":"observed in place",utc=DateTime.UtcNow.ToString("o"),position=clue.transform.position,
    method=sampled?ForensicRules.MethodName(clue.CollectedWith):"",container=sampled?ForensicRules.Container(clue.CollectedWith,clue.Biological):"",procedure=log?log.Summary():"",flags=log?log.Flags:0});
   if(sampled&&visiblePackets<SealedPackets.Length)SealedPackets[visiblePackets++].SetActive(true);Page=Array.IndexOf(AllClues.Where(c=>c&&c.Observed).ToArray(),clue)+1;RefreshPage();Save();}
@@ -50,6 +52,7 @@ public sealed class EvidenceRegister : MonoBehaviour {
    foreach(var t in tools)if(t&&t.Kind==DemoToolKind.Scale&&t.HasBeenPlaced&&Vector3.Distance(t.transform.position,clue.transform.position)<ScaleReach){scale=true;break;}
    clue.NotePhotographed(scale);count++;
   }
+  if(count>0&&Application.isPlaying)DemoSounds.Play(DemoSound.Ding,from,.4f);
   return count;
  }
  void Save(){if(!PersistRecords||!Application.isPlaying)return;try{Directory.CreateDirectory(Path.GetDirectoryName(output));File.WriteAllText(output,JsonUtility.ToJson(document,true));}catch(Exception e){Debug.LogWarning("Evidence record could not be saved: "+e.Message);DemoFeedback.Post("Evidence record could not be saved",FeedbackTone.Warning);}}

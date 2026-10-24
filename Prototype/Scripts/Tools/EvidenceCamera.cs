@@ -92,7 +92,7 @@ public sealed class EvidenceCamera : MonoBehaviour
             flash.color = new Color(1f, 0.97f, 0.92f);
             flash.shadows = LightShadows.Soft;
             flash.shadowCustomResolution=1024;
-            flash.shadowBias=.04f;flash.shadowNormalBias=.3f;
+            flash.shadowBias=.015f;flash.shadowNormalBias=.15f;
             DemoPlatform.TuneShadows(flash, 1024);
             flash.renderMode = LightRenderMode.ForcePixel;
             // A two-frame flash is not worth a shadow map on the mobile GPU; it still lights per pixel.

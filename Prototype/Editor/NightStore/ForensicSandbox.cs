@@ -21,17 +21,39 @@ public static partial class PresentationPolish {
   var kit=register.Kit;var caseRoot=kit.transform;var tray=caseRoot.Find("FieldKit");var lid=caseRoot.Find("RaisedLid");
   foreach(var old in register.Tools.Where(t=>t&&t.Kind>=FieldInvestigationTool.Method.MagneticWand).ToArray())Object.DestroyImmediate(old.gameObject);
   var tools=register.Tools.Where(t=>t&&t.Kind<FieldInvestigationTool.Method.MagneticWand).ToList();
-  // ---- case tools: three more tray rows and two spots on the case base (positions in Docs/Research/FORENSIC_MECHANICS_SPEC.md §3)
-  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MagneticWand,V(-.1f,.034f,-.122f)));
-  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.Tape,V(.105f,.034f,-.112f)));
-  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MikrosilKit,V(-.1f,.034f,.118f)));
+  // ---- case tools, arranged (October 24): two columns in the tray, four rows each, a printed
+  // label beside every slot; the gel lifter and the test kit on the case base; the casting bowl outside.
+  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MagneticWand,Vector3.zero));
+  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.Tape,Vector3.zero));
+  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MikrosilKit,Vector3.zero));
   var gel=FieldTool(caseRoot,register,FieldInvestigationTool.Method.GelLifter,V(.36f,.025f,-.17f));gel.transform.localRotation=Quaternion.identity;tools.Add(gel);
-  var km=FieldTool(caseRoot,register,FieldInvestigationTool.Method.KMTest,V(.36f,.025f,0));km.transform.localRotation=Quaternion.Euler(0,90,0);tools.Add(km);
-  // The casting kit works outside: its bowl rests on the pavement beside the table (its dock is a child of the case, like every tool's).
+  var km=FieldTool(caseRoot,register,FieldInvestigationTool.Method.KMTest,V(.36f,.025f,.02f));km.transform.localRotation=Quaternion.Euler(0,90,0);tools.Add(km);
+  // The casting kit works outside: its bowl rests on the pavement beside the table with its own ground dock.
   var casting=FieldTool(caseRoot,register,FieldInvestigationTool.Method.CastingKit,V(.7f,-.892f+.002f,-.75f));casting.transform.localRotation=Quaternion.identity;casting.transform.SetParent(register.transform,true);var castingDock=Group("CastingKitGroundDock",register.transform);castingDock.SetPositionAndRotation(casting.transform.position,casting.transform.rotation);casting.Dock=castingDock;tools.Add(casting);
   register.Tools=tools.ToArray();
-  foreach(var tool in register.Tools){if(tool.Dock)continue;var dock=Group("Dock_"+tool.Kind,caseRoot);dock.SetPositionAndRotation(tool.transform.position,tool.transform.rotation);tool.Dock=dock;}
+  var slots=new Dictionary<FieldInvestigationTool.Method,Vector3>{
+   {FieldInvestigationTool.Method.Forceps,V(-.115f,.034f,-.112f)},{FieldInvestigationTool.Method.Swab,V(-.115f,.034f,-.037f)},{FieldInvestigationTool.Method.Brush,V(-.115f,.034f,.038f)},{FieldInvestigationTool.Method.MagneticWand,V(-.115f,.034f,.113f)},
+   {FieldInvestigationTool.Method.LiftCard,V(.115f,.034f,-.112f)},{FieldInvestigationTool.Method.MikrosilKit,V(.115f,.034f,-.032f)},{FieldInvestigationTool.Method.Tape,V(.115f,.034f,.06f)}};
+  foreach(var tool in register.Tools){
+   if(slots.TryGetValue(tool.Kind,out var slot)){tool.transform.SetParent(tray,false);tool.transform.localPosition=slot;tool.transform.localRotation=Quaternion.Euler(0,90,0);}
+   if(!tool.Dock){var dock=Group("Dock_"+tool.Kind,caseRoot);tool.Dock=dock;}
+   if(tool.Dock.IsChildOf(caseRoot))tool.Dock.SetPositionAndRotation(tool.transform.position,tool.transform.rotation);
+  }
+  foreach(var old in tray.GetComponentsInChildren<Transform>(true).Where(t=>t.name.StartsWith("SlotLabel_")).ToArray())Object.DestroyImmediate(old.gameObject);
+  foreach(var tool in register.Tools){
+   if(!slots.TryGetValue(tool.Kind,out var slot))continue;
+   // A short printed label on the tray floor in front of the slot, like a labelled kit insert.
+   var label=Text("SlotLabel_"+tool.Kind,tray,ShortName(tool.Kind),slot+V(slot.x<0?-.085f:.085f,-.013f,-.028f),0,.0052f,new Color(.92f,.9f,.82f));
+   label.transform.localRotation=Quaternion.Euler(90,0,0);label.anchor=TextAnchor.UpperCenter;label.alignment=TextAlignment.Center;label.fontSize=48;label.characterSize=.0045f;
+   var ink=Mat(Folder,"FieldSlotLabelInk",Color.white,0);ink.shader=Shader.Find("CrimeScene/WorldText");ink.mainTexture=label.font.material.mainTexture;label.GetComponent<MeshRenderer>().sharedMaterial=ink;label.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;label.gameObject.layer=CrowdLayer;
+  }
+  // The tool guide inside the lid: one line per tool, what it works on and how (bilingual at runtime through LocalizedWorldLabel is Phase 2; English here).
+  var oldGuide=lid.Find("ToolGuide");if(oldGuide)Object.DestroyImmediate(oldGuide.gameObject);
+  var guide=Text("ToolGuide",lid,ToolGuideText(),V(-.25f,-.014f,-.24f),0,.0036f,new Color(.07f,.07f,.06f));guide.transform.localRotation=Quaternion.Euler(-90,180,0);guide.anchor=TextAnchor.UpperLeft;guide.alignment=TextAlignment.Left;guide.fontSize=48;guide.characterSize=.0028f;guide.lineSpacing=1.15f;
+  var guideInk=Mat(Folder,"FieldToolGuideInk",Color.black,0);guideInk.shader=Shader.Find("CrimeScene/WorldText");guideInk.mainTexture=guide.font.material.mainTexture;guide.GetComponent<MeshRenderer>().sharedMaterial=guideInk;guide.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;guide.gameObject.layer=CrowdLayer;
+  var guideSheet=Mat(Folder,"FieldToolGuidePaper",new Color(.93f,.92f,.86f),.04f);var sheetMesh=new KitMesh{Lightmapped=false};sheetMesh.Bar(guideSheet,V(0,0,0),V(.30f,.0012f,.20f),.0004f);var guidePaper=sheetMesh.Emit("ToolGuidePaper",lid,V(-.1f,-.0125f,-.14f),Quaternion.identity,Folder,"field_tool_guide_paper");guidePaper.layer=CrowdLayer;guidePaper.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
   foreach(var tool in register.Tools)foreach(var t in tool.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;
+  if(!register.GetComponent<ForensicGlow>())register.gameObject.AddComponent<ForensicGlow>().Register=register;
   // ---- consumables and protective items on a ground sheet beside the field table
   var consumables=Fresh("ForensicConsumables",root);consumables.position=V(-5.55f,0,-1.3f);
   var sheet=Mat(Folder,"ForensicGroundSheet",new Color(.16f,.19f,.23f),.08f);var tarp=new KitMesh{Lightmapped=false};tarp.Bar(sheet,V(0,.002f,0),V(1.3f,.004f,.9f),.001f);tarp.Emit("GroundSheet",consumables,Vector3.zero,Quaternion.identity,Folder,"forensic_ground_sheet");
@@ -141,6 +163,15 @@ public static partial class PresentationPolish {
   foreach(var t in group.GetComponentsInChildren<Transform>(true))GameObjectUtility.SetStaticEditorFlags(t.gameObject,0);
   Debug.Log("FORENSIC_SANDBOX_AUTHORED tools="+register.Tools.Length+" clues="+register.Clues.Length+" fields="+fields+" consumables placed from pack="+placed+"/"+items.Length);
  }
+ static string ShortName(FieldInvestigationTool.Method kind){switch(kind){
+  case FieldInvestigationTool.Method.Forceps:return "FORCEPS";case FieldInvestigationTool.Method.Swab:return "SWAB";case FieldInvestigationTool.Method.Brush:return "BRUSH";
+  case FieldInvestigationTool.Method.LiftCard:return "HINGE LIFTER";case FieldInvestigationTool.Method.MagneticWand:return "MAG. WAND";case FieldInvestigationTool.Method.Tape:return "LIFT TAPE";
+  case FieldInvestigationTool.Method.GelLifter:return "GEL LIFTER";case FieldInvestigationTool.Method.KMTest:return "BLOOD TEST";case FieldInvestigationTool.Method.CastingKit:return "CASTING";default:return "SILICONE";}}
+ static string ToolGuideText(){
+  var b=new System.Text.StringBuilder("FIELD TOOLS: what each works on, and how\n");
+  foreach(FieldInvestigationTool.Method kind in Enum.GetValues(typeof(FieldInvestigationTool.Method)))b.Append(ShortName(kind)).Append(": ").Append(FieldInvestigationTool.WorksOn(kind)).Append(". ").Append(FieldInvestigationTool.HowTo(kind)).Append('\n');
+  b.Append("Photograph before you touch. Glowing items suit the tool in your hand.");return b.ToString();
+ }
  // A pack model on the floor, or a small fallback block of the same footprint.
  static GameObject Dropped(Transform parent,string model,Vector3 at,float yaw,Vector3 size,Color fallback){
   var g=DemoAssetLibrary.PlacePack("ForensicModels",model,parent,at,yaw,new DemoAssetLibrary.PackOptions{Shadows=true,Lod=DemoAssetLibrary.LodClass.None});
@@ -205,6 +236,20 @@ public static partial class PresentationPolish {
    var butt=register.Clues.First(c=>c.Id=="E24");var forceps=Tool(FieldInvestigationTool.Method.Forceps);Take(swab);a.transform.position=butt.transform.position+Vector3.up*.3f;Require(!butt.Sample(swab)&&butt.Log.Has("Wrong method offered"),"wrong method on the cigarette end not recorded");
    Take(forceps);a.transform.position=butt.transform.position+Vector3.up*.3f;Require(butt.Sample(forceps)&&butt.Log.Last("Collected").flag==StepFlag.OutOfSequence&&register.Entries.Last().container.Contains("paper"),"cigarette end not bagged in paper or sequence not recorded");
    register.ResetInvestigation();Require(register.AllClues.All(c=>!c.Sampled&&c.Log.Steps.Count==0)&&cast.State==CastableMark.Stage.Open&&bloodTest.Result==BloodStainClue.Outcome.Untested,"reset leaves sandbox state behind");
+   // -- the glow follows the held tool: compatible targets only, fields for the applicators, nothing once put back
+   var glow=register.GetComponent<ForensicGlow>();Require(glow,"glow component missing from the register");glow.enabled=false;glow.enabled=true;
+   Take(forceps);Require(glow.ActiveGlows>=4&&ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.Forceps)&&!ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.Forceps),"forceps glow does not mark the loose items only");
+   Take(brush);Require(glow.ActiveGlows>=fields.Length+2&&ForensicGlow.Compatible(handle,FieldInvestigationTool.Method.Brush),"brush glow does not cover the case tops and the handle marks");
+   Take(kmTool);Require(ForensicGlow.Compatible(blood,FieldInvestigationTool.Method.KMTest)&&!ForensicGlow.Compatible(butt,FieldInvestigationTool.Method.KMTest),"test-kit glow is not limited to stains");
+   hand.ReleaseAll();Require(glow.ActiveGlows==0,"glow stays after the tool is put back");
+   Require(register.Tools.All(t=>t.Dock&&Vector3.Distance(t.transform.position,t.Dock.position)<.001f),"a tool rests away from its dock after the arrangement");
+   Require(register.Kit.transform.Find("FieldKit").GetComponentsInChildren<TextMesh>(true).Count(t=>t.name.StartsWith("SlotLabel_"))==7&&register.Kit.transform.Find("RaisedLid/ToolGuide"),"slot labels or the lid tool guide missing");
+   // -- marker numbers: a removed number is reused
+   var station=Object.FindFirstObjectByType<ToolStation>();if(station&&station.MarkerPrefab){
+    int before=station.DeployedCount;var m1=station.Spawn(DemoToolKind.Marker);var m2=station.Spawn(DemoToolKind.Marker);var m3=station.Spawn(DemoToolKind.Marker);
+    Require(m1.MarkerNumber==1&&m2.MarkerNumber==2&&m3.MarkerNumber==3,"markers do not count 1, 2, 3");station.RemoveTool(m2);var m4=station.Spawn(DemoToolKind.Marker);
+    Require(m4.MarkerNumber==2&&station.NextMarkerNumber==4,"a removed marker number is not reused");station.RemoveTool(m1);station.RemoveTool(m3);station.RemoveTool(m4);Require(station.DeployedCount==before&&station.NextMarkerNumber==1,"marker numbers not released");
+   }
    Debug.Log("FORENSIC_SANDBOX_PASS ten tools; "+fields.Length+" latent fields with "+marks+" marks; sweep develops and over-brushes; porous paper; DNA-before-powder wipes the mark; photograph-then-lift correct; lift-first out of sequence; KM positive/negative/invalid; dental-stone and silicone casting; dust-mark discipline; forceps and paper packaging; JSON; reset");
   }finally{hand.ReleaseAll();Object.DestroyImmediate(a);foreach(var f in fields)f.ResetField();register.ResetInvestigation();register.PersistRecords=persist;Physics.SyncTransforms();}
  }

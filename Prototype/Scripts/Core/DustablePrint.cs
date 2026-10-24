@@ -23,7 +23,7 @@ public sealed class DustablePrint : MonoBehaviour {
  public void Brush(float amount,FieldInvestigationTool.Method applicator){
   if(Destroyed||amount<=0||Coverage>=OverBrushLimit)return;bool was=Developed;Coverage=Mathf.Min(OverBrushLimit,Coverage+amount);Refresh();
   if(!was&&Developed){
-   var log=Clue?ProcedureLog.Of(Clue):null;var surface=Clue?Clue.Surface:SurfaceClass.NonPorousSmooth;
+   var log=Clue?ProcedureLog.Of(Clue):null;var surface=Clue?Clue.Surface:SurfaceClass.NonPorousSmooth;if(Clue&&Clue.Register)Clue.Register.GlowRefresh();
    if(log)log.Add("Developed",ForensicRules.MethodName(applicator),ForensicRules.Applicator(applicator,surface),Smudge?"smear, no ridge detail":"ridge detail, grade 4");
    if(Smudge){ForensicFeedback.Post("Powder shows a smear with no ridge detail",FeedbackTone.Info);if(Clue)Clue.Inspect();return;}
    if(Clue)Clue.Inspect();DemoSounds.Play(DemoSound.Select,transform.position,.15f);
