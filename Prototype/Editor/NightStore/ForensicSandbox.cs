@@ -22,12 +22,13 @@ public static partial class PresentationPolish {
   foreach(var old in register.Tools.Where(t=>t&&t.Kind>=FieldInvestigationTool.Method.MagneticWand).ToArray())Object.DestroyImmediate(old.gameObject);
   var tools=register.Tools.Where(t=>t&&t.Kind<FieldInvestigationTool.Method.MagneticWand).ToList();
   // ---- case tools, arranged (October 24, second pass: no printed text anywhere on the case; Koda):
-  // the hand tools lie in the tray, left column forceps/swab/brush/wand, right column silicone kit
-  // and lifting tape; the flat items (hinge lifter, blood test kit, gel lifter) ride in the lid under
-  // elastic straps; the casting bowl stands outside on the pavement.
+  // the hand tools lie in the tray, left column forceps/swab/brush/wand, lifting tape on the right;
+  // the silicone kit (tube and dispensing gun, 30 cm) lies on the case base beside the powder jar;
+  // the flat items (hinge lifter, blood test kit, gel lifter) ride in the lid under elastic straps;
+  // the casting bowl stands outside on the pavement.
   tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MagneticWand,Vector3.zero));
   tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.Tape,Vector3.zero));
-  tools.Add(FieldTool(tray,register,FieldInvestigationTool.Method.MikrosilKit,Vector3.zero));
+  var silicone=FieldTool(caseRoot,register,FieldInvestigationTool.Method.MikrosilKit,V(.37f,.025f,-.09f));silicone.transform.localRotation=Quaternion.identity;tools.Add(silicone);
   tools.Add(FieldTool(lid,register,FieldInvestigationTool.Method.GelLifter,Vector3.zero));
   tools.Add(FieldTool(lid,register,FieldInvestigationTool.Method.KMTest,Vector3.zero));
   // The casting kit works outside: its bowl rests on the pavement beside the table with its own ground dock.
@@ -36,7 +37,7 @@ public static partial class PresentationPolish {
   // Tray slots: tools lie along the tray's X, two columns either side of the partition.
   var slots=new Dictionary<FieldInvestigationTool.Method,Vector3>{
    {FieldInvestigationTool.Method.Forceps,V(-.115f,.034f,-.112f)},{FieldInvestigationTool.Method.Swab,V(-.115f,.034f,-.037f)},{FieldInvestigationTool.Method.Brush,V(-.115f,.034f,.038f)},{FieldInvestigationTool.Method.MagneticWand,V(-.115f,.034f,.113f)},
-   {FieldInvestigationTool.Method.MikrosilKit,V(.115f,.034f,-.075f)},{FieldInvestigationTool.Method.Tape,V(.115f,.034f,.07f)}};
+   {FieldInvestigationTool.Method.Tape,V(.115f,.034f,0)}};
   // Lid slots (lid local: the inner face is -Y, the lid's top edge is -Z): flat items side by side on
   // the left half, the register clipboard keeps the right half. Height per item so it rests on the face.
   var lidSlots=new Dictionary<FieldInvestigationTool.Method,Vector3>{
@@ -256,7 +257,7 @@ public static partial class PresentationPolish {
    hand.ReleaseAll();glow.Untrack();Require(glow.ActiveGlows==0&&register.transform.Cast<Transform>().All(t=>t.name!="Glow"),"glow stays after the tool is put back");
    Require(register.Tools.All(t=>t.Dock&&Vector3.Distance(t.transform.position,t.Dock.position)<.001f),"a tool rests away from its dock after the arrangement");
    Require(!register.Kit.GetComponentsInChildren<TextMesh>(true).Any(t=>t.name.StartsWith("SlotLabel_")||t.name=="ToolGuide")&&!register.Kit.transform.Find("RaisedLid/ToolGuidePaper")&&register.Kit.transform.Find("RaisedLid/LidStraps"),"printed text left on the case, or the lid straps missing");
-   Require(register.Tools.Count(t=>t.Dock.parent==register.Kit.transform.Find("RaisedLid"))==3&&register.Tools.Count(t=>t.Dock.parent==register.Kit.transform.Find("FieldKit"))==6,"three lid tools and six tray tools expected");
+   Require(register.Tools.Count(t=>t.Dock.parent==register.Kit.transform.Find("RaisedLid"))==3&&register.Tools.Count(t=>t.Dock.parent==register.Kit.transform.Find("FieldKit"))==5,"three lid tools and five tray tools expected");
    // -- the cart: pulled by its bar, the case rides on it, both come home on reset
    var cart=register.ExtraKits.Length>0?register.ExtraKits[0]:null;Require(cart&&cart.Cart&&cart.Grip,"field cart missing");
    var kitHome=register.Kit.transform.position;var cartHome=cart.transform.position;Physics.SyncTransforms();
