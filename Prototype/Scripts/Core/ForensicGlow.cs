@@ -37,11 +37,10 @@ public sealed class ForensicGlow : MonoBehaviour {
  }
  public void Rebuild(){
   Clear();if(!held||!Register)return;
-  foreach(var clue in Register.AllClues)if(Compatible(clue,held.Kind)&&!clue.GetComponent<LatentMarkField>()&&!clue.transform.IsChildOf(LatentMarkFieldRoot(clue)))Add(clue.transform,clue.transform.position+Vector3.up*.015f,Radius,false);
+  foreach(var clue in Register.AllClues)if(Compatible(clue,held.Kind)&&!clue.GetComponentInParent<LatentMarkField>())Add(clue.transform,clue.transform.position+Vector3.up*.015f,Radius,false);
   if(held.IsApplicator)foreach(var field in FindObjectsByType<LatentMarkField>(FindObjectsSortMode.None)){var box=field.GetComponent<BoxCollider>();if(!box)continue;var sheet=Add(field.transform,field.transform.TransformPoint(box.center+Vector3.up*(box.size.y*.5f+.004f)),1,true);sheet.transform.localScale=new Vector3(box.size.x,box.size.z,1);}
  }
- // Field marks are found by sweeping, so they are never pointed out one by one.
- static Transform LatentMarkFieldRoot(EvidenceClue clue){var field=clue.GetComponentInParent<LatentMarkField>();return field?field.transform:null;}
+ // Field marks (children of a LatentMarkField) are found by sweeping, so they are never pointed out one by one.
  Renderer Add(Transform target,Vector3 at,float radius,bool flat){
   var g=new GameObject("Glow"){hideFlags=HideFlags.DontSave};g.transform.SetParent(transform,false);g.transform.position=at;g.layer=target.gameObject.layer;
   g.AddComponent<MeshFilter>().sharedMesh=Quad();var r=g.AddComponent<MeshRenderer>();r.sharedMaterial=Material();r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=false;r.lightProbeUsage=UnityEngine.Rendering.LightProbeUsage.Off;
