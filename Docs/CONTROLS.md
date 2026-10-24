@@ -139,3 +139,16 @@ If controller poses do not arrive under a future OpenXR version, the fallback is
 | XRLocomotion.SnapLeft() / SnapRight() | Turn around the head |
 
 Both adapters derive from ToolHolder, which owns the held tool, the camera hand-off (EvidenceCamera.HoldBy / ReturnToRack) and the release on DemoSession.Resetting. Tools stay under DeploymentRoot while held, so reset and removal keep working. Physical headset movement is not constrained by any of this; only teleport targets are.
+
+## Forensic field tools (October 24, unverified)
+
+Ten tools dock in the portable case: forceps, sterile swab, powder brush, hinge lifter, magnetic wand, lifting tape with backing card, gel lifter, presumptive blood test kit, dental-stone casting kit (bowl beside the table), silicone casting kit. VR: grip takes a tool, trigger uses it on what the controller points at, release returns it to its dock. PC: G or click takes and uses, R returns. Nothing is gated: the register JSON records the method, container, step order and flags (see Docs/Research/FORENSIC_MECHANICS_SPEC.md).
+
+| Tool | On | What happens |
+|---|---|---|
+| Brush, magnetic wand | Any glass, metal or painted surface (held trigger, sweep) | Develops the latent marks under the contact; keep brushing past development and the ridges fill in (logged). On paper: wrong method, logged |
+| Tape, hinge lifter, gel lifter | A developed mark | Lifts it (photograph first or the lift is out of sequence); the gel lifter also lifts dust footwear marks and leaves DNA recoverable |
+| Swab | Handles, items, stains | Takes DNA or the stain; a wet swab over an undeveloped mark wipes it (logged) |
+| Blood test kit | A red-brown stain (four presses) | Rub, ethanol, reagent, peroxide: pink is a presumptive positive; paint stays white; a reagent left over 30 s makes the test invalid |
+| Casting kits | Sand impression (dental stone), tool marks (silicone) | Pour, wait (30 s / 8 s stand for 30 min / 8 min), press again to lift the cast |
+| Camera | Any clue in frame within 0.9 m | Logs "Photographed", "with scale" when an L-scale lies within 25 cm |

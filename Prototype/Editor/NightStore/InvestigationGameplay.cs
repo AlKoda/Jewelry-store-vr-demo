@@ -37,9 +37,29 @@ public static partial class PresentationPolish {
   else if(kind==FieldInvestigationTool.Method.Brush){
    var model=DemoAssetLibrary.PlacePack("ForensicModels","FingerprintBrush",g,V(0,0,-.05f),0,new DemoAssetLibrary.PackOptions{Shadows=true,Lod=DemoAssetLibrary.LodClass.None,ModelEuler=new Vector3(90,0,0)});
    if(!model){k.Cylinder(polymer,V(0,0,-.05f),V(0,0,.06f),.004f,10);k.Cylinder(trayFallback(),V(0,0,.06f),V(0,0,.10f),.012f,12);}
-  }else{k.Bar(polymer,V(0,0,.015f),V(.067f,.002f,.10f),.001f);k.Box(steel,V(0,-.0012f,.032f),V(.043f,.0005f,.038f));}
+  }else if(kind==FieldInvestigationTool.Method.LiftCard){k.Bar(polymer,V(0,0,.015f),V(.067f,.002f,.10f),.001f);k.Box(steel,V(0,-.0012f,.032f),V(.043f,.0005f,.038f));}
+  else{
+   // October 24 kit (Docs/Research/FORENSIC_MECHANICS_SPEC.md §3): pack models with primitive fallbacks.
+   var rubber=Mat(Folder,"FieldKitRubberBlack",new Color(.03f,.032f,.034f),.12f);var card=Mat(Folder,"FieldBackingCardWhite",new Color(.9f,.9f,.86f),.05f);
+   GameObject model=null;var options=new DemoAssetLibrary.PackOptions{Shadows=true,Lod=DemoAssetLibrary.LodClass.None};
+   switch(kind){
+    case FieldInvestigationTool.Method.MagneticWand:options.ModelEuler=new Vector3(90,0,0);model=DemoAssetLibrary.PlacePack("ForensicModels","MagneticWand",g,V(0,0,-.05f),0,options);
+     if(!model){k.Cylinder(polymer,V(0,0,-.05f),V(0,0,.085f),.006f,10);k.Cylinder(rubber,V(0,0,.085f),V(0,0,.103f),.009f,12);}break;
+    case FieldInvestigationTool.Method.Tape:model=DemoAssetLibrary.PlacePack("ForensicModels","LiftingTapeRoll",g,V(0,-.0225f,.03f),0,options);
+     if(!model)k.Cylinder(polymer,V(0,-.025f,.03f),V(0,.025f,.03f),.03f,16);
+     k.Bar(card,V(0,-.016f,.095f),V(.076f,.0012f,.127f),.0004f);break; // 3 x 5 in backing card under the roll
+    case FieldInvestigationTool.Method.GelLifter:options.Scale=.5f;model=DemoAssetLibrary.PlacePack("ForensicModels","GelLifterBlack",g,V(0,0,.04f),0,options);
+     if(!model)k.Bar(rubber,V(0,0,.04f),V(.065f,.0025f,.09f),.0005f);break;
+    case FieldInvestigationTool.Method.KMTest:model=DemoAssetLibrary.PlacePack("ForensicModels","KMTestKit",g,V(0,0,.03f),0,options);
+     if(!model){k.Bar(card,V(0,.012f,.03f),V(.12f,.024f,.08f),.002f);for(int i=0;i<3;i++)k.Cylinder(polymer,V(-.03f+i*.03f,.02f,.012f),V(-.03f+i*.03f,.05f,.012f),.009f,10);}break;
+    case FieldInvestigationTool.Method.CastingKit:model=DemoAssetLibrary.PlacePack("ForensicModels","MixingBowlRubber",g,V(0,-.03f,.05f),0,options);
+     if(!model)k.Lathe(rubber,V(0,-.03f,.05f),Quaternion.identity,new[]{.05f,.08f,.08f,.045f},new[]{0f,.06f,.065f,.012f},16,true,true,true);break;
+    default:options.ModelEuler=new Vector3(90,0,0);model=DemoAssetLibrary.PlacePack("ForensicModels","MikrosilTube",g,V(0,0,-.05f),0,options);
+     if(!model)k.Cylinder(polymer,V(0,0,-.05f),V(0,0,.09f),.018f,12);break;
+   }
+  }
   if(k.TriangleCount>0)k.Emit(kind.ToString()+"Body",g,Vector3.zero,Quaternion.identity,Folder,"field_tool_"+kind);
-  var box=g.gameObject.AddComponent<BoxCollider>();box.size=kind==FieldInvestigationTool.Method.LiftCard?V(.074f,.035f,.115f):V(.045f,.035f,.19f);box.center=V(0,0,.035f);box.isTrigger=true;
+  var box=g.gameObject.AddComponent<BoxCollider>();box.size=kind==FieldInvestigationTool.Method.LiftCard?V(.074f,.035f,.115f):kind>=FieldInvestigationTool.Method.MagneticWand?V(.09f,.06f,.19f):V(.045f,.035f,.19f);box.center=V(0,0,.035f);box.isTrigger=true;
   var tool=g.gameObject.AddComponent<FieldInvestigationTool>();tool.Kind=kind;tool.Register=register;tool.HandPosition=V(0,-.045f,.005f);
   tool.Tip=Group("WorkingTip",g);tool.Tip.localPosition=V(0,0,.125f);foreach(var t in g.GetComponentsInChildren<Transform>())t.gameObject.layer=CrowdLayer;return tool;
  }
@@ -104,6 +124,7 @@ public static partial class PresentationPolish {
   foreach(var r in group.GetComponentsInChildren<MeshRenderer>(true)){r.lightProbeUsage=LightProbeUsage.BlendProbes;r.reflectionProbeUsage=ReflectionProbeUsage.BlendProbes;if(r.GetComponent<TextMesh>())r.shadowCastingMode=ShadowCastingMode.Off;}
   ConfigurePortableFieldwork(register);
   AddShopSearchActivities(register);
+  ConfigureForensicSandbox(register);
  }
  public static void FieldworkInspectRun(){try{
   EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;EvidenceGameplay();
@@ -115,11 +136,11 @@ public static partial class PresentationPolish {
   if(!root)root=GameObject.Find("NightStore").transform;
   var register=root.Find("InvestigationFieldwork").GetComponent<EvidenceRegister>();bool persist=register.PersistRecords;register.PersistRecords=false;
   void Require(bool value,string message){if(!value)throw new Exception("Fieldwork: "+message);}
-  Require(register.Clues.Length==18&&register.Clues.Select(c=>c.Id).Distinct().Count()==18,"eighteen stable, unique evidence IDs required");
-  Require(register.Tools.Length==4&&register.Clues.Count(c=>c.CanSample)==10,"four field tools / ten sample points required");
+  Require(register.Clues.Length==27&&register.Clues.Select(c=>c.Id).Distinct().Count()==27,"twenty-seven stable, unique evidence IDs required");
+  Require(register.Tools.Length==10&&register.Clues.Count(c=>c.CanSample)==21,"ten field tools / twenty-one sample points required");
   Require(register.GetComponentsInChildren<Light>().Length==0&&register.GetComponentsInChildren<Rigidbody>().Length==0,"fieldwork must not add lights or rigidbody forces");
   foreach(var tool in register.Tools){Require(tool.GetComponentsInChildren<Collider>().All(c=>c.isTrigger),"held/racked tool can collide with player");tool.RecordHome();}
-  int triangles=register.GetComponentsInChildren<MeshFilter>(true).Sum(f=>f.sharedMesh.triangles.Length/3);Require(triangles<15000,"fieldwork geometry exceeds budget");
+  int triangles=register.GetComponentsInChildren<MeshFilter>(true).Sum(f=>f.sharedMesh.triangles.Length/3);Require(triangles<60000,"fieldwork geometry exceeds budget (October 24: six more case tools and the dropped items)");
   foreach(var r in register.GetComponentsInChildren<MeshRenderer>(true))Require(r.sharedMaterials.All(m=>m&&m.shader&&m.shader.isSupported&&!m.IsKeywordEnabled("_EMISSION")),"unavailable or glowing fieldwork material");
   var test=new GameObject("Temporary fieldwork input test");var hand=test.AddComponent<HandInteractor>();var second=new GameObject("Temporary second hand");var hand2=second.AddComponent<HandInteractor>();
   try{
@@ -143,6 +164,7 @@ public static partial class PresentationPolish {
   }finally{hand.ReleaseAll();hand2.ReleaseAll();Object.DestroyImmediate(test);Object.DestroyImmediate(second);register.ResetInvestigation();register.PersistRecords=persist;}
   PortableFieldworkChecks(register);
   ShopSearchChecks(register);
+  ForensicSandboxChecks(register);
   Debug.Log("FIELDWORK_BEHAVIOUR_PASS unique IDs; two-handed exclusion; controller ray; opaque occlusion; forceps/swab and wrong-tool/reach rules; single collection; tray return; container access; desktop sampling; bilingual register; JSON; reset. triangles="+triangles);
  }
  public static void FieldworkRefinementRun(){try{

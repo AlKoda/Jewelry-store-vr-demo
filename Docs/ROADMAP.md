@@ -4,7 +4,8 @@ Updated October 23, 2026. Prototype and the local Unity project must match; Koda
 
 Latest tested-build feedback (see [NEXT_SESSION_NOTES.md](NEXT_SESSION_NOTES.md)) is now coded by Claude in Prototype (October 23, **unverified**: cloud compile only, no Unity run). User feedback supersedes any visual/interaction acceptance implied by the completed local checks below.
 
-- [ ] Restore the unguided sandbox direction: remove quests/tasks, hints and progression restrictions; external instruction supplies the help. Support tools on all appropriate compatible traces/objects; research real forensic practice before the next mechanics pass.
+- [x] CODED October 24, unverified: forensic research done (Docs/Research), tools work on compatible surfaces (latent-mark fields on every case, multi-method clues, porous-surface warnings), nothing gates or hints; every step is recorded in a ProcedureLog for review. Still to do: Phase 2 of Docs/Research/FORENSIC_MECHANICS_SPEC.md (reagent spray in darkness, electrostatic lift, glove changes, review screen, Arabic strings) and removing any remaining guided text from the register page.
+- [ ] Koda: regenerate the night scene fieldwork on the PC (PresentationPolish.FieldworkRefinementRun), run FieldworkChecks (now including ForensicSandboxChecks), rebuild, headset-test the new tools (wand, tape, gel lifter, KM test, casting) and the reach to the case and the sand drift.
 - [x] CODED, unverified: door glass remnants keep no static flag (move with the leaf); eased, speed-limited door swing. Still open: intact storefront/display glass visibly realistic in the actual build.
 - [x] CODED, unverified: tool wins over the case handle unless the handle is clearly nearer; case rests on display-case tops and narrower tables (centre + 60 % footprint, 4 cm).
 - [x] CODED, unverified: head-only height offset (default 0) plus a shared floor correction measured by the presenter menu's "Calibrate floor".

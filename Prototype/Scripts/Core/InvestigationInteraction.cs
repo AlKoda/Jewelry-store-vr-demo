@@ -7,14 +7,14 @@ public static class InvestigationInteraction {
   hit=default;float nearest=reach;bool found=false;
   foreach(var h in Physics.RaycastAll(ray,reach,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Collide)){
    var t=h.collider.transform;if(holder&&(t.IsChildOf(holder.transform)||t.GetComponentInParent<CharacterController>()||(holder.FieldTool&&t.IsChildOf(holder.FieldTool.transform))||(holder.CarriedKit&&t.IsChildOf(holder.CarriedKit.transform))))continue;
-   bool target=t.GetComponentInParent<EvidenceClue>()||t.GetComponentInParent<EvidenceContainer>()||t.GetComponentInParent<EvidenceRegister>()||t.GetComponentInParent<FieldInvestigationTool>()||t.GetComponentInParent<PortableFieldKit>();
+   bool target=t.GetComponentInParent<EvidenceClue>()||t.GetComponentInParent<EvidenceContainer>()||t.GetComponentInParent<EvidenceRegister>()||t.GetComponentInParent<FieldInvestigationTool>()||t.GetComponentInParent<PortableFieldKit>()||t.GetComponentInParent<LatentMarkField>()||t.GetComponentInParent<ForensicSurface>();
    if(h.collider.isTrigger&&!target)continue;if(h.distance>nearest)continue;nearest=h.distance;hit=h;found=true;
   }return found;
  }
  public static bool Use(ToolHolder holder,Ray ray,float reach){
-  if(!Target(ray,reach,holder,out var hit)){if(holder.FieldTool)holder.FieldTool.Use(null);return holder.FieldTool;}
+  if(!Target(ray,reach,holder,out var hit)){if(holder.FieldTool)holder.FieldTool.UseAt(null,default,false);return holder.FieldTool;}
   var clue=hit.collider.GetComponentInParent<EvidenceClue>();
-  if(holder.FieldTool){holder.FieldTool.Use(clue);return true;}
+  if(holder.FieldTool){holder.FieldTool.UseAt(clue,hit,true);return true;}
   var tool=hit.collider.GetComponentInParent<FieldInvestigationTool>();if(tool){holder.TakeFieldTool(tool);return true;}
   var kit=hit.collider.GetComponentInParent<PortableFieldKit>();if(kit&&kit.GripCollider==hit.collider){holder.TakeKit(kit);return true;}
   if(clue)return clue.Inspect();var box=hit.collider.GetComponentInParent<EvidenceContainer>();if(box){box.Toggle();return true;}
