@@ -8,7 +8,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
-| Claude | Forensic research delivered (Docs/Research, October 24); sandbox mechanics Phase 1 coded (unverified); ForensicModels additions landing from asset agents | Docs/Research, Prototype/ThirdParty/ForensicModels, Prototype/Scripts/Core + Tools fieldwork classes, Editor/NightStore/ForensicSandbox.cs and InvestigationGameplay.cs, Docs/ASSET_REGISTER.md; not NEXT_SESSION_NOTES.md (ChatGPT) | 2026-10-23 | research done; code awaiting Koda's PC validation; models in progress |
+| Claude | Koda's test fixes (October 24): arranged labelled case tools, hints, glow, ding, marker number reuse, shadow bias, spectator probes; `PresentationPolish.SandboxRefreshRun` re-authors, rebuilds probes, rebakes, previews and builds. Waiting to run it on the PC until ChatGPT's checkout (CrowdGathering.cs in progress) is clean | Prototype/Scripts/Core (forensic classes, ForensicGlow), Tools/FieldInvestigationTool.cs, Tools/ToolStation.cs, Lighting/DemoLighting.cs, Editor/NightStore/ForensicSandbox.cs, IntegrationDelivery.cs, NightLighting.cs (probes only), Docs/Research | 2026-10-23 | code pushed; PC run pending |
 | ChatGPT | Integrate Claude forensic mechanics; saved-scene door/glass and tool usability corrections | Source integration fixes, new IntegrationDelivery editor pass, Docs, existing Unity scene | 2026-10-24 | local integration complete: saved-scene checks and Windows build passed; PCVR headset review pending; Phase 2 deferred |
 
 ## One project: edit it, never fork it
