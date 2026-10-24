@@ -203,7 +203,7 @@ public static partial class PresentationPolish {
    // The hand looks down at the mark and is then shifted so the brush's working tip, not the controller
    // ray, sits 2 cm over the mark (the tracked-hand contact is the tip, FieldInvestigationTool.TipContact).
    a.transform.position=mark.transform.position+Vector3.up*.16f;a.transform.LookAt(mark.transform.position);brush.Follow(a.transform);
-   a.transform.position+=mark.transform.position+Vector3.up*.02f-brush.Tip.position;a.transform.LookAt(mark.transform.position);brush.Follow(a.transform);Physics.SyncTransforms();
+   a.transform.position+=mark.transform.position+Vector3.up*.02f-brush.Tip.position;brush.Follow(a.transform);Physics.SyncTransforms();
    Require(Vector3.Distance(brush.Tip.position,mark.transform.position)<.05f&&brush.TipContact(out var tipAt,out _)&&tipAt.GetComponentInParent<LatentMarkField>(),"the brush tip over a case top finds no contact");
    Require(Physics.Raycast(new Ray(mark.transform.position+Vector3.up*.3f,Vector3.down),out var top,1,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Collide)&&top.collider.GetComponentInParent<LatentMarkField>(),"case top is not hit by a ray");
    Require(brush.UseAt(null,top,true),"brush cannot start sweeping a case top");var ray=new Ray(a.transform.position,a.transform.forward);
