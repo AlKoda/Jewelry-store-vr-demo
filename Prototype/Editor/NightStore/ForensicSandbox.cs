@@ -45,7 +45,8 @@ public static partial class PresentationPolish {
    if(slots.TryGetValue(tool.Kind,out var slot)){tool.transform.SetParent(tray,false);tool.transform.localPosition=slot;tool.transform.localRotation=Quaternion.Euler(0,90,0);}
    else if(lidSlots.TryGetValue(tool.Kind,out var lidSlot)){tool.transform.SetParent(lid,false);tool.transform.localPosition=lidSlot;tool.transform.localRotation=Quaternion.Euler(180,0,0);}
    if(!tool.Dock){var dock=Group("Dock_"+tool.Kind,caseRoot);tool.Dock=dock;}
-   if(tool.Dock.IsChildOf(caseRoot))tool.Dock.SetPositionAndRotation(tool.transform.position,tool.transform.rotation);
+   // The dock lives where the tool rests (tray or lid), so a returned tool comes back under the same part.
+   if(tool.Dock.IsChildOf(caseRoot)){tool.Dock.SetParent(tool.transform.parent,true);tool.Dock.SetPositionAndRotation(tool.transform.position,tool.transform.rotation);}
   }
   // No printed text on the case (Koda): labels and the lid guide of the first pass go.
   foreach(var old in caseRoot.GetComponentsInChildren<Transform>(true).Where(t=>t.name.StartsWith("SlotLabel_")||t.name=="ToolGuide"||t.name=="ToolGuidePaper"||t.name=="LidStraps").ToArray())Object.DestroyImmediate(old.gameObject);
@@ -255,7 +256,7 @@ public static partial class PresentationPolish {
    hand.ReleaseAll();glow.Untrack();Require(glow.ActiveGlows==0&&register.transform.Cast<Transform>().All(t=>t.name!="Glow"),"glow stays after the tool is put back");
    Require(register.Tools.All(t=>t.Dock&&Vector3.Distance(t.transform.position,t.Dock.position)<.001f),"a tool rests away from its dock after the arrangement");
    Require(!register.Kit.GetComponentsInChildren<TextMesh>(true).Any(t=>t.name.StartsWith("SlotLabel_")||t.name=="ToolGuide")&&!register.Kit.transform.Find("RaisedLid/ToolGuidePaper")&&register.Kit.transform.Find("RaisedLid/LidStraps"),"printed text left on the case, or the lid straps missing");
-   Require(register.Tools.Count(t=>t.transform.parent==register.Kit.transform.Find("RaisedLid"))==3&&register.Tools.Count(t=>t.transform.parent==register.Kit.transform.Find("FieldKit"))==6,"three lid tools and six tray tools expected");
+   Require(register.Tools.Count(t=>t.Dock.parent==register.Kit.transform.Find("RaisedLid"))==3&&register.Tools.Count(t=>t.Dock.parent==register.Kit.transform.Find("FieldKit"))==6,"three lid tools and six tray tools expected");
    // -- the cart: pulled by its bar, the case rides on it, both come home on reset
    var cart=register.ExtraKits.Length>0?register.ExtraKits[0]:null;Require(cart&&cart.Cart&&cart.Grip,"field cart missing");
    var kitHome=register.Kit.transform.position;var cartHome=cart.transform.position;Physics.SyncTransforms();
