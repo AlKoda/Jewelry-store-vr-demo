@@ -46,3 +46,6 @@ build-latest.log
 
 # Blender automatic backups
 *.blend1
+
+# Python bytecode from the pack generators
+__pycache__/
