@@ -15,6 +15,7 @@ Koda tested the integrated build and asked for: arranged tools with hints, a glo
 - **Markers:** `ToolStation` reuses the lowest free marker number after a removal (`markerNumbers` set); validator check added.
 - **Shadows:** torch bias .025/.16 to .01/.1, lamps and flash .04/.3 to .015/.15 (the large depth bias detached small tools from their shadows).
 - **Spectators:** the far-pavement people stood outside the light-probe hull (probes ended at z -15.5, people at -21.7), so they took the hull edge value and looked unlit. `NightLighting.RebuildProbes` adds two rows at body heights along z -22.2 to -19.4; needs the rebake that SandboxRefreshRun performs.
+- **Second round (same day):** held tools carry a hint card (name, works on, how) facing the eyes; the exterior field table is a `PortableFieldKit` cart (`Cart=true`): its push bar is gripped like the case handle, it follows the hand heading and carries the case riding on it (`Passengers`), parks with the same rest rules, resets home (`EvidenceRegister.ExtraKits`); the camera hold is wrist-down (`EvidenceCamera.HandHold = Euler(90,0,0)`: controller pointing up aims the lens forward, body on the fist), with the PresentationRepairValidation grip checks rewritten for it.
 - **Shaders:** pack models go through `DemoAssetLibrary.PackMaterial` (Standard, glass/cutout roles) like every other pack; no change found necessary, to be judged in the new previews.
 
 ## Local integration — October 24, verified in Unity

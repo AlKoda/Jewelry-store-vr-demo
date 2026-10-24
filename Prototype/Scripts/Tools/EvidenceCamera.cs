@@ -144,14 +144,12 @@ public sealed class EvidenceCamera : MonoBehaviour
         SetCollidersEnabled(false);
         StartViewfinder();
     }
-    public static Pose ControllerGrip(bool left){
-        var rotation=XRGhostHand.GripPitch;
-        // Seat the camera against the normal Meta controller-grasp palm.
-        // Move the camera to the hand; leave the authored finger animation alone.
-        var palm=new Vector3(left?-.029f:.029f,-.0287f,-.0255f);
-        var seat=new Vector3(left?-.095f:.095f,.004f,-.060f);
-        return new Pose(palm-rotation*seat,rotation);
-    }
+    // The camera is held from below with the wrist bent 90 degrees down (Koda, October 24): the
+    // controller points at the sky, the fingers with it, and the body sits on top of the fist with
+    // the lens level along the controller's -up. Pointing the controller up aims the camera forward.
+    public static readonly Quaternion HandHold=Quaternion.Euler(90,0,0);
+    public static Vector3 HandSeat(bool left)=>new Vector3(left?-.012f:.012f,.012f,.075f);
+    public static Pose ControllerGrip(bool left)=>new Pose(HandSeat(left),HandHold);
 
     public void ReturnToRack()
     {

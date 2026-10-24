@@ -24,7 +24,7 @@ public abstract class ToolHolder : MonoBehaviour
         if(!kit||Held||HoldingCamera||FieldTool||CarriedKit)return false;
         if(this is HandInteractor&&Vector3.Distance(transform.position,kit.Grip.position)>.32f)return false;
         if(!kit.Take(this,CameraAnchor))return false;CarriedKit=kit;var lighting=FindFirstObjectByType<DemoLighting>();if(this is HandInteractor&&lighting)lighting.ClearHandTorch(CameraAnchor);
-        DemoSounds.Play(DemoSound.Click,kit.Grip.position,.18f);DemoFeedback.Post("Field kit in hand");return true;
+        DemoSounds.Play(DemoSound.Click,kit.Grip.position,.18f);DemoFeedback.Post(kit.Cart?"Field cart in hand: walk, and it rolls with you":"Field kit in hand");return true;
     }
     public void PutDownKit(bool home=false,bool audible=true){if(!CarriedKit)return;var kit=CarriedKit;CarriedKit=null;kit.Release(home,false,audible);}
     public bool PlaceKit(Ray ray,float reach){if(!CarriedKit||!CarriedKit.PlaceByRay(ray,reach))return false;var kit=CarriedKit;CarriedKit=null;kit.Release(false,true);return true;}

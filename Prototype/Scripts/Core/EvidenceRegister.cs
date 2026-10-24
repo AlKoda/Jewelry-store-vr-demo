@@ -22,6 +22,7 @@ public sealed class EvidenceRegister : MonoBehaviour {
  public DemoSession Session;public EvidenceCamera Camera;
  public TextMesh PageText;public int Page {get;private set;}
  public PortableFieldKit Kit;
+ public PortableFieldKit[] ExtraKits=new PortableFieldKit[0]; // the pushable field cart
  public bool PersistRecords=true;
  RecordFile document=new RecordFile();string output;int visiblePackets;Material runtimeInk;
  public int ObservedCount=>AllClues.Count(c=>c&&c.Observed);
@@ -67,7 +68,7 @@ public sealed class EvidenceRegister : MonoBehaviour {
  static string Wrap(string value){var result="";int column=0;foreach(string word in value.Split(' ')){if(column+word.Length>35){result+="\n";column=0;}if(column>0){result+=" ";column++;}result+=word;column+=word.Length;}return result;}
  public void ResetInvestigation(){
   // Completed record files and photos survive reset; a new register starts here.
-  if(Kit)Kit.ResetToHome();foreach(var c in AllClues)c.ResetEvidence();foreach(var t in Tools)if(t){if(t.Holder)t.Holder.ReturnFieldTool();else t.ReturnToRack();}foreach(var c in Containers)if(c)c.Close();
+  if(Kit)Kit.ResetToHome();foreach(var k in ExtraKits)if(k)k.ResetToHome();foreach(var c in AllClues)c.ResetEvidence();foreach(var t in Tools)if(t){if(t.Holder)t.Holder.ReturnFieldTool();else t.ReturnToRack();}foreach(var c in Containers)if(c)c.Close();
   foreach(var p in SealedPackets)if(p)p.SetActive(false);visiblePackets=0;Page=0;document=new RecordFile();Begin();RefreshPage();
  }
 }

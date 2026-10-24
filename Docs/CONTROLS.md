@@ -152,3 +152,9 @@ Ten tools dock in the portable case: forceps, sterile swab, powder brush, hinge 
 | Blood test kit | A red-brown stain (four presses) | Rub, ethanol, reagent, peroxide: pink is a presumptive positive; paint stays white; a reagent left over 30 s makes the test invalid |
 | Casting kits | Sand impression (dental stone), tool marks (silicone) | Pour, wait (30 s / 8 s stand for 30 min / 8 min), press again to lift the cast |
 | Camera | Any clue in frame within 0.9 m | Logs "Photographed", "with scale" when an L-scale lies within 25 cm |
+
+### Case, cart and camera (October 24, unverified)
+
+- **Hint card:** while a field tool is held, a card above it names the tool, what it works on and how to use it; the same line appears in the message feed when you take it. Compatible targets glow faintly; display-case tops glow as a whole for the brush and wand.
+- **Cart:** the exterior field table is a cart. Grip its push bar (the rail on the street side) and walk: it rolls with you and the open case rides on top. Release to park it; a blocked spot rolls it back. Reset returns cart and case.
+- **Camera hold:** grab the camera and point the controller at the sky (wrist bent down, fingers up): the body sits on the fist and the lens looks level ahead. Trigger photographs, A/X toggles the flash.

@@ -47,16 +47,30 @@ public sealed class FieldInvestigationTool : MonoBehaviour {
  void Awake(){RecordHome();foreach(var c in GetComponentsInChildren<Collider>())c.isTrigger=true;}
  public bool Take(ToolHolder holder,Transform anchor){
   if(Holder||!holder||!anchor)return false;RecordHome();Holder=holder;transform.SetParent(Register?Register.transform:null,true);lighting=FindFirstObjectByType<DemoLighting>();Follow(anchor);
-  ForensicFeedback.Post((DemoLanguage.Arabic?"":ToolName+": ")+Hint);HeldChanged?.Invoke(this,true);return true;
+  ForensicFeedback.Post((DemoLanguage.Arabic?"":ToolName+": ")+Hint);ShowHint();HeldChanged?.Invoke(this,true);return true;
  }
+ // A small card above the held tool (headset UI layer, faces the eyes): name, what it works on, how.
+ Transform hintCard;TextMesh hintText;
+ void ShowHint(){
+  if(!Application.isPlaying)return;HideHint();
+  hintCard=new GameObject("ToolHint").transform;hintCard.SetParent(transform,false);hintCard.localPosition=new Vector3(0,.13f,.04f);
+  string text=ToolName+"\n"+Wrap((DemoLanguage.Arabic?"يعمل على: ":"Works on: ")+WorksOn(Kind),38)+"\n"+Wrap((DemoLanguage.Arabic?"الطريقة: ":"How: ")+HowTo(Kind),38);
+  int lines=text.Split('\n').Length;float height=.011f*lines+.012f;
+  DemoUi.WorldPanel("Back",hintCard,new Vector3(0,0,.002f),.22f,height,.008f,DemoUi.WithAlpha(DemoUi.Card,.85f));
+  hintText=DemoUi.WorldText("Text",hintCard,new Vector3(0,0,-.0008f),DemoLanguage.Arabic?DemoLanguage.Text(text):text,.0095f,DemoUi.Ink,TextAnchor.MiddleCenter,DemoLanguage.Arabic?DemoLanguage.Font:null);
+  DemoUi.ToHeadsetUiLayer(hintCard);
+ }
+ void HideHint(){if(hintCard){Destroy(hintCard.gameObject);hintCard=null;hintText=null;}}
+ static string Wrap(string value,int width){var result="";int column=0;foreach(string word in value.Split(' ')){if(column+word.Length>width){result+="\n";column=0;}if(column>0){result+=" ";column++;}result+=word;column+=word.Length;}return result;}
+ void FaceHint(){if(!hintCard)return;var cam=Camera.main;if(cam)DemoUi.FaceViewer(hintCard,cam.transform.position);}
  public void Follow(Transform anchor){if(!anchor)return;var offset=Holder is DesktopInteractor?new Vector3(.18f,-.14f,.38f):HandPosition;transform.SetPositionAndRotation(anchor.TransformPoint(offset),anchor.rotation*Quaternion.Euler(HandEuler));}
  void LateUpdate(){
   if(!Holder)return;
   if(Holder is HandInteractor&&lighting&&((lighting.TorchEquipped(false)&&lighting.FlashlightLight.transform.parent==Holder.transform)||(lighting.TorchEquipped(true)&&lighting.UVTorchLight.transform.parent==Holder.transform))){Holder.ReturnFieldTool();return;}
-  Follow(Holder is HandInteractor?Holder.transform:((DesktopInteractor)Holder).View.transform);
+  Follow(Holder is HandInteractor?Holder.transform:((DesktopInteractor)Holder).View.transform);FaceHint();
   if(IsApplicator)ContinueDusting();
  }
- public void ReturnToRack(){if(!recorded)RecordHome();bool held=Holder;Holder=null;dusting=null;sweeping=false;transform.SetParent(Dock?Dock.parent:homeParent,true);transform.SetPositionAndRotation(Dock?Dock.position:home,Dock?Dock.rotation:rotation);if(held)HeldChanged?.Invoke(this,false);}
+ public void ReturnToRack(){if(!recorded)RecordHome();bool held=Holder;Holder=null;dusting=null;sweeping=false;HideHint();transform.SetParent(Dock?Dock.parent:homeParent,true);transform.SetPositionAndRotation(Dock?Dock.position:home,Dock?Dock.rotation:rotation);if(held)HeldChanged?.Invoke(this,false);}
  public bool Use(EvidenceClue clue)=>UseAt(clue,default,false);
  // The trigger on whatever the ray found: a clue, or (for the powder applicators) any surface.
  public bool UseAt(EvidenceClue clue,RaycastHit hit,bool hasHit){

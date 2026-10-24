@@ -54,6 +54,20 @@ public static partial class PresentationPolish {
   var guideSheet=Mat(Folder,"FieldToolGuidePaper",new Color(.93f,.92f,.86f),.04f);var sheetMesh=new KitMesh{Lightmapped=false};sheetMesh.Bar(guideSheet,V(0,0,0),V(.30f,.0012f,.20f),.0004f);var guidePaper=sheetMesh.Emit("ToolGuidePaper",lid,V(-.1f,-.0125f,-.14f),Quaternion.identity,Folder,"field_tool_guide_paper");guidePaper.layer=CrowdLayer;guidePaper.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.Off;
   foreach(var tool in register.Tools)foreach(var t in tool.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;
   if(!register.GetComponent<ForensicGlow>())register.gameObject.AddComponent<ForensicGlow>().Register=register;
+  // ---- the field table is a cart (it has casters): pull it by its push bar and the case rides along
+  var table=register.transform.Find("ExteriorFieldTable");
+  if(table){
+   foreach(var t in table.GetComponentsInChildren<Transform>(true))GameObjectUtility.SetStaticEditorFlags(t.gameObject,0);
+   foreach(var r in table.GetComponentsInChildren<MeshRenderer>(true)){r.receiveGI=ReceiveGI.LightProbes;r.lightProbeUsage=LightProbeUsage.BlendProbes;r.reflectionProbeUsage=ReflectionProbeUsage.BlendProbes;}
+   var oldBar=table.Find("PushBar");if(oldBar)Object.DestroyImmediate(oldBar.gameObject);
+   var bar=Group("PushBar",table);bar.localPosition=V(0,.90f,-.31f);var barMesh=new KitMesh{Lightmapped=false};var steel=Mat(Folder,"FieldCartSatinSteel",new Color(.22f,.25f,.26f),.24f);
+   barMesh.Cylinder(steel,V(-.44f,0,0),V(.44f,0,0),.013f,10);foreach(float x in new[]{-.42f,.42f})barMesh.Cylinder(steel,V(x,-.025f,.0f),V(x,-.025f,.3f),.011f,8);
+   var barObject=barMesh.Emit("PushBarRail",bar,Vector3.zero,Quaternion.identity,Folder,"field_cart_push_bar");barObject.GetComponent<MeshRenderer>().shadowCastingMode=ShadowCastingMode.On;
+   var barGrip=bar.gameObject.AddComponent<BoxCollider>();barGrip.isTrigger=true;barGrip.size=V(.9f,.06f,.06f);
+   var cart=table.GetComponent<PortableFieldKit>();if(!cart)cart=table.gameObject.AddComponent<PortableFieldKit>();
+   cart.Cart=true;cart.Grip=bar;cart.GripCollider=barGrip;cart.Bounds=kit.Bounds;cart.Footprint=new Vector2(1f,.54f);cart.RestFootprint=.4f;cart.RestTolerance=.05f;cart.VolumeCentre=V(0,.5f,0);cart.VolumeHalf=V(.5f,.44f,.27f);
+   register.ExtraKits=new[]{cart};foreach(var t in table.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;
+  }
   // ---- consumables and protective items on a ground sheet beside the field table
   var consumables=Fresh("ForensicConsumables",root);consumables.position=V(-5.55f,0,-1.3f);
   var sheet=Mat(Folder,"ForensicGroundSheet",new Color(.16f,.19f,.23f),.08f);var tarp=new KitMesh{Lightmapped=false};tarp.Bar(sheet,V(0,.002f,0),V(1.3f,.004f,.9f),.001f);tarp.Emit("GroundSheet",consumables,Vector3.zero,Quaternion.identity,Folder,"forensic_ground_sheet");
@@ -244,6 +258,15 @@ public static partial class PresentationPolish {
    hand.ReleaseAll();glow.Untrack();Require(glow.ActiveGlows==0&&register.transform.Cast<Transform>().All(t=>t.name!="Glow"),"glow stays after the tool is put back");
    Require(register.Tools.All(t=>t.Dock&&Vector3.Distance(t.transform.position,t.Dock.position)<.001f),"a tool rests away from its dock after the arrangement");
    Require(register.Kit.transform.Find("FieldKit").GetComponentsInChildren<TextMesh>(true).Count(t=>t.name.StartsWith("SlotLabel_"))==7&&register.Kit.transform.Find("RaisedLid/ToolGuide"),"slot labels or the lid tool guide missing");
+   // -- the cart: pulled by its bar, the case rides on it, both come home on reset
+   var cart=register.ExtraKits.Length>0?register.ExtraKits[0]:null;Require(cart&&cart.Cart&&cart.Grip,"field cart missing");
+   var kitHome=register.Kit.transform.position;var cartHome=cart.transform.position;Physics.SyncTransforms();
+   Require(cart.Passengers().Length==1&&cart.Passengers()[0]==register.Kit,"the case does not count as a passenger of the cart");
+   hand.ReleaseAll();a.transform.SetPositionAndRotation(cart.Grip.position,Quaternion.identity);Physics.SyncTransforms();Require(hand.Grab()&&hand.CarriedKit==cart,"the cart's push bar cannot be gripped");
+   var offset=register.Kit.transform.position-cart.transform.position;a.transform.position+=new Vector3(.6f,0,-.4f);cart.Follow(a.transform);
+   Require((cart.transform.position-cartHome).magnitude>.5f&&(register.Kit.transform.position-cart.transform.position-offset).magnitude<.001f,"the case does not ride along on the cart");
+   hand.ReleaseAll();Require(!cart.Holder&&Vector3.Distance(register.Kit.transform.position-cart.transform.position,offset)<.01f,"the case left the cart when it was put down");
+   register.ResetInvestigation();Require(Vector3.Distance(cart.transform.position,cartHome)<.001f&&Vector3.Distance(register.Kit.transform.position,kitHome)<.001f,"reset does not return the cart and the case");
    // -- marker numbers: a removed number is reused
    var station=Object.FindFirstObjectByType<ToolStation>();if(station&&station.MarkerPrefab){
     int before=station.DeployedCount;var m1=station.Spawn(DemoToolKind.Marker);var m2=station.Spawn(DemoToolKind.Marker);var m3=station.Spawn(DemoToolKind.Marker);

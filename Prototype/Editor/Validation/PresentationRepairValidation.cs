@@ -38,7 +38,7 @@ public static partial class NightStoreValidation
                 var pose=EvidenceCamera.ControllerGrip(side==0);body.transform.SetLocalPositionAndRotation(pose.position,pose.rotation);
                 foreach(var bone in ghost.Root.GetComponentsInChildren<Transform>())if(bone.name.StartsWith("XRHand_"))audit.Add(side+" "+bone.name+" "+body.transform.InverseTransformPoint(bone.position).ToString("F4"));
                 foreach(var bone in ghost.Root.GetComponentsInChildren<Transform>())if(bone.name=="XRHand_Palm"){
-                    var p=body.transform.InverseTransformPoint(bone.position);if(Mathf.Abs(p.x)<.08f)throw new Exception("Palm intersects camera body instead of seating outside it");
+                    var p=body.transform.InverseTransformPoint(bone.position);if(p.magnitude<.04f)throw new Exception("Palm intersects camera body instead of seating under it");
                 }
                 var skin=ghost.Root.GetComponentInChildren<SkinnedMeshRenderer>();var baked=new Mesh();skin.BakeMesh(baked);float penetration=0;int vertexIndex=0;
                 foreach(var vertex in baked.vertices){var p=body.transform.InverseTransformPoint(skin.transform.TransformPoint(vertex));
@@ -89,8 +89,8 @@ public static partial class NightStoreValidation
             var bent=belt.Position(XRHolsters.Slot.Flashlight)-head.position;Require(bent.z<standing.z-.2f,"Bending does not retreat belt");
             foreach(bool left in new[]{false,true}){
                 var pose=EvidenceCamera.ControllerGrip(left);var torch=XRGhostHand.TorchPose(left);
-                Require(Quaternion.Angle(pose.rotation,torch.rotation)<.01f,"Camera axis does not match torch");
-                Require(pose.position.magnitude<.12f,"Camera is too far from the controller grip");
+                Require(Vector3.Angle(pose.rotation*Vector3.forward,Vector3.down)<.01f,"Camera lens does not run along the wrist-down hold (controller pointing up aims it forward)");
+                Require(Vector3.Angle(pose.rotation*Vector3.up,Vector3.forward)<.01f&&pose.position.magnitude<.12f,"Camera upright or seat wrong for the wrist-down hold");
             }
         }finally{Object.DestroyImmediate(group);}
         Debug.Log("PRESENTATION_REPAIR_VALIDATION_PASS glass, prop finish, localized reflections, car lamps, trees, bend-vs-look belt and both camera grips");
