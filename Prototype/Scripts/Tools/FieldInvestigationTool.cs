@@ -113,9 +113,19 @@ public sealed class FieldInvestigationTool : MonoBehaviour {
   for(int i=0;i<n;i++){
    var c=contacts[i];if(!c||c.transform.IsChildOf(transform)||(c is MeshCollider mesh&&!mesh.convex))continue;
    if(!c.GetComponentInParent<LatentMarkField>()&&!c.GetComponentInParent<ForensicSurface>()&&!c.GetComponentInParent<DustablePrint>())continue;
-   var p=c.ClosestPoint(Tip.position);float d=Vector3.Distance(p,Tip.position);if(d<best){best=d;at=c;point=p;}
+   var p=c.ClosestPoint(Tip.position);float d=Vector3.Distance(p,Tip.position);if(d<best&&!Occluded(c,p)){best=d;at=c;point=p;}
   }
   return at;
+ }
+ // Solid geometry between the hand and the contact blocks it; the surface's own object (the door
+ // leaf under a handle mark, the showcase under a field) never counts as an obstruction.
+ bool Occluded(Collider target,Vector3 point){
+  if(!Holder)return false;Vector3 from=Holder.transform.position;Vector3 to=point-from;float length=to.magnitude;if(length<.01f)return false;
+  var field=target.GetComponentInParent<LatentMarkField>();var print=target.GetComponentInParent<DustablePrint>();
+  Transform owner=field?field.transform.parent:print?print.transform.parent:target.transform;
+  var hits=Physics.RaycastAll(from,to/length,length-.005f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Ignore);
+  foreach(var h in hits){if(h.collider.transform.IsChildOf(transform)||h.collider.transform.IsChildOf(Holder.transform)||(owner&&h.collider.transform.IsChildOf(owner)))continue;return true;}
+  return false;
  }
  // Where the stroke lands: the tip's own contact for tracked hands, else the pointer ray.
  bool Contact(Ray ray,out Collider at,out Vector3 point){
