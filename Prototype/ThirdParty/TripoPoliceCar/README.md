@@ -15,8 +15,8 @@ hashes and generated counts; Unity removes degenerate wheel-cap triangles.
 
 Unity authoring: `PresentationPolish.PatrolCarDeliveryRun`. The existing car
 placement and original car asset pack are retained. Near model has approximately
-25,576 triangles; far model has 15,000. Four wheel
-materials share one renderer. A baked 128px reflection probe excludes the car's
+33,968 triangles; far model has 15,000. Four wheel
+materials share one renderer. Split spokes have bevelled machined shoulders, wheel hubs carry raised badges, and closed rim barrels hide the road behind the wheel. Fitted transparent projector covers and light guides are near-LOD geometry; their maximum fitted surface distance is recorded in geometry.json (9 mm). Rotors use a derivative-filtered procedural machining finish, with no new raster textures. A baked 256px reflection probe excludes the car's
 visual layer, preventing reflections of its own cabin/body. No new live light.
 
 `CrimeScene/PatrolCarFinish` retains the original paint texture and separates

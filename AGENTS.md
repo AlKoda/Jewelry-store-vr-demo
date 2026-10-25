@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Koda's second test fixes (October 24): wand/brush contact by tip, faint glow, hint on B/Y or V only, text-free case with lid straps, grabbable doors; runs `PresentationPolish.SandboxRefreshRun` in Koda's checkout (`C:\Users\MOBPC\Documents\ChatGPT\Jewelry store\repository`) with a partial checkout of Claude's files when ChatGPT has work staged | Prototype/Scripts/Core (forensic classes, ForensicGlow, PushDoorLeaf), Tools/FieldInvestigationTool.cs, VR/HandInteractor.cs, VR/XRControllerInput.cs, Desktop/DesktopInteractor.cs, Editor/NightStore/ForensicSandbox.cs, IntegrationDelivery.cs, SceneReviewPass.cs (door tuning) | 2026-10-24 | PC run passed, build in Koda's folder; headset test pending |
-| ChatGPT | Tripo patrol car refinement and integration | TripoPoliceCar, car authoring/material/checks, scene and Docs | 2026-10-26 | complete: original colour preserved, logo matched, 25,576/15,000 LODs, fresh lighting/reflections and strict Windows build passed |
+| ChatGPT | Patrol car close-up refinement | TripoPoliceCar generator/materials/shaders/authoring, scene and Docs | 2026-10-26 | complete: split spokes, closed barrels, fitted transparent optics, 256px baked reflections; 33,968/15,000 LODs; fresh bake and strict Windows build passed |
 
 ## One project: edit it, never fork it
 

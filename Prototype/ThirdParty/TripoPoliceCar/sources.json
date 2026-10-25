@@ -9,13 +9,13 @@
   "shader": "Prototype/Shaders/PatrolCarFinish.shader",
   "door_art": "Existing native InvestigationDetail/PoliceDoorMarkings.png, Noto Arabic and official ROP emblem",
   "plate_art": "Existing native PoliceArabicPlate.png; only الشرطة, no plate numbers",
-  "near_triangles_unity": 25576,
+  "near_triangles_unity": 33968,
   "distance_triangles": 15000,
-  "body_refinement": "Source body UVs/normals retained, wheel triangles replaced with native assemblies. No body subdivision/smoothing modifier/flattening.",
+  "body_refinement": "Source body UVs/normals retained; native split-spoke wheels, closed barrels, shaped badge hubs and source-conforming optical covers. No body subdivision/smoothing modifier/flattening.",
   "assets": [
     {
       "path": "geometry.json",
-      "sha256": "6d12b90a2865f5ae7efa88e61e43069455b0a6d0c336690ecc11ecc5e219e65e"
+      "sha256": "d8b6c8b41f0c37e231dc9a2c72ab151aa6d400b73103e388087e678e678cdef3"
     },
     {
       "path": "LICENSE.txt",
@@ -27,7 +27,7 @@
     },
     {
       "path": "PatrolAlloy.mat",
-      "sha256": "18fcaaf67a32ab9439c741a2c2d8565931127f0d801f0d362ab3872979c76c6a"
+      "sha256": "703f8ec05f81709a77387c287131d36ecab8e24a14fe41528523287763c5101d"
     },
     {
       "path": "PatrolBody.obj",
@@ -35,11 +35,11 @@
     },
     {
       "path": "PatrolBrake.mat",
-      "sha256": "77e1e1c45fdf1488ab10f072faf919bc0c442f52c06494c7e931046e053b56a7"
+      "sha256": "23e86fdd3146ade8a98649d0b521d9ac2673d9092b6764746f6af63f59c2ee5e"
     },
     {
       "path": "PatrolDarkMetal.mat",
-      "sha256": "35ff7897525e140a01b668a25e2b5031a14b2666eea147dd7751996f873fc270"
+      "sha256": "729476afdee59e8d859e2c6bef83f7422326269c23603e5e4f9447fca3401e0c"
     },
     {
       "path": "PatrolDistance.obj",
@@ -51,7 +51,19 @@
     },
     {
       "path": "PatrolFinish.mat",
-      "sha256": "0e5b430d055b498869a8e27177dbbf3230d219f3bb2fcc9ec1b65baa63b466de"
+      "sha256": "141d56234bf483b3ee5c60d7177d6f586894f718f0899f6fcf59981d88a76013"
+    },
+    {
+      "path": "PatrolLightGuide.mat",
+      "sha256": "1983c49a62cc23df7e406e195832b1b24f80f74df2389d6c29fac50f42317935"
+    },
+    {
+      "path": "PatrolOptics.mtl",
+      "sha256": "147109f3e7eaed5d6fe92fdfb1fa27f06205b7fb367bb7a7dd149ebf0bc03bb9"
+    },
+    {
+      "path": "PatrolOptics.obj",
+      "sha256": "3d6299ab96506dccd029a020e63afa8c28cbbc4da496e349894889fbf191f4ca"
     },
     {
       "path": "PatrolOriginal_Color.jpg",
@@ -62,8 +74,16 @@
       "sha256": "918de9710443f5f1bca9902cf7a254aaf63cdf69af4f9f3f3cfbcbbdd2c5186d"
     },
     {
+      "path": "PatrolProjectorLens.mat",
+      "sha256": "0956d793ce67dec02e95e9f1a463bccc8feb1ccfdd62079274c4e05b1d187df7"
+    },
+    {
       "path": "PatrolRubber.mat",
-      "sha256": "7e19038978920ebd15068c8f6bbe8e6286ff85c396efe67833b41789bd828622"
+      "sha256": "c63804fe4424ed09d5149b5cf362ed01c262630687749d5c5bd81ec92774be7e"
+    },
+    {
+      "path": "PatrolSatinChrome.mat",
+      "sha256": "b5487b91d12e25bb594d3350e14019116bd5af3bff4d9c6f8d1fa81817499c84"
     },
     {
       "path": "PatrolWheels.mtl",
@@ -71,11 +91,11 @@
     },
     {
       "path": "PatrolWheels.obj",
-      "sha256": "427d023dd66fb41529557654d421b6c456b36a1df474e0dabc3c8f585e1b7eb0"
+      "sha256": "9c788b74635da651ab4a3589d726bd157ceddb74636dba8c871e333682a0403c"
     },
     {
       "path": "README.md",
-      "sha256": "508f939e730ada45ff1d24a708e58380272cc93b4007811569bb8d0350968ce7"
+      "sha256": "8898988af46a33d899303c9bf3cca4bbc0a6729176b0ab4c95ffb0385177699c"
     },
     {
       "path": "Original~/police_car.fbx",
@@ -85,5 +105,7 @@
       "path": "Original~/police_car.glb",
       "sha256": "0a281d6fe793e1cb9456add0979d9fe886e89c5551345ad02e92211695d25543"
     }
-  ]
+  ],
+  "reflection_capture_resolution": 256,
+  "optics_max_surface_distance_m": 0.0090004432
 }
