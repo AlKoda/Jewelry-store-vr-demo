@@ -41,7 +41,7 @@ public static partial class PresentationPolish {
  }
  static CrowdBystander CrowdPerson(Transform parent,string role,Vector3 point,float yaw,CrowdBystander.Behaviour behaviour,float phase){
   var actor=Group("Spectator_"+role,parent);actor.localPosition=point;actor.localRotation=Quaternion.Euler(0,yaw,0);
-  var pivot=Group("FacingCalibration",actor);var asset=AssetDatabase.LoadAssetAtPath<GameObject>((role=="Talker"||role=="Phone"?OmaniCrowdFolder:CrowdFolder)+"/"+role+".fbx");if(!asset)throw new Exception("Crowd rig missing");
+  var pivot=Group("FacingCalibration",actor);var asset=AssetDatabase.LoadAssetAtPath<GameObject>((role=="Talker"||role=="Phone"?OmaniCrowdFolder+"/"+role:CrowdFolder+"/"+role+"_Detailed")+".fbx");if(!asset)throw new Exception("Crowd rig missing");
   var go=(GameObject)PrefabUtility.InstantiatePrefab(asset,pivot);PrefabUtility.UnpackPrefabInstance(go,PrefabUnpackMode.Completely,InteractionMode.AutomatedAction);go.name="CharacterSkin";
   foreach(var a in go.GetComponentsInChildren<Animation>())Object.DestroyImmediate(a);
   var animation=go.AddComponent<Animation>();animation.playAutomatically=false;animation.cullingType=AnimationCullingType.BasedOnRenderers;animation.AddClip(CrowdClip(role),"Motion");
@@ -49,6 +49,9 @@ public static partial class PresentationPolish {
   foreach(var r in go.GetComponentsInChildren<SkinnedMeshRenderer>()){
    r.sharedMaterials=r.sharedMaterials.Select(m=>CrowdMaterial(role,m.name)).ToArray();r.shadowCastingMode=ShadowCastingMode.On;r.receiveShadows=true;r.lightProbeUsage=LightProbeUsage.BlendProbes;r.reflectionProbeUsage=ReflectionProbeUsage.BlendProbes;r.updateWhenOffscreen=false;r.skinnedMotionVectors=false;r.quality=SkinQuality.Bone4;
   }
+  var near=go.GetComponentsInChildren<SkinnedMeshRenderer>().Where(r=>!r.name.Contains("Distance")).Cast<Renderer>().ToArray();var far=go.GetComponentsInChildren<SkinnedMeshRenderer>().Where(r=>r.name.Contains("Distance")).Cast<Renderer>().ToArray();
+  if(near.Length!=1||far.Length!=1)throw new Exception("Crowd model needs separate near/distance geometry: "+role);
+  var lod=actor.gameObject.AddComponent<LODGroup>();lod.SetLODs(new[]{new LOD(.21f,near),new LOD(.005f,far)});lod.fadeMode=LODFadeMode.None;lod.RecalculateBounds();
   foreach(var t in go.GetComponentsInChildren<Transform>())t.gameObject.layer=CrowdLayer;
   animation.Play("Motion");animation["Motion"].time=phase%animation["Motion"].length;animation.Sample();animation.Stop();
   var head=CrowdBone(go,"Head");var nose=CrowdBone(go,"MNose");if(!head||!nose)throw new Exception("Crowd head markers missing");var direction=actor.InverseTransformDirection(nose.position-head.position);pivot.localRotation=Quaternion.Euler(0,-Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg,0);
@@ -95,18 +98,20 @@ public static partial class PresentationPolish {
  }
  static void CrowdStructureChecks(){
   var group=root.Find("Exterior/DistantStreetLife");var actors=group.GetComponentsInChildren<CrowdBystander>();if(actors.Length!=5)throw new Exception("Five animated spectators required");
-  int triangles=0;
+  int nearTriangles=0,farTriangles=0;
   foreach(var c in actors){
    if(!c.CharacterAnimation||!c.CharacterAnimation.GetClip("Motion")||!c.CharacterAnimation.GetClip("Idle")||!c.Head||!c.Nose)throw new Exception("Crowd clip/bone binding missing");
    if(c.transform.position.z< -22.5f||c.transform.position.z> -20.8f||c.GetComponent<Rigidbody>())throw new Exception("Spectator outside pavement or force-driven");
    foreach(var r in c.GetComponentsInChildren<SkinnedMeshRenderer>()){
-    triangles+=r.sharedMesh.triangles.Length/3;if(r.bones.Any(b=>!b)||r.bones.Length!=r.sharedMesh.bindposes.Length||r.updateWhenOffscreen)throw new Exception("Skinned actor has invalid binding or offscreen cost");
+    if(r.name.Contains("Distance"))farTriangles+=r.sharedMesh.triangles.Length/3;else nearTriangles+=r.sharedMesh.triangles.Length/3;
+    if(r.bones.Any(b=>!b)||r.bones.Length!=r.sharedMesh.bindposes.Length||r.updateWhenOffscreen)throw new Exception("Skinned actor has invalid binding or offscreen cost");
     if(r.sharedMaterials.Any(m=>!m||!m.shader||!m.shader.isSupported||m.IsKeywordEnabled("_EMISSION")))throw new Exception("Crowd material unavailable or emissive");
    }
+   var lod=c.GetComponent<LODGroup>();if(!lod||lod.GetLODs().Length!=2||lod.GetLODs().Any(l=>l.renderers.Length!=1||l.renderers.Any(r=>!r)))throw new Exception("Crowd mesh LOD references missing");
   }
-  if(triangles>55000||group.GetComponentsInChildren<Light>().Length!=0)throw new Exception("Crowd exceeds geometry/light budget");
+  if(nearTriangles>125000||farTriangles>55000||group.GetComponentsInChildren<Light>().Length!=0)throw new Exception("Crowd exceeds near/distance geometry or light budget: "+nearTriangles+" / "+farTriangles);
   if(actors.Count(c=>c.Role==CrowdBystander.Behaviour.Conversation)!=2||actors.Count(c=>c.Role==CrowdBystander.Behaviour.Walker)!=1||!group.GetComponentInChildren<CrowdGroundContacts>())throw new Exception("Requested crowd behaviours missing");
-  Debug.Log("CROWD_STRUCTURE_PASS five different skinned characters, walking/conversation/phone/watch, bounded pavement, no extra lights or rigidbodies, triangles="+triangles);
+  Debug.Log("CROWD_STRUCTURE_PASS five different skinned characters, walking/conversation/phone/watch, bounded pavement, no extra lights or rigidbodies, near triangles="+nearTriangles+"; distance triangles="+farTriangles);
  }
  public static void CrowdInspectRun(){try{
   EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;PrepareCrowdImports();CrowdGathering();CrowdStructureChecks();CrowdPoseAudit();CrowdPreview();Debug.Log("CROWD_INSPECTION_READY");EditorApplication.Exit(0);

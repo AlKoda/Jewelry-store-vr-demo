@@ -511,6 +511,36 @@
       "sha256": "d66ea5a51872608550d1c1ccaa69557930a2fc7a54af6dec4a476a883e8a4533",
       "license": "MIT",
       "author": "Microsoft Corporation; project-prepared derivatives"
+    },
+    {
+      "file": "Animated/Walker_Detailed.fbx",
+      "bytes": 2787036,
+      "sha256": "0674bd2630bc7549cc3017acb0bf785e9edb84a48906af20a2f39e6af2763943",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-authored topology and LOD refinement"
+    },
+    {
+      "file": "Animated/Listener_Detailed.fbx",
+      "bytes": 2969260,
+      "sha256": "5c6819caa4408b346a90307f8663b889abac6ec42807cb2f00de6da783dcda9b",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-authored topology and LOD refinement"
+    },
+    {
+      "file": "Animated/Observer_Detailed.fbx",
+      "bytes": 3066428,
+      "sha256": "594660e9f4314a27eb81f7256226db2f4578c4c1f19ed7551d2ef7e0beced9dd",
+      "license": "MIT",
+      "author": "Microsoft Corporation; project-authored topology and LOD refinement"
     }
-  ]
+  ],
+  "mesh_refinement": {
+    "date": "2026-10-26",
+    "generator": "../Source~/refine_crowd_meshes.py",
+    "dressed_generator": "../Source~/dress_omani.py",
+    "near_crowd_triangles": 123296,
+    "distance_crowd_triangles": 36985,
+    "lod_screen_height": 0.21,
+    "smoothing_limit_world_m": 0.0018
+  }
 }

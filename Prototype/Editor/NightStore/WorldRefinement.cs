@@ -123,5 +123,53 @@ public static partial class PresentationPolish {
   // saved scene, containing only the final authored poses and objects.
   FinishOpen();EditableDelivery.Build();Debug.Log("WORLD_REFINEMENT_DELIVERY_PASS");EditorApplication.Exit(0);
  }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
+ static void CrowdModelCloseups(string label){
+  string folder="Builds/CrowdModels/"+label;Directory.CreateDirectory(folder);
+  var stage=new GameObject("Temporary isolated crowd model stage");stage.hideFlags=HideFlags.DontSave;
+  var cameraObject=new GameObject("Model review camera");cameraObject.transform.SetParent(stage.transform);var camera=cameraObject.AddComponent<Camera>();camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=new Color(.12f,.13f,.14f);camera.cullingMask=1<<31;camera.stereoTargetEye=StereoTargetEyeMask.None;camera.nearClipPlane=.02f;camera.farClipPlane=12;camera.fieldOfView=32;camera.allowHDR=true;
+  foreach(var p in new[]{new Vector3(-2,103,3),new Vector3(2,102,1)}){var g=new GameObject("Model review soft fill");g.transform.SetParent(stage.transform);g.transform.position=p;g.transform.LookAt(new Vector3(0,101,0));var l=g.AddComponent<Light>();l.type=LightType.Spot;l.range=12;l.spotAngle=100;l.intensity=p.x<0?1.6f:.65f;l.cullingMask=1<<31;}
+  var rt=new RenderTexture(1000,1200,24){antiAliasing=4};camera.targetTexture=rt;var previous=RenderTexture.active;bool fog=RenderSettings.fog;RenderSettings.fog=false;
+  try{foreach(var original in root.GetComponentsInChildren<CrowdBystander>()){
+   var clone=Object.Instantiate(original.gameObject,stage.transform);clone.transform.SetPositionAndRotation(new Vector3(0,100,0),Quaternion.identity);var actor=clone.GetComponent<CrowdBystander>();actor.enabled=false;
+   foreach(var t in clone.GetComponentsInChildren<Transform>())t.gameObject.layer=31;
+   var anim=actor.CharacterAnimation;anim.Play(actor.Role==CrowdBystander.Behaviour.Phone?"Motion":"Idle");anim[actor.Role==CrowdBystander.Behaviour.Phone?"Motion":"Idle"].normalizedTime=.28f;anim.Sample();
+   for(int i=0;i<5;i++){
+    var lod=clone.GetComponent<LODGroup>();if(lod)lod.ForceLOD(i==4?1:0);
+    var target=new Vector3(0,i==0||i==4?100.95f:101.59f,0);var offset=i==0||i==4?new Vector3(0,.12f,3.5f):i==1?new Vector3(.25f,.035f,.80f):i==2?new Vector3(.72f,.035f,.35f):new Vector3(-.70f,.035f,.35f);
+    camera.transform.position=target+offset;camera.transform.LookAt(target);camera.Render();RenderTexture.active=rt;var t=new Texture2D(1000,1200,TextureFormat.RGB24,false);t.ReadPixels(new Rect(0,0,1000,1200),0,0);t.Apply();File.WriteAllBytes(folder+"/"+original.name+"-"+i+".png",t.EncodeToPNG());Object.DestroyImmediate(t);
+   }Object.DestroyImmediate(clone);
+  }}finally{RenderSettings.fog=fog;RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(stage);}
+ }
+ public static void CrowdModelAuditRun(){try{FinishOpen();CrowdModelCloseups("before");Debug.Log("CROWD_MODEL_AUDIT_READY");EditorApplication.Exit(0);}catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
+ public static void CrowdModelPreviewRun(){try{
+  FinishOpen();CrowdGathering();CrowdStructureChecks();CrowdPoseAudit();CrowdBehaviourChecks();WorldCrowdHeadChecks();CrowdModelLodChecks();CrowdGathering();
+  AssetDatabase.SaveAssets();EditorSceneManager.MarkSceneDirty(root.gameObject.scene);EditorSceneManager.SaveOpenScenes();CrowdModelCloseups("after");CrowdPreview();Debug.Log("CROWD_MODEL_PREVIEW_READY");EditorApplication.Exit(0);
+ }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
+ static void CrowdModelLodChecks(){
+  var stage=new GameObject("Temporary crowd LOD verification");stage.hideFlags=HideFlags.DontSave;
+  var camera=stage.AddComponent<Camera>();camera.stereoTargetEye=StereoTargetEyeMask.None;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;camera.cullingMask=1<<31;camera.fieldOfView=32;camera.nearClipPlane=.02f;camera.farClipPlane=10;
+  var white=new Material(Shader.Find("Unlit/Color"));white.color=Color.white;
+  var rt=new RenderTexture(256,320,24);camera.targetTexture=rt;var image=new Texture2D(256,320,TextureFormat.RGB24,false);var previous=RenderTexture.active;bool fog=RenderSettings.fog;RenderSettings.fog=false;
+  try{foreach(var original in root.GetComponentsInChildren<CrowdBystander>()){
+   var clone=Object.Instantiate(original.gameObject);clone.transform.SetPositionAndRotation(new Vector3(0,100,0),Quaternion.identity);
+   try{
+    foreach(var t in clone.GetComponentsInChildren<Transform>())t.gameObject.layer=31;
+    foreach(var r in clone.GetComponentsInChildren<Renderer>())r.sharedMaterials=r.sharedMaterials.Select(m=>white).ToArray();
+    var c=clone.GetComponent<CrowdBystander>();c.enabled=false;c.CharacterAnimation.Play("Idle");c.CharacterAnimation["Idle"].normalizedTime=.28f;c.CharacterAnimation.Sample();
+    camera.transform.position=new Vector3(.25f,101.07f,3.5f);camera.transform.LookAt(new Vector3(0,100.95f,0));var lod=clone.GetComponent<LODGroup>();
+    Color32[] Capture(int level){lod.ForceLOD(level);camera.Render();RenderTexture.active=rt;image.ReadPixels(new Rect(0,0,256,320),0,0);image.Apply();return image.GetPixels32();}
+    var near=Capture(0);var far=Capture(1);int union=0,different=0;
+    for(int i=0;i<near.Length;i++){bool a=near[i].r>127,b=far[i].r>127;if(a||b)union++;if(a!=b)different++;}
+    float difference=different/(float)Mathf.Max(1,union);if(union<2000||difference>.08f)throw new Exception("Crowd distance mesh disappears or changes silhouette excessively: "+original.name+" "+union+" / "+difference);
+    Debug.Log("CROWD_LOD_RENDER_PASS "+original.name+" silhouette difference="+difference.ToString("P2"));
+   }finally{Object.DestroyImmediate(clone);}
+  }}finally{RenderSettings.fog=fog;RenderTexture.active=previous;rt.Release();Object.DestroyImmediate(rt);Object.DestroyImmediate(image);Object.DestroyImmediate(white);Object.DestroyImmediate(stage);}
+ }
+ public static void CrowdModelDeliveryRun(){try{
+  FinishOpen();CrowdGathering();CrowdStructureChecks();CrowdPoseAudit();CrowdBehaviourChecks();WorldCrowdHeadChecks();CrowdModelLodChecks();CrowdGathering();
+  GeneralSceneReview();PatrolCarChecks();AssetDatabase.SaveAssets();EditorSceneManager.MarkSceneDirty(root.gameObject.scene);EditorSceneManager.SaveOpenScenes();
+  if(!NightLighting.Bake(out string report))throw new Exception(report);Debug.Log(report);ReflectionCapture.Refresh();EditorSceneManager.SaveOpenScenes();
+  CrowdModelCloseups("after");CrowdPreview();FinishOpen();CrowdStructureChecks();PatrolCarChecks();NightStoreValidation.PresentationChecks();FinishOpen();EditableDelivery.Build();Debug.Log("CROWD_MODEL_DELIVERY_PASS");EditorApplication.Exit(0);
+ }catch(Exception e){Debug.LogException(e);EditorApplication.Exit(1);}}
 }
 #endif

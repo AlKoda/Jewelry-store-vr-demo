@@ -31,6 +31,16 @@ Reproduction: download the exact paths/hashes in sources.json beneath the local
 5.2 background with Source~/bake_crowd.py from the checkout root. Asset provenance
 and SHA-256 values are in sources.json. Raw source downloads are not shipped.
 
-Five skins total 36,552 triangles. Existing lights only; offscreen animation
-culling; one shared 40-vertex soft foot-contact mesh. These are asset budgets,
-not a measured standalone Quest frame rate. Real headset acceptance is pending.
+October 26 model refinement: Walker_Detailed.fbx, Listener_Detailed.fbx and
+Observer_Detailed.fbx retain the original rig, UVs and motion, with a local
+Loop-style subdivision of the face, ears and hands. Smoothing displacement is
+limited to 1.8 mm in world units, preserving identity and finger spacing. Their
+paired distance meshes are decimated offline, before skinning. Reproduce with
+Blender background and Source~/refine_crowd_meshes.py, then Source~/dress_omani.py
+for the two dressed actors. Original Animated FBXs remain the reproducible inputs.
+
+The active five-person crowd totals 123,296 near / 36,985 distance triangles,
+using exclusive per-actor LODs at 0.21 screen height. Existing lights only;
+offscreen animation culling; one shared 40-vertex soft foot-contact mesh. These
+are asset budgets, not a measured standalone Quest frame rate. Headset acceptance
+is pending. Both mesh levels pass animation/skin and rendered silhouette checks.

@@ -1,8 +1,16 @@
 # Current project handoff
 
+## Crowd model rebuild — October 26
+
+After Koda clarified that the models themselves needed work, all five spectators received refined face/ear/hand topology, retaining their original identity, UVs, skeletons and clips. Both Omani garments were reshaped against the actual shoulder/arm surfaces, with a narrower upper silhouette, cloth compression folds, turned cuffs and hems, fitted headwear, native kumma stitch geometry and a cotton furakha. Covered scalp/old cuffs are removed; a skinned neck liner prevents open seams when bending. The separate floating neckline trim was removed.
+
+Each actor now has two exclusive mesh LODs: total crowd 123,296 triangles up close, 36,985 at street distance, transition at 0.21 screen height. This replaces the prior 44,527-triangle single-level crowd. Still five actors and the same 80-bone rigs, no new lights/rigidbodies/cloth simulation. Sources: original Animated FBXs retained, new *_Detailed derivatives for Walker/Listener/Observer and revised OmaniCrowd FBXs; reproducible generators in PeopleModels/Source~.
+
+`CrowdModelDeliveryRun` completed skin/animation/head-aim regressions, actual rendered LOD silhouette checks (0.09–0.22% difference), fresh lighting/reflections, saved-scene checks and the strict Windows/PCVR build. Report: [Verification/CrowdModels/README.md](Verification/CrowdModels/README.md). Local neutral-light model views: UnityProject_Demo/Builds/CrowdModels/{before,after}; views 0/4 compare near/far. No player launch or headset frame-time measurement.
+
 ## World and crowd refinement — October 26
 
-The five existing background spectators remain. Both Omani garments now have continuous remeshed shoulders/sleeves and smoothly transferred skin weights; the crowd totals 44,527 triangles against its 55,000 guard. Cloth colours/normal relief and skin normals are calmer, conversation playback is slower, and additive head tracking no longer accumulates rotation when animation is culled. There are no new crowd lights, rigidbodies or cloth simulation.
+This preceding surface pass used a 44,527-triangle single-level crowd; its geometry is superseded by the model rebuild above. Calmer cloth/skin shading, slower conversation playback and bounded additive head aim remain. There are no new crowd lights, rigidbodies or cloth simulation.
 
 Twenty-three shop/exterior materials have restrained relief and finishes; the new SatinWood shader keeps the photographic grain with lower fine contrast. Car lower-body roughness has subtle uneven road film, retaining the exact source colour texture/body geometry. The dropped lighter is on its side and seated on the floor, its E25 evidence binding retained. All eight loose display insert arrangements have small supported offsets rather than pristine alignment. Existing scattered jewellery, glass, tools and crowd behaviours remain.
 

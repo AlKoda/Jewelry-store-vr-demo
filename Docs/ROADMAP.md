@@ -1,5 +1,7 @@
 # Open work
 
+- [x] October 26 model-specific crowd rebuild: face/ear/finger topology on all five, anatomically fitted Omani garments, turned hems/cuffs, fitted headwear, native stitch motifs, neck seam closure and two mesh LODs. Total 123,296 near / 36,985 distance triangles. Skin, loop, behaviour, head-aim, rendered LOD silhouette and strict Windows/PCVR build checks pass. See Verification/CrowdModels.
+- [ ] Human headset review of the new crowd models and LOD transition; standalone/frame-time measurements remain pending.
 - [x] October 26 world/crowd polish: continuous Omani garment shoulders and skin weights, stable bounded head aim during animation culling, restrained cloth/skin shading and conversation speed; shop/exterior finish refinement, lower-car road film, supported side-laid lighter and less aligned displays. Saved-scene regressions, bake/reflections and Windows/PCVR build pass. See Verification/WorldRefinement.
 - [ ] Human Quest Link review of background people in motion, the updated surfaces and floor lighter. Frame time remains unmeasured.
 - [x] October 26: Tripo patrol car integrated; supplied colour texture retained, matched native markings, split-spoke wheels/closed barrels, fitted headlamp optics, machined rotor finish and sharper baked reflections (33,968 near / 15,000 far triangles). Strict Windows/PCVR build and saved-scene checks pass. See Verification/PatrolCar.
