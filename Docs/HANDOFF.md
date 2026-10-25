@@ -1,4 +1,11 @@
 # Current project handoff
+## Presentation polish — October 25
+
+Road cracks, sidewalk fractures and parking paint are restored. PackImport had misclassified OmanExterior data masks and generated normals on reimport; version 3 now preserves linear masks, normal conversion and Windows parking-map resolution. Aggregate contrast and distant relief are reduced. Paint and fractures remain in one opaque road shader, with cracks cutting the paint. Actual-material GPU visibility checks pass (paint 4,611 changed pixels; cracks 1,726), alongside the crack-channel layering test.
+
+Five primary instruments have refined original meshes: forceps, cotton swab, powder brush, magnetic wand and lift card. Forensic material relief/shine is moderated and paper toned down. Tool pickups are fitted, tray slots clear the divider, and the carry handle folds outside the front. Kit selection chooses the nearest reachable handle instead of arbitrary overlap order. Test-generated latent marks no longer serialize into the scene. Existing grips, behaviours, Omani crowd and car remain; no runtime lights or physics bodies added.
+
+PresentationPolish.PresentationFinishRun: full fieldwork/forensic checks, mesh-in-tray and pickup-volume checks, saved/reopened scene checks, rendered review and strict Windows/PCVR build passed. Hardware acceptance remains pending. Details: Verification/PresentationFinish/LOCAL_REFINEMENT.md. Before/after renders: UnityProject_Demo/Builds/PresentationFinish; final log: Builds/presentation-finish.log. The player was not opened.
 ## Omani crowd delivery — October 25
 
 Two existing male spectators wear original Omani outfits: an ivory dishdasha with embroidered kumma for the conversational onlooker, and a sand dishdasha with folded mussar for the phone onlooker. Both have collarless necklines and furakha details. Covered western clothing is removed; original MIT Rocketbox skin, skeletons and animation remain. Source: PeopleModels/OmaniCrowd; generator: PeopleModels/Source~/dress_omani.py. Cultural references and licence are recorded with the assets.
@@ -303,6 +310,7 @@ Latest correction: the original empty-hand models were correct; Koda meant the h
 Snapshot distribution: the refreshed canonical ZIP uses Git LFS because saved generated scene assets exceed the ordinary GitHub file limit. Install Git LFS and run git lfs pull after cloning before launching. No new scene generation or gameplay fixes were performed during publishing.
 
 October 23 local integration: pulled de58ac5 and synchronized into Unity. Initial import/compile passed. BeltLampReview lamp assertions passed, but the Windows build exposed XRHeadTracking static PlayerPrefs initialization (GetInt forbidden during construction). Moved preference initialization to BeforeSceneLoad; Windows rebuild passed (EXISTING_SCENE_DELIVERY_PASS and BELT_LAMP_LOCAL_DELIVERY_PASS). Removed register target totals/search directions and the developed-print photograph instruction. Generic trace compatibility, full sandbox removal, saved-scene door flags/glass/prefab updates and headset testing remain open.
+
 
 
 

@@ -7,6 +7,8 @@ Shader "CrimeScene/OmanGround" {
   _BumpMap("Aggregate normal",2D)="bump" {} _BumpScale("Relief",Range(0,1))=.23
   _SurfaceType("Concrete paving",Float)=0
   _Glossiness("Smoothness",Range(0,1))=.12
+  _AggregateContrast("Aggregate contrast",Range(0,1))=.68
+  _DustStrength("Broad settled dust",Range(0,1))=.18
  }
  SubShader {
   Tags {"RenderType"="Opaque" "Queue"="Geometry"} LOD 250
@@ -14,7 +16,7 @@ Shader "CrimeScene/OmanGround" {
   #pragma surface surf Standard fullforwardshadows addshadow
   #pragma target 3.0
   sampler2D _MainTex,_AgeMap,_CrackMasks,_PaintMask,_BumpMap;
-  fixed4 _Color; half _BumpScale,_SurfaceType,_Glossiness;
+  fixed4 _Color; half _BumpScale,_SurfaceType,_Glossiness,_AggregateContrast,_DustStrength;
   struct Input {float3 worldPos;};
   float2 turn(float2 p){return float2(.7986*p.x-.6018*p.y,.6018*p.x+.7986*p.y);}
   float hash(float2 p){return frac(sin(dot(p,float2(127.1,311.7)))*43758.5453);}
@@ -23,7 +25,12 @@ Shader "CrimeScene/OmanGround" {
    float age=tex2D(_AgeMap,p/21.7).r;
    float2 grain=p/lerp(.85,.60,_SurfaceType), other=turn(grain)*1.371+float2(.37,.61);
    fixed3 base=lerp(tex2D(_MainTex,grain).rgb,tex2D(_MainTex,other).rgb,.42)*_Color.rgb;
+   // Keep real aggregate up close without a high-contrast glitter carpet in VR.
+   fixed3 average=fixed3(.16,.158,.15)*_Color.rgb;
+   base=lerp(average,base,_AggregateContrast);
    base*=lerp(.90,1.08,age);
+   float dust=smoothstep(.43,.78,age)*_DustStrength;
+   base=lerp(base,base*1.13+fixed3(.012,.010,.007),dust);
    float2 warp=(float2(age,tex2D(_AgeMap,p/33.1+2.7).r)-.5)*.23;
    // Different masks and incommensurate scales prevent a single repeated fracture stamp.
    float network=tex2D(_CrackMasks,p/7.37+warp).r;
@@ -53,7 +60,10 @@ Shader "CrimeScene/OmanGround" {
    }
    // Cracks are applied after paint: fissures cut through the old markings.
    o.Albedo=lerp(base,fixed3(.026,.023,.019),saturate(crack*.93));
-   half3 n=UnpackNormal(tex2D(_BumpMap,grain)); n.xy*=_BumpScale;
+   half3 n=UnpackNormal(tex2D(_BumpMap,grain));
+   float footprint=max(length(ddx(grain)),length(ddy(grain)));
+   half reliefFade=1-smoothstep(.018,.11,footprint);
+   n.xy*=_BumpScale*reliefFade;
    o.Normal=normalize(n);o.Metallic=0;o.Smoothness=_Glossiness*(1-crack*.8);
    o.Occlusion=1-crack*.34;o.Alpha=1;
   }

@@ -61,7 +61,7 @@ public static partial class PresentationPolish {
   if(k.TriangleCount>0)k.Emit(kind.ToString()+"Body",g,Vector3.zero,Quaternion.identity,Folder,"field_tool_"+kind);
   var box=g.gameObject.AddComponent<BoxCollider>();box.size=kind==FieldInvestigationTool.Method.LiftCard?V(.074f,.035f,.115f):kind>=FieldInvestigationTool.Method.MagneticWand?V(.09f,.06f,.19f):V(.045f,.035f,.19f);box.center=V(0,0,.035f);box.isTrigger=true;
   var tool=g.gameObject.AddComponent<FieldInvestigationTool>();tool.Kind=kind;tool.Register=register;tool.HandPosition=V(0,-.045f,.005f);
-  tool.Tip=Group("WorkingTip",g);tool.Tip.localPosition=V(0,0,.125f);foreach(var t in g.GetComponentsInChildren<Transform>())t.gameObject.layer=CrowdLayer;return tool;
+  tool.Tip=Group("WorkingTip",g);tool.Tip.localPosition=V(0,0,.125f);RefineFieldTool(tool);foreach(var t in g.GetComponentsInChildren<Transform>())t.gameObject.layer=CrowdLayer;return tool;
  }
  static Material trayFallback()=>Mat(Folder,"FieldBrushBristles",new Color(.07f,.065f,.055f),.04f);
  static EvidenceContainer FieldBox(Transform parent,string name,Vector3 position,Vector3 size,Material shell,Material lining){

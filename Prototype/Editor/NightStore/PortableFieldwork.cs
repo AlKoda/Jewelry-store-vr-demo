@@ -29,7 +29,7 @@ public static partial class PresentationPolish {
   var cover=new KitMesh{Lightmapped=false};cover.Bar(polymer,V(0,.007f,-.24f),V(.91f,.018f,.49f),.007f);cover.Bar(rubber,V(0,-.004f,-.24f),V(.865f,.007f,.445f),.002f);
   foreach(float x in new[]{-.30f,.30f})cover.Cylinder(metal,V(x-.035f,0,0),V(x+.035f,0,0),.011f,10);
   cover.Emit("LidShellAndHinges",lid,Vector3.zero,Quaternion.identity,Folder,"portable_case_lid");
-  var handle=Group("CarryHandle",caseRoot);handle.localPosition=V(0,.23f,-.18f);var bail=new KitMesh{Lightmapped=false};
+  var handle=Group("CarryHandle",caseRoot);handle.localPosition=V(0,.08f,-.38f);handle.localRotation=Quaternion.Euler(-90,0,0);var bail=new KitMesh{Lightmapped=false};
   foreach(float x in new[]{-.105f,.105f})bail.Cylinder(polymer,V(x,-.13f,0),V(x,0,0),.009f,10);
   bail.Cylinder(polymer,V(-.105f,0,0),V(.105f,0,0),.012f,12);bail.Cylinder(rubber,V(-.065f,0,0),V(.065f,0,0),.015f,12);bail.Emit("MoldedCarryHandle",handle,Vector3.zero,Quaternion.identity,Folder,"portable_case_handle");
   var grip=handle.gameObject.AddComponent<BoxCollider>();grip.isTrigger=true;grip.size=V(.24f,.055f,.055f);kit.Grip=handle;kit.GripCollider=grip;

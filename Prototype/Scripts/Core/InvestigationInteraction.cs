@@ -21,10 +21,15 @@ public static class InvestigationInteraction {
   var register=hit.collider.GetComponentInParent<EvidenceRegister>();if(register){register.NextPage();return true;}return false;
  }
  public static PortableFieldKit NearKit(HandInteractor hand){
+  PortableFieldKit best=null;float bestDistance=float.MaxValue;
   foreach(var collider in Physics.OverlapSphere(hand.transform.position,.08f,Physics.DefaultRaycastLayers,QueryTriggerInteraction.Collide)){
    var kit=collider.GetComponentInParent<PortableFieldKit>();if(!kit||kit.Holder||kit.GripCollider!=collider)continue;
-   if(Reachable(hand,collider,kit.Grip.position))return kit;
-  }return null;
+   float distance=(collider.ClosestPoint(hand.transform.position)-hand.transform.position).sqrMagnitude;
+   // The case sits above the cart's push bar. PhysX overlap order is not a
+   // selection priority: prefer the handle actually touched by the hand.
+   distance+=(kit.Grip.position-hand.transform.position).sqrMagnitude*.001f;
+   if(distance<bestDistance&&Reachable(hand,collider,kit.Grip.position)){best=kit;bestDistance=distance;}
+  }return best;
  }
  public static FieldInvestigationTool Near(HandInteractor hand){
   FieldInvestigationTool best=null;float distance=.18f;

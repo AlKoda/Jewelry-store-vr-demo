@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Koda's second test fixes (October 24): wand/brush contact by tip, faint glow, hint on B/Y or V only, text-free case with lid straps, grabbable doors; runs `PresentationPolish.SandboxRefreshRun` in Koda's checkout (`C:\Users\MOBPC\Documents\ChatGPT\Jewelry store\repository`) with a partial checkout of Claude's files when ChatGPT has work staged | Prototype/Scripts/Core (forensic classes, ForensicGlow, PushDoorLeaf), Tools/FieldInvestigationTool.cs, VR/HandInteractor.cs, VR/XRControllerInput.cs, Desktop/DesktopInteractor.cs, Editor/NightStore/ForensicSandbox.cs, IntegrationDelivery.cs, SceneReviewPass.cs (door tuning) | 2026-10-24 | PC run passed, build in Koda's folder; headset test pending |
-| ChatGPT | Finish Omani traditional-dress spectators and synchronize delivery | PeopleModels/OmaniCrowd, crowd authoring, snapshot and Docs | 2026-10-25 | complete: current-source Windows/PCVR build, animated skin/loop/behaviour checks passed; same five actors; headset review pending |
+| ChatGPT | Presentation polish: road, tool materials and usability, shaders and visual review | OmanRoad shader, targeted presentation polish editor pass, tool material/fit authoring, Docs, snapshot | 2026-10-25 | complete locally: refined tools and tray/handle usability, road/paving/parking restored; fieldwork, actual-map GPU visibility and Windows build passed; headset review pending |
 
 ## One project: edit it, never fork it
 
@@ -34,6 +34,8 @@ Update your own row **before** you start and again when you stop. Pull first: an
 - Work directly on `main`. Pull before editing and again before pushing. Small commits with clear messages.
 - With every batch: update the top of `Docs/HANDOFF.md` (state table) and `Docs/ROADMAP.md`. Mark anything not run in Unity as **unverified**. Keep HANDOFF short: it describes the present, and the History files hold the past.
 - Nothing can be compiled outside Unity. Koda runs the validators on the PC and reports the results; never claim something works in Unity or the headset before that report.
+
+
 
 
 

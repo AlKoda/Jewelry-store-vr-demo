@@ -1,4 +1,6 @@
 # Open work
+- [x] October 25 presentation polish: five refined hand-tool models, fitted pickup boxes, clear tray layout/exterior carry handle, calmer forensic materials, road/paving/parking restoration with permanent import rules. Actual-material road visibility, fieldwork, saved-scene and Windows build checks passed. See Verification/PresentationFinish.
+- [ ] Human headset review of this pass: tool detail and pickup, case carry handle, restored parking/cracks and road stability at grazing angles. No measured standalone frame-time claim.
 
 Updated October 23, 2026. Prototype and the local Unity project must match; Koda authorized uploading all current local work on October 23; latest feedback remains notes only.
 
@@ -111,3 +113,4 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 - [ ] Quest Link acceptance: floor reach, moving door glass, tool-case selection/placement, lamp height/all-lit behavior, tape and new forensic tools. Phase 2 remains separate.
 
 - [x] October 25: two Omani traditional-dress male onlookers (kumma and mussar), retaining conversation/phone behaviour and five-person crowd. Windows/PCVR delivery; headset appearance/performance review remains open.
+

@@ -39,7 +39,7 @@ public sealed class PackImport : AssetPostprocessor
 
     // Bump on every rule change. Unity then reimports every texture and audio clip of the
     // project once (it cannot tell which files a postprocessor governs).
-    public override uint GetVersion() => 2;
+    public override uint GetVersion() => 3;
 
     // Largest pack texture in the Quest standalone build (Android platform override).
     public const int QuestMaxTextureSize = 1024;
@@ -111,6 +111,11 @@ public sealed class PackImport : AssetPostprocessor
         bool cookie = pack == "NightSky" && Starts(stem, "cookie_") || pack == "SurfaceDecals" && Starts(stem, "Cookie_");
         bool sky = pack == "NightSky" && Path.GetExtension(path).Equals(".hdr", StringComparison.OrdinalIgnoreCase);
         bool sprite = pack == "NightSky" && (Starts(stem, "glow_") || Starts(stem, "flare_") || Starts(stem, "lens_dirt_") || Starts(stem, "moon_disc_"));
+        // Road authoring predates the _Normal / _PaintMask naming convention.
+        // Treating these masks as sRGB suppressed the paint wear threshold and
+        // importing the height image as colour broke the road's tangent normal.
+        bool groundNormal = pack == "OmanExterior" && In(stem, "RoadAggregateNormal", "PavingAggregateNormal");
+        bool groundData = pack == "OmanExterior" && In(stem, "GroundFracturesPacked", "ParkingLayoutMask", "RoadWeatherOriginal", "RoadNetworkOriginal", "RoadStressOriginal", "RoadFatigueOriginal", "PavingFracturesOriginal");
         Map map = Map.Colour;
         if (cookie)
         {
@@ -128,10 +133,14 @@ public sealed class PackImport : AssetPostprocessor
             Want(t.textureShape, TextureImporterShape.Texture2D, x => t.textureShape = x);
             Want(t.mipmapEnabled, false, x => t.mipmapEnabled = x);
         }
-        else if (stem.EndsWith("_Normal", StringComparison.Ordinal))
+        else if (stem.EndsWith("_Normal", StringComparison.Ordinal) || groundNormal)
         {
             map = Map.Normal;
             Want(t.textureType, TextureImporterType.NormalMap, x => t.textureType = x);
+            if (groundNormal) {
+                Want(t.convertToNormalmap, true, x => t.convertToNormalmap = x);
+                Want(t.heightmapScale, .025f, x => t.heightmapScale = x);
+            }
         }
         else if (stem.EndsWith("_MetallicSmoothness", StringComparison.Ordinal))
         {
@@ -141,11 +150,12 @@ public sealed class PackImport : AssetPostprocessor
             Want(t.alphaSource, TextureImporterAlphaSource.FromInput, x => t.alphaSource = x);
         }
         else if ((stem.EndsWith("_AO", StringComparison.Ordinal) || stem.EndsWith("_Occlusion", StringComparison.Ordinal) || stem.EndsWith("_PaintMask", StringComparison.Ordinal)) || pack == "PBRExterior" && file == "PuddleMask.png"
-            || pack == "SurfaceDecals" && file == "Caustics_Tile.png")
+            || pack == "SurfaceDecals" && file == "Caustics_Tile.png" || groundData)
         {
             map = stem.EndsWith("_AO", StringComparison.Ordinal) || stem.EndsWith("_Occlusion", StringComparison.Ordinal) ? Map.Occlusion : Map.Mask;
             Want(t.textureType, TextureImporterType.Default, x => t.textureType = x);
             Want(t.sRGBTexture, false, x => t.sRGBTexture = x);
+            if (groundData) Want(t.alphaSource, TextureImporterAlphaSource.FromInput, x => t.alphaSource = x);
         }
         else
         {
@@ -163,7 +173,7 @@ public sealed class PackImport : AssetPostprocessor
         // Wrap: signs, decals, cookies and sprites clamp (the gilt moulding repeats along its
         // length); the skies repeat around and clamp at the poles; tiling sets repeat.
         TextureWrapMode wrapU = TextureWrapMode.Repeat, wrapV = TextureWrapMode.Repeat;
-        if (cookie || sprite) wrapU = wrapV = TextureWrapMode.Clamp;
+        if (cookie || sprite || pack == "OmanExterior" && stem == "ParkingLayoutMask") wrapU = wrapV = TextureWrapMode.Clamp;
         else if (sky) wrapV = TextureWrapMode.Clamp;
         else if (pack == "WallGraphics")
         {
@@ -189,6 +199,7 @@ public sealed class PackImport : AssetPostprocessor
                 ? TextureImporterCompression.CompressedHQ : TextureImporterCompression.Compressed;
         Want(t.textureCompression, compression, x => t.textureCompression = x);
         int max = cookie ? 512 : sky ? SkySize(stem) : MaxSize(pack, sub, stem, map);
+        if (pack == "OmanExterior" && stem == "ParkingLayoutMask") max = 2048;
         Want(t.maxTextureSize, max, x => t.maxTextureSize = x);
         // Quest 3 standalone (Android): every pack texture at most 1024, ASTC chosen by the build's
         // texture subtarget (QuestBuild sets ASTC). The Windows import above is untouched; the
@@ -236,7 +247,7 @@ public sealed class PackImport : AssetPostprocessor
     // text and decals), 4 elsewhere.
     private static bool Grazing(string pack, string stem)
     {
-        if (pack == "WallGraphics" || pack == "SurfaceDecals") return true;
+        if (pack == "WallGraphics" || pack == "SurfaceDecals" || pack == "OmanExterior") return true;
         if (pack == "PBRInterior") return Starts(stem, "FloorTile") || Starts(stem, "Terrazzo");
         if (pack == "RealismTextures") return Starts(stem, "Rust") || Starts(stem, "PaintedMetal") || Starts(stem, "Surfaces/");
         if (pack == "PBRExterior") return Starts(stem, "Asphalt") || Starts(stem, "Pavement") || Starts(stem, "Concrete") || Starts(stem, "Granite");

@@ -36,7 +36,7 @@ public static partial class PresentationPolish {
   register.Tools=tools.ToArray();
   // Tray slots: tools lie along the tray's X, two columns either side of the partition.
   var slots=new Dictionary<FieldInvestigationTool.Method,Vector3>{
-   {FieldInvestigationTool.Method.Forceps,V(-.115f,.034f,-.112f)},{FieldInvestigationTool.Method.Swab,V(-.115f,.034f,-.037f)},{FieldInvestigationTool.Method.Brush,V(-.115f,.034f,.038f)},{FieldInvestigationTool.Method.MagneticWand,V(-.115f,.034f,.113f)},
+   {FieldInvestigationTool.Method.Forceps,V(-.145f,.034f,-.112f)},{FieldInvestigationTool.Method.Swab,V(-.145f,.034f,-.037f)},{FieldInvestigationTool.Method.Brush,V(-.145f,.034f,.038f)},{FieldInvestigationTool.Method.MagneticWand,V(-.145f,.034f,.113f)},
    {FieldInvestigationTool.Method.Tape,V(.115f,.034f,0)}};
   // Lid slots (lid local: the inner face is -Y, the lid's top edge is -Z): flat items side by side on
   // the left half, the register clipboard keeps the right half. Height per item so it rests on the face.

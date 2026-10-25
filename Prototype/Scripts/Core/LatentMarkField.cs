@@ -30,7 +30,7 @@ public sealed class LatentMarkField : MonoBehaviour {
   for(int i=0;i<count;i++){
    float u=(float)rng.NextDouble()*1.7f-.85f,v=(float)rng.NextDouble()*1.7f-.85f;
    Vector3 local=box.center+new Vector3(box.size.x*.5f*u,box.size.y*.5f+.0008f,box.size.z*.5f*v);
-   var g=new GameObject("LatentMark_"+i);g.transform.SetParent(transform,false);g.transform.localPosition=local;g.transform.localRotation=Quaternion.Euler(0,(float)rng.NextDouble()*360,0);g.layer=gameObject.layer;
+   var g=new GameObject("LatentMark_"+i);if(!Application.isPlaying)g.hideFlags=HideFlags.DontSave;g.transform.SetParent(transform,false);g.transform.localPosition=local;g.transform.localRotation=Quaternion.Euler(0,(float)rng.NextDouble()*360,0);g.layer=gameObject.layer;
    var filter=g.AddComponent<MeshFilter>();filter.sharedMesh=Quad();var r=g.AddComponent<MeshRenderer>();r.sharedMaterial=RidgeMaterial;r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.Off;r.receiveShadows=true;r.lightProbeUsage=UnityEngine.Rendering.LightProbeUsage.BlendProbes;r.enabled=false;
    g.transform.localScale=new Vector3(MarkWidth,1,MarkHeight);
    int cell=rng.Next(0,AtlasColumns*AtlasRows);var block=new MaterialPropertyBlock();block.SetVector("_MainTex_ST",new Vector4(AtlasCell.x,AtlasCell.y,(cell%AtlasColumns)*AtlasCell.x,1-AtlasCell.y-(cell/AtlasColumns)*AtlasCell.y));r.SetPropertyBlock(block);
