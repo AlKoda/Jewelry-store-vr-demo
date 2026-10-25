@@ -99,7 +99,9 @@ public static class PresentationValidation
         foreach(var b in Object.FindObjectsByType<InteriorBounds>(FindObjectsInactive.Include,FindObjectsSortMode.None))foreach(var p in new[]{new Vector3(-23,0,-8),new Vector3(23,0,-8),new Vector3(0,0,-15),new Vector3(-23,0,-2.99f),new Vector3(-23,0,-3.01f),new Vector3(-23,0,-13.99f),new Vector3(-23,0,-14.01f)})Require(b.Contains(p),"Road/kerb not available for investigation: "+p);
         var car=root.Find("Exterior/PoliceCar");Require(Mathf.Abs(Vector3.Dot(car.forward,Vector3.right))>.99f,"Car is not parked along the road");
         var model=car.Find("SuppliedModel");Require(model&&Mathf.Abs(model.localScale.x-model.localScale.y)<.0001f&&Mathf.Abs(model.localScale.y-model.localScale.z)<.0001f,"Supplied car is missing or flattened");
-        foreach(var f in model.GetComponentsInChildren<MeshFilter>())Require(UnityEditor.AssetDatabase.GetAssetPath(f.sharedMesh).EndsWith("police+car+3d+model.fbx"),"Supplied car mesh was replaced/modified");
+        bool refined=model.GetComponentsInChildren<MeshFilter>().Any(f=>UnityEditor.AssetDatabase.GetAssetPath(f.sharedMesh).EndsWith("TripoPoliceCar/PatrolBody.obj"));
+        if(refined)PresentationPolish.PatrolCarChecks();
+        else foreach(var f in model.GetComponentsInChildren<MeshFilter>())Require(UnityEditor.AssetDatabase.GetAssetPath(f.sharedMesh).EndsWith("police+car+3d+model.fbx"),"Supplied car mesh was replaced/modified");
         foreach(var mark in root.GetComponentsInChildren<UVTrace>(true).Where(t=>t.name.StartsWith("EvidenceUV_HandlePrint"))){
             var p=mark.transform.localPosition;Require(Mathf.Abs(Mathf.Abs(p.x)-.815f)<.005f&&p.y>=1&&p.y<=1.15f,"Entrance print is not on the pull handle");
         }

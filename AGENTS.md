@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Koda's second test fixes (October 24): wand/brush contact by tip, faint glow, hint on B/Y or V only, text-free case with lid straps, grabbable doors; runs `PresentationPolish.SandboxRefreshRun` in Koda's checkout (`C:\Users\MOBPC\Documents\ChatGPT\Jewelry store\repository`) with a partial checkout of Claude's files when ChatGPT has work staged | Prototype/Scripts/Core (forensic classes, ForensicGlow, PushDoorLeaf), Tools/FieldInvestigationTool.cs, VR/HandInteractor.cs, VR/XRControllerInput.cs, Desktop/DesktopInteractor.cs, Editor/NightStore/ForensicSandbox.cs, IntegrationDelivery.cs, SceneReviewPass.cs (door tuning) | 2026-10-24 | PC run passed, build in Koda's folder; headset test pending |
-| ChatGPT | Clear overlapping supplies around the outdoor trolley | OutdoorSupplyTidy, forensic authoring hook, scene and Docs | 2026-10-25 | complete: 19 separated supplies, no item/trolley overlaps, fresh bake and Windows build passed; layout approved by Koda; syncing snapshot |
+| ChatGPT | Tripo patrol car refinement and integration | TripoPoliceCar, car authoring/material/checks, scene and Docs | 2026-10-26 | complete: original colour preserved, logo matched, 25,576/15,000 LODs, fresh lighting/reflections and strict Windows build passed |
 
 ## One project: edit it, never fork it
 
@@ -34,15 +34,3 @@ Update your own row **before** you start and again when you stop. Pull first: an
 - Work directly on `main`. Pull before editing and again before pushing. Small commits with clear messages.
 - With every batch: update the top of `Docs/HANDOFF.md` (state table) and `Docs/ROADMAP.md`. Mark anything not run in Unity as **unverified**. Keep HANDOFF short: it describes the present, and the History files hold the past.
 - Nothing can be compiled outside Unity. Koda runs the validators on the PC and reports the results; never claim something works in Unity or the headset before that report.
-
-
-
-
-
-
-
-
-
-
-
-

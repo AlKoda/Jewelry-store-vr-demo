@@ -1,0 +1,89 @@
+{
+  "created": "2026-10-26",
+  "source": "Koda supplied police car 3d model.glb and police car 3d model (1).zip, October 25",
+  "generation": "Tripo Studio P2.0, 15000 triangles, texture generation, user account",
+  "rights": "User-authorized project use; Tripo account terms apply. ROP emblem copyright retained; not CC0.",
+  "original_colour_preserved": true,
+  "source_colour_sha256": "bc49a14385e5b319b64e90a8a55af9e0a833ee78206da34390d6c1d608ba9c8b",
+  "generator": "Tools/refine_tripo_car.py",
+  "shader": "Prototype/Shaders/PatrolCarFinish.shader",
+  "door_art": "Existing native InvestigationDetail/PoliceDoorMarkings.png, Noto Arabic and official ROP emblem",
+  "plate_art": "Existing native PoliceArabicPlate.png; only الشرطة, no plate numbers",
+  "near_triangles_unity": 25576,
+  "distance_triangles": 15000,
+  "body_refinement": "Source body UVs/normals retained, wheel triangles replaced with native assemblies. No body subdivision/smoothing modifier/flattening.",
+  "assets": [
+    {
+      "path": "geometry.json",
+      "sha256": "6d12b90a2865f5ae7efa88e61e43069455b0a6d0c336690ecc11ecc5e219e65e"
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "3b2c0a34d596731af14f32fb310345fc7999a6c9882eec327385019f72b774b1"
+    },
+    {
+      "path": "paint-samples.json",
+      "sha256": "c7ebc03b29f07e5ae7e7c086599c37db4f27099681968f1b892a0cb62f7863c1"
+    },
+    {
+      "path": "PatrolAlloy.mat",
+      "sha256": "18fcaaf67a32ab9439c741a2c2d8565931127f0d801f0d362ab3872979c76c6a"
+    },
+    {
+      "path": "PatrolBody.obj",
+      "sha256": "f0d846dd311c3b7ae14a747357238ae95a1832485022e5ec67a1bce6ff01e176"
+    },
+    {
+      "path": "PatrolBrake.mat",
+      "sha256": "77e1e1c45fdf1488ab10f072faf919bc0c442f52c06494c7e931046e053b56a7"
+    },
+    {
+      "path": "PatrolDarkMetal.mat",
+      "sha256": "35ff7897525e140a01b668a25e2b5031a14b2666eea147dd7751996f873fc270"
+    },
+    {
+      "path": "PatrolDistance.obj",
+      "sha256": "f2c908e6681ab6ae8a2bdb759aaba1c22dd7cc3794fd9419bd40e11afbe27f36"
+    },
+    {
+      "path": "PatrolDoor_Color.png",
+      "sha256": "4d3180c614acaec3287c93850e4187f377342828dd8dfc24956c54b955f93b2d"
+    },
+    {
+      "path": "PatrolFinish.mat",
+      "sha256": "0e5b430d055b498869a8e27177dbbf3230d219f3bb2fcc9ec1b65baa63b466de"
+    },
+    {
+      "path": "PatrolOriginal_Color.jpg",
+      "sha256": "bc49a14385e5b319b64e90a8a55af9e0a833ee78206da34390d6c1d608ba9c8b"
+    },
+    {
+      "path": "PatrolPlate_Color.png",
+      "sha256": "918de9710443f5f1bca9902cf7a254aaf63cdf69af4f9f3f3cfbcbbdd2c5186d"
+    },
+    {
+      "path": "PatrolRubber.mat",
+      "sha256": "7e19038978920ebd15068c8f6bbe8e6286ff85c396efe67833b41789bd828622"
+    },
+    {
+      "path": "PatrolWheels.mtl",
+      "sha256": "68c3242e3040abc5e43a2da315c5c857a947003fb59f66fd2612d7ccd9400064"
+    },
+    {
+      "path": "PatrolWheels.obj",
+      "sha256": "427d023dd66fb41529557654d421b6c456b36a1df474e0dabc3c8f585e1b7eb0"
+    },
+    {
+      "path": "README.md",
+      "sha256": "508f939e730ada45ff1d24a708e58380272cc93b4007811569bb8d0350968ce7"
+    },
+    {
+      "path": "Original~/police_car.fbx",
+      "sha256": "ff38aedbde343d0cf7bb84acb54eecce7ae89d8178b7d101196875da3b460362"
+    },
+    {
+      "path": "Original~/police_car.glb",
+      "sha256": "0a281d6fe793e1cb9456add0979d9fe886e89c5551345ad02e92211695d25543"
+    }
+  ]
+}

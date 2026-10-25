@@ -1,0 +1,9 @@
+{
+  "source_sha256": "0a281d6fe793e1cb9456add0979d9fe886e89c5551345ad02e92211695d25543",
+  "source_triangles": 15000,
+  "body_triangles": 13336,
+  "wheel_triangles": 12816,
+  "source_vertices": 19085,
+  "length_metres": 5.12,
+  "geometry_changes": "Body: uniform scale and axis conversion, original wheel faces removed for new wheel assemblies. Original body corner normals and UVs retained. No smoothing modifier, remesh, subdivision or flattening. Distance mesh retains all original 15000 triangles."
+}

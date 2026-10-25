@@ -1,4 +1,6 @@
 # Open work
+- [x] October 26: Tripo patrol car integrated; supplied colour texture retained, matched native markings, detailed wheels, physical surface separation and baked reflection capture. Strict Windows/PCVR build and saved-scene checks pass. See Verification/PatrolCar.
+- [ ] Human headset review of the car's materials, wheel LOD transition and close-up appearance; no standalone frame-time claim.
 - [x] October 25 presentation polish: five refined hand-tool models, fitted pickup boxes, clear tray layout/exterior carry handle, calmer forensic materials, road/paving/parking restoration with permanent import rules. Actual-material road visibility, fieldwork, saved-scene and Windows build checks passed. See Verification/PresentationFinish.
 - [ ] Human headset review of this pass: tool detail and pickup, case carry handle, restored parking/cracks and road stability at grazing angles. No measured standalone frame-time claim.
 
@@ -24,7 +26,7 @@ Latest tested-build feedback (see [NEXT_SESSION_NOTES.md](NEXT_SESSION_NOTES.md)
 - [x] LOCAL October 21: stronger neutral glass visibility, repaired almost-transparent blood masks, small footwear/fibre/clasp evidence and two distant licensed figures; fresh lighting/reflections, Windows build and visual/safety checks pass.
 - [x] Re-grabbed tools retain grip/orientation while held and seat on valid surfaces when released; keyboard/VR floor and raised-counter regression passed.
 - [ ] Headset acceptance/performance of this local glass/evidence/placement pass; no measured Quest frame-time claim.
-- [ ] Car livery work PAUSED by Koda. Keep the existing plain gray supplied car. Native paint drafts retained unused; reject the evaluated extra sedan's visual quality. Do not resume car changes without new direction.
+- [x] Car work resumed by Koda October 25: supplied Tripo model refined and integrated October 26; original plain-car assets retained.
 - [ ] Oman local-preview approval before GitHub/official-ZIP promotion remains outstanding.
 
 - [x] Reconcile Claude's folder organization with local glass/UI/audio/scene fixes and preserve GUIDs.

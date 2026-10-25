@@ -24,6 +24,7 @@ public static partial class PresentationPolish {
         using(var hash=SHA256.Create())return BitConverter.ToString(hash.ComputeHash(Encoding.UTF8.GetBytes(string.Join("\n",faces.OrderBy(f=>f))))).Replace("-","");
     }
     static void ApplyRawCarMaterialOnly(Transform model){
+        if(IsRefinedPatrol(model))return;
         if(model.GetComponentsInChildren<MeshRenderer>(true).Any(r=>r.sharedMaterials.Any(m=>m&&m.shader.name=="CrimeScene/OmanPoliceCar"))){ApplyPoliceLivery(model);return;}
         var m=Mat(Folder,"SuppliedCarUntexturedClay",new Color(.42f,.43f,.44f),0);
         m.shader=Shader.Find("CrimeScene/RawCarClay");if(!m.shader)throw new Exception("Raw car shader missing");m.SetFloat("_DebugGeometryNormals",0);
@@ -41,6 +42,7 @@ public static partial class PresentationPolish {
         Debug.Log("RAW_CAR_GEOMETRY_PRESERVED "+before);
     }
     static void RawCarChecks(){
+        if(IsRefinedPatrol(root.Find("Exterior/PoliceCar/SuppliedModel"))){PatrolCarChecks();return;}
         var model=root.Find("Exterior/PoliceCar/SuppliedModel");int total=0;
         foreach(var f in model.GetComponentsInChildren<MeshFilter>()){
             if(AssetDatabase.GetAssetPath(f.sharedMesh)!=RawCarPath)throw new Exception("Car no longer uses the supplied FBX directly");

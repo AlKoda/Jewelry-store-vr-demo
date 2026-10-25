@@ -1,5 +1,13 @@
 # Current project handoff
 
+## Tripo patrol car — October 26
+
+The user-supplied textured Tripo sedan replaces the plain gray car in the existing scene. Original GLB/FBX and the previous car pack are retained. The active source colour JPEG is byte-identical to the download; only the generated lettering region is reconstructed from four unlettered samples per side, blending into the original navy. Native POLICE / الشرطة / ROP markings read correctly on both sides; both blue plates contain الشرطة and no numbers. Paint, tinted exterior glazing, rubber, metal and lamp lenses have separate responses.
+
+Native tyre profiles/tread grooves, alloys, rotors, calipers and nuts replace the blocky wheels. Original body UVs and supplied corner normals remain; no body subdivision, smoothing modifier or flattening. Near LOD 25,576 triangles, distance LOD 15,000. One extra baked 128px reflection probe excludes vehicle layer 27 to prevent self-reflections; no extra realtime lights. Existing warm headlamps are aligned to the new car, parked along the road. Source: TripoPoliceCar; generator: Tools/refine_tripo_car.py; entry points: PatrolCarDeliveryRun and PatrolCarVerifyRun.
+
+Local checkpoint: ../Backups/Before-Tripo-Car-20261025. Fresh lighting/reflection capture, presentation/torch-shadow safety checks, saved-scene validation and strict Windows/PCVR build passed. Final report: Verification/PatrolCar/README.md. Headset appearance/performance remains untested; this is an exterior model with tinted opaque glazing and no detailed cabin.
+
 ## Outdoor staging cleanup — October 25
 
 All 19 outdoor consumables are now laid out separately on a 2.4 x 1.4 m mat left of the trolley, clear of its frame and the nearby bollard. Actual rendered bounds determine spacing and floor contact; pairwise overlap/trolley checks passed. The fieldwork authoring hook preserves the layout. Fresh bake and Windows build passed (Builds/outdoor-tidy.log); overview: UnityProject_Demo/Builds/outdoor-staging-tidy.png. Tools, case and evidence interactions retained.
@@ -315,8 +323,3 @@ Latest correction: the original empty-hand models were correct; Koda meant the h
 Snapshot distribution: the refreshed canonical ZIP uses Git LFS because saved generated scene assets exceed the ordinary GitHub file limit. Install Git LFS and run git lfs pull after cloning before launching. No new scene generation or gameplay fixes were performed during publishing.
 
 October 23 local integration: pulled de58ac5 and synchronized into Unity. Initial import/compile passed. BeltLampReview lamp assertions passed, but the Windows build exposed XRHeadTracking static PlayerPrefs initialization (GetInt forbidden during construction). Moved preference initialization to BeforeSceneLoad; Windows rebuild passed (EXISTING_SCENE_DELIVERY_PASS and BELT_LAMP_LOCAL_DELIVERY_PASS). Removed register target totals/search directions and the developed-print photograph instruction. Generic trace compatibility, full sandbox removal, saved-scene door flags/glass/prefab updates and headset testing remain open.
-
-
-
-
-

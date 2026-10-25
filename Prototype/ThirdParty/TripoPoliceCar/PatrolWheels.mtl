@@ -1,0 +1,11 @@
+newmtl Rubber
+Kd .3 .3 .3
+
+newmtl Alloy
+Kd .3 .3 .3
+
+newmtl Brake
+Kd .3 .3 .3
+
+newmtl DarkMetal
+Kd .3 .3 .3

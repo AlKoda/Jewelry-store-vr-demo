@@ -158,6 +158,7 @@ public static partial class PresentationPolish
         }
     }
     static void ParkCar(){
+        if(AssetDatabase.LoadAssetAtPath<GameObject>(PatrolMesh)){PlaceRefinedPatrolCar();return;}
         var car=root.Find("Exterior/PoliceCar");
         var existing=car.Find("SuppliedModel");if(existing)Object.DestroyImmediate(existing.gameObject);
         foreach(var r in car.GetComponentsInChildren<Renderer>())r.enabled=false;

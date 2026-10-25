@@ -1,0 +1,17 @@
+User-supplied Tripo-generated vehicle, October 25, 2026.
+The user authorized its use and refinement in the jewelry-store demonstration.
+The source archive contains no independent licence. Rights in generated output
+remain subject to the user's Tripo account terms; this pack is NOT labelled CC0.
+
+Original project-made wheel assemblies, shader and typography layout:
+project artwork/code, with the project's applicable terms.
+
+Royal Oman Police emblem: copyright Royal Oman Police, official header asset
+https://www.rop.gov.om/english/images/Logo.png
+Not CC0; public redistribution permission has not been established. Educational
+vehicle depiction requested by the user. The existing InvestigationDetail pack
+contains the source artwork and its original notice.
+
+Arabic lettering uses Noto Sans Arabic (SIL Open Font Licence 1.1), available in
+../Fonts/Arabic/OFL.txt. No font binary is duplicated in this pack.
+
