@@ -127,7 +127,7 @@ public sealed class XRControllerInput : MonoBehaviour
     public float RawTrackedY { get; private set; }
     public bool PoseTracked { get; private set; }
     bool needsNeutral=true;
-    float quitChordSince=-1;
+    float quitChordSince=-1,resetChordSince=-1;bool resetFired;
     public static bool HasTrackedPose(InputDevice d) {
         const InputTrackingState required=InputTrackingState.Position|InputTrackingState.Rotation;
         return d.isValid && d.TryGetFeatureValue(CommonUsages.isTracked,out bool tracked) && tracked
@@ -137,7 +137,7 @@ public sealed class XRControllerInput : MonoBehaviour
     private void LoseTracking() {
         PoseTracked=false;CancelAim();if(wheel!=null)wheel.Hide();if(XRToolWheel.Active!=null)XRToolWheel.Active.Hide();
         grip=trigger=primary=secondary=stickClick=menu=turned=false;
-        GripValue=TriggerValue=MovedDistance=0;ThumbDown=false;needsNeutral=true;quitChordSince=-1;
+        GripValue=TriggerValue=MovedDistance=0;ThumbDown=false;needsNeutral=true;quitChordSince=-1;resetChordSince=-1;resetFired=false;
         // Keep a held object frozen; require neutral controls before re-arming so a
         // reconnect with grip pressed cannot drop/place/spawn anything unexpectedly.
     }
@@ -169,6 +169,16 @@ public sealed class XRControllerInput : MonoBehaviour
             return;
         }
         quitChordSince=-1;
+        // A held left-menu + X chord resets the scene (Koda, October 25): the same reset as the
+        // presenter menu's first item, without opening it. Two seconds, like the quit chord.
+        bool resetChord=Left && device.TryGetFeatureValue(CommonUsages.menuButton,out bool resetMenu)&&resetMenu
+            && device.TryGetFeatureValue(CommonUsages.primaryButton,out bool resetX)&&resetX;
+        if(resetChord){
+            if(resetChordSince<0){resetChordSince=Time.unscaledTime;DemoFeedback.Post("Hold Menu + X for two seconds to reset the scene");}
+            else if(!resetFired&&Time.unscaledTime-resetChordSince>=2){resetFired=true;var session=FindFirstObjectByType<DemoSession>();if(session){session.ResetSession();DemoFeedback.Post("Scene reset",FeedbackTone.Success);Buzz(HandEvent.Select);}}
+            return;
+        }
+        resetChordSince=-1;resetFired=false;
         GripValue = device.TryGetFeatureValue(CommonUsages.grip, out float gripAmount) ? gripAmount : grip ? 1 : 0;
         TriggerValue = device.TryGetFeatureValue(CommonUsages.trigger, out float triggerAmount) ? triggerAmount : trigger ? 1 : 0;
         ThumbDown = primary || secondary || stickClick || Touched(device, CommonUsages.primaryTouch)

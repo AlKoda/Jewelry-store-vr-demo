@@ -112,7 +112,8 @@ Poses and buttons come from Unity's built-in XR input API (UnityEngine.XR.InputD
 | Right thumbstick left / right | Snap turn 45° (with comfort fade) |
 | F8 (desktop presenter key) | Switch VR movement between smooth walking and teleport |
 | Right thumbstick click | Flashlight on the right hand |
-| Left menu button | Show / hide the controller hints on both hands |
+| Left menu button | Short press: show / hide the controller hints on both hands. Hold 0.8 s: the presenter menu above the left hand (Reset scene, movement, vignette, language, height, floor, light bar, hints), pointed at with the right controller |
+| Left menu + X held 2 s | Reset the scene (tools, doors, evidence, cart and case back to the start); Menu + Y held 2 s quits |
 | Left thumbstick click | UV torch in the left hand |
 
 ### Headset interface (XRHandHud, October 13, unverified)
