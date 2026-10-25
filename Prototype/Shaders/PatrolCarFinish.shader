@@ -90,8 +90,11 @@ Shader "CrimeScene/PatrolCarFinish" {
    fixed3 plateInk=tex2D(_PlateTex,saturate(puv)).rgb;
    if(plate>.5){o.Albedo=plateInk;o.Metallic=.08;o.Smoothness=.49;}
    // Restrained road dust is a roughness change, concentrated at the lower sill.
-   float dust=(1-smoothstep(.035,.10,up))*step(wheel,.5);
-   o.Smoothness=lerp(o.Smoothness,.35,dust*.25);
+   float dust=(1-smoothstep(.035,.12,up))*step(wheel,.5);
+   // Unequal road film on the lower body, kept in the paint's roughness so the
+   // supplied livery stays intact. Broad variation avoids sparkling in stereo.
+   float film=.65+.18*sin(along*87+up*13)+.12*sin(along*173-up*41);
+   o.Smoothness=lerp(o.Smoothness,.32,dust*.32*film);
   }
   ENDCG
  }

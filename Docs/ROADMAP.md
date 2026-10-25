@@ -1,4 +1,7 @@
 # Open work
+
+- [x] October 26 world/crowd polish: continuous Omani garment shoulders and skin weights, stable bounded head aim during animation culling, restrained cloth/skin shading and conversation speed; shop/exterior finish refinement, lower-car road film, supported side-laid lighter and less aligned displays. Saved-scene regressions, bake/reflections and Windows/PCVR build pass. See Verification/WorldRefinement.
+- [ ] Human Quest Link review of background people in motion, the updated surfaces and floor lighter. Frame time remains unmeasured.
 - [x] October 26: Tripo patrol car integrated; supplied colour texture retained, matched native markings, split-spoke wheels/closed barrels, fitted headlamp optics, machined rotor finish and sharper baked reflections (33,968 near / 15,000 far triangles). Strict Windows/PCVR build and saved-scene checks pass. See Verification/PatrolCar.
 - [ ] Human headset review of the car's materials, wheel LOD transition and close-up appearance; no standalone frame-time claim.
 - [x] October 25 presentation polish: five refined hand-tool models, fitted pickup boxes, clear tray layout/exterior carry handle, calmer forensic materials, road/paving/parking restoration with permanent import rules. Actual-material road visibility, fieldwork, saved-scene and Windows build checks passed. See Verification/PresentationFinish.

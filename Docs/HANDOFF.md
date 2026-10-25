@@ -1,5 +1,13 @@
 # Current project handoff
 
+## World and crowd refinement — October 26
+
+The five existing background spectators remain. Both Omani garments now have continuous remeshed shoulders/sleeves and smoothly transferred skin weights; the crowd totals 44,527 triangles against its 55,000 guard. Cloth colours/normal relief and skin normals are calmer, conversation playback is slower, and additive head tracking no longer accumulates rotation when animation is culled. There are no new crowd lights, rigidbodies or cloth simulation.
+
+Twenty-three shop/exterior materials have restrained relief and finishes; the new SatinWood shader keeps the photographic grain with lower fine contrast. Car lower-body roughness has subtle uneven road film, retaining the exact source colour texture/body geometry. The dropped lighter is on its side and seated on the floor, its E25 evidence binding retained. All eight loose display insert arrangements have small supported offsets rather than pristine alignment. Existing scattered jewellery, glass, tools and crowd behaviours remain.
+
+`WorldRefinementDeliveryRun` applies this targeted pass to the saved scene, validates animations/head tracking, lighter/insert support, shop/map/car references and actual road markings, refreshes lighting/reflections, then strictly rebuilds Windows/PCVR. Completed locally: `Builds/world-refinement-delivery.log`; report: [Verification/WorldRefinement/README.md](Verification/WorldRefinement/README.md). Quest Link appearance and frame time still need human review. No player was launched.
+
 ## Tripo patrol car — October 26
 
 The user-supplied textured Tripo sedan replaces the plain gray car in the existing scene. Original GLB/FBX and the previous car pack are retained. The active source colour JPEG is byte-identical to the download; only the generated lettering region is reconstructed from four unlettered samples per side, blending into the original navy. Native POLICE / الشرطة / ROP markings read correctly on both sides; both blue plates contain الشرطة and no numbers. Paint, tinted exterior glazing, rubber, metal and lamp lenses have separate responses.

@@ -5,6 +5,8 @@ are retained; covered western clothing is removed, never layered under the robe.
 import bpy, math, json
 from pathlib import Path
 from mathutils import Vector
+from mathutils.bvhtree import BVHTree
+from mathutils.geometry import barycentric_transform
 ROOT=Path.cwd(); OUT=ROOT/'Prototype/ThirdParty/PeopleModels/OmaniCrowd'
 OUT.mkdir(parents=True,exist_ok=True)
 
@@ -43,18 +45,78 @@ def build(role):
   mod=ob.modifiers.new('Crowd skin','ARMATURE');mod.object=arm;ob.parent=arm;ob.matrix_parent_inverse=arm.matrix_world.inverted()
   verts=[];faces=[];weights=[];uv=[]
   return ob
- def rings(rows,N=32):
+ def rings(rows,N=32,closed=False):
   start=len(verts)
   for j,(center,rx,ry,w,axis) in enumerate(rows):
    axis=Vector(axis).normalized();u=Vector((1,0,0))
    if abs(u.dot(axis))>.9:u=Vector((0,1,0))
    u=(u-axis*u.dot(axis)).normalized();v=axis.cross(u)
    for i in range(N):
-    t=2*math.pi*i/N;fold=1+.022*math.cos(12*t+j*.16)
+    t=2*math.pi*i/N
+    # Several unequal folds, rather than identical vertical corrugations.
+    fold=1+.018*math.cos(11*t+.18*math.sin(j*.5))+.012*math.sin(7*t+j*.23)+.006*math.cos(17*t-j*.11)
     verts.append(Vector(center)+u*(rx*math.cos(t)*fold)+v*(ry*math.sin(t)*fold));weights.append(w);uv.append((i/N,j/max(1,len(rows)-1)))
    if j:
     for i in range(N):
      a=start+(j-1)*N+i;b=start+(j-1)*N+(i+1)%N;c=start+j*N+(i+1)%N;d=start+j*N+i;faces.append((a,b,c,d))
+  if closed:
+   faces.append(tuple(start+i for i in reversed(range(N))))
+   faces.append(tuple(start+(len(rows)-1)*N+i for i in range(N)))
+ def tailor(ob):
+  # Join the shoulder/sleeve volumes into one continuous garment. Preserve
+  # original bone weights and surface UVs by barycentric transfer in rest pose.
+  bpy.ops.object.select_all(action='DESELECT');ob.select_set(True);bpy.context.view_layer.objects.active=ob
+  for mod in list(ob.modifiers):ob.modifiers.remove(mod)
+  import bmesh
+  bm=bmesh.new();bm.from_mesh(ob.data);bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces));bm.to_mesh(ob.data);bm.free()
+  ob.data.calc_loop_triangles()
+  source=[v.co.copy() for v in ob.data.vertices]
+  triangles=[tuple(t.vertices) for t in ob.data.loop_triangles]
+  source_weights=[{g.group:g.weight for g in v.groups} for v in ob.data.vertices]
+  source_uv=[tuple(ob.data.uv_layers.active.data[li].uv.copy() for li in t.loops) for t in ob.data.loop_triangles]
+  tree=BVHTree.FromPolygons(source,triangles,all_triangles=True)
+  remesh=ob.modifiers.new('Continuous tailored shoulders','REMESH');remesh.mode='VOXEL';remesh.voxel_size=.011;remesh.use_smooth_shade=True
+  bpy.ops.object.modifier_apply(modifier=remesh.name)
+  smooth=ob.modifiers.new('Relax cloth joins','SMOOTH');smooth.factor=.65;smooth.iterations=5;bpy.ops.object.modifier_apply(modifier=smooth.name)
+  tris=sum(len(p.vertices)-2 for p in ob.data.polygons)
+  dec=ob.modifiers.new('Crowd cloth budget','DECIMATE');dec.ratio=min(1,4800/max(1,tris));bpy.ops.object.modifier_apply(modifier=dec.name)
+  # Open the ankle hem again; the closed volume was needed only for union.
+  bm=bmesh.new();bm.from_mesh(ob.data)
+  bmesh.ops.delete(bm,geom=[f for f in bm.faces if all(v.co.z<.153 for v in f.verts)],context='FACES');bm.to_mesh(ob.data);bm.free()
+  ob.vertex_groups.clear()
+  layer=ob.data.uv_layers.get('UVMap') or ob.data.uv_layers.new(name='UVMap')
+  projected_uv={};skin=[]
+  for v in ob.data.vertices:
+   point,normal,idx,distance=tree.find_nearest(v.co);ids=triangles[idx];a,b,c=[source[i] for i in ids]
+   bary=barycentric_transform(point,a,b,c,Vector((1,0,0)),Vector((0,1,0)),Vector((0,0,1)))
+   w={}
+   for vi,amount in zip(ids,bary):
+    for key,value in source_weights[vi].items():w[key]=w.get(key,0)+value*max(0,amount)
+   skin.append(w)
+   uvs=source_uv[idx];u=sum(p.x*q for p,q in zip(uvs,bary));vv=sum(p.y*q for p,q in zip(uvs,bary));projected_uv[v.index]=(u,vv)
+  # The union removes intersecting surfaces; blend weights across that new
+  # shoulder seam too, so adjacent vertices do not follow different rigid bones.
+  neighbours=[set() for v in ob.data.vertices]
+  for e in ob.data.edges:
+   a,b=e.vertices;neighbours[a].add(b);neighbours[b].add(a)
+  for iteration in range(20):
+   relaxed=[]
+   for i,w in enumerate(skin):
+    if not neighbours[i]:relaxed.append(w);continue
+    combined={key:value*.35 for key,value in w.items()}
+    for j in neighbours[i]:
+     for key,value in skin[j].items():combined[key]=combined.get(key,0)+value*.65/len(neighbours[i])
+    relaxed.append(combined)
+   skin=relaxed
+  for i,w in enumerate(skin):
+   best=sorted(w.items(),key=lambda item:item[1],reverse=True)[:4];total=sum(value for _,value in best)
+   for key,value in best:
+    name=weight_names[key];group=ob.vertex_groups.get(name) or ob.vertex_groups.new(name=name);group.add([i],value/max(total,1e-8),'REPLACE')
+  for poly in ob.data.polygons:
+   poly.use_smooth=True
+   for li in poly.loop_indices:layer.data[li].uv=projected_uv[ob.data.loops[li].vertex_index]
+  mod=ob.modifiers.new('Crowd skin','ARMATURE');mod.object=arm
+  print('TAILORED_GARMENT',role,'triangles',sum(len(p.vertices)-2 for p in ob.data.polygons))
  def torso_weight(z):
   levels=[(.88,'Pelvis'),(1.04,'Spine'),(1.20,'Spine1'),(1.38,'Spine2'),(1.53,'Neck')]
   if z<=levels[0][0]:return {'Pelvis':1}
@@ -65,7 +127,7 @@ def build(role):
  rows=[]
  for z,rx,ry in [(.14,.26,.19),(.28,.25,.18),(.48,.24,.175),(.68,.23,.165),(.88,.22,.155),(1.04,.205,.145),(1.18,.21,.145),(1.32,.235,.15),(1.41,.245,.14),(1.46,.195,.115),(1.51,.075,.073)]:
   rows.append(((0,.008,z),rx,ry,torso_weight(z),(0,0,1)))
- rings(rows,40)
+ rings(rows,40,closed=True)
  for side in ['L','R']:
   a=bone(side+' UpperArm');b=bone(side+' Forearm');c=bone(side+' Hand');rows=[(a.lerp(bone('Spine2'),.3),.065,.065,{side+' UpperArm':1},b-a)]
   for i in range(9):
@@ -76,8 +138,10 @@ def build(role):
     f=(t-.5)*2;center=b.lerp(c,f);w={side+' Forearm':1-f*.15,side+' Hand':f*.15}
    axis=(b-a) if t<.5 else (c-b);radius=.095*(1-t)+.046*t
    rows.append((center,radius,radius,w,axis))
-  rings(rows,20)
- mesh('Dishdasha',cloth)
+  rings(rows,24,closed=True)
+ garment=mesh('Dishdasha',cloth)
+ weight_names={g.index:g.name for g in garment.vertex_groups}
+ tailor(garment)
  # Flat neckline trim and chest tassel, not a standing shirt collar.
  rings([((0,.008,z),r,r,{'Neck':1},(0,0,1)) for z,r in [(1.506,.077),(1.515,.077)]],32)
  rings([((.025,-.143,z),r,r,{'Spine2':1},(0,0,1)) for z,r in [(1.26,.008),(1.29,.006),(1.39,.003),(1.43,.004)]],10)

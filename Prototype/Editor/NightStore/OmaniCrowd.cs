@@ -9,10 +9,11 @@ using static DemoGeometry;
 public static partial class PresentationPolish {
  const string OmaniCrowdFolder="Assets/CrimeSceneDemo/ThirdParty/PeopleModels/OmaniCrowd";
  static Material OmaniCrowdMaterial(string name){
-  Color color=name.Contains("Sand")?new Color(.54f,.47f,.36f):name.Contains("Embroidery")?new Color(.56f,.51f,.40f):name.Contains("Mussar")?new Color(.53f,.48f,.38f):new Color(.84f,.81f,.73f);
-  var mat=Mat(Folder,name,color,.17f);mat.shader=Shader.Find("Standard");mat.SetFloat("_Metallic",0);mat.DisableKeyword("_EMISSION");
+  Color color=name.Contains("Sand")?new Color(.76f,.72f,.64f):name.Contains("Embroidery")?new Color(.62f,.57f,.46f):name.Contains("Mussar")?new Color(.70f,.66f,.57f):new Color(.94f,.94f,.91f);
+  var mat=Mat(Folder,name,color,.12f);mat.shader=Shader.Find("Standard");mat.SetFloat("_Metallic",0);mat.DisableKeyword("_EMISSION");
   mat.mainTexture=AssetDatabase.LoadAssetAtPath<Texture2D>(OmaniCrowdFolder+(name.Contains("Kumma")?"/KummaEmbroidery.png":"/CottonWeave.png"));
-  mat.mainTextureScale=name.Contains("Kumma")?Vector2.one:new Vector2(5,9);return mat;
+  mat.mainTextureScale=name.Contains("Kumma")?Vector2.one:new Vector2(5,9);
+  mat.SetTexture("_BumpMap",AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/CrimeSceneDemo/ThirdParty/InteriorModels/Shared_FabricCharcoal_Normal.jpg"));mat.SetFloat("_BumpScale",.14f);mat.EnableKeyword("_NORMALMAP");return mat;
  }
  public static void OmaniCrowdRun(){try{
   EditorSceneManager.OpenScene(DemoValidation.ScenesFolder+"/JewelryStoreNight.unity");root=GameObject.Find("NightStore").transform;oman=root.Find("Exterior/OmanStreet");string car=CarGeometrySignature();

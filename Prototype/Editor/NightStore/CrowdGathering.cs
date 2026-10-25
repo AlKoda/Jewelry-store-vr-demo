@@ -36,7 +36,7 @@ public static partial class PresentationPolish {
   var color=AssetDatabase.LoadAssetAtPath<Texture2D>(path+"_Color.png")??AssetDatabase.LoadAssetAtPath<Texture2D>(path+"_Color.jpg");if(!color)throw new Exception("Crowd albedo missing: "+path);
   var mat=Mat(Folder,"Crowd_"+prefix+"_"+part,Color.white,cutout?.15f:head?.28f:.19f);
   mat.shader=Shader.Find(cutout?"CrimeScene/CrowdCutout":"Standard");mat.mainTexture=color;mat.DisableKeyword("_EMISSION");if(mat.HasProperty("_EmissionColor"))mat.SetColor("_EmissionColor",Color.black);
-  if(!cutout){var normal=AssetDatabase.LoadAssetAtPath<Texture2D>(path+"_Normal.png")??AssetDatabase.LoadAssetAtPath<Texture2D>(path+"_Normal.jpg");mat.SetTexture("_BumpMap",normal);mat.SetFloat("_BumpScale",head?.45f:.35f);if(normal)mat.EnableKeyword("_NORMALMAP");mat.SetFloat("_Metallic",0);}
+  if(!cutout){var normal=AssetDatabase.LoadAssetAtPath<Texture2D>(path+"_Normal.png")??AssetDatabase.LoadAssetAtPath<Texture2D>(path+"_Normal.jpg");mat.SetTexture("_BumpMap",normal);mat.SetFloat("_BumpScale",head?.22f:.25f);if(normal)mat.EnableKeyword("_NORMALMAP");mat.SetFloat("_Metallic",0);}
   EditorUtility.SetDirty(mat);return mat;
  }
  static CrowdBystander CrowdPerson(Transform parent,string role,Vector3 point,float yaw,CrowdBystander.Behaviour behaviour,float phase){
@@ -52,7 +52,7 @@ public static partial class PresentationPolish {
   foreach(var t in go.GetComponentsInChildren<Transform>())t.gameObject.layer=CrowdLayer;
   animation.Play("Motion");animation["Motion"].time=phase%animation["Motion"].length;animation.Sample();animation.Stop();
   var head=CrowdBone(go,"Head");var nose=CrowdBone(go,"MNose");if(!head||!nose)throw new Exception("Crowd head markers missing");var direction=actor.InverseTransformDirection(nose.position-head.position);pivot.localRotation=Quaternion.Euler(0,-Mathf.Atan2(direction.x,direction.z)*Mathf.Rad2Deg,0);
-  var c=actor.gameObject.AddComponent<CrowdBystander>();c.Role=behaviour;c.CharacterAnimation=animation;c.Head=head;c.Nose=nose;c.Storefront=root.Find("Facade");c.PhaseSeconds=phase;c.PlaybackSpeed=role=="Observer"?.92f:1;
+  var c=actor.gameObject.AddComponent<CrowdBystander>();c.Role=behaviour;c.CharacterAnimation=animation;c.Head=head;c.Nose=nose;c.Storefront=root.Find("Facade");c.PhaseSeconds=phase;c.PlaybackSpeed=role=="Observer"?.92f:behaviour==CrowdBystander.Behaviour.Conversation?.86f:1;
   var capsule=actor.gameObject.AddComponent<CapsuleCollider>();capsule.center=new Vector3(0,.88f,0);capsule.height=1.72f;capsule.radius=.23f;
   if(behaviour==CrowdBystander.Behaviour.Phone)CrowdPhone(c,go);
   return c;

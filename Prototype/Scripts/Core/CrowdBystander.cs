@@ -18,6 +18,7 @@ public sealed class CrowdBystander : MonoBehaviour {
  Vector3 home;float clock,wait,walked,footDistance;bool initialized,towardsEnd=true;
  string currentClip;AnimationState motionState;
  Transform viewer;AudioSource footSource;
+ Quaternion authoredHead,appliedHead,lookOffset=Quaternion.identity;bool headApplied;
 
  void Start(){Initialize();}
  public void Initialize(){
@@ -65,12 +66,20 @@ public sealed class CrowdBystander : MonoBehaviour {
  void LateUpdate(){LookTowardsScene(Time.deltaTime);}
  public void LookTowardsScene(float deltaTime){
   if(!Head||!Nose||!Storefront)return;
+  // Legacy animation can be culled while a spectator is offscreen. Remove our
+  // previous additive turn before measuring the next one, even when no new
+  // animation sample has arrived. Otherwise a small turn accumulates each frame.
+  if(headApplied&&Quaternion.Angle(Head.localRotation,appliedHead)<.001f)Head.localRotation=authoredHead;
+  authoredHead=Head.localRotation;
   Vector3 target=Storefront.position+Vector3.up*1.5f;
   if(Role==Behaviour.Conversation&&Partner&&Mathf.Repeat(clock+PhaseSeconds,11)<7)target=Partner.transform.position+Vector3.up*1.55f;
   var forward=Nose.position-Head.position;var desired=target-Head.position;
   if(forward.sqrMagnitude<.000001f||desired.sqrMagnitude<.01f)return;
   var delta=Quaternion.FromToRotation(forward,desired);float limit=Role==Behaviour.Phone?12:28;
   var limited=Quaternion.RotateTowards(Quaternion.identity,delta,limit);
-  Head.rotation=Quaternion.Slerp(Head.rotation,limited*Head.rotation,.35f);
+  var parent=Head.parent?Head.parent.rotation:Quaternion.identity;
+  var localOffset=Quaternion.Inverse(parent)*limited*parent;
+  lookOffset=Quaternion.Slerp(lookOffset,localOffset,1-Mathf.Exp(-3*Mathf.Clamp(deltaTime,0,.1f)));
+  Head.localRotation=lookOffset*authoredHead;appliedHead=Head.localRotation;headApplied=true;
  }
 }
