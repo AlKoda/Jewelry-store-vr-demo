@@ -210,7 +210,16 @@ Text: `Wall-mounted alarm keypad, brushed grey metal box, small dark display at 
 **35. `planter`** — H3.1 + Smart Low-poly text-to-3D, target **3,000** — **auto**
 `Square cream ceramic planter with a lush green indoor plant, broad glossy leaves, 1 m tall overall`
 
-**36. `police_car`** — **wait** for the country and livery decision (see "for Koda.md"). Then P2.0 text-to-3D, target **15,000**, Detailed: `Modern [country] police patrol sedan, [livery colours and markings in words, no readable text], light bar on the roof, separate wheels`. Text and badges go on as decals in Unity.
+**36. `police_car`** — Omani (Royal Oman Police) patrol car, decided October 25. Two ways:
+
+- **Best: image-to-3D from a photo.** Find one clear side-three-quarter photo of a current ROP patrol car (white body, the red livery band along the sides, roof light bar), crop it to the car alone on a plain background, 1024 px or more. Studio → **3D Workspace → Smart Topology Mesh (P2.0)** → upload → Triangle, **15,000** faces, Texture Standard, PBR on → Generate. Image-to-3D copies the real livery; text-to-3D invents one.
+- **Fallback: text-to-3D** (P2.0, 15,000 faces, texture Detailed), prompt:
+  `Modern Omani police patrol SUV, Toyota Land Cruiser shape, clean white body, one bold red horizontal livery band along both sides at door-handle height with a thin dark blue line under it, plain white doors with no lettering, red and blue roof light bar, black bumpers, five-spoke alloy wheels, separate wheels, studio product shot, neutral grey background`
+  Negative: `text, letters, logos, people, ground plane, two cars, damage`.
+  The crest, "شرطة عمان السلطانية" and "ROYAL OMAN POLICE" lettering go on afterwards as Unity decals (Tripo garbles text).
+- **No clicking at all:** `python3 Tools/tripo_generate.py --image ref.jpg --out Downloads/Tripo/police_car --faces 15000 --fbx` with a Tripo **API** key (platform.tripo3d.ai, API credits are separate from Studio). Claude can run this from the PC once the key sits in a local file outside the repository.
+
+Export → FBX, textures included, scale 1. Then it replaces `ThirdParty/SuppliedPoliceCar/police+car+3d+model.fbx` in the scene (the car checks in ReviewAndRawCar.cs pin that file's geometry and must be updated in the same change; the StreetModels pack also still holds the CC BY `PoliceCar` sedan from Zhabotinsky). The livery details above are from memory and need checking against the photo before generating.
 
 Skip for now (procedural versions are good enough and Tripo is weak at them): doors and window modules (glass, hinges), exit sign (text), downlight, bollard, L-scale, measuring reel.
 
