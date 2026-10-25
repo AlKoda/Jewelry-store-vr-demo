@@ -1,4 +1,9 @@
 # Current project handoff
+
+## Outdoor staging cleanup — October 25
+
+All 19 outdoor consumables are now laid out separately on a 2.4 x 1.4 m mat left of the trolley, clear of its frame and the nearby bollard. Actual rendered bounds determine spacing and floor contact; pairwise overlap/trolley checks passed. The fieldwork authoring hook preserves the layout. Fresh bake and Windows build passed (Builds/outdoor-tidy.log); overview: UnityProject_Demo/Builds/outdoor-staging-tidy.png. Tools, case and evidence interactions retained.
+
 ## Presentation polish — October 25
 
 Road cracks, sidewalk fractures and parking paint are restored. PackImport had misclassified OmanExterior data masks and generated normals on reimport; version 3 now preserves linear masks, normal conversion and Windows parking-map resolution. Aggregate contrast and distant relief are reduced. Paint and fractures remain in one opaque road shader, with cracks cutting the paint. Actual-material GPU visibility checks pass (paint 4,611 changed pixels; cracks 1,726), alongside the crack-channel layering test.
@@ -310,6 +315,7 @@ Latest correction: the original empty-hand models were correct; Koda meant the h
 Snapshot distribution: the refreshed canonical ZIP uses Git LFS because saved generated scene assets exceed the ordinary GitHub file limit. Install Git LFS and run git lfs pull after cloning before launching. No new scene generation or gameplay fixes were performed during publishing.
 
 October 23 local integration: pulled de58ac5 and synchronized into Unity. Initial import/compile passed. BeltLampReview lamp assertions passed, but the Windows build exposed XRHeadTracking static PlayerPrefs initialization (GetInt forbidden during construction). Moved preference initialization to BeforeSceneLoad; Windows rebuild passed (EXISTING_SCENE_DELIVERY_PASS and BELT_LAMP_LOCAL_DELIVERY_PASS). Removed register target totals/search directions and the developed-print photograph instruction. Generic trace compatibility, full sandbox removal, saved-scene door flags/glass/prefab updates and headset testing remain open.
+
 
 
 

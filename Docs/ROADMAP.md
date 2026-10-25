@@ -114,3 +114,5 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [x] October 25: two Omani traditional-dress male onlookers (kumma and mussar), retaining conversation/phone behaviour and five-person crowd. Windows/PCVR delivery; headset appearance/performance review remains open.
 
+
+- [x] October 25: outdoor supply clutter separated using actual model bounds; all 19 consumables retained, no item/trolley overlaps; fresh bake and Windows build passed.

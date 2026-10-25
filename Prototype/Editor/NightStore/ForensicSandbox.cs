@@ -87,7 +87,7 @@ public static partial class PresentationPolish {
    if(g){placed++;continue;}
    var f=new KitMesh{Lightmapped=false};f.Bar(fallbackMat,V(0,item.fallback.y*.5f,0),item.fallback,.003f);f.Emit(item.model+"_Fallback",consumables,item.at,Quaternion.Euler(0,item.yaw,0),Folder,"forensic_fallback_"+item.model.ToLowerInvariant());
   }
-  foreach(var t in consumables.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;StoreKit.MarkStatic(consumables.gameObject,true);
+  TidyOutdoorSupplies();foreach(var t in consumables.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;StoreKit.MarkStatic(consumables.gameObject,true);
   // ---- latent-mark fields on every display-case top
   foreach(var old in root.GetComponentsInChildren<LatentMarkField>(true))Object.DestroyImmediate(old.gameObject);
   var ridge=Mat(Folder,"LatentFieldRidge",new Color(.075f,.068f,.058f,.76f),.025f);ridge.shader=Shader.Find("CrimeScene/SurfaceDecal");ridge.mainTexture=DemoAssetLibrary.Texture("SurfaceDecals","Fingerprints_Atlas.png");ridge.renderQueue=2465;
