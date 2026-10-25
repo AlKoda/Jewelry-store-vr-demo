@@ -294,3 +294,5 @@ Each new pack has LICENSE.txt with source, author, license and modification deta
 | Asphalt/concrete aggregate, three road fracture masks, concrete fractures and weathering map | Original project artwork, built-in image_gen, October 21 | OmanExterior/ROAD_GENERATION_PROMPTS.md and sources.json; packed RGBA fractures, scene-derived parking mask, Unity-derived normals. No reference photo imported. |
 
 | Fine-glass granules, server equipment covers, safe fittings, ceiling hatch, cleaning bucket, broad lighting profile and separated snack meshes | Project-authored geometry/profile; existing licensed packs retained | ShopAtmosphereRefinement.cs; 3,600 batched fine granules; original supplied car bytes untouched. Broom/Dustpan/CleanerSprayBottle and FoodPackets reused from registered AmbientProps2 pack, preserving source UVs/textures. No new external downloads. |
+
+| PeopleModels/OmaniCrowd | Two Omani dishdasha outfits with kumma/mussar on existing MIT Rocketbox Talker/Phone rigs | Microsoft MIT base; project-authored garment meshes and textile patterns | PeopleModels/OmaniCrowd/LICENSE.txt and sources.json | No new actors, lights or cloth simulation |

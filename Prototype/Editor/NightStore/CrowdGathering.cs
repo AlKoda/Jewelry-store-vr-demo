@@ -29,6 +29,7 @@ public static partial class PresentationPolish {
   }
  }
  static Material CrowdMaterial(string role,string imported){
+  if(imported.StartsWith("Omani"))return OmaniCrowdMaterial(imported);
   bool cutout=imported.ToLowerInvariant().Contains("opacity"),head=imported.ToLowerInvariant().Contains("head");string part=cutout?"Cutout":head?"Head":"Body";
   string prefix=role=="Phone"?"PasserBy":role=="Observer"?"DetectiveFemale":role;
   string path=(role=="Phone"||role=="Observer")?"Assets/CrimeSceneDemo/ThirdParty/PeopleModels/"+prefix+"_"+(cutout?"Hair":part):CrowdFolder+"/"+prefix+"_"+part;
@@ -40,7 +41,7 @@ public static partial class PresentationPolish {
  }
  static CrowdBystander CrowdPerson(Transform parent,string role,Vector3 point,float yaw,CrowdBystander.Behaviour behaviour,float phase){
   var actor=Group("Spectator_"+role,parent);actor.localPosition=point;actor.localRotation=Quaternion.Euler(0,yaw,0);
-  var pivot=Group("FacingCalibration",actor);var asset=AssetDatabase.LoadAssetAtPath<GameObject>(CrowdFolder+"/"+role+".fbx");if(!asset)throw new Exception("Crowd rig missing");
+  var pivot=Group("FacingCalibration",actor);var asset=AssetDatabase.LoadAssetAtPath<GameObject>((role=="Talker"||role=="Phone"?OmaniCrowdFolder:CrowdFolder)+"/"+role+".fbx");if(!asset)throw new Exception("Crowd rig missing");
   var go=(GameObject)PrefabUtility.InstantiatePrefab(asset,pivot);PrefabUtility.UnpackPrefabInstance(go,PrefabUnpackMode.Completely,InteractionMode.AutomatedAction);go.name="CharacterSkin";
   foreach(var a in go.GetComponentsInChildren<Animation>())Object.DestroyImmediate(a);
   var animation=go.AddComponent<Animation>();animation.playAutomatically=false;animation.cullingType=AnimationCullingType.BasedOnRenderers;animation.AddClip(CrowdClip(role),"Motion");
@@ -182,7 +183,7 @@ public static partial class PresentationPolish {
 public sealed class CrowdAnimationImport : AssetPostprocessor {
  public override int GetPostprocessOrder()=>10000;
  void OnPreprocessModel(){
-  if(!assetPath.StartsWith("Assets/CrimeSceneDemo/ThirdParty/PeopleModels/Animated/",StringComparison.Ordinal))return;
+  if(!assetPath.StartsWith("Assets/CrimeSceneDemo/ThirdParty/PeopleModels/Animated/",StringComparison.Ordinal)&&!assetPath.StartsWith("Assets/CrimeSceneDemo/ThirdParty/PeopleModels/OmaniCrowd/",StringComparison.Ordinal))return;
   var importer=(ModelImporter)assetImporter;importer.importAnimation=true;importer.animationType=ModelImporterAnimationType.Legacy;importer.importBlendShapes=false;importer.materialImportMode=ModelImporterMaterialImportMode.ImportStandard;importer.isReadable=true;
  }
 }

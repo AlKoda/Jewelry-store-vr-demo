@@ -1,4 +1,9 @@
 # Current project handoff
+## Omani crowd delivery — October 25
+
+Two existing male spectators wear original Omani outfits: an ivory dishdasha with embroidered kumma for the conversational onlooker, and a sand dishdasha with folded mussar for the phone onlooker. Both have collarless necklines and furakha details. Covered western clothing is removed; original MIT Rocketbox skin, skeletons and animation remain. Source: PeopleModels/OmaniCrowd; generator: PeopleModels/Source~/dress_omani.py. Cultural references and licence are recorded with the assets.
+
+The same five spectators and behaviours remain, with 38,567 total crowd triangles and no additional lights, rigidbodies or cloth simulation. OmaniCrowdRun updates only the crowd, preserves the car and fieldwork scene, runs skin/loop/behaviour checks, renders previews and builds Windows/PCVR. Headset appearance and frame time still require user testing. Final verification: Builds/omani-crowd-final.log. Scene/source snapshot refresh and GitHub synchronization are part of this delivery; no player launch requested.
 
 Updated October 23, 2026. Read AGENTS.md, Docs/VR_TESTING.md and Docs/ROADMAP.md.
 
@@ -298,5 +303,6 @@ Latest correction: the original empty-hand models were correct; Koda meant the h
 Snapshot distribution: the refreshed canonical ZIP uses Git LFS because saved generated scene assets exceed the ordinary GitHub file limit. Install Git LFS and run git lfs pull after cloning before launching. No new scene generation or gameplay fixes were performed during publishing.
 
 October 23 local integration: pulled de58ac5 and synchronized into Unity. Initial import/compile passed. BeltLampReview lamp assertions passed, but the Windows build exposed XRHeadTracking static PlayerPrefs initialization (GetInt forbidden during construction). Moved preference initialization to BeforeSceneLoad; Windows rebuild passed (EXISTING_SCENE_DELIVERY_PASS and BELT_LAMP_LOCAL_DELIVERY_PASS). Removed register target totals/search directions and the developed-print photograph instruction. Generic trace compatibility, full sandbox removal, saved-scene door flags/glass/prefab updates and headset testing remain open.
+
 
 

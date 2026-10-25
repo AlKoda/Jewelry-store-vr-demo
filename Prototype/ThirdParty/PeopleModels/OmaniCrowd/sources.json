@@ -1,0 +1,30 @@
+{
+  "license": "MIT (base avatars/animations: Microsoft Rocketbox; clothing/textile additions: project-authored)",
+  "base_assets": [
+    "../Animated/Talker.fbx",
+    "../Animated/Phone.fbx"
+  ],
+  "generator": "../Source~/dress_omani.py",
+  "references": [
+    "https://www.omanconsulate.com/en/tourism-in-oman.html",
+    "https://experienceoman.om/wp-content/uploads/2024/03/Marhaba-Oman_compressed.pdf"
+  ],
+  "files": {
+    "CottonWeave.png": {
+      "sha256": "1d7def5dabdec2e44dbbb09b83681a88b5a519f433c5c1b6887edbd55a35e0e5",
+      "bytes": 878
+    },
+    "KummaEmbroidery.png": {
+      "sha256": "a6abf926a8005bc74b2c80ab062797ec851cc667c757e66b5a21f86c3635db69",
+      "bytes": 5891
+    },
+    "Phone.fbx": {
+      "sha256": "6f68a4f60a7b6b9c64674b90d5b7a3be0ce8524560e6c188b6ff6a532dd3687a",
+      "bytes": 2134604
+    },
+    "Talker.fbx": {
+      "sha256": "fb14bc0fe7bbc0e75354dbd49c9757f09dfb06281af8b0ef83e5955d2975ff41",
+      "bytes": 2164076
+    }
+  }
+}

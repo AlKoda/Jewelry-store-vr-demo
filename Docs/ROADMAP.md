@@ -109,3 +109,5 @@ See VR_TESTING.md for the actual setup, controls, build behavior and connection 
 
 - [x] October 24: integrate finished forensic models and Phase 1 into saved scene; fix Unity serialization/startup/UV cache issues, run FieldworkChecks before and after reopening, rebuild Windows/PCVR.
 - [ ] Quest Link acceptance: floor reach, moving door glass, tool-case selection/placement, lamp height/all-lit behavior, tape and new forensic tools. Phase 2 remains separate.
+
+- [x] October 25: two Omani traditional-dress male onlookers (kumma and mussar), retaining conversation/phone behaviour and five-person crowd. Windows/PCVR delivery; headset appearance/performance review remains open.
