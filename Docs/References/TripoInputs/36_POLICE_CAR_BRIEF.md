@@ -25,7 +25,7 @@ Please produce, each as a transparent PNG at the stated size:
 |---|---|---|
 | `ROP_Crest.png` | 1024 × 1024 | The Royal Oman Police crest as on the door: the national emblem (khanjar over two crossed swords) under a crown, inside a round frame, in white with red and gold details as in the references. Centred, transparent outside the frame. |
 | `ROP_DoorDecal.png` | 2048 × 1024 | The whole front-door block: `POLICE` (white, bold sans, left), the crest (centre), `الشرطة` (white, bold Naskh, right), and `www.rop.gov.om` (white, small, centred under the crest). Proportions as in `36b_door_decal_reference.png`; the block is about 0.55 m wide on the car. |
-| `ROP_Plate.png` | 1040 × 220 | The ROP patrol-car plate (Koda: **blue plate, white characters**), front and rear identical: number `6669` on the left, class letters `ح و` over `H W` in the middle, `عُمان` on the right with the small ROP crest above it, thin white frame line. Layout as `rop_plate_red_reference.png` but blue (`#1F3F8F`) instead of red. |
+| `ROP_Plate.png` | 1040 × 220 | The patrol-car plate as in `front_plate_reference.png`: **blue plate (`#1F3F8F`), white characters**, thin white frame line. The plate number on the left (use `6669`), the word `الشرطة` large on the right, no `عُمان`. Front and rear identical. Only use `rop_plate_red_reference.png` for the embossed character style, not for the layout or colour. |
 | `ROP_LightBar_Lens.png` | 1024 × 128 | Blue translucent lens strip for the low-profile roof bar, with the LED segment pattern. |
 
 Rules: no drop shadows, no bevels, flat colours, nothing outside the stated canvas. Navy for anything that must match the body: `#0B1E4A`. Fonts: a bold grotesque for `POLICE` (Helvetica Bold or Arial Black look), a bold Naskh for the Arabic.
