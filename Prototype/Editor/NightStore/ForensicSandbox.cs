@@ -69,7 +69,7 @@ public static partial class PresentationPolish {
    var barGrip=bar.gameObject.AddComponent<BoxCollider>();barGrip.isTrigger=true;barGrip.size=V(.9f,.06f,.06f);
    var cart=table.GetComponent<PortableFieldKit>();if(!cart)cart=table.gameObject.AddComponent<PortableFieldKit>();
    cart.Cart=true;cart.Grip=bar;cart.GripCollider=barGrip;cart.Bounds=kit.Bounds;cart.Footprint=new Vector2(1f,.54f);cart.RestFootprint=.4f;cart.RestTolerance=.05f;cart.VolumeCentre=V(0,.5f,0);cart.VolumeHalf=V(.5f,.44f,.27f);
-   register.ExtraKits=new[]{cart};foreach(var t in table.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;
+   register.ExtraKits=new[]{cart};foreach(var t in table.GetComponentsInChildren<Transform>(true))t.gameObject.layer=CrowdLayer;FinishRollingCart();
   }
   // ---- consumables and protective items on a ground sheet beside the field table
   var consumables=Fresh("ForensicConsumables",root);consumables.position=V(-5.55f,0,-1.3f);
@@ -263,9 +263,10 @@ public static partial class PresentationPolish {
    var kitHome=register.Kit.transform.position;var cartHome=cart.transform.position;Physics.SyncTransforms();
    Require(cart.Passengers().Length==1&&cart.Passengers()[0]==register.Kit,"the case does not count as a passenger of the cart");
    hand.ReleaseAll();a.transform.SetPositionAndRotation(cart.Grip.position,Quaternion.identity);Physics.SyncTransforms();Require(hand.Grab()&&hand.CarriedKit==cart,"the cart's push bar cannot be gripped");
-   var offset=register.Kit.transform.position-cart.transform.position;a.transform.position+=new Vector3(.6f,0,-.4f);cart.Follow(a.transform);
-   Require((cart.transform.position-cartHome).magnitude>.5f&&(register.Kit.transform.position-cart.transform.position-offset).magnitude<.001f,"the case does not ride along on the cart");
-   hand.ReleaseAll();Require(!cart.Holder&&Vector3.Distance(register.Kit.transform.position-cart.transform.position,offset)<.01f,"the case left the cart when it was put down");
+   var offset=cart.transform.InverseTransformPoint(register.Kit.transform.position);var handleStart=a.transform.position;
+   for(int frame=0;frame<90;frame++){a.transform.position=handleStart+new Vector3(.6f,0,-.4f)*Mathf.Min(1,frame/55f);if(cart.RollOnGround)cart.RollStep(a.transform,.02f);else cart.Follow(a.transform);Physics.SyncTransforms();}
+   Require((cart.transform.position-cartHome).magnitude>.5f&&(cart.transform.InverseTransformPoint(register.Kit.transform.position)-offset).magnitude<.001f,"the case does not ride along on the rolling cart");
+   hand.ReleaseAll();Require(!cart.Holder&&Vector3.Distance(cart.transform.InverseTransformPoint(register.Kit.transform.position),offset)<.01f,"the case left the cart when it was put down");
    register.ResetInvestigation();Require(Vector3.Distance(cart.transform.position,cartHome)<.001f&&Vector3.Distance(register.Kit.transform.position,kitHome)<.001f,"reset does not return the cart and the case");
    // -- marker numbers: a removed number is reused
    var station=Object.FindFirstObjectByType<ToolStation>();if(station&&station.MarkerPrefab){

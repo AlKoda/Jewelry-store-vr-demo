@@ -15,9 +15,16 @@ hashes and generated counts; Unity removes degenerate wheel-cap triangles.
 
 Unity authoring: `PresentationPolish.PatrolCarDeliveryRun`. The existing car
 placement and original car asset pack are retained. Near model has approximately
-33,968 triangles; far model has 15,000. Four wheel
+34,184 triangles after the fitted-wiper finish; far model has 15,000. Four wheel
 materials share one renderer. Split spokes have bevelled machined shoulders, wheel hubs carry raised badges, and closed rim barrels hide the road behind the wheel. Fitted transparent projector covers and light guides are near-LOD geometry; their maximum fitted surface distance is recorded in geometry.json (9 mm). Rotors use a derivative-filtered procedural machining finish, with no new raster textures. A baked 256px reflection probe excludes the car's
 visual layer, preventing reflections of its own cabin/body. No new live light.
+
+Final detail pass: Tools/refine_patrol_details.py fits two parked wipers to the
+unmodified source surface (216 triangles, 3 mm seated offset). PatrolTyre uses
+native derivative-filtered tread and sidewall finish variation on the existing
+tyre geometry, with darker rubber. The source lamp atlas is neutralized in the
+surface shader to reduce coloured artefacts; the original colour JPEG remains
+unchanged. CartPatrolFinishRun applies this and validates the existing scene.
 
 `CrimeScene/PatrolCarFinish` retains the original paint texture and separates
 paint, tinted exterior glazing, rubber, metal and lamp surface responses. Native

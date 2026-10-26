@@ -9,7 +9,7 @@ Update your own row **before** you start and again when you stop. Pull first: an
 | Assistant | Working on | Files | Since | Status |
 |---|---|---|---|---|
 | Claude | Koda's second test fixes (October 24): wand/brush contact by tip, faint glow, hint on B/Y or V only, text-free case with lid straps, grabbable doors; runs `PresentationPolish.SandboxRefreshRun` in Koda's checkout (`C:\Users\MOBPC\Documents\ChatGPT\Jewelry store\repository`) with a partial checkout of Claude's files when ChatGPT has work staged | Prototype/Scripts/Core (forensic classes, ForensicGlow, PushDoorLeaf), Tools/FieldInvestigationTool.cs, VR/HandInteractor.cs, VR/XRControllerInput.cs, Desktop/DesktopInteractor.cs, Editor/NightStore/ForensicSandbox.cs, IntegrationDelivery.cs, SceneReviewPass.cs (door tuning) | 2026-10-24 | PC run passed, build in Koda's folder; headset test pending |
-| ChatGPT | Crowd mesh refinement after model-specific feedback | PeopleModels/Animated and OmaniCrowd meshes/generators, crowd authoring/validation, saved scene and Docs | 2026-10-26 | complete: five refined models, dual mesh LODs, skin/render regressions and Windows/PCVR build pass; headset acceptance pending |
+| ChatGPT | Car finishing, grounded equipment trolley and side camera grips (explicit user request) | Tripo car/detail assets/shaders, PortableFieldKit, EvidenceCamera, ShopWalkController/XRLocomotion pace, cart hook/test in ForensicSandbox, validation and scene/Docs | 2026-10-26 | complete: targeted/full fieldwork checks, camera renders, bake/reflections and Windows/PCVR build pass; reversible mode; headset review pending |
 
 ## One project: edit it, never fork it
 

@@ -118,6 +118,7 @@ public sealed class ShopWalkController : MonoBehaviour
             + transform.forward * Input.GetAxisRaw("Vertical");
         float speed = Speed * (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? SprintMultiplier : 1)
             * (Crouching ? CrouchSpeedMultiplier : 1);
+        speed=PortableFieldKit.LimitWalkingSpeed(transform,speed);
         // One Move per frame keeps isGrounded valid, so fall speed cannot accumulate.
         verticalSpeed = body.isGrounded ? -1f : Mathf.Max(verticalSpeed - 9.81f * Time.deltaTime, -8f);
         Move((Vector3.ClampMagnitude(direction, 1) * speed + Vector3.up * verticalSpeed) * Time.deltaTime);

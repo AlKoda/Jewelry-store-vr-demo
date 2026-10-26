@@ -9,7 +9,7 @@
   "shader": "Prototype/Shaders/PatrolCarFinish.shader",
   "door_art": "Existing native InvestigationDetail/PoliceDoorMarkings.png, Noto Arabic and official ROP emblem",
   "plate_art": "Existing native PoliceArabicPlate.png; only الشرطة, no plate numbers",
-  "near_triangles_unity": 33968,
+  "near_triangles_unity": 34184,
   "distance_triangles": 15000,
   "body_refinement": "Source body UVs/normals retained; native split-spoke wheels, closed barrels, shaped badge hubs and source-conforming optical covers. No body subdivision/smoothing modifier/flattening.",
   "assets": [
@@ -79,7 +79,7 @@
     },
     {
       "path": "PatrolRubber.mat",
-      "sha256": "c63804fe4424ed09d5149b5cf362ed01c262630687749d5c5bd81ec92774be7e"
+      "sha256": "31003a740e32dd4db3dbd65cf78be8d4b4f554d01b5d10465eba1ecfafbb1813"
     },
     {
       "path": "PatrolSatinChrome.mat",
@@ -94,8 +94,20 @@
       "sha256": "9c788b74635da651ab4a3589d726bd157ceddb74636dba8c871e333682a0403c"
     },
     {
+      "path": "PatrolWiperRubber.mat",
+      "sha256": "bf528d89b0af19baabebd8e66f6eb735e32ad98f2e0b5ce4e4284dafd3d98678"
+    },
+    {
+      "path": "PatrolWipers.obj",
+      "sha256": "8d321a404a7ddc978572b083a9a2e25f3fa0472f081ab869bbfcce55c872596f"
+    },
+    {
       "path": "README.md",
-      "sha256": "8898988af46a33d899303c9bf3cca4bbc0a6729176b0ab4c95ffb0385177699c"
+      "sha256": "68d689b0c7cf51cc3cb8c14632233d7dd14d6826948a0fbdb7fe26530567f3a2"
+    },
+    {
+      "path": "wiper-geometry.json",
+      "sha256": "0383b4e934ee653615abad537be87536cb7d3a1a1be85c4656b6a8deb1b8714d"
     },
     {
       "path": "Original~/police_car.fbx",
@@ -107,5 +119,6 @@
     }
   ],
   "reflection_capture_resolution": 256,
-  "optics_max_surface_distance_m": 0.0090004432
+  "optics_max_surface_distance_m": 0.0090004432,
+  "finish_generator": "Tools/refine_patrol_details.py"
 }

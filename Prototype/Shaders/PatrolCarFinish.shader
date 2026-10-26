@@ -71,7 +71,7 @@ Shader "CrimeScene/PatrolCarFinish" {
    float grille=step(along,-.454)*between(up,.085,.167)*step(ab,.13);
    if(grille>.5){o.Albedo=source*.92;o.Metallic=smoothstep(.07,.4,lightness)*.9;o.Smoothness=.72;}
    float lamp=step(along,-.405)*between(up,.115,.162)*between(ab,.115,.19);
-   if(lamp>.5){o.Albedo=source*.92;o.Metallic=.08;o.Smoothness=.84;}
+   if(lamp>.5){float luminance=dot(source,float3(.2126,.7152,.0722));o.Albedo=lerp(source*.92,luminance*float3(.88,.92,.97),.65);o.Metallic=.08;o.Smoothness=.88;}
    float rear=step(.439,along)*between(up,.122,.206)*step(.135,ab);
    if(rear>.5){o.Metallic=.06;o.Smoothness=.86;}
    float handle=step(.167,ab)*between(up,.195,.211)*max(between(along,-.077,-.033),between(along,.162,.208));

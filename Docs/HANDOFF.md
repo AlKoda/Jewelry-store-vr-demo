@@ -1,5 +1,13 @@
 # Current project handoff
 
+## Equipment trolley, camera side grips and patrol finishing — October 26
+
+Koda confirmed “card” meant the equipment trolley, not the police car. Its handle now applies bounded ground movement with acceleration, steering, braking, obstacle sweeps and four supporting ground samples. Taking the handle preserves the current position; hand height cannot lift the trolley, a tracking jump releases it, and release/placement no longer relocates it to the hand/ray. Keyboard/thumbstick walking is limited to a pushing pace while holding it, restored on release. Case passengers keep their local poses and docks. Four native casters swivel and wheels spin. No dynamic rigidbody. To revert movement, disable `PortableFieldKit.RollOnGround` on ExteriorFieldTable in the existing scene; the original hand-follow path remains. ForensicSandbox's cart contract/test and authoring hook were updated for this explicit user request.
+
+Camera holding retains the accepted wrist/lens rotation, with the body shifted so left/right hands sit at their corresponding outer camera edges. Patrol car polish adds darker rubber with restrained tread/sidewall variation, neutral lamp colour and 216 triangles of source-fitted parked wipers. Near/far car totals: 34,184 / 15,000. Original body geometry, source colour texture and markings remain.
+
+`CartPatrolFinishRun` completed targeted motion/safety/grip checks, full fieldwork/forensic regressions (including the case riding on the real trolley), camera grip renders, fresh lighting/reflections and the strict Windows/PCVR build. Report: [Verification/CartPatrolFinish/README.md](Verification/CartPatrolFinish/README.md). Human Quest Link grip/push acceptance and frame-time review remain pending. No player launch.
+
 ## Crowd model rebuild — October 26
 
 After Koda clarified that the models themselves needed work, all five spectators received refined face/ear/hand topology, retaining their original identity, UVs, skeletons and clips. Both Omani garments were reshaped against the actual shoulder/arm surfaces, with a narrower upper silhouette, cloth compression folds, turned cuffs and hems, fitted headwear, native kumma stitch geometry and a cotton furakha. Covered scalp/old cuffs are removed; a skinned neck liner prevents open seams when bending. The separate floating neckline trim was removed.

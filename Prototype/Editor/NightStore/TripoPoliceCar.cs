@@ -56,13 +56,13 @@ public static partial class PresentationPolish {
   var probe=probeObject.GetComponent<ReflectionProbe>();if(!probe)probe=probeObject.gameObject.AddComponent<ReflectionProbe>();
   probe.transform.position=car.TransformPoint(new Vector3(0,1.05f,0));probe.size=new Vector3(6,3.5f,6);probe.center=Vector3.zero;probe.boxProjection=true;probe.resolution=256;probe.mode=ReflectionProbeMode.Baked;probe.refreshMode=ReflectionProbeRefreshMode.ViaScripting;probe.cullingMask=~(1<<27);probe.intensity=.9f;probe.importance=20;probe.blendDistance=.5f;probe.nearClipPlane=.1f;probe.farClipPlane=100;
   foreach(var r in model.GetComponentsInChildren<Renderer>(true)){r.reflectionProbeUsage=ReflectionProbeUsage.Simple;r.probeAnchor=probe.transform;}
-  StoreKit.MarkStatic(model,false);PatrolCarChecks();
+  StoreKit.MarkStatic(model,false);if(AssetDatabase.LoadAssetAtPath<GameObject>(PatrolPack+"/PatrolWipers.obj"))FinishPatrolDetails();PatrolCarChecks();
  }
  static Material PatrolWheelMaterial(string name){
   string kind=name.Contains("Alloy")?"Alloy":name.Contains("Brake")?"Brake":name.Contains("DarkMetal")?"DarkMetal":"Rubber";
   var path=PatrolPack+"/Patrol"+kind+".mat";var m=AssetDatabase.LoadAssetAtPath<Material>(path);if(!m){m=new Material(Shader.Find("Standard"));AssetDatabase.CreateAsset(m,path);}
-  m.shader=Shader.Find(kind=="Brake"?"CrimeScene/PatrolMachinedMetal":"Standard");
-  m.color=kind=="Alloy"?new Color(.72f,.74f,.76f):kind=="Brake"?new Color(.40f,.42f,.44f):kind=="DarkMetal"?new Color(.15f,.16f,.17f):new Color(.15f,.154f,.158f);
+  m.shader=Shader.Find(kind=="Brake"?"CrimeScene/PatrolMachinedMetal":kind=="Rubber"?"CrimeScene/PatrolTyre":"Standard");
+  m.color=kind=="Alloy"?new Color(.72f,.74f,.76f):kind=="Brake"?new Color(.40f,.42f,.44f):kind=="DarkMetal"?new Color(.15f,.16f,.17f):new Color(.075f,.078f,.081f);
   m.SetFloat("_Metallic",kind=="Rubber"?0:kind=="Brake"?.80f:kind=="DarkMetal"?.65f:.92f);m.SetFloat("_Glossiness",kind=="Rubber"?.20f:kind=="Alloy"?.64f:kind=="Brake"?.48f:.30f);EditorUtility.SetDirty(m);return m;
  }
  static Material PatrolOpticalMaterial(string name){

@@ -1,5 +1,7 @@
 # Open work
 
+- [x] October 26 equipment trolley: grounded, acceleration-limited push/pull, turning/spinning casters, braking, obstacle/ground checks, tracking-jump release and stable case passengers; previous hand-follow mode retained. Camera hands moved to matching left/right edges without changing the accepted angle. Car: rubber/lamp finishing and fitted native wipers (34,184 near / 15,000 far). Full fieldwork and Windows/PCVR checks passed. See Verification/CartPatrolFinish.
+- [ ] Human Quest Link review: trolley handle reach, steering/braking, passenger stability and camera side grips. Frame time remains unmeasured.
 - [x] October 26 model-specific crowd rebuild: face/ear/finger topology on all five, anatomically fitted Omani garments, turned hems/cuffs, fitted headwear, native stitch motifs, neck seam closure and two mesh LODs. Total 123,296 near / 36,985 distance triangles. Skin, loop, behaviour, head-aim, rendered LOD silhouette and strict Windows/PCVR build checks pass. See Verification/CrowdModels.
 - [ ] Human headset review of the new crowd models and LOD transition; standalone/frame-time measurements remain pending.
 - [x] October 26 world/crowd polish: continuous Omani garment shoulders and skin weights, stable bounded head aim during animation culling, restrained cloth/skin shading and conversation speed; shop/exterior finish refinement, lower-car road film, supported side-laid lighter and less aligned displays. Saved-scene regressions, bake/reflections and Windows/PCVR build pass. See Verification/WorldRefinement.

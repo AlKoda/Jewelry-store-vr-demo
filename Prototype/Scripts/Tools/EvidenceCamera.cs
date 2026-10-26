@@ -144,11 +144,10 @@ public sealed class EvidenceCamera : MonoBehaviour
         SetCollidersEnabled(false);
         StartViewfinder();
     }
-    // The camera is held from below with the wrist bent 90 degrees down (Koda, October 24): the
-    // controller points at the sky, the fingers with it, and the body sits on top of the fist with
-    // the lens level along the controller's -up. Pointing the controller up aims the camera forward.
+    // Retain the accepted wrist/lens angle. Offset the body to the opposite side
+    // of the controller, seating each hand on its corresponding camera edge.
     public static readonly Quaternion HandHold=Quaternion.Euler(90,0,0);
-    public static Vector3 HandSeat(bool left)=>new Vector3(left?-.012f:.012f,.012f,.075f);
+    public static Vector3 HandSeat(bool left)=>new Vector3(left?.085f:-.085f,.012f,.075f);
     public static Pose ControllerGrip(bool left)=>new Pose(HandSeat(left),HandHold);
 
     public void ReturnToRack()

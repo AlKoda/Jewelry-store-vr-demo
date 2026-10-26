@@ -125,6 +125,7 @@ public sealed class XRLocomotion : MonoBehaviour
         forward.Normalize();
         Vector3 right = new Vector3(forward.z, 0, -forward.x);
         float speed = MoveSpeed * Mathf.InverseLerp(MoveDeadZone, 1f, Mathf.Min(amount, 1f));
+        speed=PortableFieldKit.LimitWalkingSpeed(transform,speed);
         Vector3 step = (forward * stick.y + right * stick.x).normalized * speed * deltaTime;
         if (TryStep(step)) return step.magnitude;
         // Slide along a wall: try each horizontal component on its own.
